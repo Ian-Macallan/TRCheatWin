@@ -173,8 +173,7 @@
       <SubSystem>Windows</SubSystem>
     </Link>
     <PostBuildEvent>
-      <Command>copy $(OutDir)$(TargetName)$(TargetExt) C:\EXE\
-copy $(OutDir)$(TargetName)$(TargetExt) K:\Kits.Games\Tombraider\</Command>
+      <Command></Command>
     </PostBuildEvent>
     <PostBuildEvent>
       <Message>Copy</Message>
@@ -209,8 +208,7 @@ copy $(OutDir)$(TargetName)$(TargetExt) K:\Kits.Games\Tombraider\</Command>
       <SubSystem>Windows</SubSystem>
     </Link>
     <PostBuildEvent>
-      <Command>copy $(OutDir)$(TargetName)$(TargetExt) C:\EXE\$(TargetName)x64$(TargetExt) 
-copy $(OutDir)$(TargetName)$(TargetExt) K:\Kits.Games\Tombraider\</Command>
+      <Command></Command>
     </PostBuildEvent>
     <PostBuildEvent>
       <Message>Copy</Message>
