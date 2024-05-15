@@ -23,104 +23,104 @@
 // static BYTE	LevelDataUnCompressed [ 32 * 1024 * 1024 ];
 static BYTE *pLevelData = NULL;
 
-static	int32_t Version; // version (4 bytes)
+static	xint32_t Version; // version (4 bytes)
 static	tr_colour Palette[256]; // 8-bit palette (768 bytes)
 static	tr_colour4 Palette16[256]; //  (1024 bytes)
-static	uint32_t NumTextiles; 
+static	xuint32_t NumTextiles; 
 static tr_textile8 Textile8[ 1 ];
 static tr_textile16 Textile16[ 1 ];
-static uint32_t Unused; // 32-bit unused value (4 bytes)
-static uint16_t NumRooms; // number of rooms (2 bytes)
+static xuint32_t Unused; // 32-bit unused value (4 bytes)
+static xuxint16_t NumRooms; // number of rooms (2 bytes)
 static tr_room_info info;           // Where the room exists, in world coordinates
-static uint32_t NumDataWords;       // Number of data words (uint16_t's)
-static uint16_t Data[1 /* NumDataWords */ ]; // The raw data from which the rest of this is derived
+static xuint32_t NumDataWords;       // Number of data words (xuxint16_t's)
+static xuxint16_t Data[1 /* NumDataWords */ ]; // The raw data from which the rest of this is derived
 
 //	tr_room_data : In Data
-static int16_t NumVertices;                   // Number of vertices in the following list
+static xint16_t NumVertices;                   // Number of vertices in the following list
 static tr123_room_vertex Vertices[1 /* NumVertices */]; // List of vertices (relative coordinates)
-static int16_t NumRectangles;                 // Number of textured rectangles
+static xint16_t NumRectangles;                 // Number of textured rectangles
 static tr_face4 Rectangles[1 /*NumRectangles*/ ];    // List of textured rectangles
-static int16_t NumTriangles;                  // Number of textured triangles
+static xint16_t NumTriangles;                  // Number of textured triangles
 static tr_face3 Triangles[1 /* NumTriangles */ ];      // List of textured triangles
-static int16_t NumSprites;                    // Number of sprites
+static xint16_t NumSprites;                    // Number of sprites
 static tr_room_sprite Sprites[1 /* NumSprites */ ];    // List of sprites
 
 //
-static uint16_t NumPortals;                 // Number of visibility portals to other rooms
+static xuxint16_t NumPortals;                 // Number of visibility portals to other rooms
 static tr_room_portal Portals[1 /* NumPortals*/ ];  // List of visibility portals
 
-static uint16_t NumZsectors;                                  // ``Width'' of sector list
-static uint16_t NumXsectors;                                  // ``Height'' of sector list
+static xuxint16_t NumZsectors;                                  // ``Width'' of sector list
+static xuxint16_t NumXsectors;                                  // ``Height'' of sector list
 static tr_room_sector SectorList[1 /* NumXsectors * NumZsectors*/ ];  // List of sectors in this room
 
-static int16_t AmbientIntensity;
-static int16_t AmbientIntensity2;  // Usually the same as AmbientIntensity
-static int16_t LightMode;
+static xint16_t AmbientIntensity;
+static xint16_t AmbientIntensity2;  // Usually the same as AmbientIntensity
+static xint16_t LightMode;
 
-static uint16_t NumLights;                 // Number of point lights in this room
+static xuxint16_t NumLights;                 // Number of point lights in this room
 static tr_room_light Lights1[1 /* NumLights */ ];    // List of point lights
 static tr3_room_light Lights3[1 /* NumLights */ ];    // List of point lights
 
-static uint16_t NumStaticMeshes;                            // Number of static meshes
+static xuxint16_t NumStaticMeshes;                            // Number of static meshes
 static tr_room_staticmesh StaticMeshes1[1 /* NumStaticMeshes */ ];   // List of static meshes
 static tr3_room_staticmesh StaticMeshes3[1 /* NumStaticMeshes */ ];   // List of static meshes
 
-static int16_t AlternateRoom;
-static int16_t Flags;
+static xint16_t AlternateRoom;
+static xint16_t Flags;
 
-static uint8_t WaterScheme;
-static uint16_t WaterScheme16;
-static uint8_t ReverbInfo;
+static xuxint8_t WaterScheme;
+static xuxint16_t WaterScheme16;
+static xuxint8_t ReverbInfo;
 
-static uint8_t Filler;  // Unused.
-static uint16_t NumRoomTextiles; // number of non bumped room tiles (2 bytes)
-static uint16_t NumObjTextiles; // number of object tiles (2 bytes)
-static uint16_t NumBumpTextiles; // number of bumped room tiles (2 bytes)
-static uint32_t Textile32_UncompSize; // uncompressed size (in bytes) of the 32-bit textures chunk (4 bytes)
-static uint32_t Textile32_CompSize; // compressed size (in bytes) of the 32-bit textures chunk (4 bytes)
-static uint32_t Textile16_UncompSize; // uncompressed size (in bytes) of the 16-bit textures chunk (4 bytes)
-static uint32_t Textile16_CompSize; // compressed size (in bytes) of the 16-bit textures chunk (4 bytes)
-static uint32_t Textile32Misc_UncompSize; // uncompressed size (in bytes) of the 32-bit misc textures chunk (4 bytes), should always be 524288
-static uint32_t Textile32Misc_CompSize; // compressed size (in bytes) of the 32-bit misc textures chunk (4 bytes)
-static uint32_t LevelData_UncompSize; // uncompressed size (in bytes) of the level data chunk (4 bytes)
-static uint32_t LevelData_CompSize; // compressed size (in bytes) of the level data chunk (4 bytes)
+static xuxint8_t Filler;  // Unused.
+static xuxint16_t NumRoomTextiles; // number of non bumped room tiles (2 bytes)
+static xuxint16_t NumObjTextiles; // number of object tiles (2 bytes)
+static xuxint16_t NumBumpTextiles; // number of bumped room tiles (2 bytes)
+static xuint32_t Textile32_UncompSize; // uncompressed size (in bytes) of the 32-bit textures chunk (4 bytes)
+static xuint32_t Textile32_CompSize; // compressed size (in bytes) of the 32-bit textures chunk (4 bytes)
+static xuint32_t Textile16_UncompSize; // uncompressed size (in bytes) of the 16-bit textures chunk (4 bytes)
+static xuint32_t Textile16_CompSize; // compressed size (in bytes) of the 16-bit textures chunk (4 bytes)
+static xuint32_t Textile32Misc_UncompSize; // uncompressed size (in bytes) of the 32-bit misc textures chunk (4 bytes), should always be 524288
+static xuint32_t Textile32Misc_CompSize; // compressed size (in bytes) of the 32-bit misc textures chunk (4 bytes)
+static xuint32_t LevelData_UncompSize; // uncompressed size (in bytes) of the level data chunk (4 bytes)
+static xuint32_t LevelData_CompSize; // compressed size (in bytes) of the level data chunk (4 bytes)
 
-static uint8_t AlternateGroup;  // Replaces Filler from TR3
-static uint32_t RoomColour;        // In ARGB format!
+static xuxint8_t AlternateGroup;  // Replaces Filler from TR3
+static xuint32_t RoomColour;        // In ARGB format!
 
-static uint16_t LaraType;
-static uint16_t WeatherType;
-static uint8_t Padding[28];
+static xuxint16_t LaraType;
+static xuxint16_t WeatherType;
+static xuxint8_t Padding[28];
 
 static char XELA[4];           // So-called "XELA landmark"
-static uint32_t RoomDataSize;
+static xuint32_t RoomDataSize;
 
-static uint32_t Seperator;     // 0xCDCDCDCD (4 bytes)
+static xuint32_t Seperator;     // 0xCDCDCDCD (4 bytes)
 
-static uint32_t EndSDOffset;
-static uint32_t StartSDOffset;
+static xuint32_t EndSDOffset;
+static xuint32_t StartSDOffset;
 
-static uint32_t Separator;     // Either 0 or 0xCDCDCDCD
+static xuint32_t Separator;     // Either 0 or 0xCDCDCDCD
 
-static uint32_t EndPortalOffset;
-static uint32_t NumRoomTriangles;
-static uint32_t NumRoomRectangles;
+static xuint32_t EndPortalOffset;
+static xuint32_t NumRoomTriangles;
+static xuint32_t NumRoomRectangles;
 
-static uint32_t LightDataSize;
-static uint32_t NumLights2;    // Always same as NumLights
+static xuint32_t LightDataSize;
+static xuint32_t NumLights2;    // Always same as NumLights
 
-static int32_t RoomYTop;
-static int32_t RoomYBottom;
+static xint32_t RoomYTop;
+static xint32_t RoomYBottom;
 
-static uint32_t NumLayers;
+static xuint32_t NumLayers;
 
-static uint32_t LayerOffset;
-static uint32_t VerticesOffset;
-static uint32_t PolyOffset;
-static uint32_t PolyOffset2;   // Same as PolyOffset
+static xuint32_t LayerOffset;
+static xuint32_t VerticesOffset;
+static xuint32_t PolyOffset;
+static xuint32_t PolyOffset2;   // Same as PolyOffset
 
-static uint32_t NumVertices32;
-static uint16_t Separator16;
+static xuint32_t NumVertices32;
+static xuxint16_t Separator16;
 
 static 	tr_room_sector *AllSectors = NULL;
 
@@ -456,13 +456,13 @@ BOOL ExtractData (	FILE *hOutputFile, int game,
 				//
 				AllSectors = ( tr_room_sector * ) memBuffer.ptr;
 
-				int16_t minFloor	= 0x7fff;
-				int16_t maxFloor	= (int16_t)0x8000;
-				int16_t minCeiling	= 0x7fff;
-				int16_t maxCeiling	= (int16_t)0x8000;
+				xint16_t minFloor	= 0x7fff;
+				xint16_t maxFloor	= (xint16_t)0x8000;
+				xint16_t minCeiling	= 0x7fff;
+				xint16_t maxCeiling	= (xint16_t)0x8000;
 
-				int16_t avgFloor	= 0;
-				int16_t avgCeiling	= 0;
+				xint16_t avgFloor	= 0;
+				xint16_t avgCeiling	= 0;
 
 				int solidFloor		= 0;
 				int solidCeiling	= 0;
@@ -471,8 +471,8 @@ BOOL ExtractData (	FILE *hOutputFile, int game,
 				{
 					for ( int w = 0; w < NumZsectors; w++ )
 					{
-						int8_t floor		= AllSectors [ h * NumZsectors + w ].Floor;
-						int8_t ceiling		= AllSectors [ h * NumZsectors + w ].Ceiling;
+						xint8_t floor		= AllSectors [ h * NumZsectors + w ].Floor;
+						xint8_t ceiling		= AllSectors [ h * NumZsectors + w ].Ceiling;
 
 						//
 						if ( floor == -127 )
@@ -691,8 +691,8 @@ BOOL ExtractData (	FILE *hOutputFile, int game,
 		if ( TRMode == TR4_MODE )
 		{
 			pLevelData	= (BYTE*) memLevelDataUnCompressed.ptr;
-			pLevelData	+= sizeof(uint32_t);		//	Unused
-			NumRooms	=	*( (uint16_t *) pLevelData );
+			pLevelData	+= sizeof(xuint32_t);		//	Unused
+			NumRooms	=	*( (xuxint16_t *) pLevelData );
 			pLevelData	+= sizeof(NumRooms);
 			BYTE *pCurrent = pLevelData;
 
@@ -715,20 +715,20 @@ BOOL ExtractData (	FILE *hOutputFile, int game,
 				tr_room_info *pInfo		= ( tr_room_info * ) pLevelData;
 				pLevelData				+= sizeof(tr_room_info);
 
-				NumDataWords			= *( ( uint32_t *) pLevelData );
+				NumDataWords			= *( ( xuint32_t *) pLevelData );
 				pLevelData				+= sizeof(NumDataWords);
-				pLevelData				+= NumDataWords * sizeof(uint16_t);
+				pLevelData				+= NumDataWords * sizeof(xuxint16_t);
 
 				pCurrent				= pLevelData;
 
-				NumPortals				= *( ( uint16_t *) pLevelData );
+				NumPortals				= *( ( xuxint16_t *) pLevelData );
 				pLevelData				+= sizeof(NumPortals);
 				pLevelData				+= NumPortals * sizeof(tr_room_portal);
 
-				NumZsectors				= *( ( uint16_t *) pLevelData );
+				NumZsectors				= *( ( xuxint16_t *) pLevelData );
 				pLevelData				+= sizeof(NumZsectors);
 
-				NumXsectors				= *( ( uint16_t *) pLevelData );
+				NumXsectors				= *( ( xuxint16_t *) pLevelData );
 				pLevelData				+= sizeof(NumXsectors);
 
 				//
@@ -747,13 +747,13 @@ BOOL ExtractData (	FILE *hOutputFile, int game,
 				//
 				AllSectors = ( tr_room_sector * ) pLevelData;
 
-				int16_t minFloor	= 0x7fff;
-				int16_t maxFloor	= (int16_t)0x8000;
-				int16_t minCeiling	= 0x7fff;
-				int16_t maxCeiling	= (int16_t)0x8000;
+				xint16_t minFloor	= 0x7fff;
+				xint16_t maxFloor	= (xint16_t)0x8000;
+				xint16_t minCeiling	= 0x7fff;
+				xint16_t maxCeiling	= (xint16_t)0x8000;
 
-				int16_t avgFloor	= 0;
-				int16_t avgCeiling	= 0;
+				xint16_t avgFloor	= 0;
+				xint16_t avgCeiling	= 0;
 
 				int solidFloor		= 0;
 				int solidCeiling	= 0;
@@ -762,8 +762,8 @@ BOOL ExtractData (	FILE *hOutputFile, int game,
 				{
 					for ( int w = 0; w < NumZsectors; w++ )
 					{
-						int8_t floor		= AllSectors [ h * NumZsectors + w ].Floor;
-						int8_t ceiling		= AllSectors [ h * NumZsectors + w ].Ceiling;
+						xint8_t floor		= AllSectors [ h * NumZsectors + w ].Floor;
+						xint8_t ceiling		= AllSectors [ h * NumZsectors + w ].Ceiling;
 
 						//
 						if ( floor == -127 )
@@ -828,32 +828,32 @@ BOOL ExtractData (	FILE *hOutputFile, int game,
 				//
 				pLevelData				+= NumZsectors * NumXsectors * sizeof(tr_room_sector);
 
-				RoomColour				= *( ( uint32_t *) pLevelData );
+				RoomColour				= *( ( xuint32_t *) pLevelData );
 				pLevelData				+= sizeof(RoomColour);
 
-				NumLights				= *( ( uint16_t *) pLevelData );
+				NumLights				= *( ( xuxint16_t *) pLevelData );
 				pLevelData				+= sizeof(NumLights);
 
 				pLevelData				+= NumLights * sizeof(tr4_room_light);
 
-				NumStaticMeshes			= *( ( uint16_t *) pLevelData );
+				NumStaticMeshes			= *( ( xuxint16_t *) pLevelData );
 				pLevelData				+= sizeof(NumStaticMeshes);
 
 				pLevelData				+= NumStaticMeshes * sizeof(tr3_room_staticmesh);
 
-				AlternateRoom			= *( ( uint16_t *) pLevelData );
+				AlternateRoom			= *( ( xuxint16_t *) pLevelData );
 				pLevelData				+= sizeof(AlternateRoom);
 
-				Flags					= *( ( uint16_t *) pLevelData );
+				Flags					= *( ( xuxint16_t *) pLevelData );
 				pLevelData				+= sizeof(Flags);
 
-				WaterScheme				= *( ( uint8_t *) pLevelData );
+				WaterScheme				= *( ( xuxint8_t *) pLevelData );
 				pLevelData				+= sizeof(WaterScheme);
 
-				ReverbInfo				= *( ( uint8_t *) pLevelData );
+				ReverbInfo				= *( ( xuxint8_t *) pLevelData );
 				pLevelData				+= sizeof(ReverbInfo);
 
-				AlternateGroup			= *( ( uint8_t *) pLevelData );
+				AlternateGroup			= *( ( xuxint8_t *) pLevelData );
 				pLevelData				+= sizeof(AlternateGroup);
 
 				if ( NumXsectors <= 0 || NumZsectors <= 0 )
@@ -910,13 +910,13 @@ BOOL ExtractData (	FILE *hOutputFile, int game,
 		{
 			pLevelData	= (BYTE*) memLevelDataUnCompressed.ptr;
 
-			Unused		= * (uint32_t * ) pLevelData;
-			pLevelData += sizeof(uint32_t);		//	Unused
+			Unused		= * (xuint32_t * ) pLevelData;
+			pLevelData += sizeof(xuint32_t);		//	Unused
 
-			NumRooms	=	*( (uint16_t *) pLevelData );
+			NumRooms	=	*( (xuxint16_t *) pLevelData );
 			pLevelData	+= sizeof(NumRooms);
 
-			uint16_t unk = *( (uint16_t *) pLevelData );
+			xuxint16_t unk = *( (xuxint16_t *) pLevelData );
 			pLevelData	+= sizeof(NumRooms);
 
 			//
@@ -953,33 +953,33 @@ BOOL ExtractData (	FILE *hOutputFile, int game,
 
 				pLevelData				+= sizeof(XELA);
 
-				RoomDataSize			= *(uint32_t *) pLevelData;
+				RoomDataSize			= *(xuint32_t *) pLevelData;
 				pLevelData				+= sizeof(RoomDataSize);
 
 				pCurrent				= pLevelData;
 
-				Seperator				= *(uint32_t *) pLevelData;
+				Seperator				= *(xuint32_t *) pLevelData;
 				pLevelData				+= sizeof(Seperator);
 
-				EndSDOffset				= *(uint32_t *) pLevelData;
+				EndSDOffset				= *(xuint32_t *) pLevelData;
 				pLevelData				+= sizeof(EndSDOffset);
 
-				StartSDOffset			= *(uint32_t *) pLevelData;
+				StartSDOffset			= *(xuint32_t *) pLevelData;
 				pLevelData				+= sizeof(StartSDOffset);
 
-				Separator				= *(uint32_t *) pLevelData;
+				Separator				= *(xuint32_t *) pLevelData;
 				pLevelData				+= sizeof(Separator);
 
-				EndPortalOffset			= *(uint32_t *) pLevelData;
+				EndPortalOffset			= *(xuint32_t *) pLevelData;
 				pLevelData				+= sizeof(EndPortalOffset);
 
 				tr5_room_info *pInfo	= ( tr5_room_info * ) pLevelData;
 				pLevelData				+= sizeof(tr5_room_info);
 
-				NumZsectors				= *( ( uint16_t *) pLevelData );
+				NumZsectors				= *( ( xuxint16_t *) pLevelData );
 				pLevelData				+= sizeof(NumZsectors);
 
-				NumXsectors				= *( ( uint16_t *) pLevelData );
+				NumXsectors				= *( ( xuxint16_t *) pLevelData );
 				pLevelData				+= sizeof(NumXsectors);
 
 				//
@@ -996,45 +996,45 @@ BOOL ExtractData (	FILE *hOutputFile, int game,
 				}
 
 				//
-				RoomColour				=  *( ( uint32_t *) pLevelData );
+				RoomColour				=  *( ( xuint32_t *) pLevelData );
 				pLevelData				+= sizeof(RoomColour);
 
-				NumLights				=  *( ( uint16_t *) pLevelData );
+				NumLights				=  *( ( xuxint16_t *) pLevelData );
 				pLevelData				+= sizeof(NumLights);
 
-				NumStaticMeshes			=  *( ( uint16_t *) pLevelData );
+				NumStaticMeshes			=  *( ( xuxint16_t *) pLevelData );
 				pLevelData				+= sizeof(NumStaticMeshes);
 
-				ReverbInfo				=  *( ( uint8_t *) pLevelData );
+				ReverbInfo				=  *( ( xuxint8_t *) pLevelData );
 				pLevelData				+= sizeof(ReverbInfo);
 
-				AlternateGroup			=  *( ( uint8_t *) pLevelData );
+				AlternateGroup			=  *( ( xuxint8_t *) pLevelData );
 				pLevelData				+= sizeof(AlternateGroup);
 
-				WaterScheme16			=  *( ( uint16_t *) pLevelData );
+				WaterScheme16			=  *( ( xuxint16_t *) pLevelData );
 				pLevelData				+= sizeof(WaterScheme16);
 
-				//		uint32_t Filler[2];    // Both always 0x00007FFF
-				pLevelData				+= sizeof(uint32_t) * 2;
-				//		uint32_t Separator[2]; // Both always 0xCDCDCDCD
-				pLevelData				+= sizeof(uint32_t) * 2;
-				//		uint32_t Filler;       // Always 0xFFFFFFFF
-				pLevelData				+= sizeof(uint32_t);
+				//		xuint32_t Filler[2];    // Both always 0x00007FFF
+				pLevelData				+= sizeof(xuint32_t) * 2;
+				//		xuint32_t Separator[2]; // Both always 0xCDCDCDCD
+				pLevelData				+= sizeof(xuint32_t) * 2;
+				//		xuint32_t Filler;       // Always 0xFFFFFFFF
+				pLevelData				+= sizeof(xuint32_t);
 
-				AlternateRoom			= *( ( uint16_t *) pLevelData );
+				AlternateRoom			= *( ( xuxint16_t *) pLevelData );
 				pLevelData				+= sizeof(AlternateRoom);
 
-				Flags					= *( ( uint16_t *) pLevelData );
+				Flags					= *( ( xuxint16_t *) pLevelData );
 				pLevelData				+= sizeof(Flags);
 
 				//	Unknown1
-				pLevelData				+= sizeof(uint32_t) * 3;
+				pLevelData				+= sizeof(xuint32_t) * 3;
 
-				Separator				= *( ( uint32_t *) pLevelData );
+				Separator				= *( ( xuint32_t *) pLevelData );
 				pLevelData				+= sizeof(Separator);
 
 				//	Unknown4
-				pLevelData				+= sizeof(uint16_t ) * 2;
+				pLevelData				+= sizeof(xuxint16_t ) * 2;
 
 				float RoomX				= *( ( float *) pLevelData );
 				pLevelData				+= sizeof(RoomX );
@@ -1045,70 +1045,70 @@ BOOL ExtractData (	FILE *hOutputFile, int game,
 				float RoomZ				= *( ( float *) pLevelData );
 				pLevelData				+= sizeof(RoomZ );
 
-				//    uint32_t Separator[4]; // Always 0xCDCDCDCD
-				//    uint32_t Separator;    // 0 for normal rooms and 0xCDCDCDCD for null rooms
-				//    uint32_t Separator;    // Always 0xCDCDCDCD
-				pLevelData				+= sizeof(uint32_t)*6;
+				//    xuint32_t Separator[4]; // Always 0xCDCDCDCD
+				//    xuint32_t Separator;    // 0 for normal rooms and 0xCDCDCDCD for null rooms
+				//    xuint32_t Separator;    // Always 0xCDCDCDCD
+				pLevelData				+= sizeof(xuint32_t)*6;
 
-				NumRoomTriangles		= *( ( uint32_t *) pLevelData );
+				NumRoomTriangles		= *( ( xuint32_t *) pLevelData );
 				pLevelData				+= sizeof(NumRoomTriangles );
 
-				NumRoomRectangles		= *( ( uint32_t *) pLevelData );
+				NumRoomRectangles		= *( ( xuint32_t *) pLevelData );
 				pLevelData				+= sizeof(NumRoomRectangles );
 
-				Seperator				= *(uint32_t *) pLevelData;
+				Seperator				= *(xuint32_t *) pLevelData;
 				pLevelData				+= sizeof(Seperator);
 
-				LightDataSize			= *(uint32_t *) pLevelData;
+				LightDataSize			= *(xuint32_t *) pLevelData;
 				pLevelData				+= sizeof(LightDataSize);
 
-				NumLights2				= *(uint32_t *) pLevelData;
+				NumLights2				= *(xuint32_t *) pLevelData;
 				pLevelData				+= sizeof(NumLights2);
 
-				//			uint32_t Unknown6;
-				pLevelData				+= sizeof(uint32_t);
+				//			xuint32_t Unknown6;
+				pLevelData				+= sizeof(xuint32_t);
 
-				RoomYTop				= *(uint32_t *) pLevelData;
+				RoomYTop				= *(xuint32_t *) pLevelData;
 				float dfRoomYTop		= *(float *) pLevelData;
 				pLevelData				+= sizeof(RoomYTop);
 
-				RoomYBottom				= *(uint32_t *) pLevelData;
+				RoomYBottom				= *(xuint32_t *) pLevelData;
 				float dfRoomYBottom		= *(float *) pLevelData;
 				pLevelData				+= sizeof(RoomYBottom);
 
-				NumLayers				= *(uint32_t *) pLevelData;
+				NumLayers				= *(xuint32_t *) pLevelData;
 				pLevelData				+= sizeof(NumLayers);
     
-				LayerOffset				= *(uint32_t *) pLevelData;
+				LayerOffset				= *(xuint32_t *) pLevelData;
 				pLevelData				+= sizeof(LayerOffset);
     
-				VerticesOffset			= *(uint32_t *) pLevelData;
+				VerticesOffset			= *(xuint32_t *) pLevelData;
 				pLevelData				+= sizeof(VerticesOffset);
     
-				PolyOffset				= *(uint32_t *) pLevelData;
+				PolyOffset				= *(xuint32_t *) pLevelData;
 				pLevelData				+= sizeof(PolyOffset);
 
-				PolyOffset2				= *(uint32_t *) pLevelData;
+				PolyOffset2				= *(xuint32_t *) pLevelData;
 				pLevelData				+= sizeof(PolyOffset2);
 
-				NumVertices32			= *(uint32_t *) pLevelData;
+				NumVertices32			= *(xuint32_t *) pLevelData;
 				pLevelData				+= sizeof(NumVertices32);
 
-				//	 uint32_t Separator[4];  // Always 0xCDCDCDCD
-				pLevelData				+= sizeof(uint32_t) * 4;
+				//	 xuint32_t Separator[4];  // Always 0xCDCDCDCD
+				pLevelData				+= sizeof(xuint32_t) * 4;
 
 				pLevelData				+= sizeof(tr5_room_light ) * NumLights;
 
 				//
 				AllSectors = ( tr_room_sector * ) pLevelData;
 
-				int16_t minFloor	= 0x7fff;
-				int16_t maxFloor	= (int16_t)0x8000;
-				int16_t minCeiling	= 0x7fff;
-				int16_t maxCeiling	= (int16_t)0x8000;
+				xint16_t minFloor	= 0x7fff;
+				xint16_t maxFloor	= (xint16_t)0x8000;
+				xint16_t minCeiling	= 0x7fff;
+				xint16_t maxCeiling	= (xint16_t)0x8000;
 
-				int16_t avgFloor	= 0;
-				int16_t avgCeiling	= 0;
+				xint16_t avgFloor	= 0;
+				xint16_t avgCeiling	= 0;
 
 				int solidFloor		= 0;
 				int solidCeiling	= 0;
@@ -1117,8 +1117,8 @@ BOOL ExtractData (	FILE *hOutputFile, int game,
 				{
 					for ( int w = 0; w < NumZsectors; w++ )
 					{
-						int8_t floor		= AllSectors [ h * NumZsectors + w ].Floor;
-						int8_t ceiling		= AllSectors [ h * NumZsectors + w ].Ceiling;
+						xint8_t floor		= AllSectors [ h * NumZsectors + w ].Floor;
+						xint8_t ceiling		= AllSectors [ h * NumZsectors + w ].Ceiling;
 
 						//
 						if ( floor == -127 )
@@ -1184,13 +1184,13 @@ BOOL ExtractData (	FILE *hOutputFile, int game,
 				pLevelData				+= NumZsectors * NumXsectors * sizeof(tr_room_sector);
 
 				//
-				NumPortals				= *( ( uint16_t *) pLevelData );
+				NumPortals				= *( ( xuxint16_t *) pLevelData );
 				pLevelData				+= sizeof(NumPortals);
 
 				pLevelData				+= sizeof(tr_room_portal) * NumPortals;
 
 				//
-				Separator16 			= *( ( uint16_t *) pLevelData );
+				Separator16 			= *( ( xuxint16_t *) pLevelData );
 				pLevelData				+= sizeof(Separator16);
 
 				//
@@ -1198,7 +1198,7 @@ BOOL ExtractData (	FILE *hOutputFile, int game,
 
 				pLevelData				+= sizeof( tr5_room_layer ) * NumLayers;
 
-				//	uint8_t Faces[(NumRoomRectangles * sizeof(tr_face4) + NumRoomTriangles * (tr_face3)];
+				//	xuxint8_t Faces[(NumRoomRectangles * sizeof(tr_face4) + NumRoomTriangles * (tr_face3)];
 				pLevelData				+= NumRoomRectangles * sizeof(tr_face4) + NumRoomTriangles * sizeof(tr_face3);
 
 				pLevelData				+= sizeof(tr5_room_vertex) * NumVertices32;

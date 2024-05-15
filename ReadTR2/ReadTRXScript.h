@@ -16,56 +16,56 @@ Options is a set of bit flags with several global game settings (name of the set
  **/
 struct tr4_script_header // 9 bytes
 {
-	uint8_t		Options;
-	uint8_t		Filler[3];     // Unused
-	uint32_t	InputTimeout;
-	uint8_t		Security;
+	xuxint8_t		Options;
+	xuxint8_t		Filler[3];     // Unused
+	xuint32_t	InputTimeout;
+	xuxint8_t		Security;
 };
 
 //
 struct tr4_script_levelheader
 {
-	uint8_t		NumTotalLevels;
-	uint16_t	NumUniqueLevelPaths;
+	xuxint8_t		NumTotalLevels;
+	xuxint16_t	NumUniqueLevelPaths;
 
-	uint16_t	LevelpathStringLen;
-	uint16_t	LevelBlockLen;
+	xuxint16_t	LevelpathStringLen;
+	xuxint16_t	LevelBlockLen;
 
-	uint8_t		PSXLevelString [5];    //  typically ".PSX"
-	uint8_t		PSXFMVString   [5];    //  typically ".FMV"
-	uint8_t		PSXCutString [5];    //  typically ".CUT"
-	uint8_t		Filler [5];            //  Possibly for some additional extension type?
+	xuxint8_t		PSXLevelString [5];    //  typically ".PSX"
+	xuxint8_t		PSXFMVString   [5];    //  typically ".FMV"
+	xuxint8_t		PSXCutString [5];    //  typically ".CUT"
+	xuxint8_t		Filler [5];            //  Possibly for some additional extension type?
 
-	uint8_t		PCLevelString  [5];    //  typically ".TR4"
-	uint8_t		PCFMVString    [5];    //  typically ".BIK"
-	uint8_t		PCCutString    [5];    //  typically ".TR4"
-	uint8_t		Unused [5];
+	xuxint8_t		PCLevelString  [5];    //  typically ".TR4"
+	xuxint8_t		PCFMVString    [5];    //  typically ".BIK"
+	xuxint8_t		PCCutString    [5];    //  typically ".TR4"
+	xuxint8_t		Unused [5];
 };
 
 //
 struct tr4_script_levellisting
 {
-	uint16_t OffsetsToLevelpathString[1 /* NumTotalLevels */ ];
-	uint8_t LevelpathStringBlock [1 /* LevelpathStringLen */ ];
+	xuxint16_t OffsetsToLevelpathString[1 /* NumTotalLevels */ ];
+	xuxint8_t LevelpathStringBlock [1 /* LevelpathStringLen */ ];
 
-	uint16_t OffsetsToLevelData [1 /* NumTotalLevels */ ];
+	xuxint16_t OffsetsToLevelData [1 /* NumTotalLevels */ ];
 };
 
 //
 struct tr4_script_leveldata
 {
-    uint8_t LevelData [1 /*LevelDataLen */ ];
+    xuxint8_t LevelData [1 /*LevelDataLen */ ];
 };
 
 struct tr4_lang_header
 {
-    uint16_t NumGenericStrings;
-    uint16_t NumPSXStrings;
-    uint16_t NumPCStrings;
+    xuxint16_t NumGenericStrings;
+    xuxint16_t NumPSXStrings;
+    xuxint16_t NumPCStrings;
 
-    uint16_t GenericStringsLen; //  including the null-terminator bytes
-    uint16_t PSXStringsLen;     //  including the null-terminator bytes
-    uint16_t PCStringsLen;      //  including the null-terminator bytes
+    xuxint16_t GenericStringsLen; //  including the null-terminator bytes
+    xuxint16_t PSXStringsLen;     //  including the null-terminator bytes
+    xuxint16_t PCStringsLen;      //  including the null-terminator bytes
 };
 
 #if 0
@@ -87,7 +87,7 @@ struct LevelDatax81
 {
 	BYTE		opcode;
 	bitu8		stringIndex;
-	uint16_t	levelOptions;
+	xuxint16_t	levelOptions;
 	bitu8		pathIndex;
 	bitu8		audio;
 };
@@ -97,7 +97,7 @@ struct LevelDatax82
 {
 	BYTE		opcode;
 	bitu8		pathIndex;		// Path Index seems to have another meaning in TR5
-	uint16_t	titleOptions;
+	xuxint16_t	titleOptions;
 	bitu8		audio;
 };
 
@@ -154,7 +154,7 @@ struct LevelDatax8C
 struct LevelDatax8D
 {
 	BYTE	opcode;
-	uint16_t yClicks; uint16_t zClicks; uint16_t xClicks; bitu8 red; bitu8 green; bitu8 blue;
+	xuxint16_t yClicks; xuxint16_t zClicks; xuxint16_t xClicks; bitu8 red; bitu8 green; bitu8 blue;
 };
 
 //	Mirror
@@ -204,20 +204,20 @@ struct LevelDatax92_5
 struct LevelDatax93
 {
 	BYTE		opcode;
-	uint16_t	stringIndex; 
-	uint16_t	height; 
-	uint16_t	size; 
-	uint16_t	yAngle; 
-	uint16_t	zAngle; 
-	uint16_t	xAngle; 
-	uint16_t	unknown;
+	xuxint16_t	stringIndex; 
+	xuxint16_t	height; 
+	xuxint16_t	size; 
+	xuxint16_t	yAngle; 
+	xuxint16_t	zAngle; 
+	xuxint16_t	xAngle; 
+	xuxint16_t	unknown;
 };
 
 //	LoseItemAtStartup
 struct LevelDataxDA
 {
 	BYTE		opcode;
-	uint16_t	itemNumber;
+	xuxint16_t	itemNumber;
 };
 
 //

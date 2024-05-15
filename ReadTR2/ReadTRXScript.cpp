@@ -18,10 +18,10 @@ static struct tr4_lang_header langHeader;
 //
 static const int	maxLevels		= 64;
 
-//	Length is scriptLevelHeader.NumTotalLevels * sizeof(uint16_t)
-static uint16_t LevelpathStringOffsets [ maxLevels ];
-//	Length is scriptLevelHeader.NumTotalLevels * sizeof(uint16_t)
-static uint16_t LevelBlockDataOffsets [ maxLevels ];
+//	Length is scriptLevelHeader.NumTotalLevels * sizeof(xuxint16_t)
+static xuxint16_t LevelpathStringOffsets [ maxLevels ];
+//	Length is scriptLevelHeader.NumTotalLevels * sizeof(xuxint16_t)
+static xuxint16_t LevelBlockDataOffsets [ maxLevels ];
 
 //	Length is in scriptLevelHeader.LevelpathStringLen
 static char LevelpathStringBlockData [ 0x7fff ];
@@ -30,7 +30,7 @@ static char LevelpathStringBlockData [ 0x7fff ];
 static BYTE LevelBlockData [ 0x7fff ];
 
 //
-uint16_t	LanguageBlockLen;
+xuxint16_t	LanguageBlockLen;
 //	The Size will be LanguageBlockLen
 //	String are zero terminated. The end will be an other zero
 static BYTE LanguageBlockData [ 0x7fff ];
@@ -39,7 +39,7 @@ static char LanguageFilename [ MAX_PATH ];
 
 //	From Languages
 //	Lengtth will be langHeader.NumGenericStrings + langHeader.NumPSXStrings + langHeader.NumPCStrings
-static uint16_t StringOffsetTable[8192];
+static xuxint16_t StringOffsetTable[8192];
 
 //	This will be used to search string in Level Data and setn the index
 static const int StringTableMax	= 4096;
@@ -50,8 +50,8 @@ static 	FILE *hLogFile = NULL;
 
 //
 /**
-0x81  Level           bitu8 stringIndex, uint16_t levelOptions, bitu8 pathIndex, bitu8 audio
-0x82  [Title] Level   bitu8 pathIndex, uint16_t titleOptions, bitu8 audio
+0x81  Level           bitu8 stringIndex, xuxint16_t levelOptions, bitu8 pathIndex, bitu8 audio
+0x82  [Title] Level   bitu8 pathIndex, xuxint16_t titleOptions, bitu8 audio
 0x8C  Legend          bitu8 stringIndex
 0x91  LoadCamera      bit32 srcX, bit32 srcY, bit32 srcZ, bit32 targX, bit32 targY, bit32 targZ, bitu8 room
 0x89  Layer1          bitu8 red, bitu8 green, bitu8 blue, bit8 speed
@@ -67,8 +67,8 @@ static 	FILE *hLogFile = NULL;
 0x80  FMV             bitu8: 4 least significant bits represent the FMV index; 4 most significant bits (y) represent the FMV trigger bitfield as in y=1<->bit 8 set
 0x92  ResetHUB        bitu8 levelIndex
 0x90  AnimatingMIP    bitu8: 4 least significant bits represent animatingObjectIndex - 1; 4 most significant bits represent the distance
-0x8D  LensFlare       uint16_t yClicks, bit16 zClicks, uint16_t xClicks, bitu8 red, bitu8 green, bitu8 blue
-0x93  KEY_ITEM1       uint16_t stringIndex, uint16_t height, uint16_t size, uint16_t yAngle, uint16_t zAngle, uint16_t xAngle, uint16_t unknown
+0x8D  LensFlare       xuxint16_t yClicks, bit16 zClicks, xuxint16_t xClicks, bitu8 red, bitu8 green, bitu8 blue
+0x93  KEY_ITEM1       xuxint16_t stringIndex, xuxint16_t height, xuxint16_t size, xuxint16_t yAngle, xuxint16_t zAngle, xuxint16_t xAngle, xuxint16_t unknown
 0x94  KEY_ITEM2   -=-  (All the same)
 0x95  KEY_ITEM3   -=-
 0x96  KEY_ITEM4   -=-
@@ -149,7 +149,7 @@ static 	FILE *hLogFile = NULL;
  **/
 
 /**
-The uint16_t values levelOptions and titleOptions are actually bit fields containing several boolean options, and are laid out as follows (per-bit description):
+The xuxint16_t values levelOptions and titleOptions are actually bit fields containing several boolean options, and are laid out as follows (per-bit description):
 
     Bit 0 (0x0001) — YoungLara
     Bit 1 (0x0002) — Weather
@@ -741,7 +741,7 @@ static DWORD GetDWORDValue ( char *parms )
 /////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////
-static uint16_t SearchStringIndex ( const char *pText, const char delimiter = '\0' )
+static xuxint16_t SearchStringIndex ( const char *pText, const char delimiter = '\0' )
 {
 	static char szSearched [ MAX_PATH ];
 	strcpy_s ( szSearched, sizeof(szSearched), pText );
@@ -754,7 +754,7 @@ static uint16_t SearchStringIndex ( const char *pText, const char delimiter = '\
 		}
 	}
 
-	for ( uint16_t i = 0; i < StringTableMax; i++ )
+	for ( xuxint16_t i = 0; i < StringTableMax; i++ )
 	{
 		if ( StringTable [ i ] != NULL )
 		{
@@ -880,7 +880,7 @@ static void Cleanup()
 }
 
 /**
-The uint16_t values levelOptions and titleOptions are actually bit fields containing several boolean options, and are laid out as follows (per-bit description):
+The xuxint16_t values levelOptions and titleOptions are actually bit fields containing several boolean options, and are laid out as follows (per-bit description):
 
     Bit 0 (0x0001) — YoungLara
     Bit 1 (0x0002) — Weather
@@ -899,7 +899,7 @@ The uint16_t values levelOptions and titleOptions are actually bit fields contai
     Bit 14 (0x4000) — RemoveAmulet
     Bit 15 (0x8000) — NoLevel
  **/
-static const char *OptionLabel ( uint16_t option )
+static const char *OptionLabel ( xuxint16_t option )
 {
 	static char szText [ MAX_PATH * 4 ];
 	ZeroMemory ( szText, sizeof(szText) );
@@ -1079,8 +1079,8 @@ BOOL ReadTRXLanguage ( const char *pFilename, const char *pDirectory, int iLang,
 
 	int countStrings = langHeader.NumGenericStrings + langHeader.NumPSXStrings + langHeader.NumPCStrings;
 
-	uRead = fread ( (char*) &StringOffsetTable, 1, sizeof(uint16_t)*countStrings, hInpFile );
-	if ( uRead != sizeof(uint16_t)*countStrings )
+	uRead = fread ( (char*) &StringOffsetTable, 1, sizeof(xuxint16_t)*countStrings, hInpFile );
+	if ( uRead != sizeof(xuxint16_t)*countStrings )
 	{
 		fclose ( hOutFile );
 		fclose ( hInpFile );
@@ -1189,7 +1189,7 @@ BOOL ReadTRXLanguage ( const char *pFilename, const char *pDirectory, int iLang,
 /////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////
-static BOOL TreatLevelData ( FILE *hOutFile, uint16_t offset, int len, int version )
+static BOOL TreatLevelData ( FILE *hOutFile, xuxint16_t offset, int len, int version )
 {
 	//
 	bool bTitle = false;
@@ -1231,7 +1231,7 @@ static BOOL TreatLevelData ( FILE *hOutFile, uint16_t offset, int len, int versi
 				}
 
 				//	Level
-				//	bitu8 stringIndex; uint16_t levelOptions; bitu8 pathIndex; bitu8 audio;
+				//	bitu8 stringIndex; xuxint16_t levelOptions; bitu8 pathIndex; bitu8 audio;
 				case 0x81 :
 				{
 					LevelDatax81 *pArguments = ( LevelDatax81 * ) ( & LevelBlockData [ x ] );
@@ -1253,7 +1253,7 @@ static BOOL TreatLevelData ( FILE *hOutFile, uint16_t offset, int len, int versi
 					break;
 				}
 				//	Title
-				//	bitu8 pathIndex; uint16_t titleOptions; bitu8 audio;
+				//	bitu8 pathIndex; xuxint16_t titleOptions; bitu8 audio;
 				case 0x82 :
 				{
 					bTitle = true;
@@ -1362,7 +1362,7 @@ static BOOL TreatLevelData ( FILE *hOutFile, uint16_t offset, int len, int versi
 					x += sizeof(LevelDatax8C);
 					break;
 				}
-				//	uint16_t yClicks; bit16 zClicks; uint16_t xClicks; bitu8 red; bitu8 green; bitu8 blue;
+				//	xuxint16_t yClicks; bit16 zClicks; xuxint16_t xClicks; bitu8 red; bitu8 green; bitu8 blue;
 				case 0x8D :
 				{
 					LevelDatax8D *pArguments = ( LevelDatax8D * ) ( & LevelBlockData [ x ] );
@@ -1646,9 +1646,9 @@ BOOL ReadTRXScript ( const char *pathname, const char *pDirectory, int version )
 	ZeroMemory ( &LevelpathStringOffsets, sizeof(LevelpathStringOffsets) );
 	if ( nbLevels > 0 )
 	{
-		if ( hLogFile != NULL ) fprintf_s ( hLogFile, "Reading LevelpathStringOffsets %d\n", sizeof(uint16_t)*nbLevels );
-		uRead = fread ( (char*) &LevelpathStringOffsets, 1, sizeof(uint16_t)*nbLevels, hInpFile );
-		if ( uRead != sizeof(uint16_t)*nbLevels )
+		if ( hLogFile != NULL ) fprintf_s ( hLogFile, "Reading LevelpathStringOffsets %d\n", sizeof(xuxint16_t)*nbLevels );
+		uRead = fread ( (char*) &LevelpathStringOffsets, 1, sizeof(xuxint16_t)*nbLevels, hInpFile );
+		if ( uRead != sizeof(xuxint16_t)*nbLevels )
 		{
 			fclose ( hOutFile );
 			fclose ( hInpFile );
@@ -1695,9 +1695,9 @@ BOOL ReadTRXScript ( const char *pathname, const char *pDirectory, int version )
 	ZeroMemory ( &LevelBlockDataOffsets, sizeof(LevelBlockDataOffsets) );
 	if ( nbLevels > 0 )
 	{
-		if ( hLogFile != NULL ) fprintf_s ( hLogFile, "Reading LevelBlockDataOffsets %d\n", sizeof(uint16_t)*nbLevels );
-		uRead = fread ( (char*) &LevelBlockDataOffsets, 1, sizeof(uint16_t)*nbLevels, hInpFile );
-		if ( uRead != sizeof(uint16_t)*nbLevels )
+		if ( hLogFile != NULL ) fprintf_s ( hLogFile, "Reading LevelBlockDataOffsets %d\n", sizeof(xuxint16_t)*nbLevels );
+		uRead = fread ( (char*) &LevelBlockDataOffsets, 1, sizeof(xuxint16_t)*nbLevels, hInpFile );
+		if ( uRead != sizeof(xuxint16_t)*nbLevels )
 		{
 			fclose ( hOutFile );
 			fclose ( hInpFile );
@@ -1746,7 +1746,7 @@ BOOL ReadTRXScript ( const char *pathname, const char *pDirectory, int version )
 	fprintf ( hOutFile, "[Language]\n" );
 
 	ZeroMemory ( LanguageBlockData, sizeof(LanguageBlockData) );
-	LanguageBlockLen = (uint16_t) fread ( LanguageBlockData, 1, sizeof(LanguageBlockData), hInpFile );
+	LanguageBlockLen = (xuxint16_t) fread ( LanguageBlockData, 1, sizeof(LanguageBlockData), hInpFile );
 	if ( hLogFile != NULL ) fprintf_s ( hLogFile, "Reading LanguageBlockData %d\n", LanguageBlockLen );
 	char *pLang = (char*) LanguageBlockData;
 	int iLang = 0;
@@ -1905,19 +1905,19 @@ BOOL WriteTRXLanguage ( const char *pFilename, const char *pDirectory, int iLang
 							case StringsGeneric :
 							{
 								langHeader.NumGenericStrings++;
-								langHeader.GenericStringsLen += (uint16_t) strlen(pText) + 1;
+								langHeader.GenericStringsLen += (xuxint16_t) strlen(pText) + 1;
 								break;
 							}
 							case StringsPSX :
 							{
 								langHeader.NumPSXStrings++;
-								langHeader.PSXStringsLen += (uint16_t) strlen(pText) + 1;
+								langHeader.PSXStringsLen += (xuxint16_t) strlen(pText) + 1;
 								break;
 							}
 							case StringsPC :
 							{
 								langHeader.NumPCStrings++;
-								langHeader.PCStringsLen += (uint16_t) strlen(pText) + 1;
+								langHeader.PCStringsLen += (xuxint16_t) strlen(pText) + 1;
 								break;
 							}
 						}
@@ -1951,7 +1951,7 @@ BOOL WriteTRXLanguage ( const char *pFilename, const char *pDirectory, int iLang
 			//
 			//	Write Offset Table
 			int stringsCount	= langHeader.NumGenericStrings + langHeader.NumPSXStrings + langHeader.NumPCStrings;
-			fwrite ( StringOffsetTable, 1, sizeof(uint16_t)*stringsCount, hOutFile );
+			fwrite ( StringOffsetTable, 1, sizeof(xuxint16_t)*stringsCount, hOutFile );
 
 			//
 			do
@@ -2273,16 +2273,16 @@ BOOL WriteTRXScript ( const char *pathname, const char *pDirectory, int version 
 
 						//
 						//	Write Prevoious : LevelpathStringBlockData
-						if ( hLogFile ) fprintf_s ( hLogFile, "Writing LevelpathStringOffsets %d\n", sizeof(uint16_t)*scriptLevelHeader.NumTotalLevels );
-						fwrite ( LevelpathStringOffsets, 1, sizeof(uint16_t)*scriptLevelHeader.NumTotalLevels, hOutFile );
+						if ( hLogFile ) fprintf_s ( hLogFile, "Writing LevelpathStringOffsets %d\n", sizeof(xuxint16_t)*scriptLevelHeader.NumTotalLevels );
+						fwrite ( LevelpathStringOffsets, 1, sizeof(xuxint16_t)*scriptLevelHeader.NumTotalLevels, hOutFile );
 						
 						//
 						if ( hLogFile ) fprintf_s ( hLogFile, "Writing LevelpathStringBlockData %d\n", scriptLevelHeader.LevelpathStringLen );
 						fwrite ( LevelpathStringBlockData, 1, scriptLevelHeader.LevelpathStringLen, hOutFile );
 
 						//	Write Previous : LevelBlockDataOffsets
-						if ( hLogFile ) fprintf_s ( hLogFile, "Writing LevelBlockDataOffsets %d\n", sizeof(uint16_t)*scriptLevelHeader.NumTotalLevels );
-						fwrite ( (char*) &LevelBlockDataOffsets, 1, sizeof(uint16_t)*scriptLevelHeader.NumTotalLevels, hOutFile );
+						if ( hLogFile ) fprintf_s ( hLogFile, "Writing LevelBlockDataOffsets %d\n", sizeof(xuxint16_t)*scriptLevelHeader.NumTotalLevels );
+						fwrite ( (char*) &LevelBlockDataOffsets, 1, sizeof(xuxint16_t)*scriptLevelHeader.NumTotalLevels, hOutFile );
 
 						//	Then Data
 						if ( hLogFile ) fprintf_s ( hLogFile, "Writing LevelBlockData %d\n", scriptLevelHeader.LevelBlockLen );
@@ -2888,7 +2888,7 @@ BOOL WriteTRXScript ( const char *pathname, const char *pDirectory, int version 
 								LevelpathStringOffsets [ scriptLevelHeader.NumTotalLevels - 1 ] = scriptLevelHeader.LevelpathStringLen;
 								memcpy_s ( LevelpathStringBlockData + scriptLevelHeader.LevelpathStringLen,
 											sizeof(LevelpathStringBlockData) - scriptLevelHeader.LevelpathStringLen, pBuffer, strlen(pBuffer) + 1 );
-								scriptLevelHeader.LevelpathStringLen	+= (uint16_t)strlen(pBuffer) + 1;
+								scriptLevelHeader.LevelpathStringLen	+= (xuxint16_t)strlen(pBuffer) + 1;
 							}
 
 							//
@@ -2899,7 +2899,7 @@ BOOL WriteTRXScript ( const char *pathname, const char *pDirectory, int version 
 							}
 
 							//
-							//	bitu8 stringIndex; uint16_t levelOptions; bitu8 pathIndex; bitu8 audio;
+							//	bitu8 stringIndex; xuxint16_t levelOptions; bitu8 pathIndex; bitu8 audio;
 							if ( currentSection == Section_Level )
 							{
 								//
@@ -2936,7 +2936,7 @@ BOOL WriteTRXScript ( const char *pathname, const char *pDirectory, int version 
 							//	
 							else
 							{
-								//	bitu8 pathIndex; uint16_t titleOptions; bitu8 audio;
+								//	bitu8 pathIndex; xuxint16_t titleOptions; bitu8 audio;
 								LevelDatax82	data;
 								ZeroMemory ( &data, sizeof(data) );
 								data.opcode			= 0x82;
@@ -3627,7 +3627,7 @@ BOOL WriteTRXScript ( const char *pathname, const char *pDirectory, int version 
 
 							//
 							memcpy_s ( LanguageBlockData + LanguageBlockLen, sizeof(LanguageBlockData) - LanguageBlockLen, LanguageFilename, strlen ( LanguageFilename ) + 1 );
-							LanguageBlockLen += (uint16_t) strlen ( LanguageFilename ) + 1;
+							LanguageBlockLen += (xuxint16_t) strlen ( LanguageFilename ) + 1;
 						}
 					}
 					else if ( currentSection == Section_PSXExtensions )
