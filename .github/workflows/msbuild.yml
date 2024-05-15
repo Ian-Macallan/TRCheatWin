@@ -13,7 +13,7 @@ on:
 
 env:
   # Path to the solution file relative to the root of the project.
-  SOLUTION_FILE_PATH: TRCheatWin.v170.sln
+  SOLUTION_FILE_PATH: TRCheatWin.v160.sln
   PLATFORM_ENV: x64
   
   # Configuration type to build.
