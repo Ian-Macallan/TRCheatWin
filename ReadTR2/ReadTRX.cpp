@@ -30,10 +30,10 @@ static	xuint32_t NumTextiles;
 static tr_textile8 Textile8[ 1 ];
 static tr_textile16 Textile16[ 1 ];
 static xuint32_t Unused; // 32-bit unused value (4 bytes)
-static xuxint16_t NumRooms; // number of rooms (2 bytes)
+static xuint16_t NumRooms; // number of rooms (2 bytes)
 static tr_room_info info;           // Where the room exists, in world coordinates
-static xuint32_t NumDataWords;       // Number of data words (xuxint16_t's)
-static xuxint16_t Data[1 /* NumDataWords */ ]; // The raw data from which the rest of this is derived
+static xuint32_t NumDataWords;       // Number of data words (xuint16_t's)
+static xuint16_t Data[1 /* NumDataWords */ ]; // The raw data from which the rest of this is derived
 
 //	tr_room_data : In Data
 static xint16_t NumVertices;                   // Number of vertices in the following list
@@ -46,22 +46,22 @@ static xint16_t NumSprites;                    // Number of sprites
 static tr_room_sprite Sprites[1 /* NumSprites */ ];    // List of sprites
 
 //
-static xuxint16_t NumPortals;                 // Number of visibility portals to other rooms
+static xuint16_t NumPortals;                 // Number of visibility portals to other rooms
 static tr_room_portal Portals[1 /* NumPortals*/ ];  // List of visibility portals
 
-static xuxint16_t NumZsectors;                                  // ``Width'' of sector list
-static xuxint16_t NumXsectors;                                  // ``Height'' of sector list
+static xuint16_t NumZsectors;                                  // ``Width'' of sector list
+static xuint16_t NumXsectors;                                  // ``Height'' of sector list
 static tr_room_sector SectorList[1 /* NumXsectors * NumZsectors*/ ];  // List of sectors in this room
 
 static xint16_t AmbientIntensity;
 static xint16_t AmbientIntensity2;  // Usually the same as AmbientIntensity
 static xint16_t LightMode;
 
-static xuxint16_t NumLights;                 // Number of point lights in this room
+static xuint16_t NumLights;                 // Number of point lights in this room
 static tr_room_light Lights1[1 /* NumLights */ ];    // List of point lights
 static tr3_room_light Lights3[1 /* NumLights */ ];    // List of point lights
 
-static xuxint16_t NumStaticMeshes;                            // Number of static meshes
+static xuint16_t NumStaticMeshes;                            // Number of static meshes
 static tr_room_staticmesh StaticMeshes1[1 /* NumStaticMeshes */ ];   // List of static meshes
 static tr3_room_staticmesh StaticMeshes3[1 /* NumStaticMeshes */ ];   // List of static meshes
 
@@ -69,13 +69,13 @@ static xint16_t AlternateRoom;
 static xint16_t Flags;
 
 static xuxint8_t WaterScheme;
-static xuxint16_t WaterScheme16;
+static xuint16_t WaterScheme16;
 static xuxint8_t ReverbInfo;
 
 static xuxint8_t Filler;  // Unused.
-static xuxint16_t NumRoomTextiles; // number of non bumped room tiles (2 bytes)
-static xuxint16_t NumObjTextiles; // number of object tiles (2 bytes)
-static xuxint16_t NumBumpTextiles; // number of bumped room tiles (2 bytes)
+static xuint16_t NumRoomTextiles; // number of non bumped room tiles (2 bytes)
+static xuint16_t NumObjTextiles; // number of object tiles (2 bytes)
+static xuint16_t NumBumpTextiles; // number of bumped room tiles (2 bytes)
 static xuint32_t Textile32_UncompSize; // uncompressed size (in bytes) of the 32-bit textures chunk (4 bytes)
 static xuint32_t Textile32_CompSize; // compressed size (in bytes) of the 32-bit textures chunk (4 bytes)
 static xuint32_t Textile16_UncompSize; // uncompressed size (in bytes) of the 16-bit textures chunk (4 bytes)
@@ -88,8 +88,8 @@ static xuint32_t LevelData_CompSize; // compressed size (in bytes) of the level 
 static xuxint8_t AlternateGroup;  // Replaces Filler from TR3
 static xuint32_t RoomColour;        // In ARGB format!
 
-static xuxint16_t LaraType;
-static xuxint16_t WeatherType;
+static xuint16_t LaraType;
+static xuint16_t WeatherType;
 static xuxint8_t Padding[28];
 
 static char XELA[4];           // So-called "XELA landmark"
@@ -120,7 +120,7 @@ static xuint32_t PolyOffset;
 static xuint32_t PolyOffset2;   // Same as PolyOffset
 
 static xuint32_t NumVertices32;
-static xuxint16_t Separator16;
+static xuint16_t Separator16;
 
 static 	tr_room_sector *AllSectors = NULL;
 
@@ -692,7 +692,7 @@ BOOL ExtractData (	FILE *hOutputFile, int game,
 		{
 			pLevelData	= (BYTE*) memLevelDataUnCompressed.ptr;
 			pLevelData	+= sizeof(xuint32_t);		//	Unused
-			NumRooms	=	*( (xuxint16_t *) pLevelData );
+			NumRooms	=	*( (xuint16_t *) pLevelData );
 			pLevelData	+= sizeof(NumRooms);
 			BYTE *pCurrent = pLevelData;
 
@@ -717,18 +717,18 @@ BOOL ExtractData (	FILE *hOutputFile, int game,
 
 				NumDataWords			= *( ( xuint32_t *) pLevelData );
 				pLevelData				+= sizeof(NumDataWords);
-				pLevelData				+= NumDataWords * sizeof(xuxint16_t);
+				pLevelData				+= NumDataWords * sizeof(xuint16_t);
 
 				pCurrent				= pLevelData;
 
-				NumPortals				= *( ( xuxint16_t *) pLevelData );
+				NumPortals				= *( ( xuint16_t *) pLevelData );
 				pLevelData				+= sizeof(NumPortals);
 				pLevelData				+= NumPortals * sizeof(tr_room_portal);
 
-				NumZsectors				= *( ( xuxint16_t *) pLevelData );
+				NumZsectors				= *( ( xuint16_t *) pLevelData );
 				pLevelData				+= sizeof(NumZsectors);
 
-				NumXsectors				= *( ( xuxint16_t *) pLevelData );
+				NumXsectors				= *( ( xuint16_t *) pLevelData );
 				pLevelData				+= sizeof(NumXsectors);
 
 				//
@@ -831,20 +831,20 @@ BOOL ExtractData (	FILE *hOutputFile, int game,
 				RoomColour				= *( ( xuint32_t *) pLevelData );
 				pLevelData				+= sizeof(RoomColour);
 
-				NumLights				= *( ( xuxint16_t *) pLevelData );
+				NumLights				= *( ( xuint16_t *) pLevelData );
 				pLevelData				+= sizeof(NumLights);
 
 				pLevelData				+= NumLights * sizeof(tr4_room_light);
 
-				NumStaticMeshes			= *( ( xuxint16_t *) pLevelData );
+				NumStaticMeshes			= *( ( xuint16_t *) pLevelData );
 				pLevelData				+= sizeof(NumStaticMeshes);
 
 				pLevelData				+= NumStaticMeshes * sizeof(tr3_room_staticmesh);
 
-				AlternateRoom			= *( ( xuxint16_t *) pLevelData );
+				AlternateRoom			= *( ( xuint16_t *) pLevelData );
 				pLevelData				+= sizeof(AlternateRoom);
 
-				Flags					= *( ( xuxint16_t *) pLevelData );
+				Flags					= *( ( xuint16_t *) pLevelData );
 				pLevelData				+= sizeof(Flags);
 
 				WaterScheme				= *( ( xuxint8_t *) pLevelData );
@@ -913,10 +913,10 @@ BOOL ExtractData (	FILE *hOutputFile, int game,
 			Unused		= * (xuint32_t * ) pLevelData;
 			pLevelData += sizeof(xuint32_t);		//	Unused
 
-			NumRooms	=	*( (xuxint16_t *) pLevelData );
+			NumRooms	=	*( (xuint16_t *) pLevelData );
 			pLevelData	+= sizeof(NumRooms);
 
-			xuxint16_t unk = *( (xuxint16_t *) pLevelData );
+			xuint16_t unk = *( (xuint16_t *) pLevelData );
 			pLevelData	+= sizeof(NumRooms);
 
 			//
@@ -976,10 +976,10 @@ BOOL ExtractData (	FILE *hOutputFile, int game,
 				tr5_room_info *pInfo	= ( tr5_room_info * ) pLevelData;
 				pLevelData				+= sizeof(tr5_room_info);
 
-				NumZsectors				= *( ( xuxint16_t *) pLevelData );
+				NumZsectors				= *( ( xuint16_t *) pLevelData );
 				pLevelData				+= sizeof(NumZsectors);
 
-				NumXsectors				= *( ( xuxint16_t *) pLevelData );
+				NumXsectors				= *( ( xuint16_t *) pLevelData );
 				pLevelData				+= sizeof(NumXsectors);
 
 				//
@@ -999,10 +999,10 @@ BOOL ExtractData (	FILE *hOutputFile, int game,
 				RoomColour				=  *( ( xuint32_t *) pLevelData );
 				pLevelData				+= sizeof(RoomColour);
 
-				NumLights				=  *( ( xuxint16_t *) pLevelData );
+				NumLights				=  *( ( xuint16_t *) pLevelData );
 				pLevelData				+= sizeof(NumLights);
 
-				NumStaticMeshes			=  *( ( xuxint16_t *) pLevelData );
+				NumStaticMeshes			=  *( ( xuint16_t *) pLevelData );
 				pLevelData				+= sizeof(NumStaticMeshes);
 
 				ReverbInfo				=  *( ( xuxint8_t *) pLevelData );
@@ -1011,7 +1011,7 @@ BOOL ExtractData (	FILE *hOutputFile, int game,
 				AlternateGroup			=  *( ( xuxint8_t *) pLevelData );
 				pLevelData				+= sizeof(AlternateGroup);
 
-				WaterScheme16			=  *( ( xuxint16_t *) pLevelData );
+				WaterScheme16			=  *( ( xuint16_t *) pLevelData );
 				pLevelData				+= sizeof(WaterScheme16);
 
 				//		xuint32_t Filler[2];    // Both always 0x00007FFF
@@ -1021,10 +1021,10 @@ BOOL ExtractData (	FILE *hOutputFile, int game,
 				//		xuint32_t Filler;       // Always 0xFFFFFFFF
 				pLevelData				+= sizeof(xuint32_t);
 
-				AlternateRoom			= *( ( xuxint16_t *) pLevelData );
+				AlternateRoom			= *( ( xuint16_t *) pLevelData );
 				pLevelData				+= sizeof(AlternateRoom);
 
-				Flags					= *( ( xuxint16_t *) pLevelData );
+				Flags					= *( ( xuint16_t *) pLevelData );
 				pLevelData				+= sizeof(Flags);
 
 				//	Unknown1
@@ -1034,7 +1034,7 @@ BOOL ExtractData (	FILE *hOutputFile, int game,
 				pLevelData				+= sizeof(Separator);
 
 				//	Unknown4
-				pLevelData				+= sizeof(xuxint16_t ) * 2;
+				pLevelData				+= sizeof(xuint16_t ) * 2;
 
 				float RoomX				= *( ( float *) pLevelData );
 				pLevelData				+= sizeof(RoomX );
@@ -1184,13 +1184,13 @@ BOOL ExtractData (	FILE *hOutputFile, int game,
 				pLevelData				+= NumZsectors * NumXsectors * sizeof(tr_room_sector);
 
 				//
-				NumPortals				= *( ( xuxint16_t *) pLevelData );
+				NumPortals				= *( ( xuint16_t *) pLevelData );
 				pLevelData				+= sizeof(NumPortals);
 
 				pLevelData				+= sizeof(tr_room_portal) * NumPortals;
 
 				//
-				Separator16 			= *( ( xuxint16_t *) pLevelData );
+				Separator16 			= *( ( xuint16_t *) pLevelData );
 				pLevelData				+= sizeof(Separator16);
 
 				//

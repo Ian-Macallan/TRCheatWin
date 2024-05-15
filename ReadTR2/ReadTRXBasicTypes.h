@@ -5,7 +5,7 @@ typedef char			xint8_t;
 typedef unsigned char	xuxint8_t;
 
 typedef short			xint16_t;
-typedef unsigned short	xuxint16_t;
+typedef unsigned short	xuint16_t;
 
 typedef	unsigned long	xuint32_t;
 typedef	long			xint32_t;

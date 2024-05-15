@@ -26,10 +26,10 @@ struct tr4_script_header // 9 bytes
 struct tr4_script_levelheader
 {
 	xuxint8_t		NumTotalLevels;
-	xuxint16_t	NumUniqueLevelPaths;
+	xuint16_t	NumUniqueLevelPaths;
 
-	xuxint16_t	LevelpathStringLen;
-	xuxint16_t	LevelBlockLen;
+	xuint16_t	LevelpathStringLen;
+	xuint16_t	LevelBlockLen;
 
 	xuxint8_t		PSXLevelString [5];    //  typically ".PSX"
 	xuxint8_t		PSXFMVString   [5];    //  typically ".FMV"
@@ -45,10 +45,10 @@ struct tr4_script_levelheader
 //
 struct tr4_script_levellisting
 {
-	xuxint16_t OffsetsToLevelpathString[1 /* NumTotalLevels */ ];
+	xuint16_t OffsetsToLevelpathString[1 /* NumTotalLevels */ ];
 	xuxint8_t LevelpathStringBlock [1 /* LevelpathStringLen */ ];
 
-	xuxint16_t OffsetsToLevelData [1 /* NumTotalLevels */ ];
+	xuint16_t OffsetsToLevelData [1 /* NumTotalLevels */ ];
 };
 
 //
@@ -59,13 +59,13 @@ struct tr4_script_leveldata
 
 struct tr4_lang_header
 {
-    xuxint16_t NumGenericStrings;
-    xuxint16_t NumPSXStrings;
-    xuxint16_t NumPCStrings;
+    xuint16_t NumGenericStrings;
+    xuint16_t NumPSXStrings;
+    xuint16_t NumPCStrings;
 
-    xuxint16_t GenericStringsLen; //  including the null-terminator bytes
-    xuxint16_t PSXStringsLen;     //  including the null-terminator bytes
-    xuxint16_t PCStringsLen;      //  including the null-terminator bytes
+    xuint16_t GenericStringsLen; //  including the null-terminator bytes
+    xuint16_t PSXStringsLen;     //  including the null-terminator bytes
+    xuint16_t PCStringsLen;      //  including the null-terminator bytes
 };
 
 #if 0
@@ -87,7 +87,7 @@ struct LevelDatax81
 {
 	BYTE		opcode;
 	bitu8		stringIndex;
-	xuxint16_t	levelOptions;
+	xuint16_t	levelOptions;
 	bitu8		pathIndex;
 	bitu8		audio;
 };
@@ -97,7 +97,7 @@ struct LevelDatax82
 {
 	BYTE		opcode;
 	bitu8		pathIndex;		// Path Index seems to have another meaning in TR5
-	xuxint16_t	titleOptions;
+	xuint16_t	titleOptions;
 	bitu8		audio;
 };
 
@@ -154,7 +154,7 @@ struct LevelDatax8C
 struct LevelDatax8D
 {
 	BYTE	opcode;
-	xuxint16_t yClicks; xuxint16_t zClicks; xuxint16_t xClicks; bitu8 red; bitu8 green; bitu8 blue;
+	xuint16_t yClicks; xuint16_t zClicks; xuint16_t xClicks; bitu8 red; bitu8 green; bitu8 blue;
 };
 
 //	Mirror
@@ -204,20 +204,20 @@ struct LevelDatax92_5
 struct LevelDatax93
 {
 	BYTE		opcode;
-	xuxint16_t	stringIndex; 
-	xuxint16_t	height; 
-	xuxint16_t	size; 
-	xuxint16_t	yAngle; 
-	xuxint16_t	zAngle; 
-	xuxint16_t	xAngle; 
-	xuxint16_t	unknown;
+	xuint16_t	stringIndex; 
+	xuint16_t	height; 
+	xuint16_t	size; 
+	xuint16_t	yAngle; 
+	xuint16_t	zAngle; 
+	xuint16_t	xAngle; 
+	xuint16_t	unknown;
 };
 
 //	LoseItemAtStartup
 struct LevelDataxDA
 {
 	BYTE		opcode;
-	xuxint16_t	itemNumber;
+	xuint16_t	itemNumber;
 };
 
 //
