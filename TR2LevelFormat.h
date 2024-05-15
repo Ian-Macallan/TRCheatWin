@@ -79,7 +79,7 @@ struct tr2_room_vertex  // 12 bytes
 {
 	tr_vertex Vertex;
 	xint16_t Lighting;
-	xuxint16_t Attributes; // A set of flags for special rendering effects
+	xuint16_t Attributes; // A set of flags for special rendering effects
 	xint16_t Lighting2;  // Almost always equal to Lighting1
 };
 
@@ -87,15 +87,15 @@ struct tr3_room_vertex  // 12 bytes
 {
 	tr_vertex Vertex;
 	xint16_t Lighting;   // Value is ignored!
-	xuxint16_t Attributes; // A set of flags for special rendering effects
-	xuxint16_t Colour;     // 15-bit colour
+	xuint16_t Attributes; // A set of flags for special rendering effects
+	xuint16_t Colour;     // 15-bit colour
 };
 
 struct tr123_room_vertex  // 12 bytes
 {
 	tr_vertex Vertex;
 	xint16_t Lighting;
-	xuxint16_t Attributes; // A set of flags for special rendering effects
+	xuint16_t Attributes; // A set of flags for special rendering effects
 	xint16_t Lighting2;  // Almost always equal to Lighting1
 };
 
@@ -108,14 +108,14 @@ struct tr5_room_vertex  // 28 bytes
 
 struct tr_face4    // 12 bytes
 {
-    xuxint16_t Vertices[4];
-    xuxint16_t Texture;
+    xuint16_t Vertices[4];
+    xuint16_t Texture;
 };
 
 struct tr_face3    // 8 bytes
 {
-    xuxint16_t Vertices[3];
-    xuxint16_t Texture;
+    xuint16_t Vertices[3];
+    xuint16_t Texture;
 };
 
 struct tr_room_sprite  // 4 bytes
@@ -141,15 +141,15 @@ struct tr_room_data    // (variable length)
 
 struct tr_room_portal  // 32 bytes
 {
-    xuxint16_t  AdjoiningRoom; // Which room this portal leads to
+    xuint16_t  AdjoiningRoom; // Which room this portal leads to
     tr_vertex Normal;
     tr_vertex Vertices[4];
 };
 
 struct tr_room_sector // 8 bytes
 {
-    xuxint16_t FDindex;    // Index into FloorData[]
-    xuxint16_t BoxIndex;   // Index into Boxes[] (-1 if none)
+    xuint16_t FDindex;    // Index into FloorData[]
+    xuint16_t BoxIndex;   // Index into Boxes[] (-1 if none)
     xuxint8_t  RoomBelow;  // 255 is none
     xint8_t   Floor;      // Absolute height of floor
     xuxint8_t  RoomAbove;  // 255 if none
@@ -159,15 +159,15 @@ struct tr_room_sector // 8 bytes
 struct tr_room_light   // 18 bytes
 {
 	xint32_t x, y, z;       // Position of light, in world coordinates
-	xuxint16_t Intensity1;    // Light intensity
+	xuint16_t Intensity1;    // Light intensity
 	xuint32_t Fade1;         // Falloff value
 };
 
 struct tr2_room_light   // 24 bytes
 {
 	xint32_t x, y, z;       // Position of light, in world coordinates
-	xuxint16_t Intensity1;    // Light intensity
-	xuxint16_t Intensity2;    // Only in TR2
+	xuint16_t Intensity1;    // Light intensity
+	xuint16_t Intensity2;    // Only in TR2
 	xuint32_t Fade1;         // Falloff value
 	xuint32_t Fade2;         // Only in TR2
 };
@@ -183,53 +183,53 @@ struct tr3_room_light   // 24 bytes
 struct tr_room_staticmesh  // 18 bytes
 {
     xuint32_t x, y, z;    // Absolute position in world coordinates
-    xuxint16_t Rotation;
-    xuxint16_t Intensity1;
-    xuxint16_t MeshID;     // Which StaticMesh item to draw
+    xuint16_t Rotation;
+    xuint16_t Intensity1;
+    xuint16_t MeshID;     // Which StaticMesh item to draw
 };
 
 struct tr2_room_staticmesh  // 20 bytes
 {
     xuint32_t x, y, z;    // Absolute position in world coordinates
-    xuxint16_t Rotation;
-    xuxint16_t Intensity1;
-    xuxint16_t Intensity2; // Absent in TR1
-    xuxint16_t MeshID;     // Which StaticMesh item to draw
+    xuint16_t Rotation;
+    xuint16_t Intensity1;
+    xuint16_t Intensity2; // Absent in TR1
+    xuint16_t MeshID;     // Which StaticMesh item to draw
 };
 
 struct tr3_room_staticmesh  // 20 bytes
 {
     xuint32_t x, y, z;    // Absolute position in world coordinates
-    xuxint16_t Rotation;
-    xuxint16_t Colour;     // 15-bit colour
-    xuxint16_t Unused;     // Not used!
-    xuxint16_t MeshID;     // Which StaticMesh item to draw
+    xuint16_t Rotation;
+    xuint16_t Colour;     // 15-bit colour
+    xuint16_t Unused;     // Not used!
+    xuint16_t MeshID;     // Which StaticMesh item to draw
 };
 
 struct tr_room  // (variable length)
 {
     tr_room_info info;           // Where the room exists, in world coordinates
 
-    xuint32_t NumDataWords;       // Number of data words (xuxint16_t's)
-    xuxint16_t Data[1 /* NumDataWords */ ]; // The raw data from which the rest of this is derived
+    xuint32_t NumDataWords;       // Number of data words (xuint16_t's)
+    xuint16_t Data[1 /* NumDataWords */ ]; // The raw data from which the rest of this is derived
 
 #if 0
     tr_room_data RoomData;       // The room mesh
 #endif
 
-    xuxint16_t NumPortals;                 // Number of visibility portals to other rooms
+    xuint16_t NumPortals;                 // Number of visibility portals to other rooms
     tr_room_portal Portals[1 /* NumPortals */];  // List of visibility portals
 
-    xuxint16_t NumZsectors;                                  // ``Width'' of sector list
-    xuxint16_t NumXsectors;                                  // ``Height'' of sector list
+    xuint16_t NumZsectors;                                  // ``Width'' of sector list
+    xuint16_t NumXsectors;                                  // ``Height'' of sector list
     tr_room_sector SectorList[ 1 /* NumXsectors * NumZsectors */ ];  // List of sectors in this room
 
     xint16_t AmbientIntensity;
 
-    xuxint16_t NumLights;                 // Number of lights in this room
+    xuint16_t NumLights;                 // Number of lights in this room
     tr_room_light Lights[1 /* NumLights */ ];    // List of lights
 
-    xuxint16_t NumStaticMeshes;                            // Number of static meshes
+    xuint16_t NumStaticMeshes;                            // Number of static meshes
     tr2_room_staticmesh StaticMeshes[1 /* NumStaticMeshes */];   // List of static meshes
 
     xint16_t AlternateRoom;
@@ -240,28 +240,28 @@ struct tr2_room  // (variable length)
 {
     tr_room_info info;           // Where the room exists, in world coordinates
 
-    xuint32_t NumDataWords;       // Number of data words (xuxint16_t's)
-    xuxint16_t Data[1 /* NumDataWords */ ]; // The raw data from which the rest of this is derived
+    xuint32_t NumDataWords;       // Number of data words (xuint16_t's)
+    xuint16_t Data[1 /* NumDataWords */ ]; // The raw data from which the rest of this is derived
 
 #if 0
     tr_room_data RoomData;       // The room mesh
 #endif
 
-    xuxint16_t NumPortals;                 // Number of visibility portals to other rooms
+    xuint16_t NumPortals;                 // Number of visibility portals to other rooms
     tr_room_portal Portals[1 /* NumPortals*/ ];  // List of visibility portals
 
-    xuxint16_t NumZsectors;                                  // ``Width'' of sector list
-    xuxint16_t NumXsectors;                                  // ``Height'' of sector list
+    xuint16_t NumZsectors;                                  // ``Width'' of sector list
+    xuint16_t NumXsectors;                                  // ``Height'' of sector list
     tr_room_sector SectorList[1 /* NumXsectors * NumZsectors*/ ];  // List of sectors in this room
 
     xint16_t AmbientIntensity;
     xint16_t AmbientIntensity2;  // Usually the same as AmbientIntensity
     xint16_t LightMode;
 
-    xuxint16_t NumLights;                 // Number of point lights in this room
+    xuint16_t NumLights;                 // Number of point lights in this room
     tr_room_light Lights[1 /* NumLights */ ];    // List of point lights
 
-    xuxint16_t NumStaticMeshes;                            // Number of static meshes
+    xuint16_t NumStaticMeshes;                            // Number of static meshes
     tr_room_staticmesh StaticMeshes[1 /* NumStaticMeshes */ ];   // List of static meshes
 
     xint16_t AlternateRoom;
@@ -272,25 +272,25 @@ struct tr3_room  // (variable length)
 {
     tr_room_info info;           // Where the room exists, in world coordinates
 
-    xuint32_t NumDataWords;       // Number of data words (xuxint16_t's)
-    xuxint16_t Data[1 /* NumDataWords */]; // The raw data from which the rest of this is derived
+    xuint32_t NumDataWords;       // Number of data words (xuint16_t's)
+    xuint16_t Data[1 /* NumDataWords */]; // The raw data from which the rest of this is derived
 #if 0
     tr_room_data RoomData;       // The room mesh
 #endif
-    xuxint16_t NumPortals;                 // Number of visibility portals to other rooms
+    xuint16_t NumPortals;                 // Number of visibility portals to other rooms
     tr_room_portal Portals[1 /* NumPortals */ ];  // List of visibility portals
 
-    xuxint16_t NumZsectors;                                  // ``Width'' of sector list
-    xuxint16_t NumXsectors;                                  // ``Height'' of sector list
+    xuint16_t NumZsectors;                                  // ``Width'' of sector list
+    xuint16_t NumXsectors;                                  // ``Height'' of sector list
     tr_room_sector SectorList[1 /* NumXsectors * NumZsectors */ ];  // List of sectors in this room
 
     xint16_t AmbientIntensity1;  // This and the next one only affect externally-lit objects
     xint16_t AmbientIntensity2;  // Usually the same as AmbientIntensity1
 
-    xuxint16_t NumLights;                 // Number of point lights in this room
+    xuint16_t NumLights;                 // Number of point lights in this room
     tr3_room_light Lights[ 1 /* NumLights */ ];   // List of point lights
 
-    xuxint16_t NumStaticMeshes;                            // Number of static meshes
+    xuint16_t NumStaticMeshes;                            // Number of static meshes
     tr_room_staticmesh StaticMeshes[1 /* NumStaticMeshes */ ];    // List of static meshes
 
     xint16_t AlternateRoom;
@@ -323,24 +323,24 @@ struct tr4_room  // (variable length)
 {
     tr_room_info info;           // Where the room exists, in world coordinates
 
-    xuint32_t NumDataWords;       // Number of data words (xuxint16_t's)
-    xuxint16_t Data[1 /*NumDataWords*/]; // The raw data from which the rest of this is derived
+    xuint32_t NumDataWords;       // Number of data words (xuint16_t's)
+    xuint16_t Data[1 /*NumDataWords*/]; // The raw data from which the rest of this is derived
 #if 0
     tr_room_data RoomData;       // The room mesh
 #endif
-    xuxint16_t NumPortals;                 // Number of visibility portals to other rooms
+    xuint16_t NumPortals;                 // Number of visibility portals to other rooms
     tr_room_portal Portals[1/*NumPortals*/];  // List of visibility portals
 
-    xuxint16_t NumZsectors;                                  // ``Width'' of sector list
-    xuxint16_t NumXsectors;                                  // ``Height'' of sector list
+    xuint16_t NumZsectors;                                  // ``Width'' of sector list
+    xuint16_t NumXsectors;                                  // ``Height'' of sector list
     tr_room_sector SectorList[1/*NumXsectors * NumZsectors*/]; // List of sectors in this room
 
     xuint32_t RoomColour;        // In ARGB format!
 
-    xuxint16_t NumLights;                 // Number of point lights in this room
+    xuint16_t NumLights;                 // Number of point lights in this room
     tr4_room_light Lights[1/*NumLights*/];   // List of point lights
 
-    xuxint16_t NumStaticMeshes;                           // Number of static meshes
+    xuint16_t NumStaticMeshes;                           // Number of static meshes
     tr_room_staticmesh StaticMeshes[1/*NumStaticMeshes*/];   // List of static meshes
 
     xint16_t AlternateRoom;
@@ -377,13 +377,13 @@ struct tr5_room_light   // 88 bytes
 struct tr5_room_layer   // 56 bytes
 {
     xuint32_t NumLayerVertices;   // Number of vertices in this layer (4 bytes)
-    xuxint16_t UnknownL1;
-    xuxint16_t NumLayerRectangles; // Number of rectangles in this layer (2 bytes)
-    xuxint16_t NumLayerTriangles;  // Number of triangles in this layer (2 bytes)
-    xuxint16_t UnknownL2;
+    xuint16_t UnknownL1;
+    xuint16_t NumLayerRectangles; // Number of rectangles in this layer (2 bytes)
+    xuint16_t NumLayerTriangles;  // Number of triangles in this layer (2 bytes)
+    xuint16_t UnknownL2;
 
-    xuxint16_t Filler;             // Always 0
-    xuxint16_t Filler2;            // Always 0
+    xuint16_t Filler;             // Always 0
+    xuint16_t Filler2;            // Always 0
 
     // The following 6 floats define the bounding box for the layer
 
@@ -417,24 +417,24 @@ struct tr5_room // (variable length)
 
     tr_room_info info;
 
-    xuxint16_t NumZSectors;
-    xuxint16_t NumXSectors;
+    xuint16_t NumZSectors;
+    xuint16_t NumXSectors;
 
     xuint32_t RoomColour;   // In ARGB format!
 
-    xuxint16_t NumLights;
-    xuxint16_t NumStaticMeshes;
+    xuint16_t NumLights;
+    xuint16_t NumStaticMeshes;
 
     xuxint8_t  ReverbInfo;
     xuxint8_t  AlternateGroup;
-    xuxint16_t WaterScheme;
+    xuint16_t WaterScheme;
 
     xuint32_t Filler[2];    // Both always 0x00007FFF
     xuint32_t Separator2[2]; // Both always 0xCDCDCDCD
     xuint32_t Filler2;       // Always 0xFFFFFFFF
 
-    xuxint16_t AlternateRoom;
-    xuxint16_t Flags;
+    xuint16_t AlternateRoom;
+    xuint16_t Flags;
 
     xuint32_t Unknown1;
     xuint32_t Unknown2;     // Always 0
@@ -442,8 +442,8 @@ struct tr5_room // (variable length)
 
     xuint32_t Separator3;    // 0xCDCDCDCD
 
-    xuxint16_t Unknown4;
-    xuxint16_t Unknown5;
+    xuint16_t Unknown4;
+    xuint16_t Unknown5;
 
     float RoomX;
     float RoomY;
@@ -480,10 +480,10 @@ struct tr5_room // (variable length)
     tr5_room_light Lights[1/*NumLights*/];    // Data for the lights (88 bytes * NumRoomLights)
     tr_room_sector SectorList[1/*NumXSectors * NumZSectors*/]; // List of sectors in this room
 
-    xuxint16_t NumPortals;                 // Number of visibility portals to other rooms
+    xuint16_t NumPortals;                 // Number of visibility portals to other rooms
     tr_room_portal Portals[1/*NumPortals*/];  // List of visibility portals
 
-    xuxint16_t Separator9;  // Always 0xCDCD
+    xuint16_t Separator9;  // Always 0xCDCD
 
     tr3_room_staticmesh StaticMeshes[1/*NumStaticMeshes*/];   // List of static meshes
 
@@ -557,12 +557,12 @@ struct TR1Level
 	xuint32_t NumTextiles; // number of texture tiles (4 bytes)
 	tr_textile8 Textile8[1 /*NumTextiles*/ ]; // 8-bit (palettized) textiles (NumTextiles * 65536 bytes)
 	xuint32_t Unused; // 32-bit unused value (4 bytes)
-	xuxint16_t NumRooms; // number of rooms (2 bytes)
+	xuint16_t NumRooms; // number of rooms (2 bytes)
 	tr_room Rooms[1 /* NumRooms */ ]; // room list (variable length)
 #if 0
-	xuint32_t NumFloorData; // number of floor data xuxint16_t's to follow (4 bytes)
-	xuxint16_t FloorData[NumFloorData]; // floor data (NumFloorData * 2 bytes)
-	xuint32_t NumMeshData; // number of xuxint16_t's of mesh data to follow (=Meshes[]) (4 bytes)
+	xuint32_t NumFloorData; // number of floor data xuint16_t's to follow (4 bytes)
+	xuint16_t FloorData[NumFloorData]; // floor data (NumFloorData * 2 bytes)
+	xuint32_t NumMeshData; // number of xuint16_t's of mesh data to follow (=Meshes[]) (4 bytes)
 	tr_mesh Meshes[NumMeshPointers]; // note that NumMeshPointers comes AFTER Meshes[]
 	xuint32_t NumMeshPointers; // number of mesh pointers to follow (4 bytes)
 	xuint32_t MeshPointers[NumMeshPointers]; // mesh pointer list (NumMeshPointers * 4 bytes)
@@ -577,7 +577,7 @@ struct TR1Level
 	xuint32_t NumMeshTrees; // number of MeshTrees to follow (4 bytes)
 	tr_meshtree_node MeshTrees[NumMeshTrees]; // MeshTree list (NumMeshTrees * 4 bytes)
 	xuint32_t NumFrames; // number of words of frame data to follow (4 bytes)
-	xuxint16_t Frames[NumFrames]; // frame data (NumFrames * 2 bytes)
+	xuint16_t Frames[NumFrames]; // frame data (NumFrames * 2 bytes)
 	xuint32_t NumModels; // number of models to follow (4 bytes)
 	tr_model Models[NumModels]; // model list (NumModels * 18 bytes)
 	xuint32_t NumStaticMeshes; // number of StaticMesh data records to follow (4 bytes)
@@ -595,22 +595,22 @@ struct TR1Level
 	xuint32_t NumBoxes; // number of box data records to follow (4 bytes)
 	tr_box Boxes[NumBoxes]; // box data (NumBoxes * 20 bytes [TR1 version])
 	xuint32_t NumOverlaps; // number of overlap records to follow (4 bytes)
-	xuxint16_t Overlaps[NumOverlaps]; // overlap data (NumOverlaps * 2 bytes)
-	xuxint16_t GroundZone[2*NumBoxes]; // ground zone data
-	xuxint16_t GroundZone2[2*NumBoxes]; // ground zone 2 data
-	xuxint16_t FlyZone[2*NumBoxes]; // fly zone data
-	xuxint16_t GroundZoneAlt[2*NumBoxes]; // ground zone data (alternate rooms?)
-	xuxint16_t GroundZoneAlt2[2*NumBoxes]; // ground zone 2 data (alternate rooms?)
-	xuxint16_t FlyZoneAlt[2*NumBoxes]; // fly zone data (alternate rooms?)
+	xuint16_t Overlaps[NumOverlaps]; // overlap data (NumOverlaps * 2 bytes)
+	xuint16_t GroundZone[2*NumBoxes]; // ground zone data
+	xuint16_t GroundZone2[2*NumBoxes]; // ground zone 2 data
+	xuint16_t FlyZone[2*NumBoxes]; // fly zone data
+	xuint16_t GroundZoneAlt[2*NumBoxes]; // ground zone data (alternate rooms?)
+	xuint16_t GroundZoneAlt2[2*NumBoxes]; // ground zone 2 data (alternate rooms?)
+	xuint16_t FlyZoneAlt[2*NumBoxes]; // fly zone data (alternate rooms?)
 	xuint32_t NumAnimatedTextures; // number of animated texture records to follow (4 bytes)
-	xuxint16_t AnimatedTextures[NumAnimatedTextures]; // animated texture data (NumAnimatedTextures * 2 bytes)
+	xuint16_t AnimatedTextures[NumAnimatedTextures]; // animated texture data (NumAnimatedTextures * 2 bytes)
 	xuint32_t NumEntities; // number of entities to follow (4 bytes)
 	tr_entity Entities[NumEntities]; // entity list (NumEntities * 22 bytes [TR1 version])
 	xuxint8_t LightMap[32 * 256]; // light map (8192 bytes)
 	tr_colour Palette[256]; // 8-bit palette (768 bytes)
-	xuxint16_t NumCinematicFrames; // number of cinematic frame records to follow (2 bytes)
+	xuint16_t NumCinematicFrames; // number of cinematic frame records to follow (2 bytes)
 	tr_cinematic_frame CinematicFrames[NumCinematicFrames]; // (NumCinematicFrames * 16 bytes)
-	xuxint16_t NumDemoData; // number of demo data records to follow (2 bytes)
+	xuint16_t NumDemoData; // number of demo data records to follow (2 bytes)
 	xuxint8_t DemoData[NumDemoData]; // demo data (NumDemoData bytes)
 	xint16_t SoundMap[256]; // sound map (512 bytes)
 	xuint32_t NumSoundDetails; // number of sound-detail records to follow (4 bytes)
@@ -631,12 +631,12 @@ struct TR2Level
 	tr_textile8 Textile8[1 /* NumTextiles */ ]; // 8-bit (palettized) textiles (NumTextiles * 65536 bytes)
 	tr_textile16 Textile16[1 /* NumTextiles */ ]; // 16-bit (ARGB) textiles (NumTextiles * 131072 bytes)
 	xuint32_t Unused; // 32-bit unused value (4 bytes)
-	xuxint16_t NumRooms; // number of rooms (2 bytes)
+	xuint16_t NumRooms; // number of rooms (2 bytes)
 	tr2_room Rooms[1 /* NumRooms */ ]; // room list (variable length)
-	xuint32_t NumFloorData; // number of floor data xuxint16_t's to follow (4 bytes)
-	xuxint16_t FloorData[1 /* NumFloorData*/ ]; // floor data (NumFloorData * 2 bytes)
+	xuint32_t NumFloorData; // number of floor data xuint16_t's to follow (4 bytes)
+	xuint16_t FloorData[1 /* NumFloorData*/ ]; // floor data (NumFloorData * 2 bytes)
 #if 0
-	xuint32_t NumMeshData; // number of xuxint16_t's of mesh data to follow (=Meshes[]) (4 bytes)
+	xuint32_t NumMeshData; // number of xuint16_t's of mesh data to follow (=Meshes[]) (4 bytes)
 	tr_mesh_N Meshes[1 /* NumMeshPointers */ ]; // note that NumMeshPointers comes AFTER Meshes[]
 	xuint32_t NumMeshPointers; // number of mesh pointers to follow (4 bytes)
 	xuint32_t MeshPointers[1 /* NumMeshPointers */ ]; // mesh pointer list (NumMeshPointers * 4 bytes)
@@ -651,7 +651,7 @@ struct TR2Level
 	xuint32_t NumMeshTrees; // number of MeshTrees to follow (4 bytes)
 	tr_meshtree_node MeshTrees[NumMeshTrees]; // MeshTree list (NumMeshTrees * 4 bytes)
 	xuint32_t NumFrames; // number of words of frame data to follow (4 bytes)
-	xuxint16_t Frames[NumFrames]; // frame data (NumFrames * 2 bytes)
+	xuint16_t Frames[NumFrames]; // frame data (NumFrames * 2 bytes)
 	xuint32_t NumModels; // number of models to follow (4 bytes)
 	tr_model Models[NumModels]; // model list (NumModels * 18 bytes)
 	xuint32_t NumStaticMeshes; // number of StaticMesh data records to follow (4 bytes)
@@ -669,16 +669,16 @@ struct TR2Level
 	xuint32_t NumBoxes; // number of box data records to follow (4 bytes)
 	tr2_box Boxes[NumBoxes]; // box data (NumBoxes * 8 bytes)
 	xuint32_t NumOverlaps; // number of overlap records to follow (4 bytes)
-	xuxint16_t Overlaps[NumOverlaps]; // overlap data (NumOverlaps * 2 bytes)
+	xuint16_t Overlaps[NumOverlaps]; // overlap data (NumOverlaps * 2 bytes)
 	xint16_t Zones[10*NumBoxes]; // zone data (NumBoxes * 20 bytes)
 	xuint32_t NumAnimatedTextures; // number of animated texture records to follow (4 bytes)
-	xuxint16_t AnimatedTextures[NumAnimatedTextures]; // animated texture data (NumAnimatedTextures * 2 bytes)
+	xuint16_t AnimatedTextures[NumAnimatedTextures]; // animated texture data (NumAnimatedTextures * 2 bytes)
 	xuint32_t NumEntities; // number of entities to follow (4 bytes)
 	tr2_entity Entities[NumEntities]; // entity list (NumEntities * 24 bytes)
 	xuxint8_t LightMap[32 * 256]; // light map (8192 bytes)
-	xuxint16_t NumCinematicFrames; // number of cinematic frame records to follow (2 bytes)
+	xuint16_t NumCinematicFrames; // number of cinematic frame records to follow (2 bytes)
 	tr_cinematic_frame CinematicFrames[NumCinematicFrames]; // (NumCinematicFrames * 16 bytes)
-	xuxint16_t NumDemoData; // number of demo data records to follow (2 bytes)
+	xuint16_t NumDemoData; // number of demo data records to follow (2 bytes)
 	xuxint8_t DemoData[NumDemoData]; // demo data (NumDemoData bytes)
 	xint16_t SoundMap[370]; // sound map (740 bytes)
 	xuint32_t NumSoundDetails; // number of sound-detail records to follow (4 bytes)
@@ -697,12 +697,12 @@ struct TR3Level
 	tr_textile8 Textile8[1 /* NumTextiles */]; // 8-bit (palettized) textiles (NumTextiles * 65536 bytes)
 	tr_textile16 Textile16[ 1 /* NumTextiles */ ]; // 16-bit (ARGB) textiles (NumTextiles * 131072 bytes) (absent from TR1)
 	xuint32_t Unused; // 32-bit unused value (4 bytes)
-	xuxint16_t NumRooms; // number of rooms (2 bytes)
+	xuint16_t NumRooms; // number of rooms (2 bytes)
 	tr3_room Rooms[1 /* NumRooms */ ]; // room list (variable length)
 #if 0
-	xuint32_t NumFloorData; // number of floor data xuxint16_t's to follow (4 bytes)
-	xuxint16_t FloorData[NumFloorData]; // floor data (NumFloorData * 2 bytes)
-	xuint32_t NumMeshData; // number of xuxint16_t's of mesh data to follow (=Meshes[]) (4 bytes)
+	xuint32_t NumFloorData; // number of floor data xuint16_t's to follow (4 bytes)
+	xuint16_t FloorData[NumFloorData]; // floor data (NumFloorData * 2 bytes)
+	xuint32_t NumMeshData; // number of xuint16_t's of mesh data to follow (=Meshes[]) (4 bytes)
 	tr_mesh Meshes[NumMeshPointers]; // note that NumMeshPointers comes AFTER Meshes[]
 	xuint32_t NumMeshPointers; // number of mesh pointers to follow (4 bytes)
 	xuint32_t MeshPointers[NumMeshPointers]; // mesh pointer list (NumMeshPointers * 4 bytes)
@@ -717,7 +717,7 @@ struct TR3Level
 	xuint32_t NumMeshTrees; // number of MeshTrees to follow (4 bytes)
 	tr_meshtree_node MeshTrees[NumMeshTrees]; // MeshTree list (NumMeshTrees * 4 bytes)
 	xuint32_t NumFrames; // number of words of frame data to follow (4 bytes)
-	xuxint16_t Frames[NumFrames]; // frame data (NumFrames * 2 bytes)
+	xuint16_t Frames[NumFrames]; // frame data (NumFrames * 2 bytes)
 	xuint32_t NumModels; // number of models to follow (4 bytes)
 	tr_model Models[NumModels]; // model list (NumModels * 18 bytes)
 	xuint32_t NumStaticMeshes; // number of StaticMesh data records to follow (4 bytes)
@@ -733,18 +733,18 @@ struct TR3Level
 	xuint32_t NumBoxes; // number of box data records to follow (4 bytes)
 	tr2_box Boxes[NumBoxes]; // box data (NumBoxes * 8 bytes)
 	xuint32_t NumOverlaps; // number of overlap records to follow (4 bytes)
-	xuxint16_t Overlaps[NumOverlaps]; // overlap data (NumOverlaps * 2 bytes)
+	xuint16_t Overlaps[NumOverlaps]; // overlap data (NumOverlaps * 2 bytes)
 	xint16_t Zones[10*NumBoxes]; // zone data (NumBoxes * 20 bytes)
 	xuint32_t NumAnimatedTextures; // number of animated texture records to follow (4 bytes)
-	xuxint16_t AnimatedTextures[NumAnimatedTextures]; // animated texture data (NumAnimatedTextures * 2 bytes)
+	xuint16_t AnimatedTextures[NumAnimatedTextures]; // animated texture data (NumAnimatedTextures * 2 bytes)
 	xuint32_t NumObjectTextures; // number of object textures to follow (4 bytes) (after AnimatedTextures in TR3)
 	tr_object_texture ObjectTextures[NumObjectTextures]; // object texture list (NumObjectTextures * 20 bytes)
 	xuint32_t NumEntities; // number of entities to follow (4 bytes)
 	tr2_entity Entities[NumEntities]; // entity list (NumEntities * 24 bytes)
 	xuxint8_t LightMap[32 * 256]; // light map (8192 bytes)
-	xuxint16_t NumCinematicFrames; // number of cinematic frame records to follow (2 bytes)
+	xuint16_t NumCinematicFrames; // number of cinematic frame records to follow (2 bytes)
 	tr_cinematic_frame CinematicFrames[NumCinematicFrames]; // (NumCinematicFrames * 16 bytes)
-	xuxint16_t NumDemoData; // number of demo data records to follow (2 bytes)
+	xuint16_t NumDemoData; // number of demo data records to follow (2 bytes)
 	xuxint8_t DemoData[NumDemoData]; // demo data (NumDemoData bytes)
 	xint16_t SoundMap[370]; // sound map (740 bytes)
 	xuint32_t NumSoundDetails; // number of sound-detail records to follow (4 bytes)
@@ -757,9 +757,9 @@ struct TR3Level
 struct TR4Level
 {
 	xuint32_t Version; // version (4 bytes)
-	xuxint16_t NumRoomTextiles; // number of non bumped room tiles (2 bytes)
-	xuxint16_t NumObjTextiles; // number of object tiles (2 bytes)
-	xuxint16_t NumBumpTextiles; // number of bumped room tiles (2 bytes)
+	xuint16_t NumRoomTextiles; // number of non bumped room tiles (2 bytes)
+	xuint16_t NumObjTextiles; // number of object tiles (2 bytes)
+	xuint16_t NumBumpTextiles; // number of bumped room tiles (2 bytes)
 	xuint32_t Textile32_UncompSize; // uncompressed size (in bytes) of the 32-bit textures chunk (4 bytes)
 	xuint32_t Textile32_CompSize; // compressed size (in bytes) of the 32-bit textures chunk (4 bytes)
 	xuxint8_t Textile32_Compressed[1/*Textile32_CompSize*/]; // zlib-compressed 32-bit textures chunk (Textile32_CompSize bytes)
@@ -783,12 +783,12 @@ struct TR4Level
 	xuxint8_t LevelData_Compressed[1/*LevelData_CompSize*/]; // zlib-compressed level data chunk (LevelData_CompSize bytes)
 	//	{
 	//	    xuint32_t Unused; // 32-bit unused value, always 0 (4 bytes)
-	//	    xuxint16_t NumRooms; // number of rooms (2 bytes)
+	//	    xuint16_t NumRooms; // number of rooms (2 bytes)
 	//	    tr4_room Rooms[NumRooms]; // room list (variable length)
 #if 0
-		xuint32_t NumFloorData; // number of floor data xuxint16_t's to follow (4 bytes)
-		xuxint16_t FloorData[NumFloorData]; // floor data (NumFloorData * 2 bytes)
-		xuint32_t NumMeshData; // number of xuxint16_t's of mesh data to follow (=Meshes[]) (4 bytes)
+		xuint32_t NumFloorData; // number of floor data xuint16_t's to follow (4 bytes)
+		xuint16_t FloorData[NumFloorData]; // floor data (NumFloorData * 2 bytes)
+		xuint32_t NumMeshData; // number of xuint16_t's of mesh data to follow (=Meshes[]) (4 bytes)
 		tr4_mesh Meshes[NumMeshPointers]; // note that NumMeshPointers comes AFTER Meshes[]
 		xuint32_t NumMeshPointers; // number of mesh pointers to follow (4 bytes)
 		xuint32_t MeshPointers[NumMeshPointers]; // mesh pointer list (NumMeshPointers * 4 bytes)
@@ -803,7 +803,7 @@ struct TR4Level
 		xuint32_t NumMeshTrees; // number of MeshTrees to follow (4 bytes)
 		tr_meshtree_node MeshTrees[NumMeshTrees]; // MeshTree list (NumMeshTrees * 4 bytes)
 		xuint32_t NumFrames; // number of words of frame data to follow (4 bytes)
-		xuxint16_t Frames[NumFrames]; // frame data (NumFrames * 2 bytes)
+		xuint16_t Frames[NumFrames]; // frame data (NumFrames * 2 bytes)
 		xuint32_t NumModels; // number of models to follow (4 bytes)
 		tr_model Models[NumModels]; // model list (NumModels * 18 bytes)
 		xuint32_t NumStaticMeshes; // number of StaticMesh data records to follow (4 bytes)
@@ -822,10 +822,10 @@ struct TR4Level
 		xuint32_t NumBoxes; // number of box data records to follow (4 bytes)
 		tr2_box Boxes[NumBoxes]; // box data (NumBoxes * 8 bytes)
 		xuint32_t NumOverlaps; // number of overlap records to follow (4 bytes)
-		xuxint16_t Overlaps[NumOverlaps]; // overlap data (NumOverlaps * 2 bytes)
+		xuint16_t Overlaps[NumOverlaps]; // overlap data (NumOverlaps * 2 bytes)
 		xint16_t Zones[10*NumBoxes]; // zone data (NumBoxes * 20 bytes)
 		xuint32_t NumAnimatedTextures; // number of animated texture records to follow (4 bytes)
-		xuxint16_t AnimatedTextures[NumAnimatedTextures]; // animated texture data (NumAnimatedTextures * 2 bytes)
+		xuint16_t AnimatedTextures[NumAnimatedTextures]; // animated texture data (NumAnimatedTextures * 2 bytes)
 		xuxint8_t AnimatedTexturesUVCount;
 		xuint32_t NumObjectTextures; // number of object textures to follow (4 bytes) (after AnimatedTextures in TR3)
 		tr4_object_texture ObjectTextures[NumObjectTextures]; // object texture list (NumObjectTextures * 38 bytes)
@@ -833,7 +833,7 @@ struct TR4Level
 		tr4_entity Entities[NumEntities]; // entity list (NumEntities * 24 bytes)
 		xuint32_t NumAIObjects; // number of AI objects to follow (4 bytes)
 		tr4_ai_object AIObjects[NumAIObjects]; // AI objects list (NumAIObjects * 24 bytes)
-		xuxint16_t NumDemoData; // number of demo data records to follow (2 bytes)
+		xuint16_t NumDemoData; // number of demo data records to follow (2 bytes)
 		xuxint8_t DemoData[NumDemoData]; // demo data (NumDemoData bytes)
 		xint16_t SoundMap[370]; // sound map (740 bytes)
 		xuint32_t NumSoundDetails; // number of sound-detail records to follow (4 bytes)
@@ -849,9 +849,9 @@ struct TR4Level
 struct TR5Level
 {
 xuint32_t Version; // version (4 bytes)
-xuxint16_t NumRoomTextiles; // number of non bumped room tiles (2 bytes)
-xuxint16_t NumObjTextiles; // number of object tiles (2 bytes)
-xuxint16_t NumBumpTextiles; // number of bumped room tiles (2 bytes)
+xuint16_t NumRoomTextiles; // number of non bumped room tiles (2 bytes)
+xuint16_t NumObjTextiles; // number of object tiles (2 bytes)
+xuint16_t NumBumpTextiles; // number of bumped room tiles (2 bytes)
 xuint32_t Textile32_UncompSize; // uncompressed size (in bytes) of the 32-bit textures chunk (4 bytes)
 xuint32_t Textile32_CompSize; // compressed size (in bytes) of the 32-bit textures chunk (4 bytes)
 xuxint8_t Textile32_Compressed[1 /* Textile32_CompSize */ ]; // zlib-compressed 32-bit textures chunk (Textile32_CompSize bytes)
@@ -870,19 +870,19 @@ xuxint8_t Textile32Misc_Compressed[1 /* Textile32Misc_CompSize */]; // zlib-comp
 //	{
 //	    tr4_textile32 Textile32Misc[3];
 //	}
-xuxint16_t LaraType;
-xuxint16_t WeatherType;
+xuint16_t LaraType;
+xuint16_t WeatherType;
 xuxint8_t Padding[28];
 xuint32_t LevelData_UncompSize; // uncompressed size (in bytes) of the level data chunk (4 bytes)
 xuint32_t LevelData_CompSize; // compressed size (in bytes) of the level data chunk, equal to LevelData_UncompSize (4 bytes)
 // NOT COMPRESSED
 xuint32_t Unused; // 32-bit unused value, always 0 (4 bytes)
-xuxint16_t NumRooms; // number of rooms (2 bytes)
+xuint16_t NumRooms; // number of rooms (2 bytes)
 tr5_room Rooms[1 /* NumRooms */]; // room list (variable length)
 #if 0
-xuint32_t NumFloorData; // number of floor data xuxint16_t's to follow (4 bytes)
-xuxint16_t FloorData[NumFloorData]; // floor data (NumFloorData * 2 bytes)
-xuint32_t NumMeshData; // number of xuxint16_t's of mesh data to follow (=Meshes[]) (4 bytes)
+xuint32_t NumFloorData; // number of floor data xuint16_t's to follow (4 bytes)
+xuint16_t FloorData[NumFloorData]; // floor data (NumFloorData * 2 bytes)
+xuint32_t NumMeshData; // number of xuint16_t's of mesh data to follow (=Meshes[]) (4 bytes)
 tr4_mesh Meshes[NumMeshPointers]; // note that NumMeshPointers comes AFTER Meshes[]
 xuint32_t NumMeshPointers; // number of mesh pointers to follow (4 bytes)
 xuint32_t MeshPointers[NumMeshPointers]; // mesh pointer list (NumMeshPointers * 4 bytes)
@@ -897,7 +897,7 @@ tr_anim_command AnimCommands[NumAnimCommands]; // animation-command list (NumAni
 xuint32_t NumMeshTrees; // number of MeshTrees to follow (4 bytes)
 tr_meshtree_node MeshTrees[NumMeshTrees]; // MeshTree list (NumMeshTrees * 4 bytes)
 xuint32_t NumFrames; // number of words of frame data to follow (4 bytes)
-xuxint16_t Frames[NumFrames]; // frame data (NumFrames * 2 bytes)
+xuint16_t Frames[NumFrames]; // frame data (NumFrames * 2 bytes)
 xuint32_t NumModels; // number of models to follow (4 bytes)
 tr_model Models[NumModels]; // model list (NumModels * 18 bytes)
 xuint32_t NumStaticMeshes; // number of StaticMesh data records to follow (4 bytes)
@@ -916,10 +916,10 @@ tr_sound_source SoundSources[NumSoundSources]; // sound source data (NumSoundSou
 xuint32_t NumBoxes; // number of box data records to follow (4 bytes)
 tr2_box Boxes[NumBoxes]; // box data (NumBoxes * 8 bytes)
 xuint32_t NumOverlaps; // number of overlap records to follow (4 bytes)
-xuxint16_t Overlaps[NumOverlaps]; // overlap data (NumOverlaps * 2 bytes)
+xuint16_t Overlaps[NumOverlaps]; // overlap data (NumOverlaps * 2 bytes)
 xint16_t Zones[10*NumBoxes]; // zone data (NumBoxes * 20 bytes)
 xuint32_t NumAnimatedTextures; // number of animated texture records to follow (4 bytes)
-xuxint16_t AnimatedTextures[NumAnimatedTextures]; // animated texture data (NumAnimatedTextures * 2 bytes)
+xuint16_t AnimatedTextures[NumAnimatedTextures]; // animated texture data (NumAnimatedTextures * 2 bytes)
 xuxint8_t AnimatedTexturesUVCount;
 xuxint8_t TEX[4]; // T E X \0 (0x54, 0x45, 0x58, 0x00)
 xuint32_t NumObjectTextures; // number of object textures to follow (4 bytes) (after AnimatedTextures in TR3)
@@ -928,7 +928,7 @@ xuint32_t NumEntities; // number of entities to follow (4 bytes)
 tr4_entity Entities[NumEntities]; // entity list (NumEntities * 24 bytes)
 xuint32_t NumAIObjects; // number of AI objects to follow (4 bytes)
 tr4_ai_object AIObjects[NumAIObjects]; // AI objects list (NumAIObjects * 24 bytes)
-xuxint16_t NumDemoData; // number of demo data records to follow (2 bytes)
+xuint16_t NumDemoData; // number of demo data records to follow (2 bytes)
 xuxint8_t DemoData[NumDemoData]; // demo data (NumDemoData bytes)
 xint16_t SoundMap[450]; // sound map (740 bytes)
 xuint32_t NumSoundDetails; // number of sound-detail records to follow (4 bytes)
