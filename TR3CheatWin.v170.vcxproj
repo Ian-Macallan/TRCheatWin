@@ -1,0 +1,704 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{6C6733C6-E924-4601-99C6-AD9A4564108C}</ProjectGuid>
+    <RootNamespace>TR3CHEATWIN</RootNamespace>
+    <Keyword>MFCProj</Keyword>
+    <ProjectName>TRCheatWin</ProjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseOfMfc>Static</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v170</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseOfMfc>Dynamic</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v170</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseOfMfc>Static</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v170</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseOfMfc>Dynamic</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v170</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC70.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC70.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC70.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC70.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</LinkIncremental>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</LinkIncremental>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkIncremental>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <PostBuildEventUseInBuild>false</PostBuildEventUseInBuild>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Midl>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MkTypLibCompatible>true</MkTypLibCompatible>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <TargetEnvironment>Win32</TargetEnvironment>
+      <TypeLibraryName>.\Debug/TR3CHEATWIN.tlb</TypeLibraryName>
+    </Midl>
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
+      <BrowseInformation>true</BrowseInformation>
+      <WarningLevel>Level3</WarningLevel>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <AdditionalIncludeDirectories>.</AdditionalIncludeDirectories>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x040c</Culture>
+    </ResourceCompile>
+    <Link>
+      <AdditionalOptions>/MACHINE:I386 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalDependencies>version.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Midl>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MkTypLibCompatible>true</MkTypLibCompatible>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <TypeLibraryName>.\Debug/TR3CHEATWIN.tlb</TypeLibraryName>
+    </Midl>
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
+      <BrowseInformation>true</BrowseInformation>
+      <WarningLevel>Level3</WarningLevel>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <AdditionalIncludeDirectories>.%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x040c</Culture>
+    </ResourceCompile>
+    <Link>
+      <AdditionalDependencies>version.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Midl>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MkTypLibCompatible>true</MkTypLibCompatible>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <TargetEnvironment>Win32</TargetEnvironment>
+      <TypeLibraryName>.\Release/TR3CHEATWIN.tlb</TypeLibraryName>
+    </Midl>
+    <ClCompile>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <StringPooling>true</StringPooling>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
+      <BrowseInformation>true</BrowseInformation>
+      <WarningLevel>Level3</WarningLevel>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <AdditionalIncludeDirectories>.</AdditionalIncludeDirectories>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x040c</Culture>
+    </ResourceCompile>
+    <Link>
+      <AdditionalOptions>/MACHINE:I386 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalDependencies>version.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <SubSystem>Windows</SubSystem>
+    </Link>
+    <PostBuildEvent>
+      <Command>
+      </Command>
+    </PostBuildEvent>
+    <PostBuildEvent>
+      <Message>
+      </Message>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Midl>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MkTypLibCompatible>true</MkTypLibCompatible>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <TypeLibraryName>.\Release/TR3CHEATWIN.tlb</TypeLibraryName>
+    </Midl>
+    <ClCompile>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <StringPooling>true</StringPooling>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
+      <BrowseInformation>true</BrowseInformation>
+      <WarningLevel>Level3</WarningLevel>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <AdditionalIncludeDirectories>.</AdditionalIncludeDirectories>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x040c</Culture>
+    </ResourceCompile>
+    <Link>
+      <AdditionalDependencies>version.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <SubSystem>Windows</SubSystem>
+    </Link>
+    <PostBuildEvent>
+      <Command>
+      </Command>
+    </PostBuildEvent>
+    <PostBuildEvent>
+      <Message>
+      </Message>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="GunGrids.cpp" />
+    <ClCompile Include="ReadTR2\MCMemA.cpp" />
+    <ClCompile Include="ReadTR2\ReadTRX.cpp" />
+    <ClCompile Include="ReadTR2\ReadTRXScript.cpp" />
+    <ClCompile Include="StdAfx.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="adler32.c">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="compress.c">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="crc32.c">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="deflate.c">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="gzclose.c">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="gzlib.c">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="gzread.c">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="gzwrite.c">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="infback.c">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="inffast.c">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="inflate.c">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="inftrees.c">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="trees.c">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="uncompr.c">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="zutil.c">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="TR10SaveGame.cpp" />
+    <ClCompile Include="TR2SaveGame.cpp" />
+    <ClCompile Include="TR4NGSaveGame.cpp" />
+    <ClCompile Include="TR9SaveGame.cpp" />
+    <ClCompile Include="TRLabelItems.cpp" />
+    <ClCompile Include="TRXAllMaps.cpp" />
+    <ClCompile Include="TRXAmmosPage.cpp" />
+    <ClCompile Include="TRXButtonBase.cpp" />
+    <ClCompile Include="TRXCComboBoxBase.cpp" />
+    <ClCompile Include="TRXCHeaderCtrlBase.cpp" />
+    <ClCompile Include="TRXColors.cpp" />
+    <ClCompile Include="TRXCToolTipCtrlBase.cpp" />
+    <ClCompile Include="TRXEditBase.cpp" />
+    <ClCompile Include="TRXHelpDialog.cpp" />
+    <ClCompile Include="TRXListCtrlBase.cpp" />
+    <ClCompile Include="TRXMenuBase.cpp" />
+    <ClCompile Include="TRXMessageBox.cpp" />
+    <ClCompile Include="TRXNC.cpp" />
+    <ClCompile Include="TRXPropertyPageBase.cpp" />
+    <ClCompile Include="TRXRectangle.cpp" />
+    <ClCompile Include="TRXRoomPicture.cpp" />
+    <ClCompile Include="TRXRoomWall.cpp" />
+    <ClCompile Include="TRXCHEATWIN.cpp" />
+    <ClCompile Include="TRXCHEATWINDlg.cpp" />
+    <ClCompile Include="TRXContainer.cpp" />
+    <ClCompile Include="TRXDialogBase.cpp" />
+    <ClCompile Include="TRXDifferences.cpp" />
+    <ClCompile Include="TRXEquipmentPage.cpp" />
+    <ClCompile Include="TRXGlobal.cpp" />
+    <ClCompile Include="TRXGunPage.cpp" />
+    <ClCompile Include="TRXInfoPage.cpp" />
+    <ClCompile Include="TRXItems.cpp" />
+    <ClCompile Include="TRXItemsTR4.cpp" />
+    <ClCompile Include="TRXMapAreas.cpp" />
+    <ClCompile Include="TRXPosition.cpp" />
+    <ClCompile Include="TRXPropertyPage.cpp" />
+    <ClCompile Include="TRXPropertyPage123.cpp" />
+    <ClCompile Include="TRXPropertySheet.cpp" />
+    <ClCompile Include="TRXPropertySheetAll.cpp" />
+    <ClCompile Include="TR3SaveGame.cpp" />
+    <ClCompile Include="TR4SaveGame.cpp" />
+    <ClCompile Include="TR5SaveGame.cpp" />
+    <ClCompile Include="TRSaveGame.cpp" />
+    <ClCompile Include="TR15SaveGame.cpp" />
+    <ClCompile Include="TRXPropertySheetRemastered.cpp" />
+    <ClCompile Include="TRXPropertySheetStandard.cpp" />
+    <ClCompile Include="TRXRemastered.cpp" />
+    <ClCompile Include="TRXRemasteredInfos.cpp" />
+    <ClCompile Include="TRXSecretsDialog.cpp" />
+    <ClCompile Include="TRXSpinButtonCtrlBase.cpp" />
+    <ClCompile Include="TRXStaticBase.cpp" />
+    <ClCompile Include="TRXTools.cpp" />
+    <ClCompile Include="TRXVerticalMap.cpp" />
+    <ClCompile Include="TRXWallPicture.cpp" />
+    <ClCompile Include="TR_Areas.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="hlp\TRXCHEATWIN.hpj" />
+    <None Include="res\Aire 51.bmp" />
+    <None Include="res\Aldwych.bmp" />
+    <None Include="res\Ammos Desert Eagle.bmp" />
+    <None Include="res\Ammos Grenade Launcher.bmp" />
+    <None Include="res\Ammos harpoon.bmp" />
+    <None Include="res\Ammos MP5.bmp" />
+    <None Include="res\Ammos Riot Gun.bmp" />
+    <None Include="res\Ammos Rocket Launcher.bmp" />
+    <None Include="res\Ammos Uzis.bmp" />
+    <None Include="res\ANTARC.bmp" />
+    <None Include="res\Antarctique.bmp" />
+    <None Include="res\bitmap1.bmp" />
+    <None Include="res\bitmap2.bmp" />
+    <None Include="res\bitmap4.bmp" />
+    <None Include="res\Chrono.bmp" />
+    <None Include="res\Desert Eagle 3.bmp" />
+    <None Include="res\Desert Eagle.bmp" />
+    <None Include="res\Flares 2.bmp" />
+    <None Include="res\Flares.bmp" />
+    <None Include="res\Grenade Launcher 2.bmp" />
+    <None Include="res\Grenade Launcher 3.bmp" />
+    <None Include="res\Grenade Launcher.bmp" />
+    <None Include="res\Guns.bmp" />
+    <None Include="res\Hallows.bmp" />
+    <None Include="res\Harpoon 2.bmp" />
+    <None Include="res\Harpoon 3.bmp" />
+    <None Include="res\Harpoon.bmp" />
+    <None Include="res\helptext.bin" />
+    <None Include="res\INDIA.bmp" />
+    <None Include="res\K1 Aire Mise a Feu.bmp" />
+    <None Include="res\K1 Crash Bishop.bmp" />
+    <None Include="res\K1 Desert Pass.bmp" />
+    <None Include="res\K1 Gange Portail.bmp" />
+    <None Include="res\K1 Haute Carte A.bmp" />
+    <None Include="res\K1 Jungle Indra 2.bmp" />
+    <None Include="res\K1 Londres Salle du Conduit.bmp" />
+    <None Include="res\K1 Lude Chaufferie.bmp" />
+    <None Include="res\K1 Temple Ganesha.bmp" />
+    <None Include="res\K1 Village Cotier Clef Contrebandier.bmp" />
+    <None Include="res\K2 Aldwych Salomon.bmp" />
+    <None Include="res\K2 Crash Tuckerman.bmp" />
+    <None Include="res\K2 Desert Detonateur.bmp" />
+    <None Include="res\K2 Haute Carte B.bmp" />
+    <None Include="res\K2 Londres Cathedral.bmp" />
+    <None Include="res\K3 Aldwych Salomon.bmp" />
+    <None Include="res\K4 Aire Passe.bmp" />
+    <None Include="res\K4 Aldwych Maintenance.bmp" />
+    <None Include="res\K4 Jungle Indra.bmp" />
+    <None Include="res\La caverne Du Meteore.bmp" />
+    <None Include="res\La Cite Perdue de Tinos.bmp" />
+    <None Include="res\La Gorge de Mabudu.bmp" />
+    <None Include="res\La Jungle.bmp" />
+    <None Include="res\La Ville.bmp" />
+    <None Include="res\Large Medipak 2.bmp" />
+    <None Include="res\Large Medipak 3.bmp" />
+    <None Include="res\Large Medipak.bmp" />
+    <None Include="res\Le Desert Du Nevada.bmp" />
+    <None Include="res\Le Gange.bmp" />
+    <None Include="res\Le Lieu du Crash.bmp" />
+    <None Include="res\Le Portail de Lude.bmp" />
+    <None Include="res\Le Temple de Puna.bmp" />
+    <None Include="res\Le Village Cotier.bmp" />
+    <None Include="res\Les Grottes de Kaliya.bmp" />
+    <None Include="res\Les Mines de RX.bmp" />
+    <None Include="res\Les Quais de La Tamise.bmp" />
+    <None Include="res\Les Ruines du Temple.bmp" />
+    <None Include="res\LONDON.bmp" />
+    <None Include="res\M1 Crash Carte du Marais.bmp" />
+    <None Include="res\mp5.bmp" />
+    <None Include="res\NEVADA.bmp" />
+    <None Include="res\P1 Aire Cle Tour.bmp" />
+    <None Include="res\P1 Aldwych Penny.bmp" />
+    <None Include="res\P1 Haute Passe Bleu.bmp" />
+    <None Include="res\P1 Lude Embaumenent.bmp" />
+    <None Include="res\P1 Temple Cimeterre.bmp" />
+    <None Include="res\P1 Village Cotier - Pierre Du Serpent.bmp" />
+    <None Include="res\P2 Aire Disque Code.bmp" />
+    <None Include="res\P2 Aldwych Ticket.bmp" />
+    <None Include="res\P2 Haute Passe Jaune.bmp" />
+    <None Include="res\P3 Aire Disque Code.bmp" />
+    <None Include="res\P3 Aldwych Maillet.bmp" />
+    <None Include="res\P4 Aire Cle Hangar.bmp" />
+    <None Include="res\P4 Aldwych Etoile.bmp" />
+    <None Include="res\Quartier Haute Securite.bmp" />
+    <None Include="res\Riot Gun 2.bmp" />
+    <None Include="res\Riot Gun.bmp" />
+    <None Include="res\Rocket Launcher 2.bmp" />
+    <None Include="res\Rocket Launcher.bmp" />
+    <None Include="res\Small Medipak 2.bmp" />
+    <None Include="res\Small Medipak 3.bmp" />
+    <None Include="res\Small Medipak.bmp" />
+    <None Include="res\SOUTHPAC.bmp" />
+    <None Include="res\T1 Pierre Infada.bmp" />
+    <None Include="res\T3 Oeil D Isis.bmp" />
+    <None Include="res\T4 Object 115.bmp" />
+    <None Include="res\THEEND.bmp" />
+    <None Include="res\Title.bmp" />
+    <None Include="res\TR1 The End.bmp" />
+    <None Include="res\TR1 The Start.bmp" />
+    <None Include="res\TR2 The End.bmp" />
+    <None Include="res\TR2 The Start.bmp" />
+    <None Include="res\TR3CHEATWIN.ico" />
+    <None Include="res\TR3CHEATWIN.rc2" />
+    <None Include="res\TUB End.bmp" />
+    <None Include="res\TUB Start.bmp" />
+    <None Include="res\Uzis 2.bmp" />
+    <None Include="res\Uzis.bmp" />
+    <None Include="hlp\AfxDlg.rtf" />
+    <CustomBuild Include="hlp\TR3CHEATWIN.cnt">
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Copying contents file...</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Copying contents file...</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">copy "hlp\%(Filename).cnt" $(OutDir)
+</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">copy "hlp\%(Filename).cnt" $(OutDir)
+</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)%(Filename).cnt;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(OutDir)%(Filename).cnt;%(Outputs)</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Copying contents file...</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Copying contents file...</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">copy "hlp\%(Filename).cnt" $(OutDir)
+</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">copy "hlp\%(Filename).cnt" $(OutDir)
+</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)%(Filename).cnt;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(OutDir)%(Filename).cnt;%(Outputs)</Outputs>
+    </CustomBuild>
+    <None Include="ReadMe.txt" />
+    <None Include="TR_Areas_inc.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="TRCheatWin.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="AutomaticVersionHeader.h" />
+    <ClInclude Include="GunGrids.h" />
+    <ClInclude Include="ReadTR2\MCMemA.h" />
+    <ClInclude Include="ReadTR2\ReadTRX.h" />
+    <ClInclude Include="ReadTR2\ReadTRXBasicTypes.h" />
+    <ClInclude Include="ReadTR2\ReadTRXScript.h" />
+    <ClInclude Include="TR1G_Areas_inc.h" />
+    <ClInclude Include="TR1_Areas_inc.h" />
+    <ClInclude Include="TR2G_Areas_inc.h" />
+    <ClInclude Include="TR2LevelFormat.h" />
+    <ClInclude Include="TR2_Areas_inc.h" />
+    <ClInclude Include="TR3G_Areas_inc.h" />
+    <ClInclude Include="TR3_Areas_inc.h" />
+    <ClInclude Include="TR4G_Areas_inc.h" />
+    <ClInclude Include="TR4NGSaveGame.h" />
+    <ClInclude Include="TR4_Areas_inc.h" />
+    <ClInclude Include="TR5_Areas_inc.h" />
+    <ClInclude Include="TRLabelItems.h" />
+    <ClInclude Include="TRR1G_Areas_inc.h" />
+    <ClInclude Include="TRR1_Areas_inc.h" />
+    <ClInclude Include="TRR2G_Areas_inc.h" />
+    <ClInclude Include="TRR2_Areas_inc.h" />
+    <ClInclude Include="TRR3G_Areas_inc.h" />
+    <ClInclude Include="TRR3_Areas_inc.h" />
+    <ClInclude Include="TRXAllMaps.h" />
+    <ClInclude Include="TRXButtonBase.h" />
+    <ClInclude Include="TRXCComboBoxBase.h" />
+    <ClInclude Include="TRXCHeaderCtrlBase.h" />
+    <ClInclude Include="TRXColors.h" />
+    <ClInclude Include="TRXCToolTipCtrlBase.h" />
+    <ClInclude Include="TRXEditBase.h" />
+    <ClInclude Include="TRXGDI.h" />
+    <ClInclude Include="TRXHelpDialog.h" />
+    <ClInclude Include="TRXListCtrlBase.h" />
+    <ClInclude Include="TRXMenuBase.h" />
+    <ClInclude Include="TRXMessageBox.h" />
+    <ClInclude Include="TRXNC.h" />
+    <ClInclude Include="TRXPropertyPageBase.h" />
+    <ClInclude Include="TRXRectangle.h" />
+    <ClInclude Include="TRXRoomPicture.h" />
+    <ClInclude Include="TRXRoomWall.h" />
+    <ClInclude Include="TRXDialogBase.h" />
+    <ClInclude Include="TRXDifferences.h" />
+    <ClInclude Include="TRXGlobal.h" />
+    <ClInclude Include="TRXItemsTR4.h" />
+    <ClInclude Include="TRXMapAreas.h" />
+    <ClInclude Include="TRXPosition.h" />
+    <ClInclude Include="TRXPropertyPage123.h" />
+    <ClInclude Include="TRXPropertySheet.h" />
+    <ClInclude Include="TRXPropertySheetRemastered.h" />
+    <ClInclude Include="TRXPropertySheetStandard.h" />
+    <ClInclude Include="TRXRemastered.h" />
+    <ClInclude Include="TRXRemasteredInfos.h" />
+    <ClInclude Include="TRXSecretsDialog.h" />
+    <ClInclude Include="TRXSpinButtonCtrlBase.h" />
+    <ClInclude Include="TRXStaticBase.h" />
+    <ClInclude Include="TRXTools.h" />
+    <ClInclude Include="TRXVerticalMap.h" />
+    <ClInclude Include="TRXWallPicture.h" />
+    <ClInclude Include="TR_Areas.h" />
+    <CustomBuild Include="Resource.h">
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Making help include file...</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Making help include file...</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">echo. &gt;"hlp\$(TargetName).hm"
+echo // Commands (ID_* and IDM_*) &gt;&gt;"hlp\$(TargetName).hm"
+makehm ID_,HID_,0x10000 IDM_,HIDM_,0x10000 resource.h &gt;&gt;"hlp\$(TargetName).hm"
+echo. &gt;&gt;"hlp\$(TargetName).hm"
+echo // Prompts (IDP_*) &gt;&gt;"hlp\$(TargetName).hm"
+makehm IDP_,HIDP_,0x30000 resource.h &gt;&gt;"hlp\$(TargetName).hm"
+echo. &gt;&gt;"hlp\$(TargetName).hm"
+echo // Resources (IDR_*) &gt;&gt;"hlp\$(TargetName).hm"
+makehm IDR_,HIDR_,0x20000 resource.h &gt;&gt;"hlp\$(TargetName).hm"
+echo. &gt;&gt;"hlp\$(TargetName).hm"
+echo // Dialogs (IDD_*) &gt;&gt;"hlp\$(TargetName).hm"
+makehm IDD_,HIDD_,0x20000 resource.h &gt;&gt;"hlp\$(TargetName).hm"
+echo. &gt;&gt;"hlp\$(TargetName).hm"
+echo // Frame Controls (IDW_*) &gt;&gt;"hlp\$(TargetName).hm"
+makehm IDW_,HIDW_,0x50000 resource.h &gt;&gt;"hlp\$(TargetName).hm"
+</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">echo. &gt;"hlp\$(TargetName).hm"
+echo // Commands (ID_* and IDM_*) &gt;&gt;"hlp\$(TargetName).hm"
+makehm ID_,HID_,0x10000 IDM_,HIDM_,0x10000 resource.h &gt;&gt;"hlp\$(TargetName).hm"
+echo. &gt;&gt;"hlp\$(TargetName).hm"
+echo // Prompts (IDP_*) &gt;&gt;"hlp\$(TargetName).hm"
+makehm IDP_,HIDP_,0x30000 resource.h &gt;&gt;"hlp\$(TargetName).hm"
+echo. &gt;&gt;"hlp\$(TargetName).hm"
+echo // Resources (IDR_*) &gt;&gt;"hlp\$(TargetName).hm"
+makehm IDR_,HIDR_,0x20000 resource.h &gt;&gt;"hlp\$(TargetName).hm"
+echo. &gt;&gt;"hlp\$(TargetName).hm"
+echo // Dialogs (IDD_*) &gt;&gt;"hlp\$(TargetName).hm"
+makehm IDD_,HIDD_,0x20000 resource.h &gt;&gt;"hlp\$(TargetName).hm"
+echo. &gt;&gt;"hlp\$(TargetName).hm"
+echo // Frame Controls (IDW_*) &gt;&gt;"hlp\$(TargetName).hm"
+makehm IDW_,HIDW_,0x50000 resource.h &gt;&gt;"hlp\$(TargetName).hm"
+</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">hlp\$(TargetName).hm;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">hlp\$(TargetName).hm;%(Outputs)</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Making help include file...</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Making help include file...</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">echo. &gt;"hlp\$(TargetName).hm"
+echo // Commands (ID_* and IDM_*) &gt;&gt;"hlp\$(TargetName).hm"
+makehm ID_,HID_,0x10000 IDM_,HIDM_,0x10000 resource.h &gt;&gt;"hlp\$(TargetName).hm"
+echo. &gt;&gt;"hlp\$(TargetName).hm"
+echo // Prompts (IDP_*) &gt;&gt;"hlp\$(TargetName).hm"
+makehm IDP_,HIDP_,0x30000 resource.h &gt;&gt;"hlp\$(TargetName).hm"
+echo. &gt;&gt;"hlp\$(TargetName).hm"
+echo // Resources (IDR_*) &gt;&gt;"hlp\$(TargetName).hm"
+makehm IDR_,HIDR_,0x20000 resource.h &gt;&gt;"hlp\$(TargetName).hm"
+echo. &gt;&gt;"hlp\$(TargetName).hm"
+echo // Dialogs (IDD_*) &gt;&gt;"hlp\$(TargetName).hm"
+makehm IDD_,HIDD_,0x20000 resource.h &gt;&gt;"hlp\$(TargetName).hm"
+echo. &gt;&gt;"hlp\$(TargetName).hm"
+echo // Frame Controls (IDW_*) &gt;&gt;"hlp\$(TargetName).hm"
+makehm IDW_,HIDW_,0x50000 resource.h &gt;&gt;"hlp\$(TargetName).hm"
+</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">echo. &gt;"hlp\$(TargetName).hm"
+echo // Commands (ID_* and IDM_*) &gt;&gt;"hlp\$(TargetName).hm"
+makehm ID_,HID_,0x10000 IDM_,HIDM_,0x10000 resource.h &gt;&gt;"hlp\$(TargetName).hm"
+echo. &gt;&gt;"hlp\$(TargetName).hm"
+echo // Prompts (IDP_*) &gt;&gt;"hlp\$(TargetName).hm"
+makehm IDP_,HIDP_,0x30000 resource.h &gt;&gt;"hlp\$(TargetName).hm"
+echo. &gt;&gt;"hlp\$(TargetName).hm"
+echo // Resources (IDR_*) &gt;&gt;"hlp\$(TargetName).hm"
+makehm IDR_,HIDR_,0x20000 resource.h &gt;&gt;"hlp\$(TargetName).hm"
+echo. &gt;&gt;"hlp\$(TargetName).hm"
+echo // Dialogs (IDD_*) &gt;&gt;"hlp\$(TargetName).hm"
+makehm IDD_,HIDD_,0x20000 resource.h &gt;&gt;"hlp\$(TargetName).hm"
+echo. &gt;&gt;"hlp\$(TargetName).hm"
+echo // Frame Controls (IDW_*) &gt;&gt;"hlp\$(TargetName).hm"
+makehm IDW_,HIDW_,0x50000 resource.h &gt;&gt;"hlp\$(TargetName).hm"
+</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">hlp\$(TargetName).hm;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">hlp\$(TargetName).hm;%(Outputs)</Outputs>
+    </CustomBuild>
+    <ClInclude Include="StdAfx.h" />
+    <ClInclude Include="TR10SaveGame.h" />
+    <ClInclude Include="TR2SaveGame.h" />
+    <ClInclude Include="TR9SaveGame.h" />
+    <ClInclude Include="TRXAmmosPage.h" />
+    <ClInclude Include="TRXCHEATWIN.h" />
+    <ClInclude Include="TRXCHEATWINDlg.h" />
+    <ClInclude Include="TRXContainer.h" />
+    <ClInclude Include="TRXEquipmentPage.h" />
+    <ClInclude Include="TRXGunPage.h" />
+    <ClInclude Include="TRXInfoPage.h" />
+    <ClInclude Include="TRXItems.h" />
+    <ClInclude Include="TRXPropertyPage.h" />
+    <ClInclude Include="TRXPropertySheetAll.h" />
+    <ClInclude Include="TR3SaveGame.h" />
+    <ClInclude Include="TR4SaveGame.h" />
+    <ClInclude Include="TR5SaveGame.h" />
+    <ClInclude Include="TRSaveGame.h" />
+    <ClInclude Include="TR15SaveGame.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="res\Ammos.Grappling.bmp" />
+    <Image Include="res\Ammos_Arrow.bmp" />
+    <Image Include="res\Ammos_Guns.bmp" />
+    <Image Include="res\bitmap3.bmp" />
+    <Image Include="res\Bullets.bmp" />
+    <Image Include="res\Check.ico" />
+    <Image Include="res\CheckBlack.ico" />
+    <Image Include="res\Chronicles.0.bmp" />
+    <Image Include="res\Chronicles.1.bmp" />
+    <Image Include="res\Close.ico" />
+    <Image Include="res\Crossbow.bmp" />
+    <Image Include="res\crowbar.bmp" />
+    <Image Include="res\Grappling100.bmp" />
+    <Image Include="res\HK.Ammos.bmp" />
+    <Image Include="res\HK.bmp" />
+    <Image Include="res\Last.Revelation.0.bmp" />
+    <Image Include="res\Last.Revelation.1.bmp" />
+    <Image Include="res\Maximize.ico" />
+    <Image Include="res\Mininize.ico" />
+    <Image Include="res\revolver.bmp" />
+    <Image Include="res\Windowed.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="res\HelpText.txt" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+  <ProjectExtensions>
+    <VisualStudio>
+      <UserProperties RESOURCE_FILE="" />
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>
