@@ -1,0 +1,868 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<VisualStudioProject
+	ProjectType="Visual C++"
+	Version="8,00"
+	Name="TR3CHEATWIN"
+	ProjectGUID="{6C6733C6-E924-4601-99C6-AD9A4564108C}"
+	RootNamespace="TR3CHEATWIN"
+	Keyword="MFCProj"
+	>
+	<Platforms>
+		<Platform
+			Name="Win32"
+		/>
+	</Platforms>
+	<ToolFiles>
+	</ToolFiles>
+	<Configurations>
+		<Configuration
+			Name="Debug|Win32"
+			OutputDirectory=".\Debug"
+			IntermediateDirectory=".\Debug"
+			ConfigurationType="1"
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC70.vsprops"
+			UseOfMFC="1"
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			CharacterSet="2"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+				PreprocessorDefinitions="_DEBUG"
+				MkTypLibCompatible="true"
+				SuppressStartupBanner="true"
+				TargetEnvironment="1"
+				TypeLibraryName=".\Debug/TR3CHEATWIN.tlb"
+			/>
+			<Tool
+				Name="VCCLCompilerTool"
+				Optimization="0"
+				PreprocessorDefinitions="WIN32,_DEBUG,_WINDOWS"
+				BasicRuntimeChecks="3"
+				RuntimeLibrary="1"
+				UsePrecompiledHeader="2"
+				PrecompiledHeaderThrough="stdafx.h"
+				PrecompiledHeaderFile=".\Debug/TR3CHEATWIN.pch"
+				AssemblerListingLocation=".\Debug/"
+				ObjectFile=".\Debug/"
+				ProgramDataBaseFileName=".\Debug/"
+				BrowseInformation="1"
+				WarningLevel="3"
+				SuppressStartupBanner="true"
+				DebugInformationFormat="4"
+			/>
+			<Tool
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				PreprocessorDefinitions="_DEBUG"
+				Culture="1036"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
+			<Tool
+				Name="VCLinkerTool"
+				AdditionalOptions="/MACHINE:I386"
+				AdditionalDependencies="version.lib"
+				OutputFile=".\Debug/TR3CHEATWIN.exe"
+				LinkIncremental="2"
+				SuppressStartupBanner="true"
+				GenerateDebugInformation="true"
+				ProgramDatabaseFile=".\Debug/TR3CHEATWIN.pdb"
+				SubSystem="2"
+			/>
+			<Tool
+				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCManifestTool"
+			/>
+			<Tool
+				Name="VCXDCMakeTool"
+			/>
+			<Tool
+				Name="VCBscMakeTool"
+			/>
+			<Tool
+				Name="VCFxCopTool"
+			/>
+			<Tool
+				Name="VCAppVerifierTool"
+			/>
+			<Tool
+				Name="VCWebDeploymentTool"
+			/>
+			<Tool
+				Name="VCPostBuildEventTool"
+			/>
+		</Configuration>
+		<Configuration
+			Name="Release|Win32"
+			OutputDirectory=".\Release"
+			IntermediateDirectory=".\Release"
+			ConfigurationType="1"
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC70.vsprops"
+			UseOfMFC="1"
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			CharacterSet="2"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+				PreprocessorDefinitions="NDEBUG"
+				MkTypLibCompatible="true"
+				SuppressStartupBanner="true"
+				TargetEnvironment="1"
+				TypeLibraryName=".\Release/TR3CHEATWIN.tlb"
+			/>
+			<Tool
+				Name="VCCLCompilerTool"
+				InlineFunctionExpansion="1"
+				PreprocessorDefinitions="WIN32,NDEBUG,_WINDOWS"
+				StringPooling="true"
+				RuntimeLibrary="0"
+				EnableFunctionLevelLinking="true"
+				UsePrecompiledHeader="2"
+				PrecompiledHeaderThrough="stdafx.h"
+				PrecompiledHeaderFile=".\Release/TR3CHEATWIN.pch"
+				AssemblerListingLocation=".\Release/"
+				ObjectFile=".\Release/"
+				ProgramDataBaseFileName=".\Release/"
+				BrowseInformation="1"
+				WarningLevel="3"
+				SuppressStartupBanner="true"
+			/>
+			<Tool
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				PreprocessorDefinitions="NDEBUG"
+				Culture="1036"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
+			<Tool
+				Name="VCLinkerTool"
+				AdditionalOptions="/MACHINE:I386"
+				AdditionalDependencies="version.lib"
+				OutputFile=".\Release/TR3CHEATWIN.exe"
+				LinkIncremental="1"
+				SuppressStartupBanner="true"
+				ProgramDatabaseFile=".\Release/TR3CHEATWIN.pdb"
+				SubSystem="2"
+			/>
+			<Tool
+				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCManifestTool"
+			/>
+			<Tool
+				Name="VCXDCMakeTool"
+			/>
+			<Tool
+				Name="VCBscMakeTool"
+			/>
+			<Tool
+				Name="VCFxCopTool"
+			/>
+			<Tool
+				Name="VCAppVerifierTool"
+			/>
+			<Tool
+				Name="VCWebDeploymentTool"
+			/>
+			<Tool
+				Name="VCPostBuildEventTool"
+			/>
+		</Configuration>
+	</Configurations>
+	<References>
+	</References>
+	<Files>
+		<Filter
+			Name="Source Files"
+			Filter="cpp;c;cxx;rc;def;r;odl;idl;hpj;bat"
+			>
+			<File
+				RelativePath=".\StdAfx.cpp"
+				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="1"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="1"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\TR1SaveGame.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\TR2SaveGame.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\TR3AmmosPage.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\TR3CHEATWIN.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\hlp\TR3CHEATWIN.hpj"
+				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\TR3CHEATWIN.rc"
+				>
+			</File>
+			<File
+				RelativePath=".\TR3CHEATWINDlg.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\TR3EquipmentPage.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\TR3GunPage.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\TR3InfoPage.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\TR3Items.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\TR3PropSheet.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\TR3SaveGame.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\TR4SaveGame.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\TRSaveGame.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\TUBSaveGame.cpp"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="Header Files"
+			Filter="h;hpp;hxx;hm;inl"
+			>
+			<File
+				RelativePath=".\AutomaticVersionHeader.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Resource.h"
+				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Making help include file..."
+						CommandLine="echo. &gt;&quot;hlp\$(TargetName).hm&quot;&#x0D;&#x0A;echo // Commands (ID_* and IDM_*) &gt;&gt;&quot;hlp\$(TargetName).hm&quot;&#x0D;&#x0A;makehm ID_,HID_,0x10000 IDM_,HIDM_,0x10000 resource.h &gt;&gt;&quot;hlp\$(TargetName).hm&quot;&#x0D;&#x0A;echo. &gt;&gt;&quot;hlp\$(TargetName).hm&quot;&#x0D;&#x0A;echo // Prompts (IDP_*) &gt;&gt;&quot;hlp\$(TargetName).hm&quot;&#x0D;&#x0A;makehm IDP_,HIDP_,0x30000 resource.h &gt;&gt;&quot;hlp\$(TargetName).hm&quot;&#x0D;&#x0A;echo. &gt;&gt;&quot;hlp\$(TargetName).hm&quot;&#x0D;&#x0A;echo // Resources (IDR_*) &gt;&gt;&quot;hlp\$(TargetName).hm&quot;&#x0D;&#x0A;makehm IDR_,HIDR_,0x20000 resource.h &gt;&gt;&quot;hlp\$(TargetName).hm&quot;&#x0D;&#x0A;echo. &gt;&gt;&quot;hlp\$(TargetName).hm&quot;&#x0D;&#x0A;echo // Dialogs (IDD_*) &gt;&gt;&quot;hlp\$(TargetName).hm&quot;&#x0D;&#x0A;makehm IDD_,HIDD_,0x20000 resource.h &gt;&gt;&quot;hlp\$(TargetName).hm&quot;&#x0D;&#x0A;echo. &gt;&gt;&quot;hlp\$(TargetName).hm&quot;&#x0D;&#x0A;echo // Frame Controls (IDW_*) &gt;&gt;&quot;hlp\$(TargetName).hm&quot;&#x0D;&#x0A;makehm IDW_,HIDW_,0x50000 resource.h &gt;&gt;&quot;hlp\$(TargetName).hm&quot;&#x0D;&#x0A;"
+						Outputs="hlp\$(TargetName).hm"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Making help include file..."
+						CommandLine="echo. &gt;&quot;hlp\$(TargetName).hm&quot;&#x0D;&#x0A;echo // Commands (ID_* and IDM_*) &gt;&gt;&quot;hlp\$(TargetName).hm&quot;&#x0D;&#x0A;makehm ID_,HID_,0x10000 IDM_,HIDM_,0x10000 resource.h &gt;&gt;&quot;hlp\$(TargetName).hm&quot;&#x0D;&#x0A;echo. &gt;&gt;&quot;hlp\$(TargetName).hm&quot;&#x0D;&#x0A;echo // Prompts (IDP_*) &gt;&gt;&quot;hlp\$(TargetName).hm&quot;&#x0D;&#x0A;makehm IDP_,HIDP_,0x30000 resource.h &gt;&gt;&quot;hlp\$(TargetName).hm&quot;&#x0D;&#x0A;echo. &gt;&gt;&quot;hlp\$(TargetName).hm&quot;&#x0D;&#x0A;echo // Resources (IDR_*) &gt;&gt;&quot;hlp\$(TargetName).hm&quot;&#x0D;&#x0A;makehm IDR_,HIDR_,0x20000 resource.h &gt;&gt;&quot;hlp\$(TargetName).hm&quot;&#x0D;&#x0A;echo. &gt;&gt;&quot;hlp\$(TargetName).hm&quot;&#x0D;&#x0A;echo // Dialogs (IDD_*) &gt;&gt;&quot;hlp\$(TargetName).hm&quot;&#x0D;&#x0A;makehm IDD_,HIDD_,0x20000 resource.h &gt;&gt;&quot;hlp\$(TargetName).hm&quot;&#x0D;&#x0A;echo. &gt;&gt;&quot;hlp\$(TargetName).hm&quot;&#x0D;&#x0A;echo // Frame Controls (IDW_*) &gt;&gt;&quot;hlp\$(TargetName).hm&quot;&#x0D;&#x0A;makehm IDW_,HIDW_,0x50000 resource.h &gt;&gt;&quot;hlp\$(TargetName).hm&quot;&#x0D;&#x0A;"
+						Outputs="hlp\$(TargetName).hm"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\StdAfx.h"
+				>
+			</File>
+			<File
+				RelativePath=".\TR1SaveGame.h"
+				>
+			</File>
+			<File
+				RelativePath=".\TR2SaveGame.h"
+				>
+			</File>
+			<File
+				RelativePath=".\TR3AmmosPage.h"
+				>
+			</File>
+			<File
+				RelativePath=".\TR3CHEATWIN.h"
+				>
+			</File>
+			<File
+				RelativePath=".\TR3CHEATWINDlg.h"
+				>
+			</File>
+			<File
+				RelativePath=".\TR3EquipmentPage.h"
+				>
+			</File>
+			<File
+				RelativePath=".\TR3GunPage.h"
+				>
+			</File>
+			<File
+				RelativePath=".\TR3InfoPage.h"
+				>
+			</File>
+			<File
+				RelativePath=".\TR3Items.h"
+				>
+			</File>
+			<File
+				RelativePath=".\TR3PropSheet.h"
+				>
+			</File>
+			<File
+				RelativePath=".\TR3SaveGame.h"
+				>
+			</File>
+			<File
+				RelativePath=".\TR4SaveGame.h"
+				>
+			</File>
+			<File
+				RelativePath=".\TRSaveGame.h"
+				>
+			</File>
+			<File
+				RelativePath=".\TUBSaveGame.h"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="Resource Files"
+			Filter="ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe"
+			>
+			<File
+				RelativePath=".\res\Aire 51.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\Aldwych.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\Ammos Desert Eagle.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\Ammos Grenade Launcher.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\Ammos harpoon.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\Ammos MP5.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\Ammos Riot Gun.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\Ammos Rocket Launcher.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\Ammos Uzis.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\ANTARC.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\Antarctique.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\bitmap1.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\bitmap2.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\bitmap4.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\Chrono.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\Desert Eagle 3.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\Desert Eagle.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\Flares 2.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\Flares.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\Grenade Launcher 2.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\Grenade Launcher 3.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\Grenade Launcher.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\Guns.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\Hallows.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\Harpoon 2.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\Harpoon 3.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\Harpoon.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\INDIA.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\K1 Aire Mise a Feu.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\K1 Crash Bishop.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\K1 Desert Pass.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\K1 Gange Portail.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\K1 Haute Carte A.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\K1 Jungle Indra 2.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\K1 Londres Salle du Conduit.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\K1 Lude Chaufferie.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\K1 Temple Ganesha.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\K1 Village Cotier Clef Contrebandier.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\K2 Aldwych Salomon.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\K2 Crash Tuckerman.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\K2 Desert Detonateur.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\K2 Haute Carte B.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\K2 Londres Cathedral.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\K3 Aldwych Salomon.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\K4 Aire Passe.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\K4 Aldwych Maintenance.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\K4 Jungle Indra.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\La caverne Du Meteore.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\La Cite Perdue de Tinos.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\La Gorge de Mabudu.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\La Jungle.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\La Ville.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\Large Medipak 2.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\Large Medipak 3.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\Large Medipak.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\Le Desert Du Nevada.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\Le Gange.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\Le Lieu du Crash.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\Le Portail de Lude.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\Le Temple de Puna.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\Le Village Cotier.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\Les Grottes de Kaliya.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\Les Mines de RX.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\Les Quais de La Tamise.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\Les Ruines du Temple.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\LONDON.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\M1 Crash Carte du Marais.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\mp5.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\NEVADA.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\P1 Aire Cle Tour.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\P1 Aldwych Penny.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\P1 Haute Passe Bleu.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\P1 Lude Embaumenent.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\P1 Temple Cimeterre.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\P1 Village Cotier - Pierre Du Serpent.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\P2 Aire Disque Code.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\P2 Aldwych Ticket.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\P2 Haute Passe Jaune.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\P3 Aire Disque Code.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\P3 Aldwych Maillet.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\P4 Aire Cle Hangar.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\P4 Aldwych Etoile.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\Quartier Haute Securite.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\Riot Gun 2.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\Riot Gun.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\Rocket Launcher 2.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\Rocket Launcher.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\Small Medipak 2.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\Small Medipak 3.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\Small Medipak.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\SOUTHPAC.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\T1 Pierre Infada.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\T3 Oeil D Isis.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\T4 Object 115.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\THEEND.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\Title.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\TR1 The End.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\TR1 The Start.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\TR2 The End.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\TR2 The Start.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\TR3CHEATWIN.ico"
+				>
+			</File>
+			<File
+				RelativePath=".\res\TR3CHEATWIN.rc2"
+				>
+			</File>
+			<File
+				RelativePath=".\res\TUB End.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\TUB Start.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\Uzis 2.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\Uzis.bmp"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="Help Files"
+			Filter="cnt;rtf"
+			>
+			<File
+				RelativePath=".\hlp\AfxDlg.rtf"
+				>
+			</File>
+			<File
+				RelativePath=".\hlp\TR3CHEATWIN.cnt"
+				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Copying contents file..."
+						CommandLine="copy &quot;hlp\$(InputName).cnt&quot; $(OutDir)&#x0D;&#x0A;"
+						Outputs="$(OutDir)\$(InputName).cnt"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Copying contents file..."
+						CommandLine="copy &quot;hlp\$(InputName).cnt&quot; $(OutDir)&#x0D;&#x0A;"
+						Outputs="$(OutDir)\$(InputName).cnt"
+					/>
+				</FileConfiguration>
+			</File>
+		</Filter>
+		<File
+			RelativePath=".\ReadMe.txt"
+			>
+		</File>
+	</Files>
+	<Globals>
+	</Globals>
+</VisualStudioProject>
