@@ -1,0 +1,20 @@
+ 
+// Commands (ID_* and IDM_*) 
+HIDM_ABOUTBOX                           0x10010
+ 
+// Prompts (IDP_*) 
+HIDP_SOCKETS_INIT_FAILED                0x30067
+ 
+// Resources (IDR_*) 
+HIDR_MAINFRAME                          0x20080
+ 
+// Dialogs (IDD_*) 
+HIDD_ABOUTBOX                           0x20064
+HIDD_TR3CHEATWIN_DIALOG                 0x20066
+HIDD_GUN_PAGE                           0x200A6
+HIDD_EQUIPMENT                          0x200A9
+HIDD_INFO                               0x200AA
+HIDD_ITEMS                              0x200AB
+HIDD_AMMOS                              0x200AF
+ 
+// Frame Controls (IDW_*) 

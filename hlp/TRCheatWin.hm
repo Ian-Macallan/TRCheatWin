@@ -1,0 +1,55 @@
+ 
+// Commands (ID_* and IDM_*) 
+HIDM_ABOUTBOX                           0x10010
+HIDM_REMASTERED                         0x10020
+HIDM_STANDARD                           0x10030
+HIDM_UNCHECKED                          0x10040
+HIDM_SEARCH_EXT                         0x10050
+HIDM_VERTICALVIEW                       0x10060
+HIDM_AMMOS                              0x1006B
+HIDM_EQUIPMENT                          0x1006C
+HIDM_GUN                                0x1006D
+HIDM_ITEMS                              0x1006E
+HIDM_DARK_THEME                         0x10070
+HID_MENULIST_EXPORT                     0x18003
+HID_MENULIST_IMPORT                     0x18004
+HID_MENULIST_DELETE                     0x18005
+HID_MENULIST_INFOS                      0x18006
+HID_MENULIST_RENUMBER                   0x18007
+HID_MENULIST_RESETTO                    0x18008
+HID_MENULIST_RESETTOSTART               0x18009
+HID_MENULIST_POSITION                   0x1800A
+ 
+// Prompts (IDP_*) 
+HIDP_SOCKETS_INIT_FAILED                0x30067
+ 
+// Resources (IDR_*) 
+HIDR_MAINFRAME                          0x20080
+HIDR_MENU_LIST                          0x20114
+HIDR_HELPTEXT1                          0x2011A
+HIDR_HELP_TEXT                          0x2011A
+ 
+// Dialogs (IDD_*) 
+HIDD_ABOUTBOX                           0x20064
+HIDD_TR3CHEATWIN_DIALOG                 0x20066
+HIDD_TRXDIABLOGBASE                     0x20072
+HIDD_TRXMAPAREAS                        0x20073
+HIDD_TRXALLMAPS                         0x20074
+HIDD_TRXVERTICALMAP                     0x20076
+HIDD_TRXMESSAGEBOX                      0x20078
+HIDD_TRXHELPDIALOG                      0x20079
+HIDD_GUN_PAGE                           0x200A6
+HIDD_EQUIPMENT                          0x200A9
+HIDD_INFO                               0x200AA
+HIDD_ITEMS                              0x200AB
+HIDD_AMMOS                              0x200AF
+HIDD_CONTAINER                          0x2010F
+HIDD_ITEMS1                             0x20110
+HIDD_REMASTERED                         0x20110
+HIDD_ITEMS_TR4                          0x20111
+HIDD_LIST_SECRETS                       0x20112
+HIDD_REMASTERED_INFO                    0x20113
+HIDD_DIFFERENCES                        0x20115
+HIDD_POSITION                           0x20116
+ 
+// Frame Controls (IDW_*) 
