@@ -1,5 +1,5 @@
  TRCHEATWIN
-
+-----------
 This Program can modify savegames files from :
 - Tombraider I, Unfinished Business,
 - Tombraider II, II The Golden Mask,
@@ -18,3 +18,6 @@ The features are :
 - Changing position and showing maps of levels for all Tombraider 1 to 5 games.
 - Export, Import, Delete savegame from Tombraider Remastered.
 - Getting rid of TR1 and TR3 Boss in Tombraider Remastered. 
+
+Binaries are available at my site:
+http://www.macallan.org
