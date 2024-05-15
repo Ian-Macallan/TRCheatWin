@@ -1,0 +1,53 @@
+Tabs :
+------
+TRR 1 2 3 Tab      : This Tab handles remastered 123 Savegames.
+                     It handles weapons, ammos, secrets, objects,
+                     and maps.
+
+TR 1-5 Info Tab    : This Tab handles Standard Tombraider
+                     1 to 5 savegames.
+                     It handles too the TR4 Next Generation
+                     savegames and maps (standard and custom).
+
+TR 1-5 Equipment   : This Tab handles Life, Air for Standard
+                     Tombraider 1 to 5 savegames.
+
+TR 1-5 Guns Tab    : This Tab handles Guns for Standard 
+                     Tombraider 1 to 5 savegames.
+
+TR 1-5 Ammos Tab   : This Tab handles Ammos for Standard 
+                     Tombraider 1 to 5 savegames.
+
+TR 1-3 Items Tab   : This Tab handles Keys, Objects for Standard 
+                     Tombraider 1 to 3 savegames.
+
+TR 4-5 Items Tab   : This Tab handles Keys, Objects for Standard 
+                     Tombraider 4 to 5 savegames.
+
+Command Line Options :
+----------------------
+-help, -h, help    : Show Help Dialog
+
+-1 -2 -3 -4 -5 -s  : 
+-standard [arg]    : Launch TRCheatWin for Tombraider Standard
+                     Argument can be a savename.
+
+-123, -r           : 
+-remastered [arg]  : Launch TRCheatWin for Tombraider Remastered
+                     Argument can be a savename.
+
+-resizable         : Launch TRCheatWin in a resiable form
+
+-rs4 script.dat    : Extract text from a TR4 script.dat and
+                     from language.dat files.
+
+-ws4 script.txt    : Write into a TR4 script.dat and language.dat
+                     from text files.
+
+-rs5 cript.dat     : Extract text from a TR5 script.dat and
+                     language.dat files. (Experimental)
+
+-ws5 script.txt    : Write into a TR5 script.dat and language.dat
+                     from text files. (Experimental)
+
+-maps              : Show Any Map
