@@ -13,3 +13,6 @@
 *.suo
 *.sdf
 *.res
+*.*sdf
+*.*build
+*.cnt
