@@ -852,6 +852,22 @@ bool CTRXCHEATWINApp::SearchInitFile ( const char *pInitFileName, size_t iInitFi
 }
 
 //
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
+static BOOL EndsWithI ( const char *pText, const char *pEnd )
+{
+	if ( strlen(pText) >= strlen(pEnd) )
+	{
+		if ( _stricmp ( pText + strlen(pText) - strlen(pEnd), pEnd ) == 0 )
+		{
+			return TRUE;
+		}
+	}
+	return FALSE;
+}
+
+//
 ////////////////////////////////////////////////////////////////////////
 //
 ////////////////////////////////////////////////////////////////////////
@@ -863,22 +879,14 @@ void CTRXCHEATWINApp::GetModule ()
 							sizeof(ModuleFileName)		//	__in      DWORD nSize
 							);
 	strcpy_s ( InitFileName, sizeof(InitFileName), ModuleFileName );
-	char *pX64 = strstr ( InitFileName, "x64.exe" );
-	if ( pX64 != NULL )
+	BOOL endsWith = EndsWithI ( InitFileName, "x64.exe" );
+	if ( endsWith )
 	{
-		*pX64 = '\0';
+		InitFileName [ strlen(InitFileName) - strlen("x64.exe") ] = '\0';
 	}
 	else
 	{
-		pX64 = strstr ( InitFileName, "X64" );
-		if ( pX64 != NULL )
-		{
-			*pX64 = '\0';
-		}
-		else
-		{
-			RemoveFileType ( InitFileName );
-		}
+		RemoveFileType ( InitFileName );
 	}
 
 	strcat_s ( InitFileName, sizeof(InitFileName), ".ini" );

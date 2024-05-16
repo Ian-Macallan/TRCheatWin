@@ -79,26 +79,26 @@ struct tr4_lang_stringdata
 struct LevelDatax80
 {
 	BYTE	opcode;
-	bitu8	val; // 4 least significant bits represent the FMV index; 4 most significant bits (y) represent the FMV trigger bitfield as in y=1<->bit 8 set
+	xbitu8	val; // 4 least significant bits represent the FMV index; 4 most significant bits (y) represent the FMV trigger bitfield as in y=1<->bit 8 set
 };
 
 //	Level
 struct LevelDatax81 
 {
 	BYTE		opcode;
-	bitu8		stringIndex;
+	xbitu8		stringIndex;
 	xuint16_t	levelOptions;
-	bitu8		pathIndex;
-	bitu8		audio;
+	xbitu8		pathIndex;
+	xbitu8		audio;
 };
 
 //	Title
 struct LevelDatax82
 {
 	BYTE		opcode;
-	bitu8		pathIndex;		// Path Index seems to have another meaning in TR5
+	xbitu8		pathIndex;		// Path Index seems to have another meaning in TR5
 	xuint16_t	titleOptions;
-	bitu8		audio;
+	xbitu8		audio;
 };
 
 //	 level-data-end  no arguments - this opcode appears at the end of every level (incl. title) block
@@ -111,7 +111,7 @@ struct LevelDatax83
 struct LevelDatax84
 {
 	BYTE	opcode;
-	bitu8	cutIndex;
+	xbitu8	cutIndex;
 };
 
 //	ResidentCut
@@ -119,85 +119,85 @@ struct LevelDatax84
 struct LevelDatax85
 {
 	BYTE	opcode;
-	bitu8	cutIndex;
+	xbitu8	cutIndex;
 };
 
 //	Layer1
 struct LevelDatax89
 {
 	BYTE	opcode;
-	bitu8	red; bitu8 green; bitu8 blue; bit8 speed;
+	xbitu8	red; xbitu8 green; xbitu8 blue; xbiti8 speed;
 };
 
 //	Layer2
 struct LevelDatax8A
 {
 	BYTE	opcode;
-	bitu8	red; bitu8 green; bitu8 blue; bit8 speed;
+	xbitu8	red; xbitu8 green; xbitu8 blue; xbiti8 speed;
 };
 
 //	UVrotate
 struct LevelDatax8B
 {
 	BYTE	opcode;
-	bit8	speed;
+	xbiti8	speed;
 };
 
 //	Legend
 struct LevelDatax8C
 {
 	BYTE	opcode;
-	bitu8	stringIndex;
+	xbitu8	stringIndex;
 };
 
 //	LensFlare
 struct LevelDatax8D
 {
 	BYTE	opcode;
-	xuint16_t yClicks; xuint16_t zClicks; xuint16_t xClicks; bitu8 red; bitu8 green; bitu8 blue;
+	xuint16_t yClicks; xuint16_t zClicks; xuint16_t xClicks; xbitu8 red; xbitu8 green; xbitu8 blue;
 };
 
 //	Mirror
 struct LevelDatax8E
 {
 	BYTE	opcode;
-	bitu8	room; bit32 xAxis;
+	xbitu8	room; xbit32 xAxis;
 };
 
 //	Fog
 struct LevelDatax8F
 {
 	BYTE	opcode;
-	bitu8	red; bitu8 green; bitu8 blue;
+	xbitu8	red; xbitu8 green; xbitu8 blue;
 };
 
 //	AnimatingMIP
 struct LevelDatax90
 {
 	BYTE	opcode;
-	bitu8	val; //: 4 least significant bits represent animatingObjectIndex - 1; 4 most significant bits represent the distance
+	xbitu8	val; //: 4 least significant bits represent animatingObjectIndex - 1; 4 most significant bits represent the distance
 };
 
 //	LoadCamera
 struct LevelDatax91
 {
 	BYTE	opcode;
-	bit32	srcX; bit32 srcY; bit32 srcZ; bit32 targX; bit32 targY; bit32 targZ; bitu8 room;
+	xbit32	srcX; xbit32 srcY; xbit32 srcZ; xbit32 targX; xbit32 targY; xbit32 targZ; xbitu8 room;
 };
 
 //	ResetHUB
 struct LevelDatax92
 {
 	BYTE	opcode;
-	bitu8	levelIndex;
+	xbitu8	levelIndex;
 };
 
 //	ResetHUB
 struct LevelDatax92_5
 {
 	BYTE	opcode;
-	bitu8	levelIndex;
-	bitu8	other [ 13 ];
+	xbitu8	levelIndex;
+	xbitu8	other [ 13 ];
 };
 
 //	0x93 -> 0xD9

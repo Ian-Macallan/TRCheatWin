@@ -10,9 +10,9 @@ typedef unsigned short	xuint16_t;
 typedef	unsigned long	xuint32_t;
 typedef	long			xint32_t;
 
-typedef unsigned char	bitu8;
-typedef char			bit8;
+typedef unsigned char	xbitu8;
+typedef char			xbiti8;
 
-typedef short			bit16;
+typedef short			xbit16;
 
-typedef	long			bit32;
+typedef	long			xbit32;

@@ -1,0 +1,15 @@
+*.obj
+*.tlog
+*.sbr
+*.bsc
+*.idb
+*.pch
+*.pdb
+*.ilk
+*.log
+*.ipch
+*.exe
+*.*state
+*.suo
+*.sdf
+*.res

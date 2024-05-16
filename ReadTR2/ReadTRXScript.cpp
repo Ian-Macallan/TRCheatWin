@@ -50,24 +50,24 @@ static 	FILE *hLogFile = NULL;
 
 //
 /**
-0x81  Level           bitu8 stringIndex, xuint16_t levelOptions, bitu8 pathIndex, bitu8 audio
-0x82  [Title] Level   bitu8 pathIndex, xuint16_t titleOptions, bitu8 audio
-0x8C  Legend          bitu8 stringIndex
-0x91  LoadCamera      bit32 srcX, bit32 srcY, bit32 srcZ, bit32 targX, bit32 targY, bit32 targZ, bitu8 room
-0x89  Layer1          bitu8 red, bitu8 green, bitu8 blue, bit8 speed
-0x8A  Layer2          bitu8 red, bitu8 green, bitu8 blue, bit8 speed
-0x8E  Mirror          bitu8 room, bit32 xAxis
-0x8F  Fog             bitu8 red, bitu8 green, bitu8 blue
-0x84  Cut             bitu8 cutIndex
-0x8B  UVrotate        bit8 speed
-0x85  ResidentCut1    bitu8 cutIndex
-0x86  ResidentCut2    bitu8 cutIndex
-0x87  ResidentCut3    bitu8 cutIndex
-0x88  ResidentCut4    bitu8 cutIndex
-0x80  FMV             bitu8: 4 least significant bits represent the FMV index; 4 most significant bits (y) represent the FMV trigger bitfield as in y=1<->bit 8 set
-0x92  ResetHUB        bitu8 levelIndex
-0x90  AnimatingMIP    bitu8: 4 least significant bits represent animatingObjectIndex - 1; 4 most significant bits represent the distance
-0x8D  LensFlare       xuint16_t yClicks, bit16 zClicks, xuint16_t xClicks, bitu8 red, bitu8 green, bitu8 blue
+0x81  Level           xbitu8 stringIndex, xuint16_t levelOptions, xbitu8 pathIndex, xbitu8 audio
+0x82  [Title] Level   xbitu8 pathIndex, xuint16_t titleOptions, xbitu8 audio
+0x8C  Legend          xbitu8 stringIndex
+0x91  LoadCamera      xbit32 srcX, xbit32 srcY, xbit32 srcZ, xbit32 targX, xbit32 targY, xbit32 targZ, xbitu8 room
+0x89  Layer1          xbitu8 red, xbitu8 green, xbitu8 blue, xbiti8 speed
+0x8A  Layer2          xbitu8 red, xbitu8 green, xbitu8 blue, xbiti8 speed
+0x8E  Mirror          xbitu8 room, xbit32 xAxis
+0x8F  Fog             xbitu8 red, xbitu8 green, xbitu8 blue
+0x84  Cut             xbitu8 cutIndex
+0x8B  UVrotate        xbiti8 speed
+0x85  ResidentCut1    xbitu8 cutIndex
+0x86  ResidentCut2    xbitu8 cutIndex
+0x87  ResidentCut3    xbitu8 cutIndex
+0x88  ResidentCut4    xbitu8 cutIndex
+0x80  FMV             xbitu8: 4 least significant bits represent the FMV index; 4 most significant bits (y) represent the FMV trigger bitfield as in y=1<->bit 8 set
+0x92  ResetHUB        xbitu8 levelIndex
+0x90  AnimatingMIP    xbitu8: 4 least significant bits represent animatingObjectIndex - 1; 4 most significant bits represent the distance
+0x8D  LensFlare       xuint16_t yClicks, xbit16 zClicks, xuint16_t xClicks, xbitu8 red, xbitu8 green, xbitu8 blue
 0x93  KEY_ITEM1       xuint16_t stringIndex, xuint16_t height, xuint16_t size, xuint16_t yAngle, xuint16_t zAngle, xuint16_t xAngle, xuint16_t unknown
 0x94  KEY_ITEM2   -=-  (All the same)
 0x95  KEY_ITEM3   -=-
@@ -1221,7 +1221,7 @@ static BOOL TreatLevelData ( FILE *hOutFile, xuint16_t offset, int len, int vers
 			switch ( LevelBlockData [ x ] )
 			{
 				//	FMV
-				//	bitu8 val
+				//	xbitu8 val
 				case 0x80 :
 				{
 					LevelDatax80 *pArguments = ( LevelDatax80 * ) ( & LevelBlockData [ x ] );
@@ -1231,7 +1231,7 @@ static BOOL TreatLevelData ( FILE *hOutFile, xuint16_t offset, int len, int vers
 				}
 
 				//	Level
-				//	bitu8 stringIndex; xuint16_t levelOptions; bitu8 pathIndex; bitu8 audio;
+				//	xbitu8 stringIndex; xuint16_t levelOptions; xbitu8 pathIndex; xbitu8 audio;
 				case 0x81 :
 				{
 					LevelDatax81 *pArguments = ( LevelDatax81 * ) ( & LevelBlockData [ x ] );
@@ -1253,7 +1253,7 @@ static BOOL TreatLevelData ( FILE *hOutFile, xuint16_t offset, int len, int vers
 					break;
 				}
 				//	Title
-				//	bitu8 pathIndex; xuint16_t titleOptions; bitu8 audio;
+				//	xbitu8 pathIndex; xuint16_t titleOptions; xbitu8 audio;
 				case 0x82 :
 				{
 					bTitle = true;
@@ -1288,7 +1288,7 @@ static BOOL TreatLevelData ( FILE *hOutFile, xuint16_t offset, int len, int vers
 					x += sizeof(LevelDatax83);
 					break;
 				}
-				//	bitu8 cutIndex;
+				//	xbitu8 cutIndex;
 				case 0x84 :
 				{
 					LevelDatax84 *pArguments = ( LevelDatax84 * ) ( & LevelBlockData [ x ] );
@@ -1326,7 +1326,7 @@ static BOOL TreatLevelData ( FILE *hOutFile, xuint16_t offset, int len, int vers
 					break;
 				}
 
-				//	bitu8 red; bitu8 green; bitu8 blue; bit8 speed;
+				//	xbitu8 red; xbitu8 green; xbitu8 blue; xbiti8 speed;
 				case 0x89 :
 				{
 					LevelDatax89 *pArguments = ( LevelDatax89 * ) ( & LevelBlockData [ x ] );
@@ -1353,7 +1353,7 @@ static BOOL TreatLevelData ( FILE *hOutFile, xuint16_t offset, int len, int vers
 					x += sizeof(LevelDatax8B);
 					break;
 				}
-				//	bitu8 stringIndex;
+				//	xbitu8 stringIndex;
 				case 0x8C :
 				{
 					LevelDatax8C *pArguments = ( LevelDatax8C * ) ( & LevelBlockData [ x ] );
@@ -1362,7 +1362,7 @@ static BOOL TreatLevelData ( FILE *hOutFile, xuint16_t offset, int len, int vers
 					x += sizeof(LevelDatax8C);
 					break;
 				}
-				//	xuint16_t yClicks; bit16 zClicks; xuint16_t xClicks; bitu8 red; bitu8 green; bitu8 blue;
+				//	xuint16_t yClicks; xbit16 zClicks; xuint16_t xClicks; xbitu8 red; xbitu8 green; xbitu8 blue;
 				case 0x8D :
 				{
 					LevelDatax8D *pArguments = ( LevelDatax8D * ) ( & LevelBlockData [ x ] );
@@ -1372,7 +1372,7 @@ static BOOL TreatLevelData ( FILE *hOutFile, xuint16_t offset, int len, int vers
 					x += sizeof(LevelDatax8D);
 					break;
 				}
-				//	bitu8 room; bit32 xAxis;
+				//	xbitu8 room; xbit32 xAxis;
 				case 0x8E :
 				{
 					LevelDatax8E *pArguments = ( LevelDatax8E * ) ( & LevelBlockData [ x ] );
@@ -1380,7 +1380,7 @@ static BOOL TreatLevelData ( FILE *hOutFile, xuint16_t offset, int len, int vers
 					x += sizeof(LevelDatax8E);
 					break;
 				}
-				//	bitu8 red; bitu8 green; bitu8 blue;
+				//	xbitu8 red; xbitu8 green; xbitu8 blue;
 				case 0x8F :
 				{
 					LevelDatax8F *pArguments = ( LevelDatax8F * ) ( & LevelBlockData [ x ] );
@@ -1388,7 +1388,7 @@ static BOOL TreatLevelData ( FILE *hOutFile, xuint16_t offset, int len, int vers
 					x += sizeof(LevelDatax8F);
 					break;
 				}
-				//	bitu8 val;
+				//	xbitu8 val;
 				case 0x90 :
 				{
 					LevelDatax90 *pArguments = ( LevelDatax90 * ) ( & LevelBlockData [ x ] );
@@ -1396,7 +1396,7 @@ static BOOL TreatLevelData ( FILE *hOutFile, xuint16_t offset, int len, int vers
 					x += sizeof(LevelDatax90);
 					break;
 				}
-				//	bit32 srcX; bit32 srcY; bit32 srcZ; bit32 targX; bit32 targY; bit32 targZ; bitu8 room;
+				//	xbit32 srcX; xbit32 srcY; xbit32 srcZ; xbit32 targX; xbit32 targY; xbit32 targZ; xbitu8 room;
 				case 0x91 :
 				{
 					LevelDatax91 *pArguments = ( LevelDatax91 * ) ( & LevelBlockData [ x ] );
@@ -1407,7 +1407,7 @@ static BOOL TreatLevelData ( FILE *hOutFile, xuint16_t offset, int len, int vers
 					x += sizeof(LevelDatax91);
 					break;
 				}
-				//	bitu8 levelIndex;
+				//	xbitu8 levelIndex;
 				case 0x92 :
 				{
 					if ( version == 4 )
@@ -2877,7 +2877,7 @@ BOOL WriteTRXScript ( const char *pathname, const char *pDirectory, int version 
 							//
 							//	Ok Store in LevelpathStringOffsets and 
 							BOOL bNumericPath	= FALSE;
-							bit8 iNumericPath	= atoi(pBuffer);
+							xbiti8 iNumericPath	= atoi(pBuffer);
 							if ( IsNumeric(pBuffer) )
 							{
 								//
@@ -2899,7 +2899,7 @@ BOOL WriteTRXScript ( const char *pathname, const char *pDirectory, int version 
 							}
 
 							//
-							//	bitu8 stringIndex; xuint16_t levelOptions; bitu8 pathIndex; bitu8 audio;
+							//	xbitu8 stringIndex; xuint16_t levelOptions; xbitu8 pathIndex; xbitu8 audio;
 							if ( currentSection == Section_Level )
 							{
 								//
@@ -2936,7 +2936,7 @@ BOOL WriteTRXScript ( const char *pathname, const char *pDirectory, int version 
 							//	
 							else
 							{
-								//	bitu8 pathIndex; xuint16_t titleOptions; bitu8 audio;
+								//	xbitu8 pathIndex; xuint16_t titleOptions; xbitu8 audio;
 								LevelDatax82	data;
 								ZeroMemory ( &data, sizeof(data) );
 								data.opcode			= 0x82;
@@ -3084,7 +3084,7 @@ BOOL WriteTRXScript ( const char *pathname, const char *pDirectory, int version 
 							data.opcode	= 0x8C;
 							//
 							//	Search String
-							data.stringIndex = (bitu8) SearchStringIndex ( pBuffer );
+							data.stringIndex = (xbitu8) SearchStringIndex ( pBuffer );
 
 							//
 							memcpy_s ( LevelBlockData + scriptLevelHeader.LevelBlockLen, 
