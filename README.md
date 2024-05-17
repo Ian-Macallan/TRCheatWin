@@ -29,3 +29,14 @@ For Tombraider Remastered Edition the screen is :
 The other Tabs are for Standard Tombraider 1 to 5 including gold edition and custom edition.
 
 ![example](https://github.com/Ian-Macallan/TRCheatWin/blob/7535b79f4294ae836c456b53d0f460c989d0bb7e/Pictures/TRCheatWin1.png)
+
+You can have a dark background (modify the TRCheatWin.ini).
+And it works for TR4 Custom levels.
+
+https://github.com/Ian-Macallan/TRCheatWin/blob/c29e2a1d332d53b8b687562deb4dce8af7a6094b/Pictures/TRCheatWinCus.png
+
+You can see the map of the level from above.
+https://github.com/Ian-Macallan/TRCheatWin/blob/c29e2a1d332d53b8b687562deb4dce8af7a6094b/Pictures/TRCheatWinCusMap.png
+
+And vertical view from each direction.
+https://github.com/Ian-Macallan/TRCheatWin/blob/c29e2a1d332d53b8b687562deb4dce8af7a6094b/Pictures/TRCheatWinCusMapVert.png
