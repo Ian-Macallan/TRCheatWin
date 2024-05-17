@@ -15,10 +15,10 @@ This Program can modify savegames files from :
 - Tombraider IV The Last Revelation, IV Times Exclusive and
 - Tombraider V Chronicles and
 - Tombraider Remastered 1 2 3.
-The executable for x86 is TRCheatWin.zip or TRCheatWin.zip.
+The executable for x86 is TRCheatWin.zip.
 The executable for x64 is TRCheatWinx64.zip
 For the both versions you will need Visual Sudio Redistribuable
-And a savegame file with all episodes of Tombraider Remastered (All Hallows included) savegame.dat.
+
 The features are :
 - Getting all guns and ammos, life pak, flares,
 - Changing health and air.
@@ -27,7 +27,7 @@ The features are :
 - Export, Import, Delete savegame from Tombraider Remastered.
 - Getting rid of TR1 and TR3 Boss in Tombraider Remastered. 
 
-Binaries are available at my site:
+Latest Binaries are available at my site:
 http://www.macallan.org
 
 ## Tombraider Remastered
@@ -60,6 +60,7 @@ If you use only Standard Edition you can launch TRCheatWin -s
 ![TRCheatWin1](https://github.com/Ian-Macallan/TRCheatWin/blob/7535b79f4294ae836c456b53d0f460c989d0bb7e/Pictures/TRCheatWin1.png)
 
 You can have a dark background (modify the TRCheatWin.ini). And it works for TR4 Custom levels.
+A good example of subclassing MFC Objects.
 
 ![TRCheatWinCus](https://github.com/Ian-Macallan/TRCheatWin/blob/c29e2a1d332d53b8b687562deb4dce8af7a6094b/Pictures/TRCheatWinCus.png)
 
