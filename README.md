@@ -32,9 +32,11 @@ On Remastered Edition you can export / import / delete one save slot.
 
 
 The is a position editor for all Tombraider included.
+
 ![example](https://github.com/Ian-Macallan/TRCheatWin/blob/ccbbc8ec8dd1ab657f42c5469ed84f5aa23e84db/Pictures/TRCheatWin7.png)
 
 That show the map for each level.
+
 ![TRCheatWin8](https://github.com/Ian-Macallan/TRCheatWin/blob/ccbbc8ec8dd1ab657f42c5469ed84f5aa23e84db/Pictures/TRCheatWin8.png)
 ---
 
@@ -48,24 +50,30 @@ And it works for TR4 Custom levels.
 ![TRCheatWinCus](https://github.com/Ian-Macallan/TRCheatWin/blob/c29e2a1d332d53b8b687562deb4dce8af7a6094b/Pictures/TRCheatWinCus.png)
 
 You can see the map of the level from above.
+
 ![TRCheatWinCusMap](https://github.com/Ian-Macallan/TRCheatWin/blob/c29e2a1d332d53b8b687562deb4dce8af7a6094b/Pictures/TRCheatWinCusMap.png)
 
 And vertical view from each direction.
 ![TRCheatWinCusMapVert](https://github.com/Ian-Macallan/TRCheatWin/blob/c29e2a1d332d53b8b687562deb4dce8af7a6094b/Pictures/TRCheatWinCusMapVert.png)
 
 You can modify air / flares / medipak and health whebn available
+
 ![TRCheatWin2a](https://github.com/Ian-Macallan/TRCheatWin/blob/ccbbc8ec8dd1ab657f42c5469ed84f5aa23e84db/Pictures/TRCheatWin2a.png)
 
 Add Guns :
+
 ![TRCheatWin2](https://github.com/Ian-Macallan/TRCheatWin/blob/ccbbc8ec8dd1ab657f42c5469ed84f5aa23e84db/Pictures/TRCheatWin2.png)
 
 Ammos :
+
 ![TRCheatWin3](https://github.com/Ian-Macallan/TRCheatWin/blob/ccbbc8ec8dd1ab657f42c5469ed84f5aa23e84db/Pictures/TRCheatWin3.png)
 
 Keys and other objects for TR 1 to TR 3 Standard Edition:
+
 ![TRCheatWin4](https://github.com/Ian-Macallan/TRCheatWin/blob/ccbbc8ec8dd1ab657f42c5469ed84f5aa23e84db/Pictures/TRCheatWin4.png)
 
 And for TR4 / TR5 Editions.
+
 ![TRCheatWin5](https://github.com/Ian-Macallan/TRCheatWin/blob/ccbbc8ec8dd1ab657f42c5469ed84f5aa23e84db/Pictures/TRCheatWin5.png)
 
 
