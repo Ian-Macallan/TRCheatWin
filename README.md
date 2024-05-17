@@ -73,7 +73,7 @@ And vertical view from each direction.
 ![TRCheatWinCusMapVert](https://github.com/Ian-Macallan/TRCheatWin/blob/c29e2a1d332d53b8b687562deb4dce8af7a6094b/Pictures/TRCheatWinCusMapVert.png)
 
 ### Air / Health / Medipak
-You can modify air / flares / medipak and health whebn available
+You can modify air / flares / medipak and health when available
 
 ![TRCheatWin2a](https://github.com/Ian-Macallan/TRCheatWin/blob/ccbbc8ec8dd1ab657f42c5469ed84f5aa23e84db/Pictures/TRCheatWin2a.png)
 
