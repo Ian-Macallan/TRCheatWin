@@ -95,4 +95,12 @@ And for TR4 / TR5 Editions.
 
 ![TRCheatWin5](https://github.com/Ian-Macallan/TRCheatWin/blob/ccbbc8ec8dd1ab657f42c5469ed84f5aa23e84db/Pictures/TRCheatWin5.png)
 
+## Settings
+
+Settings are stored on TRCheatWin.ini (the same name for x64 and x86 version).
+It is created in the same folder as TRCheatWin*.exe but is used if it is in you PATH.
+
+## Compilation
+The Code builds with Visual Studio 2012 and above.
+Compile without error with Visual Studio 2022 on Github.
 
