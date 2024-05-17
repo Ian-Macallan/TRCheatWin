@@ -22,4 +22,4 @@ The features are :
 Binaries are available at my site:
 http://www.macallan.org
 
-(https://github.com/Ian-Macallan/TRCheatWin/Pictures/TRCheatWin1.png)
+![example](https://github.com/Ian-Macallan/TRCheatWin/Pictures/TRCheatWin1.png)
