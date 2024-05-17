@@ -22,6 +22,10 @@ The features are :
 Binaries are available at my site:
 http://www.macallan.org
 
-![example](https://github.com/Ian-Macallan/TRCheatWin/blob/7535b79f4294ae836c456b53d0f460c989d0bb7e/Pictures/TRCheatWin.png)
+For Tombraider Remastered Edition the screen is :
+
+![example](https://github.com/Ian-Macallan/TRCheatWin/blob/115a445e48f7a0d30b683d1b8dbd34e619ad5a6c/Pictures/TRCheatWin.png)
+
+The other Tabs are for Standard Tombraider 1 to 5 including gold edition and custom edition.
 
 ![example](https://github.com/Ian-Macallan/TRCheatWin/blob/7535b79f4294ae836c456b53d0f460c989d0bb7e/Pictures/TRCheatWin1.png)
