@@ -16,3 +16,9 @@
 *.*sdf
 *.*build
 *.cnt
+Debug/*
+Release/*
+x64/Debug/*
+x64/Release/*
+ReadTR2/Debug/*
+ReadTR2/Release/*

@@ -1453,6 +1453,12 @@ static BOOL TreatLevelData ( FILE *hOutFile, xuint16_t offset, int len, int vers
 					{
 						int index = (unsigned char ) ( LevelBlockData [ x ] - 0x93 );
 
+						//	On TR5 seems to be shifted
+						if ( version == 5 )
+						{
+							index = ( index + 1 ) % ( sizeof(labelData) / sizeof(char *) );
+						}
+
 						LevelDatax93 *pArguments = ( LevelDatax93 * ) ( & LevelBlockData [ x ] );
 						const char *pString = StringTable [ pArguments->stringIndex ];
 						if ( step == 2 ) fprintf ( hOutFile, "%s,%s,$%04X,$%04X,$%04X,$%04X,$%04X,$%04X\n", labelData[index],
@@ -3299,6 +3305,10 @@ BOOL WriteTRXScript ( const char *pathname, const char *pDirectory, int version 
 							{
 								data.opcode	= 0x93 + key - 1;
 							}
+							if ( version == 5 && data.opcode > 0x93 )
+							{
+								data.opcode	= data.opcode - 1;
+							}
 							pBuffer = SkipToNext ( pBuffer );
 
 							//
@@ -3338,6 +3348,10 @@ BOOL WriteTRXScript ( const char *pathname, const char *pDirectory, int version 
 							if ( puzzle >= 1 && puzzle <= 12 )
 							{
 								data.opcode	= 0x9F + puzzle - 1;
+							}
+							if ( version == 5 && data.opcode > 0x93 )
+							{
+								data.opcode	= data.opcode - 1;
 							}
 							pBuffer = SkipToNext ( pBuffer );
 
@@ -3379,6 +3393,10 @@ BOOL WriteTRXScript ( const char *pathname, const char *pDirectory, int version 
 							{
 								data.opcode	= 0xAB + pickup - 1;
 							}
+							if ( version == 5 && data.opcode > 0x93 )
+							{
+								data.opcode	= data.opcode - 1;
+							}
 							pBuffer = SkipToNext ( pBuffer );
 
 							//
@@ -3418,6 +3436,10 @@ BOOL WriteTRXScript ( const char *pathname, const char *pDirectory, int version 
 							if ( examine >= 1 && examine <= 3 )
 							{
 								data.opcode	= 0xAF + examine - 1;
+							}
+							if ( version == 5 && data.opcode > 0x93 )
+							{
+								data.opcode	= data.opcode - 1;
 							}
 							pBuffer = SkipToNext ( pBuffer );
 
@@ -3481,6 +3503,10 @@ BOOL WriteTRXScript ( const char *pathname, const char *pDirectory, int version 
 							{
 								data.opcode	= 0xB2 + ( key - 1 ) * 2 + ( combo - 1 );
 							}
+							if ( version == 5 && data.opcode > 0x93 )
+							{
+								data.opcode	= data.opcode - 1;
+							}
 							pBuffer = SkipToNext ( pBuffer );
 
 							//
@@ -3525,6 +3551,10 @@ BOOL WriteTRXScript ( const char *pathname, const char *pDirectory, int version 
 							{
 								data.opcode	= 0xC2 + ( puzzle - 1 ) * 2 + ( combo - 1 );
 							}
+							if ( version == 5 && data.opcode > 0x93 )
+							{
+								data.opcode	= data.opcode - 1;
+							}
 							pBuffer = SkipToNext ( pBuffer );
 
 							//
@@ -3568,6 +3598,10 @@ BOOL WriteTRXScript ( const char *pathname, const char *pDirectory, int version 
 							if ( pickup >= 1 && pickup <= 4 && combo >= 1 && combo <= 2 )
 							{
 								data.opcode	= 0xD2 + ( pickup - 1 ) * 2 + ( combo - 1 );
+							}
+							if ( version == 5 && data.opcode > 0x93 )
+							{
+								data.opcode	= data.opcode - 1;
 							}
 							pBuffer = SkipToNext ( pBuffer );
 

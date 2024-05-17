@@ -851,7 +851,7 @@ BOOL CTRXVerticalMap::OnInitDialog()
 /////////////////////////////////////////////////////////////////////////////
 //	Search Point if not found use Text and call parent SelectArea
 /////////////////////////////////////////////////////////////////////////////
-void CTRXVerticalMap::SelectArea ( const char *pText )
+void CTRXVerticalMap::SelectAreaAndExit ( const char *pText )
 {
 	POINT point;
 	BOOL bPosition	= GetCursorPos ( &point );
@@ -879,9 +879,11 @@ void CTRXVerticalMap::SelectArea ( const char *pText )
 		CTRXMapAreas *pParent = dynamic_cast<CTRXMapAreas *>(m_Parent);
 		if ( pParent != NULL )
 		{
-			pParent->SelectArea ( iSelectedArea );
+			pParent->SelectAreaAndExit ( iSelectedArea );
 		}
 	}
+
+	CTRXDialogBase::OnOK();
 }
 
 //

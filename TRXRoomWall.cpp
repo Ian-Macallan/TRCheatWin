@@ -370,7 +370,7 @@ void CTRXRoomWall::OnStnDblclick()
 			CTRXMapAreas *parent = dynamic_cast<CTRXMapAreas *>(GetParent());
 			if ( parent != NULL )
 			{
-				parent->SelectArea( m_szText );
+				parent->SelectAreaAndExit( m_szText );
 				bContinue	= false;
 			}
 		}
@@ -380,7 +380,7 @@ void CTRXRoomWall::OnStnDblclick()
 			CTRXVerticalMap *parent = dynamic_cast<CTRXVerticalMap *>(GetParent());
 			if ( parent != NULL )
 			{
-				parent->SelectArea( m_szText );
+				parent->SelectAreaAndExit( m_szText );
 				bContinue	= false;
 			}
 		}

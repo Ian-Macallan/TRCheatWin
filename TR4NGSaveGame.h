@@ -108,7 +108,43 @@ struct          TR4NGGun
 	BYTE		m_gunCrowBar;
 
 	//	0x172-0x18e : Objects
-	BYTE		m_Object [ 29 ];
+	union
+	{
+		BYTE		m_Object [ 29 ];
+		struct Detailed
+		{
+			//	Address : 1 - 3 : 3 Object
+			BYTE	m_Objects [ 3 ];
+
+			//	Address : 4 - 6 : 3 Examine
+			BYTE	m_Examine [ 3 ];
+
+			//	Address : 7 - 18 : 12 Puzzle
+			BYTE	m_Puzzle [ 12 ];
+
+			//	19 - 20	: 16  (8 Puzzle Combo * 2)
+			BYTE	m_PuzzleCombo [ 2 ];	//	Four by byte
+
+			//	Address : 21 - 22	: 12 Keys
+			//	Byte 1 : Keys 1 to 8
+			//	Byte 2 : Keys 9 to 12
+			BYTE	m_Key [ 2 ];			//	Six by byte
+
+			//	Address : 23 - 24 : 16 (8 Key Combo * 2)
+			//	8 Key Combo3
+			BYTE	m_KeyCombo [ 2 ];		//	Three by byte
+
+			//	Address : 25 - 26 : 4 Pickup
+			BYTE	m_Pickup [ 2 ];			//	Four by byte
+
+			//	Address : 27 - 28  : 8 (4 Pickup Combo * 2)
+			BYTE	m_PickupCombo [ 2 ];	//	Four by byte
+
+			//	Address : 29
+			//	Amulet
+			BYTE	m_Amulet;
+		};
+	};
 
 };
 typedef struct TR4NGGun	TR4NGGUN;

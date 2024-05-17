@@ -568,7 +568,7 @@ void CTRXMapAreas::ComputeRoomRect ( const RECT *pBase, RECT *pRect, TR_AREA *pA
 /////////////////////////////////////////////////////////////////////////////
 //	Direct Select Area
 /////////////////////////////////////////////////////////////////////////////
-void CTRXMapAreas::SelectArea ( int area )
+void CTRXMapAreas::SelectAreaAndExit ( int area )
 {
 	m_iSelectedArea	= area;
 	CTRXDialogBase::OnOK();
@@ -578,7 +578,7 @@ void CTRXMapAreas::SelectArea ( int area )
 /////////////////////////////////////////////////////////////////////////////
 //	Search Point : if not found use the text
 /////////////////////////////////////////////////////////////////////////////
-void CTRXMapAreas::SelectArea ( const char *pText )
+void CTRXMapAreas::SelectAreaAndExit ( const char *pText )
 {
 	//
 	POINT point;

@@ -35,9 +35,9 @@ class CTRXMapAreas : public CTRXDialogBase
 		void ComputeRoomRect ( const RECT *pBase, RECT *pRect, TR_AREA *pArea );
 
 		//	Direct Select Area
-		void SelectArea ( int area );
+		void SelectAreaAndExit ( int area );
 		//	Search Point : if not found use the text
-		void SelectArea ( const char *pText );
+		void SelectAreaAndExit ( const char *pText );
 		void ShowMap ();
 		void SetCurrentArea ( const TR_AREA *pArea, const TR_CUR_POSITION *pCurrentPosition );
 		void SetTombraiderLevelIndex ( int iTombraider, int iLevelIndex );

@@ -37,7 +37,7 @@ class CTRXVerticalMap : public CTRXDialogBase
 		int FindWindowAtPoint( POINT point);
 
 		//	Search Point if not found use Text and call parent SelectArea
-		void SelectArea ( const char *pText );
+		void SelectAreaAndExit ( const char *pText );
 
 		void SetButtonFonts();
 
