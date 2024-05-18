@@ -6,25 +6,25 @@
 
 #pragma pack(push, pack1, 1)
 
-#
+# 
 struct tr_colour   // 3 bytes
 {
-    xuxint8_t Red;        // Red component (0 -- darkest, 255 -- brightest)
-    xuxint8_t Green;      // Green component (0 -- darkest, 255 -- brightest)
-    xuxint8_t Blue;       // Blue component (0 -- darkest, 255 -- brightest)
+    xuint8_t Red;        // Red component (0 -- darkest, 255 -- brightest)
+    xuint8_t Green;      // Green component (0 -- darkest, 255 -- brightest)
+    xuint8_t Blue;       // Blue component (0 -- darkest, 255 -- brightest)
 };
 
 struct tr_colour4  // 4 bytes
 {
-    xuxint8_t Red;
-    xuxint8_t Green;
-    xuxint8_t Blue;
-    xuxint8_t Unused;
+    xuint8_t Red;
+    xuint8_t Green;
+    xuint8_t Blue;
+    xuint8_t Unused;
 };
 
 struct tr_textile8    // 65536 bytes
 {
-    xuxint8_t Tile[256 * 256];
+    xuint8_t Tile[256 * 256];
 };
 
 struct tr_textile16    // 131072 bytes
@@ -150,9 +150,9 @@ struct tr_room_sector // 8 bytes
 {
     xuint16_t FDindex;    // Index into FloorData[]
     xuint16_t BoxIndex;   // Index into Boxes[] (-1 if none)
-    xuxint8_t  RoomBelow;  // 255 is none
+    xuint8_t  RoomBelow;  // 255 is none
     xint8_t   Floor;      // Absolute height of floor
-    xuxint8_t  RoomAbove;  // 255 if none
+    xuint8_t  RoomAbove;  // 255 if none
     xint8_t   Ceiling;    // Absolute height of ceiling
 };
 
@@ -296,10 +296,10 @@ struct tr3_room  // (variable length)
     xint16_t AlternateRoom;
     xint16_t Flags;
 
-    xuxint8_t WaterScheme;
-    xuxint8_t ReverbInfo;
+    xuint8_t WaterScheme;
+    xuint8_t ReverbInfo;
 
-    xuxint8_t Filler;  // Unused.
+    xuint8_t Filler;  // Unused.
 };
 
 struct tr4_room_light   // 46 bytes
@@ -307,9 +307,9 @@ struct tr4_room_light   // 46 bytes
 	xint32_t x, y, z;       // Position of light, in world coordinates
 	tr_colour Colour;        // Colour of the light
 
-	xuxint8_t LightType;
-	xuxint8_t Unknown;       // Always 0xFF?
-	xuxint8_t Intensity;
+	xuint8_t LightType;
+	xuint8_t Unknown;       // Always 0xFF?
+	xuint8_t Intensity;
 
 	float In;            // Also called hotspot in TRLE manual
 	float Out;           // Also called falloff in TRLE manual
@@ -346,10 +346,10 @@ struct tr4_room  // (variable length)
     xint16_t AlternateRoom;
     xint16_t Flags;
 
-    xuxint8_t WaterScheme;
-    xuxint8_t ReverbInfo;
+    xuint8_t WaterScheme;
+    xuint8_t ReverbInfo;
 
-    xuxint8_t AlternateGroup;  // Replaces Filler from TR3
+    xuint8_t AlternateGroup;  // Replaces Filler from TR3
 };
 
 struct tr5_room_light   // 88 bytes
@@ -369,9 +369,9 @@ struct tr5_room_light   // 88 bytes
 	xint32_t x2, y2, z2;    // Same as position, only in integer.
 	xint32_t dx2, dy2, dz2; // Same as direction, only in integer.
 
-	xuxint8_t LightType;
+	xuint8_t LightType;
 
-	xuxint8_t Filler[3];     // Dummy values = 3 x 0xCD
+	xuint8_t Filler[3];     // Dummy values = 3 x 0xCD
 };
 
 struct tr5_room_layer   // 56 bytes
@@ -425,8 +425,8 @@ struct tr5_room // (variable length)
     xuint16_t NumLights;
     xuint16_t NumStaticMeshes;
 
-    xuxint8_t  ReverbInfo;
-    xuxint8_t  AlternateGroup;
+    xuint8_t  ReverbInfo;
+    xuint8_t  AlternateGroup;
     xuint16_t WaterScheme;
 
     xuint32_t Filler[2];    // Both always 0x00007FFF
@@ -489,7 +489,7 @@ struct tr5_room // (variable length)
 
     tr5_room_layer rl[1/*NumLayers*/]; // Data for the room layers (volumes) (56 bytes * NumLayers)
 
-    xuxint8_t Faces[1/*(NumRoomRectangles * sizeof(tr_face4) + NumRoomTriangles * (tr_face3)*/];
+    xuint8_t Faces[1/*(NumRoomRectangles * sizeof(tr_face4) + NumRoomTriangles * (tr_face3)*/];
 
     tr5_room_vertex Vertices[1/*NumVertices*/];
 };
@@ -606,17 +606,17 @@ struct TR1Level
 	xuint16_t AnimatedTextures[NumAnimatedTextures]; // animated texture data (NumAnimatedTextures * 2 bytes)
 	xuint32_t NumEntities; // number of entities to follow (4 bytes)
 	tr_entity Entities[NumEntities]; // entity list (NumEntities * 22 bytes [TR1 version])
-	xuxint8_t LightMap[32 * 256]; // light map (8192 bytes)
+	xuint8_t LightMap[32 * 256]; // light map (8192 bytes)
 	tr_colour Palette[256]; // 8-bit palette (768 bytes)
 	xuint16_t NumCinematicFrames; // number of cinematic frame records to follow (2 bytes)
 	tr_cinematic_frame CinematicFrames[NumCinematicFrames]; // (NumCinematicFrames * 16 bytes)
 	xuint16_t NumDemoData; // number of demo data records to follow (2 bytes)
-	xuxint8_t DemoData[NumDemoData]; // demo data (NumDemoData bytes)
+	xuint8_t DemoData[NumDemoData]; // demo data (NumDemoData bytes)
 	xint16_t SoundMap[256]; // sound map (512 bytes)
 	xuint32_t NumSoundDetails; // number of sound-detail records to follow (4 bytes)
 	tr_sound_details SoundDetails[NumSoundDetails]; // sound-detail list (NumSoundDetails * 8 bytes)
-	xuint32_t NumSamples; // number of xuxint8_t's in Samples (4 bytes)
-	xuxint8_t Samples[NumSamples]; // array of xuxint8_t's -- embedded sound samples in Microsoft WAVE format (NumSamples bytes)
+	xuint32_t NumSamples; // number of xuint8_t's in Samples (4 bytes)
+	xuint8_t Samples[NumSamples]; // array of xuint8_t's -- embedded sound samples in Microsoft WAVE format (NumSamples bytes)
 	xuint32_t NumSampleIndices; // number of sample indices to follow (4 bytes)
 	xuint32_t SampleIndices[NumSampleIndices]; // sample indices (NumSampleIndices * 4 bytes)
 #endif
@@ -675,11 +675,11 @@ struct TR2Level
 	xuint16_t AnimatedTextures[NumAnimatedTextures]; // animated texture data (NumAnimatedTextures * 2 bytes)
 	xuint32_t NumEntities; // number of entities to follow (4 bytes)
 	tr2_entity Entities[NumEntities]; // entity list (NumEntities * 24 bytes)
-	xuxint8_t LightMap[32 * 256]; // light map (8192 bytes)
+	xuint8_t LightMap[32 * 256]; // light map (8192 bytes)
 	xuint16_t NumCinematicFrames; // number of cinematic frame records to follow (2 bytes)
 	tr_cinematic_frame CinematicFrames[NumCinematicFrames]; // (NumCinematicFrames * 16 bytes)
 	xuint16_t NumDemoData; // number of demo data records to follow (2 bytes)
-	xuxint8_t DemoData[NumDemoData]; // demo data (NumDemoData bytes)
+	xuint8_t DemoData[NumDemoData]; // demo data (NumDemoData bytes)
 	xint16_t SoundMap[370]; // sound map (740 bytes)
 	xuint32_t NumSoundDetails; // number of sound-detail records to follow (4 bytes)
 	tr_sound_details SoundDetails[NumSoundDetails]; // sound-detail list (NumSoundDetails * 8 bytes)
@@ -741,11 +741,11 @@ struct TR3Level
 	tr_object_texture ObjectTextures[NumObjectTextures]; // object texture list (NumObjectTextures * 20 bytes)
 	xuint32_t NumEntities; // number of entities to follow (4 bytes)
 	tr2_entity Entities[NumEntities]; // entity list (NumEntities * 24 bytes)
-	xuxint8_t LightMap[32 * 256]; // light map (8192 bytes)
+	xuint8_t LightMap[32 * 256]; // light map (8192 bytes)
 	xuint16_t NumCinematicFrames; // number of cinematic frame records to follow (2 bytes)
 	tr_cinematic_frame CinematicFrames[NumCinematicFrames]; // (NumCinematicFrames * 16 bytes)
 	xuint16_t NumDemoData; // number of demo data records to follow (2 bytes)
-	xuxint8_t DemoData[NumDemoData]; // demo data (NumDemoData bytes)
+	xuint8_t DemoData[NumDemoData]; // demo data (NumDemoData bytes)
 	xint16_t SoundMap[370]; // sound map (740 bytes)
 	xuint32_t NumSoundDetails; // number of sound-detail records to follow (4 bytes)
 	tr3_sound_details SoundDetails[NumSoundDetails]; // sound-detail list (NumSoundDetails * 8 bytes)
@@ -762,25 +762,25 @@ struct TR4Level
 	xuint16_t NumBumpTextiles; // number of bumped room tiles (2 bytes)
 	xuint32_t Textile32_UncompSize; // uncompressed size (in bytes) of the 32-bit textures chunk (4 bytes)
 	xuint32_t Textile32_CompSize; // compressed size (in bytes) of the 32-bit textures chunk (4 bytes)
-	xuxint8_t Textile32_Compressed[1/*Textile32_CompSize*/]; // zlib-compressed 32-bit textures chunk (Textile32_CompSize bytes)
+	xuint8_t Textile32_Compressed[1/*Textile32_CompSize*/]; // zlib-compressed 32-bit textures chunk (Textile32_CompSize bytes)
 	//	{
 	//	    tr4_textile32 Textile32[NumRoomTextiles + NumObjTextiles + NumBumpTextiles];
 	//	}
 	xuint32_t Textile16_UncompSize; // uncompressed size (in bytes) of the 16-bit textures chunk (4 bytes)
 	xuint32_t Textile16_CompSize; // compressed size (in bytes) of the 16-bit textures chunk (4 bytes)
-	xuxint8_t Textile16_Compressed[1/*Textile32_CompSize*/]; // zlib-compressed 16-bit textures chunk (Textile16_CompSize bytes)
+	xuint8_t Textile16_Compressed[1/*Textile32_CompSize*/]; // zlib-compressed 16-bit textures chunk (Textile16_CompSize bytes)
 	//	{
 	//	    tr_textile16 Textile16[NumRoomTextiles + NumObjTextiles + NumBumpTextiles];
 	//	}
 	xuint32_t Textile32Misc_UncompSize; // uncompressed size (in bytes) of the 32-bit misc textures chunk (4 bytes), should always be 524288
 	xuint32_t Textile32Misc_CompSize; // compressed size (in bytes) of the 32-bit misc textures chunk (4 bytes)
-	xuxint8_t Textile32Misc_Compressed[1/*Textile32Misc_CompSize*/]; // zlib-compressed 32-bit misc textures chunk (Textile32Misc_CompSize bytes)
+	xuint8_t Textile32Misc_Compressed[1/*Textile32Misc_CompSize*/]; // zlib-compressed 32-bit misc textures chunk (Textile32Misc_CompSize bytes)
 	//	{
 	//	    tr4_textile32 Textile32Misc[2];
 	//	}
 	xuint32_t LevelData_UncompSize; // uncompressed size (in bytes) of the level data chunk (4 bytes)
 	xuint32_t LevelData_CompSize; // compressed size (in bytes) of the level data chunk (4 bytes)
-	xuxint8_t LevelData_Compressed[1/*LevelData_CompSize*/]; // zlib-compressed level data chunk (LevelData_CompSize bytes)
+	xuint8_t LevelData_Compressed[1/*LevelData_CompSize*/]; // zlib-compressed level data chunk (LevelData_CompSize bytes)
 	//	{
 	//	    xuint32_t Unused; // 32-bit unused value, always 0 (4 bytes)
 	//	    xuint16_t NumRooms; // number of rooms (2 bytes)
@@ -808,7 +808,7 @@ struct TR4Level
 		tr_model Models[NumModels]; // model list (NumModels * 18 bytes)
 		xuint32_t NumStaticMeshes; // number of StaticMesh data records to follow (4 bytes)
 		tr_staticmesh StaticMeshes[NumStaticMeshes]; // StaticMesh data (NumStaticMesh * 32 bytes)
-		xuxint8_t SPR[3]; // S P R (0x53, 0x50, 0x52)
+		xuint8_t SPR[3]; // S P R (0x53, 0x50, 0x52)
 		xuint32_t NumSpriteTextures; // number of sprite textures to follow (4 bytes)
 		tr_sprite_texture SpriteTextures[NumSpriteTextures]; // sprite texture list (NumSpriteTextures * 16 bytes)
 		xuint32_t NumSpriteSequences; // number of sprite sequences records to follow (4 bytes)
@@ -826,7 +826,7 @@ struct TR4Level
 		xint16_t Zones[10*NumBoxes]; // zone data (NumBoxes * 20 bytes)
 		xuint32_t NumAnimatedTextures; // number of animated texture records to follow (4 bytes)
 		xuint16_t AnimatedTextures[NumAnimatedTextures]; // animated texture data (NumAnimatedTextures * 2 bytes)
-		xuxint8_t AnimatedTexturesUVCount;
+		xuint8_t AnimatedTexturesUVCount;
 		xuint32_t NumObjectTextures; // number of object textures to follow (4 bytes) (after AnimatedTextures in TR3)
 		tr4_object_texture ObjectTextures[NumObjectTextures]; // object texture list (NumObjectTextures * 38 bytes)
 		xuint32_t NumEntities; // number of entities to follow (4 bytes)
@@ -834,7 +834,7 @@ struct TR4Level
 		xuint32_t NumAIObjects; // number of AI objects to follow (4 bytes)
 		tr4_ai_object AIObjects[NumAIObjects]; // AI objects list (NumAIObjects * 24 bytes)
 		xuint16_t NumDemoData; // number of demo data records to follow (2 bytes)
-		xuxint8_t DemoData[NumDemoData]; // demo data (NumDemoData bytes)
+		xuint8_t DemoData[NumDemoData]; // demo data (NumDemoData bytes)
 		xint16_t SoundMap[370]; // sound map (740 bytes)
 		xuint32_t NumSoundDetails; // number of sound-detail records to follow (4 bytes)
 		tr3_sound_details SoundDetails[NumSoundDetails]; // sound-detail list (NumSoundDetails * 8 bytes)
@@ -854,25 +854,25 @@ xuint16_t NumObjTextiles; // number of object tiles (2 bytes)
 xuint16_t NumBumpTextiles; // number of bumped room tiles (2 bytes)
 xuint32_t Textile32_UncompSize; // uncompressed size (in bytes) of the 32-bit textures chunk (4 bytes)
 xuint32_t Textile32_CompSize; // compressed size (in bytes) of the 32-bit textures chunk (4 bytes)
-xuxint8_t Textile32_Compressed[1 /* Textile32_CompSize */ ]; // zlib-compressed 32-bit textures chunk (Textile32_CompSize bytes)
+xuint8_t Textile32_Compressed[1 /* Textile32_CompSize */ ]; // zlib-compressed 32-bit textures chunk (Textile32_CompSize bytes)
 //	{
 //	    tr4_textile32 Textile32[NumRoomTextiles + NumObjTextiles + NumBumpTextiles];
 //	}
 xuint32_t Textile16_UncompSize; // uncompressed size (in bytes) of the 16-bit textures chunk (4 bytes)
 xuint32_t Textile16_CompSize; // compressed size (in bytes) of the 16-bit textures chunk (4 bytes)
-xuxint8_t Textile16_Compressed[ 1 /* Textile32_CompSize */ ]; // zlib-compressed 16-bit textures chunk (Textile16_CompSize bytes)
+xuint8_t Textile16_Compressed[ 1 /* Textile32_CompSize */ ]; // zlib-compressed 16-bit textures chunk (Textile16_CompSize bytes)
 //	{
 //	    tr_textile16 Textile16[NumRoomTextiles + NumObjTextiles + NumBumpTextiles];
 //	}
 xuint32_t Textile32Misc_UncompSize; // uncompressed size (in bytes) of the 32-bit misc textures chunk (4 bytes), should always be 786432
 xuint32_t Textile32Misc_CompSize; // compressed size (in bytes) of the 32-bit misc textures chunk (4 bytes)
-xuxint8_t Textile32Misc_Compressed[1 /* Textile32Misc_CompSize */]; // zlib-compressed 32-bit misc textures chunk (Textile32Misc_CompSize bytes)
+xuint8_t Textile32Misc_Compressed[1 /* Textile32Misc_CompSize */]; // zlib-compressed 32-bit misc textures chunk (Textile32Misc_CompSize bytes)
 //	{
 //	    tr4_textile32 Textile32Misc[3];
 //	}
 xuint16_t LaraType;
 xuint16_t WeatherType;
-xuxint8_t Padding[28];
+xuint8_t Padding[28];
 xuint32_t LevelData_UncompSize; // uncompressed size (in bytes) of the level data chunk (4 bytes)
 xuint32_t LevelData_CompSize; // compressed size (in bytes) of the level data chunk, equal to LevelData_UncompSize (4 bytes)
 // NOT COMPRESSED
@@ -902,7 +902,7 @@ xuint32_t NumModels; // number of models to follow (4 bytes)
 tr_model Models[NumModels]; // model list (NumModels * 18 bytes)
 xuint32_t NumStaticMeshes; // number of StaticMesh data records to follow (4 bytes)
 tr_staticmesh StaticMeshes[NumStaticMeshes]; // StaticMesh data (NumStaticMesh * 32 bytes)
-xuxint8_t SPR[4]; // S P R \0 (0x53, 0x50, 0x52, 0x00)
+xuint8_t SPR[4]; // S P R \0 (0x53, 0x50, 0x52, 0x00)
 xuint32_t NumSpriteTextures; // number of sprite textures to follow (4 bytes)
 tr_sprite_texture SpriteTextures[NumSpriteTextures]; // sprite texture list (NumSpriteTextures * 16 bytes)
 xuint32_t NumSpriteSequences; // number of sprite sequences records to follow (4 bytes)
@@ -920,8 +920,8 @@ xuint16_t Overlaps[NumOverlaps]; // overlap data (NumOverlaps * 2 bytes)
 xint16_t Zones[10*NumBoxes]; // zone data (NumBoxes * 20 bytes)
 xuint32_t NumAnimatedTextures; // number of animated texture records to follow (4 bytes)
 xuint16_t AnimatedTextures[NumAnimatedTextures]; // animated texture data (NumAnimatedTextures * 2 bytes)
-xuxint8_t AnimatedTexturesUVCount;
-xuxint8_t TEX[4]; // T E X \0 (0x54, 0x45, 0x58, 0x00)
+xuint8_t AnimatedTexturesUVCount;
+xuint8_t TEX[4]; // T E X \0 (0x54, 0x45, 0x58, 0x00)
 xuint32_t NumObjectTextures; // number of object textures to follow (4 bytes) (after AnimatedTextures in TR3)
 tr4_object_texture ObjectTextures[NumObjectTextures]; // object texture list (NumObjectTextures * 38 bytes)
 xuint32_t NumEntities; // number of entities to follow (4 bytes)
@@ -929,13 +929,13 @@ tr4_entity Entities[NumEntities]; // entity list (NumEntities * 24 bytes)
 xuint32_t NumAIObjects; // number of AI objects to follow (4 bytes)
 tr4_ai_object AIObjects[NumAIObjects]; // AI objects list (NumAIObjects * 24 bytes)
 xuint16_t NumDemoData; // number of demo data records to follow (2 bytes)
-xuxint8_t DemoData[NumDemoData]; // demo data (NumDemoData bytes)
+xuint8_t DemoData[NumDemoData]; // demo data (NumDemoData bytes)
 xint16_t SoundMap[450]; // sound map (740 bytes)
 xuint32_t NumSoundDetails; // number of sound-detail records to follow (4 bytes)
 tr3_sound_details SoundDetails[NumSoundDetails]; // sound-detail list (NumSoundDetails * 8 bytes)
 xuint32_t NumSampleIndices; // number of sample indices to follow (4 bytes)  +
 xuint32_t SampleIndices[NumSampleIndices]; // sample indices (NumSampleIndices * 4 bytes)
-xuxint8_t Separator[6]; // 6 0xCD bytes
+xuint8_t Separator[6]; // 6 0xCD bytes
 xuint32_t NumSamples; // number of sound samples (4 bytes)
 tr4_sample Samples[NumSamples]; // sound samples (this is the last part, so you can simply read until EOF)
 #endif

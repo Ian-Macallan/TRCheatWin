@@ -843,6 +843,24 @@ static DWORD GetDWORDValue ( char *parms )
 }
 
 //
+//====================================================================================
+//	Print if FILE is Not NULL
+//====================================================================================
+static int Print ( FILE *hFile, const char *format, ... )
+{
+	if ( hFile == NULL )
+	{
+		return -1;
+	}
+
+	va_list argptr;
+	va_start(argptr, format);
+	int result = vfprintf_s ( hFile, format, argptr );
+	va_end(argptr);
+	return result;
+}
+
+//
 /////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////
@@ -870,7 +888,7 @@ static xuint16_t SearchStringIndex ( const char *pText, const char delimiter = '
 		}
 	}
 
-	if ( hLogFile != NULL ) fprintf_s ( hLogFile, "Error String %s not found\n", pText );
+	Print ( hLogFile, "Error String %s not found\n", pText );
 
 	return 0;
 }
@@ -1094,10 +1112,25 @@ static const char *OptionLabel ( xuint16_t option )
 
 //
 /////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
+static void CloseOne ( FILE **phFile )
+{
+	if ( phFile == NULL || *phFile == NULL )
+	{
+		return;
+	}
+	fclose ( *phFile );
+	*phFile = NULL;
+
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
 //	http://xproger.info/projects/OpenLara/trs.html
 //
 /////////////////////////////////////////////////////////////////////////////
-BOOL ReadTRXLanguage ( const char *pFilename, const char *pDirectory, int iLang, int version )
+BOOL ReadTRXLanguage ( const char *pFilename, const char *pDirectory, int iLang, int version, bool bWrite )
 {
 	//	For First Language
 	if ( iLang == 0 )
@@ -1135,24 +1168,25 @@ BOOL ReadTRXLanguage ( const char *pFilename, const char *pDirectory, int iLang,
 	fopen_s ( &hInpFile, szLanguage, "rb" );
 	if ( hInpFile == NULL )
 	{
-		if ( hLogFile != NULL ) fprintf_s ( hLogFile, "File Open Error %s\n", szLanguage );
+		Print ( hLogFile, "File Open Error %s\n", szLanguage );
 		return bResult;
 	}
 
 	//
-	strcpy_s ( szOutputFilename, sizeof(szOutputFilename), szLanguage );
-	strcat_s ( szOutputFilename, sizeof(szOutputFilename), ".TXT" );
-	fopen_s ( &hOutFile, szOutputFilename, "w" );
-	if ( hOutFile == NULL )
+	if ( bWrite )
 	{
-		if ( hLogFile != NULL ) fprintf_s ( hLogFile, "File Open Error %s\n", szOutputFilename );
-		fclose ( hInpFile );
+		strcpy_s ( szOutputFilename, sizeof(szOutputFilename), szLanguage );
+		strcat_s ( szOutputFilename, sizeof(szOutputFilename), ".TXT" );
+		fopen_s ( &hOutFile, szOutputFilename, "w" );
+		if ( hOutFile == NULL )
+		{
+			Print ( hLogFile, "File Open Error %s\n", szOutputFilename );
+			CloseOne ( &hInpFile );
 
-		hInpFile	= NULL;
+			Cleanup();
 
-		Cleanup();
-
-		return bResult;
+			return bResult;
+		}
 	}
 
 	//
@@ -1160,11 +1194,8 @@ BOOL ReadTRXLanguage ( const char *pFilename, const char *pDirectory, int iLang,
 	size_t uRead = fread ( (char*) &langHeader, 1, sizeof(langHeader), hInpFile );
 	if ( uRead != sizeof(langHeader) )
 	{
-		fclose ( hOutFile );
-		fclose ( hInpFile );
-
-		hOutFile	= NULL;
-		hInpFile	= NULL;
+		CloseOne ( &hOutFile );
+		CloseOne ( &hInpFile );
 
 		Cleanup();
 			
@@ -1174,24 +1205,24 @@ BOOL ReadTRXLanguage ( const char *pFilename, const char *pDirectory, int iLang,
 	//
 	//	All the strings defined within {LANGUAGE}.DAT files are ASCII null-terminated strings.
 	//	Every character (byte) contained in such a string is XOR-ed with byte 0xA5 (as mentioned above, it is done 
-	fprintf ( hOutFile, "; NumGenericStrings : %d\n", langHeader.NumGenericStrings );
-	fprintf ( hOutFile, "; NumPSXStrings : %d\n", langHeader.NumPSXStrings );
-	fprintf ( hOutFile, "; NumPCStrings : %d\n", langHeader.NumPCStrings );
+	if ( bWrite )
+	{
+		Print ( hOutFile, "; NumGenericStrings : %d\n", langHeader.NumGenericStrings );
+		Print ( hOutFile, "; NumPSXStrings : %d\n", langHeader.NumPSXStrings );
+		Print ( hOutFile, "; NumPCStrings : %d\n", langHeader.NumPCStrings );
 
-	fprintf ( hOutFile, "; GenericStringsLen : %d\n", langHeader.GenericStringsLen );
-	fprintf ( hOutFile, "; PSXStringsLen : %d\n", langHeader.PSXStringsLen );
-	fprintf ( hOutFile, "; PCStringsLen : %d\n", langHeader.PCStringsLen );
+		Print ( hOutFile, "; GenericStringsLen : %d\n", langHeader.GenericStringsLen );
+		Print ( hOutFile, "; PSXStringsLen : %d\n", langHeader.PSXStringsLen );
+		Print ( hOutFile, "; PCStringsLen : %d\n", langHeader.PCStringsLen );
+	}
 
 	int countStrings = langHeader.NumGenericStrings + langHeader.NumPSXStrings + langHeader.NumPCStrings;
 
 	uRead = fread ( (char*) &StringOffsetTable, 1, sizeof(xuint16_t)*countStrings, hInpFile );
 	if ( uRead != sizeof(xuint16_t)*countStrings )
 	{
-		fclose ( hOutFile );
-		fclose ( hInpFile );
-
-		hOutFile	= NULL;
-		hInpFile	= NULL;
+		CloseOne ( &hOutFile );
+		CloseOne ( &hInpFile );
 
 		Cleanup();
 			
@@ -1209,7 +1240,8 @@ BOOL ReadTRXLanguage ( const char *pFilename, const char *pDirectory, int iLang,
 	}
 
 	//	Generic
-	fprintf ( hOutFile, "[Strings]\n" );
+	Print ( hOutFile, "[Strings]\n" );
+
 	int iBegining = 0;
 	for ( int i = 0; i < langHeader.NumGenericStrings; i++ )
 	{
@@ -1220,7 +1252,7 @@ BOOL ReadTRXLanguage ( const char *pFilename, const char *pDirectory, int iLang,
 		}
 		ZeroMemory ( memString.ptr, memString.len );
 		memcpy_s ( memString.ptr, memString.len, memLanguageStrings.ptr + StringOffsetTable [ iBegining + i ], len );
-		fprintf ( hOutFile, "; Generic String %d (Offset %d : %d)\n", i, StringOffsetTable [ iBegining + i ], len );
+		Print ( hOutFile, "; Generic String %d (Offset %d : %d)\n", i, StringOffsetTable [ iBegining + i ], len );
 		const char *pText = StringToText ( memString.ptr );
 		if ( StringTable [ iBegining + i ] == NULL )
 		{
@@ -1228,12 +1260,14 @@ BOOL ReadTRXLanguage ( const char *pFilename, const char *pDirectory, int iLang,
 			strcpy_s ( StringTable [ iBegining + i ], strlen(pText) + 1, pText );
 		}
 
-		fprintf ( hOutFile, "%s\n", pText );
+		Print ( hOutFile, "%s\n", pText );
 	}
-	fprintf ( hOutFile, "\n" );
+
+	Print ( hOutFile, "\n" );
 
 	//	PSX
-	fprintf ( hOutFile, "[PSXStrings]\n" );
+	Print ( hOutFile, "[PSXStrings]\n" );
+
 	iBegining = langHeader.NumGenericStrings;
 	for ( int i = 0; i < langHeader.NumPSXStrings; i++ )
 	{
@@ -1244,19 +1278,19 @@ BOOL ReadTRXLanguage ( const char *pFilename, const char *pDirectory, int iLang,
 		}
 		ZeroMemory ( memString.ptr, memString.len );
 		memcpy_s ( memString.ptr, memString.len, memLanguageStrings.ptr + StringOffsetTable [ iBegining + i ], len );
-		fprintf ( hOutFile, "; PSX String %d (Offset %d : %d)\n", i, StringOffsetTable [ iBegining + i ], len );
+		Print ( hOutFile, "; PSX String %d (Offset %d : %d)\n", i, StringOffsetTable [ iBegining + i ], len );
 		const char *pText = StringToText ( memString.ptr );
 		if ( StringTable [ iBegining + i ] == NULL )
 		{
 			StringTable [ iBegining + i ] = (char*) malloc ( strlen(pText) + 1 );
 			strcpy_s ( StringTable [ iBegining + i ], strlen(pText) + 1, pText );
 		}
-		fprintf ( hOutFile, "%s\n", pText );
+		Print ( hOutFile, "%s\n", pText );
 	}
-	fprintf ( hOutFile, "\n" );
+	Print ( hOutFile, "\n" );
 
 	//
-	fprintf ( hOutFile, "[PCStrings]\n" );
+	Print ( hOutFile, "[PCStrings]\n" );
 	iBegining = langHeader.NumGenericStrings + langHeader.NumPSXStrings;
 	for ( int i = 0; i < langHeader.NumPCStrings; i++ )
 	{
@@ -1267,23 +1301,20 @@ BOOL ReadTRXLanguage ( const char *pFilename, const char *pDirectory, int iLang,
 		}
 		ZeroMemory ( memString.ptr, memString.len );
 		memcpy_s ( memString.ptr, memString.len, memLanguageStrings.ptr + StringOffsetTable [ iBegining + i ], len );
-		fprintf ( hOutFile, "; PC String %d (Offset %d : %d)\n", i, StringOffsetTable [ iBegining + i ], len );
+		Print ( hOutFile, "; PC String %d (Offset %d : %d)\n", i, StringOffsetTable [ iBegining + i ], len );
 		const char *pText = StringToText ( memString.ptr );
 		if ( StringTable [ iBegining + i ] == NULL )
 		{
 			StringTable [ iBegining + i ] = (char*) malloc ( strlen(pText) + 1 );
 			strcpy_s ( StringTable [ iBegining + i ], strlen(pText) + 1, pText );
 		}
-		fprintf ( hOutFile, "%s\n", pText );
+		Print ( hOutFile, "%s\n", pText );
 	}
-	fprintf ( hOutFile, "\n" );
+	Print ( hOutFile, "\n" );
 
 	//
-	fclose ( hOutFile );
-	fclose ( hInpFile );
-
-	hOutFile	= NULL;
-	hInpFile	= NULL;
+	CloseOne ( &hOutFile );
+	CloseOne ( &hInpFile );
 
 	bResult = TRUE;
 
@@ -1312,11 +1343,11 @@ static BOOL TreatLevelData ( FILE *hOutFile, xuint16_t offset, int len, int vers
 		{
 			if ( bTitle )
 			{
-				fprintf ( hOutFile, "[Title]\n" );
+				Print ( hOutFile, "[Title]\n" );
 			}
 			else
 			{
-				fprintf ( hOutFile, "[Level]\n" );
+				Print ( hOutFile, "[Level]\n" );
 			}
 		}
 
@@ -1330,7 +1361,7 @@ static BOOL TreatLevelData ( FILE *hOutFile, xuint16_t offset, int len, int vers
 				case 0x80 :
 				{
 					LevelDatax80 *pArguments = ( LevelDatax80 * ) ( & LevelBlockData [ x ] );
-					if ( step == 2 ) fprintf ( hOutFile, "FMV=\t$%02X\n", pArguments->val );
+					if ( step == 2 ) Print ( hOutFile, "FMV=\t$%02X\n", pArguments->val );
 					x += sizeof(LevelDatax80);
 					break;
 				}
@@ -1341,18 +1372,18 @@ static BOOL TreatLevelData ( FILE *hOutFile, xuint16_t offset, int len, int vers
 				{
 					LevelDatax81 *pArguments = ( LevelDatax81 * ) ( & LevelBlockData [ x ] );
 					const char *pString = StringTable [ pArguments->stringIndex ];
-					if ( step == 2 ) fprintf ( hOutFile, "Name=\t%s\n", pString );
+					if ( step == 2 ) Print ( hOutFile, "Name=\t%s\n", pString );
 					const char *pathString = "";
 					if ( pArguments->pathIndex >= 0 && pArguments->pathIndex < maxLevels )
 					{
 						pathString = LevelpathStringBlockData + LevelpathStringOffsets [ pArguments->pathIndex ];
 					}
-					if ( step == 2 ) fprintf ( hOutFile, "; Level 0x81 args : %d,$%04X,%d,%d\n",
+					if ( step == 2 ) Print ( hOutFile, "; Level 0x81 args : %d,$%04X,%d,%d\n",
 							pArguments->stringIndex, pArguments->levelOptions, pArguments->pathIndex, pArguments->audio );
-					if ( step == 2 ) fprintf ( hOutFile, "Level=\t%s,%d\n", pathString, pArguments->audio );
+					if ( step == 2 ) Print ( hOutFile, "Level=\t%s,%d\n", pathString, pArguments->audio );
 
 					const char *pLabelOption = OptionLabel ( pArguments->levelOptions );
-					if ( step == 2 ) fprintf ( hOutFile, "%s", pLabelOption );
+					if ( step == 2 ) Print ( hOutFile, "%s", pLabelOption );
 
 					x += sizeof(LevelDatax81);
 					break;
@@ -1369,19 +1400,19 @@ static BOOL TreatLevelData ( FILE *hOutFile, xuint16_t offset, int len, int vers
 					if ( pArguments->pathIndex >= 0 && pArguments->pathIndex < maxLevels )
 					{
 						pathString = LevelpathStringBlockData + LevelpathStringOffsets [ pArguments->pathIndex ];
-						if ( step == 2 ) fprintf ( hOutFile, "; Level 0x82 args : %d,$%04X,%d\n", 
+						if ( step == 2 ) Print ( hOutFile, "; Level 0x82 args : %d,$%04X,%d\n", 
 							pArguments->pathIndex, pArguments->titleOptions, pArguments->audio );
-						if ( step == 2 ) fprintf ( hOutFile, "Level=\t%s,%d\n", pathString, pArguments->audio );
+						if ( step == 2 ) Print ( hOutFile, "Level=\t%s,%d\n", pathString, pArguments->audio );
 					}
 					else
 					{
-						if ( step == 2 ) fprintf ( hOutFile, "; Level 0x82 args : %d,$%04X,%d\n", 
+						if ( step == 2 ) Print ( hOutFile, "; Level 0x82 args : %d,$%04X,%d\n", 
 							pArguments->pathIndex, pArguments->titleOptions, pArguments->audio );
-						if ( step == 2 ) fprintf ( hOutFile, "Level=\t%d,%d\n", pArguments->pathIndex, pArguments->audio );
+						if ( step == 2 ) Print ( hOutFile, "Level=\t%d,%d\n", pArguments->pathIndex, pArguments->audio );
 					}
 
 					const char *pLabelOption = OptionLabel ( pArguments->titleOptions );
-					if ( step == 2 ) fprintf ( hOutFile, "%s", pLabelOption );
+					if ( step == 2 ) Print ( hOutFile, "%s", pLabelOption );
 
 					x += sizeof(LevelDatax82);
 					break;
@@ -1389,7 +1420,7 @@ static BOOL TreatLevelData ( FILE *hOutFile, xuint16_t offset, int len, int vers
 				case 0x83 :
 				{
 					LevelDatax83 *pArguments = ( LevelDatax83 * ) ( & LevelBlockData [ x ] );
-					if ( step == 2 ) fprintf ( hOutFile, "; Level-Data-End Opcode $%02X\n", pArguments->opcode );
+					if ( step == 2 ) Print ( hOutFile, "; Level-Data-End Opcode $%02X\n", pArguments->opcode );
 					x += sizeof(LevelDatax83);
 					break;
 				}
@@ -1397,7 +1428,7 @@ static BOOL TreatLevelData ( FILE *hOutFile, xuint16_t offset, int len, int vers
 				case 0x84 :
 				{
 					LevelDatax84 *pArguments = ( LevelDatax84 * ) ( & LevelBlockData [ x ] );
-					if ( step == 2 ) fprintf ( hOutFile, "Cut=\t$%02X\n", pArguments->cutIndex );
+					if ( step == 2 ) Print ( hOutFile, "Cut=\t$%02X\n", pArguments->cutIndex );
 					x += sizeof(LevelDatax84);
 					break;
 				}
@@ -1405,28 +1436,28 @@ static BOOL TreatLevelData ( FILE *hOutFile, xuint16_t offset, int len, int vers
 				case 0x85 :
 				{
 					LevelDatax85 *pArguments = ( LevelDatax85 * ) ( & LevelBlockData [ x ] );
-					if ( step == 2 ) fprintf ( hOutFile, "ResidentCut=\t1,$%02X\n", pArguments->cutIndex );
+					if ( step == 2 ) Print ( hOutFile, "ResidentCut=\t1,$%02X\n", pArguments->cutIndex );
 					x += sizeof(LevelDatax85);
 					break;
 				}
 				case 0x86 :
 				{
 					LevelDatax85 *pArguments = ( LevelDatax85 * ) ( & LevelBlockData [ x ] );
-					if ( step == 2 ) fprintf ( hOutFile, "ResidentCut=\t2,$%02X\n", pArguments->cutIndex );
+					if ( step == 2 ) Print ( hOutFile, "ResidentCut=\t2,$%02X\n", pArguments->cutIndex );
 					x += sizeof(LevelDatax85);
 					break;
 				}
 				case 0x87 :
 				{
 					LevelDatax85 *pArguments = ( LevelDatax85 * ) ( & LevelBlockData [ x ] );
-					if ( step == 2 ) fprintf ( hOutFile, "ResidentCut=\t3,$%02X\n", pArguments->cutIndex );
+					if ( step == 2 ) Print ( hOutFile, "ResidentCut=\t3,$%02X\n", pArguments->cutIndex );
 					x += sizeof(LevelDatax85);
 					break;
 				}
 				case 0x88 :
 				{
 					LevelDatax84 *pArguments = ( LevelDatax84 * ) ( & LevelBlockData [ x ] );
-					if ( step == 2 ) fprintf ( hOutFile, "ResidentCut=\t4,$%02X\n", pArguments->cutIndex );
+					if ( step == 2 ) Print ( hOutFile, "ResidentCut=\t4,$%02X\n", pArguments->cutIndex );
 					x += sizeof(LevelDatax84);
 					break;
 				}
@@ -1435,7 +1466,7 @@ static BOOL TreatLevelData ( FILE *hOutFile, xuint16_t offset, int len, int vers
 				case 0x89 :
 				{
 					LevelDatax89 *pArguments = ( LevelDatax89 * ) ( & LevelBlockData [ x ] );
-					if ( step == 2 ) fprintf ( hOutFile, "Layer1=\t%d,%d,%d,%d\n",
+					if ( step == 2 ) Print ( hOutFile, "Layer1=\t%d,%d,%d,%d\n",
 										pArguments->red, pArguments->green, pArguments->blue, pArguments->speed  );
 					x += sizeof(LevelDatax89);
 					break;
@@ -1444,7 +1475,7 @@ static BOOL TreatLevelData ( FILE *hOutFile, xuint16_t offset, int len, int vers
 				case 0x8A :
 				{
 					LevelDatax89 *pArguments = ( LevelDatax89 * ) ( & LevelBlockData [ x ] );
-					if ( step == 2 ) fprintf ( hOutFile, "Layer2=\t%d,%d,%d,%d\n",
+					if ( step == 2 ) Print ( hOutFile, "Layer2=\t%d,%d,%d,%d\n",
 										pArguments->red, pArguments->green, pArguments->blue, pArguments->speed  );
 					x += sizeof(LevelDatax89);
 					break;
@@ -1454,7 +1485,7 @@ static BOOL TreatLevelData ( FILE *hOutFile, xuint16_t offset, int len, int vers
 				case 0x8B :
 				{
 					LevelDatax8B *pArguments = ( LevelDatax8B * ) ( & LevelBlockData [ x ] );
-					if ( step == 2 ) fprintf ( hOutFile, "UVrotate=\t%d\n", pArguments->speed  );
+					if ( step == 2 ) Print ( hOutFile, "UVrotate=\t%d\n", pArguments->speed  );
 					x += sizeof(LevelDatax8B);
 					break;
 				}
@@ -1463,7 +1494,7 @@ static BOOL TreatLevelData ( FILE *hOutFile, xuint16_t offset, int len, int vers
 				{
 					LevelDatax8C *pArguments = ( LevelDatax8C * ) ( & LevelBlockData [ x ] );
 					const char *pString = StringTable [ pArguments->stringIndex ];
-					if ( step == 2 ) fprintf ( hOutFile, "Legend=\t%s\n", pString  );
+					if ( step == 2 ) Print ( hOutFile, "Legend=\t%s\n", pString  );
 					x += sizeof(LevelDatax8C);
 					break;
 				}
@@ -1471,7 +1502,7 @@ static BOOL TreatLevelData ( FILE *hOutFile, xuint16_t offset, int len, int vers
 				case 0x8D :
 				{
 					LevelDatax8D *pArguments = ( LevelDatax8D * ) ( & LevelBlockData [ x ] );
-					if ( step == 2 ) fprintf ( hOutFile, "LensFlare=\t%d,%d,%d,$%02X,$%02X,$%02X\n", 
+					if ( step == 2 ) Print ( hOutFile, "LensFlare=\t%d,%d,%d,$%02X,$%02X,$%02X\n", 
 										pArguments->yClicks, pArguments->zClicks, pArguments->xClicks,
 										pArguments->red, pArguments->green, pArguments->blue  );
 					x += sizeof(LevelDatax8D);
@@ -1481,7 +1512,7 @@ static BOOL TreatLevelData ( FILE *hOutFile, xuint16_t offset, int len, int vers
 				case 0x8E :
 				{
 					LevelDatax8E *pArguments = ( LevelDatax8E * ) ( & LevelBlockData [ x ] );
-					if ( step == 2 ) fprintf ( hOutFile, "Mirror=\t%d,$%04lX\n", pArguments->room, pArguments->xAxis  );
+					if ( step == 2 ) Print ( hOutFile, "Mirror=\t%d,$%04lX\n", pArguments->room, pArguments->xAxis  );
 					x += sizeof(LevelDatax8E);
 					break;
 				}
@@ -1489,7 +1520,7 @@ static BOOL TreatLevelData ( FILE *hOutFile, xuint16_t offset, int len, int vers
 				case 0x8F :
 				{
 					LevelDatax8F *pArguments = ( LevelDatax8F * ) ( & LevelBlockData [ x ] );
-					if ( step == 2 ) fprintf ( hOutFile, "Fog=\t$%02X,$%02X,$%02X\n", pArguments->red, pArguments->green, pArguments->blue  );
+					if ( step == 2 ) Print ( hOutFile, "Fog=\t$%02X,$%02X,$%02X\n", pArguments->red, pArguments->green, pArguments->blue  );
 					x += sizeof(LevelDatax8F);
 					break;
 				}
@@ -1497,7 +1528,7 @@ static BOOL TreatLevelData ( FILE *hOutFile, xuint16_t offset, int len, int vers
 				case 0x90 :
 				{
 					LevelDatax90 *pArguments = ( LevelDatax90 * ) ( & LevelBlockData [ x ] );
-					if ( step == 2 ) fprintf ( hOutFile, "AnimatingMIP=\t$%02X\n", pArguments->val );
+					if ( step == 2 ) Print ( hOutFile, "AnimatingMIP=\t$%02X\n", pArguments->val );
 					x += sizeof(LevelDatax90);
 					break;
 				}
@@ -1505,7 +1536,7 @@ static BOOL TreatLevelData ( FILE *hOutFile, xuint16_t offset, int len, int vers
 				case 0x91 :
 				{
 					LevelDatax91 *pArguments = ( LevelDatax91 * ) ( & LevelBlockData [ x ] );
-					if ( step == 2 ) fprintf ( hOutFile, "LoadCamera=\t%ld,%ld,%ld,%ld,%ld,%ld,%d\n", 
+					if ( step == 2 ) Print ( hOutFile, "LoadCamera=\t%ld,%ld,%ld,%ld,%ld,%ld,%d\n", 
 										pArguments->srcX, pArguments->srcY, pArguments->srcZ,
 										pArguments->targX, pArguments->targY, pArguments->targZ,
 										pArguments->room );
@@ -1518,7 +1549,7 @@ static BOOL TreatLevelData ( FILE *hOutFile, xuint16_t offset, int len, int vers
 					if ( version == 4 )
 					{
 						LevelDatax92 *pArguments = ( LevelDatax92 * ) ( & LevelBlockData [ x ] );
-						if ( step == 2 ) fprintf ( hOutFile, "ResetHUB=\t$%02X\n", pArguments->levelIndex );
+						if ( step == 2 ) Print ( hOutFile, "ResetHUB=\t$%02X\n", pArguments->levelIndex );
 						x += sizeof(LevelDatax92);
 					}
 					else if ( version == 5 )
@@ -1526,16 +1557,16 @@ static BOOL TreatLevelData ( FILE *hOutFile, xuint16_t offset, int len, int vers
 						LevelDatax92_5 *pArguments = ( LevelDatax92_5 * ) ( & LevelBlockData [ x ] );
 						if ( step == 2 )
 						{
-							fprintf ( hOutFile, "ResetHUB=\t$%02X,", pArguments->levelIndex );
+							Print ( hOutFile, "ResetHUB=\t$%02X,", pArguments->levelIndex );
 							for ( int iX = 0; iX < sizeof(pArguments->other); iX++ )
 							{
 								if ( iX == sizeof(pArguments->other) - 1 )
 								{
-									fprintf ( hOutFile, "$%02X\n", pArguments->other[iX] );
+									Print ( hOutFile, "$%02X\n", pArguments->other[iX] );
 								}
 								else
 								{
-									fprintf ( hOutFile, "$%02X,", pArguments->other[iX] );
+									Print ( hOutFile, "$%02X,", pArguments->other[iX] );
 								}
 							}
 						}
@@ -1547,7 +1578,7 @@ static BOOL TreatLevelData ( FILE *hOutFile, xuint16_t offset, int len, int vers
 				case 0xDA :
 				{
 					LevelDataxDA *pArguments = ( LevelDataxDA * ) ( & LevelBlockData [ x ] );
-					if ( step == 2 ) fprintf ( hOutFile, "LoseItemAtStartup=\t%d\n", pArguments->itemNumber );
+					if ( step == 2 ) Print ( hOutFile, "LoseItemAtStartup=\t%d\n", pArguments->itemNumber );
 					x += sizeof(LevelDataxDA);
 					break;
 				}
@@ -1566,7 +1597,7 @@ static BOOL TreatLevelData ( FILE *hOutFile, xuint16_t offset, int len, int vers
 
 						LevelDatax93 *pArguments = ( LevelDatax93 * ) ( & LevelBlockData [ x ] );
 						const char *pString = StringTable [ pArguments->stringIndex ];
-						if ( step == 2 ) fprintf ( hOutFile, "%s,%s,$%04X,$%04X,$%04X,$%04X,$%04X,$%04X\n", labelData[index],
+						if ( step == 2 ) Print ( hOutFile, "%s,%s,$%04X,$%04X,$%04X,$%04X,$%04X,$%04X\n", labelData[index],
 											pString, 
 											pArguments->height, pArguments->size,
 											pArguments->yAngle, pArguments->zAngle, pArguments->xAngle,
@@ -1601,7 +1632,7 @@ static BOOL TreatLevelData ( FILE *hOutFile, xuint16_t offset, int len, int vers
 					}
 					else
 					{
-						if ( step == 2 ) fprintf ( hOutFile, "; OpcodeError $%02X\n", LevelBlockData [ x ] );
+						if ( step == 2 ) Print ( hOutFile, "; OpcodeError $%02X\n", LevelBlockData [ x ] );
 						x++;
 					}
 					break;
@@ -1611,7 +1642,7 @@ static BOOL TreatLevelData ( FILE *hOutFile, xuint16_t offset, int len, int vers
 	}
 
 	//
-	fprintf ( hOutFile, "\n" );
+	Print ( hOutFile, "\n" );
 
 	return TRUE;
 }
@@ -1667,7 +1698,7 @@ static BOOL WriteHeader ( int version, int level )
 //	Full Pathname
 //
 /////////////////////////////////////////////////////////////////////////////
-BOOL ReadTRXScript ( const char *pathname, const char *pDirectory, int version )
+BOOL ReadTRXScript ( const char *pathname, const char *pDirectory, int version, bool bWrite )
 {
 	//
 	ZeroMemory ( StringTable, sizeof(StringTable) );
@@ -1697,13 +1728,13 @@ BOOL ReadTRXScript ( const char *pathname, const char *pDirectory, int version )
 	//
 	FILE *hInpFile = NULL;
 	FILE *hOutFile = NULL;
+
 	fopen_s ( &hInpFile, pathname, "rb" );
 	if ( hInpFile == NULL )
 	{
-		if ( hLogFile != NULL ) fprintf_s ( hLogFile, "File Open Error %s\n", pathname );
-		if ( hLogFile != NULL ) fclose ( hLogFile );
-		if ( hHeaFile != NULL ) fclose ( hHeaFile );
-		hLogFile	= NULL;
+		Print ( hLogFile, "File Open Error %s\n", pathname );
+		CloseOne ( &hLogFile );
+		CloseOne ( &hHeaFile );
 		return bResult;
 	}
 
@@ -1713,130 +1744,113 @@ BOOL ReadTRXScript ( const char *pathname, const char *pDirectory, int version )
 	fopen_s ( &hOutFile, szOutputFilename, "w" );
 	if ( hOutFile == NULL )
 	{
-		if ( hLogFile != NULL ) fprintf_s ( hLogFile, "File Open Error %s\n", szOutputFilename );
-		fclose ( hInpFile );
-
-		hInpFile	= NULL;
+		Print ( hLogFile, "File Open Error %s\n", szOutputFilename );
+		CloseOne ( &hInpFile );
 
 		Cleanup();
 
-		if ( hLogFile != NULL ) fclose ( hLogFile );
-		if ( hHeaFile != NULL ) fclose ( hHeaFile );
-
-		hLogFile	= NULL;
-		hHeaFile	= NULL;
+		CloseOne ( &hLogFile );
+		CloseOne ( &hHeaFile );
 
 		return bResult;
 	}
 
 	//
-	if ( hLogFile != NULL ) fprintf_s ( hLogFile, "Reading scriptHeader %d\n", sizeof(scriptHeader) );
+	Print ( hLogFile, "Reading scriptHeader %d\n", sizeof(scriptHeader) );
 	size_t uRead = fread ( (char*) &scriptHeader, 1, sizeof(scriptHeader), hInpFile );
 	if ( uRead != sizeof(scriptHeader) )
 	{
-		fclose ( hOutFile );
-		fclose ( hInpFile );
-
-		hOutFile	= NULL;
-		hInpFile	= NULL;
+		CloseOne ( &hOutFile );
+		CloseOne ( &hInpFile );
+		CloseOne ( &hLogFile );
+		CloseOne ( &hHeaFile );
 
 		Cleanup();
-
-		if ( hLogFile != NULL ) fclose ( hLogFile );
-		if ( hHeaFile != NULL ) fclose ( hHeaFile );
-
-		hLogFile	= NULL;
-		hHeaFile	= NULL;
 
 		return bResult;
 	}
 
 	//
-	fprintf ( hOutFile, "[Options]\n" );
-	fprintf ( hOutFile, "; Options : 0x%x\n", scriptHeader.Options );
+	Print ( hOutFile, "[Options]\n" );
+	Print ( hOutFile, "; Options : 0x%x\n", scriptHeader.Options );
 	if ( scriptHeader.Options & 0x01 )
 	{
-		fprintf ( hOutFile, "FlyCheat=\tENABLED\n" );
+		Print ( hOutFile, "FlyCheat=\tENABLED\n" );
 	}
 	else
 	{
-		fprintf ( hOutFile, "FlyCheat=\tDISABLED\n" );
+		Print ( hOutFile, "FlyCheat=\tDISABLED\n" );
 	}
 	if ( scriptHeader.Options & 0x02 )
 	{
-		fprintf ( hOutFile, "LoadSave=\tENABLED\n" );
+		Print ( hOutFile, "LoadSave=\tENABLED\n" );
 	}
 	else
 	{
-		fprintf ( hOutFile, "LoadSave=\tDISABLED\n" );
+		Print ( hOutFile, "LoadSave=\tDISABLED\n" );
 	}
 	if ( scriptHeader.Options & 0x04 )
 	{
-		fprintf ( hOutFile, "Title=\tENABLED\n" );
+		Print ( hOutFile, "Title=\tENABLED\n" );
 	}
 	else
 	{
-		fprintf ( hOutFile, "Title=\tDISABLED\n" );
+		Print ( hOutFile, "Title=\tDISABLED\n" );
 	}
 	if ( scriptHeader.Options & 0x08 )
 	{
-		fprintf ( hOutFile, "PlayAnyLevel=\tENABLED\n" );
+		Print ( hOutFile, "PlayAnyLevel=\tENABLED\n" );
 	}
 	else
 	{
-		fprintf ( hOutFile, "PlayAnyLevel=\tDISABLED\n" );
+		Print ( hOutFile, "PlayAnyLevel=\tDISABLED\n" );
 	}
 	if ( scriptHeader.Options & 0x80 )
 	{
-		fprintf ( hOutFile, "DemoDisc=\tENABLED\n" );
+		Print ( hOutFile, "DemoDisc=\tENABLED\n" );
 	}
 	else
 	{
-		fprintf ( hOutFile, "DemoDisc=\tDISABLED\n" );
+		Print ( hOutFile, "DemoDisc=\tDISABLED\n" );
 	}
 
-	fprintf ( hOutFile, "InputTimeout=\t%d\n", scriptHeader.InputTimeout );
-	fprintf ( hOutFile, "Security=\t$%02X\n", scriptHeader.Security );
-	fprintf ( hOutFile, "\n" );
+	Print ( hOutFile, "InputTimeout=\t%d\n", scriptHeader.InputTimeout );
+	Print ( hOutFile, "Security=\t$%02X\n", scriptHeader.Security );
+	Print ( hOutFile, "\n" );
 
 	//
-	if ( hLogFile != NULL ) fprintf_s ( hLogFile, "Reading scriptHeader %d\n", sizeof(scriptLevelHeader) );
+	Print ( hLogFile, "Reading scriptHeader %d\n", sizeof(scriptLevelHeader) );
 	uRead = fread ( (char*) &scriptLevelHeader, 1, sizeof(scriptLevelHeader), hInpFile );
 	if ( uRead != sizeof(scriptLevelHeader) )
 	{
-		fclose ( hOutFile );
-		fclose ( hInpFile );
-		hOutFile	= NULL;
-		hInpFile	= NULL;
+		CloseOne ( &hOutFile );
+		CloseOne ( &hInpFile );
+
+		CloseOne ( &hLogFile );
+		CloseOne ( &hHeaFile );
 
 		Cleanup();
-
-		if ( hLogFile != NULL ) fclose ( hLogFile );
-		if ( hHeaFile != NULL ) fclose ( hHeaFile );
-
-		hLogFile	= NULL;
-		hHeaFile	= NULL;
 
 		return bResult;
 	}
 
 	//
-	fprintf ( hOutFile, "; NumTotalLevels : %d\n", scriptLevelHeader.NumTotalLevels );
-	fprintf ( hOutFile, "; NumUniqueLevelPaths : %d\n", scriptLevelHeader.NumUniqueLevelPaths );
-	fprintf ( hOutFile, "; LevelpathStringLen : %d\n", scriptLevelHeader.LevelpathStringLen );
-	fprintf ( hOutFile, "; LevelBlockLen : %d\n", scriptLevelHeader.LevelBlockLen );
+	Print ( hOutFile, "; NumTotalLevels : %d\n", scriptLevelHeader.NumTotalLevels );
+	Print ( hOutFile, "; NumUniqueLevelPaths : %d\n", scriptLevelHeader.NumUniqueLevelPaths );
+	Print ( hOutFile, "; LevelpathStringLen : %d\n", scriptLevelHeader.LevelpathStringLen );
+	Print ( hOutFile, "; LevelBlockLen : %d\n", scriptLevelHeader.LevelBlockLen );
 
-	fprintf ( hOutFile, "[PSXExtensions]\n" );
-	fprintf ( hOutFile, "Level=\t%s\n", scriptLevelHeader.PSXLevelString );
-	fprintf ( hOutFile, "Cut=\t%s\n", scriptLevelHeader.PSXCutString );
-	fprintf ( hOutFile, "FMV=\t%s\n", scriptLevelHeader.PSXFMVString );
-	fprintf ( hOutFile, "\n" );
+	Print ( hOutFile, "[PSXExtensions]\n" );
+	Print ( hOutFile, "Level=\t%s\n", scriptLevelHeader.PSXLevelString );
+	Print ( hOutFile, "Cut=\t%s\n", scriptLevelHeader.PSXCutString );
+	Print ( hOutFile, "FMV=\t%s\n", scriptLevelHeader.PSXFMVString );
+	Print ( hOutFile, "\n" );
 
-	fprintf ( hOutFile, "[PCExtensions]\n" );
-	fprintf ( hOutFile, "Level=\t%s\n", scriptLevelHeader.PCLevelString );
-	fprintf ( hOutFile, "Cut=\t%s\n", scriptLevelHeader.PCCutString );
-	fprintf ( hOutFile, "FMV=\t%s\n", scriptLevelHeader.PCFMVString );
-	fprintf ( hOutFile, "\n" );
+	Print ( hOutFile, "[PCExtensions]\n" );
+	Print ( hOutFile, "Level=\t%s\n", scriptLevelHeader.PCLevelString );
+	Print ( hOutFile, "Cut=\t%s\n", scriptLevelHeader.PCCutString );
+	Print ( hOutFile, "FMV=\t%s\n", scriptLevelHeader.PCFMVString );
+	Print ( hOutFile, "\n" );
 
 	//
 	int nbLevels = scriptLevelHeader.NumTotalLevels;
@@ -1846,23 +1860,17 @@ BOOL ReadTRXScript ( const char *pathname, const char *pDirectory, int version )
 	ZeroMemory ( &LevelpathStringOffsets, sizeof(LevelpathStringOffsets) );
 	if ( nbLevels > 0 )
 	{
-		if ( hLogFile != NULL ) fprintf_s ( hLogFile, "Reading LevelpathStringOffsets %d\n", sizeof(xuint16_t)*nbLevels );
+		Print ( hLogFile, "Reading LevelpathStringOffsets %d\n", sizeof(xuint16_t)*nbLevels );
 		uRead = fread ( (char*) &LevelpathStringOffsets, 1, sizeof(xuint16_t)*nbLevels, hInpFile );
 		if ( uRead != sizeof(xuint16_t)*nbLevels )
 		{
-			fclose ( hOutFile );
-			fclose ( hInpFile );
+			CloseOne ( &hOutFile );
+			CloseOne ( &hInpFile );
 
-			hOutFile	= NULL;
-			hInpFile	= NULL;
+			CloseOne ( &hLogFile );
+			CloseOne ( &hHeaFile );
 
 			Cleanup();
-
-			if ( hLogFile != NULL ) fclose ( hLogFile );
-			if ( hHeaFile != NULL ) fclose ( hHeaFile );
-
-			hLogFile	= NULL;
-			hHeaFile	= NULL;
 
 			return bResult;
 		}
@@ -1870,31 +1878,24 @@ BOOL ReadTRXScript ( const char *pathname, const char *pDirectory, int version )
 
 	//
 	ZeroMemory ( LevelpathStringBlockData, sizeof(LevelpathStringBlockData) );
-	if ( hLogFile != NULL ) fprintf_s ( hLogFile, "Reading LevelpathStringBlockData %d\n", scriptLevelHeader.LevelpathStringLen );
+	Print ( hLogFile, "Reading LevelpathStringBlockData %d\n", scriptLevelHeader.LevelpathStringLen );
 	uRead = fread ( LevelpathStringBlockData, 1, scriptLevelHeader.LevelpathStringLen, hInpFile );
 	if ( uRead != scriptLevelHeader.LevelpathStringLen )
 	{
-		fclose ( hOutFile );
-		fclose ( hInpFile );
+		CloseOne ( &hOutFile );
+		CloseOne ( &hInpFile );
 
-		hOutFile	= NULL;
-		hInpFile	= NULL;
+		CloseOne ( &hLogFile );
+		CloseOne ( &hHeaFile );
 
 		Cleanup();
-
-		if ( hLogFile != NULL ) fclose ( hLogFile );
-		if ( hHeaFile != NULL ) fclose ( hHeaFile );
-
-
-		hLogFile	= NULL;
-		hHeaFile	= NULL;
 
 		return bResult;
 	}
 		
 	for ( int i = 0; i < nbLevels; i++ )
 	{
-		fprintf ( hOutFile, "; LevelpathStringOffsets %d : %d %s\n", i, LevelpathStringOffsets [ i ], LevelpathStringBlockData + LevelpathStringOffsets [ i ] );
+		Print ( hOutFile, "; LevelpathStringOffsets %d : %d %s\n", i, LevelpathStringOffsets [ i ], LevelpathStringBlockData + LevelpathStringOffsets [ i ] );
 	}
 
 	//
@@ -1902,23 +1903,17 @@ BOOL ReadTRXScript ( const char *pathname, const char *pDirectory, int version )
 	ZeroMemory ( &LevelBlockDataOffsets, sizeof(LevelBlockDataOffsets) );
 	if ( nbLevels > 0 )
 	{
-		if ( hLogFile != NULL ) fprintf_s ( hLogFile, "Reading LevelBlockDataOffsets %d\n", sizeof(xuint16_t)*nbLevels );
+		Print ( hLogFile, "Reading LevelBlockDataOffsets %d\n", sizeof(xuint16_t)*nbLevels );
 		uRead = fread ( (char*) &LevelBlockDataOffsets, 1, sizeof(xuint16_t)*nbLevels, hInpFile );
 		if ( uRead != sizeof(xuint16_t)*nbLevels )
 		{
-			fclose ( hOutFile );
-			fclose ( hInpFile );
+			CloseOne ( &hOutFile );
+			CloseOne ( &hInpFile );
 
-			hOutFile	= NULL;
-			hInpFile	= NULL;
+			CloseOne ( &hLogFile );
+			CloseOne ( &hHeaFile );
 
 			Cleanup();
-
-			if ( hLogFile != NULL ) fclose ( hLogFile );
-			if ( hHeaFile != NULL ) fclose ( hHeaFile );
-
-			hLogFile	= NULL;
-			hHeaFile	= NULL;
 
 			return bResult;
 		}
@@ -1926,23 +1921,17 @@ BOOL ReadTRXScript ( const char *pathname, const char *pDirectory, int version )
 
 	//
 	ZeroMemory ( LevelBlockData, sizeof(LevelBlockData) );
-	if ( hLogFile != NULL ) fprintf_s ( hLogFile, "Reading LevelBlockData %d\n", scriptLevelHeader.LevelBlockLen );
+	Print ( hLogFile, "Reading LevelBlockData %d\n", scriptLevelHeader.LevelBlockLen );
 	uRead = fread ( LevelBlockData, 1, scriptLevelHeader.LevelBlockLen, hInpFile );
 	if ( uRead != scriptLevelHeader.LevelBlockLen )
 	{
-		fclose ( hOutFile );
-		fclose ( hInpFile );
+		CloseOne ( &hOutFile );
+		CloseOne ( &hInpFile );
 
-		hOutFile	= NULL;
-		hInpFile	= NULL;
+		CloseOne ( &hLogFile );
+		CloseOne ( &hHeaFile );
 
 		Cleanup();
-
-		if ( hLogFile != NULL ) fclose ( hLogFile );
-		if ( hHeaFile != NULL ) fclose ( hHeaFile );
-
-		hLogFile	= NULL;
-		hHeaFile	= NULL;
 
 		return bResult;
 	}
@@ -1952,15 +1941,15 @@ BOOL ReadTRXScript ( const char *pathname, const char *pDirectory, int version )
 	//	Finally Languages
 
 	//
-	fprintf ( hOutFile, "\n" );
-	fprintf ( hOutFile, "; LANGUAGE.DAT will be treated as LANGUAGE.DAT.TXT by the write procedure\n" );
-	fprintf ( hOutFile, "; So leave this section as it is\n" );
-	fprintf ( hOutFile, "; The Index will not be treated : so order them correctly\n" );
-	fprintf ( hOutFile, "[Language]\n" );
+	Print ( hOutFile, "\n" );
+	Print ( hOutFile, "; LANGUAGE.DAT will be treated as LANGUAGE.DAT.TXT by the write procedure\n" );
+	Print ( hOutFile, "; So leave this section as it is\n" );
+	Print ( hOutFile, "; The Index will not be treated : so order them correctly\n" );
+	Print ( hOutFile, "[Language]\n" );
 
 	ZeroMemory ( LanguageBlockData, sizeof(LanguageBlockData) );
 	LanguageBlockLen = (xuint16_t) fread ( LanguageBlockData, 1, sizeof(LanguageBlockData), hInpFile );
-	if ( hLogFile != NULL ) fprintf_s ( hLogFile, "Reading LanguageBlockData %d\n", LanguageBlockLen );
+	Print ( hLogFile, "Reading LanguageBlockData %d\n", LanguageBlockLen );
 	char *pLang = (char*) LanguageBlockData;
 	int iLang = 0;
 	while ( *pLang != '\0' )
@@ -1968,15 +1957,15 @@ BOOL ReadTRXScript ( const char *pathname, const char *pDirectory, int version )
 		//	Next Generation
 		if ( memcmp ( pLang, "NG", 2 ) == 0 )
 		{
-			fprintf ( hOutFile, "; Next Generation File.\n" );
+			Print ( hOutFile, "; Next Generation File.\n" );
 			break;
 		}
-		fprintf ( hOutFile, "File=\t%d,%s\n", iLang, pLang );
-		ReadTRXLanguage ( pLang, pDirectory, iLang, version );
+		Print ( hOutFile, "File=\t%d,%s\n", iLang, pLang );
+		ReadTRXLanguage ( pLang, pDirectory, iLang, version, bWrite );
 		pLang += strlen ( pLang ) + 1;
 		iLang ++;
 	}
-	fprintf ( hOutFile, "\n" );
+	Print ( hOutFile, "\n" );
 
 	//	Treat After Language has been read
 	for ( int i = 0; i < nbLevels; i++ )
@@ -1989,7 +1978,7 @@ BOOL ReadTRXScript ( const char *pathname, const char *pDirectory, int version )
 		{
 			len = LevelBlockDataOffsets [ i + 1 ];
 		}
-		fprintf ( hOutFile, "; LevelBlockDataOffsets %d : %d 0x%x (len=%d)\n", i, LevelBlockDataOffsets [ i ], LevelBlockDataOffsets [ i ], len - LevelBlockDataOffsets [ i ] );
+		Print ( hOutFile, "; LevelBlockDataOffsets %d : %d 0x%x (len=%d)\n", i, LevelBlockDataOffsets [ i ], LevelBlockDataOffsets [ i ], len - LevelBlockDataOffsets [ i ] );
 
 		//
 		//	Treat Level Data
@@ -2003,22 +1992,16 @@ BOOL ReadTRXScript ( const char *pathname, const char *pDirectory, int version )
 	WriteHeader ( version, -1 );
 
 	//
-	fclose ( hOutFile );
-	fclose ( hInpFile );
+	CloseOne ( &hOutFile );
+	CloseOne ( &hInpFile );
 
-	hOutFile	= NULL;
-	hInpFile	= NULL;
+	CloseOne ( &hLogFile );
+	CloseOne ( &hHeaFile );
 
 	bResult		= TRUE;
 
 	//
 	Cleanup();
-
-	if ( hLogFile != NULL ) fclose ( hLogFile );
-	if ( hHeaFile != NULL ) fclose ( hHeaFile );
-
-	hLogFile	= NULL;
-	hHeaFile	= NULL;
 
 	//
 	return bResult;
@@ -2070,7 +2053,7 @@ BOOL WriteTRXLanguage ( const char *pFilename, const char *pDirectory, int iLang
 		fopen_s ( &hInpFile, szLanguage, "r" );
 		if ( hInpFile == NULL )
 		{
-			if ( hLogFile != NULL ) fprintf_s ( hLogFile, "File Open Error %s\n", szLanguage );
+			Print ( hLogFile, "File Open Error %s\n", szLanguage );
 			return bResult;
 		}
 
@@ -2160,10 +2143,8 @@ BOOL WriteTRXLanguage ( const char *pFilename, const char *pDirectory, int iLang
 			fopen_s ( &hOutFile, szOutputFilename, "wb" );
 			if ( hOutFile == NULL )
 			{
-				if ( hLogFile != NULL ) fprintf_s ( hLogFile, "File Open Error %s\n", szOutputFilename );
-				fclose ( hInpFile );
-
-				hInpFile	= NULL;
+				Print ( hLogFile, "File Open Error %s\n", szOutputFilename );
+				CloseOne ( &hInpFile );
 
 				Cleanup();
 
@@ -2224,11 +2205,8 @@ BOOL WriteTRXLanguage ( const char *pFilename, const char *pDirectory, int iLang
 			while ( ! feof(hInpFile) && ! ferror( hInpFile) );
 		}
 
-		if ( hInpFile != NULL ) fclose ( hInpFile );
-		if ( hOutFile != NULL ) fclose ( hOutFile );
-
-		hInpFile = NULL;
-		hOutFile = NULL;
+		CloseOne ( &hInpFile );
+		CloseOne ( &hOutFile );
 
 	}
 
@@ -2363,9 +2341,8 @@ BOOL WriteTRXScript ( const char *pathname, const char *pDirectory, int version 
 		fopen_s ( &hInpFile, pathname, "r" );
 		if ( hInpFile == NULL )
 		{
-			if ( hLogFile != NULL ) fprintf_s ( hLogFile, "File Open Error %s\n", pathname );
-			if ( hLogFile != NULL ) fclose ( hLogFile );
-			hLogFile	= NULL;
+			Print ( hLogFile, "File Open Error %s\n", pathname );
+			CloseOne ( &hLogFile );
 			return FALSE;
 		}
 
@@ -2377,15 +2354,13 @@ BOOL WriteTRXScript ( const char *pathname, const char *pDirectory, int version 
 			fopen_s ( &hOutFile, szOutputFilename, "wb" );
 			if ( hOutFile == NULL )
 			{
-				if ( hLogFile != NULL ) fprintf_s ( hLogFile, "File Open Error %s\n", szOutputFilename );
-				fclose ( hInpFile );
+				Print ( hLogFile, "File Open Error %s\n", szOutputFilename );
+				CloseOne ( &hInpFile );
 
-				hInpFile	= NULL;
+				CloseOne ( &hLogFile );
 
 				Cleanup();
 
-				if ( hLogFile != NULL ) fclose ( hLogFile );
-				hLogFile	= NULL;
 				return bResult;
 			}
 		}
@@ -2488,7 +2463,7 @@ BOOL WriteTRXScript ( const char *pathname, const char *pDirectory, int version 
 										sizeof(LevelBlockData) - scriptLevelHeader.LevelBlockLen, &data, sizeof(data) );
 							scriptLevelHeader.LevelBlockLen += sizeof(data);
 
-							if ( hLogFile != NULL ) fprintf_s ( hLogFile, "Adding EndOfLevel %s\n", TraceOperation ( &data, sizeof(data) ) );
+							Print ( hLogFile, "Adding EndOfLevel %s\n", TraceOperation ( &data, sizeof(data) ) );
 
 							bNeedEndOfLevel	= false;
 						}
@@ -2543,7 +2518,7 @@ BOOL WriteTRXScript ( const char *pathname, const char *pDirectory, int version 
 										sizeof(LevelBlockData) - scriptLevelHeader.LevelBlockLen, &data, sizeof(data) );
 							scriptLevelHeader.LevelBlockLen += sizeof(data);
 
-							if ( hLogFile != NULL ) fprintf_s ( hLogFile, "Adding EndOfLevel %s\n", TraceOperation ( &data, sizeof(data) ) );
+							Print ( hLogFile, "Adding EndOfLevel %s\n", TraceOperation ( &data, sizeof(data) ) );
 
 							bNeedEndOfLevel	= false;
 						}
@@ -2579,7 +2554,7 @@ BOOL WriteTRXScript ( const char *pathname, const char *pDirectory, int version 
 										sizeof(LevelBlockData) - scriptLevelHeader.LevelBlockLen, &data, sizeof(data) );
 							scriptLevelHeader.LevelBlockLen += sizeof(data);
 
-							if ( hLogFile != NULL ) fprintf_s ( hLogFile, "Adding EndOfLevel %s\n", TraceOperation ( &data, sizeof(data) ) );
+							Print ( hLogFile, "Adding EndOfLevel %s\n", TraceOperation ( &data, sizeof(data) ) );
 
 							bNeedEndOfLevel	= false;
 						}
@@ -2662,7 +2637,7 @@ BOOL WriteTRXScript ( const char *pathname, const char *pDirectory, int version 
 						}
 						else
 						{
-							if ( hLogFile != NULL ) fprintf_s ( hLogFile, "Not Recognized %s\n", pBuffer );
+							Print ( hLogFile, "Not Recognized %s\n", pBuffer );
 						}
 					}
 					//
@@ -2697,17 +2672,17 @@ BOOL WriteTRXScript ( const char *pathname, const char *pDirectory, int version 
 								{
 									LevelDatax81	*pData = (LevelDatax81 *)( LevelBlockData + LevelOffset );
 									pData->levelOptions	|= 0x0001;
-									if ( hLogFile != NULL ) fprintf_s ( hLogFile, "Changing Level %s\n", TraceOperation ( pData, sizeof(LevelDatax81) ) );
+									Print ( hLogFile, "Changing Level %s\n", TraceOperation ( pData, sizeof(LevelDatax81) ) );
 								}
 								else if ( TitleOffset >= 0 )
 								{
 									LevelDatax82	*pData = (LevelDatax82 *)( LevelBlockData + LevelOffset );
 									pData->titleOptions	|= 0x0001;
-									if ( hLogFile != NULL ) fprintf_s ( hLogFile, "Changing Title %s\n", TraceOperation ( pData, sizeof(LevelDatax82) ) );
+									Print ( hLogFile, "Changing Title %s\n", TraceOperation ( pData, sizeof(LevelDatax82) ) );
 								}
 								else
 								{
-									if ( hLogFile != NULL ) fprintf_s ( hLogFile, "No Level\n" );
+									Print ( hLogFile, "No Level\n" );
 								}
 							}
 						}
@@ -2720,17 +2695,17 @@ BOOL WriteTRXScript ( const char *pathname, const char *pDirectory, int version 
 								{
 									LevelDatax81	*pData = (LevelDatax81 *)( LevelBlockData + LevelOffset );
 									pData->levelOptions	|= 0x0002;
-									if ( hLogFile != NULL ) fprintf_s ( hLogFile, "Changing Level %s\n", TraceOperation ( pData, sizeof(LevelDatax81) ) );
+									Print ( hLogFile, "Changing Level %s\n", TraceOperation ( pData, sizeof(LevelDatax81) ) );
 								}
 								else if ( TitleOffset >= 0 )
 								{
 									LevelDatax82	*pData = (LevelDatax82 *)( LevelBlockData + LevelOffset );
 									pData->titleOptions	|= 0x0002;
-									if ( hLogFile != NULL ) fprintf_s ( hLogFile, "Changing Title %s\n", TraceOperation ( pData, sizeof(LevelDatax82) ) );
+									Print ( hLogFile, "Changing Title %s\n", TraceOperation ( pData, sizeof(LevelDatax82) ) );
 								}
 								else
 								{
-									if ( hLogFile != NULL ) fprintf_s ( hLogFile, "No Level\n" );
+									Print ( hLogFile, "No Level\n" );
 								}
 							}
 						}
@@ -2743,17 +2718,17 @@ BOOL WriteTRXScript ( const char *pathname, const char *pDirectory, int version 
 								{
 									LevelDatax81	*pData = (LevelDatax81 *)( LevelBlockData + LevelOffset );
 									pData->levelOptions	|= 0x0004;
-									if ( hLogFile != NULL ) fprintf_s ( hLogFile, "Changing Level %s\n", TraceOperation ( pData, sizeof(LevelDatax81) ) );
+									Print ( hLogFile, "Changing Level %s\n", TraceOperation ( pData, sizeof(LevelDatax81) ) );
 								}
 								else if ( TitleOffset >= 0 )
 								{
 									LevelDatax82	*pData = (LevelDatax82 *)( LevelBlockData + LevelOffset );
 									pData->titleOptions	|= 0x0004;
-									if ( hLogFile != NULL ) fprintf_s ( hLogFile, "Changing Title %s\n", TraceOperation ( pData, sizeof(LevelDatax82) ) );
+									Print ( hLogFile, "Changing Title %s\n", TraceOperation ( pData, sizeof(LevelDatax82) ) );
 								}
 								else
 								{
-									if ( hLogFile != NULL ) fprintf_s ( hLogFile, "No Level\n" );
+									Print ( hLogFile, "No Level\n" );
 								}
 							}
 						}
@@ -2766,17 +2741,17 @@ BOOL WriteTRXScript ( const char *pathname, const char *pDirectory, int version 
 								{
 									LevelDatax81	*pData = (LevelDatax81 *)( LevelBlockData + LevelOffset );
 									pData->levelOptions	|= 0x0008;
-									if ( hLogFile != NULL ) fprintf_s ( hLogFile, "Changing Level %s\n", TraceOperation ( pData, sizeof(LevelDatax81) ) );
+									Print ( hLogFile, "Changing Level %s\n", TraceOperation ( pData, sizeof(LevelDatax81) ) );
 								}
 								else if ( TitleOffset >= 0 )
 								{
 									LevelDatax82	*pData = (LevelDatax82 *)( LevelBlockData + LevelOffset );
 									pData->titleOptions	|= 0x0008;
-									if ( hLogFile != NULL ) fprintf_s ( hLogFile, "Changing Title %s\n", TraceOperation ( pData, sizeof(LevelDatax82) ) );
+									Print ( hLogFile, "Changing Title %s\n", TraceOperation ( pData, sizeof(LevelDatax82) ) );
 								}
 								else
 								{
-									if ( hLogFile != NULL ) fprintf_s ( hLogFile, "No Level\n" );
+									Print ( hLogFile, "No Level\n" );
 								}
 							}
 						}
@@ -2789,17 +2764,17 @@ BOOL WriteTRXScript ( const char *pathname, const char *pDirectory, int version 
 								{
 									LevelDatax81	*pData = (LevelDatax81 *)( LevelBlockData + LevelOffset );
 									pData->levelOptions	|= 0x0010;
-									if ( hLogFile != NULL ) fprintf_s ( hLogFile, "Changing Level %s\n", TraceOperation ( pData, sizeof(LevelDatax81) ) );
+									Print ( hLogFile, "Changing Level %s\n", TraceOperation ( pData, sizeof(LevelDatax81) ) );
 								}
 								else if ( TitleOffset >= 0 )
 								{
 									LevelDatax82	*pData = (LevelDatax82 *)( LevelBlockData + LevelOffset );
 									pData->titleOptions	|= 0x0010;
-									if ( hLogFile != NULL ) fprintf_s ( hLogFile, "Changing Title %s\n", TraceOperation ( pData, sizeof(LevelDatax82) ) );
+									Print ( hLogFile, "Changing Title %s\n", TraceOperation ( pData, sizeof(LevelDatax82) ) );
 								}
 								else
 								{
-									if ( hLogFile != NULL ) fprintf_s ( hLogFile, "No Level\n" );
+									Print ( hLogFile, "No Level\n" );
 								}
 							}
 						}
@@ -2812,17 +2787,17 @@ BOOL WriteTRXScript ( const char *pathname, const char *pDirectory, int version 
 								{
 									LevelDatax81	*pData = (LevelDatax81 *)( LevelBlockData + LevelOffset );
 									pData->levelOptions	|= 0x0020;
-									if ( hLogFile != NULL ) fprintf_s ( hLogFile, "Changing Level %s\n", TraceOperation ( pData, sizeof(LevelDatax81) ) );
+									Print ( hLogFile, "Changing Level %s\n", TraceOperation ( pData, sizeof(LevelDatax81) ) );
 								}
 								else if ( TitleOffset >= 0 )
 								{
 									LevelDatax82	*pData = (LevelDatax82 *)( LevelBlockData + LevelOffset );
 									pData->titleOptions	|= 0x0020;
-									if ( hLogFile != NULL ) fprintf_s ( hLogFile, "Changing Title %s\n", TraceOperation ( pData, sizeof(LevelDatax82) ) );
+									Print ( hLogFile, "Changing Title %s\n", TraceOperation ( pData, sizeof(LevelDatax82) ) );
 								}
 								else
 								{
-									if ( hLogFile != NULL ) fprintf_s ( hLogFile, "No Level\n" );
+									Print ( hLogFile, "No Level\n" );
 								}
 							}
 						}
@@ -2835,17 +2810,17 @@ BOOL WriteTRXScript ( const char *pathname, const char *pDirectory, int version 
 								{
 									LevelDatax81	*pData = (LevelDatax81 *)( LevelBlockData + LevelOffset );
 									pData->levelOptions	|= 0x0040;
-									if ( hLogFile != NULL ) fprintf_s ( hLogFile, "Changing Level %s\n", TraceOperation ( pData, sizeof(LevelDatax81) ) );
+									Print ( hLogFile, "Changing Level %s\n", TraceOperation ( pData, sizeof(LevelDatax81) ) );
 								}
 								else if ( TitleOffset >= 0 )
 								{
 									LevelDatax82	*pData = (LevelDatax82 *)( LevelBlockData + LevelOffset );
 									pData->titleOptions	|= 0x0040;
-									if ( hLogFile != NULL ) fprintf_s ( hLogFile, "Changing Title %s\n", TraceOperation ( pData, sizeof(LevelDatax82) ) );
+									Print ( hLogFile, "Changing Title %s\n", TraceOperation ( pData, sizeof(LevelDatax82) ) );
 								}
 								else
 								{
-									if ( hLogFile != NULL ) fprintf_s ( hLogFile, "No Level\n" );
+									Print ( hLogFile, "No Level\n" );
 								}
 							}
 						}
@@ -2858,17 +2833,17 @@ BOOL WriteTRXScript ( const char *pathname, const char *pDirectory, int version 
 								{
 									LevelDatax81	*pData = (LevelDatax81 *)( LevelBlockData + LevelOffset );
 									pData->levelOptions	|= 0x0080;
-									if ( hLogFile != NULL ) fprintf_s ( hLogFile, "Changing Level %s\n", TraceOperation ( pData, sizeof(LevelDatax81) ) );
+									Print ( hLogFile, "Changing Level %s\n", TraceOperation ( pData, sizeof(LevelDatax81) ) );
 								}
 								else if ( TitleOffset >= 0 )
 								{
 									LevelDatax82	*pData = (LevelDatax82 *)( LevelBlockData + LevelOffset );
 									pData->titleOptions	|= 0x0080;
-									if ( hLogFile != NULL ) fprintf_s ( hLogFile, "Changing Title %s\n", TraceOperation ( pData, sizeof(LevelDatax82) ) );
+									Print ( hLogFile, "Changing Title %s\n", TraceOperation ( pData, sizeof(LevelDatax82) ) );
 								}
 								else
 								{
-									if ( hLogFile != NULL ) fprintf_s ( hLogFile, "No Level\n" );
+									Print ( hLogFile, "No Level\n" );
 								}
 							}
 						}
@@ -2882,17 +2857,17 @@ BOOL WriteTRXScript ( const char *pathname, const char *pDirectory, int version 
 								{
 									LevelDatax81	*pData = (LevelDatax81 *)( LevelBlockData + LevelOffset );
 									pData->levelOptions	|= 0x0100;
-									if ( hLogFile != NULL ) fprintf_s ( hLogFile, "Changing Level %s\n", TraceOperation ( pData, sizeof(LevelDatax81) ) );
+									Print ( hLogFile, "Changing Level %s\n", TraceOperation ( pData, sizeof(LevelDatax81) ) );
 								}
 								else if ( TitleOffset >= 0 )
 								{
 									LevelDatax82	*pData = (LevelDatax82 *)( LevelBlockData + LevelOffset );
 									pData->titleOptions	|= 0x0100;
-									if ( hLogFile != NULL ) fprintf_s ( hLogFile, "Changing Title %s\n", TraceOperation ( pData, sizeof(LevelDatax82) ) );
+									Print ( hLogFile, "Changing Title %s\n", TraceOperation ( pData, sizeof(LevelDatax82) ) );
 								}
 								else
 								{
-									if ( hLogFile != NULL ) fprintf_s ( hLogFile, "No Level\n" );
+									Print ( hLogFile, "No Level\n" );
 								}
 							}
 						}
@@ -2906,17 +2881,17 @@ BOOL WriteTRXScript ( const char *pathname, const char *pDirectory, int version 
 								{
 									LevelDatax81	*pData = (LevelDatax81 *)( LevelBlockData + LevelOffset );
 									pData->levelOptions	|= 0x0200;
-									if ( hLogFile != NULL ) fprintf_s ( hLogFile, "Changing Level %s\n", TraceOperation ( pData, sizeof(LevelDatax81) ) );
+									Print ( hLogFile, "Changing Level %s\n", TraceOperation ( pData, sizeof(LevelDatax81) ) );
 								}
 								else if ( TitleOffset >= 0 )
 								{
 									LevelDatax82	*pData = (LevelDatax82 *)( LevelBlockData + LevelOffset );
 									pData->titleOptions	|= 0x0200;
-									if ( hLogFile != NULL ) fprintf_s ( hLogFile, "Changing Title %s\n", TraceOperation ( pData, sizeof(LevelDatax82) ) );
+									Print ( hLogFile, "Changing Title %s\n", TraceOperation ( pData, sizeof(LevelDatax82) ) );
 								}
 								else
 								{
-									if ( hLogFile != NULL ) fprintf_s ( hLogFile, "No Level\n" );
+									Print ( hLogFile, "No Level\n" );
 								}
 							}
 						}
@@ -2930,17 +2905,17 @@ BOOL WriteTRXScript ( const char *pathname, const char *pDirectory, int version 
 								{
 									LevelDatax81	*pData = (LevelDatax81 *)( LevelBlockData + LevelOffset );
 									pData->levelOptions	|= 0x0400;
-									if ( hLogFile != NULL ) fprintf_s ( hLogFile, "Changing Level %s\n", TraceOperation ( pData, sizeof(LevelDatax81) ) );
+									Print ( hLogFile, "Changing Level %s\n", TraceOperation ( pData, sizeof(LevelDatax81) ) );
 								}
 								else if ( TitleOffset >= 0 )
 								{
 									LevelDatax82	*pData = (LevelDatax82 *)( LevelBlockData + LevelOffset );
 									pData->titleOptions	|= 0x0400;
-									if ( hLogFile != NULL ) fprintf_s ( hLogFile, "Changing Title %s\n", TraceOperation ( pData, sizeof(LevelDatax82) ) );
+									Print ( hLogFile, "Changing Title %s\n", TraceOperation ( pData, sizeof(LevelDatax82) ) );
 								}
 								else
 								{
-									if ( hLogFile != NULL ) fprintf_s ( hLogFile, "No Level\n" );
+									Print ( hLogFile, "No Level\n" );
 								}
 							}
 						}
@@ -2953,17 +2928,17 @@ BOOL WriteTRXScript ( const char *pathname, const char *pDirectory, int version 
 								{
 									LevelDatax81	*pData = (LevelDatax81 *)( LevelBlockData + LevelOffset );
 									pData->levelOptions	|= 0x0800;
-									if ( hLogFile != NULL ) fprintf_s ( hLogFile, "Changing Level %s\n", TraceOperation ( pData, sizeof(LevelDatax81) ) );
+									Print ( hLogFile, "Changing Level %s\n", TraceOperation ( pData, sizeof(LevelDatax81) ) );
 								}
 								else if ( TitleOffset >= 0 )
 								{
 									LevelDatax82	*pData = (LevelDatax82 *)( LevelBlockData + LevelOffset );
 									pData->titleOptions	|= 0x0800;
-									if ( hLogFile != NULL ) fprintf_s ( hLogFile, "Changing Title %s\n", TraceOperation ( pData, sizeof(LevelDatax82) ) );
+									Print ( hLogFile, "Changing Title %s\n", TraceOperation ( pData, sizeof(LevelDatax82) ) );
 								}
 								else
 								{
-									if ( hLogFile != NULL ) fprintf_s ( hLogFile, "No Level\n" );
+									Print ( hLogFile, "No Level\n" );
 								}
 							}
 						}
@@ -2977,17 +2952,17 @@ BOOL WriteTRXScript ( const char *pathname, const char *pDirectory, int version 
 								{
 									LevelDatax81	*pData = (LevelDatax81 *)( LevelBlockData + LevelOffset );
 									pData->levelOptions	|= 0x1000;
-									if ( hLogFile != NULL ) fprintf_s ( hLogFile, "Changing Level %s\n", TraceOperation ( pData, sizeof(LevelDatax81) ) );
+									Print ( hLogFile, "Changing Level %s\n", TraceOperation ( pData, sizeof(LevelDatax81) ) );
 								}
 								else if ( TitleOffset >= 0 )
 								{
 									LevelDatax82	*pData = (LevelDatax82 *)( LevelBlockData + LevelOffset );
 									pData->titleOptions	|= 0x1000;
-									if ( hLogFile != NULL ) fprintf_s ( hLogFile, "Changing Title %s\n", TraceOperation ( pData, sizeof(LevelDatax82) ) );
+									Print ( hLogFile, "Changing Title %s\n", TraceOperation ( pData, sizeof(LevelDatax82) ) );
 								}
 								else
 								{
-									if ( hLogFile != NULL ) fprintf_s ( hLogFile, "No Level\n" );
+									Print ( hLogFile, "No Level\n" );
 								}
 							}
 						}
@@ -3000,17 +2975,17 @@ BOOL WriteTRXScript ( const char *pathname, const char *pDirectory, int version 
 								{
 									LevelDatax81	*pData = (LevelDatax81 *)( LevelBlockData + LevelOffset );
 									pData->levelOptions	|= 0x2000;
-									if ( hLogFile != NULL ) fprintf_s ( hLogFile, "Changing Level %s\n", TraceOperation ( pData, sizeof(LevelDatax81) ) );
+									Print ( hLogFile, "Changing Level %s\n", TraceOperation ( pData, sizeof(LevelDatax81) ) );
 								}
 								else if ( TitleOffset >= 0 )
 								{
 									LevelDatax82	*pData = (LevelDatax82 *)( LevelBlockData + LevelOffset );
 									pData->titleOptions	|= 0x2000;
-									if ( hLogFile != NULL ) fprintf_s ( hLogFile, "Changing Title %s\n", TraceOperation ( pData, sizeof(LevelDatax82) ) );
+									Print ( hLogFile, "Changing Title %s\n", TraceOperation ( pData, sizeof(LevelDatax82) ) );
 								}
 								else
 								{
-									if ( hLogFile != NULL ) fprintf_s ( hLogFile, "No Level\n" );
+									Print ( hLogFile, "No Level\n" );
 								}
 							}
 						}
@@ -3023,17 +2998,17 @@ BOOL WriteTRXScript ( const char *pathname, const char *pDirectory, int version 
 								{
 									LevelDatax81	*pData = (LevelDatax81 *)( LevelBlockData + LevelOffset );
 									pData->levelOptions	|= 0x4000;
-									if ( hLogFile != NULL ) fprintf_s ( hLogFile, "Changing Level %s\n", TraceOperation ( pData, sizeof(LevelDatax81) ) );
+									Print ( hLogFile, "Changing Level %s\n", TraceOperation ( pData, sizeof(LevelDatax81) ) );
 								}
 								else if ( TitleOffset >= 0 )
 								{
 									LevelDatax82	*pData = (LevelDatax82 *)( LevelBlockData + LevelOffset );
 									pData->titleOptions	|= 0x4000;
-									if ( hLogFile != NULL ) fprintf_s ( hLogFile, "Changing Title %s\n", TraceOperation ( pData, sizeof(LevelDatax82) ) );
+									Print ( hLogFile, "Changing Title %s\n", TraceOperation ( pData, sizeof(LevelDatax82) ) );
 								}
 								else
 								{
-									if ( hLogFile != NULL ) fprintf_s ( hLogFile, "No Level\n" );
+									Print ( hLogFile, "No Level\n" );
 								}
 							}
 						}
@@ -3046,17 +3021,17 @@ BOOL WriteTRXScript ( const char *pathname, const char *pDirectory, int version 
 								{
 									LevelDatax81	*pData = (LevelDatax81 *)( LevelBlockData + LevelOffset );
 									pData->levelOptions	|= 0x8000;
-									if ( hLogFile != NULL ) fprintf_s ( hLogFile, "Changing Level %s\n", TraceOperation ( pData, sizeof(LevelDatax81) ) );
+									Print ( hLogFile, "Changing Level %s\n", TraceOperation ( pData, sizeof(LevelDatax81) ) );
 								}
 								else if ( TitleOffset >= 0 )
 								{
 									LevelDatax82	*pData = (LevelDatax82 *)( LevelBlockData + LevelOffset );
 									pData->titleOptions	|= 0x8000;
-									if ( hLogFile != NULL ) fprintf_s ( hLogFile, "Changing Title %s\n", TraceOperation ( pData, sizeof(LevelDatax82) ) );
+									Print ( hLogFile, "Changing Title %s\n", TraceOperation ( pData, sizeof(LevelDatax82) ) );
 								}
 								else
 								{
-									if ( hLogFile != NULL ) fprintf_s ( hLogFile, "No Level\n" );
+									Print ( hLogFile, "No Level\n" );
 								}
 							}
 						}
@@ -3076,7 +3051,7 @@ BOOL WriteTRXScript ( const char *pathname, const char *pDirectory, int version 
 							memcpy_s ( LevelBlockData + scriptLevelHeader.LevelBlockLen, 
 										sizeof(LevelBlockData) - scriptLevelHeader.LevelBlockLen, &data, sizeof(data) );
 							scriptLevelHeader.LevelBlockLen += sizeof(data);
-							if ( hLogFile != NULL ) fprintf_s ( hLogFile, "Adding FMV %s\n", TraceOperation ( &data, sizeof(data) ) );
+							Print ( hLogFile, "Adding FMV %s\n", TraceOperation ( &data, sizeof(data) ) );
 						}
 						//
 						//	Name
@@ -3143,7 +3118,7 @@ BOOL WriteTRXScript ( const char *pathname, const char *pDirectory, int version 
 								if ( nameIndex != - 1)
 								{
 									data.stringIndex	= nameIndex;
-									if ( hLogFile != NULL ) fprintf_s ( hLogFile, "Level Name %s\n", TraceOperation ( &data, sizeof(data) ) );
+									Print ( hLogFile, "Level Name %s\n", TraceOperation ( &data, sizeof(data) ) );
 									nameIndex			= -1;
 								}
 
@@ -3156,7 +3131,7 @@ BOOL WriteTRXScript ( const char *pathname, const char *pDirectory, int version 
 											sizeof(LevelBlockData) - scriptLevelHeader.LevelBlockLen, &data, sizeof(data) );
 								scriptLevelHeader.LevelBlockLen += sizeof(data);
 
-								if ( hLogFile != NULL ) fprintf_s ( hLogFile, "Adding Level %s\n", TraceOperation ( &data, sizeof(data) ) );
+								Print ( hLogFile, "Adding Level %s\n", TraceOperation ( &data, sizeof(data) ) );
 							}
 							//	
 							else
@@ -3184,7 +3159,7 @@ BOOL WriteTRXScript ( const char *pathname, const char *pDirectory, int version 
 											sizeof(LevelBlockData) - scriptLevelHeader.LevelBlockLen, &data, sizeof(data) );
 								scriptLevelHeader.LevelBlockLen += sizeof(data);
 
-								if ( hLogFile != NULL ) fprintf_s ( hLogFile, "Adding Title %s\n", TraceOperation ( &data, sizeof(data) ) );
+								Print ( hLogFile, "Adding Title %s\n", TraceOperation ( &data, sizeof(data) ) );
 							}
 						}
 						//	0x84 
@@ -3203,7 +3178,7 @@ BOOL WriteTRXScript ( const char *pathname, const char *pDirectory, int version 
 										sizeof(LevelBlockData) - scriptLevelHeader.LevelBlockLen, &data, sizeof(data) );
 							scriptLevelHeader.LevelBlockLen += sizeof(data);
 
-							if ( hLogFile != NULL ) fprintf_s ( hLogFile, "Adding Cut %s\n", TraceOperation ( &data, sizeof(data) ) );
+							Print ( hLogFile, "Adding Cut %s\n", TraceOperation ( &data, sizeof(data) ) );
 						}
 						//	0x85 0x88
 						else if ( strIcmpL ( pBuffer, "ResidentCut=" ) == 0 )
@@ -3230,7 +3205,7 @@ BOOL WriteTRXScript ( const char *pathname, const char *pDirectory, int version 
 										sizeof(LevelBlockData) - scriptLevelHeader.LevelBlockLen, &data, sizeof(data) );
 							scriptLevelHeader.LevelBlockLen += sizeof(data);
 
-							if ( hLogFile != NULL ) fprintf_s ( hLogFile, "Adding ResidentCut %s\n", TraceOperation ( &data, sizeof(data) ) );
+							Print ( hLogFile, "Adding ResidentCut %s\n", TraceOperation ( &data, sizeof(data) ) );
 						}
 						//	0x89
 						else if ( strIcmpL ( pBuffer, "Layer1=" ) == 0 )
@@ -3254,7 +3229,7 @@ BOOL WriteTRXScript ( const char *pathname, const char *pDirectory, int version 
 										sizeof(LevelBlockData) - scriptLevelHeader.LevelBlockLen, &data, sizeof(data) );
 							scriptLevelHeader.LevelBlockLen += sizeof(data);
 
-							if ( hLogFile != NULL ) fprintf_s ( hLogFile, "Adding Layer1 %s\n", TraceOperation ( &data, sizeof(data) ) );
+							Print ( hLogFile, "Adding Layer1 %s\n", TraceOperation ( &data, sizeof(data) ) );
 						}
 						//	0x8a
 						else if ( strIcmpL ( pBuffer, "Layer2=" ) == 0 )
@@ -3278,7 +3253,7 @@ BOOL WriteTRXScript ( const char *pathname, const char *pDirectory, int version 
 										sizeof(LevelBlockData) - scriptLevelHeader.LevelBlockLen, &data, sizeof(data) );
 							scriptLevelHeader.LevelBlockLen += sizeof(data);
 
-							if ( hLogFile != NULL ) fprintf_s ( hLogFile, "Adding Layer2 %s\n", TraceOperation ( &data, sizeof(data) ) );
+							Print ( hLogFile, "Adding Layer2 %s\n", TraceOperation ( &data, sizeof(data) ) );
 						}
 						//	0x8b
 						else if ( strIcmpL ( pBuffer, "UVrotate=" ) == 0 )
@@ -3296,7 +3271,7 @@ BOOL WriteTRXScript ( const char *pathname, const char *pDirectory, int version 
 										sizeof(LevelBlockData) - scriptLevelHeader.LevelBlockLen, &data, sizeof(data) );
 							scriptLevelHeader.LevelBlockLen += sizeof(data);
 
-							if ( hLogFile != NULL ) fprintf_s ( hLogFile, "Adding UVrotate %s\n", TraceOperation ( &data, sizeof(data) ) );
+							Print ( hLogFile, "Adding UVrotate %s\n", TraceOperation ( &data, sizeof(data) ) );
 						}
 						//	0x8c
 						else if ( strIcmpL ( pBuffer, "Legend=" ) == 0 )
@@ -3316,7 +3291,7 @@ BOOL WriteTRXScript ( const char *pathname, const char *pDirectory, int version 
 										sizeof(LevelBlockData) - scriptLevelHeader.LevelBlockLen, &data, sizeof(data) );
 							scriptLevelHeader.LevelBlockLen += sizeof(data);
 
-							if ( hLogFile != NULL ) fprintf_s ( hLogFile, "Adding Legend %s\n", TraceOperation ( &data, sizeof(data) ) );
+							Print ( hLogFile, "Adding Legend %s\n", TraceOperation ( &data, sizeof(data) ) );
 						}
 						//	0x8d
 						else if ( strIcmpL ( pBuffer, "LensFlare=" ) == 0 )
@@ -3346,7 +3321,7 @@ BOOL WriteTRXScript ( const char *pathname, const char *pDirectory, int version 
 										sizeof(LevelBlockData) - scriptLevelHeader.LevelBlockLen, &data, sizeof(data) );
 							scriptLevelHeader.LevelBlockLen += sizeof(data);
 
-							if ( hLogFile != NULL ) fprintf_s ( hLogFile, "Adding LensFlare %s\n", TraceOperation ( &data, sizeof(data) ) );
+							Print ( hLogFile, "Adding LensFlare %s\n", TraceOperation ( &data, sizeof(data) ) );
 						}
 						//	0x8E
 						else if ( strIcmpL ( pBuffer, "Mirror=" ) == 0 )
@@ -3368,7 +3343,7 @@ BOOL WriteTRXScript ( const char *pathname, const char *pDirectory, int version 
 										sizeof(LevelBlockData) - scriptLevelHeader.LevelBlockLen, &data, sizeof(data) );
 							scriptLevelHeader.LevelBlockLen += sizeof(data);
 
-							if ( hLogFile != NULL ) fprintf_s ( hLogFile, "Adding Mirror %s\n", TraceOperation ( &data, sizeof(data) ) );
+							Print ( hLogFile, "Adding Mirror %s\n", TraceOperation ( &data, sizeof(data) ) );
 						}
 						//	0x8F
 						else if ( strIcmpL ( pBuffer, "Fog=" ) == 0 )
@@ -3391,7 +3366,7 @@ BOOL WriteTRXScript ( const char *pathname, const char *pDirectory, int version 
 										sizeof(LevelBlockData) - scriptLevelHeader.LevelBlockLen, &data, sizeof(data) );
 							scriptLevelHeader.LevelBlockLen += sizeof(data);
 
-							if ( hLogFile != NULL ) fprintf_s ( hLogFile, "Adding Fog %s\n", TraceOperation ( &data, sizeof(data) ) );
+							Print ( hLogFile, "Adding Fog %s\n", TraceOperation ( &data, sizeof(data) ) );
 						}
 						//	0x90
 						else if ( strIcmpL ( pBuffer, "AnimatingMIP=" ) == 0 )
@@ -3410,7 +3385,7 @@ BOOL WriteTRXScript ( const char *pathname, const char *pDirectory, int version 
 										sizeof(LevelBlockData) - scriptLevelHeader.LevelBlockLen, &data, sizeof(data) );
 							scriptLevelHeader.LevelBlockLen += sizeof(data);
 
-							if ( hLogFile != NULL ) fprintf_s ( hLogFile, "Adding AnimatingMIP %s\n", TraceOperation ( &data, sizeof(data) ) );
+							Print ( hLogFile, "Adding AnimatingMIP %s\n", TraceOperation ( &data, sizeof(data) ) );
 						}
 						//	0x91
 						else if ( strIcmpL ( pBuffer, "LoadCamera=" ) == 0 )
@@ -3442,7 +3417,7 @@ BOOL WriteTRXScript ( const char *pathname, const char *pDirectory, int version 
 										sizeof(LevelBlockData) - scriptLevelHeader.LevelBlockLen, &data, sizeof(data) );
 							scriptLevelHeader.LevelBlockLen += sizeof(data);
 
-							if ( hLogFile != NULL ) fprintf_s ( hLogFile, "Adding LoadCamera %s\n", TraceOperation ( &data, sizeof(data) ) );
+							Print ( hLogFile, "Adding LoadCamera %s\n", TraceOperation ( &data, sizeof(data) ) );
 						}
 						//	0x92
 						else if ( strIcmpL ( pBuffer, "ResetHUB=" ) == 0 )
@@ -3465,7 +3440,7 @@ BOOL WriteTRXScript ( const char *pathname, const char *pDirectory, int version 
 											sizeof(LevelBlockData) - scriptLevelHeader.LevelBlockLen, &data, sizeof(data) );
 								scriptLevelHeader.LevelBlockLen += sizeof(data);
 
-								if ( hLogFile != NULL ) fprintf_s ( hLogFile, "Adding ResetHUB Version 4 %s\n", TraceOperation ( &data, sizeof(data) ) );
+								Print ( hLogFile, "Adding ResetHUB Version 4 %s\n", TraceOperation ( &data, sizeof(data) ) );
 							}
 							else if ( version == 5 )
 							{
@@ -3486,7 +3461,7 @@ BOOL WriteTRXScript ( const char *pathname, const char *pDirectory, int version 
 											sizeof(LevelBlockData) - scriptLevelHeader.LevelBlockLen, &data, sizeof(data) );
 								scriptLevelHeader.LevelBlockLen += sizeof(data);
 
-								if ( hLogFile != NULL ) fprintf_s ( hLogFile, "Adding ResetHUB Version 5 %s\n", TraceOperation ( &data, sizeof(data) ) );
+								Print ( hLogFile, "Adding ResetHUB Version 5 %s\n", TraceOperation ( &data, sizeof(data) ) );
 							}
 						}
 						else if ( strIcmpL ( pBuffer, "LoseItemAtStartup=" ) == 0 )
@@ -3506,7 +3481,7 @@ BOOL WriteTRXScript ( const char *pathname, const char *pDirectory, int version 
 										sizeof(LevelBlockData) - scriptLevelHeader.LevelBlockLen, &data, sizeof(data) );
 							scriptLevelHeader.LevelBlockLen += sizeof(data);
 
-							if ( hLogFile != NULL ) fprintf_s ( hLogFile, "Adding LoseItemAtStartup %s\n", TraceOperation ( &data, sizeof(data) ) );
+							Print ( hLogFile, "Adding LoseItemAtStartup %s\n", TraceOperation ( &data, sizeof(data) ) );
 						}
 						
 						//	0x93 -- 0x9E
@@ -3551,7 +3526,7 @@ BOOL WriteTRXScript ( const char *pathname, const char *pDirectory, int version 
 										sizeof(LevelBlockData) - scriptLevelHeader.LevelBlockLen, &data, sizeof(data) );
 							scriptLevelHeader.LevelBlockLen += sizeof(data);
 
-							if ( hLogFile != NULL ) fprintf_s ( hLogFile, "Adding Key %s\n", TraceOperation ( &data, sizeof(data) ) );
+							Print ( hLogFile, "Adding Key %s\n", TraceOperation ( &data, sizeof(data) ) );
 						}
 						//	0x9F -- 0xAA
 						else if ( strIcmpL ( pBuffer, "Puzzle=" ) == 0 )
@@ -3595,7 +3570,7 @@ BOOL WriteTRXScript ( const char *pathname, const char *pDirectory, int version 
 										sizeof(LevelBlockData) - scriptLevelHeader.LevelBlockLen, &data, sizeof(data) );
 							scriptLevelHeader.LevelBlockLen += sizeof(data);
 
-							if ( hLogFile != NULL ) fprintf_s ( hLogFile, "Adding Puzzle %s\n", TraceOperation ( &data, sizeof(data) ) );
+							Print ( hLogFile, "Adding Puzzle %s\n", TraceOperation ( &data, sizeof(data) ) );
 						}
 						//	0xAB -- 0xAE
 						else if ( strIcmpL ( pBuffer, "Pickup=" ) == 0 )
@@ -3639,7 +3614,7 @@ BOOL WriteTRXScript ( const char *pathname, const char *pDirectory, int version 
 										sizeof(LevelBlockData) - scriptLevelHeader.LevelBlockLen, &data, sizeof(data) );
 							scriptLevelHeader.LevelBlockLen += sizeof(data);
 
-							if ( hLogFile != NULL ) fprintf_s ( hLogFile, "Adding Pickup %s\n", TraceOperation ( &data, sizeof(data) ) );
+							Print ( hLogFile, "Adding Pickup %s\n", TraceOperation ( &data, sizeof(data) ) );
 						}
 						//	0xAF -- 0xB1
 						else if ( strIcmpL ( pBuffer, "Examine=" ) == 0 )
@@ -3683,7 +3658,7 @@ BOOL WriteTRXScript ( const char *pathname, const char *pDirectory, int version 
 										sizeof(LevelBlockData) - scriptLevelHeader.LevelBlockLen, &data, sizeof(data) );
 							scriptLevelHeader.LevelBlockLen += sizeof(data);
 
-							if ( hLogFile != NULL ) fprintf_s ( hLogFile, "Adding Examine %s\n", TraceOperation ( &data, sizeof(data) ) );
+							Print ( hLogFile, "Adding Examine %s\n", TraceOperation ( &data, sizeof(data) ) );
 						}
 						//	0xB2 -- 0xC1
 						/**
@@ -3749,7 +3724,7 @@ BOOL WriteTRXScript ( const char *pathname, const char *pDirectory, int version 
 										sizeof(LevelBlockData) - scriptLevelHeader.LevelBlockLen, &data, sizeof(data) );
 							scriptLevelHeader.LevelBlockLen += sizeof(data);
 
-							if ( hLogFile != NULL ) fprintf_s ( hLogFile, "Adding KeyCombo %s\n", TraceOperation ( &data, sizeof(data) ) );
+							Print ( hLogFile, "Adding KeyCombo %s\n", TraceOperation ( &data, sizeof(data) ) );
 						}
 						//	0xC2 -- 0xD1
 						else if ( strIcmpL ( pBuffer, "PuzzleCombo=" ) == 0 )
@@ -3797,7 +3772,7 @@ BOOL WriteTRXScript ( const char *pathname, const char *pDirectory, int version 
 										sizeof(LevelBlockData) - scriptLevelHeader.LevelBlockLen, &data, sizeof(data) );
 							scriptLevelHeader.LevelBlockLen += sizeof(data);
 
-							if ( hLogFile != NULL ) fprintf_s ( hLogFile, "Adding PuzzleCombo %s\n", TraceOperation ( &data, sizeof(data) ) );
+							Print ( hLogFile, "Adding PuzzleCombo %s\n", TraceOperation ( &data, sizeof(data) ) );
 						}
 						//	0xD2 -- 0xD9
 						else if ( strIcmpL ( pBuffer, "PickupCombo=" ) == 0 )
@@ -3845,11 +3820,11 @@ BOOL WriteTRXScript ( const char *pathname, const char *pDirectory, int version 
 										sizeof(LevelBlockData) - scriptLevelHeader.LevelBlockLen, &data, sizeof(data) );
 							scriptLevelHeader.LevelBlockLen += sizeof(data);
 
-							if ( hLogFile != NULL ) fprintf_s ( hLogFile, "Adding PickupCombo %s\n", TraceOperation ( &data, sizeof(data) ) );
+							Print ( hLogFile, "Adding PickupCombo %s\n", TraceOperation ( &data, sizeof(data) ) );
 						}
 						else
 						{
-							if ( hLogFile != NULL ) fprintf_s ( hLogFile, "Not Recognized %s\n", pBuffer );
+							Print ( hLogFile, "Not Recognized %s\n", pBuffer );
 						}
 
 					}
@@ -3871,7 +3846,7 @@ BOOL WriteTRXScript ( const char *pathname, const char *pDirectory, int version 
 							strcpy_s ( LanguageFilename, sizeof(LanguageFilename), pBuffer );
 							if ( EndsWithI ( LanguageFilename, ".TXT" ) )
 							{
-								if ( hLogFile != NULL ) fprintf_s ( hLogFile, "Changing Language File Type for %s\n", LanguageFilename );
+								Print ( hLogFile, "Changing Language File Type for %s\n", LanguageFilename );
 								RemoveFileType ( LanguageFilename );
 								strcat_s ( LanguageFilename, sizeof(LanguageFilename), ".DAT" );
 							}
@@ -3921,7 +3896,7 @@ BOOL WriteTRXScript ( const char *pathname, const char *pDirectory, int version 
 					}
 					else
 					{
-						if ( hLogFile != NULL ) fprintf_s ( hLogFile, "Not Recognized %s\n", pBuffer );
+						Print ( hLogFile, "Not Recognized %s\n", pBuffer );
 					}
 				}
 			}
@@ -3940,7 +3915,7 @@ BOOL WriteTRXScript ( const char *pathname, const char *pDirectory, int version 
 								sizeof(LevelBlockData) - scriptLevelHeader.LevelBlockLen, &data, sizeof(data) );
 					scriptLevelHeader.LevelBlockLen += sizeof(data);
 
-					if ( hLogFile != NULL ) fprintf_s ( hLogFile, "Adding EndOfLevel %s\n", TraceOperation ( &data, sizeof(data) ) );
+					Print ( hLogFile, "Adding EndOfLevel %s\n", TraceOperation ( &data, sizeof(data) ) );
 
 					bNeedEndOfLevel	= false;
 				}
@@ -3954,19 +3929,15 @@ BOOL WriteTRXScript ( const char *pathname, const char *pDirectory, int version 
 
 		//
 		//
-		if ( hOutFile != NULL ) fclose ( hOutFile );
-		if ( hInpFile != NULL ) fclose ( hInpFile );
-
-		hOutFile	= NULL;
-		hInpFile	= NULL;
+		CloseOne ( &hOutFile );
+		CloseOne ( &hInpFile );
 
 		bResult		= TRUE;
 	}
 
 	Cleanup();
 
-	if ( hLogFile != NULL ) fclose ( hLogFile );
-	hLogFile	= NULL;
+	CloseOne ( &hLogFile );
 
 	return bResult;
 }

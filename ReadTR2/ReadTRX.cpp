@@ -68,11 +68,11 @@ static tr3_room_staticmesh StaticMeshes3[1 /* NumStaticMeshes */ ];   // List of
 static xint16_t AlternateRoom;
 static xint16_t Flags;
 
-static xuxint8_t WaterScheme;
+static xuint8_t WaterScheme;
 static xuint16_t WaterScheme16;
-static xuxint8_t ReverbInfo;
+static xuint8_t ReverbInfo;
 
-static xuxint8_t Filler;  // Unused.
+static xuint8_t Filler;  // Unused.
 static xuint16_t NumRoomTextiles; // number of non bumped room tiles (2 bytes)
 static xuint16_t NumObjTextiles; // number of object tiles (2 bytes)
 static xuint16_t NumBumpTextiles; // number of bumped room tiles (2 bytes)
@@ -85,12 +85,12 @@ static xuint32_t Textile32Misc_CompSize; // compressed size (in bytes) of the 32
 static xuint32_t LevelData_UncompSize; // uncompressed size (in bytes) of the level data chunk (4 bytes)
 static xuint32_t LevelData_CompSize; // compressed size (in bytes) of the level data chunk (4 bytes)
 
-static xuxint8_t AlternateGroup;  // Replaces Filler from TR3
+static xuint8_t AlternateGroup;  // Replaces Filler from TR3
 static xuint32_t RoomColour;        // In ARGB format!
 
 static xuint16_t LaraType;
 static xuint16_t WeatherType;
-static xuxint8_t Padding[28];
+static xuint8_t Padding[28];
 
 static char XELA[4];           // So-called "XELA landmark"
 static xuint32_t RoomDataSize;
@@ -152,6 +152,24 @@ static int PrintStdout ( const char *format, ... )
 }
 
 //
+//====================================================================================
+//	Print if FILE is Not NULL
+//====================================================================================
+static int Print ( FILE *hFile, const char *format, ... )
+{
+	if ( hFile == NULL )
+	{
+		return -1;
+	}
+
+	va_list argptr;
+	va_start(argptr, format);
+	int result = vfprintf_s ( hFile, format, argptr );
+	va_end(argptr);
+	return result;
+}
+
+//
 /////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////
@@ -169,6 +187,21 @@ static size_t ReadChunk ( void *pBuffer, size_t iLen, FILE *hFile )
 	}
 
 	return iLen;
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
+static void CloseOne ( FILE **phFile )
+{
+	if ( phFile == NULL || *phFile == NULL )
+	{
+		return;
+	}
+	fclose ( *phFile );
+	*phFile = NULL;
+
 }
 
 //
@@ -209,8 +242,7 @@ BOOL ExtractData (	FILE *hOutputFile, int game,
 				bResult = FALSE;
 				if ( hFile != NULL )
 				{
-					fclose ( hFile );
-					hFile	= NULL;
+					CloseOne ( &hFile );
 				}
 				return bResult;
 			}
@@ -223,8 +255,7 @@ BOOL ExtractData (	FILE *hOutputFile, int game,
 				bResult = FALSE;
 				if ( hFile != NULL )
 				{
-					fclose ( hFile );
-					hFile	= NULL;
+					CloseOne ( &hFile );
 				}
 				return bResult;
 			}
@@ -252,8 +283,7 @@ BOOL ExtractData (	FILE *hOutputFile, int game,
 				bResult = FALSE;
 				if ( hFile != NULL )
 				{
-					fclose ( hFile );
-					hFile	= NULL;
+					CloseOne ( &hFile );
 				}
 				return bResult;
 			}
@@ -267,8 +297,7 @@ BOOL ExtractData (	FILE *hOutputFile, int game,
 				bResult = FALSE;
 				if ( hFile != NULL )
 				{
-					fclose ( hFile );
-					hFile	= NULL;
+					CloseOne ( &hFile );
 				}
 				return bResult;
 			}
@@ -325,8 +354,7 @@ BOOL ExtractData (	FILE *hOutputFile, int game,
 					bResult = FALSE;
 					if ( hFile != NULL )
 					{
-						fclose ( hFile );
-						hFile	= NULL;
+						CloseOne ( &hFile );
 					}
 
 					return bResult;
@@ -365,10 +393,7 @@ BOOL ExtractData (	FILE *hOutputFile, int game,
 		}
 
 		//
-		if ( hOutputFile != NULL )
-		{
-			fprintf ( hOutputFile, "static TR_AREA %s%s [] =\n{\n", pPrefix, szName );
-		}
+		Print ( hOutputFile, "static TR_AREA %s%s [] =\n{\n", pPrefix, szName );
 
 		//
 		if ( TRMode == TRR1_MODE || TRMode == TRR2_MODE || TRMode == TRR3_MODE )
@@ -379,8 +404,7 @@ BOOL ExtractData (	FILE *hOutputFile, int game,
 				bResult = FALSE;
 				if ( hFile != NULL )
 				{
-					fclose ( hFile );
-					hFile	= NULL;
+					CloseOne ( &hFile );
 				}
 
 				return bResult;
@@ -446,8 +470,7 @@ BOOL ExtractData (	FILE *hOutputFile, int game,
 					bResult = FALSE;
 					if ( hFile != NULL )
 					{
-						fclose ( hFile );
-						hFile	= NULL;
+						CloseOne ( &hFile );
 					}
 
 					return bResult;
@@ -644,22 +667,19 @@ BOOL ExtractData (	FILE *hOutputFile, int game,
 					bResult = FALSE;
 					if ( hFile != NULL )
 					{
-						fclose ( hFile );
-						hFile	= NULL;
+						CloseOne ( &hFile );
 					}
 
 					return bResult;
 				}
 
 				//
-				if ( hOutputFile != NULL )
-				{
-					fprintf ( hOutputFile, "\t{ %d, %ld, %ld, %ld, %ld, \"\", %d, %d, 0x%X, %d, %d, %d, %d, %d, %d, %d, }, // 0x%02X\n",
-						i, info.x, info.z, info.yTop, info.yBottom, NumXsectors, NumZsectors, Flags,
-						minFloor, maxFloor, minCeiling, maxCeiling, floorRatio, ceilingRatio, game, i );
-				}
+				Print ( hOutputFile, "\t{ %d, %ld, %ld, %ld, %ld, \"\", %d, %d, 0x%X, %d, %d, %d, %d, %d, %d, %d, }, // 0x%02X\n",
+					i, info.x, info.z, info.yTop, info.yBottom, NumXsectors, NumZsectors, Flags,
+					minFloor, maxFloor, minCeiling, maxCeiling, floorRatio, ceilingRatio, game, i );
+
 				//	Store In Memory
-				else if ( function != NULL )
+				if ( function != NULL )
 				{
 					TR_AREA trArea;
 					ZeroMemory ( &trArea, sizeof(trArea) );
@@ -702,8 +722,7 @@ BOOL ExtractData (	FILE *hOutputFile, int game,
 				bResult = FALSE;
 				if ( hFile != NULL )
 				{
-					fclose ( hFile );
-					hFile	= NULL;
+					CloseOne ( &hFile );
 				}
 
 				return bResult;
@@ -737,8 +756,7 @@ BOOL ExtractData (	FILE *hOutputFile, int game,
 					bResult = FALSE;
 					if ( hFile != NULL )
 					{
-						fclose ( hFile );
-						hFile	= NULL;
+						CloseOne ( &hFile );
 					}
 
 					return bResult;
@@ -847,13 +865,13 @@ BOOL ExtractData (	FILE *hOutputFile, int game,
 				Flags					= *( ( xuint16_t *) pLevelData );
 				pLevelData				+= sizeof(Flags);
 
-				WaterScheme				= *( ( xuxint8_t *) pLevelData );
+				WaterScheme				= *( ( xuint8_t *) pLevelData );
 				pLevelData				+= sizeof(WaterScheme);
 
-				ReverbInfo				= *( ( xuxint8_t *) pLevelData );
+				ReverbInfo				= *( ( xuint8_t *) pLevelData );
 				pLevelData				+= sizeof(ReverbInfo);
 
-				AlternateGroup			= *( ( xuxint8_t *) pLevelData );
+				AlternateGroup			= *( ( xuint8_t *) pLevelData );
 				pLevelData				+= sizeof(AlternateGroup);
 
 				if ( NumXsectors <= 0 || NumZsectors <= 0 )
@@ -861,21 +879,19 @@ BOOL ExtractData (	FILE *hOutputFile, int game,
 					bResult = FALSE;
 					if ( hFile != NULL )
 					{
-						fclose ( hFile );
-						hFile	= NULL;
+						CloseOne ( &hFile );
 					}
 
 					return bResult;
 				}
 
 				//
-				if ( hOutputFile != NULL )
-				{
-					fprintf ( hOutputFile, "\t{ %d, %ld, %ld, %ld, %ld, \"\", %d, %d, 0x%X, %d, %d, %d, %d, %d, %d, %d, }, // 0x%02X\n",
-						i, pInfo->x, pInfo->z, pInfo->yTop, pInfo->yBottom, NumXsectors, NumZsectors, Flags,
-						minFloor, maxFloor, minCeiling, maxCeiling, floorRatio, ceilingRatio, game, i );
-				}
-				else if ( function != NULL )
+				Print ( hOutputFile, "\t{ %d, %ld, %ld, %ld, %ld, \"\", %d, %d, 0x%X, %d, %d, %d, %d, %d, %d, %d, }, // 0x%02X\n",
+					i, pInfo->x, pInfo->z, pInfo->yTop, pInfo->yBottom, NumXsectors, NumZsectors, Flags,
+					minFloor, maxFloor, minCeiling, maxCeiling, floorRatio, ceilingRatio, game, i );
+
+				//
+				if ( function != NULL )
 				{
 					//	Store In Memory
 					TR_AREA trArea;
@@ -925,8 +941,7 @@ BOOL ExtractData (	FILE *hOutputFile, int game,
 				bResult = FALSE;
 				if ( hFile != NULL )
 				{
-					fclose ( hFile );
-					hFile	= NULL;
+					CloseOne ( &hFile );
 				}
 
 				return bResult;
@@ -944,8 +959,7 @@ BOOL ExtractData (	FILE *hOutputFile, int game,
 					bResult = FALSE;
 					if ( hFile != NULL )
 					{
-						fclose ( hFile );
-						hFile	= NULL;
+						CloseOne ( &hFile );
 					}
 
 					return bResult;
@@ -988,8 +1002,7 @@ BOOL ExtractData (	FILE *hOutputFile, int game,
 					bResult = FALSE;
 					if ( hFile != NULL )
 					{
-						fclose ( hFile );
-						hFile	= NULL;
+						CloseOne ( &hFile );
 					}
 
 					return bResult;
@@ -1005,10 +1018,10 @@ BOOL ExtractData (	FILE *hOutputFile, int game,
 				NumStaticMeshes			=  *( ( xuint16_t *) pLevelData );
 				pLevelData				+= sizeof(NumStaticMeshes);
 
-				ReverbInfo				=  *( ( xuxint8_t *) pLevelData );
+				ReverbInfo				=  *( ( xuint8_t *) pLevelData );
 				pLevelData				+= sizeof(ReverbInfo);
 
-				AlternateGroup			=  *( ( xuxint8_t *) pLevelData );
+				AlternateGroup			=  *( ( xuint8_t *) pLevelData );
 				pLevelData				+= sizeof(AlternateGroup);
 
 				WaterScheme16			=  *( ( xuint16_t *) pLevelData );
@@ -1198,7 +1211,7 @@ BOOL ExtractData (	FILE *hOutputFile, int game,
 
 				pLevelData				+= sizeof( tr5_room_layer ) * NumLayers;
 
-				//	xuxint8_t Faces[(NumRoomRectangles * sizeof(tr_face4) + NumRoomTriangles * (tr_face3)];
+				//	xuint8_t Faces[(NumRoomRectangles * sizeof(tr_face4) + NumRoomTriangles * (tr_face3)];
 				pLevelData				+= NumRoomRectangles * sizeof(tr_face4) + NumRoomTriangles * sizeof(tr_face3);
 
 				pLevelData				+= sizeof(tr5_room_vertex) * NumVertices32;
@@ -1208,23 +1221,20 @@ BOOL ExtractData (	FILE *hOutputFile, int game,
 					bResult = FALSE;
 					if ( hFile != NULL )
 					{
-						fclose ( hFile );
-						hFile	= NULL;
+						CloseOne ( &hFile );
 					}
 
 					return bResult;
 				}
 
 				//
-				if ( hOutputFile != NULL )
-				{
-					fprintf ( hOutputFile, "\t//	Room X : %.3f - Y : %.3f - Z: %.3f - YTop : %.3f - YBottom : %.3f \n", RoomX, RoomY, RoomZ, dfRoomYTop, dfRoomYBottom );
-					fprintf ( hOutputFile, "\t{ %d, %ld, %ld, %ld, %ld, \"\", %d, %d, 0x%X, %d, %d, %d, %d, %d, %d, %d, }, // 0x%02X\n",
-						i, pInfo->x, pInfo->z, pInfo->yTop, pInfo->yBottom, NumXsectors, NumZsectors, Flags,
-						minFloor, maxFloor, minCeiling, maxCeiling, floorRatio, ceilingRatio, game, i );
-					fflush ( hOutputFile );
-				}
-				else if ( function != NULL )
+				Print ( hOutputFile, "\t//	Room X : %.3f - Y : %.3f - Z: %.3f - YTop : %.3f - YBottom : %.3f \n", RoomX, RoomY, RoomZ, dfRoomYTop, dfRoomYBottom );
+				Print ( hOutputFile, "\t{ %d, %ld, %ld, %ld, %ld, \"\", %d, %d, 0x%X, %d, %d, %d, %d, %d, %d, %d, }, // 0x%02X\n",
+					i, pInfo->x, pInfo->z, pInfo->yTop, pInfo->yBottom, NumXsectors, NumZsectors, Flags,
+					minFloor, maxFloor, minCeiling, maxCeiling, floorRatio, ceilingRatio, game, i );
+
+				//
+				if ( function != NULL )
 				{
 					//	Store In Memory
 					TR_AREA trArea;
@@ -1256,27 +1266,15 @@ BOOL ExtractData (	FILE *hOutputFile, int game,
 
 		}
 
-		if ( hOutputFile != NULL )
-		{
-			fprintf ( hOutputFile, "\t{ -1, 0, 0, 0, NULL, 0, 0, 0, 0, 0, 0, 0, -1, }, // End\n" );
-			fprintf ( hOutputFile, "};\n\n" );
-		}
-		else
-		{
-			//	Store End In Memory
-		}
+		Print ( hOutputFile, "\t{ -1, 0, 0, 0, NULL, 0, 0, 0, 0, 0, 0, 0, -1, }, // End\n" );
+		Print ( hOutputFile, "};\n\n" );
 
 		bResult = TRUE;
 
-		fclose ( hFile );
-		hFile	= NULL;
+		CloseOne ( &hFile );
 	}
 
-	if ( hFile != NULL )
-	{
-		fclose ( hFile );
-		hFile	= NULL;
-	}
+	CloseOne ( &hFile );
 
 	return bResult;
 }

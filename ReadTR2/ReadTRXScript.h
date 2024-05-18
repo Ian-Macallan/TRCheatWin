@@ -16,37 +16,37 @@ Options is a set of bit flags with several global game settings (name of the set
  **/
 struct tr4_script_header // 9 bytes
 {
-	xuxint8_t		Options;
-	xuxint8_t		Filler[3];     // Unused
+	xuint8_t		Options;
+	xuint8_t		Filler[3];     // Unused
 	xuint32_t	InputTimeout;
-	xuxint8_t		Security;
+	xuint8_t		Security;
 };
 
 //
 struct tr4_script_levelheader
 {
-	xuxint8_t		NumTotalLevels;
+	xuint8_t		NumTotalLevels;
 	xuint16_t	NumUniqueLevelPaths;
 
 	xuint16_t	LevelpathStringLen;
 	xuint16_t	LevelBlockLen;
 
-	xuxint8_t		PSXLevelString [5];    //  typically ".PSX"
-	xuxint8_t		PSXFMVString   [5];    //  typically ".FMV"
-	xuxint8_t		PSXCutString [5];    //  typically ".CUT"
-	xuxint8_t		Filler [5];            //  Possibly for some additional extension type?
+	xuint8_t		PSXLevelString [5];    //  typically ".PSX"
+	xuint8_t		PSXFMVString   [5];    //  typically ".FMV"
+	xuint8_t		PSXCutString [5];    //  typically ".CUT"
+	xuint8_t		Filler [5];            //  Possibly for some additional extension type?
 
-	xuxint8_t		PCLevelString  [5];    //  typically ".TR4"
-	xuxint8_t		PCFMVString    [5];    //  typically ".BIK"
-	xuxint8_t		PCCutString    [5];    //  typically ".TR4"
-	xuxint8_t		Unused [5];
+	xuint8_t		PCLevelString  [5];    //  typically ".TR4"
+	xuint8_t		PCFMVString    [5];    //  typically ".BIK"
+	xuint8_t		PCCutString    [5];    //  typically ".TR4"
+	xuint8_t		Unused [5];
 };
 
 //
 struct tr4_script_levellisting
 {
 	xuint16_t OffsetsToLevelpathString[1 /* NumTotalLevels */ ];
-	xuxint8_t LevelpathStringBlock [1 /* LevelpathStringLen */ ];
+	xuint8_t LevelpathStringBlock [1 /* LevelpathStringLen */ ];
 
 	xuint16_t OffsetsToLevelData [1 /* NumTotalLevels */ ];
 };
@@ -54,7 +54,7 @@ struct tr4_script_levellisting
 //
 struct tr4_script_leveldata
 {
-    xuxint8_t LevelData [1 /*LevelDataLen */ ];
+    xuint8_t LevelData [1 /*LevelDataLen */ ];
 };
 
 struct tr4_lang_header
@@ -223,8 +223,8 @@ struct LevelDataxDA
 //
 #pragma pack(pop, pack1)
 
-extern BOOL ReadTRXLanguage ( const char *pFilename, const char *pDirectory, int iLang, int version );
-extern BOOL ReadTRXScript ( const char *pathname, const char *pDirectory, int version = 4 );
+extern BOOL ReadTRXLanguage ( const char *pFilename, const char *pDirectory, int iLang, int version, bool bWrite = true );
+extern BOOL ReadTRXScript ( const char *pathname, const char *pDirectory, int version = 4, bool bWrite = true );
 
 extern BOOL WriteTRXLanguage ( const char *pFilename, const char *pDirectory, int iLang, int version );
 extern BOOL WriteTRXScript ( const char *pathname, const char *pDirectory, int version = 4 );

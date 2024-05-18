@@ -1,8 +1,9 @@
 #pragma once
 
 //	http://xproger.info/projects/OpenLara/trs.html#tr_vertex
+
 typedef char			xint8_t;
-typedef unsigned char	xuxint8_t;
+typedef unsigned char	xuint8_t;
 
 typedef short			xint16_t;
 typedef unsigned short	xuint16_t;
