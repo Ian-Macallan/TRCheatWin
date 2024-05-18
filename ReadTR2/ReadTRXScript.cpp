@@ -1672,7 +1672,7 @@ static BOOL WriteHeader ( int version, int level )
 	}
 	else
 	{
-		fprintf_s (  hHeaFile, "char *TR%dItemsName [NB_BUTTONS] =\n", version, level );
+		fprintf_s (  hHeaFile, "char *TR%dItemsName [NB_BUTTONS] =\n", version );
 		fprintf_s (  hHeaFile, "{\n" );
 
 		for ( int i = 0; i < NB_BUTTONS; i++ )
