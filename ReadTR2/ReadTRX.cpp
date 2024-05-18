@@ -212,9 +212,9 @@ BOOL ExtractData (	FILE *hOutputFile, int game,
 					const char *pPathname, const char *pName, TR_MODE TRMode, const char *pPrefix,
 					FCT_AddToCustomArea function )
 {
-	MCMemA memBuffer(32 * 1024 * 1024);
-	MCMemA memLevelDataCompressed ( 32 * 1024 * 1024 );
-	MCMemA memLevelDataUnCompressed ( 32 * 1024 * 1024 );
+	MCMemA memBuffer(64 * 1024 * 1024);
+	MCMemA memLevelDataCompressed ( 64 * 1024 * 1024 );
+	MCMemA memLevelDataUnCompressed ( 64 * 1024 * 1024 );
 
 	BOOL  bResult = FALSE;
 
@@ -344,10 +344,15 @@ BOOL ExtractData (	FILE *hOutputFile, int game,
 			iRead = ReadChunk (  &LevelData_CompSize, sizeof(LevelData_CompSize), hFile );
 			iRead = ReadChunk (  memLevelDataCompressed.ptr, LevelData_CompSize, hFile );
 
+			long lUncompSize	= LevelData_UncompSize;
+			long lCompSize		= LevelData_CompSize;
+
+			//
 			//	Uncompress Level Data
 			if ( LevelData_UncompSize != LevelData_CompSize )
 			{
-				int compressStatus = uncompress2( (Bytef *) memLevelDataUnCompressed.ptr, &LevelData_UncompSize, (Bytef *) memLevelDataCompressed.ptr, &LevelData_CompSize);
+				int compressStatus = 
+					uncompress2 ( (Bytef *) memLevelDataUnCompressed.ptr, &LevelData_UncompSize, (Bytef *) memLevelDataCompressed.ptr, &LevelData_CompSize);
 				if ( compressStatus != Z_OK )
 				{
 					PrintStdout ( "Error Uncompressing\r\n" );

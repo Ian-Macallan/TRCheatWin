@@ -100,6 +100,11 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 BOOL CTRXPropertyPageBase::AddLocation ( STRUCTLOCATION *pTable, const char *pLocation )
 {
+	if ( pTable == NULL )
+	{
+		return FALSE;
+	}
+
 	for ( int i = 0; i < LEN_LOCATION; i++ )
 	{
 		//	Already Here
@@ -134,6 +139,11 @@ BOOL CTRXPropertyPageBase::AddLocation ( STRUCTLOCATION *pTable, const char *pLo
 /////////////////////////////////////////////////////////////////////////////
 BOOL CTRXPropertyPageBase::RemoveLocation ( STRUCTLOCATION *pTable, const char *pLocation )
 {
+	if ( pTable == NULL )
+	{
+		return FALSE;
+	}
+
 	for ( int i = 0; i < LEN_LOCATION; i++ )
 	{
 		//	Here

@@ -53,6 +53,15 @@ static	STRUCTLOCATION	CustomPathnames4 [ LEN_LOCATION ];
 static	STRUCTLOCATION	CustomPathnames5 [ LEN_LOCATION ];
 
 //
+typedef struct CustomDataFilesStruct
+{
+	char datafile [ 64 ];
+	char title [ 128 ];
+} CustomDataFilesType;
+
+static CustomDataFilesType CustomDataFiles [ TR4NGMAXLEVEL ];
+
+//
 /////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////
@@ -123,38 +132,64 @@ static int SortLocation(const void *pVoid1, const void *pVoid2)
 
 //
 /////////////////////////////////////////////////////////////////////////////
-//
+//	what = 0 for items labels
 /////////////////////////////////////////////////////////////////////////////
-static void AddToItemsLabels ( int level, int button, const char *pText )
+static void AddToItemsLabels ( int what, int level, int button, const char *pText, const char *pTitle )
 {
-	if ( button >= 0 && button < NB_BUTTONS && pText != NULL )
+	//	What = 0, level = level, button = button, pText = item label
+	if ( what == 0 )
 	{
-		if ( level == -1 )
+		if ( button >= 0 && button < NB_BUTTONS && pText != NULL )
 		{
-			OutputDebugString ( "--Gen--\n" );
-			if ( TR49ItemsNameGen [ button ] != NULL )
+			if ( level == -1 )
 			{
-				free ( TR49ItemsNameGen [ button ] );
-				TR49ItemsNameGen [ button ] = NULL;
-			}
+				if ( TR49ItemsNameGen [ button ] != NULL )
+				{
+					free ( TR49ItemsNameGen [ button ] );
+					TR49ItemsNameGen [ button ] = NULL;
+				}
 
-			TR49ItemsNameGen [ button ] = ( char * ) malloc ( strlen(pText) + 1 );
-			strcpy_s ( TR49ItemsNameGen [ button ], strlen(pText) + 1, pText );
-			OutputDebugString ( pText );
-		}
-		else if ( level >= 0 && level < TR4NGMAXLEVEL )
-		{
-			OutputDebugString ( "--Ind--\n" );
-			if ( TR49ItemsNameInd [ level ] [ button ] != NULL )
-			{
-				free ( TR49ItemsNameInd [ level ] [ button ] );
-				TR49ItemsNameInd [ level ] [ button ] = NULL;
+				TR49ItemsNameGen [ button ] = ( char * ) malloc ( strlen(pText) + 1 );
+				strcpy_s ( TR49ItemsNameGen [ button ], strlen(pText) + 1, pText );
 			}
-			TR49ItemsNameInd [ level ] [ button ] = ( char * ) malloc ( strlen(pText) + 1 );
-			strcpy_s ( TR49ItemsNameInd [ level ] [ button ], strlen(pText) + 1, pText );
-			OutputDebugString ( pText );
+			else if ( level >= 0 && level < TR4NGMAXLEVEL )
+			{
+				if ( TR49ItemsNameInd [ level ] [ button ] != NULL )
+				{
+					free ( TR49ItemsNameInd [ level ] [ button ] );
+					TR49ItemsNameInd [ level ] [ button ] = NULL;
+				}
+				TR49ItemsNameInd [ level ] [ button ] = ( char * ) malloc ( strlen(pText) + 1 );
+				strcpy_s ( TR49ItemsNameInd [ level ] [ button ], strlen(pText) + 1, pText );
+			}
 		}
 	}
+	//	What = 1, level = levelindex, button = 1 is title, 0 is level, pText = DATA/LEVEL
+	else if ( what == 1 )
+	{
+		if ( level >= 0 && level < TR4NGMAXLEVEL && pText != NULL && pTitle != NULL )
+		{
+			strcpy_s ( CustomDataFiles [ level ].datafile, sizeof(CustomDataFiles [ level ].datafile), pText );
+			strcpy_s ( CustomDataFiles [ level ].title, sizeof(CustomDataFiles [ level ].title), pTitle );
+		}
+	}
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
+int SearchDataFileIndex ( const char *pSavename )
+{
+	for ( int i = 0; i < TR4NGMAXLEVEL; i++ )
+	{
+		if ( _strcmpi ( pSavename, CustomDataFiles [ i ].title ) == 0 )
+		{
+			return i;
+		}
+	}
+
+	return -1;
 }
 
 //
@@ -799,7 +834,7 @@ void CTRXInfoPage::DisplayValues()
 			{
 				InitCustomArea();
 				m_SetManualCombo		= false;
-				m_Custom_Selected	= 0;
+				m_Custom_Selected		= 0;
 				m_Custom_Combo.SetCurSel(m_Custom_Selected);
 				m_SetManualCombo		= true;
 			}
@@ -808,7 +843,7 @@ void CTRXInfoPage::DisplayValues()
 		{
 			InitCustomArea();
 			m_SetManualCombo		= false;
-			m_Custom_Selected	= 0;
+			m_Custom_Selected		= 0;
 			m_Custom_Combo.SetCurSel(m_Custom_Selected);
 			m_SetManualCombo		= true;
 		}
@@ -2487,6 +2522,11 @@ void CTRXInfoPage::OnBnClickedAddCustom()
 	static char szPathname [ MAX_PATH ] = "";
 	static char szDirectory [ MAX_PATH ] = "";
 
+	static char szScript [ MAX_PATH ] = "";
+	static char szScriptDirectory [ MAX_PATH ] = "";
+
+	static char szTRPathname [ MAX_PATH ] = "";
+
 	int iCurSel = m_Custom_Combo.GetCurSel();
 	if ( iCurSel >= 0 && iCurSel < m_Custom_Combo.GetCount() )
 	{
@@ -2578,7 +2618,11 @@ void CTRXInfoPage::OnBnClickedAddCustom()
 		BOOL bExtracted = ExtractData ( NULL, 99, szPathname, "Custom", trMode, "TRC_", AddToCustomArea );
 		if ( bExtracted )
 		{
-			AddLocation ( pTable, szPathname );
+			BOOL bAdded = AddLocation ( pTable, szPathname );
+			if ( bAdded )
+			{
+				m_Custom_Combo.AddString ( szPathname );
+			}
 		}
 		else
 		{
@@ -2587,17 +2631,57 @@ void CTRXInfoPage::OnBnClickedAddCustom()
 
 		//
 		//	Read Script
-		theApp.RemoveFilename ( szPathname );
-		theApp.RemoveFilename ( szPathname );
-		strcpy_s ( szDirectory, sizeof(szDirectory), szPathname );
-		strcat_s ( szPathname, sizeof(szPathname), "\\SCRIPT.DAT" );
+		strcpy_s ( szScriptDirectory, sizeof(szScriptDirectory), szPathname );
+		theApp.RemoveFilename ( szScriptDirectory );
+		theApp.RemoveFilename ( szScriptDirectory );
+		strcpy_s ( szScript, sizeof(szScript), szScriptDirectory );
+		strcat_s ( szScript, sizeof(szScript), "\\SCRIPT.DAT" );
 
 		//
 		//	Reset
+		ZeroMemory ( CustomDataFiles, sizeof(CustomDataFiles) );
 		ResetCustomLabels ();
 
 		//
-		BOOL bRead = ReadTRXScript ( szPathname, szDirectory, tombraider / 10, false, AddToItemsLabels );
+		BOOL bRead = ReadTRXScript ( szScript, szScriptDirectory, tombraider / 10, false, AddToItemsLabels );
+
+		//
+		int datafileIndex = SearchDataFileIndex ( CTRSaveGame::I()->GetSaveName() );
+		if ( datafileIndex >= 0 )
+		{
+			strcpy_s ( szTRPathname, sizeof(szTRPathname), szScriptDirectory );
+			strcat_s ( szTRPathname, sizeof(szTRPathname), "\\" );
+			strcat_s ( szTRPathname, sizeof(szTRPathname), CustomDataFiles[datafileIndex].datafile );
+			if ( tombraider / 10 == 4 )
+			{
+				strcat_s ( szTRPathname, sizeof(szTRPathname), ".tr4" );
+			}
+			else
+			{
+				strcat_s ( szTRPathname, sizeof(szTRPathname), ".trc" );
+			}
+
+			//
+			if ( _strcmpi ( szTRPathname, szPathname ) != 0 )
+			{
+				InitCustomArea();
+				SetCustomLevelName ( CTRXCHEATWINApp::FindFileName ( szTRPathname ) );
+				BOOL bExtracted = ExtractData ( NULL, 99, szTRPathname, "Custom", trMode, "TRC_", AddToCustomArea );
+				if ( bExtracted )
+				{
+					BOOL bAdded = AddLocation ( pTable, szTRPathname );
+					if ( bAdded )
+					{
+						m_Custom_Combo.AddString ( szTRPathname );
+					}
+
+					//
+					m_SetManualCombo = false;
+					SelectCustomFromDir ( szTRPathname );
+					m_SetManualCombo = true;
+				}
+			}
+		}
 
 		//
 		DisplayValues();
@@ -2688,6 +2772,11 @@ void CTRXInfoPage::ChangeCustomCombo()
 	static char szPathname [ MAX_PATH ] = "";
 	static char szDirectory [ MAX_PATH ] = "";
 
+	static char szScript [ MAX_PATH ] = "";
+	static char szScriptDirectory [ MAX_PATH ] = "";
+
+	static char szTRPathname [ MAX_PATH ] = "";
+
 	if ( m_SetManualCombo )
 	{
 		m_Custom_Selected = m_Custom_Combo.GetCurSel();
@@ -2696,7 +2785,7 @@ void CTRXInfoPage::ChangeCustomCombo()
 			m_Custom_Combo.GetLBText(m_Custom_Selected,szPathname );
 			int tombraider	= CTRSaveGame::GetFullVersion ();
 			TR_MODE	trMode				= TR_NONE;
-
+			STRUCTLOCATION	*pTable		= NULL;
 			//
 			switch ( tombraider )
 			{
@@ -2705,6 +2794,7 @@ void CTRXInfoPage::ChangeCustomCombo()
 				case 15 :
 				{
 					trMode	= TRR1_MODE;
+					pTable	= CustomPathnames1;
 					break;
 				}
 				case 2:
@@ -2712,6 +2802,7 @@ void CTRXInfoPage::ChangeCustomCombo()
 				case 25 :
 				{
 					trMode	= TRR2_MODE;
+					pTable	= CustomPathnames2;
 					break;
 				}
 				case 3:
@@ -2719,6 +2810,7 @@ void CTRXInfoPage::ChangeCustomCombo()
 				case 35 :
 				{
 					trMode	= TRR3_MODE;
+					pTable	= CustomPathnames3;
 					break;
 				}
 				case 4:
@@ -2727,12 +2819,14 @@ void CTRXInfoPage::ChangeCustomCombo()
 				case 49 :
 				{
 					trMode	= TR4_MODE;
+					pTable	= CustomPathnames4;
 					break;
 				}
 				case 5:
 				case 50 :
 				{
 					trMode	= TR5_MODE;
+					pTable	= CustomPathnames5;
 					break;
 				}
 				default:
@@ -2758,17 +2852,57 @@ void CTRXInfoPage::ChangeCustomCombo()
 
 				//
 				//	Read Script
-				theApp.RemoveFilename ( szPathname );
-				theApp.RemoveFilename ( szPathname );
-				strcpy_s ( szDirectory, sizeof(szDirectory), szPathname );
-				strcat_s ( szPathname, sizeof(szPathname), "\\SCRIPT.DAT" );
+				strcpy_s ( szScriptDirectory, sizeof(szScriptDirectory), szPathname );
+				theApp.RemoveFilename ( szScriptDirectory );
+				theApp.RemoveFilename ( szScriptDirectory );
+				strcpy_s ( szScript, sizeof(szScript), szScriptDirectory );
+				strcat_s ( szScript, sizeof(szScript), "\\SCRIPT.DAT" );
 
 				//
 				//	Reset
+				ZeroMemory ( CustomDataFiles, sizeof(CustomDataFiles) );
 				ResetCustomLabels ();
 
 				//
-				BOOL bRead = ReadTRXScript ( szPathname, szDirectory, tombraider / 10, false, AddToItemsLabels );
+				BOOL bRead = ReadTRXScript ( szScript, szScriptDirectory, tombraider / 10, false, AddToItemsLabels );
+
+				//
+				int datafileIndex = SearchDataFileIndex ( CTRSaveGame::I()->GetSaveName() );
+				if ( datafileIndex >= 0 )
+				{
+					strcpy_s ( szTRPathname, sizeof(szTRPathname), szScriptDirectory );
+					strcat_s ( szTRPathname, sizeof(szTRPathname), "\\" );
+					strcat_s ( szTRPathname, sizeof(szTRPathname), CustomDataFiles[datafileIndex].datafile );
+					if ( tombraider / 10 == 4 )
+					{
+						strcat_s ( szTRPathname, sizeof(szTRPathname), ".tr4" );
+					}
+					else
+					{
+						strcat_s ( szTRPathname, sizeof(szTRPathname), ".trc" );
+					}
+
+					//
+					if ( _strcmpi ( szTRPathname, szPathname ) != 0 )
+					{
+						InitCustomArea();
+						SetCustomLevelName ( CTRXCHEATWINApp::FindFileName ( szTRPathname ) );
+						BOOL bExtracted = ExtractData ( NULL, 99, szTRPathname, "Custom", trMode, "TRC_", AddToCustomArea );
+						if ( bExtracted )
+						{
+							BOOL bAdded = AddLocation ( pTable, szTRPathname );
+							if ( bAdded )
+							{
+								m_Custom_Combo.AddString ( szTRPathname );
+							}
+
+							//
+							m_SetManualCombo = false;
+							SelectCustomFromDir ( szTRPathname );
+							m_SetManualCombo = true;
+						}
+					}
+				}
 			}
 
 			//
@@ -2784,8 +2918,10 @@ void CTRXInfoPage::ChangeCustomCombo()
 /////////////////////////////////////////////////////////////////////////////
 void CTRXInfoPage::OnSelchangeCustomCombo()
 {
+	ZeroMemory ( CustomDataFiles, sizeof(CustomDataFiles) );
 	ResetCustomLabels ();
 
+	//
 	ChangeCustomCombo();
 }
 
@@ -2832,6 +2968,10 @@ BOOL CTRXInfoPage::SelectCustomFromPath (const char *pathname)
 	ZeroMemory ( szFilename, sizeof(szFilename) );
 
 	strcpy_s ( szFilename, sizeof(szFilename), pathname );
+	if ( SelectCustomFromDir ( szFilename ) )
+	{
+		return TRUE;
+	}
 	theApp.RemoveFilename ( szFilename );
 	return SelectCustomFromDir ( szFilename );
 }

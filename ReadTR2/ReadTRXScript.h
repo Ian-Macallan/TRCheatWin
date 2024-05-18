@@ -226,7 +226,8 @@ struct LevelDataxDA
 
 //
 //	For Adding Items Label
-typedef void (*FCT_AddToItemsLabels)(int level, int button, const char *pText);
+//	For Lavel What is 0
+typedef void (*FCT_AddToItemsLabels)( int what, int level, int button, const char *pText, const char *pLevelName );
 
 extern BOOL ReadTRXLanguage (	const char *pFilename, const char *pDirectory, int iLang, int version, bool bWrite = true );
 extern BOOL ReadTRXScript (		const char *pathname, const char *pDirectory, int version = 4, bool bWrite = true,

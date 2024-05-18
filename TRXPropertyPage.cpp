@@ -297,6 +297,7 @@ void  CTRXPropertyPage::SetGUIModified( BOOL bChanged, const char *pWhere )
 		return;
 	}
 
+#ifdef _DEBUG
 	if (bChanged )
 	{
 		OutputDebugString ( pWhere );
@@ -307,6 +308,7 @@ void  CTRXPropertyPage::SetGUIModified( BOOL bChanged, const char *pWhere )
 		OutputDebugString ( pWhere );
 		OutputDebugString ( " - SetGUIModified Changed to FALSE\n" );
 	}
+#endif
 
 	m_bModified	= bChanged;
 	if ( m_bApplyActive )

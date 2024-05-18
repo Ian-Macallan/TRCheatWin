@@ -1325,7 +1325,9 @@ BOOL ReadTRXLanguage ( const char *pFilename, const char *pDirectory, int iLang,
 /////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////
-static BOOL TreatLevelData ( FILE *hOutFile, xuint16_t offset, int len, int version )
+static BOOL TreatLevelData (	FILE *hOutFile, xuint16_t offset, int len, 
+								int	levelIndex,
+								int version, FCT_AddToItemsLabels function )
 {
 	//
 	bool bTitle = false;
@@ -1378,9 +1380,18 @@ static BOOL TreatLevelData ( FILE *hOutFile, xuint16_t offset, int len, int vers
 					{
 						pathString = LevelpathStringBlockData + LevelpathStringOffsets [ pArguments->pathIndex ];
 					}
-					if ( step == 2 ) Print ( hOutFile, "; Level 0x81 args : %d,$%04X,%d,%d\n",
+
+					if ( step == 2 )
+					{
+						Print ( hOutFile, "; Level 0x81 args : %d,$%04X,%d,%d\n",
 							pArguments->stringIndex, pArguments->levelOptions, pArguments->pathIndex, pArguments->audio );
-					if ( step == 2 ) Print ( hOutFile, "Level=\t%s,%d\n", pathString, pArguments->audio );
+						Print ( hOutFile, "Level=\t%s,%d\n", pathString, pArguments->audio );
+
+						if ( function != NULL )
+						{
+							(*function)(1, levelIndex, -1, pathString, pString );
+						}
+					}
 
 					const char *pLabelOption = OptionLabel ( pArguments->levelOptions );
 					if ( step == 2 ) Print ( hOutFile, "%s", pLabelOption );
@@ -1400,15 +1411,31 @@ static BOOL TreatLevelData ( FILE *hOutFile, xuint16_t offset, int len, int vers
 					if ( pArguments->pathIndex >= 0 && pArguments->pathIndex < maxLevels )
 					{
 						pathString = LevelpathStringBlockData + LevelpathStringOffsets [ pArguments->pathIndex ];
-						if ( step == 2 ) Print ( hOutFile, "; Level 0x82 args : %d,$%04X,%d\n", 
-							pArguments->pathIndex, pArguments->titleOptions, pArguments->audio );
-						if ( step == 2 ) Print ( hOutFile, "Level=\t%s,%d\n", pathString, pArguments->audio );
+						if ( step == 2 )
+						{
+							Print ( hOutFile, "; Level 0x82 args : %d,$%04X,%d\n", 
+								pArguments->pathIndex, pArguments->titleOptions, pArguments->audio );
+							Print ( hOutFile, "Level=\t%s,%d\n", pathString, pArguments->audio );
+
+							if ( function != NULL )
+							{
+								(*function)(1, levelIndex, 1, pathString, "[Title]" );
+							}
+						}
 					}
 					else
 					{
-						if ( step == 2 ) Print ( hOutFile, "; Level 0x82 args : %d,$%04X,%d\n", 
-							pArguments->pathIndex, pArguments->titleOptions, pArguments->audio );
-						if ( step == 2 ) Print ( hOutFile, "Level=\t%d,%d\n", pArguments->pathIndex, pArguments->audio );
+						if ( step == 2 )
+						{
+							Print ( hOutFile, "; Level 0x82 args : %d,$%04X,%d\n", 
+								pArguments->pathIndex, pArguments->titleOptions, pArguments->audio );
+							Print ( hOutFile, "Level=\t%d,%d\n", pArguments->pathIndex, pArguments->audio );
+
+							if ( function != NULL )
+							{
+								(*function)(1, levelIndex, 1, pathString, "[Title]" );
+							}
+						}
 					}
 
 					const char *pLabelOption = OptionLabel ( pArguments->titleOptions );
@@ -1417,11 +1444,14 @@ static BOOL TreatLevelData ( FILE *hOutFile, xuint16_t offset, int len, int vers
 					x += sizeof(LevelDatax82);
 					break;
 				}
+
+				//	End Of Level
 				case 0x83 :
 				{
 					LevelDatax83 *pArguments = ( LevelDatax83 * ) ( & LevelBlockData [ x ] );
 					if ( step == 2 ) Print ( hOutFile, "; Level-Data-End Opcode $%02X\n", pArguments->opcode );
 					x += sizeof(LevelDatax83);
+					//
 					break;
 				}
 				//	xbitu8 cutIndex;
@@ -1760,7 +1790,7 @@ static BOOL WriteHeader ( int version, int level, FCT_AddToItemsLabels function 
 			Print ( hHeaFile, "\t\"%s\",\t// %d \n", ItemsTable [ b ].text, b + 1 );
 			if  ( function != NULL )
 			{
-				( *function ) ( level, b, ItemsTable [ b ].text );
+				( *function ) ( 0, level, b, ItemsTable [ b ].text, "" );
 			}
 		}
 		Print (  hHeaFile, "};\n" );
@@ -1785,7 +1815,7 @@ static BOOL WriteHeader ( int version, int level, FCT_AddToItemsLabels function 
 			//
 			if  ( function != NULL )
 			{
-				( *function ) ( level, b, GlobalItemsTable [ b ].text );
+				( *function ) ( 0, level, b, GlobalItemsTable [ b ].text, "" );
 			}
 		}
 		Print (  hHeaFile, "};\n" );
@@ -2084,11 +2114,13 @@ BOOL ReadTRXScript (	const char *pathname, const char *pDirectory, int version, 
 		{
 			len = LevelBlockDataOffsets [ i + 1 ];
 		}
-		Print ( hOutFile, "; LevelBlockDataOffsets %d : %d 0x%x (len=%d)\n", i, LevelBlockDataOffsets [ i ], LevelBlockDataOffsets [ i ], len - LevelBlockDataOffsets [ i ] );
+
+		Print ( hOutFile, "; LevelBlockDataOffsets %d : %d 0x%x (len=%d)\n", i,
+			LevelBlockDataOffsets [ i ], LevelBlockDataOffsets [ i ], len - LevelBlockDataOffsets [ i ] );
 
 		//
 		//	Treat Level Data
-		TreatLevelData ( hOutFile, LevelBlockDataOffsets [ i ],  len, version );
+		TreatLevelData ( hOutFile, LevelBlockDataOffsets [ i ],  len, i, version, function );
 
 		//
 		WriteHeader ( version, i, function );
