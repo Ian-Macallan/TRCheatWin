@@ -47,6 +47,37 @@ static char THIS_FILE[] = __FILE__;
 
 //
 /////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
+void ResetCustomLabels ()
+{
+	//
+	//	Reset
+	for ( int l = 0; l < TR4NGMAXLEVEL; l++ )
+	{
+		for ( int b = 0; b < NB_BUTTONS; b++ )
+		{
+			if ( TR49ItemsNameInd [ l ] [ b ] != NULL )
+			{
+				free ( TR49ItemsNameInd [ l ] [ b ] );
+				TR49ItemsNameInd [ l ] [ b ] = NULL;
+			}
+		}
+	}
+
+	//
+	for ( int b = 0; b < NB_BUTTONS; b++ )
+	{
+		if ( TR49ItemsNameGen [ b ] != NULL )
+		{
+			free ( TR49ItemsNameGen [ b ] );
+			TR49ItemsNameGen [ b ] = NULL;
+		}
+	}
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
 // CTRXCHEATWINApp
 //
 /////////////////////////////////////////////////////////////////////////////
@@ -637,6 +668,9 @@ BOOL CTRXCHEATWINApp::InitInstance()
 		// TODO: Place code here to handle when the dialog is
 		//  dismissed with Cancel
 	}
+
+	//
+	ResetCustomLabels ();
 
 	// Since the dialog has been closed, return FALSE so that we exit the
 	//  application, rather than start the application's message pump.

@@ -125,37 +125,6 @@ static int SortLocation(const void *pVoid1, const void *pVoid2)
 /////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////
-static void ResetCustomLabels ()
-{
-	//
-	//	Reset
-	for ( int l = 0; l < TR4NGMAXLEVEL; l++ )
-	{
-		for ( int b = 0; b < NB_BUTTONS; b++ )
-		{
-			if ( TR49ItemsNameInd [ l ] [ b ] != NULL )
-			{
-				free ( TR49ItemsNameInd [ l ] [ b ] );
-				TR49ItemsNameInd [ l ] [ b ] = NULL;
-			}
-		}
-	}
-
-	//
-	for ( int b = 0; b < NB_BUTTONS; b++ )
-	{
-		if ( TR49ItemsNameGen [ b ] != NULL )
-		{
-			free ( TR49ItemsNameGen [ b ] );
-			TR49ItemsNameGen [ b ] = NULL;
-		}
-	}
-}
-
-//
-/////////////////////////////////////////////////////////////////////////////
-//
-/////////////////////////////////////////////////////////////////////////////
 static void AddToItemsLabels ( int level, int button, const char *pText )
 {
 	if ( button >= 0 && button < NB_BUTTONS && pText != NULL )
