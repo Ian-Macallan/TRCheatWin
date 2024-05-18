@@ -1660,34 +1660,34 @@ static BOOL WriteHeader ( int version, int level )
 
 	if ( level >= 0 )
 	{
-		fprintf_s (  hHeaFile, "char *TR%dItemsName%02d [NB_BUTTONS] =\n", version, level );
-		fprintf_s (  hHeaFile, "{\n" );
+		Print (  hHeaFile, "char *TR%dItemsName%02d [NB_BUTTONS] =\n", version, level );
+		Print (  hHeaFile, "{\n" );
 
 		for ( int i = 0; i < NB_BUTTONS; i++ )
 		{
-			fprintf_s (  hHeaFile, "\t\"%s\",\t// %d \n", ItemsTable [ i ].text, i + 1);
+			Print (  hHeaFile, "\t\"%s\",\t// %d \n", ItemsTable [ i ].text, i + 1);
 		}
-		fprintf_s (  hHeaFile, "};\n" );
-		fprintf_s (  hHeaFile, "\n" );
+		Print (  hHeaFile, "};\n" );
+		Print (  hHeaFile, "\n" );
 	}
 	else
 	{
-		fprintf_s (  hHeaFile, "char *TR%dItemsName [NB_BUTTONS] =\n", version );
-		fprintf_s (  hHeaFile, "{\n" );
+		Print (  hHeaFile, "char *TR%dItemsName [NB_BUTTONS] =\n", version );
+		Print (  hHeaFile, "{\n" );
 
 		for ( int i = 0; i < NB_BUTTONS; i++ )
 		{
 			if ( strlen(GlobalItemsTable [ i ].text) > 0 )
 			{
-				fprintf_s (  hHeaFile, "\t%s,\t// %d \n", GlobalItemsTable [ i ].text, i + 1);
+				Print (  hHeaFile, "\t%s,\t// %d \n", GlobalItemsTable [ i ].text, i + 1);
 			}
 			else
 			{
-				fprintf_s (  hHeaFile, "\t\"\",\t// %d \n", i + 1);
+				Print (  hHeaFile, "\t\"\",\t// %d \n", i + 1);
 			}
 		}
-		fprintf_s (  hHeaFile, "};\n" );
-		fprintf_s (  hHeaFile, "\n" );
+		Print (  hHeaFile, "};\n" );
+		Print (  hHeaFile, "\n" );
 	}
 
 	return TRUE;
@@ -2412,7 +2412,7 @@ BOOL WriteTRXScript ( const char *pathname, const char *pDirectory, int version 
 					{ 
 						if ( step == 2 )
 						{
-							if ( hLogFile ) fprintf_s ( hLogFile, "Writing scriptHeader %d\n", sizeof(scriptHeader) );
+							Print ( hLogFile, "Writing scriptHeader %d\n", sizeof(scriptHeader) );
 							fwrite ( &scriptHeader, 1, sizeof(scriptHeader), hOutFile );
 						}
 						bOptionsDone	= true;
@@ -2432,7 +2432,7 @@ BOOL WriteTRXScript ( const char *pathname, const char *pDirectory, int version 
 					{ 
 						if ( step == 2 )
 						{
-							if ( hLogFile ) fprintf_s ( hLogFile, "Writing scriptHeader %d\n", sizeof(scriptHeader) );
+							Print ( hLogFile, "Writing scriptHeader %d\n", sizeof(scriptHeader) );
 							fwrite ( &scriptHeader, 1, sizeof(scriptHeader), hOutFile );
 						}
 						bOptionsDone	= true;
@@ -2468,28 +2468,28 @@ BOOL WriteTRXScript ( const char *pathname, const char *pDirectory, int version 
 							bNeedEndOfLevel	= false;
 						}
 
-						if ( hLogFile ) fprintf_s ( hLogFile, "Writing scriptLevelHeader %d\n", sizeof(scriptLevelHeader) );
+						Print ( hLogFile, "Writing scriptLevelHeader %d\n", sizeof(scriptLevelHeader) );
 						fwrite ( &scriptLevelHeader, 1, sizeof(scriptLevelHeader), hOutFile );
 
 						//
 						//	Write Prevoious : LevelpathStringBlockData
-						if ( hLogFile ) fprintf_s ( hLogFile, "Writing LevelpathStringOffsets %d\n", sizeof(xuint16_t)*scriptLevelHeader.NumTotalLevels );
+						Print ( hLogFile, "Writing LevelpathStringOffsets %d\n", sizeof(xuint16_t)*scriptLevelHeader.NumTotalLevels );
 						fwrite ( LevelpathStringOffsets, 1, sizeof(xuint16_t)*scriptLevelHeader.NumTotalLevels, hOutFile );
 						
 						//
-						if ( hLogFile ) fprintf_s ( hLogFile, "Writing LevelpathStringBlockData %d\n", scriptLevelHeader.LevelpathStringLen );
+						Print ( hLogFile, "Writing LevelpathStringBlockData %d\n", scriptLevelHeader.LevelpathStringLen );
 						fwrite ( LevelpathStringBlockData, 1, scriptLevelHeader.LevelpathStringLen, hOutFile );
 
 						//	Write Previous : LevelBlockDataOffsets
-						if ( hLogFile ) fprintf_s ( hLogFile, "Writing LevelBlockDataOffsets %d\n", sizeof(xuint16_t)*scriptLevelHeader.NumTotalLevels );
+						Print ( hLogFile, "Writing LevelBlockDataOffsets %d\n", sizeof(xuint16_t)*scriptLevelHeader.NumTotalLevels );
 						fwrite ( (char*) &LevelBlockDataOffsets, 1, sizeof(xuint16_t)*scriptLevelHeader.NumTotalLevels, hOutFile );
 
 						//	Then Data
-						if ( hLogFile ) fprintf_s ( hLogFile, "Writing LevelBlockData %d\n", scriptLevelHeader.LevelBlockLen );
+						Print ( hLogFile, "Writing LevelBlockData %d\n", scriptLevelHeader.LevelBlockLen );
 						fwrite ( LevelBlockData, 1, scriptLevelHeader.LevelBlockLen, hOutFile );
 						//	Finally Languages
 						//	Write One byte more
-						if ( hLogFile ) fprintf_s ( hLogFile, "Writing LanguageBlockData %d\n", LanguageBlockLen );
+						Print ( hLogFile, "Writing LanguageBlockData %d\n", LanguageBlockLen );
 						fwrite ( LanguageBlockData, 1, LanguageBlockLen, hOutFile );
 					}
 
