@@ -5,6 +5,110 @@
 #include "MCMemA.h"
 
 
+#ifndef		NB_BUTTONS
+#define		NB_BUTTONS		29
+#endif
+
+//	Space to store temporarly Items strings
+#define		MAX_LABEL_STRING	1024
+typedef struct LabelStringStruct
+{
+	char	text [MAX_LABEL_STRING];
+} LabelStringType;
+
+static LabelStringType			ItemsTable [ NB_BUTTONS ];
+static LabelStringType			GlobalItemsTable [ NB_BUTTONS ];
+
+typedef struct CorrespondanceStruct
+{
+	int		offset;
+	BYTE	value;
+} CorrespondanceType;
+
+//	Correspondance between objects and TR4 Object Structure
+static CorrespondanceType Correspondance [ 0xD9 - 0x93 + 1 ] =
+{
+	//	12 Keys
+	{ 20,	1 },
+	{ 20,	2 },
+	{ 20,	4 },
+	{ 20,	8 },
+	{ 20,	16 },
+	{ 20,	32 },
+	{ 20,	64 },
+	{ 20,	128 },
+	{ 21,	1 },
+	{ 21,	2 },
+	{ 21,	4 },
+	{ 21,	8 },
+	//	12 Puzzle
+	{ 6,	1 },
+	{ 7,	1 },
+	{ 8,	1 },
+	{ 9,	1 },
+	{ 10,	1 },
+	{ 11,	1 },
+	{ 12,	1 },
+	{ 13,	1 },
+	{ 14,	1 },
+	{ 15,	1 },
+	{ 16,	1 },
+	{ 17,	1 },
+	//	4 Pickup
+	{ 24,	1 },
+	{ 24,	2 },
+	{ 25,	1 },
+	{ 25,	2 },
+	//	3 Examine
+	{ 3,	1 },
+	{ 4,	1 },
+	{ 5,	1 },
+	//	16 KeyCombo
+	{ 22,	1 },
+	{ 22,	2 },
+	{ 22,	4 },
+	{ 22,	8 },
+	{ 22,	16 },
+	{ 22,	32 },
+	{ 22,	64 },
+	{ 22,	128 },
+	{ 23,	1 },
+	{ 23,	2 },
+	{ 23,	4 },
+	{ 23,	8 },
+	{ 23,	16 },
+	{ 23,	32 },
+	{ 23,	64 },
+	{ 23,	128 },
+	//	16 PuzzleCombo
+	{ 18,	1 },
+	{ 18,	2 },
+	{ 18,	4 },
+	{ 18,	8 },
+	{ 18,	16 },
+	{ 18,	32 },
+	{ 18,	64 },
+	{ 18,	128 },
+	{ 19,	1 },
+	{ 19,	2 },
+	{ 19,	4 },
+	{ 19,	8 },
+	{ 19,	16 },
+	{ 19,	32 },
+	{ 19,	64 },
+	{ 19,	128 },
+	//	8 PickupCombo
+	{ 26,	1 },
+	{ 26,	2 },
+	{ 26,	4 },
+	{ 26,	8 },
+	{ 27,	1 },
+	{ 27,	2 },
+	{ 27,	4 },
+	{ 27,	8 },
+
+};
+
 //
 /////////////////////////////////////////////////////////////////////////////
 //	-script "G:\Program Files (x86)\Core Design\trle\Script\SCRIPT.DAT"
@@ -46,7 +150,8 @@ static const int StringTableMax	= 4096;
 static char *StringTable [ StringTableMax ];
 
 //
-static 	FILE *hLogFile = NULL;
+static 	FILE *hLogFile		= NULL;
+static 	FILE *hHeaFile	= NULL;
 
 //
 /**
@@ -1467,6 +1572,32 @@ static BOOL TreatLevelData ( FILE *hOutFile, xuint16_t offset, int len, int vers
 											pArguments->yAngle, pArguments->zAngle, pArguments->xAngle,
 											pArguments->unknown );
 						x += sizeof(LevelDatax93);
+
+						//
+						if ( step == 2 )
+						{
+							CorrespondanceType corr = Correspondance [ index ];
+							char szItemName [ 64 ];
+							sprintf_s ( szItemName, sizeof(szItemName), "%s (%d)", pString, corr.value );
+
+							sprintf_s ( ItemsTable [ corr.offset ].text + strlen(ItemsTable [ corr.offset ].text), 
+										sizeof(ItemsTable [ corr.offset ].text) - strlen(ItemsTable [ corr.offset ].text),
+										"%s \\r\\n", szItemName );
+							if ( strstr ( GlobalItemsTable [ corr.offset ].text, szItemName ) == NULL )
+							{
+								if ( strlen(GlobalItemsTable [ corr.offset ].text) != 0 )
+								{
+									sprintf_s ( GlobalItemsTable [ corr.offset ].text + strlen(GlobalItemsTable [ corr.offset ].text), 
+												sizeof(GlobalItemsTable [ corr.offset ].text) - strlen(GlobalItemsTable [ corr.offset ].text),
+												"\n\t\t" );
+								}
+
+								//
+								sprintf_s ( GlobalItemsTable [ corr.offset ].text + strlen(GlobalItemsTable [ corr.offset ].text), 
+											sizeof(GlobalItemsTable [ corr.offset ].text) - strlen(GlobalItemsTable [ corr.offset ].text),
+											"\"%s \\r\\n\"", szItemName );
+							}
+						}
 					}
 					else
 					{
@@ -1487,6 +1618,52 @@ static BOOL TreatLevelData ( FILE *hOutFile, xuint16_t offset, int len, int vers
 
 //
 /////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
+static BOOL WriteHeader ( int version, int level )
+{
+	if ( hHeaFile == NULL )
+	{
+		return FALSE;
+	}
+
+	if ( level >= 0 )
+	{
+		fprintf_s (  hHeaFile, "char *TR%dItemsName%02d [NB_BUTTONS] =\n", version, level );
+		fprintf_s (  hHeaFile, "{\n" );
+
+		for ( int i = 0; i < NB_BUTTONS; i++ )
+		{
+			fprintf_s (  hHeaFile, "\t\"%s\",\t// %d \n", ItemsTable [ i ].text, i + 1);
+		}
+		fprintf_s (  hHeaFile, "};\n" );
+		fprintf_s (  hHeaFile, "\n" );
+	}
+	else
+	{
+		fprintf_s (  hHeaFile, "char *TR%dItemsName [NB_BUTTONS] =\n", version, level );
+		fprintf_s (  hHeaFile, "{\n" );
+
+		for ( int i = 0; i < NB_BUTTONS; i++ )
+		{
+			if ( strlen(GlobalItemsTable [ i ].text) > 0 )
+			{
+				fprintf_s (  hHeaFile, "\t%s,\t// %d \n", GlobalItemsTable [ i ].text, i + 1);
+			}
+			else
+			{
+				fprintf_s (  hHeaFile, "\t\"\",\t// %d \n", i + 1);
+			}
+		}
+		fprintf_s (  hHeaFile, "};\n" );
+		fprintf_s (  hHeaFile, "\n" );
+	}
+
+	return TRUE;
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
 //	Full Pathname
 //
 /////////////////////////////////////////////////////////////////////////////
@@ -1494,6 +1671,8 @@ BOOL ReadTRXScript ( const char *pathname, const char *pDirectory, int version )
 {
 	//
 	ZeroMemory ( StringTable, sizeof(StringTable) );
+
+	ZeroMemory ( GlobalItemsTable, sizeof(GlobalItemsTable) );
 
 	//
 	BOOL bResult = FALSE;
@@ -1507,7 +1686,13 @@ BOOL ReadTRXScript ( const char *pathname, const char *pDirectory, int version )
 	strcat_s ( szLogFilename, sizeof(szLogFilename), ".LOG" );
 
 	//
+	static char szHeaFilename [ MAX_PATH ];
+	strcpy_s ( szHeaFilename, sizeof(szHeaFilename), pathname );
+	strcat_s ( szHeaFilename, sizeof(szHeaFilename), ".h" );
+
+	//
 	fopen_s ( &hLogFile, szLogFilename, "w" );
+	fopen_s ( &hHeaFile, szHeaFilename, "w" );
 
 	//
 	FILE *hInpFile = NULL;
@@ -1517,6 +1702,7 @@ BOOL ReadTRXScript ( const char *pathname, const char *pDirectory, int version )
 	{
 		if ( hLogFile != NULL ) fprintf_s ( hLogFile, "File Open Error %s\n", pathname );
 		if ( hLogFile != NULL ) fclose ( hLogFile );
+		if ( hHeaFile != NULL ) fclose ( hHeaFile );
 		hLogFile	= NULL;
 		return bResult;
 	}
@@ -1535,7 +1721,10 @@ BOOL ReadTRXScript ( const char *pathname, const char *pDirectory, int version )
 		Cleanup();
 
 		if ( hLogFile != NULL ) fclose ( hLogFile );
+		if ( hHeaFile != NULL ) fclose ( hHeaFile );
+
 		hLogFile	= NULL;
+		hHeaFile	= NULL;
 
 		return bResult;
 	}
@@ -1554,7 +1743,10 @@ BOOL ReadTRXScript ( const char *pathname, const char *pDirectory, int version )
 		Cleanup();
 
 		if ( hLogFile != NULL ) fclose ( hLogFile );
+		if ( hHeaFile != NULL ) fclose ( hHeaFile );
+
 		hLogFile	= NULL;
+		hHeaFile	= NULL;
 
 		return bResult;
 	}
@@ -1614,14 +1806,16 @@ BOOL ReadTRXScript ( const char *pathname, const char *pDirectory, int version )
 	{
 		fclose ( hOutFile );
 		fclose ( hInpFile );
-
 		hOutFile	= NULL;
 		hInpFile	= NULL;
 
 		Cleanup();
 
 		if ( hLogFile != NULL ) fclose ( hLogFile );
+		if ( hHeaFile != NULL ) fclose ( hHeaFile );
+
 		hLogFile	= NULL;
+		hHeaFile	= NULL;
 
 		return bResult;
 	}
@@ -1665,7 +1859,10 @@ BOOL ReadTRXScript ( const char *pathname, const char *pDirectory, int version )
 			Cleanup();
 
 			if ( hLogFile != NULL ) fclose ( hLogFile );
+			if ( hHeaFile != NULL ) fclose ( hHeaFile );
+
 			hLogFile	= NULL;
+			hHeaFile	= NULL;
 
 			return bResult;
 		}
@@ -1686,7 +1883,11 @@ BOOL ReadTRXScript ( const char *pathname, const char *pDirectory, int version )
 		Cleanup();
 
 		if ( hLogFile != NULL ) fclose ( hLogFile );
+		if ( hHeaFile != NULL ) fclose ( hHeaFile );
+
+
 		hLogFile	= NULL;
+		hHeaFile	= NULL;
 
 		return bResult;
 	}
@@ -1714,7 +1915,10 @@ BOOL ReadTRXScript ( const char *pathname, const char *pDirectory, int version )
 			Cleanup();
 
 			if ( hLogFile != NULL ) fclose ( hLogFile );
+			if ( hHeaFile != NULL ) fclose ( hHeaFile );
+
 			hLogFile	= NULL;
+			hHeaFile	= NULL;
 
 			return bResult;
 		}
@@ -1735,7 +1939,10 @@ BOOL ReadTRXScript ( const char *pathname, const char *pDirectory, int version )
 		Cleanup();
 
 		if ( hLogFile != NULL ) fclose ( hLogFile );
+		if ( hHeaFile != NULL ) fclose ( hHeaFile );
+
 		hLogFile	= NULL;
+		hHeaFile	= NULL;
 
 		return bResult;
 	}
@@ -1774,6 +1981,9 @@ BOOL ReadTRXScript ( const char *pathname, const char *pDirectory, int version )
 	//	Treat After Language has been read
 	for ( int i = 0; i < nbLevels; i++ )
 	{
+		ZeroMemory ( ItemsTable, sizeof(ItemsTable) );
+
+		//
 		int len = scriptLevelHeader.LevelBlockLen;
 		if ( i + 1 < nbLevels )
 		{
@@ -1784,7 +1994,13 @@ BOOL ReadTRXScript ( const char *pathname, const char *pDirectory, int version )
 		//
 		//	Treat Level Data
 		TreatLevelData ( hOutFile, LevelBlockDataOffsets [ i ],  len, version );
+
+		//
+		WriteHeader ( version, i );
 	}
+
+	//
+	WriteHeader ( version, -1 );
 
 	//
 	fclose ( hOutFile );
@@ -1799,7 +2015,10 @@ BOOL ReadTRXScript ( const char *pathname, const char *pDirectory, int version )
 	Cleanup();
 
 	if ( hLogFile != NULL ) fclose ( hLogFile );
+	if ( hHeaFile != NULL ) fclose ( hHeaFile );
+
 	hLogFile	= NULL;
+	hHeaFile	= NULL;
 
 	//
 	return bResult;

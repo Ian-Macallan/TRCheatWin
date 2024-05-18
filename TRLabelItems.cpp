@@ -369,30 +369,79 @@ char *TR4ItemsName [NB_BUTTONS] =
 	"Winding Key (2)... \r\nMechanical Scarab (4) \r\nBoth (6)\r\nCombined (1) \r\n",		// 1
 	"Small Waterskin",		// 2
 	"Large Waterskin \r\n5 Liters (6)\r\n",		// 3
-	"Scrap of Paper \r\n",		// 4
-	"Rules of Senet \r\n",		// 5
-	"",		// 6
-	"Golden Skull \r\nSun Talisman \r\nHand Of Orion \r\nIgnition Key... \r\nTalisman \r\nNitrous Oxide Feeder \r\nTridents \r\nShovel \r\nStone of Maat\r\nGolden Mask \r\n",		// 7
-	"Hand Of Sirius \r\nTimeless Sands \r\nCanopic Jar 1... \r\nStone of Khepri \r\nMusical Scroll \r\nCar Jack \r\n",		// 8
-	"Scarab Talisman \r\nCanopic Jar 2... \r\nStone of Atum \r\nGolden Stars \r\n",		// 9
-	"Golden Serpent... \r\nBa Cartouche \r\nRoof Key \r\nStone of Re \r\n",		// 10
-	"Portal Guardian \r\nWeapon Code Key... \r\nRa Cartouche \r\nHoly Scriptures \r\n",		// 11 
-	"Golden Vraeus... \r\nWestern Shaft Key \r\nHorseman's Gem \r\n",		// 12
-	"Guardian's Key \r\nNorthern Shaft Key \r\n",		// 13
-	"Detonator... \r\nSouthern Shaft Key \r\n",		// 14
-	"Eastern Shaft Key \r\n",		// 15
-	"Pharos Knot \r\n",		// 16
-	"Pharos Pillar \r\n",		// 17
-	"Black Beetles \r\n",		// 18
-	"Eye Fragment (1 to 3)... \r\n\r\nSun Goddess (2) \r\nSun Disk (1) \r\n\r\nCartouche Pieces (64,128,192) \r\n"
-	"\r\nMetal Blade (1) \r\nWooden Handle (2) \r\nBoth (3) \r\n\r\nHook (64) \r\n Pole (128) \r\n" 
-	"\r\nWalve Pipe (1) \r\nNitrous Oxide Canister (2) \r\nCar Jack Body (4) \r\nHandle (8) \r\n",		// 19	
-	"Ornate Handle (1) \r\nHathor Effigy (2) \r\n\r\nMine Detonator Body (64)  \r\nMine Position Data (128) \r\n",		// 20
-	"Hypostyle Key (2)... \r\nToken \r\nSilver Key \r\n",		// 21
-	"Gate Key... \r\nGuard's Key (8) \r\nArmoury Key \r\n",		// 22
-	"",		// 23
-	"",		// 24
-	"Broken Glasses (2)... \r\nBroken Beetle (1) \r\n\r\nJerrycan (2) \r\nBag of Sand (1) \r\nBoth (3) \r\n",		// 25
+	"Scrap Of Paper (1) \r\n",	// 4 
+	"The Rules of Senet (1) \r\n",	// 5 
+	"Fire Circle Scroll (1) \r\n",	// 6 
+	"Golden Skull (1) \r\n"
+		"Eye Of Horus (1) \r\n"
+		"The Hand Of Orion (1) \r\n"
+		"Ignition Key (1) \r\n"
+		"Sun Talisman (1) \r\n"
+		"Trident (1) \r\n"
+		"Nitrous Oxide Feeder (1) \r\n"
+		"Shovel (1) \r\n"
+		"Stone of Maat (1) \r\n",	// 7 
+	"The Timeless Sands (1) \r\n"
+		"The Hand Of Sirius (1) \r\n"
+		"Canopic Jar 1 (1) \r\n"
+		"Music Scroll (1) \r\n"
+		"Car-Jack (1) \r\n"
+		"Stone of Khepri (1) \r\n",	// 8 
+	"Scarab Talisman (1) \r\n"
+		"Canopic Jar 2 (1) \r\n"
+		"Golden Star (1) \r\n"
+		"Stone of Atum (1) \r\n",	// 9 
+	"The Golden Serpent (1) \r\n"
+		"Ba Cartouche (1) \r\n"
+		"Hook and Pole (1) \r\n"
+		"Roof Key (1) \r\n"
+		"Stone of Re (1) \r\n",	// 10 
+	"Ra Cartouche (1) \r\n"
+		"Portal Guardian (1) \r\n"
+		"Weapon Code Key (1) \r\n"
+		"Holy Scripture (1) \r\n",	// 11 
+	"Golden Vraeus (1) \r\n"
+		"Horseman's Gem (1) \r\n"
+		"Western Shaft Key (1) \r\n",	// 12 
+	"Guardian Key (1) \r\n"
+		"Northern Shaft Key (1) \r\n",	// 13 
+	"Mine Detonator (1) \r\n"
+		"Southern Shaft Key (1) \r\n",	// 14 
+	"Eastern Shaft Key (1) \r\n",	// 15 
+	"Pharos Knot (1) \r\n",	// 16 
+	"Pharos Pillar (1) \r\n",	// 17 
+	"Black Beetle (1) \r\n",	// 18 
+	"Eye Piece (1) \r\n"
+		"Eye Piece (2) \r\n"
+		"Sun Goddess (2) \r\n"
+		"Sun Disk (1) \r\n"
+		"Cartouche Piece 1 (64) \r\n"
+		"Cartouche Piece 2 (128) \r\n"
+		"Wall Hook (64) \r\n"
+		"Broken Handle (128) \r\n"
+		"Valve Pipe (1) \r\n"
+		"Nitrous Oxide Cannister (2) \r\n"
+		"Car-Jack Body (4) \r\n"
+		"Handle (8) \r\n"
+		"Metal Blade (1) \r\n"
+		"Wooden Handle (2) \r\n",	// 19 
+	"Ornate Handle (1) \r\n"
+		"Hathor Effigy (2) \r\n"
+		"Mine Detonator Body (64) \r\n"
+		"Mine Position Data (128) \r\n",	// 20 
+	"Hypostyle Key (2) \r\n"
+		"Temple Key (4) \r\n"
+		"Token (1) \r\n"
+		"Silver Key (1) \r\n",	// 21 
+	"Gate Key (2) \r\n"
+		"Armoury Key (4) \r\n"
+		"The Guards Keys (8) \r\n",	// 22 
+	"",	// 23 
+	"",	// 24 
+	"Broken Beetle (1) \r\n"
+		"Broken Glasses (2) \r\n"
+		"Bag of Sand (1) \r\n"
+		"Jerrycan (2) \r\n",	// 25 
 	"",		// 26
 	"",		// 27
 	"",		// 28
@@ -408,7 +457,7 @@ char *TR4ItemsName01 [NB_BUTTONS] =
 	"",		// 4
 	"",		// 5
 	"",		// 6
-	"Golden Skull \r\n",		// 7
+	"Golden Skull (1) \r\n",	// 7 
 	"",		// 8
 	"",		// 9
 	"",		// 10
@@ -442,8 +491,8 @@ char *TR4ItemsName03 [NB_BUTTONS] =
 	"",		// 4
 	"",		// 5
 	"",		// 6
-	"",		// 7
-	"Timeless Sands \r\n",		// 8
+	"Eye Of Horus (1) \r\n",	// 7 
+	"The Timeless Sands (1) \r\n",	// 8 
 	"",		// 9
 	"",		// 10
 	"",		// 11 
@@ -454,7 +503,7 @@ char *TR4ItemsName03 [NB_BUTTONS] =
 	"",		// 16
 	"",		// 17
 	"",		// 18
-	"Eye Fragment (1 to 3) \r\n",		// 19	
+	"Eye Piece (1) \r\nEye Piece (2) \r\n",	// 19 
 	"",		// 20
 	"",		// 21
 	"",		// 22
@@ -476,10 +525,10 @@ char *TR4ItemsName04 [NB_BUTTONS] =
 	"",		// 4
 	"",		// 5
 	"",		// 6
-	"Hand Of Orion \r\n",		// 7
-	"Hand Of Sirius \r\n",		// 8
-	"Scarab Talisman \r\n",		// 9
-	"Golden Serpent \r\n",		// 10
+	"The Hand Of Orion (1) \r\n",	// 7 
+	"The Hand Of Sirius (1) \r\n",	// 8 
+	"Scarab Talisman (1) \r\n",	// 9 
+	"The Golden Serpent (1) \r\n",	// 10 
 	"",		// 11 
 	"",		// 12
 	"",		// 13
@@ -510,7 +559,7 @@ char *TR4ItemsName05 [NB_BUTTONS] =
 	"",		// 4
 	"",		// 5
 	"",		// 6
-	"Ignition Key \r\n",		// 7
+	"Ignition Key (1) \r\n",	// 7 
 	"",		// 8
 	"",		// 9
 	"",		// 10
@@ -544,7 +593,7 @@ char *TR4ItemsName06 [NB_BUTTONS] =
 	"",		// 4
 	"",		// 5
 	"",		// 6
-	"Ignition Key \r\n",		// 7
+	"Ignition Key (1) \r\n",	// 7 
 	"Canopic Jar 1 \r\n",	// 8
 	"Canopic Jar 2 \r\n",	// 9
 	"",		// 10
@@ -578,9 +627,9 @@ char *TR4ItemsName07 [NB_BUTTONS] =
 	"",		// 4
 	"",		// 5
 	"",		// 6
-	"Sun Talisman \r\n",		// 7
-	"Canopic Jar 1 \r\n",	// 8
-	"Canopic Jar 2 \r\n",	// 9
+	"Sun Talisman (1) \r\n",	// 7 
+	"Canopic Jar 1 (1) \r\n",	// 8 
+	"Canopic Jar 2 (1) \r\n",	// 9 
 	"",		// 10
 	"",		// 11 
 	"",		// 12
@@ -590,9 +639,9 @@ char *TR4ItemsName07 [NB_BUTTONS] =
 	"",		// 16
 	"",		// 17
 	"",		// 18
-	"Sun Goddess (2) \r\nSun Disk (1) \r\n",		// 19	
-	"",		// 20
-	"Hypostyle Key (2) \r\n",		// 21
+	"Sun Goddess (2) \r\n",	// 19 
+	"",	// 20 
+	"Hypostyle Key (2) \r\n",	// 21 
 	"",		// 22
 	"",		// 23
 	"",		// 24
@@ -612,9 +661,9 @@ char *TR4ItemsName08 [NB_BUTTONS] =
 	"",		// 4
 	"",		// 5
 	"",		// 6
-	"Sun Talisman \r\n",		// 7
-	"Canopic Jar 1 \r\n",	// 8
-	"Canopic Jar 2 \r\n",	// 9
+	"Sun Talisman (1) \r\n",	// 7 
+	"Canopic Jar 1 (1) \r\n",	// 8 
+	"Canopic Jar 2 (1) \r\n",	// 9 
 	"",		// 10
 	"",		// 11 
 	"",		// 12
@@ -624,9 +673,9 @@ char *TR4ItemsName08 [NB_BUTTONS] =
 	"",		// 16
 	"",		// 17
 	"",		// 18
-	"Sun Goddess (2) \r\nSun Disk (1) \r\n",		// 19	
-	"",		// 20
-	"Hypostyle Key (2) \r\n",		// 21
+	"Sun Disk (1) \r\nSun Goddess (2) \r\n",	// 19 
+	"",	// 20 
+	"Hypostyle Key (2) \r\nTemple Key (4) \r\n",	// 21 
 	"",		// 22
 	"",		// 23
 	"",		// 24
@@ -646,9 +695,9 @@ char *TR4ItemsName09 [NB_BUTTONS] =
 	"",		// 4
 	"",		// 5
 	"",		// 6
-	"Sun Talisman \r\n",		// 7
-	"Canopic Jar 1 \r\n",		// 8
-	"Canopic Jar 2 \r\n",		// 9
+	"Sun Talisman (1) \r\n",	// 7 
+	"Canopic Jar 1 (1) \r\n",	// 8 
+	"Canopic Jar 2 (1) \r\n",	// 9 
 	"",		// 10
 	"",		// 11 
 	"",		// 12
@@ -658,9 +707,9 @@ char *TR4ItemsName09 [NB_BUTTONS] =
 	"",		// 16
 	"",		// 17
 	"",		// 18
-	"Sun Goddess (2) \r\nSun Disk (1) \r\n",		// 19	
-	"",		// 20
-	"",		// 21
+	"Sun Disk (1) \r\nSun Goddess (2) \r\n",	// 19 
+	"",	// 20 
+	"Hypostyle Key (2) \r\nTemple Key (4) \r\n",	// 21 
 	"",		// 22
 	"",		// 23
 	"",		// 24
@@ -678,21 +727,21 @@ char *TR4ItemsName10 [NB_BUTTONS] =
 	"",		// 2
 	"",		// 3
 	"",		// 4
-	"Rules of Senet \r\n",		// 5
-	"",		// 6
-	"",		// 7
-	"",		// 8
-	"",		// 9
-	"Ba Cartouche \r\n",		// 10
-	"Ra Cartouche \r\n",		// 11 
-	"",		// 12
-	"",		// 13
-	"",		// 14
-	"",		// 15
-	"",		// 16
-	"",		// 17
-	"",		// 18
-	"Cartouche Pieces (64,128,192) \r\n",		// 19	
+	"The Rules of Senet (1) \r\n",	// 5 
+	"",	// 6 
+	"",	// 7 
+	"",	// 8 
+	"",	// 9 
+	"Ba Cartouche (1) \r\n",	// 10 
+	"Ra Cartouche (1) \r\n",	// 11 
+	"",	// 12 
+	"",	// 13 
+	"",	// 14 
+	"",	// 15 
+	"",	// 16 
+	"",	// 17 
+	"",	// 18 
+	"Cartouche Piece 1 (64) \r\nCartouche Piece 2 (128) \r\n",	// 19 
 	"",		// 20
 	"",		// 21
 	"",		// 22
@@ -712,13 +761,13 @@ char *TR4ItemsName11 [NB_BUTTONS] =
 	"",		// 2
 	"",		// 3
 	"",		// 4
-	"Rules of Senet \r\n",		// 5
+	"The Rules of Senet (1) \r\n",	// 5 
 	"",		// 6
 	"",		// 7
 	"",		// 8
 	"",		// 9
-	"Ba Cartouche \r\n",		// 10
-	"Ra Cartouche \r\n",		// 11 
+	"Ba Cartouche (1) \r\n",	// 10 
+	"Ra Cartouche (1) \r\n",	// 11 
 	"",		// 12
 	"",		// 13
 	"",		// 14
@@ -726,7 +775,7 @@ char *TR4ItemsName11 [NB_BUTTONS] =
 	"",		// 16
 	"",		// 17
 	"",		// 18
-	"Cartouche Pieces (64,128,192) \r\n",		// 19
+	"Cartouche Piece 1 (64) \r\nCartouche Piece 2 (128) \r\n",	// 19 
 	"",		// 20
 	"",		// 21
 	"",		// 22
@@ -753,8 +802,8 @@ char *TR4ItemsName12 [NB_BUTTONS] =
 	"",		// 9
 	"",		// 10
 	"",		// 11 
-	"Golden Vraeus \r\n",		// 12
-	"Guardian's Key \r\n",		// 13
+	"Golden Vraeus (1) \r\n",	// 12 
+	"Guardian Key (1) \r\n",	// 13 
 	"",		// 14
 	"",		// 15
 	"",		// 16
@@ -816,25 +865,25 @@ char *TR4ItemsName14 [NB_BUTTONS] =
 	"",		// 4
 	"",		// 5
 	"",		// 6
-	"",		// 7
-	"",		// 8
-	"",		// 9
-	"",		// 10
-	"",		// 11 
-	"",		// 12
+	"Trident (1) \r\n",	// 7 
+	"Music Scroll (1) \r\n",	// 8 
+	"Golden Star (1) \r\n",	// 9 
+	"Hook and Pole (1) \r\n",	// 10 
+	"Portal Guardian (1) \r\n",	// 11 
+	"Horseman's Gem (1) \r\n",	// 12 
 	"",		// 13
 	"",		// 14
 	"",		// 15
-	"",		// 16
-	"",		// 17
-	"",		// 18
-	"",		// 19	
-	"",		// 20
-	"",		// 21
-	"",		// 22
+	"Pharos Knot (1) \r\n",	// 16 
+	"Pharos Pillar (1) \r\n",	// 17 
+	"Black Beetle (1) \r\n",	// 18 
+	"Wall Hook (64) \r\nBroken Handle (128) \r\n",	// 19 
+	"Ornate Handle (1) \r\nHathor Effigy (2) \r\n",	// 20 
+	"Token (1) \r\n",	// 21 
+	"Gate Key (2) \r\n",	// 22 
 	"",		// 23
 	"",		// 24
-	"",		// 25
+	"Broken Beetle (1) \r\nBroken Glasses (2) \r\n",	// 25 
 	"",		// 26
 	"",		// 27
 	"",		// 28
@@ -850,25 +899,25 @@ char *TR4ItemsName15 [NB_BUTTONS] =
 	"",		// 4
 	"",		// 5
 	"",		// 6
-	"",		// 7
-	"",		// 8
-	"",		// 9
-	"",		// 10
-	"",		// 11 
-	"",		// 12
+	"Trident (1) \r\n",	// 7 
+	"Music Scroll (1) \r\n",	// 8 
+	"Golden Star (1) \r\n",	// 9 
+	"Hook and Pole (1) \r\n",	// 10 
+	"Portal Guardian (1) \r\n",	// 11 
+	"Horseman's Gem (1) \r\n",	// 12 
 	"",		// 13
 	"",		// 14
 	"",		// 15
-	"Pharos Knot \r\n",		// 16
-	"Pharos Pillar \r\n",		// 17
-	"",		// 18
-	"Pole (128) \r\nHook (64) \r\n",		// 19	
-	"",		// 20
-	"Token \r\n",		// 21
-	"Gate Key \r\n",		// 22
+	"Pharos Knot (1) \r\n",	// 16 
+	"Pharos Pillar (1) \r\n",	// 17 
+	"Black Beetle (1) \r\n",	// 18 
+	"Wall Hook (64) \r\nBroken Handle (128) \r\n",	// 19 
+	"Ornate Handle (1) \r\nHathor Effigy (2) \r\n",	// 20 
+	"Token (1) \r\n",	// 21 
+	"Gate Key (2) \r\n",	// 22 
 	"",		// 23
 	"",		// 24
-	"Broken Glasses (2) \r\n",		// 25
+	"Broken Beetle (1) \r\nBroken Glasses (2) \r\n",	// 25 
 	"",		// 26
 	"",		// 27
 	"",		// 28
@@ -884,25 +933,25 @@ char *TR4ItemsName16 [NB_BUTTONS] =
 	"",		// 4
 	"",		// 5
 	"",		// 6
-	"",		// 7
-	"",		// 8
-	"",		// 9
-	"",		// 10
-	"",		// 11 
+	"Trident (1) \r\n",	// 7 
+	"Music Scroll (1) \r\n",	// 8 
+	"Golden Star (1) \r\n",	// 9 
+	"Hook and Pole (1) \r\n",	// 10 
+	"Portal Guardian (1) \r\n",	// 11 
 	"",		// 12
 	"",		// 13
 	"",		// 14
 	"",		// 15
-	"Pharos Knot \r\n",		// 16
-	"Pharos Pillar \r\n",		// 17
-	"Black Beetles \r\n",		// 18
-	"",		// 19	
-	"",		// 20
-	"",		// 21
-	"",		// 22
+	"Pharos Knot (1) \r\n",	// 16 
+	"Pharos Pillar (1) \r\n",	// 17 
+	"Black Beetle (1) \r\n",	// 18 
+	"Wall Hook (64) \r\nBroken Handle (128) \r\n",	// 19 
+	"Ornate Handle (1) \r\nHathor Effigy (2) \r\n",	// 20 
+	"Token (1) \r\n",	// 21 
+	"Gate Key (2) \r\n",	// 22 
 	"",		// 23
 	"",		// 24
-	"Broken Beetle (1) \r\n",		// 25
+	"Broken Beetle (1) \r\nBroken Glasses (2) \r\n",	// 25 
 	"",		// 26
 	"",		// 27
 	"",		// 28
@@ -922,21 +971,21 @@ char *TR4ItemsName17 [NB_BUTTONS] =
 	"",		// 8
 	"",		// 9
 	"",		// 10
-	"Portal Guardian \r\n",		// 11 
+	"Portal Guardian (1) \r\n",	// 11 
 	"",		// 12
 	"",		// 13
 	"",		// 14
 	"",		// 15
-	"Pharos Knot \r\n",		// 16
+	"Pharos Knot (1) \r\n",	// 16 
 	"Pharos Pillar \r\n",		// 17
-	"",		// 18
+	"Black Beetle (1) \r\n",	// 18 
 	"",		// 19	
-	"Ornate Handle (1) \r\nHathor Effigy (2) \r\n",		// 20
+	"Ornate Handle (1) \r\nHathor Effigy (2) \r\n",	// 20 
 	"",		// 21
 	"",		// 22
 	"",		// 23
 	"",		// 24
-	"Broken Glasses (2)... \r\nBroken Beetle (1) \r\nBoth (3) \r\n",		// 25
+	"Broken Beetle (1) \r\nBroken Glasses (2) \r\n",	// 25 
 	"",		// 26
 	"",		// 27
 	"",		// 28
@@ -952,22 +1001,22 @@ char *TR4ItemsName18 [NB_BUTTONS] =
 	"",		// 4
 	"",		// 5
 	"",		// 6
-	"Tridents \r\n",		// 7
-	"",		// 8
-	"",		// 9
-	"",		// 10
-	"",		// 11 
-	"",		// 12
+	"Trident (1) \r\n",	// 7 
+	"Music Scroll (1) \r\n",	// 8 
+	"Golden Star (1) \r\n",	// 9 
+	"",	// 10 
+	"Portal Guardian (1) \r\n",	// 11 
+	"Horseman's Gem (1) \r\n",	// 12 
 	"",		// 13
 	"",		// 14
 	"",		// 15
-	"",		// 16
-	"",		// 17
-	"",		// 18
-	"",		// 19	
-	"",		// 20
-	"",		// 21
-	"",		// 22
+	"Pharos Knot (1) \r\n",	// 16 
+	"Pharos Pillar (1) \r\n",	// 17 
+	"Black Beetle (1) \r\n",	// 18 
+	"",	// 19 
+	"Ornate Handle (1) \r\nHathor Effigy (2) \r\n",	// 20 
+	"Token (1) \r\n",	// 21 
+	"Gate Key (2) \r\n",	// 22 
 	"",		// 23
 	"",		// 24
 	"",		// 25
@@ -986,25 +1035,25 @@ char *TR4ItemsName19 [NB_BUTTONS] =
 	"",		// 4
 	"",		// 5
 	"",		// 6
-	"Tridents \r\n",		// 7
-	"",		// 8
-	"",		// 9
-	"",		// 10
-	"",		// 11 
-	"",		// 12
+	"Trident (1) \r\n",	// 7 
+	"Music Scroll (1) \r\n",	// 8 
+	"Golden Star (1) \r\n",	// 9 
+	"",	// 10 
+	"Portal Guardian (1) \r\n",	// 11 
+	"Horseman's Gem (1) \r\n",	// 12 
 	"",		// 13
 	"",		// 14
 	"",		// 15
-	"",		// 16
-	"",		// 17
-	"",		// 18
-	"",		// 19	
-	"",		// 20
+	"Pharos Knot (1) \r\n",	// 16 
+	"Pharos Pillar (1) \r\n",	// 17 
+	"Black Beetle (1) \r\n",	// 18 
+	"",	// 19 
+	"Ornate Handle (1) \r\nHathor Effigy (2) \r\n",	// 20 
 	"",		// 21
 	"",		// 22
 	"",		// 23
 	"",		// 24
-	"",		// 25
+	"Broken Beetle (1) \r\nBroken Glasses (2) \r\n",	// 25 
 	"",		// 26
 	"",		// 27
 	"",		// 28
@@ -1019,21 +1068,21 @@ char *TR4ItemsName20 [NB_BUTTONS] =
 	"",		// 3
 	"",		// 4
 	"",		// 5
-	"",		// 6
-	"",		// 7
-	"Musical Scroll \r\n",		// 8
-	"Golden Stars \r\n",		// 9
-	"",		// 10
-	"",		// 11 
-	"Horseman's Gem \r\n",		// 12
+	"Fire Circle Scroll (1) \r\n",	// 6 
+	"",	// 7 
+	"Music Scroll (1) \r\n",	// 8 
+	"Golden Star (1) \r\n",	// 9 
+	"",	// 10 
+	"Portal Guardian (1) \r\n",	// 11 
+	"Horseman's Gem (1) \r\n",	// 12 
 	"",		// 13
 	"",		// 14
 	"",		// 15
-	"",		// 16
-	"Pharos Pillar \r\n",		// 17
-	"",		// 18
-	"",		// 19	
-	"",		// 20
+	"Pharos Knot (1) \r\n",	// 16 
+	"Pharos Pillar (1) \r\n",	// 17 
+	"Black Beetle (1) \r\n",	// 18 
+	"",	// 19 
+	"Ornate Handle (1) \r\nHathor Effigy (2) \r\n",	// 20 
 	"",		// 21
 	"",		// 22
 	"",		// 23
@@ -1058,21 +1107,21 @@ char *TR4ItemsName21 [NB_BUTTONS] =
 	"",		// 8
 	"",		// 9
 	"",		// 10
-	"",		// 11 
+	"Portal Guardian (1) \r\n",	// 11 
 	"",		// 12
 	"",		// 13
 	"",		// 14
 	"",		// 15
-	"Pharos Knot \r\n",		// 16
-	"",		// 17
-	"",		// 18
-	"",		// 19	
-	"",		// 20
-	"",		// 21
-	"",		// 22
-	"",		// 23
-	"",		// 24
-	"",		// 25
+	"Pharos Knot (1) \r\n",	// 16 
+	"Pharos Pillar (1) \r\n",	// 17 
+	"Black Beetle (1) \r\n",	// 18 
+	"",	// 19 
+	"Ornate Handle (1) \r\nHathor Effigy (2) \r\n",	// 20 
+	"",	// 21 
+	"",	// 22 
+	"",	// 23 
+	"",	// 24 
+	"Broken Beetle (1) \r\nBroken Glasses (2) \r\n",	// 25 
 	"",		// 26
 	"",		// 27
 	"",		// 28
@@ -1088,20 +1137,20 @@ char *TR4ItemsName22 [NB_BUTTONS] =
 	"",		// 4
 	"",		// 5
 	"",		// 6
-	"Nitrous Oxide Feeder \r\n",		// 7
-	"",		// 8
-	"",		// 9
-	"Roof Key \r\n",		// 10
-	"Weapon Code Key \r\n",		// 11 
-	"",		// 12
-	"",		// 13
-	"",		// 14
+	"Nitrous Oxide Feeder (1) \r\n",	// 7 
+	"Car-Jack (1) \r\n",	// 8 
+	"",	// 9 
+	"Roof Key (1) \r\n",	// 10 
+	"Weapon Code Key (1) \r\n",	// 11 
+	"",	// 12 
+	"",	// 13 
+	"Mine Detonator (1) \r\n",	// 14 
 	"",		// 15
 	"",		// 16
 	"",		// 17
 	"",		// 18
-	"",		// 19	
-	"",		// 20
+	"Valve Pipe (1) \r\nNitrous Oxide Cannister (2) \r\nCar-Jack Body (4) \r\nHandle (8) \r\n",	// 19 
+	"Mine Detonator Body (64) \r\nMine Position Data (128) \r\n",	// 20 
 	"",		// 21
 	"",		// 22
 	"",		// 23
@@ -1122,20 +1171,20 @@ char *TR4ItemsName23 [NB_BUTTONS] =
 	"",		// 4
 	"",		// 5
 	"",		// 6
-	"Nitrous Oxide Feeder \r\n",		// 7
-	"",		// 8
-	"",		// 9
-	"Roof Key \r\n",		// 10
-	"Weapon Code Key \r\n",		// 11 
-	"",		// 12
-	"",		// 13
-	"",		// 14
+	"Nitrous Oxide Feeder (1) \r\n",	// 7 
+	"Car-Jack (1) \r\n",	// 8 
+	"",	// 9 
+	"Roof Key (1) \r\n",	// 10 
+	"Weapon Code Key (1) \r\n",	// 11 
+	"",	// 12 
+	"",	// 13 
+	"Mine Detonator (1) \r\n",	// 14 
 	"",		// 15
 	"",		// 16
 	"",		// 17
 	"",		// 18
-	"Nitrous Oxide Canister (2) \r\nWalve Pipe () \r\nBoth (3) \r\n",		// 19	
-	"",		// 20
+	"Valve Pipe (1) \r\nNitrous Oxide Cannister (2) \r\nCar-Jack Body (4) \r\nHandle (8) \r\n",	// 19 
+	"Mine Detonator Body (64) \r\nMine Position Data (128) \r\n",	// 20 
 	"",		// 21
 	"",		// 22
 	"",		// 23
@@ -1156,20 +1205,20 @@ char *TR4ItemsName24 [NB_BUTTONS] =
 	"",		// 4
 	"",		// 5
 	"",		// 6
-	"Nitrous Oxide Feeder \r\n",		// 7
-	"",		// 8
-	"",		// 9
-	"Roof Key \r\n",		// 10
-	"Weapon Code Key \r\n",		// 11 
-	"",		// 12
-	"",		// 13
-	"",		// 14
+	"Nitrous Oxide Feeder (1) \r\n",	// 7 
+	"Car-Jack (1) \r\n",	// 8 
+	"",	// 9 
+	"Roof Key (1) \r\n",	// 10 
+	"Weapon Code Key (1) \r\n",	// 11 
+	"",	// 12 
+	"",	// 13 
+	"Mine Detonator (1) \r\n",	// 14 
 	"",		// 15
 	"",		// 16
 	"",		// 17
 	"",		// 18
-	"Nitrous Oxide Canister (2) \r\nWalve Pipe () \r\nBoth (3) \r\n",		// 19	
-	"",		// 20
+	"Valve Pipe (1) \r\nNitrous Oxide Cannister (2) \r\nCar-Jack Body (4) \r\nHandle (8) \r\n",	// 19 
+	"Mine Detonator Body (64) \r\nMine Position Data (128) \r\n",	// 20 
 	"",		// 21
 	"",		// 22
 	"",		// 23
@@ -1190,20 +1239,20 @@ char *TR4ItemsName25 [NB_BUTTONS] =
 	"",		// 4
 	"",		// 5
 	"",		// 6
-	"Nitrous Oxide Feeder \r\n",		// 7
-	"Car Jack \r\n",		// 8
-	"",		// 9
-	"Roof Key \r\n",		// 10
-	"Weapon Code Key \r\n",		// 11 
-	"",		// 12
-	"",		// 13
-	"",		// 14
+	"Nitrous Oxide Feeder (1) \r\n",	// 7 
+	"Car-Jack (1) \r\n",	// 8 
+	"",	// 9 
+	"Roof Key (1) \r\n",	// 10 
+	"Weapon Code Key (1) \r\n",	// 11 
+	"",	// 12 
+	"",	// 13 
+	"Mine Detonator (1) \r\n",	// 14 
 	"",		// 15
 	"",		// 16
 	"",		// 17
 	"",		// 18
-	"Nitrous Oxide Canister (2) \r\nWalve Pipe () \r\nBoth (3) \r\n",		// 19	
-	"Mine Detonator Body (64) \r\n",		// 20
+	"Valve Pipe (1) \r\nNitrous Oxide Cannister (2) \r\nCar-Jack Body (4) \r\nHandle (8) \r\n",	// 19 
+	"Mine Detonator Body (64) \r\nMine Position Data (128) \r\n",	// 20 
 	"",		// 21
 	"",		// 22
 	"",		// 23
@@ -1224,20 +1273,20 @@ char *TR4ItemsName26 [NB_BUTTONS] =
 	"",		// 4
 	"",		// 5
 	"",		// 6
-	"Nitrous Oxide Feeder \r\n",		// 7
-	"Car Jack \r\n",		// 8
-	"",		// 9
-	"Roof Key \r\n",		// 10
-	"Weapon Code Key \r\n",		// 11 
-	"",		// 12
-	"",		// 13
-	"",		// 14
+	"Nitrous Oxide Feeder (1) \r\n",	// 7 
+	"Car-Jack (1) \r\n",	// 8 
+	"",	// 9 
+	"Roof Key (1) \r\n",	// 10 
+	"Weapon Code Key (1) \r\n",	// 11 
+	"",	// 12 
+	"",	// 13 
+	"Mine Detonator (1) \r\n",	// 14 
 	"",		// 15
 	"",		// 16
 	"",		// 17
 	"",		// 18
-	"Nitrous Oxide Canister (2) \r\nWalve Pipe () \r\nBoth (3) \r\n",		// 19	
-	"Mine Detonator Body (64) \r\n",		// 20
+	"Valve Pipe (1) \r\nNitrous Oxide Cannister (2) \r\nCar-Jack Body (4) \r\nHandle (8) \r\n",	// 19 
+	"Mine Detonator Body (64) \r\nMine Position Data (128) \r\n",	// 20 
 	"",		// 21
 	"",		// 22
 	"",		// 23
@@ -1258,20 +1307,20 @@ char *TR4ItemsName27 [NB_BUTTONS] =
 	"",		// 4
 	"",		// 5
 	"",		// 6
-	"Nitrous Oxide Feeder \r\n",		// 7
-	"Car Jack \r\n",		// 8
-	"",		// 9
-	"Roof Key \r\n",		// 10
-	"Weapon Code Key \r\n",		// 11 
-	"",		// 12
-	"",		// 13
-	"",		// 14
-	"",		// 15
-	"",		// 16
-	"",		// 17
-	"",		// 18
-	"Nitrous Oxide Canister (2) \r\nWalve Pipe () \r\nBoth (3) \r\n",		// 19	
-	"Mine Detonator Body (64) \r\n",		// 20
+	"Nitrous Oxide Feeder (1) \r\n",	// 7 
+	"Car-Jack (1) \r\n",	// 8 
+	"",	// 9 
+	"Roof Key (1) \r\n",	// 10 
+	"Weapon Code Key (1) \r\n",	// 11 
+	"",	// 12 
+	"",	// 13 
+	"Mine Detonator (1) \r\n",	// 14 
+	"",	// 15 
+	"",	// 16 
+	"",	// 17 
+	"",	// 18 
+	"Valve Pipe (1) \r\nNitrous Oxide Cannister (2) \r\nCar-Jack Body (4) \r\nHandle (8) \r\n",	// 19 
+	"Mine Detonator Body (64) \r\nMine Position Data (128) \r\n",	// 20 
 	"",		// 21
 	"",		// 22
 	"",		// 23
@@ -1292,22 +1341,22 @@ char *TR4ItemsName28 [NB_BUTTONS] =
 	"",		// 4
 	"",		// 5
 	"",		// 6
-	"Shovel \r\n",		// 7
-	"",		// 8
-	"",		// 9
-	"",		// 10
-	"",		// 11 
-	"",		// 12
+	"Shovel (1) \r\n",	// 7 
+	"",	// 8 
+	"",	// 9 
+	"",	// 10 
+	"Holy Scripture (1) \r\n",	// 11 
+	"Western Shaft Key (1) \r\n",	// 12 
 	"",		// 13
 	"",		// 14
 	"",		// 15
 	"",		// 16
 	"",		// 17
 	"",		// 18
-	"Metal Blade (1) \r\nWooden Handle (2) \r\nBoth (3) \r\n",		// 19
-	"",		// 20
-	"Silver Key \r\n",		// 21
-	"",		// 22
+	"Metal Blade (1) \r\nWooden Handle (2) \r\n",	// 19 
+	"",	// 20 
+	"Silver Key (1) \r\n",	// 21 
+	"Armoury Key (4) \r\nThe Guards Keys (8) \r\n",	// 22 
 	"",		// 23
 	"",		// 24
 	"",		// 25
@@ -1357,15 +1406,15 @@ char *TR4ItemsName30 [NB_BUTTONS] =
 	"",		// 1
 	"",		// 2
 	"",		// 3
-	"Scrap of Paper \r\n",		// 4
-	"",		// 5
-	"",		// 6
-	"Stone of Maat \r\n",		// 7
-	"Stone of Khepri \r\n",		// 8
-	"Stone of Atum \r\n",		// 9
-	"Stone of Re \r\n",		// 10
-	"Holy Scripture \r\n",		// 11 
-	"",		// 12
+	"Scrap Of Paper (1) \r\n",	// 4 
+	"",	// 5 
+	"",	// 6 
+	"Stone of Maat (1) \r\n",	// 7 
+	"Stone of Khepri (1) \r\n",	// 8 
+	"Stone of Atum (1) \r\n",	// 9 
+	"Stone of Re (1) \r\n",	// 10 
+	"Holy Scripture (1) \r\n",	// 11 
+	"Western Shaft Key (1) \r\n",	// 12 
 	"",		// 13
 	"",		// 14
 	"",		// 15
@@ -1375,7 +1424,7 @@ char *TR4ItemsName30 [NB_BUTTONS] =
 	"",		// 19	
 	"",		// 20
 	"",		// 21
-	"",		// 22
+	"Armoury Key (4) \r\nThe Guards Keys (8) \r\n",	// 22 
 	"",		// 23
 	"",		// 24
 	"",		// 25
@@ -1398,18 +1447,18 @@ char *TR4ItemsName31 [NB_BUTTONS] =
 	"",		// 8
 	"",		// 9
 	"",		// 10
-	"",		// 11 
-	"Western Shaft Key \r\n",		// 12
-	"Northern Shaft Key \r\n",		// 13
-	"Southern Shaft Key \r\n",		// 14
-	"Eastern Shaft Key \r\n",		// 15
-	"",		// 16
-	"",		// 17
-	"",		// 18
-	"",		// 19	
-	"",		// 20
-	"",		// 21
-	"Guard's Key (12) \r\nArmoury Key \r\n",		// 22
+	"Holy Scripture (1) \r\n",	// 11 
+	"Western Shaft Key (1) \r\n",	// 12 
+	"",	// 13 
+	"",	// 14 
+	"",	// 15 
+	"",	// 16 
+	"",	// 17 
+	"",	// 18 
+	"",	// 19 
+	"",	// 20 
+	"",	// 21 
+	"Armoury Key (4) \r\nThe Guards Keys (8) \r\n",	// 22 
 	"",		// 23
 	"",		// 24
 	"",		// 25
@@ -1432,18 +1481,18 @@ char *TR4ItemsName32 [NB_BUTTONS] =
 	"",		// 8
 	"",		// 9
 	"",		// 10
-	"",		// 11 
-	"Western Shaft Key \r\n",		// 12
-	"Northern Shaft Key \r\n",		// 13
-	"Southern Shaft Key \r\n",		// 14
-	"Eastern Shaft Key \r\n",		// 15
-	"",		// 16
-	"",		// 17
-	"",		// 18
-	"",		// 19	
-	"",		// 20
-	"",		// 21
-	"Guard's Key (12) \r\nArmoury Key \r\n",		// 22
+	"Holy Scripture (1) \r\n",	// 11 
+	"Western Shaft Key (1) \r\n",	// 12 
+	"",	// 13 
+	"",	// 14 
+	"",	// 15 
+	"",	// 16 
+	"",	// 17 
+	"",	// 18 
+	"",	// 19 
+	"",	// 20 
+	"",	// 21 
+	"Armoury Key (4) \r\nThe Guards Keys (8) \r\n",	// 22 
 	"",		// 23
 	"",		// 24
 	"",		// 25
@@ -1466,18 +1515,18 @@ char *TR4ItemsName33 [NB_BUTTONS] =
 	"",		// 8
 	"",		// 9
 	"",		// 10
-	"",		// 11 
-	"Western Shaft Key \r\n",		// 12
-	"Northern Shaft Key \r\n",		// 13
-	"Southern Shaft Key \r\n",		// 14
-	"Eastern Shaft Key \r\n",		// 15
-	"",		// 16
-	"",		// 17
-	"",		// 18
-	"",		// 19	
-	"",		// 20
-	"",		// 21
-	"Guard's Key (12) \r\nArmoury Key \r\n",		// 22
+	"Holy Scripture (1) \r\n",	// 11 
+	"Western Shaft Key (1) \r\n",	// 12 
+	"Northern Shaft Key (1) \r\n",	// 13 
+	"Southern Shaft Key (1) \r\n",	// 14 
+	"",	// 15 
+	"",	// 16 
+	"",	// 17 
+	"",	// 18 
+	"",	// 19 
+	"",	// 20 
+	"",	// 21 
+	"Armoury Key (4) \r\nThe Guards Keys (8) \r\n",	// 22 
 	"",		// 23
 	"",		// 24
 	"Jerrycan (2) \r\nBag of Sand (1) \r\nBoth (3) \r\n",	// 25
@@ -1500,18 +1549,18 @@ char *TR4ItemsName34 [NB_BUTTONS] =
 	"",		// 8
 	"",		// 9
 	"",		// 10
-	"",		// 11 
-	"",		// 12
-	"",		// 13
-	"",		// 14
-	"",		// 15
-	"",		// 16
-	"",		// 17
-	"",		// 18
-	"",		// 19	
-	"",		// 20
-	"",		// 21
-	"",		// 22
+	"Holy Scripture (1) \r\n",	// 11 
+	"Western Shaft Key (1) \r\n",	// 12 
+	"Northern Shaft Key (1) \r\n",	// 13 
+	"Southern Shaft Key (1) \r\n",	// 14 
+	"",	// 15 
+	"",	// 16 
+	"",	// 17 
+	"",	// 18 
+	"",	// 19 
+	"",	// 20 
+	"",	// 21 
+	"Armoury Key (4) \r\nThe Guards Keys (8) \r\n",	// 22 
 	"",		// 23
 	"",		// 24
 	"",		// 25
@@ -1534,18 +1583,18 @@ char *TR4ItemsName35 [NB_BUTTONS] =
 	"",		// 8
 	"",		// 9
 	"",		// 10
-	"",		// 11 
-	"Western Shaft Key \r\n",		// 12
-	"Northern Shaft Key \r\n",		// 13
-	"Southern Shaft Key \r\n",		// 14
-	"Eastern Shaft Key \r\n",		// 15
-	"",		// 16
-	"",		// 17
-	"",		// 18
-	"",		// 19	
-	"",		// 20
-	"",		// 21
-	"Guard's Key (12) \r\nArmoury Key \r\n",		// 22
+	"Holy Scripture (1) \r\n",	// 11 
+	"Western Shaft Key (1) \r\n",	// 12 
+	"Northern Shaft Key (1) \r\n",	// 13 
+	"Southern Shaft Key (1) \r\n",	// 14 
+	"Eastern Shaft Key (1) \r\n",	// 15 
+	"",	// 16 
+	"",	// 17 
+	"",	// 18 
+	"",	// 19 
+	"",	// 20 
+	"",	// 21 
+	"Armoury Key (4) \r\nThe Guards Keys (8) \r\n",	// 22 
 	"",		// 23
 	"",		// 24
 	"",		// 25
@@ -1568,18 +1617,18 @@ char *TR4ItemsName36 [NB_BUTTONS] =
 	"",		// 8
 	"",		// 9
 	"",		// 10
-	"",		// 11 
-	"Western Shaft Key \r\n",		// 12
-	"Northern Shaft Key \r\n",		// 13
-	"Southern Shaft Key \r\n",		// 14
-	"Eastern Shaft Key \r\n",		// 15
-	"",		// 16
-	"",		// 17
-	"",		// 18
-	"",		// 19	
-	"",		// 20
-	"",		// 21
-	"Guard's Key (12) \r\nArmoury Key \r\n",		// 22
+	"Holy Scripture (1) \r\n",	// 11 
+	"Western Shaft Key (1) \r\n",	// 12 
+	"Northern Shaft Key (1) \r\n",	// 13 
+	"Southern Shaft Key (1) \r\n",	// 14 
+	"Eastern Shaft Key (1) \r\n",	// 15 
+	"",	// 16 
+	"",	// 17 
+	"",	// 18 
+	"",	// 19 
+	"",	// 20 
+	"",	// 21 
+	"Armoury Key (4) \r\nThe Guards Keys (8) \r\n",	// 22 
 	"",		// 23
 	"",		// 24
 	"",		// 25
@@ -1602,18 +1651,18 @@ char *TR4ItemsName37 [NB_BUTTONS] =
 	"",		// 8
 	"",		// 9
 	"",		// 10
-	"Holy Scriptures \r\n",		// 11 
-	"",		// 12
-	"",		// 13
-	"",		// 14
-	"",		// 15
-	"",		// 16
-	"",		// 17
-	"",		// 18
-	"",		// 19	
-	"",		// 20
-	"",		// 21
-	"Guard's Key (8) \r\n",		// 22
+	"Holy Scripture (1) \r\n",	// 11 
+	"",	// 12 
+	"",	// 13 
+	"",	// 14 
+	"",	// 15 
+	"",	// 16 
+	"",	// 17 
+	"",	// 18 
+	"",	// 19 
+	"",	// 20 
+	"",	// 21 
+	"Armoury Key (4) \r\nThe Guards Keys (8) \r\n",	// 22 
 	"",		// 23
 	"",		// 24
 	"",		// 25
@@ -1632,6 +1681,83 @@ char *TR4ItemsName37 [NB_BUTTONS] =
 //	TR5
 /////////////////////////////////////////////////////////////////////////////
 
+char *TR5ItemsName [NB_BUTTONS] =
+{
+	"Crowbar \r\n",			// 1
+	"",	// 2 
+	"",	// 3 
+	"",	// 4 
+	"Cloth \r\n",					// 5
+	"Vials of chloroform \r\n",		// 6
+	"Garden Key (1) \r\n"
+		"Valve wheel (1) \r\n"
+		"A Fuse (1) \r\n"
+		"Chaff flares (1) \r\n"
+		"Nitrogen canister (1) \r\n"
+		"Heart (1) \r\n"
+		"Bone dust (1) \r\n"
+		"Chalk (1) \r\n"
+		"Helipad access key (1) \r\n",	// 7 
+	"Oxygen canister (1) \r\n"
+		"Catapult (1) \r\n"
+		"Silver coin (1) \r\n"
+		"Iris artifact (1) \r\n",	// 8 
+	"Golden coin (1) \r\n"
+		"Suit console (1) \r\n"
+		"Iron clapper (1) \r\n"
+		"Access code disc (1) \r\n"
+		"Teleporter disc (1) \r\n",	// 9 
+	"Mars symbol (1) \r\n"
+		"Gemstone (1) \r\n"
+		"Suit battery (1) \r\n"
+		"Iris lab access (1) \r\n",	// 10 
+	"Venus symbol (1) \r\n",	// 11 
+	"",	// 12 
+	"",	// 13 
+	"",	// 14 
+	"",	// 15 
+	"",	// 16 
+	"",	// 17 
+	"",	// 18 
+	"Gemstone piece (64) \r\n"
+		"Gemstone piece (128) \r\n"
+		"Aqualung (16) \r\n"
+		"Suit console (32) \r\n"
+		"Battery (+) (64) \r\n"
+		"Battery (-) (128) \r\n"
+		"Rubber tube (4) \r\n"
+		"Pitchfork (8) \r\n"
+		"Key bit (left) (1) \r\n"
+		"Key bit (right) (2) \r\n",	// 19 
+	"",	// 20 
+	"Golden Key 2 (2) \r\n"
+		"Cloth (1) \r\n"
+		"Colosseum key 2 (2) \r\n"
+		"Silver key (64) \r\n"
+		"Swipe Card (128) \r\n"
+		"Bronze key (32) \r\n"
+		"Hammer (64) \r\n"
+		"High level access card (128) \r\n"
+		"Red alert! (1) \r\n"
+		"Escape with the iris (1) \r\n",	// 21 
+	"",	// 22 
+	"",	// 23 
+	"",	// 24 
+	"Mercury stone (1) \r\n"
+		"Saturn Symbol (2) \r\n"
+		"Philosophers stone (1) \r\n"
+		"Spear Of Destiny (1) \r\n"
+		"Bestiary (1) \r\n"
+		"ID access card (1) \r\n"
+		"Iris artifact (2) \r\n"
+		"Low level access card (1) \r\n"
+		"Restroom access card (2) \r\n",	// 25 
+	"",	// 26 
+	"",	// 27 
+	"",	// 28 
+	"",	// 29 
+};
+
 //	Streets of Rome
 char *TR5ItemsName01 [NB_BUTTONS] =
 {
@@ -1639,27 +1765,27 @@ char *TR5ItemsName01 [NB_BUTTONS] =
 	"",			// 2
 	"",			// 3
 	"",			// 4
-	"Cloth",					// 5
-	"Vials of chloroform \r\n",		// 6
-	"Garden Key \r\n",				// 7
-	"",							// 8
-	"",							// 9
-	"",							// 10
-	"",							// 11
-	"",		// 12
-	"",		// 13
-	"",		// 14
-	"",		// 15
-	"",		// 16
-	"",		// 17
-	"",		// 18
-	"",		// 19
-	"",		// 20
-	"Gold Key \r\n",		// 21
-	"",		// 22
-	"",		// 23
-	"",		// 24
-	"Saturn Stone \r\n",		// 25
+	"",	// 5 
+	"",	// 6 
+	"Garden Key (1) \r\n",	// 7 
+	"",	// 8 
+	"",	// 9 
+	"",	// 10 
+	"",	// 11 
+	"",	// 12 
+	"",	// 13 
+	"",	// 14 
+	"",	// 15 
+	"",	// 16 
+	"",	// 17 
+	"",	// 18 
+	"",	// 19 
+	"",	// 20 
+	"Golden Key 2 (2) \r\nCloth (1) \r\n",	// 21 
+	"",	// 22 
+	"",	// 23 
+	"",	// 24 
+	"Mercury stone (1) \r\nSaturn Symbol (2) \r\n",	// 25 
 	"",		// 26
 	"",		// 27
 	"",		// 28
@@ -1673,27 +1799,27 @@ char *TR5ItemsName02 [NB_BUTTONS] =
 	"",			// 2
 	"",			// 3
 	"",			// 4
-	"Cloth \r\n",					// 5
-	"Vials of chloroform \r\n",		// 6
-	"Valve Wheel \r\n",				// 7
-	"",							// 8
-	"Gold Coin \r\n",				// 9
-	"Mars Stone \r\n",				// 10
-	"Venus Stone \r\n",				// 11
-	"",							// 12
-	"",							// 13
-	"",							// 14
-	"",		// 15
-	"",		// 16
-	"",		// 17
-	"",		// 18
-	"",		// 19
-	"",		// 20
-	"Gold Key \r\n",		// 21
-	"",		// 22
-	"",		// 23
-	"",		// 24
-	"Saturn Stone \r\n",		// 25
+	"",	// 5 
+	"",	// 6 
+	"Valve wheel (1) \r\n",	// 7 
+	"",	// 8 
+	"Golden coin (1) \r\n",	// 9 
+	"Mars symbol (1) \r\n",	// 10 
+	"Venus symbol (1) \r\n",	// 11 
+	"",	// 12 
+	"",	// 13 
+	"",	// 14 
+	"",	// 15 
+	"",	// 16 
+	"",	// 17 
+	"",	// 18 
+	"",	// 19 
+	"",	// 20 
+	"",	// 21 
+	"",	// 22 
+	"",	// 23 
+	"",	// 24 
+	"",	// 25 
 	"",		// 26
 	"",		// 27
 	"",		// 28
@@ -1707,27 +1833,27 @@ char *TR5ItemsName03 [NB_BUTTONS] =
 	"",		// 2
 	"",		// 3
 	"",		// 4
-	"Cloth \r\n",					// 5
-	"Vials of chloroform \r\n",		// 6
-	"",		// 7
-	"",		// 8
-	"",		// 9
-	"Gemstone \r\n",		// 10
-	"",		// 11
-	"",		// 12
-	"",		// 13
-	"",		// 14
-	"",		// 15
-	"",		// 16
-	"",		// 17
-	"",		// 18
-	"Gemstone Pieces (64) \r\n",		// 10
-	"",		// 20
-	"Coliseum Key \r\n",		// 21
-	"",		// 22
-	"",		// 23
-	"",		// 24
-	"Saturn Stone \r\n",		// 25
+	"",	// 5 
+	"",	// 6 
+	"",	// 7 
+	"",	// 8 
+	"",	// 9 
+	"Gemstone (1) \r\n",	// 10 
+	"",	// 11 
+	"",	// 12 
+	"",	// 13 
+	"",	// 14 
+	"",	// 15 
+	"",	// 16 
+	"",	// 17 
+	"",	// 18 
+	"Gemstone piece (64) \r\nGemstone piece (128) \r\n",	// 19 
+	"",	// 20 
+	"Colosseum key 2 (2) \r\n",	// 21 
+	"",	// 22 
+	"",	// 23 
+	"",	// 24 
+	"Philosophers stone (1) \r\n",	// 25 
 	"",		// 26
 	"",		// 27
 	"",		// 28
@@ -1741,27 +1867,27 @@ char *TR5ItemsName04 [NB_BUTTONS] =
 	"",		// 2
 	"",		// 3
 	"",		// 4
-	"",					// 5
-	"",		// 6
-	"Fuse \r\n",		// 7
-	"",		// 8
-	"",		// 9
-	"",		// 10
-	"",		// 11
-	"",		// 12
-	"",		// 13
-	"",		// 14
-	"",		// 15
-	"",		// 16
-	"",		// 17
-	"",		// 18
-	"",		// 19
-	"",		// 20
-	"Access Card (128) \r\nKey (64) \r\nBoth (192) \r\n",		// 21
-	"",		// 22
-	"",		// 23
-	"",		// 24
-	"Golden Rose (8)\r\n",		// 25
+	"",	// 5 
+	"",	// 6 
+	"A Fuse (1) \r\n",	// 7 
+	"",	// 8 
+	"",	// 9 
+	"",	// 10 
+	"",	// 11 
+	"",	// 12 
+	"",	// 13 
+	"",	// 14 
+	"",	// 15 
+	"",	// 16 
+	"",	// 17 
+	"",	// 18 
+	"",	// 19 
+	"",	// 20 
+	"Silver key (64) \r\nSwipe Card (128) \r\n",	// 21 
+	"",	// 22 
+	"",	// 23 
+	"",	// 24 
+	"",	// 25 
 	"",		// 26
 	"",		// 27
 	"",		// 28
@@ -1775,27 +1901,27 @@ char *TR5ItemsName05 [NB_BUTTONS] =
 	"",		// 2
 	"",		// 3
 	"",		// 4
-	"Cloth \r\n",					// 5
-	"Vials of chloroform \r\n",		// 6
-	"",		// 7
-	"",		// 8
-	"Suit Console \r\n",		// 9
-	"Battery \r\n",			// 10
-	"",		// 11
-	"",		// 12
-	"",		// 13
-	"",		// 14
-	"",		// 15
-	"",		// 16
-	"",		// 17
-	"",		// 18
-	"Aqualung (240) \r\n",		// 19
-	"",		// 20
-	"Gold Key \r\n",		// 21
-	"",		// 22
-	"",		// 23
-	"",		// 24
-	"Golden Rose (8)\r\n",		// 25
+	"",	// 5 
+	"",	// 6 
+	"",	// 7 
+	"",	// 8 
+	"Suit console (1) \r\n",	// 9 
+	"Suit battery (1) \r\n",	// 10 
+	"",	// 11 
+	"",	// 12 
+	"",	// 13 
+	"",	// 14 
+	"",	// 15 
+	"",	// 16 
+	"",	// 17 
+	"",	// 18 
+	"Aqualung (16) \r\nSuit console (32) \r\nBattery (+) (64) \r\nBattery (-) (128) \r\n",	// 19 
+	"",	// 20 
+	"Bronze key (32) \r\nSilver key (64) \r\n",	// 21 
+	"",	// 22 
+	"",	// 23 
+	"",	// 24 
+	"",	// 25 
 	"",		// 26
 	"",		// 27
 	"",		// 28
@@ -1809,27 +1935,27 @@ char *TR5ItemsName06 [NB_BUTTONS] =
 	"",		// 2
 	"",		// 3
 	"",		// 4
-	"Cloth \r\n",					// 5
-	"Vials of chloroform \r\n",		// 6
-	"Leure \r\n",		// 7
-	"",		// 8
-	"",		// 9
-	"",		// 10
-	"",		// 11
-	"",		// 12
-	"",		// 13
-	"",		// 14
-	"",		// 15
-	"",		// 16
-	"",		// 17
-	"",		// 18
-	"",		// 19
-	"",		// 20
-	"Gold Key \r\n",		// 21
-	"",		// 22
-	"",		// 23
-	"",		// 25
-	"Golden Rose (8)\r\n",		// 25
+	"",	// 5 
+	"",	// 6 
+	"Chaff flares (1) \r\n",	// 7 
+	"",	// 8 
+	"",	// 9 
+	"",	// 10 
+	"",	// 11 
+	"",	// 12 
+	"",	// 13 
+	"",	// 14 
+	"",	// 15 
+	"",	// 16 
+	"",	// 17 
+	"",	// 18 
+	"",	// 19 
+	"",	// 20 
+	"",	// 21 
+	"",	// 22 
+	"",	// 23 
+	"",	// 24 
+	"Spear Of Destiny (1) \r\n",	// 25 
 	"",		// 26
 	"",		// 27
 	"",		// 28
@@ -1843,27 +1969,27 @@ char *TR5ItemsName07 [NB_BUTTONS] =
 	"",		// 2
 	"",		// 3
 	"",		// 4
-	"Cloth \r\n",					// 5
-	"Vials of chloroform \r\n",		// 6
-	"Nitrogen Canister \r\n",		// 7
-	"Oxygen Canister \r\n",		// 8
-	"",		// 9
-	"",		// 10
-	"",		// 11
-	"",		// 12
-	"",		// 13
-	"",		// 14
-	"",		// 15
-	"",		// 16
-	"",		// 17
-	"",		// 18
-	"",		// 19
-	"",		// 20
-	"Card (128) \r\nKey(92) \r\nBoth (240) \r\n",		// 21
-	"",		// 22
-	"",		// 23
-	"",		// 24
-	"Golden Rose (8)\r\n",		// 25
+	"",	// 5 
+	"",	// 6 
+	"Nitrogen canister (1) \r\n",	// 7 
+	"Oxygen canister (1) \r\n",	// 8 
+	"",	// 9 
+	"",	// 10 
+	"",	// 11 
+	"",	// 12 
+	"",	// 13 
+	"",	// 14 
+	"",	// 15 
+	"",	// 16 
+	"",	// 17 
+	"",	// 18 
+	"",	// 19 
+	"",	// 20 
+	"Bronze key (32) \r\nSilver key (64) \r\nSwipe Card (128) \r\n",	// 21 
+	"",	// 22 
+	"",	// 23 
+	"",	// 24 
+	"",	// 25 
 	"",		// 26
 	"",		// 27
 	"",		// 28
@@ -1877,27 +2003,27 @@ char *TR5ItemsName08 [NB_BUTTONS] =
 	"",		// 2
 	"",		// 3
 	"",		// 4
-	"Cloth \r\n",					// 5
-	"Vials of chloroform \r\n",		// 6
-	"Heart \r\n",		// 7
-	"Slingshot \r\n",		// 8
-	"Clapper (1) \r\n",		// 9
-	"",		// 10
-	"",		// 11
-	"",		// 12
-	"",		// 13
-	"",		// 14
-	"",		// 15
-	"",		// 16
-	"",		// 17
-	"",		// 18
-	"Pitchfork (4,12) \r\n",		// 19
-	"",		// 20
-	"Gold Key \r\n",		// 21
-	"",		// 22
-	"",		// 23
-	"",		// 24
-	"Clapper (8) \r\n",		// 25
+	"",	// 5 
+	"",	// 6 
+	"Heart (1) \r\n",	// 7 
+	"Catapult (1) \r\n",	// 8 
+	"Iron clapper (1) \r\n",	// 9 
+	"",	// 10 
+	"",	// 11 
+	"",	// 12 
+	"",	// 13 
+	"",	// 14 
+	"",	// 15 
+	"",	// 16 
+	"",	// 17 
+	"",	// 18 
+	"Rubber tube (4) \r\nPitchfork (8) \r\n",	// 19 
+	"",	// 20 
+	"",	// 21 
+	"",	// 22 
+	"",	// 23 
+	"",	// 24 
+	"",	// 25 
 	"",		// 26
 	"",		// 27
 	"",		// 28
@@ -1911,27 +2037,27 @@ char *TR5ItemsName09 [NB_BUTTONS] =
 	"",		// 2
 	"",		// 3
 	"",		// 4
-	"Cloth \r\n",					// 5
-	"Vials of chloroform \r\n",		// 6
-	"Bone Dust \r\n",		// 7
-	"",		// 8
-	"",		// 9
-	"",		// 10
-	"",		// 11
-	"",		// 12
-	"",		// 13
-	"",		// 14
-	"",		// 15
-	"",		// 16
-	"",		// 17
-	"",		// 18
-	"",		// 19
-	"",		// 20
-	"Gold Key \r\n",		// 21
-	"",		// 22
-	"",		// 23
-	"",		// 24
-	"Bestiary \r\n",		// 25
+	"",	// 5 
+	"",	// 6 
+	"Bone dust (1) \r\n",	// 7 
+	"",	// 8 
+	"",	// 9 
+	"",	// 10 
+	"",	// 11 
+	"",	// 12 
+	"",	// 13 
+	"",	// 14 
+	"",	// 15 
+	"",	// 16 
+	"",	// 17 
+	"",	// 18 
+	"",	// 19 
+	"",	// 20 
+	"",	// 21 
+	"",	// 22 
+	"",	// 23 
+	"",	// 24 
+	"Bestiary (1) \r\n",	// 25 
 	"",		// 26
 	"",		// 27
 	"",		// 28
@@ -1945,27 +2071,27 @@ char *TR5ItemsName10 [NB_BUTTONS] =
 	"",		// 2
 	"",		// 3
 	"",		// 4
-	"Cloth \r\n",					// 5
-	"Vials of chloroform \r\n",		// 6
-	"Chalk \r\n",		// 7
-	"Silver Coin \r\n",		// 8
-	"",		// 9
-	"",		// 10
-	"",		// 11
-	"",		// 12
-	"",		// 13
-	"",		// 14
-	"",		// 15
-	"",		// 16
-	"",		// 17
-	"",		// 18
-	"",		// 19
-	"",		// 20
-	"Gold Key \r\n",		// 21
-	"",		// 22
-	"",		// 23
-	"",		// 24
-	"Bestiary (1,9) \r\n",		// 25
+	"",	// 5 
+	"",	// 6 
+	"Chalk (1) \r\n",	// 7 
+	"Silver coin (1) \r\n",	// 8 
+	"",	// 9 
+	"",	// 10 
+	"",	// 11 
+	"",	// 12 
+	"",	// 13 
+	"",	// 14 
+	"",	// 15 
+	"",	// 16 
+	"",	// 17 
+	"",	// 18 
+	"",	// 19 
+	"",	// 20 
+	"",	// 21 
+	"",	// 22 
+	"",	// 23 
+	"",	// 24 
+	"Bestiary (1) \r\n",	// 25 
 	"",		// 26
 	"",		// 27
 	"",		// 28
@@ -1981,25 +2107,25 @@ char *TR5ItemsName11 [NB_BUTTONS] =
 	"",		// 4
 	"Cloth \r\n",					// 5
 	"Vials of chloroform \r\n",		// 6
-	"",		// 7
-	"Iris artifact \r\n",		// 8
-	"",		// 9
-	"",		// 10
-	"",		// 11
-	"",		// 12
-	"",		// 13
-	"",		// 14
-	"",		// 15
-	"",		// 16
-	"",		// 17
-	"",		// 18
-	"",		// 19
-	"",		// 20
-	"Hammer (64) \r\nKeyCard (128) \r\n",		// 21
-	"",		// 22
-	"",		// 23
-	"",		// 24
-	"Hammer (8,64) \r\n",		// 25
+	"",	// 7 
+	"",	// 8 
+	"Access code disc (1) \r\n",	// 9 
+	"Iris lab access (1) \r\n",	// 10 
+	"",	// 11 
+	"",	// 12 
+	"",	// 13 
+	"",	// 14 
+	"",	// 15 
+	"",	// 16 
+	"",	// 17 
+	"",	// 18 
+	"",	// 19 
+	"",	// 20 
+	"Hammer (64) \r\nHigh level access card (128) \r\nRed alert! (1) \r\n",	// 21 
+	"",	// 22 
+	"",	// 23 
+	"",	// 24 
+	"ID access card (1) \r\nIris artifact (2) \r\n",	// 25 
 	"",		// 26
 	"",		// 27
 	"",		// 28
@@ -2015,25 +2141,25 @@ char *TR5ItemsName12 [NB_BUTTONS] =
 	"",		// 4
 	"Cloth \r\n",					// 5
 	"Vials of chloroform \r\n",		// 6
-	"",		// 7
-	"Iris artifact \r\n",		// 8
-	"",		// 9
-	"",		// 10
-	"",		// 11
-	"",		// 12
-	"",		// 13
-	"",		// 14
-	"",		// 15
-	"",		// 16
-	"",		// 17
-	"",		// 18
-	"",		// 19
-	"",		// 20
-	"Gold Key \r\n",		// 21
-	"",		// 22
-	"",		// 23
-	"",		// 24
-	"Restroom Card (2,10) \r\n",		// 25
+	"",	// 7 
+	"Iris artifact (1) \r\n",	// 8 
+	"Teleporter disc (1) \r\n",	// 9 
+	"",	// 10 
+	"",	// 11 
+	"",	// 12 
+	"",	// 13 
+	"",	// 14 
+	"",	// 15 
+	"",	// 16 
+	"",	// 17 
+	"",	// 18 
+	"",	// 19 
+	"",	// 20 
+	"Red alert! (1) \r\n",	// 21 
+	"",	// 22 
+	"",	// 23 
+	"",	// 24 
+	"Low level access card (1) \r\nRestroom access card (2) \r\n",	// 25 
 	"",		// 26
 	"",		// 27
 	"",		// 28
@@ -2049,19 +2175,19 @@ char *TR5ItemsName14 [NB_BUTTONS] =
 	"",		// 4
 	"Cloth \r\n",					// 5
 	"Vials of chloroform \r\n",		// 6
-	"",		// 7
-	"Grappling \r\n",		// 8
-	"",		// 9
-	"",		// 10
-	"",		// 11
-	"",		// 12
-	"",		// 13
-	"",		// 14
-	"",		// 15
-	"",		// 16
-	"",		// 17
-	"",		// 18
-	"Key Bits (1 to 3) \r\n",		// 19
+	"Helipad access key (1) \r\n",	// 7 
+	"Iris artifact (1) \r\n",	// 8 
+	"",	// 9 
+	"",	// 10 
+	"",	// 11 
+	"",	// 12 
+	"",	// 13 
+	"",	// 14 
+	"",	// 15 
+	"",	// 16 
+	"",	// 17 
+	"",	// 18 
+	"Key bit (left) (1) \r\nKey bit (right) (2) \r\n",	// 19 
 	"",		// 20
 	"Gold Key \r\n",		// 21
 	"",		// 22

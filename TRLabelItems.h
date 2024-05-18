@@ -84,6 +84,9 @@ extern char *TR4ItemsName37 [NB_BUTTONS];
 #define	TR4ItemsName38	TR4ItemsName37
 
 //	TR5
+extern char *TR5ItemsName [NB_BUTTONS];
+
+//
 extern char *TR5ItemsName01 [NB_BUTTONS];
 extern char *TR5ItemsName02 [NB_BUTTONS];
 extern char *TR5ItemsName03 [NB_BUTTONS];

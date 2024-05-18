@@ -288,6 +288,7 @@ BOOL CTRXItemsTR4::OnSetActive()
 	}
 	else if ( iVersion == 5 || iVersion == 50 )
 	{
+		pTableGen = TR5ItemsName;
 		int iLevelIndex = CTRSaveGame::GetLevelIndex();
 		switch ( iLevelIndex )
 		{
@@ -911,6 +912,8 @@ BOOL CTRXItemsTR4::OnToolTipNotify(UINT id, NMHDR *pNMH, LRESULT *pResult)
 			}
 			else if ( iVersion == 5 || iVersion == 50 )
 			{
+				pTable = TR5ItemsName;
+#if 0
 				int iLevelIndex = CTRSaveGame::GetLevelIndex();
 				switch ( iLevelIndex )
 				{
@@ -929,6 +932,7 @@ BOOL CTRXItemsTR4::OnToolTipNotify(UINT id, NMHDR *pNMH, LRESULT *pResult)
 					case 12 : // No 12 Level
 					case 13 : pTable = TR5ItemsName14; break;
 				}
+#endif
 			}
 
 			//
