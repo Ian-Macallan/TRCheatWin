@@ -28,6 +28,7 @@
 #include "TRXMessageBox.h"
 #include "TR_Areas.h"
 #include "TRXHelpDialog.h"
+#include "TRLabelItems.h"
 
 #include "ReadTR2/ReadTRX.h"
 #include "ReadTR2/ReadTRXScript.h"
@@ -276,6 +277,10 @@ BOOL CTRXCHEATWINApp::InitInstance()
 	SetRegistryKey("Macallan");
 
 	GetModule();
+
+	//	Custom Levels
+	ZeroMemory ( TR49ItemsNameInd, sizeof(TR49ItemsNameInd) );
+	ZeroMemory ( TR49ItemsNameGen, sizeof(TR49ItemsNameGen) );
 
 	//	Instanciate Colors
 	CTRXColors::Instanciate();

@@ -16,3 +16,4 @@ enum TR_MODE
 extern BOOL ExtractData (	FILE *hOutputFile, int game,
 							const char *pPathname, const char *pName, TR_MODE TRMode, const char *pPrefix,
 							FCT_AddToCustomArea function = NULL );
+

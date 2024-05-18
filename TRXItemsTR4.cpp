@@ -181,7 +181,7 @@ void CTRXItemsTR4::SetLabel ( UINT checkId, UINT editId, char **pTableInd, char 
 	//
 	if ( pCheckWnd != NULL )
 	{
-		if ( pTableInd != NULL && strlen(pTableInd [ index ]) > 0 )
+		if ( pTableInd != NULL && pTableInd [ index ] != NULL && strlen(pTableInd [ index ]) > 0 )
 		{
 			ZeroMemory ( szLabel, sizeof(szLabel) );
 			strcpy_s ( szLabel, pTableInd [ index ] );
@@ -194,7 +194,7 @@ void CTRXItemsTR4::SetLabel ( UINT checkId, UINT editId, char **pTableInd, char 
 			pEditWnd->SetFont ( m_pBoldFont, TRUE );
 			pCheckWnd->SetWindowText ( szLabel );
 		}
-		else if ( pTableGen != NULL && strlen(pTableGen [ index ]) > 0 )
+		else if ( pTableGen != NULL && pTableGen [ index ] != NULL && strlen(pTableGen [ index ]) > 0 )
 		{
 			ZeroMemory ( szLabel, sizeof(szLabel) );
 			strcpy_s ( szLabel, pTableGen [ index ] );
@@ -240,56 +240,83 @@ BOOL CTRXItemsTR4::OnSetActive()
 	char **pTableGen = NULL;
 	char **pTableInd = NULL;
 	int iVersion = CTRSaveGame::GetVersion();
-	if ( iVersion == 4 || ( iVersion >= 40 && iVersion <= 49 ) )
+
+	//
+	bool bStandardLevel = true;
+	if ( TR49ItemsNameGen [ 0 ] != NULL )
 	{
-		pTableGen = TR4ItemsName;
-		int iLevelIndex = CTRSaveGame::GetLevelIndex();
-		switch ( iLevelIndex )
+		bStandardLevel = false;
+	}
+
+	//
+	int iLevelIndex = CTRSaveGame::GetLevelIndex();
+
+	if ( iVersion == 4 || ( iVersion >= 40 && iVersion <= 45 ) )
+	{
+		//
+		if ( bStandardLevel )
 		{
-			case 0  : pTableInd = TR4ItemsName01; break;
-			case 1  : pTableInd = TR4ItemsName02; break;
-			case 2  : pTableInd = TR4ItemsName03; break;
-			case 3  : pTableInd = TR4ItemsName04; break;
-			case 4  : pTableInd = TR4ItemsName05; break;
-			case 5  : pTableInd = TR4ItemsName06; break;
-			case 6  : pTableInd = TR4ItemsName07; break;
-			case 7  : pTableInd = TR4ItemsName08; break;
-			case 8  : pTableInd = TR4ItemsName09; break;
-			case 9  : pTableInd = TR4ItemsName10; break;
-			case 10 : pTableInd = TR4ItemsName11; break;
-			case 11 : pTableInd = TR4ItemsName12; break;
-			case 12 : pTableInd = TR4ItemsName13; break;
-			case 13 : pTableInd = TR4ItemsName14; break;
-			case 14 : pTableInd = TR4ItemsName15; break;
-			case 15 : pTableInd = TR4ItemsName16; break;
-			case 16 : pTableInd = TR4ItemsName17; break;
-			case 17 : pTableInd = TR4ItemsName18; break;
-			case 18 : pTableInd = TR4ItemsName19; break;
-			case 19 : pTableInd = TR4ItemsName20; break;
-			case 20 : pTableInd = TR4ItemsName21; break;
-			case 21 : pTableInd = TR4ItemsName22; break;
-			case 22 : pTableInd = TR4ItemsName23; break;
-			case 23 : pTableInd = TR4ItemsName24; break;
-			case 24 : pTableInd = TR4ItemsName25; break;
-			case 25 : pTableInd = TR4ItemsName26; break;
-			case 26 : pTableInd = TR4ItemsName27; break;
-			case 27 : pTableInd = TR4ItemsName28; break;
-			case 28 : pTableInd = TR4ItemsName29; break;
-			case 29 : pTableInd = TR4ItemsName30; break;
-			case 30 : pTableInd = TR4ItemsName31; break;
-			case 31 : pTableInd = TR4ItemsName32; break;
-			case 32 : pTableInd = TR4ItemsName33; break;
-			case 33 : pTableInd = TR4ItemsName34; break;
-			case 34 : pTableInd = TR4ItemsName35; break;
-			case 35 : pTableInd = TR4ItemsName36; break;
-			case 36 : pTableInd = TR4ItemsName37; break;
-			case 37 : pTableInd = TR4ItemsName38; break;
+			pTableGen = TR4ItemsName;
+			switch ( iLevelIndex )
+			{
+				case 0  : pTableInd = TR4ItemsName01; break;
+				case 1  : pTableInd = TR4ItemsName02; break;
+				case 2  : pTableInd = TR4ItemsName03; break;
+				case 3  : pTableInd = TR4ItemsName04; break;
+				case 4  : pTableInd = TR4ItemsName05; break;
+				case 5  : pTableInd = TR4ItemsName06; break;
+				case 6  : pTableInd = TR4ItemsName07; break;
+				case 7  : pTableInd = TR4ItemsName08; break;
+				case 8  : pTableInd = TR4ItemsName09; break;
+				case 9  : pTableInd = TR4ItemsName10; break;
+				case 10 : pTableInd = TR4ItemsName11; break;
+				case 11 : pTableInd = TR4ItemsName12; break;
+				case 12 : pTableInd = TR4ItemsName13; break;
+				case 13 : pTableInd = TR4ItemsName14; break;
+				case 14 : pTableInd = TR4ItemsName15; break;
+				case 15 : pTableInd = TR4ItemsName16; break;
+				case 16 : pTableInd = TR4ItemsName17; break;
+				case 17 : pTableInd = TR4ItemsName18; break;
+				case 18 : pTableInd = TR4ItemsName19; break;
+				case 19 : pTableInd = TR4ItemsName20; break;
+				case 20 : pTableInd = TR4ItemsName21; break;
+				case 21 : pTableInd = TR4ItemsName22; break;
+				case 22 : pTableInd = TR4ItemsName23; break;
+				case 23 : pTableInd = TR4ItemsName24; break;
+				case 24 : pTableInd = TR4ItemsName25; break;
+				case 25 : pTableInd = TR4ItemsName26; break;
+				case 26 : pTableInd = TR4ItemsName27; break;
+				case 27 : pTableInd = TR4ItemsName28; break;
+				case 28 : pTableInd = TR4ItemsName29; break;
+				case 29 : pTableInd = TR4ItemsName30; break;
+				case 30 : pTableInd = TR4ItemsName31; break;
+				case 31 : pTableInd = TR4ItemsName32; break;
+				case 32 : pTableInd = TR4ItemsName33; break;
+				case 33 : pTableInd = TR4ItemsName34; break;
+				case 34 : pTableInd = TR4ItemsName35; break;
+				case 35 : pTableInd = TR4ItemsName36; break;
+				case 36 : pTableInd = TR4ItemsName37; break;
+				case 37 : pTableInd = TR4ItemsName38; break;
+			}
 		}
+		else
+		{
+			pTableGen = TR49ItemsNameGen;
+
+			//	Skip Title
+			pTableInd = TR49ItemsNameInd [ iLevelIndex + 1 ];
+		}
+	}
+	else if ( iVersion == 49 )
+	{
+		pTableGen = TR49ItemsNameGen;
+
+		//	Skip Title
+		pTableInd = TR49ItemsNameInd [ iLevelIndex + 1 ];
 	}
 	else if ( iVersion == 5 || iVersion == 50 )
 	{
 		pTableGen = TR5ItemsName;
-		int iLevelIndex = CTRSaveGame::GetLevelIndex();
 		switch ( iLevelIndex )
 		{
 			case 0  : pTableInd = TR5ItemsName01; break;
@@ -904,11 +931,29 @@ BOOL CTRXItemsTR4::OnToolTipNotify(UINT id, NMHDR *pNMH, LRESULT *pResult)
 		if ( ptAction.x >= rect.left && ptAction.x <= rect.right && ptAction.y >= rect.top && ptAction.y <= rect.bottom )
 		{
 			//
+			bool bStandardLevel = true;
+			if ( TR49ItemsNameGen [ 0 ] != NULL )
+			{
+				bStandardLevel = false;
+			}
+
+			//
 			char **pTable		= NULL;
 			int iVersion = CTRSaveGame::GetVersion();
-			if ( iVersion == 4 || ( iVersion >= 40 && iVersion <= 49 ) )
+			if ( iVersion == 4 || ( iVersion >= 40 && iVersion <= 45 ) )
 			{
-				pTable = TR4ItemsName;
+				if ( bStandardLevel )
+				{
+					pTable = TR4ItemsName;
+				}
+				else
+				{
+					pTable = TR49ItemsNameGen;
+				}
+			}
+			else if ( iVersion == 49 )
+			{
+				pTable = TR49ItemsNameGen;
 			}
 			else if ( iVersion == 5 || iVersion == 50 )
 			{

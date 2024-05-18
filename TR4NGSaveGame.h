@@ -32,7 +32,10 @@
  *      Definition.
  *      ------------------------------------------------
  */
+#ifndef TR4NGMAXLEVEL
 #define TR4NGMAXLEVEL		38
+#endif
+
 #define TR4NGBUFFEREND		14014
 
 

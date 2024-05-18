@@ -2,6 +2,10 @@
 
 #include "GunGrids.h"
 
+#ifndef TR4NGMAXLEVEL
+#define TR4NGMAXLEVEL		38
+#endif
+
 //
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -100,4 +104,8 @@ extern char *TR5ItemsName10 [NB_BUTTONS];
 extern char *TR5ItemsName11 [NB_BUTTONS];
 extern char *TR5ItemsName12 [NB_BUTTONS];
 extern char *TR5ItemsName14 [NB_BUTTONS];
+
+//	TR4 Custom Levels
+extern char *TR49ItemsNameInd [ TR4NGMAXLEVEL ] [ NB_BUTTONS ];
+extern char *TR49ItemsNameGen [ NB_BUTTONS ];
 

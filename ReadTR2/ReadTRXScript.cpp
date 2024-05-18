@@ -1611,22 +1611,42 @@ static BOOL TreatLevelData ( FILE *hOutFile, xuint16_t offset, int len, int vers
 							char szItemName [ 64 ];
 							sprintf_s ( szItemName, sizeof(szItemName), "%s (%d)", pString, corr.value );
 
-							sprintf_s ( ItemsTable [ corr.offset ].text + strlen(ItemsTable [ corr.offset ].text), 
-										sizeof(ItemsTable [ corr.offset ].text) - strlen(ItemsTable [ corr.offset ].text),
-										"%s \\r\\n", szItemName );
+							if ( hOutFile != NULL )
+							{
+								sprintf_s ( ItemsTable [ corr.offset ].text + strlen(ItemsTable [ corr.offset ].text), 
+											sizeof(ItemsTable [ corr.offset ].text) - strlen(ItemsTable [ corr.offset ].text),
+											"%s \\r\\n", szItemName );
+							}
+							else
+							{
+								sprintf_s ( ItemsTable [ corr.offset ].text + strlen(ItemsTable [ corr.offset ].text), 
+											sizeof(ItemsTable [ corr.offset ].text) - strlen(ItemsTable [ corr.offset ].text),
+											"%s \r\n", szItemName );
+							}
+
+							//
 							if ( strstr ( GlobalItemsTable [ corr.offset ].text, szItemName ) == NULL )
 							{
-								if ( strlen(GlobalItemsTable [ corr.offset ].text) != 0 )
-								{
-									sprintf_s ( GlobalItemsTable [ corr.offset ].text + strlen(GlobalItemsTable [ corr.offset ].text), 
-												sizeof(GlobalItemsTable [ corr.offset ].text) - strlen(GlobalItemsTable [ corr.offset ].text),
-												"\n\t\t" );
-								}
-
 								//
-								sprintf_s ( GlobalItemsTable [ corr.offset ].text + strlen(GlobalItemsTable [ corr.offset ].text), 
+								if ( hOutFile != NULL )
+								{
+									if ( strlen(GlobalItemsTable [ corr.offset ].text) != 0 )
+									{
+										sprintf_s ( GlobalItemsTable [ corr.offset ].text + strlen(GlobalItemsTable [ corr.offset ].text), 
+													sizeof(GlobalItemsTable [ corr.offset ].text) - strlen(GlobalItemsTable [ corr.offset ].text),
+													"\n\t\t" );
+									}
+
+									sprintf_s ( GlobalItemsTable [ corr.offset ].text + strlen(GlobalItemsTable [ corr.offset ].text), 
 											sizeof(GlobalItemsTable [ corr.offset ].text) - strlen(GlobalItemsTable [ corr.offset ].text),
 											"\"%s \\r\\n\"", szItemName );
+								}
+								else
+								{
+									sprintf_s ( GlobalItemsTable [ corr.offset ].text + strlen(GlobalItemsTable [ corr.offset ].text), 
+											sizeof(GlobalItemsTable [ corr.offset ].text) - strlen(GlobalItemsTable [ corr.offset ].text),
+											"%s \r\n", szItemName );
+								}
 							}
 						}
 					}
@@ -1651,11 +1671,83 @@ static BOOL TreatLevelData ( FILE *hOutFile, xuint16_t offset, int len, int vers
 /////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////
-static BOOL WriteHeader ( int version, int level )
+static BOOL WriteHeader ( int version, int level, FCT_AddToItemsLabels function = NULL )
 {
-	if ( hHeaFile == NULL )
+	//
+	if ( level < 0 )
 	{
-		return FALSE;
+		if ( hHeaFile == NULL )
+		{
+			int b = 0;
+			if ( strlen(GlobalItemsTable [ b ].text) == 0 )
+			{
+				strcpy_s ( GlobalItemsTable [ b ].text, sizeof(GlobalItemsTable [ b ].text), "Crowbar" );
+			}
+
+			//
+			b = 1;
+			if ( strlen(GlobalItemsTable [ b ].text) == 0 )
+			{
+				strcpy_s ( GlobalItemsTable [ b ].text, sizeof(GlobalItemsTable [ b ].text), "Small Waterskin" );
+			}
+
+			//
+			b = 2;
+			if ( strlen(GlobalItemsTable [ b ].text) == 0 )
+			{
+				strcpy_s ( GlobalItemsTable [ b ].text, sizeof(GlobalItemsTable [ b ].text), "Large Waterskin" );
+			}
+
+			//
+			b = 5;
+			if ( strlen(GlobalItemsTable [ b ].text) == 0 )
+			{
+				strcpy_s ( GlobalItemsTable [ b ].text, sizeof(GlobalItemsTable [ b ].text), "Cloth" );
+			}
+
+			//
+			b = 6;
+			if ( strlen(GlobalItemsTable [ b ].text) == 0 )
+			{
+				strcpy_s ( GlobalItemsTable [ b ].text, sizeof(GlobalItemsTable [ b ].text), "Vials of chloroform" );
+			}
+		}
+		else
+		{
+			int b = 0;
+			if ( strlen(GlobalItemsTable [ b ].text) == 0 )
+			{
+				strcpy_s ( GlobalItemsTable [ b ].text, sizeof(GlobalItemsTable [ b ].text), "\"Crowbar\"" );
+			}
+
+			//
+			b = 1;
+			if ( strlen(GlobalItemsTable [ b ].text) == 0 )
+			{
+				strcpy_s ( GlobalItemsTable [ b ].text, sizeof(GlobalItemsTable [ b ].text), "\"Small Waterskin\"" );
+			}
+
+			//
+			b = 2;
+			if ( strlen(GlobalItemsTable [ b ].text) == 0 )
+			{
+				strcpy_s ( GlobalItemsTable [ b ].text, sizeof(GlobalItemsTable [ b ].text), "\"Large Waterskin\"" );
+			}
+
+			//
+			b = 5;
+			if ( strlen(GlobalItemsTable [ b ].text) == 0 )
+			{
+				strcpy_s ( GlobalItemsTable [ b ].text, sizeof(GlobalItemsTable [ b ].text), "\"Cloth\"" );
+			}
+
+			//
+			b = 6;
+			if ( strlen(GlobalItemsTable [ b ].text) == 0 )
+			{
+				strcpy_s ( GlobalItemsTable [ b ].text, sizeof(GlobalItemsTable [ b ].text), "\"Vials of chloroform\"" );
+			}
+		}
 	}
 
 	if ( level >= 0 )
@@ -1663,9 +1755,13 @@ static BOOL WriteHeader ( int version, int level )
 		Print (  hHeaFile, "char *TR%dItemsName%02d [NB_BUTTONS] =\n", version, level );
 		Print (  hHeaFile, "{\n" );
 
-		for ( int i = 0; i < NB_BUTTONS; i++ )
+		for ( int b = 0; b < NB_BUTTONS; b++ )
 		{
-			Print (  hHeaFile, "\t\"%s\",\t// %d \n", ItemsTable [ i ].text, i + 1);
+			Print ( hHeaFile, "\t\"%s\",\t// %d \n", ItemsTable [ b ].text, b + 1 );
+			if  ( function != NULL )
+			{
+				( *function ) ( level, b, ItemsTable [ b ].text );
+			}
 		}
 		Print (  hHeaFile, "};\n" );
 		Print (  hHeaFile, "\n" );
@@ -1675,15 +1771,21 @@ static BOOL WriteHeader ( int version, int level )
 		Print (  hHeaFile, "char *TR%dItemsName [NB_BUTTONS] =\n", version );
 		Print (  hHeaFile, "{\n" );
 
-		for ( int i = 0; i < NB_BUTTONS; i++ )
+		for ( int b = 0; b < NB_BUTTONS; b++ )
 		{
-			if ( strlen(GlobalItemsTable [ i ].text) > 0 )
+			if ( strlen(GlobalItemsTable [ b ].text) > 0 )
 			{
-				Print (  hHeaFile, "\t%s,\t// %d \n", GlobalItemsTable [ i ].text, i + 1);
+				Print ( hHeaFile, "\t%s,\t// %d \n", GlobalItemsTable [ b ].text, b + 1 );
 			}
 			else
 			{
-				Print (  hHeaFile, "\t\"\",\t// %d \n", i + 1);
+				Print ( hHeaFile, "\t\"\",\t// %d \n", b + 1 );
+			}
+
+			//
+			if  ( function != NULL )
+			{
+				( *function ) ( level, b, GlobalItemsTable [ b ].text );
 			}
 		}
 		Print (  hHeaFile, "};\n" );
@@ -1698,7 +1800,8 @@ static BOOL WriteHeader ( int version, int level )
 //	Full Pathname
 //
 /////////////////////////////////////////////////////////////////////////////
-BOOL ReadTRXScript ( const char *pathname, const char *pDirectory, int version, bool bWrite )
+BOOL ReadTRXScript (	const char *pathname, const char *pDirectory, int version, bool bWrite,
+						FCT_AddToItemsLabels function )
 {
 	//
 	ZeroMemory ( StringTable, sizeof(StringTable) );
@@ -1722,8 +1825,8 @@ BOOL ReadTRXScript ( const char *pathname, const char *pDirectory, int version, 
 	strcat_s ( szHeaFilename, sizeof(szHeaFilename), ".h" );
 
 	//
-	fopen_s ( &hLogFile, szLogFilename, "w" );
-	fopen_s ( &hHeaFile, szHeaFilename, "w" );
+	if ( bWrite ) fopen_s ( &hLogFile, szLogFilename, "w" );
+	if ( bWrite ) fopen_s ( &hHeaFile, szHeaFilename, "w" );
 
 	//
 	FILE *hInpFile = NULL;
@@ -1739,20 +1842,23 @@ BOOL ReadTRXScript ( const char *pathname, const char *pDirectory, int version, 
 	}
 
 	//
-	strcpy_s ( szOutputFilename, sizeof(szOutputFilename), pathname );
-	strcat_s ( szOutputFilename, sizeof(szOutputFilename), ".TXT" );
-	fopen_s ( &hOutFile, szOutputFilename, "w" );
-	if ( hOutFile == NULL )
+	if ( bWrite )
 	{
-		Print ( hLogFile, "File Open Error %s\n", szOutputFilename );
-		CloseOne ( &hInpFile );
+		strcpy_s ( szOutputFilename, sizeof(szOutputFilename), pathname );
+		strcat_s ( szOutputFilename, sizeof(szOutputFilename), ".TXT" );
+		fopen_s ( &hOutFile, szOutputFilename, "w" );
+		if ( hOutFile == NULL )
+		{
+			Print ( hLogFile, "File Open Error %s\n", szOutputFilename );
+			CloseOne ( &hInpFile );
 
-		Cleanup();
+			Cleanup();
 
-		CloseOne ( &hLogFile );
-		CloseOne ( &hHeaFile );
+			CloseOne ( &hLogFile );
+			CloseOne ( &hHeaFile );
 
-		return bResult;
+			return bResult;
+		}
 	}
 
 	//
@@ -1985,11 +2091,11 @@ BOOL ReadTRXScript ( const char *pathname, const char *pDirectory, int version, 
 		TreatLevelData ( hOutFile, LevelBlockDataOffsets [ i ],  len, version );
 
 		//
-		WriteHeader ( version, i );
+		WriteHeader ( version, i, function );
 	}
 
 	//
-	WriteHeader ( version, -1 );
+	WriteHeader ( version, -1, function );
 
 	//
 	CloseOne ( &hOutFile );

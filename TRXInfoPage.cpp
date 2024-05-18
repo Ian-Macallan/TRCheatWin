@@ -9,6 +9,8 @@
 #include "TRXMapAreas.h"
 #include "TRXMessageBox.h"
 #include "ReadTR2\ReadTRX.h"
+#include "ReadTR2\\ReadTRXScript.h"
+#include "TRLabelItems.h"
 
 #include "AutomaticVersionHeader.h"
 
@@ -117,6 +119,73 @@ static int SortLocation(const void *pVoid1, const void *pVoid2)
 	}
 
 	return iResult;
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
+static void ResetCustomLabels ()
+{
+	//
+	//	Reset
+	for ( int l = 0; l < TR4NGMAXLEVEL; l++ )
+	{
+		for ( int b = 0; b < NB_BUTTONS; b++ )
+		{
+			if ( TR49ItemsNameInd [ l ] [ b ] != NULL )
+			{
+				free ( TR49ItemsNameInd [ l ] [ b ] );
+				TR49ItemsNameInd [ l ] [ b ] = NULL;
+			}
+		}
+	}
+
+	//
+	for ( int b = 0; b < NB_BUTTONS; b++ )
+	{
+		if ( TR49ItemsNameGen [ b ] != NULL )
+		{
+			free ( TR49ItemsNameGen [ b ] );
+			TR49ItemsNameGen [ b ] = NULL;
+		}
+	}
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
+static void AddToItemsLabels ( int level, int button, const char *pText )
+{
+	if ( button >= 0 && button < NB_BUTTONS && pText != NULL )
+	{
+		if ( level == -1 )
+		{
+			OutputDebugString ( "--Gen--\n" );
+			if ( TR49ItemsNameGen [ button ] != NULL )
+			{
+				free ( TR49ItemsNameGen [ button ] );
+				TR49ItemsNameGen [ button ] = NULL;
+			}
+
+			TR49ItemsNameGen [ button ] = ( char * ) malloc ( strlen(pText) + 1 );
+			strcpy_s ( TR49ItemsNameGen [ button ], strlen(pText) + 1, pText );
+			OutputDebugString ( pText );
+		}
+		else if ( level >= 0 && level < TR4NGMAXLEVEL )
+		{
+			OutputDebugString ( "--Ind--\n" );
+			if ( TR49ItemsNameInd [ level ] [ button ] != NULL )
+			{
+				free ( TR49ItemsNameInd [ level ] [ button ] );
+				TR49ItemsNameInd [ level ] [ button ] = NULL;
+			}
+			TR49ItemsNameInd [ level ] [ button ] = ( char * ) malloc ( strlen(pText) + 1 );
+			strcpy_s ( TR49ItemsNameInd [ level ] [ button ], strlen(pText) + 1, pText );
+			OutputDebugString ( pText );
+		}
+	}
 }
 
 //
@@ -2547,6 +2616,21 @@ void CTRXInfoPage::OnBnClickedAddCustom()
 			CTRXMessageBox::ShowMessage( "Load Custom Data File", "Fail to read the level data file" );
 		}
 
+		//
+		//	Read Script
+		theApp.RemoveFilename ( szPathname );
+		theApp.RemoveFilename ( szPathname );
+		strcpy_s ( szDirectory, sizeof(szDirectory), szPathname );
+		strcat_s ( szPathname, sizeof(szPathname), "\\SCRIPT.DAT" );
+
+		//
+		//	Reset
+		ResetCustomLabels ();
+
+		//
+		BOOL bRead = ReadTRXScript ( szPathname, szDirectory, tombraider / 10, false, AddToItemsLabels );
+
+		//
 		DisplayValues();
 	}
 
@@ -2633,6 +2717,7 @@ void CTRXInfoPage::OnBnClickedRemoveCustom()
 void CTRXInfoPage::ChangeCustomCombo()
 {
 	static char szPathname [ MAX_PATH ] = "";
+	static char szDirectory [ MAX_PATH ] = "";
 
 	if ( m_SetManualCombo )
 	{
@@ -2691,6 +2776,8 @@ void CTRXInfoPage::ChangeCustomCombo()
 			 *		Starts a dialog box.
 			 */
 			InitCustomArea();
+
+			//
 			if ( m_Custom_Selected >= 1 )
 			{
 				SetCustomLevelName ( CTRXCHEATWINApp::FindFileName ( szPathname ) );
@@ -2699,6 +2786,20 @@ void CTRXInfoPage::ChangeCustomCombo()
 				{
 					CTRXMessageBox::ShowMessage( "Load Custom Data File", "Fail to read the level data file" );
 				}
+
+				//
+				//	Read Script
+				theApp.RemoveFilename ( szPathname );
+				theApp.RemoveFilename ( szPathname );
+				strcpy_s ( szDirectory, sizeof(szDirectory), szPathname );
+				strcat_s ( szPathname, sizeof(szPathname), "\\SCRIPT.DAT" );
+
+				//
+				//	Reset
+				ResetCustomLabels ();
+
+				//
+				BOOL bRead = ReadTRXScript ( szPathname, szDirectory, tombraider / 10, false, AddToItemsLabels );
 			}
 
 			//
@@ -2714,6 +2815,8 @@ void CTRXInfoPage::ChangeCustomCombo()
 /////////////////////////////////////////////////////////////////////////////
 void CTRXInfoPage::OnSelchangeCustomCombo()
 {
+	ResetCustomLabels ();
+
 	ChangeCustomCombo();
 }
 

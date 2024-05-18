@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-
+//
 #include "ReadTRXBasicTypes.h"
 
 #pragma pack(push, pack1, 1)
@@ -223,8 +223,15 @@ struct LevelDataxDA
 //
 #pragma pack(pop, pack1)
 
-extern BOOL ReadTRXLanguage ( const char *pFilename, const char *pDirectory, int iLang, int version, bool bWrite = true );
-extern BOOL ReadTRXScript ( const char *pathname, const char *pDirectory, int version = 4, bool bWrite = true );
 
+//
+//	For Adding Items Label
+typedef void (*FCT_AddToItemsLabels)(int level, int button, const char *pText);
+
+extern BOOL ReadTRXLanguage (	const char *pFilename, const char *pDirectory, int iLang, int version, bool bWrite = true );
+extern BOOL ReadTRXScript (		const char *pathname, const char *pDirectory, int version = 4, bool bWrite = true,
+								FCT_AddToItemsLabels function = NULL );
+
+//
 extern BOOL WriteTRXLanguage ( const char *pFilename, const char *pDirectory, int iLang, int version );
 extern BOOL WriteTRXScript ( const char *pathname, const char *pDirectory, int version = 4 );
