@@ -2019,16 +2019,15 @@ BOOL ReadTRXScript (	const char *pathname, const char *pDirectory, int version, 
 	}
 
 	//
-	int nbLevels = scriptLevelHeader.NumTotalLevels;
-
 	//
 	//	Strings
+	int nbLevelPath = scriptLevelHeader.NumUniqueLevelPaths;
 	ZeroMemory ( &LevelpathStringOffsets, sizeof(LevelpathStringOffsets) );
-	if ( nbLevels > 0 )
+	if ( nbLevelPath > 0 )
 	{
-		Print ( hLogFile, "Reading LevelpathStringOffsets %d\n", sizeof(xuint16_t)*nbLevels );
-		uRead = fread ( (char*) &LevelpathStringOffsets, 1, sizeof(xuint16_t)*nbLevels, hInpFile );
-		if ( uRead != sizeof(xuint16_t)*nbLevels )
+		Print ( hLogFile, "Reading LevelpathStringOffsets %d\n", sizeof(xuint16_t)*nbLevelPath );
+		uRead = fread ( (char*) &LevelpathStringOffsets, 1, sizeof(xuint16_t)*nbLevelPath, hInpFile );
+		if ( uRead != sizeof(xuint16_t)*nbLevelPath )
 		{
 			CloseOne ( &hOutFile );
 			CloseOne ( &hInpFile );
@@ -2059,13 +2058,14 @@ BOOL ReadTRXScript (	const char *pathname, const char *pDirectory, int version, 
 		return bResult;
 	}
 		
-	for ( int i = 0; i < nbLevels; i++ )
+	for ( int i = 0; i < nbLevelPath; i++ )
 	{
 		Print ( hOutFile, "; LevelpathStringOffsets %d : %d %s\n", i, LevelpathStringOffsets [ i ], LevelpathStringBlockData + LevelpathStringOffsets [ i ] );
 	}
 
 	//
 	//
+	int nbLevels = scriptLevelHeader.NumTotalLevels;
 	ZeroMemory ( &LevelBlockDataOffsets, sizeof(LevelBlockDataOffsets) );
 	if ( nbLevels > 0 )
 	{
@@ -2641,8 +2641,8 @@ BOOL WriteTRXScript ( const char *pathname, const char *pDirectory, int version 
 
 						//
 						//	Write Prevoious : LevelpathStringBlockData
-						Print ( hLogFile, "Writing LevelpathStringOffsets %d\n", sizeof(xuint16_t)*scriptLevelHeader.NumTotalLevels );
-						fwrite ( LevelpathStringOffsets, 1, sizeof(xuint16_t)*scriptLevelHeader.NumTotalLevels, hOutFile );
+						Print ( hLogFile, "Writing LevelpathStringOffsets %d\n", sizeof(xuint16_t)*scriptLevelHeader.NumUniqueLevelPaths );
+						fwrite ( LevelpathStringOffsets, 1, sizeof(xuint16_t)*scriptLevelHeader.NumUniqueLevelPaths, hOutFile );
 						
 						//
 						Print ( hLogFile, "Writing LevelpathStringBlockData %d\n", scriptLevelHeader.LevelpathStringLen );
@@ -3253,7 +3253,8 @@ BOOL WriteTRXScript ( const char *pathname, const char *pDirectory, int version 
 							}
 							else
 							{
-								LevelpathStringOffsets [ scriptLevelHeader.NumTotalLevels - 1 ] = scriptLevelHeader.LevelpathStringLen;
+								//	We Will Dupplicate PATH
+								LevelpathStringOffsets [ scriptLevelHeader.NumUniqueLevelPaths - 1 ] = scriptLevelHeader.LevelpathStringLen;
 								memcpy_s ( LevelpathStringBlockData + scriptLevelHeader.LevelpathStringLen,
 											sizeof(LevelpathStringBlockData) - scriptLevelHeader.LevelpathStringLen, pBuffer, strlen(pBuffer) + 1 );
 								scriptLevelHeader.LevelpathStringLen	+= (xuint16_t)strlen(pBuffer) + 1;
