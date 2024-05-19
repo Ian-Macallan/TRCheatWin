@@ -141,5 +141,5 @@ extern void InitCustomArea ();
 extern void AddToCustomArea (TR_AREA *pArea);
 extern BOOL IsCustomArea ( );
 extern char *GetCustomLevelName();
-extern void SetCustomLevelName( char *pName );
+extern void SetCustomLevelName( const char *pName );
 typedef void (*FCT_AddToCustomArea)(TR_AREA *pArea);

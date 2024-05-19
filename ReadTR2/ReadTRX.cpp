@@ -214,7 +214,7 @@ BOOL ExtractData (	FILE *hOutputFile, int game,
 {
 	MCMemA memBuffer(64 * 1024 * 1024);
 	MCMemA memLevelDataCompressed ( 64 * 1024 * 1024 );
-	MCMemA memLevelDataUnCompressed ( 64 * 1024 * 1024 );
+	MCMemA memLevelDataUnCompressed ( 128 * 1024 * 1024 );
 
 	BOOL  bResult = FALSE;
 
@@ -305,8 +305,6 @@ BOOL ExtractData (	FILE *hOutputFile, int game,
 
 		//
 		ZeroMemory ( memBuffer.ptr, memBuffer.len );
-		ZeroMemory ( memLevelDataCompressed.ptr, memLevelDataCompressed.len );
-		ZeroMemory ( memLevelDataUnCompressed.ptr, memLevelDataUnCompressed.len );
 
 		//
 		if ( TRMode == TRR2_MODE || TRMode == TRR3_MODE )
@@ -340,6 +338,9 @@ BOOL ExtractData (	FILE *hOutputFile, int game,
 				iRead = ReadChunk (  &Padding, sizeof(Padding), hFile );
 			}
 
+			ZeroMemory ( memLevelDataCompressed.ptr, memLevelDataCompressed.len );
+			ZeroMemory ( memLevelDataUnCompressed.ptr, memLevelDataUnCompressed.len );
+
 			iRead = ReadChunk (  &LevelData_UncompSize, sizeof(LevelData_UncompSize), hFile );
 			iRead = ReadChunk (  &LevelData_CompSize, sizeof(LevelData_CompSize), hFile );
 			iRead = ReadChunk (  memLevelDataCompressed.ptr, LevelData_CompSize, hFile );
@@ -347,14 +348,15 @@ BOOL ExtractData (	FILE *hOutputFile, int game,
 			long lUncompSize	= LevelData_UncompSize;
 			long lCompSize		= LevelData_CompSize;
 
-			//
 			//	Uncompress Level Data
 			if ( LevelData_UncompSize != LevelData_CompSize )
 			{
-				int compressStatus = 
-					uncompress2 ( (Bytef *) memLevelDataUnCompressed.ptr, &LevelData_UncompSize, (Bytef *) memLevelDataCompressed.ptr, &LevelData_CompSize);
+				int compressStatus = uncompress2( (Bytef *) memLevelDataUnCompressed.ptr, &LevelData_UncompSize,
+					(Bytef *) memLevelDataCompressed.ptr, &LevelData_CompSize);
 				if ( compressStatus != Z_OK )
 				{
+					//	Probably a Dict I do know of
+					//	Maybe crypted too
 					PrintStdout ( "Error Uncompressing\r\n" );
 					bResult = FALSE;
 					if ( hFile != NULL )

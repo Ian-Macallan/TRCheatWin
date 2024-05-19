@@ -9,6 +9,7 @@
 #include "TRXPropertyPage.h"
 #include "TRXRoomPicture.h"
 #include "afxwin.h"
+#include "READTR2/READTRX.h"
 
 #define	COL_FILENAME	0
 #define	COL_GAME		1
@@ -32,7 +33,8 @@ class CTRXInfoPage : public CTRXPropertyPage
 		void DisplayDirectory(const char *pDirectory);
 		BOOL SelectCustomFromDir (const char *pDirectory);
 		BOOL SelectCustomFromPath (const char *pathname);
-		void ChangeCustomCombo();
+		//	If bManualChange we will not search best map
+		void ChangeCustomCombo( bool bManualChange );
 		int EnableForVersion();
 		void FillListCtrl( const char *pDirectory);
 
@@ -71,6 +73,8 @@ class CTRXInfoPage : public CTRXPropertyPage
 		void SetCurrent ( );
 		void ShowRoom(TR_AREA *pArea, DWORD x, DWORD z, WORD wDirection);
 		void ClickRoom ( UINT nFlags, CPoint point );
+		BOOL ExtractAfterScript ( int tombraider, TR_MODE trMode, STRUCTLOCATION *pTable, 
+									const char *pScriptDirectory, const char *pathname );
 		virtual void SetThemeChanged ( bool bDarkTheme );
 
 	// Dialog Data
