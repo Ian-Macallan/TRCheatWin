@@ -1127,6 +1127,18 @@ static void CloseOne ( FILE **phFile )
 
 //
 /////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
+void XorWith ( BYTE *pBuffer, size_t len, BYTE security )
+{
+	for ( size_t i = 0; i < len; i++ )
+	{
+		pBuffer [ i ] = pBuffer [ i ] ^ security;
+	}
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
 //	http://xproger.info/projects/OpenLara/trs.html
 //
 /////////////////////////////////////////////////////////////////////////////
@@ -1987,6 +1999,24 @@ BOOL ReadTRXScript (	const char *pathname, const char *pDirectory, int version, 
 	Print ( hOutFile, "Cut=\t%s\n", scriptLevelHeader.PCCutString );
 	Print ( hOutFile, "FMV=\t%s\n", scriptLevelHeader.PCFMVString );
 	Print ( hOutFile, "\n" );
+
+	if (	strlen ( (char *) scriptLevelHeader.PSXLevelString ) > 5	||
+			strlen ( (char *) scriptLevelHeader.PSXCutString ) > 5		||
+			strlen ( (char *) scriptLevelHeader.PSXLevelString ) > 5	||
+			strlen ( (char *) scriptLevelHeader.PCLevelString ) > 5		||
+			strlen ( (char *) scriptLevelHeader.PCCutString ) > 5		||
+			strlen ( (char *) scriptLevelHeader.PCFMVString ) > 5			)
+	{
+		CloseOne ( &hOutFile );
+		CloseOne ( &hInpFile );
+
+		CloseOne ( &hLogFile );
+		CloseOne ( &hHeaFile );
+
+		Cleanup();
+
+		return FALSE;
+	}
 
 	//
 	int nbLevels = scriptLevelHeader.NumTotalLevels;

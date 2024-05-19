@@ -981,7 +981,7 @@ BOOL CTRXItemsTR4::OnToolTipNotify(UINT id, NMHDR *pNMH, LRESULT *pResult)
 			}
 
 			//
-			if ( pTable != NULL )
+			if ( pTable != NULL && pTable [ iX ] != NULL )
 			{
 				if ( strlen(pTable [ iX ]) > 0 )
 				{

@@ -26,10 +26,10 @@ struct tr4_script_header // 9 bytes
 struct tr4_script_levelheader
 {
 	xuint8_t		NumTotalLevels;
-	xuint16_t	NumUniqueLevelPaths;
+	xuint16_t		NumUniqueLevelPaths;
 
-	xuint16_t	LevelpathStringLen;
-	xuint16_t	LevelBlockLen;
+	xuint16_t		LevelpathStringLen;
+	xuint16_t		LevelBlockLen;
 
 	xuint8_t		PSXLevelString [5];    //  typically ".PSX"
 	xuint8_t		PSXFMVString   [5];    //  typically ".FMV"
