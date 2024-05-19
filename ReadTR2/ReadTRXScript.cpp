@@ -393,6 +393,67 @@ enum StringsEnum
 
 //
 //====================================================================================
+//	TRNG
+// decriptare zona dei primi 64 bytes di script dat puntati da pScript
+//====================================================================================
+void DecriptaScript(BYTE *pScript)
+{
+	int i;
+	int Indice;
+	BYTE VetOut[64];
+	int TotXor;
+	int j;
+	int TotOrd;
+
+	static BYTE VetCryptTableXor[17] = {
+		239, 85, 225, 248, 61, 111, 214, 25, 218, 151, 29, 139, 
+		133, 15, 180, 10, 196};	
+
+	TotXor = 8;
+	TotOrd = 20;
+
+	static BYTE VetCryptOrd[64] = 
+		{57, 49, 1, 7, 36, 37, 0, 17, 45, 13, 40, 44, 
+		46, 33, 30, 34, 20, 41, 26, 19, 59, 53, 43, 2, 
+		22, 6, 23, 9, 31, 10, 21, 15, 5, 8, 42, 24, 
+		55, 14, 48, 56, 47, 60, 12, 39, 28, 32, 16, 27, 
+		52, 35, 62, 58, 63, 11, 18, 38, 4, 54, 50, 61, 
+		51, 25, 29, 3};
+
+	// fare in modo che il valore dei totali delle due serie 
+	// costanti sia corretto
+	TotXor = TotXor << 1;		//	16
+	TotOrd *=3;					//	60
+	TotXor++;					//	17
+	TotOrd +=4;					//	64
+	// adesso totXor = 17
+	// e TotOrd = 64
+	// prima usare lo xor per togliere la mascheratura
+	Indice=0;
+	for (i=0;i<TotOrd;i++) {
+		if (Indice >= TotXor) Indice=0;
+
+		pScript[i] ^= VetCryptTableXor[Indice];
+		Indice++;
+	}
+
+	// adesso rimettere a posto l'ordine
+	for (i=0;i<TotOrd;i++) {
+		for (j=0;j<TotOrd;j++) {
+			if (VetCryptOrd[j] == i) break;
+		}
+		VetOut[i] = pScript[j];
+	}
+
+	for (i=0;i<TotOrd;i++) {
+		pScript[i] = VetOut[i];
+	}
+
+
+}
+
+//
+//====================================================================================
 //
 //====================================================================================
 static const char *__strstri ( const char *pString, const char *pSearched )
@@ -1903,10 +1964,15 @@ BOOL ReadTRXScript (	const char *pathname, const char *pDirectory, int version, 
 		}
 	}
 
-	//
-	Print ( hLogFile, "Reading scriptHeader %d\n", sizeof(scriptHeader) );
-	size_t uRead = fread ( (char*) &scriptHeader, 1, sizeof(scriptHeader), hInpFile );
-	if ( uRead != sizeof(scriptHeader) )
+	size_t uRead = 0;
+
+	//	Look If Encryot
+	////////////////////////////////////
+	BOOL fileIsCrypted = FALSE;
+	BYTE cryptHeader [ 64 ];
+	ZeroMemory ( cryptHeader, sizeof(cryptHeader) );
+	uRead = fread ( cryptHeader, 1, sizeof(cryptHeader), hInpFile );
+	if ( uRead != sizeof(cryptHeader) )
 	{
 		CloseOne ( &hOutFile );
 		CloseOne ( &hInpFile );
@@ -1916,6 +1982,44 @@ BOOL ReadTRXScript (	const char *pathname, const char *pDirectory, int version, 
 		Cleanup();
 
 		return bResult;
+	}
+
+	//	The crypted part covers the two headers and it will remain 8 bytes.
+	DecriptaScript ( cryptHeader );
+	tr4_script_header		*pScriptHeader		= (tr4_script_header *) cryptHeader;
+	tr4_script_levelheader	*pScriptLevelHeader	= (tr4_script_levelheader *)( cryptHeader + sizeof(tr4_script_header) );
+	BYTE *pCryptHeader = cryptHeader;
+
+	//
+	//	Check
+	if ( strcmp ( (char *) pScriptLevelHeader->PCLevelString, ".TR4" ) == 0 )
+	{
+		fileIsCrypted	= TRUE;
+		Print ( hOutFile, "; File is Crypted\n" );
+	}
+
+	//
+	if ( ! fileIsCrypted )
+	{
+		fseek ( hInpFile, SEEK_SET, 0 );
+		Print ( hLogFile, "Reading scriptHeader %d\n", sizeof(scriptHeader) );
+		uRead = fread ( (char*) &scriptHeader, 1, sizeof(scriptHeader), hInpFile );
+		if ( uRead != sizeof(scriptHeader) )
+		{
+			CloseOne ( &hOutFile );
+			CloseOne ( &hInpFile );
+			CloseOne ( &hLogFile );
+			CloseOne ( &hHeaFile );
+
+			Cleanup();
+
+			return bResult;
+		}
+	}
+	else
+	{
+		memcpy_s ( &scriptHeader, sizeof(scriptHeader), pCryptHeader, sizeof(scriptHeader) );
+		pCryptHeader += sizeof(scriptHeader);
 	}
 
 	//
@@ -1967,19 +2071,27 @@ BOOL ReadTRXScript (	const char *pathname, const char *pDirectory, int version, 
 	Print ( hOutFile, "\n" );
 
 	//
-	Print ( hLogFile, "Reading scriptHeader %d\n", sizeof(scriptLevelHeader) );
-	uRead = fread ( (char*) &scriptLevelHeader, 1, sizeof(scriptLevelHeader), hInpFile );
-	if ( uRead != sizeof(scriptLevelHeader) )
+	if ( ! fileIsCrypted )
 	{
-		CloseOne ( &hOutFile );
-		CloseOne ( &hInpFile );
+		Print ( hLogFile, "Reading scriptHeader %d\n", sizeof(scriptLevelHeader) );
+		uRead = fread ( (char*) &scriptLevelHeader, 1, sizeof(scriptLevelHeader), hInpFile );
+		if ( uRead != sizeof(scriptLevelHeader) )
+		{
+			CloseOne ( &hOutFile );
+			CloseOne ( &hInpFile );
 
-		CloseOne ( &hLogFile );
-		CloseOne ( &hHeaFile );
+			CloseOne ( &hLogFile );
+			CloseOne ( &hHeaFile );
 
-		Cleanup();
+			Cleanup();
 
-		return bResult;
+			return bResult;
+		}
+	}
+	else
+	{
+		memcpy_s ( &scriptLevelHeader, sizeof(scriptLevelHeader), pCryptHeader, sizeof(scriptLevelHeader) );
+		pCryptHeader += sizeof(scriptLevelHeader);
 	}
 
 	//
@@ -2018,16 +2130,68 @@ BOOL ReadTRXScript (	const char *pathname, const char *pDirectory, int version, 
 		return FALSE;
 	}
 
-	//
+	//	Normally 8 bytes only
+	int remaining = sizeof(cryptHeader) - sizeof(scriptHeader) - sizeof(scriptLevelHeader);
+
 	//
 	//	Strings
 	int nbLevelPath = scriptLevelHeader.NumUniqueLevelPaths;
 	ZeroMemory ( &LevelpathStringOffsets, sizeof(LevelpathStringOffsets) );
-	if ( nbLevelPath > 0 )
+	if ( ! fileIsCrypted )
 	{
-		Print ( hLogFile, "Reading LevelpathStringOffsets %d\n", sizeof(xuint16_t)*nbLevelPath );
-		uRead = fread ( (char*) &LevelpathStringOffsets, 1, sizeof(xuint16_t)*nbLevelPath, hInpFile );
-		if ( uRead != sizeof(xuint16_t)*nbLevelPath )
+		if ( nbLevelPath > 0 )
+		{
+			Print ( hLogFile, "Reading LevelpathStringOffsets %d\n", sizeof(xuint16_t)*nbLevelPath );
+			uRead = fread ( (char*) &LevelpathStringOffsets, 1, sizeof(xuint16_t)*nbLevelPath, hInpFile );
+			if ( uRead != sizeof(xuint16_t)*nbLevelPath )
+			{
+				CloseOne ( &hOutFile );
+				CloseOne ( &hInpFile );
+
+				CloseOne ( &hLogFile );
+				CloseOne ( &hHeaFile );
+
+				Cleanup();
+
+				return bResult;
+			}
+		}
+	}
+	else
+	{
+		int toCopy = min ( remaining, (int) sizeof(xuint16_t)*nbLevelPath );
+		if ( toCopy > 0 )
+		{
+			memcpy_s ( (BYTE*) LevelpathStringOffsets, toCopy, pCryptHeader, toCopy );
+		}
+		pCryptHeader += toCopy;
+		remaining = remaining - toCopy;
+		int toRead = sizeof(xuint16_t)*nbLevelPath - toCopy;
+		if ( toRead > 0 )
+		{
+			uRead = fread ( ( (char*) &LevelpathStringOffsets ) + toRead, 1, toRead, hInpFile );
+			if ( uRead != toRead )
+			{
+				CloseOne ( &hOutFile );
+				CloseOne ( &hInpFile );
+
+				CloseOne ( &hLogFile );
+				CloseOne ( &hHeaFile );
+
+				Cleanup();
+
+				return bResult;
+			}
+		}
+	}
+
+	//
+	ZeroMemory ( LevelpathStringBlockData, sizeof(LevelpathStringBlockData) );
+	Print ( hLogFile, "Reading LevelpathStringBlockData %d\n", scriptLevelHeader.LevelpathStringLen );
+	if ( ! fileIsCrypted )
+	{
+		uRead = fread ( LevelpathStringBlockData, 1, scriptLevelHeader.LevelpathStringLen, hInpFile );
+		if ( uRead != scriptLevelHeader.LevelpathStringLen )
 		{
 			CloseOne ( &hOutFile );
 			CloseOne ( &hInpFile );
@@ -2040,24 +2204,34 @@ BOOL ReadTRXScript (	const char *pathname, const char *pDirectory, int version, 
 			return bResult;
 		}
 	}
+	else
+	{
+		int toCopy = min ( remaining, scriptLevelHeader.LevelpathStringLen );
+		if ( toCopy > 0 )
+		{
+			memcpy_s ( (BYTE*) LevelpathStringBlockData, toCopy, pCryptHeader, toCopy );
+		}
+		remaining = remaining - toCopy;
+		int toRead = scriptLevelHeader.LevelpathStringLen - toCopy;
+		if ( toRead > 0 )
+		{
+			uRead = fread ( LevelpathStringBlockData + toCopy, 1, toRead, hInpFile );
+			if ( uRead != toRead )
+			{
+				CloseOne ( &hOutFile );
+				CloseOne ( &hInpFile );
+
+				CloseOne ( &hLogFile );
+				CloseOne ( &hHeaFile );
+
+				Cleanup();
+
+				return bResult;
+			}
+		}
+	}
 
 	//
-	ZeroMemory ( LevelpathStringBlockData, sizeof(LevelpathStringBlockData) );
-	Print ( hLogFile, "Reading LevelpathStringBlockData %d\n", scriptLevelHeader.LevelpathStringLen );
-	uRead = fread ( LevelpathStringBlockData, 1, scriptLevelHeader.LevelpathStringLen, hInpFile );
-	if ( uRead != scriptLevelHeader.LevelpathStringLen )
-	{
-		CloseOne ( &hOutFile );
-		CloseOne ( &hInpFile );
-
-		CloseOne ( &hLogFile );
-		CloseOne ( &hHeaFile );
-
-		Cleanup();
-
-		return bResult;
-	}
-		
 	for ( int i = 0; i < nbLevelPath; i++ )
 	{
 		Print ( hOutFile, "; LevelpathStringOffsets %d : %d %s\n", i, LevelpathStringOffsets [ i ], LevelpathStringBlockData + LevelpathStringOffsets [ i ] );

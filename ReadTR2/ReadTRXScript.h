@@ -14,15 +14,17 @@ Options is a set of bit flags with several global game settings (name of the set
     Bit 7 (0x80) — DemoDisc. Unknown feature, probably related to game versions deployed on promotional CDs.
 
  **/
+
+//	Size : 7
 struct tr4_script_header // 9 bytes
 {
 	xuint8_t		Options;
 	xuint8_t		Filler[3];     // Unused
-	xuint32_t	InputTimeout;
+	xuint32_t		InputTimeout;
 	xuint8_t		Security;
 };
 
-//
+//	Size : 15
 struct tr4_script_levelheader
 {
 	xuint8_t		NumTotalLevels;
