@@ -57,8 +57,8 @@ static CorrespondanceType Correspondance [ 0xD9 - 0x93 + 1 ] =
 	//	4 Pickup
 	{ 24,	1 },
 	{ 24,	2 },
-	{ 25,	1 },
-	{ 25,	2 },
+	{ 24,	4 },
+	{ 24,	8 },
 	//	3 Examine
 	{ 3,	1 },
 	{ 4,	1 },

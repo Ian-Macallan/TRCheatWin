@@ -137,6 +137,7 @@ struct          TR4Gun
 			BYTE	m_KeyCombo [ 2 ];		//	Three by byte
 
 			//	Address : 25 - 26 : 4 Pickup
+			//	Seem to be 4 by byte only first byte used
 			BYTE	m_Pickup [ 2 ];			//	Four by byte
 
 			//	Address : 27 - 28  : 8 (4 Pickup Combo * 2)
