@@ -43,12 +43,8 @@ jobs:
       # Add additional options to the MSBuild command line here (like platform or verbosity level).
       # See https://docs.microsoft.com/visualstudio/msbuild/msbuild-command-line-reference
       run: msbuild /m /p:Configuration=${{env.BUILD_CONFIGURATION}} ${{env.SOLUTION_FILE_PATH}}
-    - name: Upload binary as release asset
-      uses: actions/upload-release-asset@v1
-      env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: Upload Binary
+      uses: actions/upload-artifact@v4
       with:
-          upload_url: ${{ github.event.release.upload_url }}
-          asset_path: TRCheatWin/Release/TRCheatWin.exe
-          asset_name: TRCheatWin.exe
-          asset_content_type: ${{ matrix.executable_mime }}	"application/vnd.microsoft.portable-executable"
+          path: TRCheatWin/Release/TRCheatWin.exe
+          name: TRCheatWin.exe
