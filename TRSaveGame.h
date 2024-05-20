@@ -13,6 +13,11 @@
 #include "TRXTools.h"
 
 //
+#pragma warning (disable : 4477)
+#pragma warning (disable : 4311)
+#pragma warning (disable : 4302)
+
+//
 /////////////////////////////////////////////////////////////////////////////
 // CTRSaveGame document
 //
