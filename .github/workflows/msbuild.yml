@@ -50,6 +50,5 @@ jobs:
     - name: Upload Binary
       uses: actions/upload-artifact@v4
       with:
-          working-directory: ${{env.GITHUB_WORKSPACE}}
-          path: TRCheatWin\Release\TRCheatWin.exe
+          path: TRCheatWin/Release/TRCheatWin.exe
           name: Binaries/TRCheatWin.exe
