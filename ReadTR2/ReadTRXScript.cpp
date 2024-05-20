@@ -1992,13 +1992,15 @@ BOOL ReadTRXScript (	const char *pathname, const char *pDirectory, int version, 
 
 	//
 	//	Check
-	if ( strcmp ( (char *) pScriptLevelHeader->PCLevelString, ".TR4" ) == 0 )
+	if (	memcmp ( (char *) pScriptLevelHeader->PCLevelString, ".TR4", strlen(".TR4") ) == 0	&&
+			memcmp ( (char *) pScriptLevelHeader->PCCutString, ".TR4", strlen(".TR4") ) == 0	&& 
+			memcmp ( (char *) pScriptLevelHeader->PCFMVString, ".BIK", strlen(".BIK") ) == 0		)
 	{
 		fileIsCrypted	= TRUE;
-		Print ( hOutFile, "; File is Crypted\n" );
+		Print ( hOutFile, "; File is Crypted TRNG\n" );
 	}
 
-	//
+	//	File not Crypted : Rewind and Read Normally
 	if ( ! fileIsCrypted )
 	{
 		fseek ( hInpFile, SEEK_SET, 0 );
@@ -2016,6 +2018,7 @@ BOOL ReadTRXScript (	const char *pathname, const char *pDirectory, int version, 
 			return bResult;
 		}
 	}
+	//	Get The Script Header from Buffer
 	else
 	{
 		memcpy_s ( &scriptHeader, sizeof(scriptHeader), pCryptHeader, sizeof(scriptHeader) );
@@ -2066,6 +2069,7 @@ BOOL ReadTRXScript (	const char *pathname, const char *pDirectory, int version, 
 		Print ( hOutFile, "DemoDisc=\tDISABLED\n" );
 	}
 
+	//
 	Print ( hOutFile, "InputTimeout=\t%d\n", scriptHeader.InputTimeout );
 	Print ( hOutFile, "Security=\t$%02X\n", scriptHeader.Security );
 	Print ( hOutFile, "\n" );
@@ -2088,6 +2092,7 @@ BOOL ReadTRXScript (	const char *pathname, const char *pDirectory, int version, 
 			return bResult;
 		}
 	}
+	//	Get The Script Level Header from Buffer
 	else
 	{
 		memcpy_s ( &scriptLevelHeader, sizeof(scriptLevelHeader), pCryptHeader, sizeof(scriptLevelHeader) );
@@ -2130,7 +2135,7 @@ BOOL ReadTRXScript (	const char *pathname, const char *pDirectory, int version, 
 		return FALSE;
 	}
 
-	//	Normally 8 bytes only
+	//	Normally it remains 8 bytes only
 	int remaining = sizeof(cryptHeader) - sizeof(scriptHeader) - sizeof(scriptLevelHeader);
 
 	//
@@ -2159,6 +2164,10 @@ BOOL ReadTRXScript (	const char *pathname, const char *pDirectory, int version, 
 	}
 	else
 	{
+		//	Look if there is enough and Read if not in the file.
+		//	We have already read the first 64 bytes
+		//	So the reading continues from here
+		//	We could have to read if there is more than 4 levels ( 2 bytes * 4 = 8)
 		int toCopy = min ( remaining, (int) sizeof(xuint16_t)*nbLevelPath );
 		if ( toCopy > 0 )
 		{
@@ -2206,6 +2215,11 @@ BOOL ReadTRXScript (	const char *pathname, const char *pDirectory, int version, 
 	}
 	else
 	{
+		//	Look if there is enough and Read if not in the file.
+		//	We have already read the first 64 bytes
+		//	So the reading continues from here
+		//	We will have to read even if there is only one level ( 2 bytes * 4 = 8)
+		//	because levelpath is DATA\L<null> (so a minimum of 7 bytes)
 		int toCopy = min ( remaining, scriptLevelHeader.LevelpathStringLen );
 		if ( toCopy > 0 )
 		{

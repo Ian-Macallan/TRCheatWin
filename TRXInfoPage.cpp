@@ -494,6 +494,10 @@ void CTRXInfoPage::OnLoad()
 		}
 
 		SetGUIModified ( FALSE );
+
+		//	Reset Custom Combo
+		m_Custom_Combo.SetCurSel ( 0 );
+
 	}
 
 	// TODO: Add your control notification handler code here
@@ -2019,6 +2023,9 @@ void CTRXInfoPage::OnSelchangeCombo()
 			m_Combo.GetLBText( iCurSel, szDirectory );
 			DisplayDirectory (szDirectory);
 		}
+
+		//	Reset Custom Combo
+		m_Custom_Combo.SetCurSel ( 0 );
 	}
 
 	SetGUIModified ( FALSE );

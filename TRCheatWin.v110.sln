@@ -3,6 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TRCheatWin", "TR3CHEATWIN.v110.vcxproj", "{6C6733C6-E924-4601-99C6-AD9A4564108C}"
 EndProject
 Global
+	GlobalSection(SolutionProperties) = preSolution
+		
+		
+		
+		
+		
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
 		Debug|x64 = Debug|x64
