@@ -2342,7 +2342,7 @@ void CTRXInfoPage::OnBnClickedMap()
 				m_South_North.SetWindowText ( szText );
 
 				ZeroMemory ( szText, sizeof(szText) );
-				sprintf_s ( szText, sizeof(szText), "%d", room );
+				sprintf_s ( szText, sizeof(szText), "%d", (int) room );
 				m_Area.SetWindowText ( szText );
 
 				ChangeRoom();

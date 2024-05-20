@@ -166,8 +166,8 @@ int CTR5SaveGame::ReadSavegame ( const char *pFilename )
         if ( m_iSaveLength != TR5LEVELSIZE )
         {
 			sprintf_s ( m_Status, sizeof(m_Status), "Internal error in length %d versus %d = %d.",
-				sizeof ( TR5SAVE ), m_iSaveLength, 
-				m_iSaveLength - sizeof ( TR5SAVE ) );
+				(int) sizeof ( TR5SAVE ), m_iSaveLength, 
+				m_iSaveLength - (int) sizeof ( TR5SAVE ) );
 			fclose ( hFile );
             return 0;
         }
@@ -282,8 +282,8 @@ void CTR5SaveGame::writeSaveGame()
         if ( m_iSaveLength != TR5LEVELSIZE )
         {
 			sprintf_s ( m_Status, sizeof(m_Status), "Internal error in length %d versus %d = %d.",
-				sizeof ( TR5SAVE ), m_iSaveLength, 
-				m_iSaveLength - sizeof ( TR5SAVE ) );
+				(int) sizeof ( TR5SAVE ), m_iSaveLength, 
+				m_iSaveLength - (int) sizeof ( TR5SAVE ) );
 			fclose ( hFile );
             return;
         }

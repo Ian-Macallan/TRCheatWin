@@ -169,9 +169,9 @@ int CTR4NGSaveGame::ReadSavegame ( const char *pFilename )
          */
         if ( m_iSaveLength < CTRXGlobal::m_iMinNGSize || m_iSaveLength > CTRXGlobal::m_iMaxNGSize )
         {
-			sprintf_s ( m_Status, sizeof(m_Status), "Internal error in length %d versus %d = %d.",
-				sizeof ( TR4NGSAVE ), m_iSaveLength, 
-				m_iSaveLength - sizeof ( TR4NGSAVE ) );
+			sprintf_s ( m_Status, sizeof(m_Status), "Internal error in length %d versus %d = %d.", 
+				(int) sizeof ( TR4NGSAVE ), m_iSaveLength, 
+				m_iSaveLength - (int) sizeof ( TR4NGSAVE ) );
 			fclose ( hFile );
             return 0;
         }
@@ -298,8 +298,8 @@ void CTR4NGSaveGame::writeSaveGame()
     if ( m_iSaveLength < CTRXGlobal::m_iMinNGSize || m_iSaveLength > CTRXGlobal::m_iMaxNGSize )
     {
 		sprintf_s ( m_Status, sizeof(m_Status), "Internal error in length %d versus %d = %d.",
-			sizeof ( TR4NGSAVE ), m_iSaveLength, 
-			m_iSaveLength - sizeof ( TR4NGSAVE ) );
+			(int) sizeof ( TR4NGSAVE ), m_iSaveLength, 
+			m_iSaveLength - (int) sizeof ( TR4NGSAVE ) );
 		fclose ( hFile );
         return;
     }

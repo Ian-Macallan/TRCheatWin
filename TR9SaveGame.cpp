@@ -1710,7 +1710,8 @@ BOOL CTR9SaveGame::Load ( )
 				levelName = GetLevelName ( tombraider, level );
 			}
 
-			printf ( "0x%06X = %d - Save (%lx): %d Level %d (%lx) (#%d) %s\n", i, health, RelativeAddress ( saveAddress ), save, level, (char*)  levelAddress - m_pBuffer, iCount, levelName );
+			printf ( "0x%06X = %d - Save (%lx): %d Level %d (%lx) (#%d) %s\n", i, 
+				health, RelativeAddress ( saveAddress ), save, level, (long) ( (char*)  levelAddress - m_pBuffer ), iCount, levelName );
 			if ( GetRealHealthAddress(tombraider, block) != NULL )
 			{
 				printf ( "\tReal : %lx = %d\n", RelativeAddress ( GetRealHealthAddress(tombraider, block) ), GetRealHealth(tombraider, block) );
@@ -1756,10 +1757,10 @@ BOOL CTR9SaveGame::Load ( )
 							char *pHealth		= (char *) GetRealHealthAddress ( tombraider, block );
 							printf ( " F%d:0x%06X - 0x%06X - 0x%06X - 0x%06X - 0x%06X - 0x%06X", valueResult, 
 										RelativeAddress ( pFound ), 
-										pFound - m_TR1_Blocks [ block ] [ slot ],
-										pFound - (char*) GetBlockStart ( tombraider, block ),
-										pFound - m_pBuffer - TR1_OFFSET_AIR,
-										pFound - m_pBuffer - TR1_OFFSET_STATE,
+										(long) ( pFound - m_TR1_Blocks [ block ] [ slot ] ),
+										(long) ( pFound - (char*) GetBlockStart ( tombraider, block ) ),
+										(long) ( pFound - m_pBuffer - TR1_OFFSET_AIR ),
+										(long) ( pFound - m_pBuffer - TR1_OFFSET_STATE ),
 										RelativeAddress ( pHealth ) );
 							if ( pHealth != NULL )
 							{
@@ -1820,10 +1821,10 @@ BOOL CTR9SaveGame::Load ( )
 							char *pHealth		= (char *) GetRealHealthAddress ( tombraider, block );
 							printf ( " F%d:0x%06X - 0x%06X - 0x%06X - 0x%06X - 0x%06X - 0x%06X", valueResult, 
 										RelativeAddress ( pFound ), 
-										pFound - m_TR2_Blocks [ block ] [ slot ],
-										pFound - m_TR2_Start [ block ],
-										pFound - m_pBuffer - TR2_OFFSET_AIR,
-										pFound - m_pBuffer - TR2_OFFSET_STATE,
+										(long) ( pFound - m_TR2_Blocks [ block ] [ slot ] ),
+										(long) ( pFound - m_TR2_Start [ block ] ),
+										(long) ( pFound - m_pBuffer - TR2_OFFSET_AIR ),
+										(long) ( pFound - m_pBuffer - TR2_OFFSET_STATE ),
 										RelativeAddress ( pHealth ) );
 							if ( pHealth != NULL )
 							{
@@ -1924,10 +1925,10 @@ BOOL CTR9SaveGame::Load ( )
 						char *pHealth		= (char *) GetRealHealthAddress ( tombraider, block );
 						printf ( " F%d:0x%06X - 0x%06X - 0x%06X - 0x%06X - 0x%06X - 0x%06X", valueResult, 
 									RelativeAddress ( pFound ), 
-									pFound - m_TR3_Blocks [ block ] [ slot ],
-									pFound - m_TR3_Start [ block ],
-									pFound - m_pBuffer - TR3_OFFSET_AIR,
-									pFound - m_pBuffer - TR2_OFFSET_STATE,
+									(long) ( pFound - m_TR3_Blocks [ block ] [ slot ] ),
+									(long) ( pFound - m_TR3_Start [ block ] ),
+									(long) ( pFound - m_pBuffer - TR3_OFFSET_AIR ), 
+									(long) ( pFound - m_pBuffer - TR2_OFFSET_STATE ),
 									RelativeAddress ( pHealth ) );
 						if ( pHealth != NULL )
 						{
@@ -1970,7 +1971,7 @@ BOOL CTR9SaveGame::Load ( )
 	{
 		printf ( "Count : %d - Loop : %d\n", iCount, block );
 
-		printf ( "Sizeof %d %d %d", sizeof(TABLE_TR1), sizeof(TABLE_TR2), sizeof(TABLE_TR3) );
+		printf ( "Sizeof %d %d %d", (int) sizeof(TABLE_TR1), (int) sizeof(TABLE_TR2), (int) sizeof(TABLE_TR3) );
 	}
 
 	return TRUE;

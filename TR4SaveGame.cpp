@@ -169,8 +169,8 @@ int CTR4SaveGame::ReadSavegame ( const char *pFilename )
         if ( m_iSaveLength < TR4LEVELMINSIZE || m_iSaveLength > TR4LEVELMAXSIZE )
         {
 			sprintf_s ( m_Status, sizeof(m_Status), "Internal error in length %d versus %d = %d.",
-				sizeof ( TR4SAVE ), m_iSaveLength, 
-				m_iSaveLength - sizeof ( TR4SAVE ) );
+				(int) sizeof ( TR4SAVE ), m_iSaveLength, 
+				m_iSaveLength - (int) sizeof ( TR4SAVE ) );
 			fclose ( hFile );
             return 0;
         }
@@ -284,8 +284,8 @@ void CTR4SaveGame::writeSaveGame()
     if ( m_iSaveLength < TR4LEVELMINSIZE || m_iSaveLength > TR4LEVELMAXSIZE )
     {
 		sprintf_s ( m_Status, sizeof(m_Status), "Internal error in length %d versus %d = %d.",
-			sizeof ( TR4SAVE ), m_iSaveLength, 
-			m_iSaveLength - sizeof ( TR4SAVE ) );
+			(int) sizeof ( TR4SAVE ), m_iSaveLength, 
+			m_iSaveLength - (int) sizeof ( TR4SAVE ) );
 		fclose ( hFile );
         return;
     }
