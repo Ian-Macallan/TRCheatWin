@@ -53,4 +53,4 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: Binary/TRCheatWin.exe
-        path: ${{env.GITHUB_WORKSPACE}}\Release\TRCheatWin.exe
+        path: ${{ github.workspace }}/Release/TRCheatWin.exe
