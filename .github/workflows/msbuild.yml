@@ -22,8 +22,11 @@ env:
 
 #
 permissions: 
-  contents: read
-
+  actions: write
+  contents: write
+  packages:: write
+  repository-projects: write
+  
 jobs:
   build:
     runs-on: windows-latest
