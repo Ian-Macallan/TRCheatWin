@@ -66,6 +66,7 @@ jobs:
     #    asset_name: TRCheatWin.exe
     #    asset_content_type: application/zip
     
+    # Create Release
     - name: Create Release
       id: create_release
       uses: actions/create-release@v1
@@ -77,6 +78,7 @@ jobs:
         draft: false
         prerelease: false
 
+    # Upload Release
     - name: Upload Win 32 Executable
       id: upload-release-asset 
       uses: actions/upload-release-asset@v1
