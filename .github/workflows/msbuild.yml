@@ -65,30 +65,3 @@ jobs:
     #    asset_name: TRCheatWin.exe
     #    asset_content_type: application/zip
     
-    # Create Release
-    - name: Create Release
-      id: create_release
-      uses: actions/create-release@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        tag_name: Win32 # ${{ github.ref }}
-        release_name: ReleaseWin32  # ${{ github.ref }}
-        draft: false
-        prerelease: false
-
-    # Upload Release
-    - name: Upload Win 32 Executable
-      id: upload-release-asset 
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which
-        # include a `upload_url`. See this blog post for more info:
-        # https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ${{ github.workspace }}/Release/TRCheatWin.exe
-        asset_name: TRCheatWin.exe
-        asset_content_type: application/zip
- 
