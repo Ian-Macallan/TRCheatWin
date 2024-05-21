@@ -305,4 +305,5 @@ class CTRXRemastered : public CTRXPropertyPage123
 
 		//	Ca Be Use by other
 		static const char *GetLabelForObject ( int tombraider, int levelIndex, int iObject, bool bDouble = false );
+		afx_msg void OnDropFiles(HDROP hDropInfo);
 };

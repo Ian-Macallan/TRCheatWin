@@ -49,6 +49,58 @@ static char THIS_FILE[] = __FILE__;
 /////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////
+static BOOL EndsWithI ( const char *pText, const char *pEnd )
+{
+	if ( strlen(pText) >= strlen(pEnd) )
+	{
+		if ( _stricmp ( pText + strlen(pText) - strlen(pEnd), pEnd ) == 0 )
+		{
+			return TRUE;
+		}
+	}
+	return FALSE;
+}
+
+//
+//====================================================================================
+//
+//====================================================================================
+static const char *__strstri ( const char *pString, const char *pSearched )
+{
+	if ( ( pString == NULL ) || ( pSearched == NULL ) )
+	{
+		return NULL;
+	}
+
+	if ( ( strlen ( pString ) == 0 ) || ( strlen ( pSearched ) == 0 ) )
+	{
+		return NULL;
+	}
+
+	size_t	iLen = strlen ( pSearched );
+	if ( iLen == 0 )
+	{
+		return NULL;
+	}
+
+	//
+	while ( *pString != L'\0' )
+	{
+		if ( _strnicmp ( pString, pSearched, iLen ) == 0 )
+		{
+			return pString;
+		}
+
+		pString++;
+	}
+
+	return NULL;
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
 void ResetCustomLabels ()
 {
 	//
@@ -300,11 +352,13 @@ BOOL CTRXCHEATWINApp::InitInstance()
 	}
 #endif
 
-	//	No OLE
-#if 0
-	AfxEnableControlContainer();
-#endif
+	//	Dtop
+	// Initialize OLE 2.0 libraries
+	BOOL bOle = AfxOleInit();
 
+	AfxEnableControlContainer();
+
+	//
 	SetRegistryKey("Macallan");
 
 	GetModule();
@@ -370,20 +424,23 @@ BOOL CTRXCHEATWINApp::InitInstance()
 	int iSizeTR3 = sizeof(TABLE_TR3);
 
 	//
+	//
 	if ( m_lpCmdLine != NULL )
 	{
+		char *pCommandLine = SkipSpaces ( m_lpCmdLine );
+
 		//
-		if (	_stricmp ( m_lpCmdLine, "-help" ) == 0	||
-				_stricmp ( m_lpCmdLine, "help" ) == 0	||
-				_stricmp ( m_lpCmdLine, "-h" ) == 0 )
+		if (	_stricmp ( pCommandLine, "-help" ) == 0	||
+				_stricmp ( pCommandLine, "help" ) == 0	||
+				_stricmp ( pCommandLine, "-h" ) == 0 )
 		{
 			CTRXHelpDialog dlg;
 			nResponse = dlg.DoModal();
 		}
 		//
-		else if (	_stricmp ( m_lpCmdLine, "-123" ) == 0				||
-					_stricmp ( m_lpCmdLine, "-r" ) == 0					||
-					_stricmp ( m_lpCmdLine, "-remastered" ) == 0		)
+		else if (	_stricmp ( pCommandLine, "-123" ) == 0				||
+					_stricmp ( pCommandLine, "-r" ) == 0					||
+					_stricmp ( pCommandLine, "-remastered" ) == 0		)
 		{
 			CTRXPropertySheetRemastered	dlg ( "Tombraider Remastered Cheat Program" );
 			dlg.SetApply ( TRUE );
@@ -391,15 +448,15 @@ BOOL CTRXCHEATWINApp::InitInstance()
 			nResponse = dlg.DoModal();
 		}
 		//
-		else if (	_strnicmp ( m_lpCmdLine, "-123 ", strlen("-123 ") ) == 0				||
-					_strnicmp ( m_lpCmdLine, "-r ", strlen("-r ") ) == 0					||
-					_strnicmp ( m_lpCmdLine, "-remastered ", strlen("-remastered ") ) == 0		)
+		else if (	_strnicmp ( pCommandLine, "-123 ", strlen("-123 ") ) == 0				||
+					_strnicmp ( pCommandLine, "-r ", strlen("-r ") ) == 0					||
+					_strnicmp ( pCommandLine, "-remastered ", strlen("-remastered ") ) == 0		)
 		{
 			CTRXPropertySheetRemastered	dlg ( "Tombraider Remastered Cheat Program" );
 			dlg.SetApply ( TRUE );
 
 			//
-			char *pFilename = strchr ( m_lpCmdLine, ' ' );
+			char *pFilename = strchr ( pCommandLine, ' ' );
 			if ( pFilename != NULL )
 			{
 				pFilename = SkipSpaces ( pFilename );
@@ -414,32 +471,32 @@ BOOL CTRXCHEATWINApp::InitInstance()
 			m_pMainWnd = &dlg;
 			nResponse = dlg.DoModal();
 		}
-		else if (	_stricmp ( m_lpCmdLine, "-1" ) == 0					||
-					_stricmp ( m_lpCmdLine, "-2" ) == 0					||
-					_stricmp ( m_lpCmdLine, "-3" ) == 0					||
-					_stricmp ( m_lpCmdLine, "-4" ) == 0					||
-					_stricmp ( m_lpCmdLine, "-5" ) == 0					||
-					_stricmp ( m_lpCmdLine, "-s" ) == 0					||
-					_stricmp ( m_lpCmdLine, "-standard" ) == 0		)
+		else if (	_stricmp ( pCommandLine, "-1" ) == 0					||
+					_stricmp ( pCommandLine, "-2" ) == 0					||
+					_stricmp ( pCommandLine, "-3" ) == 0					||
+					_stricmp ( pCommandLine, "-4" ) == 0					||
+					_stricmp ( pCommandLine, "-5" ) == 0					||
+					_stricmp ( pCommandLine, "-s" ) == 0					||
+					_stricmp ( pCommandLine, "-standard" ) == 0		)
 		{
 			CTRXPropertySheetStandard	dlg ( "Tombraider Standard Cheat Program" );
 			dlg.SetApply ( TRUE );
 			m_pMainWnd = &dlg;
 			nResponse = dlg.DoModal();
 		}
-		else if (	_strnicmp ( m_lpCmdLine, "-1 ", strlen("-1 ") ) == 0					||
-					_strnicmp ( m_lpCmdLine, "-2 ", strlen("-2 ") ) == 0					||
-					_strnicmp ( m_lpCmdLine, "-3 ", strlen("-3 ") ) == 0					||
-					_strnicmp ( m_lpCmdLine, "-4 ", strlen("-4 ") ) == 0					||
-					_strnicmp ( m_lpCmdLine, "-5 ", strlen("-5 ") ) == 0					||
-					_strnicmp ( m_lpCmdLine, "-s ", strlen("-s ") ) == 0					||
-					_strnicmp ( m_lpCmdLine, "-standard ", strlen("-standard ") ) == 0		)
+		else if (	_strnicmp ( pCommandLine, "-1 ", strlen("-1 ") ) == 0					||
+					_strnicmp ( pCommandLine, "-2 ", strlen("-2 ") ) == 0					||
+					_strnicmp ( pCommandLine, "-3 ", strlen("-3 ") ) == 0					||
+					_strnicmp ( pCommandLine, "-4 ", strlen("-4 ") ) == 0					||
+					_strnicmp ( pCommandLine, "-5 ", strlen("-5 ") ) == 0					||
+					_strnicmp ( pCommandLine, "-s ", strlen("-s ") ) == 0					||
+					_strnicmp ( pCommandLine, "-standard ", strlen("-standard ") ) == 0		)
 		{
 			CTRXPropertySheetStandard	dlg ( "Tombraider Standard Cheat Program" );
 			dlg.SetApply ( TRUE );
 
 			//
-			char *pFilename = strchr ( m_lpCmdLine, ' ' );
+			char *pFilename = strchr ( pCommandLine, ' ' );
 			if ( pFilename != NULL )
 			{
 				pFilename = SkipSpaces ( pFilename );
@@ -456,7 +513,7 @@ BOOL CTRXCHEATWINApp::InitInstance()
 			nResponse = dlg.DoModal();
 		}
 		//
-		else if ( _stricmp ( m_lpCmdLine, "-resizable" ) == 0L )
+		else if ( _stricmp ( pCommandLine, "-resizable" ) == 0L )
 		{
 			CTRXGlobal::m_iDarkTheme	= 0;
 			CTRXContainer dlg;
@@ -465,13 +522,13 @@ BOOL CTRXCHEATWINApp::InitInstance()
 		}
 		//
 #ifdef _DEBUG
-		else if ( _strnicmp ( m_lpCmdLine, "-analyze", strlen("-analyze") ) == 0L )
+		else if ( _strnicmp ( pCommandLine, "-analyze", strlen("-analyze") ) == 0L )
 		{
 			//
 			SetStdOutToNewConsole();
 
 			//
-			char *pFilename = strchr ( m_lpCmdLine, ' ' );
+			char *pFilename = strchr ( pCommandLine, ' ' );
 			if ( pFilename != NULL )
 			{
 				pFilename = SkipSpaces ( pFilename );
@@ -495,10 +552,10 @@ BOOL CTRXCHEATWINApp::InitInstance()
 #endif
 		//
 		//	Read Script
-		else if ( _strnicmp ( m_lpCmdLine, "-rs4", strlen("-rs4") ) == 0L )
+		else if ( _strnicmp ( pCommandLine, "-rs4", strlen("-rs4") ) == 0L )
 		{
 			//
-			char *pFilename = strchr ( m_lpCmdLine, ' ' );
+			char *pFilename = strchr ( pCommandLine, ' ' );
 			if ( pFilename != NULL )
 			{
 				pFilename = SkipSpaces ( pFilename );
@@ -516,10 +573,10 @@ BOOL CTRXCHEATWINApp::InitInstance()
 		}
 		//
 		//	Read Script
-		else if ( _strnicmp ( m_lpCmdLine, "-ws4", strlen("-ws4") ) == 0L )
+		else if ( _strnicmp ( pCommandLine, "-ws4", strlen("-ws4") ) == 0L )
 		{
 			//
-			char *pFilename = strchr ( m_lpCmdLine, ' ' );
+			char *pFilename = strchr ( pCommandLine, ' ' );
 			if ( pFilename != NULL )
 			{
 				pFilename = SkipSpaces ( pFilename );
@@ -537,10 +594,10 @@ BOOL CTRXCHEATWINApp::InitInstance()
 		}
 		//
 		//	Read Script
-		else if ( _strnicmp ( m_lpCmdLine, "-rs5", strlen("-rs5") ) == 0L )
+		else if ( _strnicmp ( pCommandLine, "-rs5", strlen("-rs5") ) == 0L )
 		{
 			//
-			char *pFilename = strchr ( m_lpCmdLine, ' ' );
+			char *pFilename = strchr ( pCommandLine, ' ' );
 			if ( pFilename != NULL )
 			{
 				pFilename = SkipSpaces ( pFilename );
@@ -558,10 +615,10 @@ BOOL CTRXCHEATWINApp::InitInstance()
 		}
 		//
 		//	Read Script
-		else if ( _strnicmp ( m_lpCmdLine, "-ws5", strlen("-ws5") ) == 0L )
+		else if ( _strnicmp ( pCommandLine, "-ws5", strlen("-ws5") ) == 0L )
 		{
 			//
-			char *pFilename = strchr ( m_lpCmdLine, ' ' );
+			char *pFilename = strchr ( pCommandLine, ' ' );
 			if ( pFilename != NULL )
 			{
 				pFilename = SkipSpaces ( pFilename );
@@ -578,7 +635,7 @@ BOOL CTRXCHEATWINApp::InitInstance()
 			}
 		}
 		//
-		else if ( _stricmp ( m_lpCmdLine, "-maps" ) == 0L )
+		else if ( _stricmp ( pCommandLine, "-maps" ) == 0L )
 		{
 			CTRXAllMaps dlg;
 			m_pMainWnd = &dlg;
@@ -586,14 +643,14 @@ BOOL CTRXCHEATWINApp::InitInstance()
 		}
 		//
 		//	Custom
-		else if (	strncmp ( m_lpCmdLine, "-tr1", strlen("-tr1") ) == 0L ||
-					strncmp ( m_lpCmdLine, "-tr2", strlen("-tr2") ) == 0L ||
-					strncmp ( m_lpCmdLine, "-tr3", strlen("-tr3") ) == 0L ||
-					strncmp ( m_lpCmdLine, "-tr4", strlen("-tr4") ) == 0L ||
-					strncmp ( m_lpCmdLine, "-tr5", strlen("-tr5") ) == 0L	)
+		else if (	strncmp ( pCommandLine, "-tr1", strlen("-tr1") ) == 0L ||
+					strncmp ( pCommandLine, "-tr2", strlen("-tr2") ) == 0L ||
+					strncmp ( pCommandLine, "-tr3", strlen("-tr3") ) == 0L ||
+					strncmp ( pCommandLine, "-tr4", strlen("-tr4") ) == 0L ||
+					strncmp ( pCommandLine, "-tr5", strlen("-tr5") ) == 0L	)
 		{
 			//
-			char *pFilename = strchr ( m_lpCmdLine, ' ' );
+			char *pFilename = strchr ( pCommandLine, ' ' );
 			if ( pFilename != NULL )
 			{
 				pFilename = SkipSpaces ( pFilename );
@@ -605,23 +662,23 @@ BOOL CTRXCHEATWINApp::InitInstance()
 
 				//
 				TR_MODE	trMode;
-				if ( strncmp ( m_lpCmdLine, "-tr1", strlen("-tr1") ) == 0L )
+				if ( strncmp ( pCommandLine, "-tr1", strlen("-tr1") ) == 0L )
 				{
 					trMode	= TRR1_MODE;
 				}
-				else if ( strncmp ( m_lpCmdLine, "-tr2", strlen("-tr2") ) == 0L )
+				else if ( strncmp ( pCommandLine, "-tr2", strlen("-tr2") ) == 0L )
 				{
 					trMode	= TRR2_MODE;
 				}
-				else if ( strncmp ( m_lpCmdLine, "-tr3", strlen("-tr3") ) == 0L )
+				else if ( strncmp ( pCommandLine, "-tr3", strlen("-tr3") ) == 0L )
 				{
 					trMode	= TRR3_MODE;
 				}
-				else if ( strncmp ( m_lpCmdLine, "-tr4", strlen("-tr4") ) == 0L )
+				else if ( strncmp ( pCommandLine, "-tr4", strlen("-tr4") ) == 0L )
 				{
 					trMode	= TR4_MODE;
 				}
-				else if ( strncmp ( m_lpCmdLine, "-tr5", strlen("-tr5") ) == 0L )
+				else if ( strncmp ( pCommandLine, "-tr5", strlen("-tr5") ) == 0L )
 				{
 					trMode	= TR5_MODE;
 				}
@@ -637,6 +694,34 @@ BOOL CTRXCHEATWINApp::InitInstance()
 
 				//
 				CTRXPropertySheetAll	dlg ( "Tombraider Remastered And Standard Cheat Program" );
+				m_pMainWnd = &dlg;
+				nResponse = dlg.DoModal();
+			}
+		}
+		//
+		else if ( __strstri ( pCommandLine, "SAVEGAME." ) != NULL )
+		{
+			strcpy_s ( szPathname, sizeof(szPathname), pCommandLine );
+			RemoveEnclosingQuotes ( szPathname, sizeof(szPathname) );
+
+			LPSTR lpFilepart = NULL;
+			GetFullPathName ( szPathname, sizeof(szFullPathname), szFullPathname, &lpFilepart );
+
+			//	Remastered
+			if ( EndsWithI ( szFullPathname, ".dat" ) )
+			{
+				CTRXPropertySheetRemastered	dlg ( "Tombraider Remastered Cheat Program" );
+				dlg.SetApply ( TRUE );
+				dlg.SetParmPathname ( szFullPathname );
+				m_pMainWnd = &dlg;
+				nResponse = dlg.DoModal();
+			}
+			//	TR123
+			else
+			{
+				CTRXPropertySheetStandard	dlg ( "Tombraider Standard Cheat Program" );
+				dlg.SetApply ( TRUE );
+				dlg.SetParmPathname ( szFullPathname );
 				m_pMainWnd = &dlg;
 				nResponse = dlg.DoModal();
 			}
@@ -888,22 +973,6 @@ bool CTRXCHEATWINApp::SearchInitFile ( const char *pInitFileName, size_t iInitFi
 	free ( pVariable );
 
 	return false;
-}
-
-//
-/////////////////////////////////////////////////////////////////////////////
-//
-/////////////////////////////////////////////////////////////////////////////
-static BOOL EndsWithI ( const char *pText, const char *pEnd )
-{
-	if ( strlen(pText) >= strlen(pEnd) )
-	{
-		if ( _stricmp ( pText + strlen(pText) - strlen(pEnd), pEnd ) == 0 )
-		{
-			return TRUE;
-		}
-	}
-	return FALSE;
 }
 
 //

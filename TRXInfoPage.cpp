@@ -368,7 +368,8 @@ BEGIN_MESSAGE_MAP(CTRXInfoPage, CTRXPropertyPage)
 	ON_CBN_DROPDOWN(IDC_CUSTOM_COMBO, &CTRXInfoPage::OnDropdownCustomCombo)
 	ON_BN_CLICKED(IDC_SEE_CUSTOM, &CTRXInfoPage::OnBnClickedSeeCustom)
 	ON_BN_CLICKED(IDC_SORT, &CTRXInfoPage::OnBnClickedSort)
-	END_MESSAGE_MAP()
+	ON_WM_DROPFILES()
+END_MESSAGE_MAP()
 //}}AFX_MSG_MAP
 
 /////////////////////////////////////////////////////////////////////////////
@@ -2540,6 +2541,11 @@ void CTRXInfoPage::OnBnClickedAddCustom()
 	}
 
 	//
+	m_Filename.GetWindowText( szDirectory, sizeof(szDirectory) );
+	theApp.RemoveFilename ( szDirectory );
+	strcat_s ( szDirectory, sizeof(szDirectory), "\\DATA" );
+
+	//
 	int tombraider	= CTRSaveGame::GetFullVersion ();
 	TR_MODE	trMode				= TR_NONE;
 	STRUCTLOCATION	*pTable		= NULL;
@@ -3043,4 +3049,78 @@ void CTRXInfoPage::SetThemeChanged ( bool bDarkTheme )
 	}
 
 	CTRXPropertyPage::SetThemeChanged ( bDarkTheme );
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
+void CTRXInfoPage::OnDropFiles(HDROP hDropInfo)
+{
+	// TODO: ajoutez ici le code de votre gestionnaire de messages et/ou les paramètres par défaut des appels
+	// TODO: Add your message handler code here and/or call default
+	static char			szFilename [ MAX_PATH ];
+	static char			szDirectory [ MAX_PATH ];
+
+	//		First get the count of files
+	UINT iCount = DragQueryFile ( hDropInfo, 0xFFFFFFFF, szFilename, sizeof ( szFilename ) );
+	if ( iCount >= 0 )
+	{
+		UINT iRes = DragQueryFile ( hDropInfo, 0, szFilename, sizeof ( szFilename ) );
+		if ( iRes != 0 )
+		{
+			/*
+			 *		The Game.
+			 */
+			char					szGame [ 64 ];
+
+			/*
+			 *		The Game save number.
+			 */
+			int 					iGame;
+
+			/*
+			 *		The Title
+			 */
+			char					szTitle [ 64 ];
+
+			/*
+			 *		The Version.
+			 */
+			int						iVersion;
+
+			/*
+			 *	Set filename Text.
+			 */
+			m_Filename.SetWindowText ( szFilename );
+		
+			strcpy_s ( szDirectory, sizeof(szDirectory), szFilename );
+			theApp.RemoveFilename ( szDirectory );
+
+			/*
+			 *	Fills list Ctrl.
+			 */
+			FillListCtrl ( szDirectory );
+
+			/*
+			 *	Retrieve informations.
+			 */
+			m_Filename.GetWindowText ( szFilename, sizeof ( szFilename ) - 1 );
+			BOOL bWritten = theApp.WriteProfileString ( "Settings", "Last Opened", szFilename );
+
+			iVersion = CTRSaveGame::InstanciateVersion ( szFilename );
+			if ( iVersion != -1 && CTRSaveGame::I() != NULL )
+			{
+				int iLevel = 0;
+				int iSub = 0;
+				iVersion = CTRSaveGame::I()->GetInfo ( szGame, sizeof(szGame), &iGame, &iLevel, szTitle, sizeof(szTitle) );
+				CTRSaveGame::I()->RetrieveInformation (  szFilename );
+				m_Status.SetWindowText ( CTRSaveGame::I()->GetStatus() );
+
+				//
+				DisplayValues ();
+			}
+		}
+	}
+	CTRXPropertyPage::OnDropFiles(hDropInfo);
 }

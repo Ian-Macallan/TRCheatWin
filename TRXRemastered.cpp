@@ -429,6 +429,7 @@ BEGIN_MESSAGE_MAP(CTRXRemastered, CTRXPropertyPage123)
 	ON_CBN_SELENDOK(IDC_COMBO, &CTRXRemastered::OnSelendokCombo)
 	ON_BN_CLICKED(IDC_POSITION, &CTRXRemastered::OnBnClickedPosition)
 	ON_BN_CLICKED(IDC_SHOW_MAP, &CTRXRemastered::OnBnClickedShowMap)
+	ON_WM_DROPFILES()
 END_MESSAGE_MAP()
 
 
@@ -5355,4 +5356,42 @@ void CTRXRemastered::SetThemeChanged ( bool bDarkTheme )
 	}
 
 	CTRXPropertyPage123::SetThemeChanged ( bDarkTheme );
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
+void CTRXRemastered::OnDropFiles(HDROP hDropInfo)
+{
+	// TODO: ajoutez ici le code de votre gestionnaire de messages et/ou les paramètres par défaut des appels
+	static char			szFilename [ MAX_PATH ];
+
+	//		First get the count of files
+	UINT iCount = DragQueryFile ( hDropInfo, 0xFFFFFFFF, szFilename, sizeof ( szFilename ) );
+	if ( iCount >= 0 )
+	{
+		UINT iRes = DragQueryFile ( hDropInfo, 0, szFilename, sizeof ( szFilename ) );
+		if ( iRes != 0 )
+		{
+			/*
+			 *	Set filename Text.
+			 */
+			m_Filename.SetWindowText ( szFilename );
+
+			DisplayList ( szFilename );
+
+			/*
+			 *	Write Profile String.
+			 */
+			//
+			BOOL bAdded = AddLocation ( LocationPathname, szFilename );
+			if ( bAdded )
+			{
+				m_Combo.AddString ( szFilename );
+			}
+		}
+	}
+
+	CTRXPropertyPage123::OnDropFiles(hDropInfo);
 }

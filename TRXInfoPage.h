@@ -167,5 +167,6 @@ class CTRXInfoPage : public CTRXPropertyPage
 		afx_msg void OnDropdownCustomCombo();
 		afx_msg void OnBnClickedSeeCustom();
 		afx_msg void OnBnClickedSort();
+		afx_msg void OnDropFiles(HDROP hDropInfo);
 };
 
