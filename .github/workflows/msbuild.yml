@@ -56,12 +56,12 @@ jobs:
     #    name: TRCheatWin.exe
     #    path: ${{ github.workspace }}/Release/TRCheatWin.exe
 
-    - name: Upload Windows win32 Executable
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ github.token }}
-      with:
-        upload_url: https://github.com/Ian-Macallan/TRCheatWin/tree/main/Binaries
-        asset_path: ${{ github.workspace }}/Release/TRCheatWin.exe
-        asset_name: TRCheatWin.exe
-        asset_content_type: application/zip
+    # - name: Upload Windows win32 Executable
+    #  uses: actions/upload-release-asset@v1
+    #  env:
+    #    GITHUB_TOKEN: ${{ github.token }}
+    #  with:
+    #    upload_url: https://github.com/Ian-Macallan/TRCheatWin/tree/main/Binaries
+    #    asset_path: ${{ github.workspace }}/Release/TRCheatWin.exe
+    #    asset_name: TRCheatWin.exe
+    #    asset_content_type: application/zip
