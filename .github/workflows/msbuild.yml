@@ -66,3 +66,14 @@ jobs:
     #    asset_name: TRCheatWin.exe
     #    asset_content_type: application/zip
     
+    # Create Release
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: Win32 # ${{ github.ref }}
+        release_name: ReleaseWin32  # ${{ github.ref }}
+        draft: false
+        prerelease: false
