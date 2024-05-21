@@ -22,10 +22,10 @@ env:
 
 #
 permissions: 
-  actions: write
-  contents: write
-  packages: write
-  repository-projects: write
+  # actions: write
+  contents: read
+  # packages: write
+  # repository-projects: write
   
 jobs:
   build:
