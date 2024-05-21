@@ -20,7 +20,8 @@ env:
   # https://docs.github.com/actions/learn-github-actions/managing-complex-workflows#using-a-build-matrix
   BUILD_CONFIGURATION: Release
 
-permissions: write-all
+# permissions: write-all
+permissions: read-all
 
 jobs:
   build:
