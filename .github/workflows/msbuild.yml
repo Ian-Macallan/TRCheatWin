@@ -24,7 +24,7 @@ env:
 permissions: 
   actions: write
   contents: write
-  packages:: write
+  packages: write
   repository-projects: write
   
 jobs:
