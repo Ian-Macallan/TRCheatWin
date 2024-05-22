@@ -6,11 +6,12 @@ HIDM_STANDARD                           0x10030
 HIDM_UNCHECKED                          0x10040
 HIDM_SEARCH_EXT                         0x10050
 HIDM_VERTICALVIEW                       0x10060
+HIDM_SEARCH_POS_EXT                     0x10070
+HIDM_DARK_THEME                         0x10080
 HIDM_AMMOS                              0x1006B
 HIDM_EQUIPMENT                          0x1006C
 HIDM_GUN                                0x1006D
 HIDM_ITEMS                              0x1006E
-HIDM_DARK_THEME                         0x10070
 HID_MENULIST_EXPORT                     0x18003
 HID_MENULIST_IMPORT                     0x18004
 HID_MENULIST_DELETE                     0x18005
