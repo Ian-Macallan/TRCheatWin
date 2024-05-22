@@ -5,12 +5,13 @@
 /////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////
-BOOL			CTRXGlobal::m_iUnchecked	= FALSE;
-BOOL			CTRXGlobal::m_iSearchExt	= FALSE;
-unsigned		CTRXGlobal::m_iMinNGSize	= 37400;
-unsigned		CTRXGlobal::m_iMaxNGSize	= 37500;
+BOOL			CTRXGlobal::m_iUnchecked		= FALSE;
+BOOL			CTRXGlobal::m_iSearchPosExt		= FALSE;
+BOOL			CTRXGlobal::m_iSearchExt		= FALSE;
+unsigned		CTRXGlobal::m_iMinNGSize		= 37400;
+unsigned		CTRXGlobal::m_iMaxNGSize		= 37500;
 
-int				CTRXGlobal::m_iDarkTheme	= 0;
+int				CTRXGlobal::m_iDarkTheme		= 0;
 
 //
 /////////////////////////////////////////////////////////////////////////////
@@ -19,7 +20,6 @@ int				CTRXGlobal::m_iDarkTheme	= 0;
 CTRXGlobal::CTRXGlobal(void)
 {
 }
-
 
 //
 /////////////////////////////////////////////////////////////////////////////

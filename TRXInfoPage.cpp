@@ -330,8 +330,8 @@ void CTRXInfoPage::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_ADD_CUSTOM, m_Add_Custom);
 	DDX_Control(pDX, IDC_SEE_CUSTOM, m_See_Custom);
 	DDX_Control(pDX, IDC_SORT, m_Sort);
-	//}}AFX_DATA_MAP
 	DDX_Control(pDX, IDC_SQUARE, m_Square);
+	//}}AFX_DATA_MAP
 }
 
 //
@@ -463,6 +463,16 @@ void CTRXInfoPage::LoadDirectory()
 			CTRSaveGame::I()->RetrieveInformation (  szFilename );
 			m_Status.SetWindowText ( CTRSaveGame::I()->GetStatus() );
 
+			//	Reset Custom Combo
+			ZeroMemory ( CustomDataFiles, sizeof(CustomDataFiles) );
+			ResetCustomLabels ();
+
+			//	Select Default
+			m_Custom_Combo.SetCurSel ( 0 );
+
+			//	Change to Normal
+			ChangeCustomCombo( true );
+
 			//
 			DisplayValues ();
 		}
@@ -498,7 +508,14 @@ void CTRXInfoPage::OnLoad()
 		SetGUIModified ( FALSE );
 
 		//	Reset Custom Combo
+		ZeroMemory ( CustomDataFiles, sizeof(CustomDataFiles) );
+		ResetCustomLabels ();
+
+		//	Select Default
 		m_Custom_Combo.SetCurSel ( 0 );
+
+		//	Change to Normal
+		ChangeCustomCombo( true );
 
 	}
 
@@ -2036,7 +2053,10 @@ void CTRXInfoPage::OnSelchangeCombo()
 		}
 
 		//	Reset Custom Combo
+		ZeroMemory ( CustomDataFiles, sizeof(CustomDataFiles) );
+		ResetCustomLabels ();
 		m_Custom_Combo.SetCurSel ( 0 );
+		ChangeCustomCombo( true );
 	}
 
 	SetGUIModified ( FALSE );
@@ -2943,6 +2963,7 @@ BOOL CTRXInfoPage::ExtractAfterScript ( int tombraider, TR_MODE trMode, STRUCTLO
 /////////////////////////////////////////////////////////////////////////////
 void CTRXInfoPage::OnSelchangeCustomCombo()
 {
+	//
 	ZeroMemory ( CustomDataFiles, sizeof(CustomDataFiles) );
 	ResetCustomLabels ();
 
@@ -3123,11 +3144,21 @@ void CTRXInfoPage::OnDropFiles(HDROP hDropInfo)
 			iVersion = CTRSaveGame::InstanciateVersion ( szFilename );
 			if ( iVersion != -1 && CTRSaveGame::I() != NULL )
 			{
-				int iLevel = 0;
-				int iSub = 0;
+				int iLevel		= 0;
+				int iSub		= 0;
 				iVersion = CTRSaveGame::I()->GetInfo ( szGame, sizeof(szGame), &iGame, &iLevel, szTitle, sizeof(szTitle) );
 				CTRSaveGame::I()->RetrieveInformation (  szFilename );
 				m_Status.SetWindowText ( CTRSaveGame::I()->GetStatus() );
+
+				//	Reset Custom Combo
+				ZeroMemory ( CustomDataFiles, sizeof(CustomDataFiles) );
+				ResetCustomLabels ();
+
+				//	Select Default
+				m_Custom_Combo.SetCurSel ( 0 );
+
+				//	Change to Normal
+				ChangeCustomCombo( true );
 
 				//
 				DisplayValues ();

@@ -7,6 +7,7 @@
 #include "TR4SaveGame.h"
 #include "TRXTools.h"
 #include "TR_Areas.h"
+#include "TRXGlobal.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -1794,20 +1795,23 @@ TR4_POSITION *CTR4SaveGame::GetTR4Position ( )
 
 	//
 	//	Search Extended
-	pBuffer	= ( char * ) m_pBuffer;
-	for ( int i = 0x280; i < 0x3000; i++ )
+	if ( CTRXGlobal::m_iSearchPosExt )
 	{
-		TR4_POSITION *pTR4Position = (TR4_POSITION *) ( ( BYTE * ) pBuffer + i );
-
-		DWORD dwSouthToNorth	= ( DWORD) pTR4Position->wSouthToNorth * TR4_FACTOR;
-		DWORD dwVertical		= ( DWORD ) pTR4Position->wVertical * TR4_FACTOR;
-		DWORD dwWestToEast		= ( DWORD ) pTR4Position->wWestToEast * TR4_FACTOR;
-		WORD wRoom				= pTR4Position->cRoom;
-
-		BOOL bCheck = CheckAreaForCoordinates ( GetFullVersion(), GetLevelIndex(),  wRoom, dwWestToEast, dwVertical, dwSouthToNorth );
-		if ( bCheck )
+		pBuffer	= ( char * ) m_pBuffer;
+		for ( int i = 0x280; i < 0x3000; i++ )
 		{
-			return pTR4Position;
+			TR4_POSITION *pTR4Position = (TR4_POSITION *) ( ( BYTE * ) pBuffer + i );
+
+			DWORD dwSouthToNorth	= ( DWORD) pTR4Position->wSouthToNorth * TR4_FACTOR;
+			DWORD dwVertical		= ( DWORD ) pTR4Position->wVertical * TR4_FACTOR;
+			DWORD dwWestToEast		= ( DWORD ) pTR4Position->wWestToEast * TR4_FACTOR;
+			WORD wRoom				= pTR4Position->cRoom;
+
+			BOOL bCheck = CheckAreaForCoordinates ( GetFullVersion(), GetLevelIndex(),  wRoom, dwWestToEast, dwVertical, dwSouthToNorth );
+			if ( bCheck )
+			{
+				return pTR4Position;
+			}
 		}
 	}
 

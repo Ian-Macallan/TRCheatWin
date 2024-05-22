@@ -8,6 +8,7 @@
 #include "GunGrids.h"
 #include "TRXTools.h"
 #include "TR_Areas.h"
+#include "TRXGlobal.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -1644,17 +1645,20 @@ const TR_POSITION *CTR1SaveGame::GetPosition ( )
 
 	//
 	//	Search Extended
-	for ( int i = 0x500; i < 0x1000; i++ )
+	if ( CTRXGlobal::m_iSearchPosExt )
 	{
-		TR_POSITION *position = ( TR_POSITION *) ( (BYTE *) m_pBuffer + i );
-		int tombraider = GetFullVersion();
-		int levelIndex = GetLevelIndex();
-		BOOL bCheck = 
-			CheckAreaForCoordinates ( tombraider, levelIndex, 
-				position->wRoom, position->dwWestToEast, position->dwVertical,  position->dwSouthToNorth );
-		if ( bCheck )
+		for ( int i = 0x500; i < 0x1000; i++ )
 		{
-			return position;
+			TR_POSITION *position = ( TR_POSITION *) ( (BYTE *) m_pBuffer + i );
+			int tombraider = GetFullVersion();
+			int levelIndex = GetLevelIndex();
+			BOOL bCheck = 
+				CheckAreaForCoordinates ( tombraider, levelIndex, 
+					position->wRoom, position->dwWestToEast, position->dwVertical,  position->dwSouthToNorth );
+			if ( bCheck )
+			{
+				return position;
+			}
 		}
 	}
 

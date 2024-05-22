@@ -1804,20 +1804,23 @@ TR4NG_POSITION *CTR4NGSaveGame::GetTR4Position ( )
 
 	//
 	//	Search Extended
-	pBuffer	= ( char * ) m_pBuffer;
-	for ( int i = 0x280; i < 0x3000; i++ )
+	if ( CTRXGlobal::m_iSearchPosExt )
 	{
-		TR4NG_POSITION *pTR4Position = (TR4NG_POSITION *) ( ( BYTE * ) pBuffer + i );
-
-		DWORD dwSouthToNorth	= ( DWORD) pTR4Position->wSouthToNorth * TR4NG_FACTOR;
-		DWORD dwVertical		= ( DWORD ) pTR4Position->wVertical * TR4NG_FACTOR;
-		DWORD dwWestToEast		= ( DWORD ) pTR4Position->wWestToEast * TR4NG_FACTOR;
-		WORD wRoom				= pTR4Position->cRoom;
-
-		BOOL bCheck = CheckAreaForCoordinates ( GetFullVersion(), GetLevelIndex(),  wRoom, dwWestToEast, dwVertical, dwSouthToNorth );
-		if ( bCheck )
+		pBuffer	= ( char * ) m_pBuffer;
+		for ( int i = 0x280; i < 0x3000; i++ )
 		{
-			return pTR4Position;
+			TR4NG_POSITION *pTR4Position = (TR4NG_POSITION *) ( ( BYTE * ) pBuffer + i );
+
+			DWORD dwSouthToNorth	= ( DWORD) pTR4Position->wSouthToNorth * TR4NG_FACTOR;
+			DWORD dwVertical		= ( DWORD ) pTR4Position->wVertical * TR4NG_FACTOR;
+			DWORD dwWestToEast		= ( DWORD ) pTR4Position->wWestToEast * TR4NG_FACTOR;
+			WORD wRoom				= pTR4Position->cRoom;
+
+			BOOL bCheck = CheckAreaForCoordinates ( GetFullVersion(), GetLevelIndex(),  wRoom, dwWestToEast, dwVertical, dwSouthToNorth );
+			if ( bCheck )
+			{
+				return pTR4Position;
+			}
 		}
 	}
 

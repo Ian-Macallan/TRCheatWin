@@ -386,7 +386,8 @@ BOOL CTRXCHEATWINApp::InitInstance()
 	//
 	INT_PTR nResponse	= 0;
 
-	CTRXGlobal::m_iUnchecked	= theApp.GetProfileInt( "Settings", "Unchecked", 0 );
+	//
+	CTRXGlobal::m_iUnchecked		= theApp.GetProfileInt( "Settings", "Unchecked", 0 );
 
 	//
 	int iTmp	= theApp.GetProfileInt( "Settings", "Min NG Size", 0 );
@@ -400,6 +401,7 @@ BOOL CTRXCHEATWINApp::InitInstance()
 		theApp.WriteProfileInt( "Settings", "Max NG Size", TR_NG_MAX_SIZE );
 	}
 
+	//
 	CTRXGlobal::m_iMinNGSize	= theApp.GetProfileInt( "Settings", "Min NG Size", TR_NG_MIN_SIZE );
 	CTRXGlobal::m_iMaxNGSize	= theApp.GetProfileInt( "Settings", "Max NG Size", TR_NG_MAX_SIZE );
 	if ( CTRXGlobal::m_iMaxNGSize > MAX_SAVELENGTH )
@@ -407,6 +409,13 @@ BOOL CTRXCHEATWINApp::InitInstance()
 		CTRXGlobal::m_iMaxNGSize	= MAX_SAVELENGTH;
 		theApp.WriteProfileInt( "Settings", "Max NG Size", CTRXGlobal::m_iMaxNGSize );
 	}
+
+	iTmp	= theApp.GetProfileInt( "Settings", "Search Position Extended", -1 );
+	if ( iTmp == -1 )
+	{
+		theApp.WriteProfileInt( "Settings", "Search Position Extended", 0 );
+	}
+	CTRXGlobal::m_iSearchPosExt		= theApp.GetProfileInt( "Settings", "Search Position Extended", 0 );
 
 	//
 	iTmp		= theApp.GetProfileInt( "Settings", "DarkTheme", -1 );
