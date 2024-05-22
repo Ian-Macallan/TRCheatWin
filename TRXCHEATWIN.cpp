@@ -401,7 +401,8 @@ BOOL CTRXCHEATWINApp::InitInstance()
 		theApp.WriteProfileInt( PROFILE_SETTING, PROFILE_MAX_NG_SIZE, TR_NG_MAX_SIZE );
 	}
 
-	//
+	//	Savegame of TRNG are generally aound 40 Kb.
+	//	But there are some of 900Kb.
 	CTRXGlobal::m_iMinNGSize	= theApp.GetProfileInt( PROFILE_SETTING, PROFILE_MIN_NG_SIZE, TR_NG_MIN_SIZE );
 	CTRXGlobal::m_iMaxNGSize	= theApp.GetProfileInt( PROFILE_SETTING, PROFILE_MAX_NG_SIZE, TR_NG_MAX_SIZE );
 	if ( CTRXGlobal::m_iMaxNGSize > MAX_SAVELENGTH )
@@ -410,10 +411,12 @@ BOOL CTRXCHEATWINApp::InitInstance()
 		theApp.WriteProfileInt( PROFILE_SETTING, PROFILE_MAX_NG_SIZE, CTRXGlobal::m_iMaxNGSize );
 	}
 
+	//	Search Position Extended helps when Lara is ont in standing Position
+	//	Note that modifying position for savegame of TRNG > 900 KB will not work
 	iTmp	= theApp.GetProfileInt( PROFILE_SETTING, PROFILE_SEARCH_POS_EXT, -1 );
 	if ( iTmp == -1 )
 	{
-		theApp.WriteProfileInt( PROFILE_SETTING, PROFILE_SEARCH_POS_EXT, 0 );
+		theApp.WriteProfileInt( PROFILE_SETTING, PROFILE_SEARCH_POS_EXT, 1 );
 	}
 	CTRXGlobal::m_iSearchPosExt		= theApp.GetProfileInt( PROFILE_SETTING, PROFILE_SEARCH_POS_EXT, 0 );
 
