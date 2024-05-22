@@ -29,7 +29,5 @@ class CTRXListCtrlBase : public CListCtrl
 
 		CTRXCHeaderCtrlBase		m_HeaderCtrl;
 		bool					m_bHeaderControlSubclassed;
-
-	public:
 };
 

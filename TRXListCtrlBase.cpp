@@ -4,6 +4,8 @@
 #include "TRXGlobal.h"
 #include "TRXColors.h"
 #include "TRXGDI.h"
+#include "TRXRemastered.h"
+#include "TRXInfoPage.h"
 
 //
 /////////////////////////////////////////////////////////////////////////////
@@ -215,3 +217,4 @@ void CTRXListCtrlBase::OnNMCustomdraw(NMHDR *pNMHDR, LRESULT *pResult)
 		}
 	}
 }
+

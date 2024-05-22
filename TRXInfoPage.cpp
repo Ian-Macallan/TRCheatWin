@@ -331,6 +331,7 @@ void CTRXInfoPage::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_SEE_CUSTOM, m_See_Custom);
 	DDX_Control(pDX, IDC_SORT, m_Sort);
 	//}}AFX_DATA_MAP
+	DDX_Control(pDX, IDC_SQUARE, m_Square);
 }
 
 //
@@ -1005,30 +1006,39 @@ void CTRXInfoPage::ShowRoom ( TR_AREA *pArea, DWORD x, DWORD z, WORD wDirection 
 		m_Room.SetAreaAndPosition ( pArea, &currentPosition );
 
 		//
-		RECT rectPosition;
-		m_Position.GetWindowRect ( &rectPosition );
-		ScreenToClient ( &rectPosition );
-		RECT roomRect;
-		roomRect.top		= rectPosition.bottom + RoomMargin;
-		roomRect.left		= rectPosition.left + RoomMargin;
-		roomRect.bottom		= roomRect.top + pArea->xSectors * TR_SECTOR_SIZE / RoomDivider;
-		roomRect.right		= roomRect.left + pArea->zSectors * TR_SECTOR_SIZE / RoomDivider;
+		RECT rectSquare;
+		m_Square.GetWindowRect ( &rectSquare );
 
+		ScreenToClient ( &rectSquare );
+		RECT roomRect;
+		int divider = RoomDivider;
+
+		//
+		int width	= pArea->zSectors * TR_SECTOR_SIZE;
+		int height	= pArea->xSectors * TR_SECTOR_SIZE;
+
+		//
+		double wRatio	= (double) width / (double) ( rectSquare.right - rectSquare.left );
+		double hRatio	= (double) height / (double) ( rectSquare.bottom - rectSquare.top );
+		double ratio	= wRatio;
+		if ( ratio < hRatio )
+		{
+			ratio = hRatio;
+		}
+
+		width	= (int) ( ( double) width / ratio );
+		height	= (int) ( ( double) height / ratio );
+
+		roomRect.left		= rectSquare.left;
+		roomRect.top		= rectSquare.top;
+		roomRect.right		= roomRect.left + width; // roomRect.left + pArea->zSectors * TR_SECTOR_SIZE / divider;
+		roomRect.bottom		= roomRect.top + height; // roomRect.top + pArea->xSectors * TR_SECTOR_SIZE / divider;
+
+		//
 		m_Room.SetPointMode ( TRUE );
 		if ( ! m_bRoomCreated )
 		{
 			CTRXRoomPicture::CreateInstanceInside ( this, &m_Room, roomRect, "", SS_NOTIFY );
-#if 0
-			DWORD dwStyle = SS_OWNERDRAW;
-			dwStyle |= SS_NOTIFY;
-			BOOL bCreated = m_Room.Create ( 
-				"",								//	LPCTSTR lpszCaption,
-				dwStyle,						//	DWORD dwStyle,
-				roomRect,						//   const RECT& rect,
-				this,							//	CWnd* pParentWnd,
-				-1								//	UINT nID 
-			);
-#endif
 
 			if ( m_bToolTip )
 			{
@@ -2084,6 +2094,8 @@ BOOL CTRXInfoPage::OnInitDialog()
 		m_ToolTip.AddTool( &m_ListCtrl, LPSTR_TEXTCALLBACK );
 		m_ToolTip.Activate(TRUE);
 	}
+
+	m_Square.ShowWindow ( SW_HIDE );
 
 	m_bInitDone	= true;
 

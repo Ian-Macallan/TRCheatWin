@@ -1734,7 +1734,7 @@ void CTR5SaveGame::discard ()
 /////////////////////////////////////////////////////////////////////////////
 TR5_POSITION *CTR5SaveGame::GetTR5Position ( )
 {
-	const int extraSearch = 8;
+	const int extraSearch = 16;
 
 	char *pBuffer = (char * )GetIndicatorAddress();
 	if ( pBuffer )

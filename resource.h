@@ -598,6 +598,7 @@
 #define IDC_FROM_EAST                   1272
 #define IDC_SCROLLBAR1                  1273
 #define IDC_HELP_SCROLL                 1273
+#define IDC_SQUARE                      1274
 #define ID_MENULIST_EXPORT              32771
 #define ID_MENULIST_IMPORT              32772
 #define ID_MENULIST_DELETE              32773
@@ -613,7 +614,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        289
 #define _APS_NEXT_COMMAND_VALUE         32779
-#define _APS_NEXT_CONTROL_VALUE         1274
+#define _APS_NEXT_CONTROL_VALUE         1275
 #define _APS_NEXT_SYMED_VALUE           123
 #endif
 #endif

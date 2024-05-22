@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "TRXCComboBoxBase.h"
 #include "TRXTools.h"
+#include "TRXRemastered.h"
+#include "TRXInfoPage.h"
 
 //
 /////////////////////////////////////////////////////////////////////////////

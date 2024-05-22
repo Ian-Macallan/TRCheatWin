@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "TRXEditBase.h"
 #include "TRXTools.h"
+#include "TRXRemastered.h"
+#include "TRXInfoPage.h"
 
 //
 /////////////////////////////////////////////////////////////////////////////

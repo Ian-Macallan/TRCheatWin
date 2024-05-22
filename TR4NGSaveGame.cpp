@@ -1778,7 +1778,7 @@ void CTR4NGSaveGame::discard ()
 /////////////////////////////////////////////////////////////////////////////
 TR4NG_POSITION *CTR4NGSaveGame::GetTR4Position ( )
 {
-	const int extraSearch = 8;
+	const int extraSearch = 16;
 
 	char *pBuffer = (char * )GetIndicatorAddress();
 	if ( pBuffer )

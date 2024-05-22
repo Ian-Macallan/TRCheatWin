@@ -125,7 +125,7 @@ BEGIN
     CONTROL         "All Secrets",IDC_SECRET_ALL,"Button",BS_OWNERDRAW | WS_TABSTOP,237,193,50,14
     CONTROL         "Lara is Burning",IDC_LARABURNING,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,126,212,68,8
     EDITTEXT        IDC_LARA,205,210,30,12,ES_AUTOHSCROLL
-    GROUPBOX        "Position",IDC_STATIC,123,229,174,49
+    GROUPBOX        "Position",IDC_STATIC,123,229,167,49
     LTEXT           "Room",IDC_STATIC,131,242,20,8
     EDITTEXT        IDC_ROOM,157,239,40,14,ES_AUTOHSCROLL
     LTEXT           "Direction",IDC_STATIC,210,242,29,8
@@ -140,12 +140,13 @@ BEGIN
     CONTROL         210,IDC_LEVEL_PICTURE,"Static",SS_BITMAP | SS_REALSIZEIMAGE | SS_SUNKEN | WS_BORDER,7,194,113,80,WS_EX_DLGMODALFRAME | WS_EX_CLIENTEDGE
     EDITTEXT        IDC_STATUS,7,307,505,12,ES_AUTOHSCROLL | ES_READONLY | NOT WS_TABSTOP
     LTEXT           "°",IDC_STATIC,281,241,8,8
-    LTEXT           "North - South",IDC_POSITION,299,196,43,8
+    LTEXT           "North - South",IDC_POSITION,299,196,96,9
     LTEXT           "Custom Level :",IDC_STATIC,7,294,48,8
     COMBOBOX        IDC_CUSTOM_COMBO,65,292,372,74,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
     CONTROL         "X",IDC_REMOVE_CUSTOM,"Button",BS_OWNERDRAW | WS_TABSTOP,441,291,21,14
     CONTROL         "+",IDC_ADD_CUSTOM,"Button",BS_OWNERDRAW | WS_TABSTOP,464,291,20,14
     CONTROL         ">",IDC_SEE_CUSTOM,"Button",BS_OWNERDRAW | WS_TABSTOP,486,291,17,14
+    GROUPBOX        "",IDC_SQUARE,296,206,99,81
 END
 
 IDD_ITEMS DIALOGEX 0, 0, 520, 330
@@ -684,8 +685,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 4,1,08,013
- PRODUCTVERSION 4,1,08,013
+ FILEVERSION 4,1,08,014
+ PRODUCTVERSION 4,1,08,014
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x29L
@@ -703,15 +704,15 @@ BEGIN
             VALUE "Comments", "mailto:ian.macallan@gmail.com\0"
             VALUE "CompanyName", "Macallan (c)\0"
             VALUE "FileDescription", "TRCheatWin - (VC11.0/u5)\0"
-            VALUE "FileVersion", "4.1.08.013\0"
+            VALUE "FileVersion", "4.1.08.014\0"
             VALUE "InternalName", "https://www.macallan.org/\0"
-            VALUE "LegalCopyright", "Copyright (C) Tue May 21 18:38, 2024\0"
+            VALUE "LegalCopyright", "Copyright (C) Wed May 22 07:37, 2024\0"
             VALUE "LegalTrademarks", "Author: Ian Macallan\0"
             VALUE "OriginalFilename", ORIGINAL_FILENAME
-            VALUE "PrivateBuild", "742\0"
+            VALUE "PrivateBuild", "743\0"
             VALUE "ProductName", PRODUCT_NAME
-            VALUE "ProductVersion", "4.1.08.013\0"
-            VALUE "SpecialBuild", "742\0"
+            VALUE "ProductVersion", "4.1.08.014\0"
+            VALUE "SpecialBuild", "743\0"
         END
     END
     BLOCK "VarFileInfo"
