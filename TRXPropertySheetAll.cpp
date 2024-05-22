@@ -43,8 +43,8 @@ IMPLEMENT_DYNAMIC(CTRXPropertySheetAll, CTRXPropertySheet)
 CTRXPropertySheetAll::CTRXPropertySheetAll(UINT nIDCaption, CWnd* pParentWnd, UINT iSelectPage) :
 	CTRXPropertySheet(nIDCaption, pParentWnd, iSelectPage)
 {
-	int iRemastered	= theApp.GetProfileInt( "Menu", "Remastered", 1 );
-	int iStandard	= theApp.GetProfileInt( "Menu", "Standard", 1 );
+	int iRemastered	= theApp.GetProfileInt( PROFILE_MENU, PROFILE_REMASTERED, 1 );
+	int iStandard	= theApp.GetProfileInt( PROFILE_MENU, PROFILE_STANDARD, 1 );
 
 	m_iStandardAdded	= FALSE;
 	m_iRemasteredAdded	= FALSE;
@@ -67,8 +67,8 @@ CTRXPropertySheetAll::CTRXPropertySheetAll(UINT nIDCaption, CWnd* pParentWnd, UI
 CTRXPropertySheetAll::CTRXPropertySheetAll(LPCTSTR pszCaption, CWnd* pParentWnd, UINT iSelectPage) :
 		CTRXPropertySheet(pszCaption, pParentWnd, iSelectPage)
 {
-	int iRemastered	= theApp.GetProfileInt( "Menu", "Remastered", 1 );
-	int iStandard	= theApp.GetProfileInt( "Menu", "Standard", 1 );
+	int iRemastered	= theApp.GetProfileInt( PROFILE_MENU, PROFILE_REMASTERED, 1 );
+	int iStandard	= theApp.GetProfileInt( PROFILE_MENU, PROFILE_STANDARD, 1 );
 
 	m_iStandardAdded	= FALSE;
 	m_iRemasteredAdded	= FALSE;
@@ -120,12 +120,7 @@ BOOL CTRXPropertySheetAll::OnInitDialog()
 
 	BOOL bResult = CTRXPropertySheet::OnInitDialog();
 
-	int iRemastered	= theApp.GetProfileInt( "Menu", "Remastered", 1 );
-	int iStandard	= theApp.GetProfileInt( "Menu", "Standard", 1 );
-	int iUnChecked = theApp.GetProfileInt( "Settings", "Unchecked", 0 );
-	int iSearchExt = theApp.GetProfileInt( "Settings", "SearchExt", 0 );
-	int iDarkTheme = theApp.GetProfileInt( "Settings", "DarkTheme", 0 );
-
+	//
 	if ( GetParent() == NULL )
 	{
 		CMenu* pSysMenu = GetSystemMenu(FALSE);
@@ -133,49 +128,81 @@ BOOL CTRXPropertySheetAll::OnInitDialog()
 		{
 			pSysMenu->AppendMenu(MF_SEPARATOR);
 
-			CString strRemastered;
-			strRemastered.LoadString(IDS_REMASTERED);
-			if (!strRemastered.IsEmpty())
 			{
-				pSysMenu->AppendMenu(MF_STRING, IDM_REMASTERED, strRemastered);
-				if ( iRemastered ) pSysMenu->CheckMenuItem(IDM_REMASTERED,MF_CHECKED|MF_BYCOMMAND);
+				int iRemastered		= theApp.GetProfileInt( PROFILE_MENU, PROFILE_REMASTERED, 1 );
+
+				CString strRemastered;
+				strRemastered.LoadString(IDS_REMASTERED);
+				if (!strRemastered.IsEmpty())
+				{
+					pSysMenu->AppendMenu(MF_STRING, IDM_REMASTERED, strRemastered);
+					if ( iRemastered ) pSysMenu->CheckMenuItem(IDM_REMASTERED,MF_CHECKED|MF_BYCOMMAND);
+				}
 			}
 
-			CString strStandard;
-			strStandard.LoadString(IDS_STANDARD);
-			if (!strStandard.IsEmpty())
 			{
-				pSysMenu->AppendMenu(MF_STRING, IDM_STANDARD, strStandard);
-				if ( iStandard ) pSysMenu->CheckMenuItem(IDM_STANDARD,MF_CHECKED|MF_BYCOMMAND);
-			}
+				int iStandard		= theApp.GetProfileInt( PROFILE_MENU, PROFILE_STANDARD, 1 );
 
-			//
-			CString strUnchecked;
-			strUnchecked.LoadString(IDS_UNCHECKED);
-			if (!strUnchecked.IsEmpty())
-			{
-				pSysMenu->AppendMenu(MF_STRING, IDM_UNCHECKED, strUnchecked);
-				if ( iUnChecked ) pSysMenu->CheckMenuItem(IDM_UNCHECKED,MF_CHECKED|MF_BYCOMMAND);
-			}
-
-			//
-			CString strSearchExt;
-			strSearchExt.LoadString(IDS_SEARCH_EXT);
-			if (!strSearchExt.IsEmpty())
-			{
-				pSysMenu->AppendMenu(MF_STRING, IDM_SEARCH_EXT, strSearchExt);
-				if ( iSearchExt ) pSysMenu->CheckMenuItem(IDM_SEARCH_EXT,MF_CHECKED|MF_BYCOMMAND);
+				CString strStandard;
+				strStandard.LoadString(IDS_STANDARD);
+				if (!strStandard.IsEmpty())
+				{
+					pSysMenu->AppendMenu(MF_STRING, IDM_STANDARD, strStandard);
+					if ( iStandard ) pSysMenu->CheckMenuItem(IDM_STANDARD,MF_CHECKED|MF_BYCOMMAND);
+				}
 			}
 
 			//
-			CString strDarkTheme;
-			strDarkTheme.LoadString(IDS_DARK_THEME);
-			if (!strDarkTheme.IsEmpty())
 			{
-				pSysMenu->AppendMenu(MF_STRING, IDM_DARK_THEME, strDarkTheme);
-				if ( iDarkTheme ) pSysMenu->CheckMenuItem(IDM_DARK_THEME,MF_CHECKED|MF_BYCOMMAND);
+				int iUnChecked		= theApp.GetProfileInt( PROFILE_SETTING, PROFILE_UNCHECKED, 0 );
+
+				CString strUnchecked;
+				strUnchecked.LoadString(IDS_UNCHECKED);
+				if (!strUnchecked.IsEmpty())
+				{
+					pSysMenu->AppendMenu(MF_STRING, IDM_UNCHECKED, strUnchecked);
+					if ( iUnChecked ) pSysMenu->CheckMenuItem(IDM_UNCHECKED,MF_CHECKED|MF_BYCOMMAND);
+				}
 			}
 
+			//
+			{
+				int iSearchExt		= theApp.GetProfileInt( PROFILE_SETTING, PROFILE_SEARCH_EXT, 0 );
+
+				CString strSearchExt;
+				strSearchExt.LoadString(IDS_SEARCH_EXT);
+				if (!strSearchExt.IsEmpty())
+				{
+					pSysMenu->AppendMenu(MF_STRING, IDM_SEARCH_EXT, strSearchExt);
+					if ( iSearchExt ) pSysMenu->CheckMenuItem(IDM_SEARCH_EXT,MF_CHECKED|MF_BYCOMMAND);
+				}
+			}
+
+			//
+			{
+				int iSearchPosExt	= theApp.GetProfileInt( PROFILE_SETTING, PROFILE_SEARCH_POS_EXT, 0 );
+
+				CString strSearchPosExt;
+				strSearchPosExt.LoadString(IDS_SEARCH_POS_EXT);
+				if (!strSearchPosExt.IsEmpty())
+				{
+					pSysMenu->AppendMenu(MF_STRING, IDM_SEARCH_POS_EXT, strSearchPosExt);
+					if ( iSearchPosExt ) pSysMenu->CheckMenuItem(IDM_SEARCH_POS_EXT,MF_CHECKED|MF_BYCOMMAND);
+				}
+			}
+
+			//
+			{
+				int iDarkTheme		= theApp.GetProfileInt( PROFILE_SETTING, PROFILE_DARTKTHEME, 0 );
+
+				CString strDarkTheme;
+				strDarkTheme.LoadString(IDS_DARK_THEME);
+				if (!strDarkTheme.IsEmpty())
+				{
+					pSysMenu->AppendMenu(MF_STRING, IDM_DARK_THEME, strDarkTheme);
+					if ( iDarkTheme ) pSysMenu->CheckMenuItem(IDM_DARK_THEME,MF_CHECKED|MF_BYCOMMAND);
+				}
+			}
 		}
 	}
 
@@ -201,7 +228,7 @@ HCURSOR CTRXPropertySheetAll::OnQueryDragIcon()
 /////////////////////////////////////////////////////////////////////////////
 void CTRXPropertySheetAll::OnSysCommand(UINT nID, LPARAM lParam)
 {
-	if ((nID & 0xFFF0) == IDM_REMASTERED)
+	if ( ( nID & 0xFFF0 ) == IDM_REMASTERED)
 	{
 		CMenu* pSysMenu = GetSystemMenu(FALSE);
 		if ( pSysMenu )
@@ -212,14 +239,14 @@ void CTRXPropertySheetAll::OnSysCommand(UINT nID, LPARAM lParam)
 			{
 				if ( standard == MF_CHECKED )	// Only Remove Remastered if standard is enabled
 				{
-					theApp.WriteProfileInt( "Menu", "Remastered", 0 );
+					theApp.WriteProfileInt( PROFILE_MENU, PROFILE_REMASTERED, 0 );
 					pSysMenu->CheckMenuItem(IDM_REMASTERED,MF_UNCHECKED|MF_BYCOMMAND);
 					RemoveRemasteredPage();
 				}
 			}
 			else
 			{
-				theApp.WriteProfileInt( "Menu", "Remastered", 1 );
+				theApp.WriteProfileInt( PROFILE_MENU, PROFILE_REMASTERED, 1 );
 				pSysMenu->CheckMenuItem(IDM_REMASTERED,MF_CHECKED|MF_BYCOMMAND);
 				AddRemasteredPage();
 			}
@@ -236,14 +263,14 @@ void CTRXPropertySheetAll::OnSysCommand(UINT nID, LPARAM lParam)
 			{
 				if ( remastered == MF_CHECKED )	// Only Remove Standard if Remastered is enabled
 				{
-					theApp.WriteProfileInt( "Menu", "Standard", 0 );
+					theApp.WriteProfileInt( PROFILE_MENU, PROFILE_STANDARD, 0 );
 					pSysMenu->CheckMenuItem(IDM_STANDARD,MF_UNCHECKED|MF_BYCOMMAND);
 					RemoveStandardPage();
 				}
 			}
 			else
 			{
-				theApp.WriteProfileInt( "Menu", "Standard", 1 );
+				theApp.WriteProfileInt( PROFILE_MENU, PROFILE_STANDARD, 1 );
 				pSysMenu->CheckMenuItem(IDM_STANDARD,MF_CHECKED|MF_BYCOMMAND);
 				AddStandardPage();
 			}
@@ -251,20 +278,20 @@ void CTRXPropertySheetAll::OnSysCommand(UINT nID, LPARAM lParam)
 	}
 	else if ((nID & 0xFFF0) == IDM_UNCHECKED)
 	{
-		int iUnchecked = theApp.GetProfileInt( "Settings", "Unchecked", 0 );
+		// int iUnchecked = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_UNCHECKED, 0 );
 
 		CMenu* pSysMenu = GetSystemMenu(FALSE);
 		if ( pSysMenu )
 		{
 			if ( CTRXGlobal::m_iUnchecked )
 			{
-				theApp.WriteProfileInt( "Settings", "Unchecked", 0 );
+				theApp.WriteProfileInt( PROFILE_SETTING, PROFILE_UNCHECKED, 0 );
 				CTRXGlobal::m_iUnchecked	= FALSE;
 				pSysMenu->CheckMenuItem(IDM_UNCHECKED,MF_UNCHECKED|MF_BYCOMMAND);
 			}
 			else
 			{
-				theApp.WriteProfileInt( "Settings", "Unchecked", 1 );
+				theApp.WriteProfileInt( PROFILE_SETTING, PROFILE_UNCHECKED, 1 );
 				CTRXGlobal::m_iUnchecked	= TRUE;
 				pSysMenu->CheckMenuItem(IDM_UNCHECKED,MF_CHECKED|MF_BYCOMMAND);
 			}
@@ -272,35 +299,56 @@ void CTRXPropertySheetAll::OnSysCommand(UINT nID, LPARAM lParam)
 	}
 	else if ((nID & 0xFFF0) == IDM_SEARCH_EXT)
 	{
-		int iSearchExt = theApp.GetProfileInt( "Settings", "SearchExt", 0 );
+		// int iSearchExt = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_SEARCH_EXT, 0 );
 
 		CMenu* pSysMenu = GetSystemMenu(FALSE);
 		if ( pSysMenu )
 		{
 			if ( CTRXGlobal::m_iSearchExt )
 			{
-				theApp.WriteProfileInt( "Settings", "SearchExt", 0 );
+				theApp.WriteProfileInt( PROFILE_SETTING, PROFILE_SEARCH_EXT, 0 );
 				CTRXGlobal::m_iSearchExt	= FALSE;
 				pSysMenu->CheckMenuItem(IDM_SEARCH_EXT,MF_UNCHECKED|MF_BYCOMMAND);
 			}
 			else
 			{
-				theApp.WriteProfileInt( "Settings", "SearchExt", 1 );
+				theApp.WriteProfileInt( PROFILE_SETTING, PROFILE_SEARCH_EXT, 1 );
 				CTRXGlobal::m_iSearchExt	= TRUE;
 				pSysMenu->CheckMenuItem(IDM_SEARCH_EXT,MF_CHECKED|MF_BYCOMMAND);
 			}
 		}
 	}
+	else if ((nID & 0xFFF0) == IDM_SEARCH_POS_EXT)
+	{
+		// int iSearchExt = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_SEARCH_POS_EXT, 0 );
+
+		CMenu* pSysMenu = GetSystemMenu(FALSE);
+		if ( pSysMenu )
+		{
+			if ( CTRXGlobal::m_iSearchPosExt )
+			{
+				theApp.WriteProfileInt( PROFILE_SETTING, PROFILE_SEARCH_POS_EXT, 0 );
+				CTRXGlobal::m_iSearchPosExt	= FALSE;
+				pSysMenu->CheckMenuItem(IDM_SEARCH_POS_EXT,MF_UNCHECKED|MF_BYCOMMAND);
+			}
+			else
+			{
+				theApp.WriteProfileInt( PROFILE_SETTING, PROFILE_SEARCH_POS_EXT, 1 );
+				CTRXGlobal::m_iSearchPosExt	= TRUE;
+				pSysMenu->CheckMenuItem(IDM_SEARCH_POS_EXT,MF_CHECKED|MF_BYCOMMAND);
+			}
+		}
+	}
 	else if ((nID & 0xFFF0) == IDM_DARK_THEME)
 	{
-		int iDarkTheme = theApp.GetProfileInt( "Settings", "DarkTheme", 0 );
+		int iDarkTheme = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_DARTKTHEME, 0 );
 
 		CMenu* pSysMenu = GetSystemMenu(FALSE);
 		if ( pSysMenu )
 		{
 			if ( CTRXGlobal::m_iDarkTheme )
 			{
-				theApp.WriteProfileInt( "Settings", "DarkTheme", 0 );
+				theApp.WriteProfileInt( PROFILE_SETTING, PROFILE_DARTKTHEME, 0 );
 				CTRXGlobal::m_iDarkTheme	= 0;
 				pSysMenu->CheckMenuItem(IDM_DARK_THEME,MF_UNCHECKED|MF_BYCOMMAND);
 				CTabCtrl* pTab = GetTabControl();
@@ -311,7 +359,7 @@ void CTRXPropertySheetAll::OnSysCommand(UINT nID, LPARAM lParam)
 			}
 			else
 			{
-				theApp.WriteProfileInt( "Settings", "DarkTheme", 1 );
+				theApp.WriteProfileInt( PROFILE_SETTING, PROFILE_DARTKTHEME, 1 );
 				CTRXGlobal::m_iDarkTheme	= 1;
 				pSysMenu->CheckMenuItem(IDM_DARK_THEME,MF_CHECKED|MF_BYCOMMAND);
 

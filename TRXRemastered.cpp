@@ -182,13 +182,13 @@ CTRXRemastered::CTRXRemastered() : CTRXPropertyPage123(CTRXRemastered::IDD)
 	//
 	char szKeyname [ 64 ];
 	sprintf_s ( szKeyname, sizeof(szKeyname), "TRX Last Location Count" );
-	int iCount = theApp.GetProfileInt( "Settings", szKeyname, 0 );
+	int iCount = theApp.GetProfileInt( PROFILE_SETTING, szKeyname, 0 );
 
 	for ( int i = 0; i < LEN_LOCATION && i < iCount; i++ )
 	{
 		char szTemp [ MAX_PATH ];
 		sprintf_s ( szKeyname, sizeof(szKeyname), "TRX Last Location %02d", i );
-		CString location  = theApp.GetProfileString( "Settings", szKeyname, "" );
+		CString location  = theApp.GetProfileString( PROFILE_SETTING, szKeyname, "" );
 		strcpy_s  ( szTemp, sizeof(szTemp), location );
 		if ( strlen(szTemp) > 0 )
 		{
@@ -487,7 +487,7 @@ void CTRXRemastered::OnBnClickedLoad()
 	m_Write.EnableWindow ( FALSE );
 	m_Max.EnableWindow ( FALSE );
 
-	CString lastRead  = theApp.GetProfileString( "Settings", "TRX Last Opened", szFilename );
+	CString lastRead  = theApp.GetProfileString( PROFILE_SETTING, PROFILE_TRX_LAST_OPENED, szFilename );
 	if ( lastRead != "" )
 	{
 		m_Filename.SetWindowText ( lastRead );
@@ -743,7 +743,7 @@ BOOL CTRXRemastered::OnSetActive()
 		}
 		else
 		{
-			lastRead = theApp.GetProfileString( "Settings", "TRX Last Opened", szFilename );
+			lastRead = theApp.GetProfileString( PROFILE_SETTING, PROFILE_TRX_LAST_OPENED, szFilename );
 		}
 
 		//
@@ -1956,7 +1956,7 @@ void CTRXRemastered::DisplayList ( const char *pFilename )
 		{
 			m_Status.SetWindowText ( "File sucessfuily read" );
 			CTR9SaveGame::I()->Load ( );
-			BOOL bWritten = theApp.WriteProfileString ( "Settings", "TRX Last Opened", pFilename );
+			BOOL bWritten = theApp.WriteProfileString ( PROFILE_SETTING, PROFILE_TRX_LAST_OPENED, pFilename );
 
 		}
 		else

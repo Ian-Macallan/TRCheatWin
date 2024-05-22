@@ -109,8 +109,8 @@ BOOL CTRXContainer::OnInitDialog()
 	ASSERT((IDM_ABOUTBOX & 0xFFF0) == IDM_ABOUTBOX);
 	ASSERT(IDM_ABOUTBOX < 0xF000);
 
-	int iRemastered	= theApp.GetProfileInt( "Menu", "Remastered", 1 );
-	int iStandard	= theApp.GetProfileInt( "Menu", "Standard", 1 );
+	int iRemastered	= theApp.GetProfileInt( PROFILE_MENU, PROFILE_REMASTERED, 1 );
+	int iStandard	= theApp.GetProfileInt( PROFILE_MENU, PROFILE_STANDARD, 1 );
 
 	//
 	if (pSysMenu != NULL)
@@ -256,14 +256,14 @@ void CTRXContainer::OnSysCommand(UINT nID, LPARAM lParam)
 			{
 				if ( standard == MF_CHECKED )	// Only Remove Remastered if standard is enabled
 				{
-					theApp.WriteProfileInt( "Menu", "Remastered", 0 );
+					theApp.WriteProfileInt( PROFILE_MENU, PROFILE_REMASTERED, 0 );
 					pSysMenu->CheckMenuItem(IDM_REMASTERED,MF_UNCHECKED|MF_BYCOMMAND);
 					m_pPropertySheet->RemoveRemasteredPage();
 				}
 			}
 			else
 			{
-				theApp.WriteProfileInt( "Menu", "Remastered", 1 );
+				theApp.WriteProfileInt( PROFILE_MENU, PROFILE_REMASTERED, 1 );
 				pSysMenu->CheckMenuItem(IDM_REMASTERED,MF_CHECKED|MF_BYCOMMAND);
 				m_pPropertySheet->AddRemasteredPage();
 			}
@@ -280,14 +280,14 @@ void CTRXContainer::OnSysCommand(UINT nID, LPARAM lParam)
 			{
 				if ( remastered == MF_CHECKED )	// Only Remove Standard if Remastered is enabled
 				{
-					theApp.WriteProfileInt( "Menu", "Standard", 0 );
+					theApp.WriteProfileInt( PROFILE_MENU, PROFILE_STANDARD, 0 );
 					pSysMenu->CheckMenuItem(IDM_STANDARD,MF_UNCHECKED|MF_BYCOMMAND);
 					m_pPropertySheet->RemoveStandardPage();
 				}
 			}
 			else
 			{
-				theApp.WriteProfileInt( "Menu", "Standard", 1 );
+				theApp.WriteProfileInt( PROFILE_MENU, PROFILE_STANDARD, 1 );
 				pSysMenu->CheckMenuItem(IDM_STANDARD,MF_CHECKED|MF_BYCOMMAND);
 				m_pPropertySheet->AddStandardPage();
 			}

@@ -86,6 +86,19 @@ class CTRXCHEATWINApp : public CWinApp
 //
 extern void ResetCustomLabels ();
 
+#define	PROFILE_SETTING				"Settings"
+#define	PROFILE_MENU				"Menu"
+#define PROFILE_REMASTERED			"Remastered"
+#define PROFILE_STANDARD			"Standard"
+#define	PROFILE_LAST_OPENED			"Last Opened"
+#define	PROFILE_TRX_LAST_OPENED		"TRX Last Opened"
+#define	PROFILE_UNCHECKED			"Unchecked"
+#define	PROFILE_SEARCH_EXT			"Search Extended"
+#define	PROFILE_SEARCH_POS_EXT		"Search Position Extended"
+#define	PROFILE_MIN_NG_SIZE			"Min NG Size"
+#define	PROFILE_MAX_NG_SIZE			"Max NG Size"
+#define	PROFILE_DARTKTHEME			"DarkTheme"
+
 /////////////////////////////////////////////////////////////////////////////
 
 //{{AFX_INSERT_LOCATION}}

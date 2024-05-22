@@ -250,13 +250,13 @@ void CTRXPropertyPageBase::LoadLocation ( STRUCTLOCATION *pTable, const char *pC
 {
 	char szKeyname [ 64 ];
 	sprintf_s ( szKeyname, sizeof(szKeyname), pCountKey );
-	int iCount = theApp.GetProfileInt( "Settings", szKeyname, 0 );
+	int iCount = theApp.GetProfileInt( PROFILE_SETTING, szKeyname, 0 );
 
 	for ( int i = 0; i < LEN_LOCATION && i < iCount; i++ )
 	{
 		char szTemp [ MAX_PATH ];
 		sprintf_s ( szKeyname, sizeof(szKeyname), pKeyFormat, i );
-		CString location  = theApp.GetProfileString( "Settings", szKeyname, "" );
+		CString location  = theApp.GetProfileString( PROFILE_SETTING, szKeyname, "" );
 		strcpy_s  ( szTemp, sizeof(szTemp), location );
 		if ( strlen(szTemp) > 0 )
 		{
@@ -281,13 +281,13 @@ void CTRXPropertyPageBase::SaveLocation ( STRUCTLOCATION *pTable, const char *pC
 		if ( strlen(pTable [ i ].szPathname) > 0 )
 		{
 			sprintf_s ( szKeyname, sizeof(szKeyname), pKeyFormat, iCount );
-			theApp.WriteProfileString( "Settings", szKeyname, pTable [ i ].szPathname );
+			theApp.WriteProfileString( PROFILE_SETTING, szKeyname, pTable [ i ].szPathname );
 			iCount++;
 		}
 	}
 
 	sprintf_s ( szKeyname, sizeof(szKeyname), pCountKey );
-	theApp.WriteProfileInt( "Settings", szKeyname, iCount );
+	theApp.WriteProfileInt( PROFILE_SETTING, szKeyname, iCount );
 }
 
 //

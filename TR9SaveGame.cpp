@@ -1572,7 +1572,7 @@ BOOL CTR9SaveGame::ReadFile ( const char *pFilename )
 	Init();
 
 	//
-	CTRXGlobal::m_iUnchecked = theApp.GetProfileInt( "Settings", "Unchecked", 0 );
+	CTRXGlobal::m_iUnchecked = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_UNCHECKED, 0 );
 
 	//
 	fopen_s ( &m_hFile, pFilename, "rb" );

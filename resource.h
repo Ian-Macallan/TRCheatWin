@@ -9,6 +9,8 @@
 #define IDM_UNCHECKED                   0x0040
 #define IDM_SEARCH_EXT                  0x0050
 #define IDM_VERTICALVIEW                0x0060
+#define IDM_SEARCH_POS_EXT              0x0070
+#define IDM_DARK_THEME                  0x0080
 #define IDD_ABOUTBOX                    100
 #define IDS_ABOUTBOX                    101
 #define IDD_TR3CHEATWIN_DIALOG          102
@@ -22,9 +24,8 @@
 #define IDM_EQUIPMENT                   108
 #define IDS_DARK_THEME                  108
 #define IDM_GUN                         109
+#define IDS_SEARCH_POS_EXT              109
 #define IDM_ITEMS                       110
-#define IUDM_STANDARD                   111
-#define IDM_DARK_THEME                  0x0070
 #define IDD_TRXDIABLOGBASE              114
 #define IDD_TRXMAPAREAS                 115
 #define IDD_TRXALLMAPS                  116
@@ -615,6 +616,6 @@
 #define _APS_NEXT_RESOURCE_VALUE        289
 #define _APS_NEXT_COMMAND_VALUE         32779
 #define _APS_NEXT_CONTROL_VALUE         1275
-#define _APS_NEXT_SYMED_VALUE           123
+#define _APS_NEXT_SYMED_VALUE           124
 #endif
 #endif

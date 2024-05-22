@@ -420,7 +420,7 @@ void CTRXInfoPage::LoadDirectory()
 	m_Write.EnableWindow ( FALSE );
 	m_Max.EnableWindow ( FALSE );
 
-	CString lastRead  = theApp.GetProfileString( "Settings", "Last Opened", szFilename );
+	CString lastRead  = theApp.GetProfileString( PROFILE_SETTING, PROFILE_LAST_OPENED, szFilename );
 	if ( lastRead != "" )
 	{
 		strcpy_s ( szDirectory, sizeof(szDirectory), lastRead );
@@ -452,7 +452,7 @@ void CTRXInfoPage::LoadDirectory()
 		 *	Retrieve informations.
 		 */
 		m_Filename.GetWindowText ( szFilename, sizeof ( szFilename ) - 1 );
-		BOOL bWritten = theApp.WriteProfileString ( "Settings", "Last Opened", szFilename );
+		BOOL bWritten = theApp.WriteProfileString ( PROFILE_SETTING, PROFILE_LAST_OPENED, szFilename );
 
 		iVersion = CTRSaveGame::InstanciateVersion ( szFilename );
 		if ( iVersion != -1 && CTRSaveGame::I() != NULL )
@@ -1141,7 +1141,7 @@ BOOL CTRXInfoPage::OnSetActive()
 		}
 		else
 		{
-			lastRead = theApp.GetProfileString( "Settings", "Last Opened", "" );
+			lastRead = theApp.GetProfileString( PROFILE_SETTING, PROFILE_LAST_OPENED, "" );
 		}
 
 		//
@@ -1557,7 +1557,7 @@ void CTRXInfoPage::DisplayOne ( int line )
 	{
 		m_ListCtrl.GetItemText( line, COL_PATHNAME, szFilename, sizeof ( szFilename ) - 1 );
 		m_Filename.SetWindowText ( szFilename );
-		BOOL bWritten = theApp.WriteProfileString ( "Settings", "Last Opened", szFilename );
+		BOOL bWritten = theApp.WriteProfileString ( PROFILE_SETTING, PROFILE_LAST_OPENED, szFilename );
 
 		/*
 		 *	Retrieve informations.
@@ -3139,7 +3139,7 @@ void CTRXInfoPage::OnDropFiles(HDROP hDropInfo)
 			 *	Retrieve informations.
 			 */
 			m_Filename.GetWindowText ( szFilename, sizeof ( szFilename ) - 1 );
-			BOOL bWritten = theApp.WriteProfileString ( "Settings", "Last Opened", szFilename );
+			BOOL bWritten = theApp.WriteProfileString ( PROFILE_SETTING, PROFILE_LAST_OPENED, szFilename );
 
 			iVersion = CTRSaveGame::InstanciateVersion ( szFilename );
 			if ( iVersion != -1 && CTRSaveGame::I() != NULL )

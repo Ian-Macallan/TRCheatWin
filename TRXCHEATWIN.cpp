@@ -387,45 +387,45 @@ BOOL CTRXCHEATWINApp::InitInstance()
 	INT_PTR nResponse	= 0;
 
 	//
-	CTRXGlobal::m_iUnchecked		= theApp.GetProfileInt( "Settings", "Unchecked", 0 );
+	CTRXGlobal::m_iUnchecked		= theApp.GetProfileInt( PROFILE_SETTING, PROFILE_UNCHECKED, 0 );
 
 	//
-	int iTmp	= theApp.GetProfileInt( "Settings", "Min NG Size", 0 );
+	int iTmp	= theApp.GetProfileInt( PROFILE_SETTING, PROFILE_MIN_NG_SIZE, 0 );
 	if ( iTmp == 0 )
 	{
-		theApp.WriteProfileInt( "Settings", "Min NG Size", TR_NG_MIN_SIZE );
+		theApp.WriteProfileInt( PROFILE_SETTING, PROFILE_MIN_NG_SIZE, TR_NG_MIN_SIZE );
 	}
-	iTmp		= theApp.GetProfileInt( "Settings", "Max NG Size", 0 );
+	iTmp		= theApp.GetProfileInt( PROFILE_SETTING, PROFILE_MAX_NG_SIZE, 0 );
 	if ( iTmp == 0 )
 	{
-		theApp.WriteProfileInt( "Settings", "Max NG Size", TR_NG_MAX_SIZE );
+		theApp.WriteProfileInt( PROFILE_SETTING, PROFILE_MAX_NG_SIZE, TR_NG_MAX_SIZE );
 	}
 
 	//
-	CTRXGlobal::m_iMinNGSize	= theApp.GetProfileInt( "Settings", "Min NG Size", TR_NG_MIN_SIZE );
-	CTRXGlobal::m_iMaxNGSize	= theApp.GetProfileInt( "Settings", "Max NG Size", TR_NG_MAX_SIZE );
+	CTRXGlobal::m_iMinNGSize	= theApp.GetProfileInt( PROFILE_SETTING, PROFILE_MIN_NG_SIZE, TR_NG_MIN_SIZE );
+	CTRXGlobal::m_iMaxNGSize	= theApp.GetProfileInt( PROFILE_SETTING, PROFILE_MAX_NG_SIZE, TR_NG_MAX_SIZE );
 	if ( CTRXGlobal::m_iMaxNGSize > MAX_SAVELENGTH )
 	{
 		CTRXGlobal::m_iMaxNGSize	= MAX_SAVELENGTH;
-		theApp.WriteProfileInt( "Settings", "Max NG Size", CTRXGlobal::m_iMaxNGSize );
+		theApp.WriteProfileInt( PROFILE_SETTING, PROFILE_MAX_NG_SIZE, CTRXGlobal::m_iMaxNGSize );
 	}
 
-	iTmp	= theApp.GetProfileInt( "Settings", "Search Position Extended", -1 );
+	iTmp	= theApp.GetProfileInt( PROFILE_SETTING, PROFILE_SEARCH_POS_EXT, -1 );
 	if ( iTmp == -1 )
 	{
-		theApp.WriteProfileInt( "Settings", "Search Position Extended", 0 );
+		theApp.WriteProfileInt( PROFILE_SETTING, PROFILE_SEARCH_POS_EXT, 0 );
 	}
-	CTRXGlobal::m_iSearchPosExt		= theApp.GetProfileInt( "Settings", "Search Position Extended", 0 );
+	CTRXGlobal::m_iSearchPosExt		= theApp.GetProfileInt( PROFILE_SETTING, PROFILE_SEARCH_POS_EXT, 0 );
 
 	//
-	iTmp		= theApp.GetProfileInt( "Settings", "DarkTheme", -1 );
+	iTmp		= theApp.GetProfileInt( PROFILE_SETTING, PROFILE_DARTKTHEME, -1 );
 	if ( iTmp == -1 )
 	{
-		theApp.WriteProfileInt( "Settings", "DarkTheme", 0 );
+		theApp.WriteProfileInt( PROFILE_SETTING, PROFILE_DARTKTHEME, 0 );
 	}
 
 	//
-	CTRXGlobal::m_iDarkTheme	= theApp.GetProfileInt( "Settings", "DarkTheme", 0 );
+	CTRXGlobal::m_iDarkTheme	= theApp.GetProfileInt( PROFILE_SETTING, PROFILE_DARTKTHEME, 0 );
 
 	//
 	int iSizeTR1 = sizeof(TABLE_TR1);

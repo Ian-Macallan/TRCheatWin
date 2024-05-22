@@ -301,7 +301,7 @@ int CTRSaveGame::GetInfo (	char *szGame, size_t iSize, int *iGame, int *iLevel, 
 {
 
 	//
-	CTRXGlobal::m_iUnchecked = theApp.GetProfileInt( "Settings", "Unchecked", 0 );
+	CTRXGlobal::m_iUnchecked = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_UNCHECKED, 0 );
 
 	//
 	int			iVersion	= 0;
