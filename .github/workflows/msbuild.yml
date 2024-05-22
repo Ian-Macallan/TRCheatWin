@@ -22,7 +22,7 @@ env:
   BUILD_VERSION: 4.1.9.1 # Version
 #
 permissions: 
-  # actions: write
+  actions: write
   contents: write
   # packages: write
   # repository-projects: write
