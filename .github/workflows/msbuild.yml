@@ -7,9 +7,13 @@ name: MSBuild
 
 on:
   push:
-    branches: [ "main" ]
+    paths:
+      - '**AutomaticVersionHeader.h'
+    # branches: [ "main" ]
   pull_request:
-    branches: [ "main" ]
+    paths:
+      - '**AutomaticVersionHeader.h'
+    # branches: [ "main" ]
 
 env:
   # Path to the solution file relative to the root of the project.
