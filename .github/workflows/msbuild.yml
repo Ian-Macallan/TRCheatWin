@@ -5,6 +5,8 @@
 
 name: MSBuild
 
+# We will build only when AutomaticVersionHeader.h changes
+# Our setbldrc
 on:
   push:
     paths:
