@@ -728,7 +728,7 @@ void CTRXVerticalMap::ShowWindows()
 			int y = LevelAreas [ i ].rect.top;
 			int cx = LevelAreas [ i ].rect.right - LevelAreas [ i ].rect.left;
 			int cy = LevelAreas [ i ].rect.bottom - LevelAreas [ i ].rect.top;
-			LevelAreas [ i ].pWnd->SetWindowPos ( previousWIndow, x, y, cx, cy, (UINT) HWND_TOP );
+			LevelAreas [ i ].pWnd->SetWindowPos ( previousWIndow, x, y, cx, cy, (UINT)( HWND_TOP ) );
 			LevelAreas [ i ].pWnd->ShowWindow ( SW_NORMAL );
 
 			if ( m_bCurrentArea && m_CurrentArea.index == LevelAreas [ i ].info.index )
