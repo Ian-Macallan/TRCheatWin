@@ -19,7 +19,7 @@ env:
   # You can convert this to a build matrix if you need coverage of multiple configuration types.
   # https://docs.github.com/actions/learn-github-actions/managing-complex-workflows#using-a-build-matrix
   BUILD_CONFIGURATION: Release
-  BUILD_VERSION: 4.1.9.4 # Version
+  BUILD_VERSION: 4.1.9.5 # Version
 #
 permissions: 
   actions: write
@@ -77,13 +77,13 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        tag_name: Win32.${{env.BUILD_VERSION}} # ${{ github.ref }}
-        release_name: Release.Win32.${{env.BUILD_VERSION}}  # ${{ github.ref }}
+        tag_name: V${{env.BUILD_VERSION}} # ${{ github.ref }}
+        release_name: Release.V${{env.BUILD_VERSION}}  # ${{ github.ref }}
         draft: false
         prerelease: false
     
-    # Upload Release
-    - name: Upload Win 32 Executable
+    # Upload Win32 Release
+    - name: Upload Win32 Executable
       id: upload-release-asset 
       uses: actions/upload-release-asset@v1
       env:
@@ -95,5 +95,20 @@ jobs:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
         asset_path: ${{ github.workspace }}/Release/TRCheatWin.exe
         asset_name: TRCheatWin.exe
+        asset_content_type: application/zip
+ 
+    # Upload X64 Release
+    - name: Upload X64 Executable
+      id: upload-release-asset 
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which
+        # include a `upload_url`. See this blog post for more info:
+        # https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ${{ github.workspace }}/x64/Release/TRCheatWin.exe
+        asset_name: TRCheatWinX64.exe
         asset_content_type: application/zip
  
