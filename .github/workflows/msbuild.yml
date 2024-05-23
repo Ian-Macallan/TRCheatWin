@@ -19,7 +19,7 @@ env:
   # You can convert this to a build matrix if you need coverage of multiple configuration types.
   # https://docs.github.com/actions/learn-github-actions/managing-complex-workflows#using-a-build-matrix
   BUILD_CONFIGURATION: Release
-  BUILD_VERSION: 4.1.9.5 # Version
+  BUILD_VERSION: 4.1.9.6 # Version
 #
 permissions: 
   actions: write
@@ -84,7 +84,7 @@ jobs:
     
     # Upload Win32 Release
     - name: Upload Win32 Executable
-      id: upload-release-asset 
+      id: upload-release-asset-win32 
       uses: actions/upload-release-asset@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -99,7 +99,7 @@ jobs:
  
     # Upload X64 Release
     - name: Upload X64 Executable
-      id: upload-release-asset 
+      id: upload-release-asset-x64 
       uses: actions/upload-release-asset@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
