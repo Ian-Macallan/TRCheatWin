@@ -3,9 +3,9 @@
 #include <Windows.h>
 
 //
-#pragma warning (disable : 4477)
-#pragma warning (disable : 4311)
-#pragma warning (disable : 4302)
+// #pragma warning (disable : 4477)
+// #pragma warning (disable : 4311)
+// #pragma warning (disable : 4302)
 
 //
 /////////////////////////////////////////////////////////////////////////////
