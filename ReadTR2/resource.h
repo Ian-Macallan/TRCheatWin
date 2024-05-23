@@ -3,7 +3,7 @@
 // Used by ReadTR2.rc
 
 // Valeurs par défaut suivantes des nouveaux objets
-// 
+//
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        101

@@ -26,8 +26,8 @@ CTRXCComboBoxBase::~CTRXCComboBoxBase(void)
 {
 }
 BEGIN_MESSAGE_MAP(CTRXCComboBoxBase, CComboBox)
-	ON_WM_ERASEBKGND()
-	ON_WM_CTLCOLOR()
+    ON_WM_ERASEBKGND()
+    ON_WM_CTLCOLOR()
 END_MESSAGE_MAP()
 
 //
@@ -36,17 +36,17 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 HBRUSH CTRXCComboBoxBase::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 {
-	// TODO: Add Code Here
-	HBRUSH hBrush = CTRXTools::OnCtlColor ( pDC, pWnd, nCtlColor );
-	if ( hBrush != NULL )
-	{
-		return hBrush;
-	}
+    // TODO: Add Code Here
+    HBRUSH hBrush = CTRXTools::OnCtlColor ( pDC, pWnd, nCtlColor );
+    if ( hBrush != NULL )
+    {
+        return hBrush;
+    }
 
-	HBRUSH hbr = CComboBox::OnCtlColor(pDC, pWnd, nCtlColor);
-	
-	// TODO: Add Code Here
-	return hbr;
+    HBRUSH hbr = CComboBox::OnCtlColor(pDC, pWnd, nCtlColor);
+    
+    // TODO: Add Code Here
+    return hbr;
 }
 
 //
@@ -55,12 +55,12 @@ HBRUSH CTRXCComboBoxBase::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 /////////////////////////////////////////////////////////////////////////////
 BOOL CTRXCComboBoxBase::OnEraseBkgnd(CDC* pDC)
 {
-	// TODO: Add Code Here
-	if ( CTRXTools::OnEraseBkgnd(pDC, this ) )
-	{
-		return TRUE;
-	}
+    // TODO: Add Code Here
+    if ( CTRXTools::OnEraseBkgnd(pDC, this ) )
+    {
+        return TRUE;
+    }
 
-	return CComboBox::OnEraseBkgnd(pDC);
+    return CComboBox::OnEraseBkgnd(pDC);
 }
 

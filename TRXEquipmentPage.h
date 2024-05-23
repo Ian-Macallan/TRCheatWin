@@ -20,67 +20,67 @@
 /////////////////////////////////////////////////////////////////////////////
 class CTRXEquipmentPage : public CTRXPropertyPage
 {
-		DECLARE_DYNCREATE(CTRXEquipmentPage)
+        DECLARE_DYNCREATE(CTRXEquipmentPage)
 
-	// Construction
-	public:
-		int EnableForVersion();
-		void UpdateBuffer();
-		void DisplayValues();
-		CTRXEquipmentPage();
-		~CTRXEquipmentPage();
+    // Construction
+    public:
+        int EnableForVersion();
+        void UpdateBuffer();
+        void DisplayValues();
+        CTRXEquipmentPage();
+        ~CTRXEquipmentPage();
 
-	// Dialog Data
-		//{{AFX_DATA(CTRXEquipmentPage)
-		enum { IDD = IDD_EQUIPMENT };
-		CTRXButtonBase	m_God;
-		CTRXEditBase	m_Life;
-		CTRXButtonBase	m_But_Flares;
-		CTRXButtonBase	m_But_Small_MediPak;
-		CTRXButtonBase	m_But_Large_MediPak;
-		CTRXButtonBase	m_Unfinite_Air;
-		CTRXEditBase	m_Status;
-		CTRXEditBase	m_Small_Medipak;
-		CTRXEditBase	m_Large_Medipak;
-		CTRXEditBase	m_GunAmmos;
-		CTRXEditBase	m_Flares;
-		CTRXEditBase	m_Air;
-		CTRXButtonBase m_Laser;
-		CTRXButtonBase m_Binocular;
-		//}}AFX_DATA
+    // Dialog Data
+        //{{AFX_DATA(CTRXEquipmentPage)
+        enum { IDD = IDD_EQUIPMENT };
+        CTRXButtonBase  m_God;
+        CTRXEditBase    m_Life;
+        CTRXButtonBase  m_But_Flares;
+        CTRXButtonBase  m_But_Small_MediPak;
+        CTRXButtonBase  m_But_Large_MediPak;
+        CTRXButtonBase  m_Unfinite_Air;
+        CTRXEditBase    m_Status;
+        CTRXEditBase    m_Small_Medipak;
+        CTRXEditBase    m_Large_Medipak;
+        CTRXEditBase    m_GunAmmos;
+        CTRXEditBase    m_Flares;
+        CTRXEditBase    m_Air;
+        CTRXButtonBase m_Laser;
+        CTRXButtonBase m_Binocular;
+        //}}AFX_DATA
 
 
-	// Overrides
-		// ClassWizard generate virtual function overrides
-		//{{AFX_VIRTUAL(CTRXEquipmentPage)
-		public:
-		virtual BOOL OnSetActive();
-		virtual BOOL OnKillActive();
-		protected:
-		virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-		//}}AFX_VIRTUAL
+    // Overrides
+        // ClassWizard generate virtual function overrides
+        //{{AFX_VIRTUAL(CTRXEquipmentPage)
+        public:
+        virtual BOOL OnSetActive();
+        virtual BOOL OnKillActive();
+        protected:
+        virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+        //}}AFX_VIRTUAL
 
-	// Implementation
-	protected:
-		// Generated message map functions
-		//{{AFX_MSG(CTRXEquipmentPage)
-		afx_msg void OnHelp();
-		afx_msg void OnUnfiniteAir();
-		afx_msg void OnButSmedi();
-		afx_msg void OnButLmedi();
-		afx_msg void OnButFlares();
-		afx_msg void OnGod();
-		//}}AFX_MSG
-		DECLARE_MESSAGE_MAP()
+    // Implementation
+    protected:
+        // Generated message map functions
+        //{{AFX_MSG(CTRXEquipmentPage)
+        afx_msg void OnHelp();
+        afx_msg void OnUnfiniteAir();
+        afx_msg void OnButSmedi();
+        afx_msg void OnButLmedi();
+        afx_msg void OnButFlares();
+        afx_msg void OnGod();
+        //}}AFX_MSG
+        DECLARE_MESSAGE_MAP()
 
-	public:
-		afx_msg void OnBnClickedLaser();
-		afx_msg void OnBnClickedBinocular();
-		virtual void OnOK();
-		virtual void OnCancel();
-		virtual BOOL OnInitDialog();
-		virtual BOOL OnApply();
-		afx_msg void OnChangeEdit();
+    public:
+        afx_msg void OnBnClickedLaser();
+        afx_msg void OnBnClickedBinocular();
+        virtual void OnOK();
+        virtual void OnCancel();
+        virtual BOOL OnInitDialog();
+        virtual BOOL OnApply();
+        afx_msg void OnChangeEdit();
 
 };
 

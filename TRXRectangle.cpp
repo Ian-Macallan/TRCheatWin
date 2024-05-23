@@ -19,7 +19,7 @@ IMPLEMENT_DYNAMIC(CTRXRectangle, CStatic)
 /////////////////////////////////////////////////////////////////////////////
 CTRXRectangle::CTRXRectangle()
 {
-	//
+    //
 }
 
 //
@@ -48,14 +48,14 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 void CTRXRectangle::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
 {
-	CDC	*pDC = CDC::FromHandle(lpDrawItemStruct->hDC);
-	if ( pDC )
-	{
+    CDC *pDC = CDC::FromHandle(lpDrawItemStruct->hDC);
+    if ( pDC )
+    {
 
-		// This code only works with buttons.
-		ASSERT(lpDrawItemStruct->CtlType == ODT_STATIC);
+        // This code only works with buttons.
+        ASSERT(lpDrawItemStruct->CtlType == ODT_STATIC);
 
-		pDC->FrameRect ( &lpDrawItemStruct->rcItem, CTRXColors::GetRedCBrush() );
-	}
+        pDC->FrameRect ( &lpDrawItemStruct->rcItem, CTRXColors::GetRedCBrush() );
+    }
 }
 

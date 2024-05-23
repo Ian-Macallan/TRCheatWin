@@ -23,33 +23,33 @@ extern CTRXCHEATWINApp theApp;
  *      Data.
  *      ------------------------------------------------
  */
-static unsigned	TUBPositions [ ] =
+static unsigned TUBPositions [ ] =
 {
-	0xdc3-0x86,		/* 01 */
-	0x1117-0x86,	/* 02 */
-	0xc26-0x86,		/* 03 */
-	0x11d6-0x86,	/* 04 */
-	0x0,		/* 05 */
-	0x0,		/* 06 */
-	0x0,		/* 07 */
-	0x0,		/* 08 */
-	0x0,		/* 09 */
-	0x0,		/* 10 */
-	0x0,		/* 11 */
-	0x0,		/* 12 */
-	0x0,		/* 13 */
-	0x0,		/* 14 */
-	0x0,		/* 15 */
-	0x0,		/* 16 */
-	0x0,		/* 17 */
-	0x0,		/* 18 */
-	0x0,		/* 19 */
-	0x0,		/* 20 */
-    0x00,		/* 0 */
-    0x00,		/* 0 */
-    0x00,		/* 0 */
-    0x00,		/* 0 */
-    0x00,		/* 0 */
+    0xdc3-0x86,     /* 01 */
+    0x1117-0x86,    /* 02 */
+    0xc26-0x86,     /* 03 */
+    0x11d6-0x86,    /* 04 */
+    0x0,        /* 05 */
+    0x0,        /* 06 */
+    0x0,        /* 07 */
+    0x0,        /* 08 */
+    0x0,        /* 09 */
+    0x0,        /* 10 */
+    0x0,        /* 11 */
+    0x0,        /* 12 */
+    0x0,        /* 13 */
+    0x0,        /* 14 */
+    0x0,        /* 15 */
+    0x0,        /* 16 */
+    0x0,        /* 17 */
+    0x0,        /* 18 */
+    0x0,        /* 19 */
+    0x0,        /* 20 */
+    0x00,       /* 0 */
+    0x00,       /* 0 */
+    0x00,       /* 0 */
+    0x00,       /* 0 */
+    0x00,       /* 0 */
 };
 
 //
@@ -66,31 +66,31 @@ IMPLEMENT_DYNAMIC(CTUBSaveGame, CTRSaveGame)
 CTUBSaveGame::CTUBSaveGame()
 {
 
-	m_iVersion			= 15;
+    m_iVersion          = 15;
 
-	m_iSaveLength		= TUBLEVELMAXSIZE;
-	m_iMaxLevel			= TUBMAXLEVEL;
+    m_iSaveLength       = TUBLEVELMAXSIZE;
+    m_iMaxLevel         = TUBMAXLEVEL;
 
-	iMaskCompass		= 0x01;
-	iMaskPistol			= 0x02;
-	iMaskMagnum			= 0x04;
-	iMaskUzi            = 0x08;
-	iMaskShotGun        = 0x10;
-	iMaskHarpoon		= 0x20;
-	iMaskMP5            = 0x40;
-	iMaskGrenade		= 0x80;
+    iMaskCompass        = 0x01;
+    iMaskPistol         = 0x02;
+    iMaskMagnum         = 0x04;
+    iMaskUzi            = 0x08;
+    iMaskShotGun        = 0x10;
+    iMaskHarpoon        = 0x20;
+    iMaskMP5            = 0x40;
+    iMaskGrenade        = 0x80;
 
-	m_pLife				= NULL;
+    m_pLife             = NULL;
 
-	m_pGun				= NULL;
+    m_pGun              = NULL;
 
-	m_pBuffer			= new ( TUBSAVE );
-	ZeroMemory ( m_pBuffer, sizeof(TUBSAVE) );
+    m_pBuffer           = new ( TUBSAVE );
+    ZeroMemory ( m_pBuffer, sizeof(TUBSAVE) );
 
-	m_pBufferBackup		= new ( TUBSAVE );
-	ZeroMemory ( m_pBufferBackup, sizeof(TUBSAVE) );
+    m_pBufferBackup     = new ( TUBSAVE );
+    ZeroMemory ( m_pBufferBackup, sizeof(TUBSAVE) );
 
-	m_iSubVersion		= 5;
+    m_iSubVersion       = 5;
 }
 
 //
@@ -99,17 +99,17 @@ CTUBSaveGame::CTUBSaveGame()
 /////////////////////////////////////////////////////////////////////////////
 CTUBSaveGame::~CTUBSaveGame()
 {
-	if ( m_pBuffer )
-	{
-		delete m_pBuffer;
-		m_pBuffer = NULL;
-	}
+    if ( m_pBuffer )
+    {
+        delete m_pBuffer;
+        m_pBuffer = NULL;
+    }
 
-	if ( m_pBufferBackup )
-	{
-		delete m_pBufferBackup;
-		m_pBufferBackup = NULL;
-	}
+    if ( m_pBufferBackup )
+    {
+        delete m_pBufferBackup;
+        m_pBufferBackup = NULL;
+    }
 }
 
 //
@@ -127,23 +127,23 @@ int CTUBSaveGame::ReadSavegame( const char *pFilename )
 {
 
     FILE                    *hFile;
-    size_t					uLenBuffer;
+    size_t                  uLenBuffer;
 
     char                    szEmpty [ 1 ];
 
     strcpy_s ( m_Filename, sizeof(m_Filename), pFilename );
-	strcpy_s ( m_Status, sizeof(m_Status), "" );
+    strcpy_s ( m_Status, sizeof(m_Status), "" );
 
-	memset ( ( char * ) m_pBuffer, 0, sizeof ( TUBSAVE ) );
+    memset ( ( char * ) m_pBuffer, 0, sizeof ( TUBSAVE ) );
 
     /*
      *      Read file.
      */
     hFile = NULL;
-	fopen_s ( &hFile, m_Filename, "rb" );
+    fopen_s ( &hFile, m_Filename, "rb" );
     if ( hFile == NULL )
     {
-		strcpy_s ( m_Status, sizeof(m_Status), "Unable to read file." );
+        strcpy_s ( m_Status, sizeof(m_Status), "Unable to read file." );
         return 0;
     }
 
@@ -152,8 +152,8 @@ int CTUBSaveGame::ReadSavegame( const char *pFilename )
      */
     if ( m_iSaveLength < TUBLEVELMINSIZE  || m_iSaveLength > TUBLEVELMAXSIZE )
     {
-		strcpy_s ( m_Status, sizeof(m_Status), "Internal error in length." );
-		fclose ( hFile );
+        strcpy_s ( m_Status, sizeof(m_Status), "Internal error in length." );
+        fclose ( hFile );
         return 0;
     }
 
@@ -161,26 +161,26 @@ int CTUBSaveGame::ReadSavegame( const char *pFilename )
     uLenBuffer = fread ( ( char * ) m_pBuffer, 1, m_iSaveLength, hFile );
     if ( uLenBuffer != m_iSaveLength )
     {
-		strcpy_s ( m_Status, sizeof(m_Status), "File size is not correct." );
-		fclose ( hFile );
+        strcpy_s ( m_Status, sizeof(m_Status), "File size is not correct." );
+        fclose ( hFile );
         return 0;
     }
 
     if ( fread ( &szEmpty, 1, 1, hFile ) != 0  )
     {
-		strcpy_s ( m_Status, sizeof(m_Status), "File size is too large." );
-		fclose ( hFile );
+        strcpy_s ( m_Status, sizeof(m_Status), "File size is too large." );
+        fclose ( hFile );
         return 0;
     }
 
-	memcpy ( m_pBufferBackup, m_pBuffer, sizeof(TUBSAVE) );
+    memcpy ( m_pBufferBackup, m_pBuffer, sizeof(TUBSAVE) );
 
     /*
      *      Close file.
      */
     fclose ( hFile );
 
-	return 1;
+    return 1;
 }
 
 //
@@ -190,41 +190,41 @@ int CTUBSaveGame::ReadSavegame( const char *pFilename )
 void CTUBSaveGame::writeSaveGame()
 {
         FILE                    *hFile;
-        size_t					uLenBuffer;
+        size_t                  uLenBuffer;
 
-		strcpy_s ( m_Status, sizeof(m_Status), "" );
+        strcpy_s ( m_Status, sizeof(m_Status), "" );
 
-		/*
-		 *		Correct guns.
-		 */
-		int		iX		= getLevelIndex ();
+        /*
+         *      Correct guns.
+         */
+        int     iX      = getLevelIndex ();
 
-		if ( ! ( m_pBuffer->trSingle.cGunBitmap & iMaskMagnum) )
-		{
-			m_pGun->m_iDesertEagle = 0 ;
-		}
+        if ( ! ( m_pBuffer->trSingle.cGunBitmap & iMaskMagnum) )
+        {
+            m_pGun->m_iDesertEagle = 0 ;
+        }
 
-		if ( ! ( m_pBuffer->trSingle.cGunBitmap & iMaskUzi ) )
-		{
-			m_pGun->m_iUzis = 0;
-		}
+        if ( ! ( m_pBuffer->trSingle.cGunBitmap & iMaskUzi ) )
+        {
+            m_pGun->m_iUzis = 0;
+        }
 
-		if ( ! ( m_pBuffer->trSingle.cGunBitmap & iMaskShotGun ) )
-		{
-			m_pGun->m_iRiotGun = 0;
-		}
+        if ( ! ( m_pBuffer->trSingle.cGunBitmap & iMaskShotGun ) )
+        {
+            m_pGun->m_iRiotGun = 0;
+        }
 
-		//
-		Backup_Savegame();
+        //
+        Backup_Savegame();
 
-		/*
+        /*
          *      Write file.
          */
         hFile = NULL;
-		fopen_s ( &hFile, m_Filename, "wb" );
+        fopen_s ( &hFile, m_Filename, "wb" );
         if ( hFile == NULL )
         {
-			strcpy_s ( m_Status, sizeof(m_Status), "Unable to write the file." );
+            strcpy_s ( m_Status, sizeof(m_Status), "Unable to write the file." );
             return;
         }
 
@@ -233,16 +233,16 @@ void CTUBSaveGame::writeSaveGame()
          */
         if (  m_iSaveLength < TUBLEVELMINSIZE  || m_iSaveLength > TUBLEVELMAXSIZE )
         {
-			strcpy_s ( m_Status, sizeof(m_Status), "Internal error in length." );
-			fclose ( hFile );
+            strcpy_s ( m_Status, sizeof(m_Status), "Internal error in length." );
+            fclose ( hFile );
             return;
         }
 
         uLenBuffer = fwrite ( ( char * ) m_pBuffer, 1, m_iSaveLength, hFile );
         if ( uLenBuffer != m_iSaveLength )
         {
-			strcpy_s ( m_Status, sizeof(m_Status), "File size is not correct." );
-			fclose ( hFile );
+            strcpy_s ( m_Status, sizeof(m_Status), "File size is not correct." );
+            fclose ( hFile );
             return;
         }
 
@@ -251,10 +251,10 @@ void CTUBSaveGame::writeSaveGame()
          */
         fclose ( hFile );
 
-		//
-		memcpy ( m_pBufferBackup,  m_pBuffer, m_iSaveLength );
+        //
+        memcpy ( m_pBufferBackup,  m_pBuffer, m_iSaveLength );
 
-		strcpy_s ( m_Status, sizeof(m_Status), "File successfully updated." );
+        strcpy_s ( m_Status, sizeof(m_Status), "File successfully updated." );
 
 }
 
@@ -264,138 +264,138 @@ void CTUBSaveGame::writeSaveGame()
 /////////////////////////////////////////////////////////////////////////////
 void CTUBSaveGame::RetrieveInformation( const char *pFilename )
 {
-	char			*pStartAddress;
-	char			*pGunAddress;
-	char			*pAddress;
+    char            *pStartAddress;
+    char            *pGunAddress;
+    char            *pAddress;
 
-	unsigned		iPosition;
-	int				iX;
-	int				iPos;
-	int				iCount;
+    unsigned        iPosition;
+    int             iX;
+    int             iPos;
+    int             iCount;
 
-	int				bExactFound;
+    int             bExactFound;
 
-	TUBAMMOS		*pGun;
+    TUBAMMOS        *pGun;
 
-	/*
-	 *	Set address to error.
-	 */
-	m_pGun			= NULL;
+    /*
+     *  Set address to error.
+     */
+    m_pGun          = NULL;
 
-	m_iSubVersion	= 5;
+    m_iSubVersion   = 5;
 
     /*
      *      Read file.
      */
     if ( ReadSavegame ( pFilename ) )
-	{
-		RetrieveHeader ( );
+    {
+        RetrieveHeader ( );
 
-		/*
-		 *		Search for health in file.
-		 */
-		iPos			= -1;
-		iCount			= 0;
-		bExactFound		= 0;
-		do
-		{
-			pGun = SearchGunStructure ( m_iGunAmmos, m_pBuffer->trSingle.cGunBitmap, &iPos );
+        /*
+         *      Search for health in file.
+         */
+        iPos            = -1;
+        iCount          = 0;
+        bExactFound     = 0;
+        do
+        {
+            pGun = SearchGunStructure ( m_iGunAmmos, m_pBuffer->trSingle.cGunBitmap, &iPos );
 
-			if ( pGun != NULL )
-			{
-				iCount++;
+            if ( pGun != NULL )
+            {
+                iCount++;
 
-				m_pGun = pGun;
-				strcpy_s ( m_Status, sizeof(m_Status), "Data loaded from the saved game.");
+                m_pGun = pGun;
+                strcpy_s ( m_Status, sizeof(m_Status), "Data loaded from the saved game.");
 
-				/*
-				 *		Get Level.
-				 */
-				iX = getLevelIndex ();
+                /*
+                 *      Get Level.
+                 */
+                iX = getLevelIndex ();
 
-				/*
-				 *		Test if it it the same as in the table.
-				 */
-	 			pStartAddress = ( char * ) m_pBuffer;
-				pGunAddress = pStartAddress + TUBPositions [ iX ];
-				if ( ( char * ) m_pGun == pGunAddress )
-				{
-					bExactFound = 1;
-				}
-			}
+                /*
+                 *      Test if it it the same as in the table.
+                 */
+                pStartAddress = ( char * ) m_pBuffer;
+                pGunAddress = pStartAddress + TUBPositions [ iX ];
+                if ( ( char * ) m_pGun == pGunAddress )
+                {
+                    bExactFound = 1;
+                }
+            }
 
-		}
-		while ( iPos >= 0 /* && ! bExactFound */ );
+        }
+        while ( iPos >= 0 /* && ! bExactFound */ );
 
-		/*
-		 *		If the exact position has been found set it.
-		 */
-		if ( bExactFound )
-		{
- 			pStartAddress = ( char * ) m_pBuffer;
-			pGunAddress   = pStartAddress + TUBPositions [ iX ];
-			m_pGun = (TUBAMMOS * ) pGunAddress;
-		}
+        /*
+         *      If the exact position has been found set it.
+         */
+        if ( bExactFound )
+        {
+            pStartAddress = ( char * ) m_pBuffer;
+            pGunAddress   = pStartAddress + TUBPositions [ iX ];
+            m_pGun = (TUBAMMOS * ) pGunAddress;
+        }
 
-		/*
-		 *		If nothing found set the position to the default.
-		 */
-		if ( m_pGun == NULL )
-		{
-			/*
-			 *		Get Level.
-			 */
-			iX = getLevelIndex ();
+        /*
+         *      If nothing found set the position to the default.
+         */
+        if ( m_pGun == NULL )
+        {
+            /*
+             *      Get Level.
+             */
+            iX = getLevelIndex ();
 
- 			pStartAddress = ( char * ) m_pBuffer;
-			pGunAddress   = pStartAddress + TUBPositions [ iX ];
-			m_pGun = (TUBAMMOS * ) pGunAddress;
+            pStartAddress = ( char * ) m_pBuffer;
+            pGunAddress   = pStartAddress + TUBPositions [ iX ];
+            m_pGun = (TUBAMMOS * ) pGunAddress;
 
-			sprintf_s ( m_Status, sizeof(m_Status), "Unable to find something in the file: Setting the address %x.",
-				TUBPositions [ iX ] );
+            sprintf_s ( m_Status, sizeof(m_Status), "Unable to find something in the file: Setting the address %x.",
+                TUBPositions [ iX ] );
 
-			m_pGun->m_iGunAmmos = m_iGunAmmos;
-			m_pGun = NULL;
+            m_pGun->m_iGunAmmos = m_iGunAmmos;
+            m_pGun = NULL;
 
-			return;
-		}
-		else
-		{
-			sprintf_s( m_Status, sizeof(m_Status), "%d good position(s) found.", iCount );
-			if ( bExactFound )
-			{
-				strcat_s ( m_Status, sizeof(m_Status), " Exact position found too." );
-			}
-		}
+            return;
+        }
+        else
+        {
+            sprintf_s( m_Status, sizeof(m_Status), "%d good position(s) found.", iCount );
+            if ( bExactFound )
+            {
+                strcat_s ( m_Status, sizeof(m_Status), " Exact position found too." );
+            }
+        }
 
-		/*
-		 *		Verify address.
-		 */
- 		pStartAddress = ( char * ) m_pBuffer;
+        /*
+         *      Verify address.
+         */
+        pStartAddress = ( char * ) m_pBuffer;
 
-		/*
-		 *		Get Level.
-		 */
-		iX = getLevelIndex ();
+        /*
+         *      Get Level.
+         */
+        iX = getLevelIndex ();
 
-		pGunAddress = pStartAddress + TUBPositions [ iX ];
-		if ( ( char * ) m_pGun != pGunAddress )
-		{
-			pAddress = ( char * ) m_pGun;
-			iPosition = (unsigned) ( pAddress - pStartAddress );
-			sprintf_s( m_Status, sizeof(m_Status), 
-				"The %d address(es) differ(s): Reference is at the address %lx instead of %lx.",
-				iCount, TUBPositions [ iX ], iPosition );
-			if ( false )
-			{
-				sprintf_s( m_Status, sizeof(m_Status), 
-					"The %d address(es) differ(s): Setting the address %lx instead of %lx.",
-					iCount, TUBPositions [ iX ], iPosition );
-				m_pGun = ( TUBAMMOS * ) pGunAddress;
-				m_pGun->m_iGunAmmos = m_iGunAmmos;
-			}
-		}
-	}
+        pGunAddress = pStartAddress + TUBPositions [ iX ];
+        if ( ( char * ) m_pGun != pGunAddress )
+        {
+            pAddress = ( char * ) m_pGun;
+            iPosition = (unsigned) ( pAddress - pStartAddress );
+            sprintf_s( m_Status, sizeof(m_Status),
+                "The %d address(es) differ(s): Reference is at the address %lx instead of %lx.",
+                iCount, TUBPositions [ iX ], iPosition );
+            if ( false )
+            {
+                sprintf_s( m_Status, sizeof(m_Status),
+                    "The %d address(es) differ(s): Setting the address %lx instead of %lx.",
+                    iCount, TUBPositions [ iX ], iPosition );
+                m_pGun = ( TUBAMMOS * ) pGunAddress;
+                m_pGun->m_iGunAmmos = m_iGunAmmos;
+            }
+        }
+    }
 }
 
 //
@@ -405,38 +405,38 @@ void CTUBSaveGame::RetrieveInformation( const char *pFilename )
 TUBAMMOS *CTUBSaveGame::SearchGunStructure ( WORD m_iGunAmmos, WORD gunBitmap, int *iPos )
 {
         int                     iX;
-        BYTE		           *pString;
-		TUBAMMOS				*pGun;
-		
-		if ( *iPos == -1 )
-		{
-			iX = TUBBUFFEREND - sizeof ( TUBAMMOS );
-		}
-		else
-		{
-			iX = *iPos;
-		}
+        BYTE                   *pString;
+        TUBAMMOS                *pGun;
+        
+        if ( *iPos == -1 )
+        {
+            iX = TUBBUFFEREND - sizeof ( TUBAMMOS );
+        }
+        else
+        {
+            iX = *iPos;
+        }
 
         while ( iX >= 0 )
         {
             pString = & ( m_pBuffer->szRemain [ iX ] );
             pGun = ( TUBAMMOS * )(  pString );
             if (    ( pGun->m_iGunAmmos == ( unsigned short )( m_iGunAmmos     ) )
-				 || ( pGun->m_iGunAmmos == ( unsigned short )( m_iGunAmmos + 1 ) )
-				 || ( pGun->m_iGunAmmos == ( unsigned short )( m_iGunAmmos - 1 ) ) )
+                 || ( pGun->m_iGunAmmos == ( unsigned short )( m_iGunAmmos + 1 ) )
+                 || ( pGun->m_iGunAmmos == ( unsigned short )( m_iGunAmmos - 1 ) ) )
             {
                 if ( CheckIfAmmosMatch ( pGun, gunBitmap ) )
                 {
-					*iPos = iX - 1;
-	                return ( pGun );
+                    *iPos = iX - 1;
+                    return ( pGun );
                 }
             }
 
             iX--;
         }
 
-		*iPos = -1;
-		pGun = NULL;
+        *iPos = -1;
+        pGun = NULL;
 
         return ( pGun );
 
@@ -450,52 +450,52 @@ TUBAMMOS *CTUBSaveGame::SearchGunStructure ( WORD m_iGunAmmos, WORD gunBitmap, i
 int CTUBSaveGame::CheckIfAmmosMatch ( TUBAMMOS *pGun, WORD gunBitmap )
 {
 
-	if ( m_pBuffer->trSingle.cGunBitmap & iMaskMagnum )
-	{
-		if ( pGun->m_iDesertEagle  != m_iDesertEagle  ) 
-		{
-			return 0;
-		}
-	}
-	else
-	{
-		if ( pGun->m_iDesertEagle  != 0 && pGun->m_iDesertEagle  != m_iDesertEagle ) 
-		{
-			return 0;
-		}
-	}
+    if ( m_pBuffer->trSingle.cGunBitmap & iMaskMagnum )
+    {
+        if ( pGun->m_iDesertEagle  != m_iDesertEagle  )
+        {
+            return 0;
+        }
+    }
+    else
+    {
+        if ( pGun->m_iDesertEagle  != 0 && pGun->m_iDesertEagle  != m_iDesertEagle )
+        {
+            return 0;
+        }
+    }
 
-	if ( m_pBuffer->trSingle.cGunBitmap & iMaskUzi )
-	{
-		if ( pGun->m_iUzis     != m_iUzis  ) 
-		{
-			return 0;
-		}
-	}
-	else
-	{
-		if ( pGun->m_iUzis != 0 && pGun->m_iUzis != m_iUzis) 
-		{
-			return 0;
-		}
-	}
+    if ( m_pBuffer->trSingle.cGunBitmap & iMaskUzi )
+    {
+        if ( pGun->m_iUzis     != m_iUzis  )
+        {
+            return 0;
+        }
+    }
+    else
+    {
+        if ( pGun->m_iUzis != 0 && pGun->m_iUzis != m_iUzis)
+        {
+            return 0;
+        }
+    }
 
-	if ( m_pBuffer->trSingle.cGunBitmap & iMaskShotGun )
-	{
-		if ( pGun->m_iRiotGun != m_iRiotGun  ) 
-		{
-			return 0;
-		}
-	}
-	else
-	{
-		if ( pGun->m_iRiotGun != 0 && pGun->m_iRiotGun != m_iRiotGun ) 
-		{
-			return 0;
-		}
-	}
+    if ( m_pBuffer->trSingle.cGunBitmap & iMaskShotGun )
+    {
+        if ( pGun->m_iRiotGun != m_iRiotGun  )
+        {
+            return 0;
+        }
+    }
+    else
+    {
+        if ( pGun->m_iRiotGun != 0 && pGun->m_iRiotGun != m_iRiotGun )
+        {
+            return 0;
+        }
+    }
 
- 	return 1;
+    return 1;
 }
 
 //
@@ -504,13 +504,13 @@ int CTUBSaveGame::CheckIfAmmosMatch ( TUBAMMOS *pGun, WORD gunBitmap )
 /////////////////////////////////////////////////////////////////////////////
 void CTUBSaveGame::RetrieveHeader()
 {
-		/*
-		 *		Objects mask.
-		 */
+        /*
+         *      Objects mask.
+         */
 //      m_pBuffer->cObjectMask = 0xff;
 
-		/*
-		 */
+        /*
+         */
         GetAmmosValues ( );
 
 }
@@ -521,11 +521,11 @@ void CTUBSaveGame::RetrieveHeader()
 /////////////////////////////////////////////////////////////////////////////
 void CTUBSaveGame::GetAmmosValues()
 {
-		int		iX;
+        int     iX;
 
-		/*
-		 *		Get gun state.
-		 */
+        /*
+         *      Get gun state.
+         */
         iX = getLevelIndex ();
 
         /*
@@ -555,21 +555,21 @@ void CTUBSaveGame::GetAmmosValues()
 /////////////////////////////////////////////////////////////////////////////
 int CTUBSaveGame::ConvertSecret(int iSecret)
 {
-	int		iResult;
+    int     iResult;
 
-	iResult = 0;
+    iResult = 0;
 
-	while ( iSecret )
-	{
-		if ( ( iSecret & 1 ) != 0 )
-		{
-			iResult++;
-		}
+    while ( iSecret )
+    {
+        if ( ( iSecret & 1 ) != 0 )
+        {
+            iResult++;
+        }
 
-		iSecret /= 2;
-	}
+        iSecret /= 2;
+    }
 
-	return iResult;
+    return iResult;
 }
 
 //
@@ -578,18 +578,18 @@ int CTUBSaveGame::ConvertSecret(int iSecret)
 /////////////////////////////////////////////////////////////////////////////
 int CTUBSaveGame::ConvertSecretBack(int iSecret)
 {
-	int		iResult;
+    int     iResult;
 
-	iResult = 0;
+    iResult = 0;
 
-	while ( iSecret )
-	{
-		iResult *= 2;
-		iResult += 1;
-		iSecret--;
-	}
+    while ( iSecret )
+    {
+        iResult *= 2;
+        iResult += 1;
+        iSecret--;
+    }
 
-	return iResult;
+    return iResult;
 
 }
 
@@ -597,14 +597,14 @@ int CTUBSaveGame::ConvertSecretBack(int iSecret)
 /////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////
-void CTUBSaveGame::GetDetailedInfo (	char *szGame, size_t iSize, int *iGame, int *iLevel,
-										char *szTitle, size_t iSizeTitle)
+void CTUBSaveGame::GetDetailedInfo (    char *szGame, size_t iSize, int *iGame, int *iLevel,
+                                        char *szTitle, size_t iSizeTitle)
 {
-	strcpy_s ( szGame, iSize, "TR1ub" );
-	strcpy_s ( szTitle, iSizeTitle, m_pBuffer->szSavename );
-	*iGame			= m_pBuffer->iSaveNumber;
-	*iLevel			= m_pBuffer->cLevel + 1;
-	m_iSubVersion	= 5;
+    strcpy_s ( szGame, iSize, "TR1ub" );
+    strcpy_s ( szTitle, iSizeTitle, m_pBuffer->szSavename );
+    *iGame          = m_pBuffer->iSaveNumber;
+    *iLevel         = m_pBuffer->cLevel + 1;
+    m_iSubVersion   = 5;
 }
 
 //
@@ -613,7 +613,7 @@ void CTUBSaveGame::GetDetailedInfo (	char *szGame, size_t iSize, int *iGame, int
 /////////////////////////////////////////////////////////////////////////////
 const char * CTUBSaveGame::GetStatus()
 {
-	return ( m_Status );
+    return ( m_Status );
 }
 
 //
@@ -622,7 +622,7 @@ const char * CTUBSaveGame::GetStatus()
 /////////////////////////////////////////////////////////////////////////////
 int CTUBSaveGame::getLevel()
 {
-	return m_pBuffer->cLevel + 1;
+    return m_pBuffer->cLevel + 1;
 }
 
 //
@@ -631,7 +631,7 @@ int CTUBSaveGame::getLevel()
 /////////////////////////////////////////////////////////////////////////////
 int CTUBSaveGame::getLevelIndex()
 {
-	return m_pBuffer->cLevel;
+    return m_pBuffer->cLevel;
 }
 
 //
@@ -640,12 +640,12 @@ int CTUBSaveGame::getLevelIndex()
 /////////////////////////////////////////////////////////////////////////////
 int CTUBSaveGame::GetAmmos1(int iX )
 {
-	if ( iX >= 0 && iX < m_iMaxLevel )
-	{
-		return ( m_pBuffer->trSingle.m_iGunAmmos );
-	}
+    if ( iX >= 0 && iX < m_iMaxLevel )
+    {
+        return ( m_pBuffer->trSingle.m_iGunAmmos );
+    }
 
-	return ( m_pGun->m_iGunAmmos );
+    return ( m_pGun->m_iGunAmmos );
 
 }
 
@@ -655,12 +655,12 @@ int CTUBSaveGame::GetAmmos1(int iX )
 /////////////////////////////////////////////////////////////////////////////
 int CTUBSaveGame::GetAmmos2(int iX )
 {
-	if ( iX >= 0 && iX < m_iMaxLevel )
-	{
-		return ( m_pBuffer->trSingle.m_iDesertEagle );
-	}
+    if ( iX >= 0 && iX < m_iMaxLevel )
+    {
+        return ( m_pBuffer->trSingle.m_iDesertEagle );
+    }
 
-	return ( m_pGun->m_iDesertEagle );
+    return ( m_pGun->m_iDesertEagle );
 
 }
 
@@ -670,12 +670,12 @@ int CTUBSaveGame::GetAmmos2(int iX )
 /////////////////////////////////////////////////////////////////////////////
 int CTUBSaveGame::GetAmmos3( int iX )
 {
-	if ( iX >= 0 && iX < m_iMaxLevel )
-	{
-		return ( m_pBuffer->trSingle.m_iUzis );
-	}
+    if ( iX >= 0 && iX < m_iMaxLevel )
+    {
+        return ( m_pBuffer->trSingle.m_iUzis );
+    }
 
-	return ( m_pGun->m_iUzis );
+    return ( m_pGun->m_iUzis );
 
 }
 
@@ -685,12 +685,12 @@ int CTUBSaveGame::GetAmmos3( int iX )
 /////////////////////////////////////////////////////////////////////////////
 int CTUBSaveGame::GetAmmos4a( int iX )
 {
-	if ( iX >= 0 && iX < m_iMaxLevel )
-	{
-		return ( m_pBuffer->trSingle.m_iRiotGun );
-	}
+    if ( iX >= 0 && iX < m_iMaxLevel )
+    {
+        return ( m_pBuffer->trSingle.m_iRiotGun );
+    }
 
-	return ( m_pGun->m_iRiotGun );
+    return ( m_pGun->m_iRiotGun );
 
 }
 
@@ -700,14 +700,14 @@ int CTUBSaveGame::GetAmmos4a( int iX )
 /////////////////////////////////////////////////////////////////////////////
 int CTUBSaveGame::GetAmmos5( int iX )
 {
-	if ( iX >= 0 && iX < m_iMaxLevel )
-	{
-//		return ( m_pBuffer->trSingle.m_iM16Gun );
-	}
+    if ( iX >= 0 && iX < m_iMaxLevel )
+    {
+//      return ( m_pBuffer->trSingle.m_iM16Gun );
+    }
 
-//	return ( m_pGun->m_iM16Gun );
+//  return ( m_pGun->m_iM16Gun );
 
-	return -1;
+    return -1;
 
 }
 
@@ -717,14 +717,14 @@ int CTUBSaveGame::GetAmmos5( int iX )
 /////////////////////////////////////////////////////////////////////////////
 int CTUBSaveGame::GetAmmos6( int iX )
 {
-	if ( iX >= 0 && iX < m_iMaxLevel )
-	{
-//		return ( m_pBuffer->trSingle.m_iRockets );
-	}
+    if ( iX >= 0 && iX < m_iMaxLevel )
+    {
+//      return ( m_pBuffer->trSingle.m_iRockets );
+    }
 
-//	return ( m_pGun->m_iRockets );
+//  return ( m_pGun->m_iRockets );
 
-	return ( -1 );
+    return ( -1 );
 
 }
 
@@ -734,14 +734,14 @@ int CTUBSaveGame::GetAmmos6( int iX )
 /////////////////////////////////////////////////////////////////////////////
 int CTUBSaveGame::GetAmmos7a( int iX )
 {
-	if ( iX >= 0 && iX < m_iMaxLevel )
-	{
-//		return ( m_pBuffer->trSingle.m_iGrenades );
-	}
+    if ( iX >= 0 && iX < m_iMaxLevel )
+    {
+//      return ( m_pBuffer->trSingle.m_iGrenades );
+    }
 
-//	return ( m_pGun->m_iGrenades );
+//  return ( m_pGun->m_iGrenades );
 
-	return -1;
+    return -1;
 
 }
 
@@ -751,14 +751,14 @@ int CTUBSaveGame::GetAmmos7a( int iX )
 /////////////////////////////////////////////////////////////////////////////
 int CTUBSaveGame::GetAmmos8a( int iX )
 {
-	if ( iX >= 0 && iX < m_iMaxLevel )
-	{
-//		return ( m_pBuffer->trSingle.m_iHarpoon );
-	}
+    if ( iX >= 0 && iX < m_iMaxLevel )
+    {
+//      return ( m_pBuffer->trSingle.m_iHarpoon );
+    }
 
-//	return ( m_pGun->m_iHarpoon );
+//  return ( m_pGun->m_iHarpoon );
 
-	return -1;
+    return -1;
 
 }
 
@@ -768,12 +768,12 @@ int CTUBSaveGame::GetAmmos8a( int iX )
 /////////////////////////////////////////////////////////////////////////////
 void CTUBSaveGame::SetAmmos2 ( const char *szString, int iX )
 {
-	if ( iX >= 0 && iX < m_iMaxLevel )
-	{
-		m_pBuffer->trSingle.m_iDesertEagle = atoi ( szString );
-	}
+    if ( iX >= 0 && iX < m_iMaxLevel )
+    {
+        m_pBuffer->trSingle.m_iDesertEagle = atoi ( szString );
+    }
 
-	m_pGun->m_iDesertEagle = atoi ( szString );
+    m_pGun->m_iDesertEagle = atoi ( szString );
 
 }
 
@@ -783,12 +783,12 @@ void CTUBSaveGame::SetAmmos2 ( const char *szString, int iX )
 /////////////////////////////////////////////////////////////////////////////
 void CTUBSaveGame::SetAmmos3 ( const char *szString, int iX )
 {
-	if ( iX >= 0 && iX < m_iMaxLevel )
-	{
-		m_pBuffer->trSingle.m_iUzis = atoi ( szString );
-	}
+    if ( iX >= 0 && iX < m_iMaxLevel )
+    {
+        m_pBuffer->trSingle.m_iUzis = atoi ( szString );
+    }
 
-	m_pGun->m_iUzis = atoi ( szString );
+    m_pGun->m_iUzis = atoi ( szString );
 
 }
 
@@ -798,12 +798,12 @@ void CTUBSaveGame::SetAmmos3 ( const char *szString, int iX )
 /////////////////////////////////////////////////////////////////////////////
 void CTUBSaveGame::SetAmmos4a ( const char *szString, int iX )
 {
-	if ( iX >= 0 && iX < m_iMaxLevel )
-	{
-		m_pBuffer->trSingle.m_iRiotGun = atoi ( szString );
-	}
+    if ( iX >= 0 && iX < m_iMaxLevel )
+    {
+        m_pBuffer->trSingle.m_iRiotGun = atoi ( szString );
+    }
 
-	m_pGun->m_iRiotGun = atoi ( szString );
+    m_pGun->m_iRiotGun = atoi ( szString );
 
 }
 
@@ -813,12 +813,12 @@ void CTUBSaveGame::SetAmmos4a ( const char *szString, int iX )
 /////////////////////////////////////////////////////////////////////////////
 void CTUBSaveGame::SetAmmos5 ( const char *szString, int iX )
 {
-	if ( iX >= 0 && iX < m_iMaxLevel )
-	{
-//		m_pBuffer->trSingle.m_iM16Gun = atoi ( szString );
-	}
+    if ( iX >= 0 && iX < m_iMaxLevel )
+    {
+//      m_pBuffer->trSingle.m_iM16Gun = atoi ( szString );
+    }
 
-//	m_pGun->m_iM16Gun = atoi ( szString );
+//  m_pGun->m_iM16Gun = atoi ( szString );
 
 }
 
@@ -828,12 +828,12 @@ void CTUBSaveGame::SetAmmos5 ( const char *szString, int iX )
 /////////////////////////////////////////////////////////////////////////////
 void CTUBSaveGame::SetAmmos6 ( const char *szString, int iX )
 {
-	if ( iX >= 0 && iX < m_iMaxLevel )
-	{
-//		m_pBuffer->trSingle.m_iRockets = atoi ( szString );
-	}
+    if ( iX >= 0 && iX < m_iMaxLevel )
+    {
+//      m_pBuffer->trSingle.m_iRockets = atoi ( szString );
+    }
 
-//	m_pGun->m_iRockets = atoi ( szString );
+//  m_pGun->m_iRockets = atoi ( szString );
 
 }
 
@@ -843,12 +843,12 @@ void CTUBSaveGame::SetAmmos6 ( const char *szString, int iX )
 /////////////////////////////////////////////////////////////////////////////
 void CTUBSaveGame::SetAmmos7a ( const char *szString, int iX )
 {
-	if ( iX >= 0 && iX < m_iMaxLevel )
-	{
-//		m_pBuffer->trSingle.m_iGrenades = atoi ( szString );
-	}
+    if ( iX >= 0 && iX < m_iMaxLevel )
+    {
+//      m_pBuffer->trSingle.m_iGrenades = atoi ( szString );
+    }
 
-//	m_pGun->m_iGrenades = atoi ( szString );
+//  m_pGun->m_iGrenades = atoi ( szString );
 }
 
 //
@@ -857,12 +857,12 @@ void CTUBSaveGame::SetAmmos7a ( const char *szString, int iX )
 /////////////////////////////////////////////////////////////////////////////
 void CTUBSaveGame::SetAmmos8a ( const char *szString, int iX )
 {
-	if ( iX >= 0 && iX < m_iMaxLevel )
-	{
-//		m_pBuffer->trSingle.m_iHarpoon = atoi ( szString );
-	}
+    if ( iX >= 0 && iX < m_iMaxLevel )
+    {
+//      m_pBuffer->trSingle.m_iHarpoon = atoi ( szString );
+    }
 
-//	m_pGun->m_iHarpoon = atoi ( szString );
+//  m_pGun->m_iHarpoon = atoi ( szString );
 
 }
 
@@ -872,7 +872,7 @@ void CTUBSaveGame::SetAmmos8a ( const char *szString, int iX )
 /////////////////////////////////////////////////////////////////////////////
 void CTUBSaveGame::SetUnlimitedAmmos(int iMask)
 {
-	m_pBuffer->cUnlimited = iMask;
+    m_pBuffer->cUnlimited = iMask;
 }
 
 //
@@ -881,7 +881,7 @@ void CTUBSaveGame::SetUnlimitedAmmos(int iMask)
 /////////////////////////////////////////////////////////////////////////////
 int CTUBSaveGame::GetUnlimitedAmmos()
 {
-	return ( m_pBuffer->cUnlimited );
+    return ( m_pBuffer->cUnlimited );
 }
 
 //
@@ -890,12 +890,12 @@ int CTUBSaveGame::GetUnlimitedAmmos()
 /////////////////////////////////////////////////////////////////////////////
 int CTUBSaveGame::Valid()
 {
-	if ( m_pGun != NULL )
-	{
-		return ( 1 );
-	}
+    if ( m_pGun != NULL )
+    {
+        return ( 1 );
+    }
 
-	return 0;
+    return 0;
 }
 
 //
@@ -904,7 +904,7 @@ int CTUBSaveGame::Valid()
 /////////////////////////////////////////////////////////////////////////////
 void CTUBSaveGame::SetInvalid()
 {
-	m_pGun = NULL;
+    m_pGun = NULL;
 }
 
 //
@@ -913,12 +913,12 @@ void CTUBSaveGame::SetInvalid()
 /////////////////////////////////////////////////////////////////////////////
 int CTUBSaveGame::CheckWeapon1 ( int iX )
 {
-	if ( m_pBuffer->trSingle.cGunBitmap & iMaskPistol )
-	{
-		return 1;
-	}
+    if ( m_pBuffer->trSingle.cGunBitmap & iMaskPistol )
+    {
+        return 1;
+    }
 
-	return 0;
+    return 0;
 }
 
 //
@@ -927,12 +927,12 @@ int CTUBSaveGame::CheckWeapon1 ( int iX )
 /////////////////////////////////////////////////////////////////////////////
 int CTUBSaveGame::CheckWeapon4 ( int iX )
 {
-	if ( m_pBuffer->trSingle.cGunBitmap & iMaskShotGun )
-	{
-		return 1;
-	}
+    if ( m_pBuffer->trSingle.cGunBitmap & iMaskShotGun )
+    {
+        return 1;
+    }
 
-	return 0;
+    return 0;
 }
 
 //
@@ -941,12 +941,12 @@ int CTUBSaveGame::CheckWeapon4 ( int iX )
 /////////////////////////////////////////////////////////////////////////////
 int CTUBSaveGame::CheckWeapon2 ( int iX )
 {
-	if ( m_pBuffer->trSingle.cGunBitmap & iMaskMagnum )
-	{
-		return 1;
-	}
+    if ( m_pBuffer->trSingle.cGunBitmap & iMaskMagnum )
+    {
+        return 1;
+    }
 
-	return 0;
+    return 0;
 }
 
 //
@@ -955,12 +955,12 @@ int CTUBSaveGame::CheckWeapon2 ( int iX )
 /////////////////////////////////////////////////////////////////////////////
 int CTUBSaveGame::CheckWeapon3 ( int iX )
 {
-	if ( m_pBuffer->trSingle.cGunBitmap & iMaskUzi )
-	{
-		return 1;
-	}
+    if ( m_pBuffer->trSingle.cGunBitmap & iMaskUzi )
+    {
+        return 1;
+    }
 
-	return 0;
+    return 0;
 }
 
 //
@@ -969,12 +969,12 @@ int CTUBSaveGame::CheckWeapon3 ( int iX )
 /////////////////////////////////////////////////////////////////////////////
 int CTUBSaveGame::CheckWeapon5 ( int iX )
 {
-	if ( m_pBuffer->trSingle.cGunBitmap & iMaskMP5 )
-	{
-		return 1;
-	}
+    if ( m_pBuffer->trSingle.cGunBitmap & iMaskMP5 )
+    {
+        return 1;
+    }
 
-	return 0;
+    return 0;
 }
 
 //
@@ -983,12 +983,12 @@ int CTUBSaveGame::CheckWeapon5 ( int iX )
 /////////////////////////////////////////////////////////////////////////////
 int CTUBSaveGame::CheckWeapon8 ( int iX )
 {
-	if ( m_pBuffer->trSingle.cGunBitmap & iMaskHarpoon )
-	{
-		return 1;
-	}
+    if ( m_pBuffer->trSingle.cGunBitmap & iMaskHarpoon )
+    {
+        return 1;
+    }
 
-	return 0;
+    return 0;
 }
 
 //
@@ -997,12 +997,12 @@ int CTUBSaveGame::CheckWeapon8 ( int iX )
 /////////////////////////////////////////////////////////////////////////////
 int CTUBSaveGame::CheckWeapon7 ( int iX )
 {
-	if ( m_pBuffer->trSingle.cGunBitmap & iMaskGrenade )
-	{
-		return 1;
-	}
+    if ( m_pBuffer->trSingle.cGunBitmap & iMaskGrenade )
+    {
+        return 1;
+    }
 
-	return 0;
+    return 0;
 }
 
 //
@@ -1011,12 +1011,12 @@ int CTUBSaveGame::CheckWeapon7 ( int iX )
 /////////////////////////////////////////////////////////////////////////////
 int CTUBSaveGame::CheckWeapon6 ( int iX )
 {
-	if ( m_pBuffer->trSingle.cGunBitmap & iMaskGrenade  )
-	{
-		return 1;
-	}
+    if ( m_pBuffer->trSingle.cGunBitmap & iMaskGrenade  )
+    {
+        return 1;
+    }
 
-	return 0;
+    return 0;
 }
 
 //
@@ -1025,12 +1025,12 @@ int CTUBSaveGame::CheckWeapon6 ( int iX )
 /////////////////////////////////////////////////////////////////////////////
 unsigned char CTUBSaveGame::GrabWeapon0 ( int iX, bool bAdd, bool bChange )
 {
-	unsigned char old = m_pBuffer->trSingle.cGunBitmap & iMaskCompass;
-	if ( ! bChange ) return old;
+    unsigned char old = m_pBuffer->trSingle.cGunBitmap & iMaskCompass;
+    if ( ! bChange ) return old;
 
-	if ( bChange ) m_pBuffer->trSingle.cGunBitmap = iMaskCompass;
-	if ( ! bAdd ) m_pBuffer->trSingle.cGunBitmap &= ( iMaskCompass ^ 0xff );
-	return old;
+    if ( bChange ) m_pBuffer->trSingle.cGunBitmap = iMaskCompass;
+    if ( ! bAdd ) m_pBuffer->trSingle.cGunBitmap &= ( iMaskCompass ^ 0xff );
+    return old;
 }
 
 //
@@ -1039,12 +1039,12 @@ unsigned char CTUBSaveGame::GrabWeapon0 ( int iX, bool bAdd, bool bChange )
 /////////////////////////////////////////////////////////////////////////////
 unsigned char CTUBSaveGame::GrabWeapon1 ( int iX, bool bAdd, bool bChange )
 {
-	unsigned char old = m_pBuffer->trSingle.cGunBitmap & iMaskPistol;
-	if ( ! bChange ) return old;
+    unsigned char old = m_pBuffer->trSingle.cGunBitmap & iMaskPistol;
+    if ( ! bChange ) return old;
 
-	if ( bChange ) m_pBuffer->trSingle.cGunBitmap |= iMaskPistol;
-	if ( ! bAdd ) m_pBuffer->trSingle.cGunBitmap &= ( iMaskPistol ^ 0xff );
-	return old;
+    if ( bChange ) m_pBuffer->trSingle.cGunBitmap |= iMaskPistol;
+    if ( ! bAdd ) m_pBuffer->trSingle.cGunBitmap &= ( iMaskPistol ^ 0xff );
+    return old;
 }
 
 //
@@ -1053,12 +1053,12 @@ unsigned char CTUBSaveGame::GrabWeapon1 ( int iX, bool bAdd, bool bChange )
 /////////////////////////////////////////////////////////////////////////////
 unsigned char CTUBSaveGame::GrabWeapon4 ( int iX, bool bAdd, bool bChange )
 {
-	unsigned char old = m_pBuffer->trSingle.cGunBitmap & iMaskShotGun;
-	if ( ! bChange ) return old;
+    unsigned char old = m_pBuffer->trSingle.cGunBitmap & iMaskShotGun;
+    if ( ! bChange ) return old;
 
-	if ( bChange ) m_pBuffer->trSingle.cGunBitmap |= iMaskShotGun;
-	if ( ! bAdd ) m_pBuffer->trSingle.cGunBitmap &= ( iMaskShotGun ^ 0xff );
-	return old;
+    if ( bChange ) m_pBuffer->trSingle.cGunBitmap |= iMaskShotGun;
+    if ( ! bAdd ) m_pBuffer->trSingle.cGunBitmap &= ( iMaskShotGun ^ 0xff );
+    return old;
 }
 
 //
@@ -1067,12 +1067,12 @@ unsigned char CTUBSaveGame::GrabWeapon4 ( int iX, bool bAdd, bool bChange )
 /////////////////////////////////////////////////////////////////////////////
 unsigned char CTUBSaveGame::GrabWeapon2 ( int iX, bool bAdd, bool bChange )
 {
-	unsigned char old = m_pBuffer->trSingle.cGunBitmap & iMaskMagnum;
-	if ( ! bChange ) return old;
+    unsigned char old = m_pBuffer->trSingle.cGunBitmap & iMaskMagnum;
+    if ( ! bChange ) return old;
 
-	if ( bChange ) m_pBuffer->trSingle.cGunBitmap |= iMaskMagnum;
-	if ( ! bAdd ) m_pBuffer->trSingle.cGunBitmap &= ( iMaskMagnum ^ 0xff );
-	return old;
+    if ( bChange ) m_pBuffer->trSingle.cGunBitmap |= iMaskMagnum;
+    if ( ! bAdd ) m_pBuffer->trSingle.cGunBitmap &= ( iMaskMagnum ^ 0xff );
+    return old;
 }
 
 //
@@ -1081,12 +1081,12 @@ unsigned char CTUBSaveGame::GrabWeapon2 ( int iX, bool bAdd, bool bChange )
 /////////////////////////////////////////////////////////////////////////////
 unsigned char CTUBSaveGame::GrabWeapon3 ( int iX, bool bAdd, bool bChange )
 {
-	unsigned char old = m_pBuffer->trSingle.cGunBitmap & iMaskUzi;
-	if ( ! bChange ) return old;
+    unsigned char old = m_pBuffer->trSingle.cGunBitmap & iMaskUzi;
+    if ( ! bChange ) return old;
 
-	if ( bChange ) m_pBuffer->trSingle.cGunBitmap |= iMaskUzi;
-	if ( ! bAdd ) m_pBuffer->trSingle.cGunBitmap &= ( iMaskUzi ^ 0xff );
-	return old;
+    if ( bChange ) m_pBuffer->trSingle.cGunBitmap |= iMaskUzi;
+    if ( ! bAdd ) m_pBuffer->trSingle.cGunBitmap &= ( iMaskUzi ^ 0xff );
+    return old;
 }
 
 //
@@ -1095,12 +1095,12 @@ unsigned char CTUBSaveGame::GrabWeapon3 ( int iX, bool bAdd, bool bChange )
 /////////////////////////////////////////////////////////////////////////////
 unsigned char CTUBSaveGame::GrabWeapon5 ( int iX, bool bAdd, bool bChange )
 {
-	unsigned char old = m_pBuffer->trSingle.cGunBitmap & iMaskMP5;
-	if ( ! bChange ) return old;
+    unsigned char old = m_pBuffer->trSingle.cGunBitmap & iMaskMP5;
+    if ( ! bChange ) return old;
 
-	if ( bChange ) m_pBuffer->trSingle.cGunBitmap |= iMaskMP5;
-	if ( ! bAdd ) m_pBuffer->trSingle.cGunBitmap &= ( iMaskMP5 ^ 0xff );
-	return old;
+    if ( bChange ) m_pBuffer->trSingle.cGunBitmap |= iMaskMP5;
+    if ( ! bAdd ) m_pBuffer->trSingle.cGunBitmap &= ( iMaskMP5 ^ 0xff );
+    return old;
 }
 
 //
@@ -1109,12 +1109,12 @@ unsigned char CTUBSaveGame::GrabWeapon5 ( int iX, bool bAdd, bool bChange )
 /////////////////////////////////////////////////////////////////////////////
 unsigned char CTUBSaveGame::GrabWeapon8 ( int iX, bool bAdd, bool bChange )
 {
-	unsigned char old = m_pBuffer->trSingle.cGunBitmap & iMaskHarpoon;
-	if ( ! bChange ) return old;
+    unsigned char old = m_pBuffer->trSingle.cGunBitmap & iMaskHarpoon;
+    if ( ! bChange ) return old;
 
-	if ( bChange ) m_pBuffer->trSingle.cGunBitmap |= iMaskHarpoon;
-	if ( ! bAdd ) m_pBuffer->trSingle.cGunBitmap &= ( iMaskHarpoon ^ 0xff );
-	return old;
+    if ( bChange ) m_pBuffer->trSingle.cGunBitmap |= iMaskHarpoon;
+    if ( ! bAdd ) m_pBuffer->trSingle.cGunBitmap &= ( iMaskHarpoon ^ 0xff );
+    return old;
 }
 
 //
@@ -1123,12 +1123,12 @@ unsigned char CTUBSaveGame::GrabWeapon8 ( int iX, bool bAdd, bool bChange )
 /////////////////////////////////////////////////////////////////////////////
 unsigned char CTUBSaveGame::GrabWeapon7 ( int iX, bool bAdd, bool bChange )
 {
-	unsigned char old = m_pBuffer->trSingle.cGunBitmap & iMaskGrenade;
-	if ( ! bChange ) return old;
+    unsigned char old = m_pBuffer->trSingle.cGunBitmap & iMaskGrenade;
+    if ( ! bChange ) return old;
 
-	if ( bChange ) m_pBuffer->trSingle.cGunBitmap |= iMaskGrenade;
-	if ( ! bAdd ) m_pBuffer->trSingle.cGunBitmap &= ( iMaskGrenade ^ 0xff );
-	return old;
+    if ( bChange ) m_pBuffer->trSingle.cGunBitmap |= iMaskGrenade;
+    if ( ! bAdd ) m_pBuffer->trSingle.cGunBitmap &= ( iMaskGrenade ^ 0xff );
+    return old;
 }
 
 //
@@ -1137,12 +1137,12 @@ unsigned char CTUBSaveGame::GrabWeapon7 ( int iX, bool bAdd, bool bChange )
 /////////////////////////////////////////////////////////////////////////////
 unsigned char CTUBSaveGame::GrabWeapon6 ( int iX, bool bAdd, bool bChange )
 {
-	unsigned char old = m_pBuffer->trSingle.cGunBitmap & iMaskGrenade;
-	if ( ! bChange ) return old;
+    unsigned char old = m_pBuffer->trSingle.cGunBitmap & iMaskGrenade;
+    if ( ! bChange ) return old;
 
-	if ( bChange ) m_pBuffer->trSingle.cGunBitmap |= iMaskGrenade;
-	if ( ! bAdd ) m_pBuffer->trSingle.cGunBitmap &= ( iMaskGrenade ^ 0xff );
-	return old;
+    if ( bChange ) m_pBuffer->trSingle.cGunBitmap |= iMaskGrenade;
+    if ( ! bAdd ) m_pBuffer->trSingle.cGunBitmap &= ( iMaskGrenade ^ 0xff );
+    return old;
 }
 
 //
@@ -1151,7 +1151,7 @@ unsigned char CTUBSaveGame::GrabWeapon6 ( int iX, bool bAdd, bool bChange )
 /////////////////////////////////////////////////////////////////////////////
 int CTUBSaveGame::GetGunAmmos ( )
 {
-	return ( m_iGunAmmos );
+    return ( m_iGunAmmos );
 }
 
 //
@@ -1160,7 +1160,7 @@ int CTUBSaveGame::GetGunAmmos ( )
 /////////////////////////////////////////////////////////////////////////////
 int CTUBSaveGame::GetSmallMedipak ( int iX )
 {
-	return ( m_pBuffer->trSingle.cSmallPack  );
+    return ( m_pBuffer->trSingle.cSmallPack  );
 }
 
 //
@@ -1169,7 +1169,7 @@ int CTUBSaveGame::GetSmallMedipak ( int iX )
 /////////////////////////////////////////////////////////////////////////////
 int CTUBSaveGame::GetLargeMedipak ( int iX )
 {
-	return ( m_pBuffer->trSingle.cLargePack  );
+    return ( m_pBuffer->trSingle.cLargePack  );
 }
 
 //
@@ -1178,9 +1178,9 @@ int CTUBSaveGame::GetLargeMedipak ( int iX )
 /////////////////////////////////////////////////////////////////////////////
 int CTUBSaveGame::GetFlares ( int iX )
 {
-//	return ( m_pBuffer->trSingle.cFlare );
+//  return ( m_pBuffer->trSingle.cFlare );
 
-	return -1;
+    return -1;
 
 }
 
@@ -1190,7 +1190,7 @@ int CTUBSaveGame::GetFlares ( int iX )
 /////////////////////////////////////////////////////////////////////////////
 int CTUBSaveGame::GetAir ( )
 {
-	return ( m_pGun->iAir );
+    return ( m_pGun->iAir );
 }
 
 //
@@ -1199,7 +1199,7 @@ int CTUBSaveGame::GetAir ( )
 /////////////////////////////////////////////////////////////////////////////
 void CTUBSaveGame::SetSmallMedipak ( const char *szString, int iX )
 {
-	 m_pBuffer->trSingle.cSmallPack  = atoi ( szString );
+     m_pBuffer->trSingle.cSmallPack  = atoi ( szString );
 }
 
 //
@@ -1208,7 +1208,7 @@ void CTUBSaveGame::SetSmallMedipak ( const char *szString, int iX )
 /////////////////////////////////////////////////////////////////////////////
 void CTUBSaveGame::SetLargeMedipak ( const char *szString, int iX )
 {
-	m_pBuffer->trSingle.cLargePack  = atoi ( szString );
+    m_pBuffer->trSingle.cLargePack  = atoi ( szString );
 }
 
 //
@@ -1217,7 +1217,7 @@ void CTUBSaveGame::SetLargeMedipak ( const char *szString, int iX )
 /////////////////////////////////////////////////////////////////////////////
 void CTUBSaveGame::SetFlares ( const char *szString, int iX )
 {
-//	m_pBuffer->trSingle.cFlare = atoi (  szString );
+//  m_pBuffer->trSingle.cFlare = atoi (  szString );
 }
 
 //
@@ -1226,7 +1226,7 @@ void CTUBSaveGame::SetFlares ( const char *szString, int iX )
 /////////////////////////////////////////////////////////////////////////////
 void CTUBSaveGame::SetAir ( const char *szString )
 {
-	m_pGun->iAir = atoi ( szString );
+    m_pGun->iAir = atoi ( szString );
 }
 
 //
@@ -1235,7 +1235,7 @@ void CTUBSaveGame::SetAir ( const char *szString )
 /////////////////////////////////////////////////////////////////////////////
 char *CTUBSaveGame::GetSaveName ()
 {
-	return ( m_pBuffer->szSavename );
+    return ( m_pBuffer->szSavename );
 }
 
 //
@@ -1244,7 +1244,7 @@ char *CTUBSaveGame::GetSaveName ()
 /////////////////////////////////////////////////////////////////////////////
 int CTUBSaveGame::GetSaveNumber ()
 {
-	return ( m_pBuffer->iSaveNumber );
+    return ( m_pBuffer->iSaveNumber );
 }
 
 //
@@ -1253,7 +1253,7 @@ int CTUBSaveGame::GetSaveNumber ()
 /////////////////////////////////////////////////////////////////////////////
 int CTUBSaveGame::GetCurrentSecrets ()
 {
-	return ( -1 );
+    return ( -1 );
 }
 
 //
@@ -1277,9 +1277,9 @@ void CTUBSaveGame::SetAllSecrets ( )
 /////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////
-int	CTUBSaveGame::IsLaraBurning ()
+int CTUBSaveGame::IsLaraBurning ()
 {
-	return 0;
+    return 0;
 }
 
 //
@@ -1312,7 +1312,7 @@ void CTUBSaveGame::SetAllObjects ()
 /////////////////////////////////////////////////////////////////////////////
 int CTUBSaveGame::GetMap1 ()
 {
-	return ( m_pBuffer->cObject_P1 );
+    return ( m_pBuffer->cObject_P1 );
 }
 
 //
@@ -1321,7 +1321,7 @@ int CTUBSaveGame::GetMap1 ()
 /////////////////////////////////////////////////////////////////////////////
 int CTUBSaveGame::GetMap2 ()
 {
-	return ( m_pBuffer->cObject_P2 );
+    return ( m_pBuffer->cObject_P2 );
 }
 
 //
@@ -1330,7 +1330,7 @@ int CTUBSaveGame::GetMap2 ()
 /////////////////////////////////////////////////////////////////////////////
 int CTUBSaveGame::GetItem1 ()
 {
-	return ( m_pBuffer->cObjectP1 );
+    return ( m_pBuffer->cObjectP1 );
 }
 
 //
@@ -1339,7 +1339,7 @@ int CTUBSaveGame::GetItem1 ()
 /////////////////////////////////////////////////////////////////////////////
 int CTUBSaveGame::GetItem2 ()
 {
-	return ( m_pBuffer->cObjectP2 );
+    return ( m_pBuffer->cObjectP2 );
 }
 
 //
@@ -1348,7 +1348,7 @@ int CTUBSaveGame::GetItem2 ()
 /////////////////////////////////////////////////////////////////////////////
 int CTUBSaveGame::GetItem3 ()
 {
-	return ( m_pBuffer->cObjectP3 );
+    return ( m_pBuffer->cObjectP3 );
 }
 
 //
@@ -1357,7 +1357,7 @@ int CTUBSaveGame::GetItem3 ()
 /////////////////////////////////////////////////////////////////////////////
 int CTUBSaveGame::GetItem4 ()
 {
-	return ( m_pBuffer->cObjectP4 );
+    return ( m_pBuffer->cObjectP4 );
 }
 
 //
@@ -1366,7 +1366,7 @@ int CTUBSaveGame::GetItem4 ()
 /////////////////////////////////////////////////////////////////////////////
 int CTUBSaveGame::GetKey1 ()
 {
-	return ( m_pBuffer->cObjectK1 );
+    return ( m_pBuffer->cObjectK1 );
 }
 
 //
@@ -1375,7 +1375,7 @@ int CTUBSaveGame::GetKey1 ()
 /////////////////////////////////////////////////////////////////////////////
 int CTUBSaveGame::GetKey2 ()
 {
-	return ( m_pBuffer->cObjectK2 );
+    return ( m_pBuffer->cObjectK2 );
 }
 
 //
@@ -1384,7 +1384,7 @@ int CTUBSaveGame::GetKey2 ()
 /////////////////////////////////////////////////////////////////////////////
 int CTUBSaveGame::GetKey3 ()
 {
-	return ( m_pBuffer->cObjectK3 );
+    return ( m_pBuffer->cObjectK3 );
 }
 
 //
@@ -1393,7 +1393,7 @@ int CTUBSaveGame::GetKey3 ()
 /////////////////////////////////////////////////////////////////////////////
 int CTUBSaveGame::GetKey4 ()
 {
-	return ( m_pBuffer->cObjectK4 );
+    return ( m_pBuffer->cObjectK4 );
 }
 
 //
@@ -1402,7 +1402,7 @@ int CTUBSaveGame::GetKey4 ()
 /////////////////////////////////////////////////////////////////////////////
 int CTUBSaveGame::GetTreasure1 ( int iX )
 {
-	return ( m_pBuffer->trSingle.cNbObject1 );
+    return ( m_pBuffer->trSingle.cNbObject1 );
 }
 
 //
@@ -1411,7 +1411,7 @@ int CTUBSaveGame::GetTreasure1 ( int iX )
 /////////////////////////////////////////////////////////////////////////////
 int CTUBSaveGame::GetTreasure2 ( int iX )
 {
-	return -1;
+    return -1;
 }
 
 //
@@ -1420,7 +1420,7 @@ int CTUBSaveGame::GetTreasure2 ( int iX )
 /////////////////////////////////////////////////////////////////////////////
 int CTUBSaveGame::GetTreasure3 ( int iX )
 {
-	return -1;
+    return -1;
 }
 
 //
@@ -1429,7 +1429,7 @@ int CTUBSaveGame::GetTreasure3 ( int iX )
 /////////////////////////////////////////////////////////////////////////////
 int CTUBSaveGame::GetTreasure4 ( int iX )
 {
-	return -1;
+    return -1;
 }
 
 //
@@ -1438,7 +1438,7 @@ int CTUBSaveGame::GetTreasure4 ( int iX )
 /////////////////////////////////////////////////////////////////////////////
 void CTUBSaveGame::SetMap1 ( char *szString )
 {
-	m_pBuffer->cObject_P1 = atoi ( szString );
+    m_pBuffer->cObject_P1 = atoi ( szString );
 }
 
 //
@@ -1447,7 +1447,7 @@ void CTUBSaveGame::SetMap1 ( char *szString )
 /////////////////////////////////////////////////////////////////////////////
 void CTUBSaveGame::SetMap2 ( char *szString )
 {
-	m_pBuffer->cObject_P2 = atoi ( szString );
+    m_pBuffer->cObject_P2 = atoi ( szString );
 }
 
 //
@@ -1456,7 +1456,7 @@ void CTUBSaveGame::SetMap2 ( char *szString )
 /////////////////////////////////////////////////////////////////////////////
 void CTUBSaveGame::SetItem1 ( char *szString )
 {
-	m_pBuffer->cObjectP1 = atoi ( szString );
+    m_pBuffer->cObjectP1 = atoi ( szString );
 }
 
 //
@@ -1465,7 +1465,7 @@ void CTUBSaveGame::SetItem1 ( char *szString )
 /////////////////////////////////////////////////////////////////////////////
 void CTUBSaveGame::SetItem2 ( char *szString )
 {
-	m_pBuffer->cObjectP2 = atoi ( szString );
+    m_pBuffer->cObjectP2 = atoi ( szString );
 }
 
 //
@@ -1474,7 +1474,7 @@ void CTUBSaveGame::SetItem2 ( char *szString )
 /////////////////////////////////////////////////////////////////////////////
 void CTUBSaveGame::SetItem3 ( char *szString )
 {
-	m_pBuffer->cObjectP3 = atoi ( szString );
+    m_pBuffer->cObjectP3 = atoi ( szString );
 }
 
 //
@@ -1483,7 +1483,7 @@ void CTUBSaveGame::SetItem3 ( char *szString )
 /////////////////////////////////////////////////////////////////////////////
 void CTUBSaveGame::SetItem4 ( char *szString )
 {
-	m_pBuffer->cObjectP4 = atoi ( szString );
+    m_pBuffer->cObjectP4 = atoi ( szString );
 }
 
 //
@@ -1492,7 +1492,7 @@ void CTUBSaveGame::SetItem4 ( char *szString )
 /////////////////////////////////////////////////////////////////////////////
 void CTUBSaveGame::SetKey1 ( char *szString )
 {
-	m_pBuffer->cObjectK1 = atoi ( szString );
+    m_pBuffer->cObjectK1 = atoi ( szString );
 }
 
 //
@@ -1501,7 +1501,7 @@ void CTUBSaveGame::SetKey1 ( char *szString )
 /////////////////////////////////////////////////////////////////////////////
 void CTUBSaveGame::SetKey2 ( char *szString )
 {
-	m_pBuffer->cObjectK2 = atoi ( szString );
+    m_pBuffer->cObjectK2 = atoi ( szString );
 }
 
 //
@@ -1510,7 +1510,7 @@ void CTUBSaveGame::SetKey2 ( char *szString )
 /////////////////////////////////////////////////////////////////////////////
 void CTUBSaveGame::SetKey3 ( char *szString )
 {
-	m_pBuffer->cObjectK3 = atoi ( szString );
+    m_pBuffer->cObjectK3 = atoi ( szString );
 }
 
 //
@@ -1519,7 +1519,7 @@ void CTUBSaveGame::SetKey3 ( char *szString )
 /////////////////////////////////////////////////////////////////////////////
 void CTUBSaveGame::SetKey4 ( char *szString )
 {
-	m_pBuffer->cObjectK4 = atoi ( szString );
+    m_pBuffer->cObjectK4 = atoi ( szString );
 }
 
 //
@@ -1528,7 +1528,7 @@ void CTUBSaveGame::SetKey4 ( char *szString )
 /////////////////////////////////////////////////////////////////////////////
 void CTUBSaveGame::SetTreasure1 ( char *szString, int iX )
 {
-	m_pBuffer->trSingle.cNbObject1 = atoi ( szString );
+    m_pBuffer->trSingle.cNbObject1 = atoi ( szString );
 }
 
 //
@@ -1561,7 +1561,7 @@ void CTUBSaveGame::SetTreasure4 ( char *szString, int iX )
 /////////////////////////////////////////////////////////////////////////////
 int CTUBSaveGame::GetMaximumSecrets ( int iX )
 {
-	return ( -1 );
+    return ( -1 );
 }
 
 //
@@ -1570,7 +1570,7 @@ int CTUBSaveGame::GetMaximumSecrets ( int iX )
 /////////////////////////////////////////////////////////////////////////////
 void CTUBSaveGame::SetGunAmmos ( const char *szGunAmmos )
 {
-	// Do Nothing.
+    // Do Nothing.
 }
 
 //
@@ -1579,7 +1579,7 @@ void CTUBSaveGame::SetGunAmmos ( const char *szGunAmmos )
 /////////////////////////////////////////////////////////////////////////////
 char *CTUBSaveGame::getBufferAddress ()
 {
-		return ( ( char * ) m_pBuffer );
+        return ( ( char * ) m_pBuffer );
 }
 
 //
@@ -1588,7 +1588,7 @@ char *CTUBSaveGame::getBufferAddress ()
 /////////////////////////////////////////////////////////////////////////////
 char *CTUBSaveGame::getBufferBackupAddress ()
 {
-		return ( ( char * ) m_pBufferBackup );
+        return ( ( char * ) m_pBufferBackup );
 }
 
 //
@@ -1597,7 +1597,7 @@ char *CTUBSaveGame::getBufferBackupAddress ()
 /////////////////////////////////////////////////////////////////////////////
 size_t CTUBSaveGame::getBufferLength()
 {
-	return m_iSaveLength;
+    return m_iSaveLength;
 }
 
 //
@@ -1606,14 +1606,14 @@ size_t CTUBSaveGame::getBufferLength()
 /////////////////////////////////////////////////////////////////////////////
 BOOL CTUBSaveGame::BufferModified ()
 {
-	if ( m_pBuffer != NULL && m_pBufferBackup != NULL && m_iSaveLength > 0 )
-	{
-		if ( CTRXTools::MemoryCompare ( m_pBuffer, m_pBufferBackup, m_iSaveLength ) != 0 )
-		{
-			return TRUE;
-		}
-	}
-	return FALSE;
+    if ( m_pBuffer != NULL && m_pBufferBackup != NULL && m_iSaveLength > 0 )
+    {
+        if ( CTRXTools::MemoryCompare ( m_pBuffer, m_pBufferBackup, m_iSaveLength ) != 0 )
+        {
+            return TRUE;
+        }
+    }
+    return FALSE;
 }
 
 //
@@ -1622,11 +1622,11 @@ BOOL CTUBSaveGame::BufferModified ()
 /////////////////////////////////////////////////////////////////////////////
 void CTUBSaveGame::discard ()
 {
-	if ( m_pBuffer != NULL && m_pBufferBackup != NULL && m_iSaveLength > 0 )
-	{
-		memcpy ( m_pBuffer, m_pBufferBackup, m_iSaveLength );
-	}
-	return;
+    if ( m_pBuffer != NULL && m_pBufferBackup != NULL && m_iSaveLength > 0 )
+    {
+        memcpy ( m_pBuffer, m_pBufferBackup, m_iSaveLength );
+    }
+    return;
 }
 
 //
@@ -1635,43 +1635,43 @@ void CTUBSaveGame::discard ()
 /////////////////////////////////////////////////////////////////////////////
 const TR_POSITION *CTUBSaveGame::GetPosition ( )
 {
-	GetLife ();
+    GetLife ();
 
-	if ( m_pLife != NULL )
-	{
-		long dwDelta = (long)((BYTE* )m_pLife - (BYTE* )m_pBuffer);
-		TR_POSITION *position = ( TR_POSITION *) ( (BYTE *) m_pLife - TR_POSITION_OFFSET );
-		int tombraider = GetFullVersion();
-		int levelIndex = GetLevelIndex();
-		BOOL bCheck = 
-			CheckAreaForCoordinates ( tombraider, levelIndex, 
-				position->wRoom, position->dwWestToEast, position->dwVertical,  position->dwSouthToNorth );
-		if ( bCheck )
-		{
-			return position;
-		}
-	}
+    if ( m_pLife != NULL )
+    {
+        long dwDelta = (long)((BYTE* )m_pLife - (BYTE* )m_pBuffer);
+        TR_POSITION *position = ( TR_POSITION *) ( (BYTE *) m_pLife - TR_POSITION_OFFSET );
+        int tombraider = GetFullVersion();
+        int levelIndex = GetLevelIndex();
+        BOOL bCheck =
+            CheckAreaForCoordinates ( tombraider, levelIndex,
+                position->wRoom, position->dwWestToEast, position->dwVertical,  position->dwSouthToNorth );
+        if ( bCheck )
+        {
+            return position;
+        }
+    }
 
-	//
-	//	Search Extended
-	if ( CTRXGlobal::m_iSearchPosExt )
-	{
-		for ( int i = 0xB00; i < 0x1200; i++ )
-		{
-			TR_POSITION *position = ( TR_POSITION *) ( (BYTE *) m_pBuffer + i );
-			int tombraider = GetFullVersion();
-			int levelIndex = GetLevelIndex();
-			BOOL bCheck = 
-				CheckAreaForCoordinates ( tombraider, levelIndex, 
-					position->wRoom, position->dwWestToEast, position->dwVertical,  position->dwSouthToNorth );
-			if ( bCheck )
-			{
-				return position;
-			}
-		}
-	}
+    //
+    //  Search Extended
+    if ( CTRXGlobal::m_iSearchPosExt )
+    {
+        for ( int i = 0xB00; i < 0x1200; i++ )
+        {
+            TR_POSITION *position = ( TR_POSITION *) ( (BYTE *) m_pBuffer + i );
+            int tombraider = GetFullVersion();
+            int levelIndex = GetLevelIndex();
+            BOOL bCheck =
+                CheckAreaForCoordinates ( tombraider, levelIndex,
+                    position->wRoom, position->dwWestToEast, position->dwVertical,  position->dwSouthToNorth );
+            if ( bCheck )
+            {
+                return position;
+            }
+        }
+    }
 
-	return NULL;
+    return NULL;
 }
 
 //
@@ -1680,27 +1680,27 @@ const TR_POSITION *CTUBSaveGame::GetPosition ( )
 /////////////////////////////////////////////////////////////////////////////
 BOOL CTUBSaveGame::SetPosition ( DWORD dwWestToEast, DWORD dwVertical, DWORD dwSouthToNorth, WORD wDirection, WORD wRoom )
 {
-	GetLife ();
+    GetLife ();
 
-	//	Check if position was good
-	if ( GetPosition ( ) == NULL )
-	{
-		return FALSE;
-	}
+    //  Check if position was good
+    if ( GetPosition ( ) == NULL )
+    {
+        return FALSE;
+    }
 
-	if ( m_pLife != NULL )
-	{
-		long dwDelta = (long)( (BYTE* )m_pLife - (BYTE* )m_pBuffer );
-		TR_POSITION *position = ( TR_POSITION *) ( (BYTE *) m_pLife - TR_POSITION_OFFSET );
-		position->dwWestToEast		= dwWestToEast;
-		position->dwVertical		= dwVertical;
-		position->dwSouthToNorth	= dwSouthToNorth;
-		position->wOrientation		= wDirection;
-		position->wRoom				= wRoom;
+    if ( m_pLife != NULL )
+    {
+        long dwDelta = (long)( (BYTE* )m_pLife - (BYTE* )m_pBuffer );
+        TR_POSITION *position = ( TR_POSITION *) ( (BYTE *) m_pLife - TR_POSITION_OFFSET );
+        position->dwWestToEast      = dwWestToEast;
+        position->dwVertical        = dwVertical;
+        position->dwSouthToNorth    = dwSouthToNorth;
+        position->wOrientation      = wDirection;
+        position->wRoom             = wRoom;
 
-		return TRUE;
-	}
+        return TRUE;
+    }
 
-	return FALSE;
+    return FALSE;
 }
 

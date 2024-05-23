@@ -1,20 +1,20 @@
 /*
  ************************************************************************************
  *
- *		File:			MCMemA.cpp
- *		Class:			MCMemA
+ *      File:           MCMemA.cpp
+ *      Class:          MCMemA
  *
  ************************************************************************************
- *		Description:
+ *      Description:
  *
  ************************************************************************************
- *		Notes:
+ *      Notes:
  *
  ************************************************************************************
  *
- *		E/Mail: ian.macallan@gmail.com
- *		(c) 2003 - 2023 / Macallan 
- *		
+ *      E/Mail: ian.macallan@gmail.com
+ *      (c) 2003 - 2023 / Macallan
+ *      
  ************************************************************************************
  *
  */
@@ -30,8 +30,8 @@
 //====================================================================================
 MCMemA::MCMemA(void)
 {
-	len	= 0;
-	ptr = NULL;
+    len = 0;
+    ptr = NULL;
 }
 
 //
@@ -40,9 +40,9 @@ MCMemA::MCMemA(void)
 //====================================================================================
 MCMemA::MCMemA(int sizeInBytes )
 {
-	len	= 0;
-	ptr = NULL;
-	AllocateA ( sizeInBytes );
+    len = 0;
+    ptr = NULL;
+    AllocateA ( sizeInBytes );
 }
 
 //
@@ -51,14 +51,14 @@ MCMemA::MCMemA(int sizeInBytes )
 //====================================================================================
 MCMemA::MCMemA ( const char *pText, int sizeInBytes  )
 {
-	if ( sizeInBytes < 0 )
-	{
-		sizeInBytes = (int) strlen(pText);
-	}
+    if ( sizeInBytes < 0 )
+    {
+        sizeInBytes = (int) strlen(pText);
+    }
 
-	AllocateA ( sizeInBytes );
+    AllocateA ( sizeInBytes );
 
-	memcpy_s ( ptr, len, pText, sizeInBytes );
+    memcpy_s ( ptr, len, pText, sizeInBytes );
 }
 
 //
@@ -67,15 +67,15 @@ MCMemA::MCMemA ( const char *pText, int sizeInBytes  )
 //====================================================================================
 char *MCMemA::AllocateA(int sizeInBytes )
 {
-	if ( sizeInBytes < 8 )
-	{
-		sizeInBytes = 8;
-	}
-	Free();
-	len	=  sizeInBytes + 1;
-	ptr = (char*) malloc(len);
-	ZeroMemory ( ptr, len );
-	return (char *) ptr;
+    if ( sizeInBytes < 8 )
+    {
+        sizeInBytes = 8;
+    }
+    Free();
+    len =  sizeInBytes + 1;
+    ptr = (char*) malloc(len);
+    ZeroMemory ( ptr, len );
+    return (char *) ptr;
 }
 
 //
@@ -84,10 +84,10 @@ char *MCMemA::AllocateA(int sizeInBytes )
 //====================================================================================
 void MCMemA::fromPointer( char *pText, int sizeInBytes )
 {
-	Free();
+    Free();
 
-	len	= sizeInBytes;
-	ptr = pText;
+    len = sizeInBytes;
+    ptr = pText;
 }
 
 //
@@ -96,11 +96,11 @@ void MCMemA::fromPointer( char *pText, int sizeInBytes )
 //====================================================================================
 void MCMemA::Free(void)
 {
-	if ( ptr != NULL )
-	{
-		free ( ptr );
-		ptr = NULL;
-	}
+    if ( ptr != NULL )
+    {
+        free ( ptr );
+        ptr = NULL;
+    }
 }
 
 //
@@ -109,5 +109,5 @@ void MCMemA::Free(void)
 //====================================================================================
 MCMemA::~MCMemA(void)
 {
-	Free();
+    Free();
 }

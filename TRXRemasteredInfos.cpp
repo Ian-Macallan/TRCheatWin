@@ -36,10 +36,10 @@ CTRXRemasteredInfos::~CTRXRemasteredInfos()
 /////////////////////////////////////////////////////////////////////////////
 void CTRXRemasteredInfos::DoDataExchange(CDataExchange* pDX)
 {
-	CTRXDialogBase::DoDataExchange(pDX);
-	DDX_Control(pDX, IDC_TEXT, m_Text);
-	DDX_Control(pDX, IDOK, m_OK);
-	DDX_Control(pDX, IDCANCEL, m_Cancel);
+    CTRXDialogBase::DoDataExchange(pDX);
+    DDX_Control(pDX, IDC_TEXT, m_Text);
+    DDX_Control(pDX, IDOK, m_OK);
+    DDX_Control(pDX, IDCANCEL, m_Cancel);
 }
 
 
@@ -56,7 +56,7 @@ END_MESSAGE_MAP()
 // Gestionnaires de messages de CTRXRemasteredInfos
 //
 /////////////////////////////////////////////////////////////////////////////
-//						
+//                      
 //
 /////////////////////////////////////////////////////////////////////////////
 
@@ -66,16 +66,16 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 BOOL CTRXRemasteredInfos::OnInitDialog()
 {
-	CTRXDialogBase::OnInitDialog();
+    CTRXDialogBase::OnInitDialog();
 
-	// TODO: Add Code Here
-	//
+    // TODO: Add Code Here
+    //
 
-	m_Text.SetFont ( m_pFixedFont );
-	m_Text.SetWindowText ( CTR9SaveGame::I()->GetInterest(m_iTombraider, m_iBlock, m_iSlot ) );
+    m_Text.SetFont ( m_pFixedFont );
+    m_Text.SetWindowText ( CTR9SaveGame::I()->GetInterest(m_iTombraider, m_iBlock, m_iSlot ) );
 
-	m_bInitDone	= true;
+    m_bInitDone = true;
 
-	return TRUE;  // return TRUE unless you set the focus to a control
-	// EXCEPTION : les pages de propriétés OCX devraient retourner FALSE
+    return TRUE;  // return TRUE unless you set the focus to a control
+    // EXCEPTION : les pages de propriétés OCX devraient retourner FALSE
 }

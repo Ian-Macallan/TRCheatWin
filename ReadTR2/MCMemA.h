@@ -1,20 +1,20 @@
 /*
  ************************************************************************************
  *
- *		File:			MCMemA.h
- *		Class:			MCMemA
+ *      File:           MCMemA.h
+ *      Class:          MCMemA
  *
  ************************************************************************************
- *		Description:
+ *      Description:
  *
  ************************************************************************************
- *		Notes:
+ *      Notes:
  *
  ************************************************************************************
  *
- *		E/Mail: ian.macallan@gmail.com
- *		(c) 2003 - 2023 / Macallan 
- *		
+ *      E/Mail: ian.macallan@gmail.com
+ *      (c) 2003 - 2023 / Macallan
+ *      
  ************************************************************************************
  *
  */
@@ -26,17 +26,17 @@
 //====================================================================================
 class MCMemA
 {
-	public :
-		int	len;
-		char *ptr;
+    public :
+        int len;
+        char *ptr;
 
-	public:
-		MCMemA(void);
-		MCMemA( int sizeInBytes );
-		MCMemA ( const char *pText, int sizeInBytes  );
-		virtual char *AllocateA( int sizeInBytes );
-		virtual void fromPointer ( char *pText, int sizeInBytes );
-		virtual void Free();
-		virtual ~MCMemA (void);
+    public:
+        MCMemA(void);
+        MCMemA( int sizeInBytes );
+        MCMemA ( const char *pText, int sizeInBytes  );
+        virtual char *AllocateA( int sizeInBytes );
+        virtual void fromPointer ( char *pText, int sizeInBytes );
+        virtual void Free();
+        virtual ~MCMemA (void);
 };
 

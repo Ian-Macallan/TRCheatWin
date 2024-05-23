@@ -7,8 +7,8 @@
 #include "TR9SaveGame.h"
 #include "TRXGDI.h"
 
-static const int RoomDivider	= 150;
-static const int RoomMargin		= 10;
+static const int RoomDivider    = 150;
+static const int RoomMargin     = 10;
 
 //
 /////////////////////////////////////////////////////////////////////////////
@@ -24,10 +24,10 @@ IMPLEMENT_DYNAMIC(CTRXWallPicture, CTRXRoomWall)
 /////////////////////////////////////////////////////////////////////////////
 CTRXWallPicture::CTRXWallPicture()
 {
-	ZeroMemory ( &m_Area, sizeof(m_Area) );
-	m_bAreaSet		= false;
-	m_bPositionSet	= false;
-	m_Wall			= WallNorth;
+    ZeroMemory ( &m_Area, sizeof(m_Area) );
+    m_bAreaSet      = false;
+    m_bPositionSet  = false;
+    m_Wall          = WallNorth;
 }
 
 //
@@ -42,74 +42,74 @@ CTRXWallPicture::~CTRXWallPicture()
 /////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////
-BOOL CTRXWallPicture::CreateInstanceInside(	CWnd *parent, CTRXWallPicture *pRoom, RECT &rect, 
-											const char *pText, DWORD dwStyle)
+BOOL CTRXWallPicture::CreateInstanceInside( CWnd *parent, CTRXWallPicture *pRoom, RECT &rect,
+                                            const char *pText, DWORD dwStyle)
 {
-	if ( parent == NULL || pRoom == NULL )
-	{
-		return FALSE;
-	}
+    if ( parent == NULL || pRoom == NULL )
+    {
+        return FALSE;
+    }
 
-	//
-	dwStyle	|= SS_OWNERDRAW;
-	BOOL bCreated = pRoom->Create (
-		pText,							//	LPCTSTR lpszCaption,
-		dwStyle,						//	DWORD dwStyle,
-		rect,							//	const RECT& rect,
-		parent,							//	CWnd* pParentWnd,
-		-1								//	UINT nID 
-	);
+    //
+    dwStyle |= SS_OWNERDRAW;
+    BOOL bCreated = pRoom->Create (
+        pText,                          //  LPCTSTR lpszCaption,
+        dwStyle,                        //  DWORD dwStyle,
+        rect,                           //  const RECT& rect,
+        parent,                         //  CWnd* pParentWnd,
+        -1                              //  UINT nID
+    );
 
-	return bCreated;
+    return bCreated;
 }
 
 //
 /////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////
-BOOL CTRXWallPicture::CreateInstanceInside(	CWnd *parent, CTRXWallPicture *pRoom, CStatic *pFrame, 
-											const char *pText, DWORD dwStyle)
+BOOL CTRXWallPicture::CreateInstanceInside( CWnd *parent, CTRXWallPicture *pRoom, CStatic *pFrame,
+                                            const char *pText, DWORD dwStyle)
 {
-	if ( parent == NULL || pRoom == NULL || pFrame == NULL )
-	{
-		return FALSE;
-	}
+    if ( parent == NULL || pRoom == NULL || pFrame == NULL )
+    {
+        return FALSE;
+    }
 
-	RECT frameRect;
-	pFrame->GetWindowRect ( &frameRect );
-	parent->ScreenToClient( &frameRect );
+    RECT frameRect;
+    pFrame->GetWindowRect ( &frameRect );
+    parent->ScreenToClient( &frameRect );
 
-	//
-	BOOL bCreated = CreateInstanceInside ( parent, pRoom, frameRect, pText, dwStyle );
+    //
+    BOOL bCreated = CreateInstanceInside ( parent, pRoom, frameRect, pText, dwStyle );
 
-	return bCreated;
+    return bCreated;
 }
 
 //
 /////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////
-BOOL CTRXWallPicture::CreateInstanceBelow (	CWnd *parent, CTRXWallPicture *pRoom, CWnd *pFrame, 
-											const char *pText, DWORD dwStyle )
+BOOL CTRXWallPicture::CreateInstanceBelow ( CWnd *parent, CTRXWallPicture *pRoom, CWnd *pFrame,
+                                            const char *pText, DWORD dwStyle )
 {
-	if ( parent == NULL || pRoom == NULL || pFrame == NULL )
-	{
-		return FALSE;
-	}
+    if ( parent == NULL || pRoom == NULL || pFrame == NULL )
+    {
+        return FALSE;
+    }
 
-	RECT frameRect;
-	pFrame->GetWindowRect ( &frameRect );
-	parent->ScreenToClient ( &frameRect );
+    RECT frameRect;
+    pFrame->GetWindowRect ( &frameRect );
+    parent->ScreenToClient ( &frameRect );
 
-	RECT roomRect;
-	roomRect.top		= frameRect.bottom + RoomMargin;
-	roomRect.left		= frameRect.left + RoomMargin;
-	roomRect.bottom		= roomRect.top + pRoom->m_Area.xSectors * TR_SECTOR_SIZE / RoomDivider;
-	roomRect.right		= roomRect.left + pRoom->m_Area.zSectors * TR_SECTOR_SIZE / RoomDivider;
+    RECT roomRect;
+    roomRect.top        = frameRect.bottom + RoomMargin;
+    roomRect.left       = frameRect.left + RoomMargin;
+    roomRect.bottom     = roomRect.top + pRoom->m_Area.xSectors * TR_SECTOR_SIZE / RoomDivider;
+    roomRect.right      = roomRect.left + pRoom->m_Area.zSectors * TR_SECTOR_SIZE / RoomDivider;
 
-	BOOL bCreated = CreateInstanceInside ( parent, pRoom, frameRect, pText, dwStyle );
+    BOOL bCreated = CreateInstanceInside ( parent, pRoom, frameRect, pText, dwStyle );
 
-	return bCreated;
+    return bCreated;
 
 }
 
@@ -134,288 +134,288 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 void CTRXWallPicture::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct )
 {
-	CDC	*pDC = CDC::FromHandle(lpDrawItemStruct->hDC);
-	if ( pDC )
-	{
+    CDC *pDC = CDC::FromHandle(lpDrawItemStruct->hDC);
+    if ( pDC )
+    {
 
-		// This code only works with buttons.
-		ASSERT(lpDrawItemStruct->CtlType == ODT_STATIC);
+        // This code only works with buttons.
+        ASSERT(lpDrawItemStruct->CtlType == ODT_STATIC);
 
-		// If drawing selected, add the pushed style to DrawFrameControl.
-		// Draw the button frame.
-		CTRXPen pen;
-		int penWidth	= 1;
-		if ( m_bSelected )
-		{
-			penWidth	= 2;
-			pen.CreatePen(PS_SOLID, penWidth, ROOM_RGB_RED);
-		}
-		else
-		{
-			pen.CreatePen(PS_SOLID, penWidth, ROOM_RGB_BLACK);
-		}
+        // If drawing selected, add the pushed style to DrawFrameControl.
+        // Draw the button frame.
+        CTRXPen pen;
+        int penWidth    = 1;
+        if ( m_bSelected )
+        {
+            penWidth    = 2;
+            pen.CreatePen(PS_SOLID, penWidth, ROOM_RGB_RED);
+        }
+        else
+        {
+            pen.CreatePen(PS_SOLID, penWidth, ROOM_RGB_BLACK);
+        }
 
-		//
-		CPen* pOldPen = pDC->SelectObject(&pen);
+        //
+        CPen* pOldPen = pDC->SelectObject(&pen);
 
-		//	Rectangle
-		pDC->Rectangle ( &lpDrawItemStruct->rcItem );
-		
-		//	Fill
-		RECT rect		= lpDrawItemStruct->rcItem;
-		rect.left		+= penWidth;
-		rect.right		-= penWidth;
-		rect.top		+= penWidth;
-		rect.bottom		-= penWidth;
+        //  Rectangle
+        pDC->Rectangle ( &lpDrawItemStruct->rcItem );
+        
+        //  Fill
+        RECT rect       = lpDrawItemStruct->rcItem;
+        rect.left       += penWidth;
+        rect.right      -= penWidth;
+        rect.top        += penWidth;
+        rect.bottom     -= penWidth;
 
-		// Draw the button text using the text color white.
-		COLORREF crOldColor;
+        // Draw the button text using the text color white.
+        COLORREF crOldColor;
 
-		//
-		CTRXBrush brush;
-		COLORREF cr;
-		DWORD	rgb;
+        //
+        CTRXBrush brush;
+        COLORREF cr;
+        DWORD   rgb;
 
-		//
-		if ( ( m_Area.flags & 0x01 ) == 0x01 )		// Bit 0 Full Of Water
-		{
-			cr	= ROOM_CR_BLUE_WATER;
-			rgb	= ROOM_RGB_WHITE;
-		}
-		else if ( ( m_Area.flags & 0x08) == 0x08 )	//	Bit 3 Open Area
-		{
-			cr	= ROOM_CR_GREEN;
-			rgb	= ROOM_RGB_BLACK;
-		}
-		else if ( ( m_Area.flags & 0x80 ) == 0x80 )		//	Bit 7 Quick Sand
-		{
-			cr	= ROOM_CR_QUICKSAND;
-			rgb	= ROOM_RGB_BLACK;
-		}
-		else if ( ( m_Area.flags & 0x100 ) == 0x100 )		//	Bit 8 Open Area
-		{
-			cr	= ROOM_CR_GREEN;
-			rgb	= ROOM_RGB_BLACK;
-		}
-		else if ( ( m_Area.flags & 0x200 ) == 0x200 )	//	Bit 9 Some Water
-		{
-			cr	= ROOM_CR_GREEN_BR;
-			rgb	= ROOM_RGB_BLACK;
-		}
-		else
-		{
-			cr	= ROOM_CR_NORMAL;
-			rgb	= ROOM_RGB_BLACK;
-		}
+        //
+        if ( ( m_Area.flags & 0x01 ) == 0x01 )      // Bit 0 Full Of Water
+        {
+            cr  = ROOM_CR_BLUE_WATER;
+            rgb = ROOM_RGB_WHITE;
+        }
+        else if ( ( m_Area.flags & 0x08) == 0x08 )  //  Bit 3 Open Area
+        {
+            cr  = ROOM_CR_GREEN;
+            rgb = ROOM_RGB_BLACK;
+        }
+        else if ( ( m_Area.flags & 0x80 ) == 0x80 )     //  Bit 7 Quick Sand
+        {
+            cr  = ROOM_CR_QUICKSAND;
+            rgb = ROOM_RGB_BLACK;
+        }
+        else if ( ( m_Area.flags & 0x100 ) == 0x100 )       //  Bit 8 Open Area
+        {
+            cr  = ROOM_CR_GREEN;
+            rgb = ROOM_RGB_BLACK;
+        }
+        else if ( ( m_Area.flags & 0x200 ) == 0x200 )   //  Bit 9 Some Water
+        {
+            cr  = ROOM_CR_GREEN_BR;
+            rgb = ROOM_RGB_BLACK;
+        }
+        else
+        {
+            cr  = ROOM_CR_NORMAL;
+            rgb = ROOM_RGB_BLACK;
+        }
 
-		//
-		if ( abs(m_Area.yBottom - m_Area.yTop) < LOW_CEILING )
-		{
-			BYTE r		= cr & 0xFF;
-			BYTE g		= ( cr >> 8 ) & 0xFF;
-			BYTE b		= ( cr >> 16 ) & 0xFF;
-			r = ( BYTE ) ( (double) r * 0.8 );
-			g = ( BYTE ) ( (double) g * 0.8 );
-			b = ( BYTE ) ( (double) b * 0.8 );
-			cr			= COLORREF(RGB(r,g,b));
-		}
-		else if ( abs(m_Area.yBottom - m_Area.yTop) > HIGH_CEILING )
-		{
-			BYTE r		= cr & 0xFF;
-			BYTE g		= ( cr >> 8 ) & 0xFF;
-			BYTE b		= ( cr >> 16 ) & 0xFF;
-			if ( r < 0xf0 )
-			{
-				r = ( BYTE ) ( (double) r * 1.1 );
-			}
-			if ( g < 0xf0 )
-			{
-				g = ( BYTE ) ( (double) g * 1.1 );
-			}
-			if ( b < 0xf0 )
-			{
-				b = ( BYTE ) ( (double) b * 1.1 );
-			}
-			cr			= COLORREF(RGB(r,g,b));
-		}
+        //
+        if ( abs(m_Area.yBottom - m_Area.yTop) < LOW_CEILING )
+        {
+            BYTE r      = cr & 0xFF;
+            BYTE g      = ( cr >> 8 ) & 0xFF;
+            BYTE b      = ( cr >> 16 ) & 0xFF;
+            r = ( BYTE ) ( (double) r * 0.8 );
+            g = ( BYTE ) ( (double) g * 0.8 );
+            b = ( BYTE ) ( (double) b * 0.8 );
+            cr          = COLORREF(RGB(r,g,b));
+        }
+        else if ( abs(m_Area.yBottom - m_Area.yTop) > HIGH_CEILING )
+        {
+            BYTE r      = cr & 0xFF;
+            BYTE g      = ( cr >> 8 ) & 0xFF;
+            BYTE b      = ( cr >> 16 ) & 0xFF;
+            if ( r < 0xf0 )
+            {
+                r = ( BYTE ) ( (double) r * 1.1 );
+            }
+            if ( g < 0xf0 )
+            {
+                g = ( BYTE ) ( (double) g * 1.1 );
+            }
+            if ( b < 0xf0 )
+            {
+                b = ( BYTE ) ( (double) b * 1.1 );
+            }
+            cr          = COLORREF(RGB(r,g,b));
+        }
 
-		//
-		brush.CreateSolidBrush ( cr );
-		crOldColor = pDC->SetTextColor ( rgb );
+        //
+        brush.CreateSolidBrush ( cr );
+        crOldColor = pDC->SetTextColor ( rgb );
 
-		//
-		pDC->FillRect ( &rect, &brush );
-		brush.DeleteObject();
+        //
+        pDC->FillRect ( &rect, &brush );
+        brush.DeleteObject();
 
-		pDC->SelectObject(pOldPen);
-		pen.DeleteObject();
+        pDC->SelectObject(pOldPen);
+        pen.DeleteObject();
 
-		// Get the button's text.
-		GetWindowText ( m_szText, sizeof(m_szText) );
+        // Get the button's text.
+        GetWindowText ( m_szText, sizeof(m_szText) );
 
-		if ( lpDrawItemStruct->itemState & ODS_DISABLED )
-		{
-			// 
-		}
+        if ( lpDrawItemStruct->itemState & ODS_DISABLED )
+        {
+            //
+        }
 
-		//
-		pDC->SetBkMode( TRANSPARENT );
-		pDC->DrawText ( m_szText, &lpDrawItemStruct->rcItem, DT_SINGLELINE|DT_VCENTER|DT_CENTER);
-		pDC->SetTextColor( crOldColor);
+        //
+        pDC->SetBkMode( TRANSPARENT );
+        pDC->DrawText ( m_szText, &lpDrawItemStruct->rcItem, DT_SINGLELINE|DT_VCENTER|DT_CENTER);
+        pDC->SetTextColor( crOldColor);
 
-		//	Draw Orientation
-		if ( m_bPointMode )
-		{
-			//	Line
-			//	Top
-			pDC->MoveTo ( m_Point.x, m_Point.y - 5 );
-			//	Bottom
-			pDC->LineTo ( m_Point.x, m_Point.y );
-			//	Left Middle
-			pDC->MoveTo ( m_Point.x - 2, m_Point.y - 3 );
-			//	Right Middle
-			pDC->LineTo ( m_Point.x + 3, m_Point.y - 3 );
+        //  Draw Orientation
+        if ( m_bPointMode )
+        {
+            //  Line
+            //  Top
+            pDC->MoveTo ( m_Point.x, m_Point.y - 5 );
+            //  Bottom
+            pDC->LineTo ( m_Point.x, m_Point.y );
+            //  Left Middle
+            pDC->MoveTo ( m_Point.x - 2, m_Point.y - 3 );
+            //  Right Middle
+            pDC->LineTo ( m_Point.x + 3, m_Point.y - 3 );
 
 
-			//	Orientation From the center
-			//	Looking West : 90
-			if ( m_Orientation >= 45 && m_Orientation < 135.0 )
-			{
-				//	Wiew from South
-				if ( m_Wall == WallSouth )
-				{
-					pDC->MoveTo ( m_Point.x, m_Point.y - 5 );
-					pDC->LineTo ( m_Point.x + 2, m_Point.y - 3 );
-					pDC->LineTo ( m_Point.x, m_Point.y - 1 );
-				}
-				//	Wiew from North
-				else if ( m_Wall == WallNorth )
-				{
-					pDC->MoveTo ( m_Point.x, m_Point.y - 5 );
-					pDC->LineTo ( m_Point.x - 2, m_Point.y - 3 );
-					pDC->LineTo ( m_Point.x, m_Point.y - 1 );
-				}
-				//	View From Front
-				else if ( m_Wall == WallWest )
-				{
-					//	From Left Middle
-					pDC->MoveTo ( m_Point.x - 2, m_Point.y - 3 );
-					pDC->LineTo ( m_Point.x, m_Point.y - 1 );
-					pDC->LineTo ( m_Point.x + 2, m_Point.y - 3 );
-				}
-				//	View From Back
-				else if ( m_Wall == WallEast )
-				{
-					//	From Left Middle
-					pDC->MoveTo ( m_Point.x - 2, m_Point.y - 3 );
-					pDC->LineTo ( m_Point.x, m_Point.y - 5 );
-					pDC->LineTo ( m_Point.x + 2, m_Point.y - 3 );
-				}
-			}
-			//	Facing North : 180 
-			else if ( m_Orientation >= 135.0 && m_Orientation < 225.0 )
-			{
-				//	View from East
-				if ( m_Wall == WallEast )
-				{
-					pDC->MoveTo ( m_Point.x, m_Point.y - 5 );
-					pDC->LineTo ( m_Point.x + 2, m_Point.y - 3 );
-					pDC->LineTo ( m_Point.x, m_Point.y - 1 );
-				}
-				//	View from West
-				else if ( m_Wall == WallWest )
-				{
-					pDC->MoveTo ( m_Point.x, m_Point.y - 5 );
-					pDC->LineTo ( m_Point.x - 2, m_Point.y - 3 );
-					pDC->LineTo ( m_Point.x, m_Point.y - 1 );
-				}
-				//	View From Front
-				else if ( m_Wall == WallSouth )
-				{
-					//	From Left Middle
-					pDC->MoveTo ( m_Point.x - 2, m_Point.y - 3 );
-					pDC->LineTo ( m_Point.x, m_Point.y - 5 );
-					pDC->LineTo ( m_Point.x + 2, m_Point.y - 3 );
-				}
-				//	View From Back
-				else if ( m_Wall == WallNorth )
-				{
-					//	From Left Middle
-					pDC->MoveTo ( m_Point.x - 2, m_Point.y - 3 );
-					pDC->LineTo ( m_Point.x, m_Point.y );
-					pDC->LineTo ( m_Point.x + 2, m_Point.y - 3 );
-				}
-			}
-			//	Looking East : 270
-			else if ( m_Orientation >= 225.0 && m_Orientation < 315.0 )
-			{
-				//	Wiew from South
-				if ( m_Wall == WallSouth )
-				{
-					pDC->MoveTo ( m_Point.x, m_Point.y - 5 );
-					pDC->LineTo ( m_Point.x + 2, m_Point.y - 3 );
-					pDC->LineTo ( m_Point.x, m_Point.y - 1 );
-				}
-				//	Wiew from North
-				else if ( m_Wall == WallNorth )
-				{
-					pDC->MoveTo ( m_Point.x, m_Point.y - 5 );
-					pDC->LineTo ( m_Point.x - 2, m_Point.y - 3 );
-					pDC->LineTo ( m_Point.x, m_Point.y - 1 );
-				}
-				//	View From Front
-				else if ( m_Wall == WallEast)
-				{
-					//	From Left Middle
-					pDC->MoveTo ( m_Point.x - 2, m_Point.y - 3 );
-					pDC->LineTo ( m_Point.x, m_Point.y - 5 );
-					pDC->LineTo ( m_Point.x + 2, m_Point.y - 3 );
-				}
-				//	View From Back
-				else if ( m_Wall == WallWest )
-				{
-					//	From Left Middle
-					pDC->MoveTo ( m_Point.x - 2, m_Point.y - 3 );
-					pDC->LineTo ( m_Point.x, m_Point.y - 1 );
-					pDC->LineTo ( m_Point.x + 2, m_Point.y - 3 );
-				}
-			}
-			//	Facing South : 0
-			else
-			{
-				//	View from East
-				if ( m_Wall == WallEast )
-				{
-					pDC->MoveTo ( m_Point.x, m_Point.y - 5 );
-					pDC->LineTo ( m_Point.x - 2, m_Point.y - 3 );
-					pDC->LineTo ( m_Point.x, m_Point.y - 1 );
-				}
-				//	View from West
-				else if ( m_Wall == WallWest )
-				{
-					pDC->MoveTo ( m_Point.x, m_Point.y - 5 );
-					pDC->LineTo ( m_Point.x + 2, m_Point.y - 3 );
-					pDC->LineTo ( m_Point.x, m_Point.y - 1 );
-				}
-				//	View From Front
-				else if ( m_Wall == WallNorth )
-				{
-					//	From Left Middle
-					pDC->MoveTo ( m_Point.x - 2, m_Point.y - 3 );
-					pDC->LineTo ( m_Point.x, m_Point.y - 5 );
-					pDC->LineTo ( m_Point.x + 2, m_Point.y - 3 );
-				}
-				//	View From Back
-				else if ( m_Wall == WallSouth )
-				{
-					//	From Left Middle
-					pDC->MoveTo ( m_Point.x - 2, m_Point.y - 3 );
-					pDC->LineTo ( m_Point.x, m_Point.y - 1 );
-					pDC->LineTo ( m_Point.x + 2, m_Point.y - 3 );
-				}
-			}
-		}
-	}
+            //  Orientation From the center
+            //  Looking West : 90
+            if ( m_Orientation >= 45 && m_Orientation < 135.0 )
+            {
+                //  Wiew from South
+                if ( m_Wall == WallSouth )
+                {
+                    pDC->MoveTo ( m_Point.x, m_Point.y - 5 );
+                    pDC->LineTo ( m_Point.x + 2, m_Point.y - 3 );
+                    pDC->LineTo ( m_Point.x, m_Point.y - 1 );
+                }
+                //  Wiew from North
+                else if ( m_Wall == WallNorth )
+                {
+                    pDC->MoveTo ( m_Point.x, m_Point.y - 5 );
+                    pDC->LineTo ( m_Point.x - 2, m_Point.y - 3 );
+                    pDC->LineTo ( m_Point.x, m_Point.y - 1 );
+                }
+                //  View From Front
+                else if ( m_Wall == WallWest )
+                {
+                    //  From Left Middle
+                    pDC->MoveTo ( m_Point.x - 2, m_Point.y - 3 );
+                    pDC->LineTo ( m_Point.x, m_Point.y - 1 );
+                    pDC->LineTo ( m_Point.x + 2, m_Point.y - 3 );
+                }
+                //  View From Back
+                else if ( m_Wall == WallEast )
+                {
+                    //  From Left Middle
+                    pDC->MoveTo ( m_Point.x - 2, m_Point.y - 3 );
+                    pDC->LineTo ( m_Point.x, m_Point.y - 5 );
+                    pDC->LineTo ( m_Point.x + 2, m_Point.y - 3 );
+                }
+            }
+            //  Facing North : 180
+            else if ( m_Orientation >= 135.0 && m_Orientation < 225.0 )
+            {
+                //  View from East
+                if ( m_Wall == WallEast )
+                {
+                    pDC->MoveTo ( m_Point.x, m_Point.y - 5 );
+                    pDC->LineTo ( m_Point.x + 2, m_Point.y - 3 );
+                    pDC->LineTo ( m_Point.x, m_Point.y - 1 );
+                }
+                //  View from West
+                else if ( m_Wall == WallWest )
+                {
+                    pDC->MoveTo ( m_Point.x, m_Point.y - 5 );
+                    pDC->LineTo ( m_Point.x - 2, m_Point.y - 3 );
+                    pDC->LineTo ( m_Point.x, m_Point.y - 1 );
+                }
+                //  View From Front
+                else if ( m_Wall == WallSouth )
+                {
+                    //  From Left Middle
+                    pDC->MoveTo ( m_Point.x - 2, m_Point.y - 3 );
+                    pDC->LineTo ( m_Point.x, m_Point.y - 5 );
+                    pDC->LineTo ( m_Point.x + 2, m_Point.y - 3 );
+                }
+                //  View From Back
+                else if ( m_Wall == WallNorth )
+                {
+                    //  From Left Middle
+                    pDC->MoveTo ( m_Point.x - 2, m_Point.y - 3 );
+                    pDC->LineTo ( m_Point.x, m_Point.y );
+                    pDC->LineTo ( m_Point.x + 2, m_Point.y - 3 );
+                }
+            }
+            //  Looking East : 270
+            else if ( m_Orientation >= 225.0 && m_Orientation < 315.0 )
+            {
+                //  Wiew from South
+                if ( m_Wall == WallSouth )
+                {
+                    pDC->MoveTo ( m_Point.x, m_Point.y - 5 );
+                    pDC->LineTo ( m_Point.x + 2, m_Point.y - 3 );
+                    pDC->LineTo ( m_Point.x, m_Point.y - 1 );
+                }
+                //  Wiew from North
+                else if ( m_Wall == WallNorth )
+                {
+                    pDC->MoveTo ( m_Point.x, m_Point.y - 5 );
+                    pDC->LineTo ( m_Point.x - 2, m_Point.y - 3 );
+                    pDC->LineTo ( m_Point.x, m_Point.y - 1 );
+                }
+                //  View From Front
+                else if ( m_Wall == WallEast)
+                {
+                    //  From Left Middle
+                    pDC->MoveTo ( m_Point.x - 2, m_Point.y - 3 );
+                    pDC->LineTo ( m_Point.x, m_Point.y - 5 );
+                    pDC->LineTo ( m_Point.x + 2, m_Point.y - 3 );
+                }
+                //  View From Back
+                else if ( m_Wall == WallWest )
+                {
+                    //  From Left Middle
+                    pDC->MoveTo ( m_Point.x - 2, m_Point.y - 3 );
+                    pDC->LineTo ( m_Point.x, m_Point.y - 1 );
+                    pDC->LineTo ( m_Point.x + 2, m_Point.y - 3 );
+                }
+            }
+            //  Facing South : 0
+            else
+            {
+                //  View from East
+                if ( m_Wall == WallEast )
+                {
+                    pDC->MoveTo ( m_Point.x, m_Point.y - 5 );
+                    pDC->LineTo ( m_Point.x - 2, m_Point.y - 3 );
+                    pDC->LineTo ( m_Point.x, m_Point.y - 1 );
+                }
+                //  View from West
+                else if ( m_Wall == WallWest )
+                {
+                    pDC->MoveTo ( m_Point.x, m_Point.y - 5 );
+                    pDC->LineTo ( m_Point.x + 2, m_Point.y - 3 );
+                    pDC->LineTo ( m_Point.x, m_Point.y - 1 );
+                }
+                //  View From Front
+                else if ( m_Wall == WallNorth )
+                {
+                    //  From Left Middle
+                    pDC->MoveTo ( m_Point.x - 2, m_Point.y - 3 );
+                    pDC->LineTo ( m_Point.x, m_Point.y - 5 );
+                    pDC->LineTo ( m_Point.x + 2, m_Point.y - 3 );
+                }
+                //  View From Back
+                else if ( m_Wall == WallSouth )
+                {
+                    //  From Left Middle
+                    pDC->MoveTo ( m_Point.x - 2, m_Point.y - 3 );
+                    pDC->LineTo ( m_Point.x, m_Point.y - 1 );
+                    pDC->LineTo ( m_Point.x + 2, m_Point.y - 3 );
+                }
+            }
+        }
+    }
 }
 
 //
@@ -424,27 +424,27 @@ void CTRXWallPicture::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct )
 /////////////////////////////////////////////////////////////////////////////
 void CTRXWallPicture::SetAreaAndPosition ( const TR_AREA *pArea, const TR_CUR_POSITION *position )
 {
-	if ( pArea != NULL && position != NULL )
-	{
-		m_Area				= *pArea;
-		m_CurrentPosition	= *position;
-		m_bAreaSet			= true;
-		m_bPositionSet		= true;
-	}
-	else if ( pArea != NULL )
-	{
-		m_Area				= *pArea;
-		ZeroMemory ( &m_CurrentPosition, sizeof(m_CurrentPosition) );
-		m_bAreaSet			= true;
-		m_bPositionSet		= false;
-	}
-	else
-	{
-		ZeroMemory ( &m_Area, sizeof(m_Area) );
-		ZeroMemory ( &m_CurrentPosition, sizeof(m_CurrentPosition) );
-		m_bAreaSet			= false;
-		m_bPositionSet		= false;
-	}
+    if ( pArea != NULL && position != NULL )
+    {
+        m_Area              = *pArea;
+        m_CurrentPosition   = *position;
+        m_bAreaSet          = true;
+        m_bPositionSet      = true;
+    }
+    else if ( pArea != NULL )
+    {
+        m_Area              = *pArea;
+        ZeroMemory ( &m_CurrentPosition, sizeof(m_CurrentPosition) );
+        m_bAreaSet          = true;
+        m_bPositionSet      = false;
+    }
+    else
+    {
+        ZeroMemory ( &m_Area, sizeof(m_Area) );
+        ZeroMemory ( &m_CurrentPosition, sizeof(m_CurrentPosition) );
+        m_bAreaSet          = false;
+        m_bPositionSet      = false;
+    }
 }
 
 //
@@ -453,7 +453,7 @@ void CTRXWallPicture::SetAreaAndPosition ( const TR_AREA *pArea, const TR_CUR_PO
 /////////////////////////////////////////////////////////////////////////////
 void CTRXWallPicture::SetWall ( WallDirectionEnum eWall )
 {
-	m_Wall	= eWall;
+    m_Wall  = eWall;
 }
 
 //
@@ -462,7 +462,7 @@ void CTRXWallPicture::SetWall ( WallDirectionEnum eWall )
 /////////////////////////////////////////////////////////////////////////////
 const TR_AREA *CTRXWallPicture::GetArea()
 {
-	return &m_Area;
+    return &m_Area;
 }
 
 //
@@ -471,49 +471,49 @@ const TR_AREA *CTRXWallPicture::GetArea()
 /////////////////////////////////////////////////////////////////////////////
 CPoint CTRXWallPicture::ComputeRoomPoint ( double dfX, double dfY, double dfZ )
 {
-	CPoint point(0,0);
+    CPoint point(0,0);
 
-	if ( m_bAreaSet && m_Area.xSectors != 0 && m_Area.zSectors != 0 && m_Area.yTop != m_Area.yBottom )
-	{
-		RECT roomRect;
-		GetClientRect ( &roomRect );
+    if ( m_bAreaSet && m_Area.xSectors != 0 && m_Area.zSectors != 0 && m_Area.yTop != m_Area.yBottom )
+    {
+        RECT roomRect;
+        GetClientRect ( &roomRect );
 
-		//	areaX West/East correspond to y
-		long areaX =  ( long ) ( dfX * POSITION_DIVIDER ) - m_Area.x;
-		//
-		long areaY =  abs(m_Area.yTop - m_Area.yBottom) - abs ( ( long ) ( dfY * POSITION_DIVIDER ) - m_Area.yBottom );
-		//	areaZ South/North correspond to x
-		long areaZ =  ( long ) ( dfZ * POSITION_DIVIDER ) - m_Area.z;
+        //  areaX West/East correspond to y
+        long areaX =  ( long ) ( dfX * POSITION_DIVIDER ) - m_Area.x;
+        //
+        long areaY =  abs(m_Area.yTop - m_Area.yBottom) - abs ( ( long ) ( dfY * POSITION_DIVIDER ) - m_Area.yBottom );
+        //  areaZ South/North correspond to x
+        long areaZ =  ( long ) ( dfZ * POSITION_DIVIDER ) - m_Area.z;
 
-		long maxX = m_Area.xSectors * TR_SECTOR_SIZE;
-		long maxY = abs ( m_Area.yTop - m_Area.yBottom );
-		long maxZ = m_Area.zSectors * TR_SECTOR_SIZE;
+        long maxX = m_Area.xSectors * TR_SECTOR_SIZE;
+        long maxY = abs ( m_Area.yTop - m_Area.yBottom );
+        long maxZ = m_Area.zSectors * TR_SECTOR_SIZE;
 
-		//	North
-		if ( m_Wall == WallNorth )
-		{
-			point.x	= ( roomRect.right - roomRect.left ) - ( LONG ) ( ( areaX  * ( roomRect.right - roomRect.left ) ) / maxX );
-		}
-		//	South
-		else if ( m_Wall == WallSouth )
-		{
-			point.x	= ( LONG ) ( ( areaX  * ( roomRect.right - roomRect.left ) ) / maxX );
-		}
-		//	West
-		else if ( m_Wall == WallWest )
-		{
-			point.x	= ( LONG ) ( ( areaZ  * ( roomRect.right - roomRect.left ) ) / maxZ );
-		}
-		//	East
-		else 
-		{
-			point.x	= ( roomRect.right - roomRect.left ) - ( LONG ) ( ( areaZ  * ( roomRect.right - roomRect.left ) ) / maxZ );
-		}
+        //  North
+        if ( m_Wall == WallNorth )
+        {
+            point.x = ( roomRect.right - roomRect.left ) - ( LONG ) ( ( areaX  * ( roomRect.right - roomRect.left ) ) / maxX );
+        }
+        //  South
+        else if ( m_Wall == WallSouth )
+        {
+            point.x = ( LONG ) ( ( areaX  * ( roomRect.right - roomRect.left ) ) / maxX );
+        }
+        //  West
+        else if ( m_Wall == WallWest )
+        {
+            point.x = ( LONG ) ( ( areaZ  * ( roomRect.right - roomRect.left ) ) / maxZ );
+        }
+        //  East
+        else
+        {
+            point.x = ( roomRect.right - roomRect.left ) - ( LONG ) ( ( areaZ  * ( roomRect.right - roomRect.left ) ) / maxZ );
+        }
 
-		//	Y is not variable
-		point.y	= ( LONG ) ( ( areaY * ( roomRect.bottom - roomRect.top ) ) / maxY );
-	}
-	return point;
+        //  Y is not variable
+        point.y = ( LONG ) ( ( areaY * ( roomRect.bottom - roomRect.top ) ) / maxY );
+    }
+    return point;
 }
 
 //
@@ -522,50 +522,50 @@ CPoint CTRXWallPicture::ComputeRoomPoint ( double dfX, double dfY, double dfZ )
 /////////////////////////////////////////////////////////////////////////////
 CPoint CTRXWallPicture::ComputeRoomPoint ( DWORD dwX, DWORD dwY, DWORD dwZ )
 {
-	CPoint point(0,0);
+    CPoint point(0,0);
 
-	if ( m_bAreaSet && m_Area.xSectors != 0 && m_Area.zSectors != 0 && m_Area.yTop != m_Area.yBottom )
-	{
-		RECT roomRect;
-		GetClientRect ( &roomRect );
+    if ( m_bAreaSet && m_Area.xSectors != 0 && m_Area.zSectors != 0 && m_Area.yTop != m_Area.yBottom )
+    {
+        RECT roomRect;
+        GetClientRect ( &roomRect );
 
-		//	areaX West/East correspond to y
-		long areaX =  ( long ) ( dwX ) - m_Area.x;
-		//
-		long areaY = abs(m_Area.yTop - m_Area.yBottom) - abs ( ( long ) ( dwY - m_Area.yBottom ) );
-		//	areaZ South/North correspond to x
-		long areaZ =  ( long ) ( dwZ ) - m_Area.z;
+        //  areaX West/East correspond to y
+        long areaX =  ( long ) ( dwX ) - m_Area.x;
+        //
+        long areaY = abs(m_Area.yTop - m_Area.yBottom) - abs ( ( long ) ( dwY - m_Area.yBottom ) );
+        //  areaZ South/North correspond to x
+        long areaZ =  ( long ) ( dwZ ) - m_Area.z;
 
-		long maxX = m_Area.xSectors * TR_SECTOR_SIZE;
-		long maxY = abs ( m_Area.yTop - m_Area.yBottom );
-		long maxZ = m_Area.zSectors * TR_SECTOR_SIZE;
+        long maxX = m_Area.xSectors * TR_SECTOR_SIZE;
+        long maxY = abs ( m_Area.yTop - m_Area.yBottom );
+        long maxZ = m_Area.zSectors * TR_SECTOR_SIZE;
 
-		//	North
-		if ( m_Wall == WallNorth )
-		{
-			point.x	= ( roomRect.right - roomRect.left ) - ( LONG ) ( ( areaX  * ( roomRect.right - roomRect.left ) ) / maxX );
-		}
-		//	South
-		else if ( m_Wall == WallSouth )
-		{
-			point.x	= ( LONG ) ( ( areaX  * ( roomRect.right - roomRect.left ) ) / maxX );
-		}
-		//	West
-		else if ( m_Wall == WallWest )
-		{
-			point.x	= ( LONG ) ( ( areaZ  * ( roomRect.right - roomRect.left ) ) / maxZ );
-		}
-		//	East
-		else 
-		{
-			point.x	= ( roomRect.right - roomRect.left ) - ( LONG ) ( ( areaZ  * ( roomRect.right - roomRect.left ) ) / maxZ );
-		}
+        //  North
+        if ( m_Wall == WallNorth )
+        {
+            point.x = ( roomRect.right - roomRect.left ) - ( LONG ) ( ( areaX  * ( roomRect.right - roomRect.left ) ) / maxX );
+        }
+        //  South
+        else if ( m_Wall == WallSouth )
+        {
+            point.x = ( LONG ) ( ( areaX  * ( roomRect.right - roomRect.left ) ) / maxX );
+        }
+        //  West
+        else if ( m_Wall == WallWest )
+        {
+            point.x = ( LONG ) ( ( areaZ  * ( roomRect.right - roomRect.left ) ) / maxZ );
+        }
+        //  East
+        else
+        {
+            point.x = ( roomRect.right - roomRect.left ) - ( LONG ) ( ( areaZ  * ( roomRect.right - roomRect.left ) ) / maxZ );
+        }
 
-		//	Y is not variable
-		point.y	= ( LONG ) ( ( areaY * ( roomRect.bottom - roomRect.top ) ) / maxY );
-	}
+        //  Y is not variable
+        point.y = ( LONG ) ( ( areaY * ( roomRect.bottom - roomRect.top ) ) / maxY );
+    }
 
-	return point;
+    return point;
 }
 
 //
@@ -574,7 +574,7 @@ CPoint CTRXWallPicture::ComputeRoomPoint ( DWORD dwX, DWORD dwY, DWORD dwZ )
 /////////////////////////////////////////////////////////////////////////////
 CPoint CTRXWallPicture::ComputeRoomPoint ( long dwX, long dwY, long dwZ )
 {
-	return ComputeRoomPoint ( (DWORD) dwX, (DWORD) dwY, (DWORD) dwZ );
+    return ComputeRoomPoint ( (DWORD) dwX, (DWORD) dwY, (DWORD) dwZ );
 }
 
 //
@@ -583,72 +583,72 @@ CPoint CTRXWallPicture::ComputeRoomPoint ( long dwX, long dwY, long dwZ )
 /////////////////////////////////////////////////////////////////////////////
 CPoint CTRXWallPicture::ComputeRoomPoint ( const char *pX, const char *pY, const char *pZ )
 {
-	if ( strchr(pX,'.' ) != NULL || strchr(pY,'.' ) != NULL || strchr(pZ,'.' ) != NULL )
-	{
-		double dfX = atof ( pX );
-		double dfY = atof ( pY );
-		double dfZ = atof ( pZ );
+    if ( strchr(pX,'.' ) != NULL || strchr(pY,'.' ) != NULL || strchr(pZ,'.' ) != NULL )
+    {
+        double dfX = atof ( pX );
+        double dfY = atof ( pY );
+        double dfZ = atof ( pZ );
 
-		return ComputeRoomPoint ( dfX, dfY, dfZ );
-	}
+        return ComputeRoomPoint ( dfX, dfY, dfZ );
+    }
 
-	DWORD dwX = atol ( pX );
-	DWORD dwY = atol ( pY );
-	DWORD dwZ = atol ( pZ );
+    DWORD dwX = atol ( pX );
+    DWORD dwY = atol ( pY );
+    DWORD dwZ = atol ( pZ );
 
-	return ComputeRoomPoint ( dwX, dwY, dwZ );
+    return ComputeRoomPoint ( dwX, dwY, dwZ );
 }
 
 #if 0
 //
 /////////////////////////////////////////////////////////////////////////////
-//	CPoint in Client Rect
+//  CPoint in Client Rect
 /////////////////////////////////////////////////////////////////////////////
 BOOL CTRXWallPicture::GetXZ(CPoint point, double &dfX, double &dfZ)
 {
-	dfX = 0;
-	dfZ = 0;
+    dfX = 0;
+    dfZ = 0;
 
-	if ( m_bAreaSet && m_Area.xSectors != 0 && m_Area.zSectors != 0 )
-	{
-		RECT roomRect;
-		GetClientRect ( &roomRect );
+    if ( m_bAreaSet && m_Area.xSectors != 0 && m_Area.zSectors != 0 )
+    {
+        RECT roomRect;
+        GetClientRect ( &roomRect );
 
-		double xRatio = ( double ) point.y / ( double ) roomRect.bottom;
-		double zRatio = ( double ) point.x / ( double ) roomRect.right;
+        double xRatio = ( double ) point.y / ( double ) roomRect.bottom;
+        double zRatio = ( double ) point.x / ( double ) roomRect.right;
 
-		dfX = ( ( double ) m_Area.x + ( double ) m_Area.xSectors * TR_SECTOR_SIZE * xRatio ) / POSITION_DIVIDER;
-		dfZ = ( ( double ) m_Area.z + ( double ) m_Area.zSectors * TR_SECTOR_SIZE * zRatio ) / POSITION_DIVIDER;
+        dfX = ( ( double ) m_Area.x + ( double ) m_Area.xSectors * TR_SECTOR_SIZE * xRatio ) / POSITION_DIVIDER;
+        dfZ = ( ( double ) m_Area.z + ( double ) m_Area.zSectors * TR_SECTOR_SIZE * zRatio ) / POSITION_DIVIDER;
 
-		return TRUE;
-	}
+        return TRUE;
+    }
 
-	return FALSE;
+    return FALSE;
 }
 
 //
 /////////////////////////////////////////////////////////////////////////////
-//	CPoint in Client Rect 
+//  CPoint in Client Rect
 /////////////////////////////////////////////////////////////////////////////
 BOOL CTRXWallPicture::GetXZ(CPoint point, DWORD &dwX, DWORD &dwZ)
 {
-	dwX = 0;
-	dwZ = 0;
+    dwX = 0;
+    dwZ = 0;
 
-	if ( m_bAreaSet && m_Area.xSectors != 0 && m_Area.zSectors != 0 )
-	{
-		RECT roomRect;
-		GetClientRect ( &roomRect );
+    if ( m_bAreaSet && m_Area.xSectors != 0 && m_Area.zSectors != 0 )
+    {
+        RECT roomRect;
+        GetClientRect ( &roomRect );
 
-		double xRatio = ( double ) point.y / ( double ) roomRect.bottom;
-		double zRatio = ( double ) point.x / ( double ) roomRect.right;
+        double xRatio = ( double ) point.y / ( double ) roomRect.bottom;
+        double zRatio = ( double ) point.x / ( double ) roomRect.right;
 
-		dwX = (DWORD) ( ( double ) m_Area.x + ( double ) m_Area.xSectors * TR_SECTOR_SIZE * xRatio );
-		dwZ = (DWORD) ( ( double ) m_Area.z + ( double ) m_Area.zSectors * TR_SECTOR_SIZE * zRatio );
+        dwX = (DWORD) ( ( double ) m_Area.x + ( double ) m_Area.xSectors * TR_SECTOR_SIZE * xRatio );
+        dwZ = (DWORD) ( ( double ) m_Area.z + ( double ) m_Area.zSectors * TR_SECTOR_SIZE * zRatio );
 
-		return TRUE;
-	}
+        return TRUE;
+    }
 
-	return FALSE;
+    return FALSE;
 }
 #endif

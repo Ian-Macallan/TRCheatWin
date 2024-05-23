@@ -15,7 +15,7 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 //
-static const	char *MessageTitle = "Tombraider Standard Editions";
+static const    char *MessageTitle = "Tombraider Standard Editions";
 
 //
 /////////////////////////////////////////////////////////////////////////////
@@ -30,10 +30,10 @@ IMPLEMENT_DYNCREATE(CTRXGunPage, CTRXPropertyPage)
 /////////////////////////////////////////////////////////////////////////////
 CTRXGunPage::CTRXGunPage() : CTRXPropertyPage(CTRXGunPage::IDD)
 {
-	//{{AFX_DATA_INIT(CTRXGunPage)
-		// NOTE: the ClassWizard will add member initialization here
-	//}}AFX_DATA_INIT
-	SetGUIModified ( FALSE );
+    //{{AFX_DATA_INIT(CTRXGunPage)
+        // NOTE: the ClassWizard will add member initialization here
+    //}}AFX_DATA_INIT
+    SetGUIModified ( FALSE );
 }
 
 //
@@ -42,36 +42,36 @@ CTRXGunPage::CTRXGunPage() : CTRXPropertyPage(CTRXGunPage::IDD)
 /////////////////////////////////////////////////////////////////////////////
 CTRXGunPage::~CTRXGunPage()
 {
-	CTRSaveGame *pGame = CTRSaveGame::I(FALSE);
-	if ( pGame != NULL )
-	{
-		delete pGame;
-	}
+    CTRSaveGame *pGame = CTRSaveGame::I(FALSE);
+    if ( pGame != NULL )
+    {
+        delete pGame;
+    }
 }
 
 void CTRXGunPage::DoDataExchange(CDataExchange* pDX)
 {
-	CTRXPropertyPage::DoDataExchange(pDX);
-	//{{AFX_DATA_MAP(CTRXGunPage)
-	DDX_Control(pDX, IDC_STATUS, m_Status);
-	DDX_Control(pDX, IDC_UZI, m_Uzis);
-	DDX_Control(pDX, IDC_ROCKETLAUNCHER, m_Rocket_Launcher);
-	DDX_Control(pDX, IDC_RIOTGUN, m_Riot_Gun);
-	DDX_Control(pDX, IDC_MP5, m_MP5);
-	DDX_Control(pDX, IDC_HARPOON, m_Harpoon);
-	DDX_Control(pDX, IDC_GUNS, m_Guns);
-	DDX_Control(pDX, IDC_GRENADELAUNCHER, m_Grenade_Launcher);
-	DDX_Control(pDX, IDC_DESERTEAGLE, m_Desert_Eagle);
-	DDX_Control(pDX, IDC_CROWBAR, m_Crowbar);
-	DDX_Control(pDX, IDC_BM_GUNS, m_BM_Guns);
-	DDX_Control(pDX, IDC_BM_DESERTEAGLE, m_BM_DesertEagle);
-	DDX_Control(pDX, IDC_BM_GRENADE, m_BM_Grenade);
-	DDX_Control(pDX, IDC_BM_UZIS, m_BM_Uzis);
-	DDX_Control(pDX, IDC_BM_HARPOON, m_BM_Harpoon);
-	DDX_Control(pDX, IDC_BM_MP5, m_BM_MP5);
-	DDX_Control(pDX, IDC_BM_ROCKET, m_BM_Rocket);
-	DDX_Control(pDX, IDC_BM_RIOTGUN, m_BM_RiotGun);
-	//}}AFX_DATA_MAP
+    CTRXPropertyPage::DoDataExchange(pDX);
+    //{{AFX_DATA_MAP(CTRXGunPage)
+    DDX_Control(pDX, IDC_STATUS, m_Status);
+    DDX_Control(pDX, IDC_UZI, m_Uzis);
+    DDX_Control(pDX, IDC_ROCKETLAUNCHER, m_Rocket_Launcher);
+    DDX_Control(pDX, IDC_RIOTGUN, m_Riot_Gun);
+    DDX_Control(pDX, IDC_MP5, m_MP5);
+    DDX_Control(pDX, IDC_HARPOON, m_Harpoon);
+    DDX_Control(pDX, IDC_GUNS, m_Guns);
+    DDX_Control(pDX, IDC_GRENADELAUNCHER, m_Grenade_Launcher);
+    DDX_Control(pDX, IDC_DESERTEAGLE, m_Desert_Eagle);
+    DDX_Control(pDX, IDC_CROWBAR, m_Crowbar);
+    DDX_Control(pDX, IDC_BM_GUNS, m_BM_Guns);
+    DDX_Control(pDX, IDC_BM_DESERTEAGLE, m_BM_DesertEagle);
+    DDX_Control(pDX, IDC_BM_GRENADE, m_BM_Grenade);
+    DDX_Control(pDX, IDC_BM_UZIS, m_BM_Uzis);
+    DDX_Control(pDX, IDC_BM_HARPOON, m_BM_Harpoon);
+    DDX_Control(pDX, IDC_BM_MP5, m_BM_MP5);
+    DDX_Control(pDX, IDC_BM_ROCKET, m_BM_Rocket);
+    DDX_Control(pDX, IDC_BM_RIOTGUN, m_BM_RiotGun);
+    //}}AFX_DATA_MAP
 }
 
 //
@@ -79,19 +79,19 @@ void CTRXGunPage::DoDataExchange(CDataExchange* pDX)
 //
 /////////////////////////////////////////////////////////////////////////////
 BEGIN_MESSAGE_MAP(CTRXGunPage, CTRXPropertyPage)
-	//{{AFX_MSG_MAP(CTRXGunPage)
-	ON_BN_CLICKED(IDC_DESERTEAGLE, &CTRXGunPage::OnBnClickedDeserteagle)
-	ON_BN_CLICKED(IDC_GRENADELAUNCHER, &CTRXGunPage::OnBnClickedGrenadelauncher)
-	ON_BN_CLICKED(IDC_GUNS, &CTRXGunPage::OnBnClickedGuns)
-	ON_BN_CLICKED(IDC_UZI, &CTRXGunPage::OnBnClickedUzi)
-	ON_BN_CLICKED(IDC_RIOTGUN, &CTRXGunPage::OnBnClickedRiotgun)
-	ON_BN_CLICKED(IDC_HARPOON, &CTRXGunPage::OnBnClickedHarpoon)
-	ON_BN_CLICKED(IDC_MP5, &CTRXGunPage::OnBnClickedMp5)
-	ON_BN_CLICKED(IDC_ROCKETLAUNCHER, &CTRXGunPage::OnBnClickedRocketlauncher)
-	ON_BN_CLICKED(IDC_CROWBAR, &CTRXGunPage::OnBnClickedCrowbar)
-	ON_BN_CLICKED(ID_HELP, OnHelp)
-	//}}AFX_MSG_MAP
-	ON_WM_CTLCOLOR()
+    //{{AFX_MSG_MAP(CTRXGunPage)
+    ON_BN_CLICKED(IDC_DESERTEAGLE, &CTRXGunPage::OnBnClickedDeserteagle)
+    ON_BN_CLICKED(IDC_GRENADELAUNCHER, &CTRXGunPage::OnBnClickedGrenadelauncher)
+    ON_BN_CLICKED(IDC_GUNS, &CTRXGunPage::OnBnClickedGuns)
+    ON_BN_CLICKED(IDC_UZI, &CTRXGunPage::OnBnClickedUzi)
+    ON_BN_CLICKED(IDC_RIOTGUN, &CTRXGunPage::OnBnClickedRiotgun)
+    ON_BN_CLICKED(IDC_HARPOON, &CTRXGunPage::OnBnClickedHarpoon)
+    ON_BN_CLICKED(IDC_MP5, &CTRXGunPage::OnBnClickedMp5)
+    ON_BN_CLICKED(IDC_ROCKETLAUNCHER, &CTRXGunPage::OnBnClickedRocketlauncher)
+    ON_BN_CLICKED(IDC_CROWBAR, &CTRXGunPage::OnBnClickedCrowbar)
+    ON_BN_CLICKED(ID_HELP, OnHelp)
+    //}}AFX_MSG_MAP
+    ON_WM_CTLCOLOR()
 END_MESSAGE_MAP()
 
 //
@@ -99,11 +99,11 @@ END_MESSAGE_MAP()
 // CTRXGunPage message handlers
 //
 /////////////////////////////////////////////////////////////////////////////
-void CTRXGunPage::OnHelp() 
+void CTRXGunPage::OnHelp()
 {
-	// TODO: Add your control notification handler code here
-	CTRXHelpDialog dlg;
-	dlg.DoModal();
+    // TODO: Add your control notification handler code here
+    CTRXHelpDialog dlg;
+    dlg.DoModal();
 }
 
 //
@@ -112,164 +112,164 @@ void CTRXGunPage::OnHelp()
 /////////////////////////////////////////////////////////////////////////////
 void CTRXGunPage::DisplayValues()
 {
-	BOOL bModified = IsGUIModified();
+    BOOL bModified = IsGUIModified();
 
-	int		iX;
+    int     iX;
 
-	if ( CTRSaveGame::I() != NULL )
-	{	
-		m_Status.SetWindowText ( CTRSaveGame::I()->GetStatus () );
-	}
+    if ( CTRSaveGame::I() != NULL )
+    {   
+        m_Status.SetWindowText ( CTRSaveGame::I()->GetStatus () );
+    }
 
-	EnableForVersion ();
+    EnableForVersion ();
 
-	if ( CTRSaveGame::IsValid() )
-	{
-		//
-		int level	= CTRSaveGame::GetLevelIndex();
+    if ( CTRSaveGame::IsValid() )
+    {
+        //
+        int level   = CTRSaveGame::GetLevelIndex();
 
-		//
-		//	Set Labels
-		//
-		//		Weapons Order
-		//		iMaskCompass			: Weapon0
-		//		iMaskPistol				: Weapon1
-		//		iMaskDesertEagle		: Weapon2
-		//		iMaskUzi				: Weapon3
-		//		iMaskShotGun			: Weapon4
-		//		iMaskMP5				: Weapon5
-		//		iMaskRocket				: Weapon6
-		//		iMaskGrenade			: Weapon7
-		//		iMaskHarpoon			: Weapon8
-		m_Guns.SetWindowTextA( CTRSaveGame::I()->GetLabel1() );
-		SetBitmap ( &m_BM_Guns, 1, CTRSaveGame::I()->GetBitmap1() );
+        //
+        //  Set Labels
+        //
+        //      Weapons Order
+        //      iMaskCompass            : Weapon0
+        //      iMaskPistol             : Weapon1
+        //      iMaskDesertEagle        : Weapon2
+        //      iMaskUzi                : Weapon3
+        //      iMaskShotGun            : Weapon4
+        //      iMaskMP5                : Weapon5
+        //      iMaskRocket             : Weapon6
+        //      iMaskGrenade            : Weapon7
+        //      iMaskHarpoon            : Weapon8
+        m_Guns.SetWindowTextA( CTRSaveGame::I()->GetLabel1() );
+        SetBitmap ( &m_BM_Guns, 1, CTRSaveGame::I()->GetBitmap1() );
 
-		m_Desert_Eagle.SetWindowTextA( CTRSaveGame::I()->GetLabel2() );
-		SetBitmap ( &m_BM_DesertEagle, 2, CTRSaveGame::I()->GetBitmap2() );
+        m_Desert_Eagle.SetWindowTextA( CTRSaveGame::I()->GetLabel2() );
+        SetBitmap ( &m_BM_DesertEagle, 2, CTRSaveGame::I()->GetBitmap2() );
 
-		m_Uzis.SetWindowTextA( CTRSaveGame::I()->GetLabel3() );
-		SetBitmap ( &m_BM_Uzis, 3, CTRSaveGame::I()->GetBitmap3() );
+        m_Uzis.SetWindowTextA( CTRSaveGame::I()->GetLabel3() );
+        SetBitmap ( &m_BM_Uzis, 3, CTRSaveGame::I()->GetBitmap3() );
 
-		m_Riot_Gun.SetWindowTextA( CTRSaveGame::I()->GetLabel4() );
-		SetBitmap ( &m_BM_RiotGun, 4, CTRSaveGame::I()->GetBitmap4() );
+        m_Riot_Gun.SetWindowTextA( CTRSaveGame::I()->GetLabel4() );
+        SetBitmap ( &m_BM_RiotGun, 4, CTRSaveGame::I()->GetBitmap4() );
 
-		m_MP5.SetWindowTextA( CTRSaveGame::I()->GetLabel5() );
-		SetBitmap ( &m_BM_MP5, 5, CTRSaveGame::I()->GetBitmap5() );
+        m_MP5.SetWindowTextA( CTRSaveGame::I()->GetLabel5() );
+        SetBitmap ( &m_BM_MP5, 5, CTRSaveGame::I()->GetBitmap5() );
 
-		m_Rocket_Launcher.SetWindowTextA( CTRSaveGame::I()->GetLabel6() );
-		SetBitmap ( &m_BM_Rocket, 6, CTRSaveGame::I()->GetBitmap6() );
+        m_Rocket_Launcher.SetWindowTextA( CTRSaveGame::I()->GetLabel6() );
+        SetBitmap ( &m_BM_Rocket, 6, CTRSaveGame::I()->GetBitmap6() );
 
-		m_Grenade_Launcher.SetWindowTextA( CTRSaveGame::I()->GetLabel7() );
-		SetBitmap ( &m_BM_Grenade, 7, CTRSaveGame::I()->GetBitmap7() );
+        m_Grenade_Launcher.SetWindowTextA( CTRSaveGame::I()->GetLabel7() );
+        SetBitmap ( &m_BM_Grenade, 7, CTRSaveGame::I()->GetBitmap7() );
 
-		m_Harpoon.SetWindowTextA( CTRSaveGame::I()->GetLabel8() );
-		SetBitmap ( &m_BM_Harpoon, 8, CTRSaveGame::I()->GetBitmap8() );
+        m_Harpoon.SetWindowTextA( CTRSaveGame::I()->GetLabel8() );
+        SetBitmap ( &m_BM_Harpoon, 8, CTRSaveGame::I()->GetBitmap8() );
 
-		m_Crowbar.SetWindowTextA ( CTRSaveGame::I()->GetLabel9() );
+        m_Crowbar.SetWindowTextA ( CTRSaveGame::I()->GetLabel9() );
 
-		/*
-	 	 *		Get gun state.
-		 */
-		iX = CTRSaveGame::GetLevelIndex ();
+        /*
+         *      Get gun state.
+         */
+        iX = CTRSaveGame::GetLevelIndex ();
 
 
-		m_Guns.SetCheck ( 0 );
-		if ( CTRSaveGame::I()->CheckWeapon1 ( iX ) )
-		{
-			m_Guns.SetCheck ( 1 );
-		}
+        m_Guns.SetCheck ( 0 );
+        if ( CTRSaveGame::I()->CheckWeapon1 ( iX ) )
+        {
+            m_Guns.SetCheck ( 1 );
+        }
 
-		m_Desert_Eagle.SetCheck ( 0 );
-		if ( CTRSaveGame::I()->CheckWeapon2 ( iX ) )
-		{
-			m_Desert_Eagle.SetCheck ( 1 );
-		}
+        m_Desert_Eagle.SetCheck ( 0 );
+        if ( CTRSaveGame::I()->CheckWeapon2 ( iX ) )
+        {
+            m_Desert_Eagle.SetCheck ( 1 );
+        }
 
-		m_Uzis.SetCheck ( 0 );
-		if ( CTRSaveGame::I()->CheckWeapon3 ( iX ) )
-		{
-			m_Uzis.SetCheck ( 1 );
-		}
+        m_Uzis.SetCheck ( 0 );
+        if ( CTRSaveGame::I()->CheckWeapon3 ( iX ) )
+        {
+            m_Uzis.SetCheck ( 1 );
+        }
 
-		m_Riot_Gun.SetCheck ( 0 );
-		if ( CTRSaveGame::I()->CheckWeapon4 ( iX ) )
-		{
-			m_Riot_Gun.SetCheck ( 1 );
-		}
+        m_Riot_Gun.SetCheck ( 0 );
+        if ( CTRSaveGame::I()->CheckWeapon4 ( iX ) )
+        {
+            m_Riot_Gun.SetCheck ( 1 );
+        }
 
-		m_MP5.SetCheck ( 0 );
-		if ( CTRSaveGame::I()->CheckWeapon5 ( iX ) )
-		{
-				m_MP5.SetCheck ( 1 );
-		}
+        m_MP5.SetCheck ( 0 );
+        if ( CTRSaveGame::I()->CheckWeapon5 ( iX ) )
+        {
+                m_MP5.SetCheck ( 1 );
+        }
 
-		m_Grenade_Launcher.SetCheck ( 0 );
-		if ( CTRSaveGame::I()->CheckWeapon7 ( iX ) )
-		{
-				m_Grenade_Launcher.SetCheck ( 1 );
-		}
+        m_Grenade_Launcher.SetCheck ( 0 );
+        if ( CTRSaveGame::I()->CheckWeapon7 ( iX ) )
+        {
+                m_Grenade_Launcher.SetCheck ( 1 );
+        }
 
-		m_Rocket_Launcher.SetCheck ( 0 );
-		if ( CTRSaveGame::I()->CheckWeapon6 ( iX ) )
-		{
-				m_Rocket_Launcher.SetCheck ( 1 );
-		}
+        m_Rocket_Launcher.SetCheck ( 0 );
+        if ( CTRSaveGame::I()->CheckWeapon6 ( iX ) )
+        {
+                m_Rocket_Launcher.SetCheck ( 1 );
+        }
 
-		m_Harpoon.SetCheck ( 0 );
-		if ( CTRSaveGame::I()->CheckWeapon8 ( iX ) )
-		{
-				m_Harpoon.SetCheck ( 1 );
-		}
+        m_Harpoon.SetCheck ( 0 );
+        if ( CTRSaveGame::I()->CheckWeapon8 ( iX ) )
+        {
+                m_Harpoon.SetCheck ( 1 );
+        }
 
-		m_Crowbar.SetCheck ( 0 );
-		if ( CTRSaveGame::I()->CheckWeapon9 ( iX ) )
-		{
-			m_Crowbar.SetCheck ( 1 );
-		}
-	}
+        m_Crowbar.SetCheck ( 0 );
+        if ( CTRSaveGame::I()->CheckWeapon9 ( iX ) )
+        {
+            m_Crowbar.SetCheck ( 1 );
+        }
+    }
 
-	SetGUIModified ( bModified );
+    SetGUIModified ( bModified );
 }
 
 //
 /////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////
-BOOL CTRXGunPage::OnInitDialog() 
+BOOL CTRXGunPage::OnInitDialog()
 {
-	CTRXPropertyPage::OnInitDialog();
-	
-	// TODO: Add extra initialization here
-	if ( m_bToolTip )
-	{
-		m_ToolTip.AddTool( &m_Status, ("Status"));
-		m_ToolTip.Activate(TRUE);
-	}
+    CTRXPropertyPage::OnInitDialog();
+    
+    // TODO: Add extra initialization here
+    if ( m_bToolTip )
+    {
+        m_ToolTip.AddTool( &m_Status, ("Status"));
+        m_ToolTip.Activate(TRUE);
+    }
 
-	m_bInitDone	= true;
+    m_bInitDone = true;
 
-	return TRUE;  // return TRUE unless you set the focus to a control
-	              // EXCEPTION: OCX Property Pages should return FALSE
+    return TRUE;  // return TRUE unless you set the focus to a control
+                  // EXCEPTION: OCX Property Pages should return FALSE
 }
 
 //
 /////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////
-BOOL CTRXGunPage::OnSetActive() 
+BOOL CTRXGunPage::OnSetActive()
 {
-	// TODO: Add your specialized code here and/or call the base class
-	BOOL bModified = IsGUIModified();
-	if ( CTRSaveGame::IsValid( ) )
-	{
-		bModified = CTRSaveGame::IsBufferModified();
-	}
+    // TODO: Add your specialized code here and/or call the base class
+    BOOL bModified = IsGUIModified();
+    if ( CTRSaveGame::IsValid( ) )
+    {
+        bModified = CTRSaveGame::IsBufferModified();
+    }
 
-	DisplayValues ();
+    DisplayValues ();
 
-	SetGUIModified ( bModified );
+    SetGUIModified ( bModified );
 
-	return CTRXPropertyPage::OnSetActive();
+    return CTRXPropertyPage::OnSetActive();
 }
 
 //
@@ -278,114 +278,114 @@ BOOL CTRXGunPage::OnSetActive()
 /////////////////////////////////////////////////////////////////////////////
 void CTRXGunPage::UpdateBuffer()
 {
-	int						iX;
+    int                     iX;
 
-	if ( CTRSaveGame::IsValid() )
-	{
-		/*
-		 *		Get gun state.
-		 */
-		iX = CTRSaveGame::GetLevelIndex ();
+    if ( CTRSaveGame::IsValid() )
+    {
+        /*
+         *      Get gun state.
+         */
+        iX = CTRSaveGame::GetLevelIndex ();
 
-		//
-		CTRSaveGame::I()->GrabWeapon0 ( iX );
+        //
+        CTRSaveGame::I()->GrabWeapon0 ( iX );
 
-		//
-		if ( m_Guns.GetCheck ( ) )
-		{
-			CTRSaveGame::I()->GrabWeapon1 ( iX );
-		}
-		else
-		{
-			CTRSaveGame::I()->GrabWeapon1 ( iX, false );
-		}
+        //
+        if ( m_Guns.GetCheck ( ) )
+        {
+            CTRSaveGame::I()->GrabWeapon1 ( iX );
+        }
+        else
+        {
+            CTRSaveGame::I()->GrabWeapon1 ( iX, false );
+        }
 
-		if ( m_Desert_Eagle.GetCheck ( ) )
-		{
-			CTRSaveGame::I()->GrabWeapon2 ( iX );
-		}
-		else
-		{
-			CTRSaveGame::I()->GrabWeapon2 ( iX, false );
-		}
+        if ( m_Desert_Eagle.GetCheck ( ) )
+        {
+            CTRSaveGame::I()->GrabWeapon2 ( iX );
+        }
+        else
+        {
+            CTRSaveGame::I()->GrabWeapon2 ( iX, false );
+        }
 
-		if ( m_Uzis.GetCheck ( ) )
-		{
-			CTRSaveGame::I()->GrabWeapon3 ( iX );
-		}
-		else
-		{
-			CTRSaveGame::I()->GrabWeapon3 ( iX, false );
-		}
+        if ( m_Uzis.GetCheck ( ) )
+        {
+            CTRSaveGame::I()->GrabWeapon3 ( iX );
+        }
+        else
+        {
+            CTRSaveGame::I()->GrabWeapon3 ( iX, false );
+        }
 
-		if ( m_Riot_Gun.GetCheck ( ) )
-		{
-			CTRSaveGame::I()->GrabWeapon4 ( iX );
-		}
-		else
-		{
-			CTRSaveGame::I()->GrabWeapon4 ( iX, false );
-		}
+        if ( m_Riot_Gun.GetCheck ( ) )
+        {
+            CTRSaveGame::I()->GrabWeapon4 ( iX );
+        }
+        else
+        {
+            CTRSaveGame::I()->GrabWeapon4 ( iX, false );
+        }
 
-		if ( m_MP5.GetCheck ( ) )
-		{
-			CTRSaveGame::I()->GrabWeapon5 ( iX );
-		}
-		else
-		{
-			CTRSaveGame::I()->GrabWeapon5 ( iX, false );
-		}
+        if ( m_MP5.GetCheck ( ) )
+        {
+            CTRSaveGame::I()->GrabWeapon5 ( iX );
+        }
+        else
+        {
+            CTRSaveGame::I()->GrabWeapon5 ( iX, false );
+        }
 
-		if ( m_Rocket_Launcher.GetCheck ( ) )
-		{
-			CTRSaveGame::I()->GrabWeapon6 ( iX );
-		}
-		else
-		{
-			CTRSaveGame::I()->GrabWeapon6 ( iX, false );
-		}
+        if ( m_Rocket_Launcher.GetCheck ( ) )
+        {
+            CTRSaveGame::I()->GrabWeapon6 ( iX );
+        }
+        else
+        {
+            CTRSaveGame::I()->GrabWeapon6 ( iX, false );
+        }
 
-		if ( m_Grenade_Launcher.GetCheck ( ) )
-		{
-			CTRSaveGame::I()->GrabWeapon7 ( iX );
-		}
-		else
-		{
-			CTRSaveGame::I()->GrabWeapon7 ( iX, false );
-		}
+        if ( m_Grenade_Launcher.GetCheck ( ) )
+        {
+            CTRSaveGame::I()->GrabWeapon7 ( iX );
+        }
+        else
+        {
+            CTRSaveGame::I()->GrabWeapon7 ( iX, false );
+        }
 
-		if ( m_Harpoon.GetCheck ( ) )
-		{
-			CTRSaveGame::I()->GrabWeapon8 ( iX );
-		}
-		else
-		{
-			CTRSaveGame::I()->GrabWeapon8 ( iX, false );
-		}
+        if ( m_Harpoon.GetCheck ( ) )
+        {
+            CTRSaveGame::I()->GrabWeapon8 ( iX );
+        }
+        else
+        {
+            CTRSaveGame::I()->GrabWeapon8 ( iX, false );
+        }
 
-		if ( m_Crowbar.GetCheck ( ) )
-		{
-			CTRSaveGame::I()->GrabWeapon9 ( iX );
-		}
-		else
-		{
-			CTRSaveGame::I()->GrabWeapon9 ( iX, false );
-		}
-	}
+        if ( m_Crowbar.GetCheck ( ) )
+        {
+            CTRSaveGame::I()->GrabWeapon9 ( iX );
+        }
+        else
+        {
+            CTRSaveGame::I()->GrabWeapon9 ( iX, false );
+        }
+    }
 }
 
 //
 /////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////
-BOOL CTRXGunPage::OnKillActive() 
+BOOL CTRXGunPage::OnKillActive()
 {
-	// TODO: Add your specialized code here and/or call the base class
-	UpdateBuffer();
+    // TODO: Add your specialized code here and/or call the base class
+    UpdateBuffer();
 
-	BOOL bModified = IsGUIModified();
+    BOOL bModified = IsGUIModified();
 
-	return CTRXPropertyPage::OnKillActive();
+    return CTRXPropertyPage::OnKillActive();
 }
 
 //
@@ -394,39 +394,39 @@ BOOL CTRXGunPage::OnKillActive()
 /////////////////////////////////////////////////////////////////////////////
 int CTRXGunPage::EnableForVersion()
 {
-	BOOL bModified = IsGUIModified();
+    BOOL bModified = IsGUIModified();
 
-	int iVersion = CTRXPropertyPage::EnableForVersion();
+    int iVersion = CTRXPropertyPage::EnableForVersion();
 
-	if ( CTRSaveGame::I() != NULL && iVersion != 0 )
-	{	
-		m_Guns.EnableWindow ( CTRSaveGame::I()->HasWeapon1 ( ));
-		m_Desert_Eagle.EnableWindow ( CTRSaveGame::I()->HasWeapon2 ( ) );
-		m_Uzis.EnableWindow ( CTRSaveGame::I()->HasWeapon3 ( ) );
-		m_Riot_Gun.EnableWindow ( CTRSaveGame::I()->HasWeapon4 ( ) );
-		m_MP5.EnableWindow ( ( iVersion >= 20 ) && CTRSaveGame::I()->HasWeapon5 ( ) );
-		m_Rocket_Launcher.EnableWindow ( ( iVersion >= 30 ) && CTRSaveGame::I()->HasWeapon6 ( ) );
-		m_Grenade_Launcher.EnableWindow ( (iVersion >= 20 ) && CTRSaveGame::I()->HasWeapon7 ( ) );
-		m_Harpoon.EnableWindow ( ( iVersion >= 20 ) && CTRSaveGame::I()->HasWeapon8 ( ) );
-		m_Crowbar.EnableWindow ( ( iVersion >= 40 ) && CTRSaveGame::I()->HasWeapon9 ( ) );
-	}
-	else
-	{
-		m_Guns.EnableWindow ( FALSE );
-		m_Desert_Eagle.EnableWindow ( FALSE );
-		m_Uzis.EnableWindow ( FALSE );
-		m_Riot_Gun.EnableWindow ( FALSE );
-		m_MP5.EnableWindow ( FALSE );
-		m_Rocket_Launcher.EnableWindow ( FALSE );
-		m_Grenade_Launcher.EnableWindow ( FALSE );
-		m_Harpoon.EnableWindow ( FALSE );
-		m_Crowbar.EnableWindow ( FALSE );
-	}
+    if ( CTRSaveGame::I() != NULL && iVersion != 0 )
+    {   
+        m_Guns.EnableWindow ( CTRSaveGame::I()->HasWeapon1 ( ));
+        m_Desert_Eagle.EnableWindow ( CTRSaveGame::I()->HasWeapon2 ( ) );
+        m_Uzis.EnableWindow ( CTRSaveGame::I()->HasWeapon3 ( ) );
+        m_Riot_Gun.EnableWindow ( CTRSaveGame::I()->HasWeapon4 ( ) );
+        m_MP5.EnableWindow ( ( iVersion >= 20 ) && CTRSaveGame::I()->HasWeapon5 ( ) );
+        m_Rocket_Launcher.EnableWindow ( ( iVersion >= 30 ) && CTRSaveGame::I()->HasWeapon6 ( ) );
+        m_Grenade_Launcher.EnableWindow ( (iVersion >= 20 ) && CTRSaveGame::I()->HasWeapon7 ( ) );
+        m_Harpoon.EnableWindow ( ( iVersion >= 20 ) && CTRSaveGame::I()->HasWeapon8 ( ) );
+        m_Crowbar.EnableWindow ( ( iVersion >= 40 ) && CTRSaveGame::I()->HasWeapon9 ( ) );
+    }
+    else
+    {
+        m_Guns.EnableWindow ( FALSE );
+        m_Desert_Eagle.EnableWindow ( FALSE );
+        m_Uzis.EnableWindow ( FALSE );
+        m_Riot_Gun.EnableWindow ( FALSE );
+        m_MP5.EnableWindow ( FALSE );
+        m_Rocket_Launcher.EnableWindow ( FALSE );
+        m_Grenade_Launcher.EnableWindow ( FALSE );
+        m_Harpoon.EnableWindow ( FALSE );
+        m_Crowbar.EnableWindow ( FALSE );
+    }
 
-	SetGUIModified ( bModified );
+    SetGUIModified ( bModified );
 
-	//
-	return iVersion;
+    //
+    return iVersion;
 }
 
 //
@@ -435,7 +435,7 @@ int CTRXGunPage::EnableForVersion()
 /////////////////////////////////////////////////////////////////////////////
 void CTRXGunPage::OnBnClickedDeserteagle()
 {
-	SetGUIModified ( TRUE );
+    SetGUIModified ( TRUE );
 }
 
 //
@@ -444,7 +444,7 @@ void CTRXGunPage::OnBnClickedDeserteagle()
 /////////////////////////////////////////////////////////////////////////////
 void CTRXGunPage::OnBnClickedGrenadelauncher()
 {
-	SetGUIModified ( TRUE );
+    SetGUIModified ( TRUE );
 }
 
 //
@@ -453,7 +453,7 @@ void CTRXGunPage::OnBnClickedGrenadelauncher()
 /////////////////////////////////////////////////////////////////////////////
 void CTRXGunPage::OnBnClickedGuns()
 {
-	SetGUIModified ( TRUE );
+    SetGUIModified ( TRUE );
 }
 
 //
@@ -462,7 +462,7 @@ void CTRXGunPage::OnBnClickedGuns()
 /////////////////////////////////////////////////////////////////////////////
 void CTRXGunPage::OnBnClickedUzi()
 {
-	SetGUIModified ( TRUE );
+    SetGUIModified ( TRUE );
 }
 
 //
@@ -471,7 +471,7 @@ void CTRXGunPage::OnBnClickedUzi()
 /////////////////////////////////////////////////////////////////////////////
 void CTRXGunPage::OnBnClickedRiotgun()
 {
-	SetGUIModified ( TRUE );
+    SetGUIModified ( TRUE );
 }
 
 //
@@ -480,7 +480,7 @@ void CTRXGunPage::OnBnClickedRiotgun()
 /////////////////////////////////////////////////////////////////////////////
 void CTRXGunPage::OnBnClickedHarpoon()
 {
-	SetGUIModified ( TRUE );
+    SetGUIModified ( TRUE );
 }
 
 //
@@ -489,7 +489,7 @@ void CTRXGunPage::OnBnClickedHarpoon()
 /////////////////////////////////////////////////////////////////////////////
 void CTRXGunPage::OnBnClickedMp5()
 {
-	SetGUIModified ( TRUE );
+    SetGUIModified ( TRUE );
 }
 
 //
@@ -498,7 +498,7 @@ void CTRXGunPage::OnBnClickedMp5()
 /////////////////////////////////////////////////////////////////////////////
 void CTRXGunPage::OnBnClickedRocketlauncher()
 {
-	SetGUIModified ( TRUE );
+    SetGUIModified ( TRUE );
 }
 
 //
@@ -507,7 +507,7 @@ void CTRXGunPage::OnBnClickedRocketlauncher()
 /////////////////////////////////////////////////////////////////////////////
 void CTRXGunPage::OnBnClickedCrowbar()
 {
-	SetGUIModified ( TRUE );
+    SetGUIModified ( TRUE );
 }
 
 //
@@ -516,11 +516,11 @@ void CTRXGunPage::OnBnClickedCrowbar()
 /////////////////////////////////////////////////////////////////////////////
 void CTRXGunPage::OnOK()
 {
-	// TODO: Add Your handler here
-	INT_PTR response = AskToSave("Gun");
-	DisplayValues ( );
+    // TODO: Add Your handler here
+    INT_PTR response = AskToSave("Gun");
+    DisplayValues ( );
 
-	CTRXPropertyPage::OnOK();
+    CTRXPropertyPage::OnOK();
 }
 
 //
@@ -529,13 +529,13 @@ void CTRXGunPage::OnOK()
 /////////////////////////////////////////////////////////////////////////////
 void CTRXGunPage::OnCancel()
 {
-	// TODO: Add Your handler here
-	if ( CTRSaveGame::I() != NULL && ( IsGUIModified() || CTRSaveGame::IsBufferModified() ) )
-	{
-		INT_PTR response = AskToSave("Gun");
-	}
+    // TODO: Add Your handler here
+    if ( CTRSaveGame::I() != NULL && ( IsGUIModified() || CTRSaveGame::IsBufferModified() ) )
+    {
+        INT_PTR response = AskToSave("Gun");
+    }
 
-	CTRXPropertyPage::OnCancel();
+    CTRXPropertyPage::OnCancel();
 }
 
 //
@@ -544,9 +544,9 @@ void CTRXGunPage::OnCancel()
 /////////////////////////////////////////////////////////////////////////////
 BOOL CTRXGunPage::OnApply()
 {
-	// TODO: Add Code Here
-	WriteWhenOnApply("Guns");
+    // TODO: Add Code Here
+    WriteWhenOnApply("Guns");
 
-	return CTRXPropertyPage::OnApply();
+    return CTRXPropertyPage::OnApply();
 }
 

@@ -25,48 +25,48 @@ extern CTRXCHEATWINApp theApp;
  */
 static char    TR3Secrets [ ] =
 {
-	/*
-	 *              India
-	 */
+    /*
+     *              India
+     */
     0x3F,   /* 01 6 */
     0x0F,   /* 02 4 */
     0x1F,   /* 03 5 */
     0x00,   /* 04 0 */
 
-	/*
-	 *              Pacific
-	 */
+    /*
+     *              Pacific
+     */
     0x07,   /* 05 3 */
     0x07,   /* 06 3 */
     0x07,   /* 07 3 */
     0x01,   /* 08 1 */
 
-	/*
-	 *              London
-	 */
+    /*
+     *              London
+     */
     0x1F,   /* 09 5 */
     0x1F,   /* 10 5 */
     0x3F,   /* 11 6 */
     0x01,   /* 12 1 */
 
-	/*
-	 *              Nevada
-	 */
+    /*
+     *              Nevada
+     */
     0x07,   /* 13 3 */
     0x03,   /* 14 2 */
     0x07,   /* 15 3 */
 
-	/*
-	 *              Antarctica
-	 */
+    /*
+     *              Antarctica
+     */
     0x07,   /* 16 3 */
     0x07,   /* 17 3 */
     0x07,   /* 18 3 */
     0x00,   /* 19 0 */
 
-	/*
-	 *				All Hallows
-	 */
+    /*
+     *              All Hallows
+     */
     0x00,   /* 20 0 */
 
     0x00,   /* 0 */
@@ -74,45 +74,45 @@ static char    TR3Secrets [ ] =
     0x00,   /* 0 */
 };
 
-//	Gold : The last Artifact
+//  Gold : The last Artifact
 static char    TR3GSecrets [ ] =
 {
-	0x07,   /* 01 3 */
-	0x07,   /* 02 3 */
-	0x07,   /* 03 3 */
-	0x07,   /* 04 3 */
-	0x07,   /* 05 3 */
-	0x00	/* 06 0 */
+    0x07,   /* 01 3 */
+    0x07,   /* 02 3 */
+    0x07,   /* 03 3 */
+    0x07,   /* 04 3 */
+    0x07,   /* 05 3 */
+    0x00    /* 06 0 */
 };
 
-static unsigned	TR3Positions [ ] =
+static unsigned TR3Positions [ ] =
 {
-	0x158f,		/* 01 */
-	0x2311,		/* 02 */
-	0x1748,		/* 03 */
-	0xc63,		/* 04 */
-	0x16f5,		/* 05 */
-	0x1817,		/* 06 */
-	0x1361,		/* 07 */
-	0x105d,		/* 08 */
-	0x17b7,		/* 09 */
-	0x2243,		/* 10 */
-	0x1ccd,		/* 11 */
-	0xa37,		/* 12 */
-	0x16e8,		/* 13 */
-	0x1d47,		/* 14 */
-	0x202d,		/* 15 */
-	0x18d9,		/* 16 */
-	0x189b,		/* 17 */
-	0x1cdb,		/* 18 */
-	0xa3f,		/* 19 */
-	0xf71,		/* 20 */
-    0x00,		/* 0 */
-    0x00,		/* 0 */
-    0x00,		/* 0 */
-    0x00,		/* 0 */
-    0x00,		/* 0 */
-    0x00,		/* 0 */
+    0x158f,     /* 01 */
+    0x2311,     /* 02 */
+    0x1748,     /* 03 */
+    0xc63,      /* 04 */
+    0x16f5,     /* 05 */
+    0x1817,     /* 06 */
+    0x1361,     /* 07 */
+    0x105d,     /* 08 */
+    0x17b7,     /* 09 */
+    0x2243,     /* 10 */
+    0x1ccd,     /* 11 */
+    0xa37,      /* 12 */
+    0x16e8,     /* 13 */
+    0x1d47,     /* 14 */
+    0x202d,     /* 15 */
+    0x18d9,     /* 16 */
+    0x189b,     /* 17 */
+    0x1cdb,     /* 18 */
+    0xa3f,      /* 19 */
+    0xf71,      /* 20 */
+    0x00,       /* 0 */
+    0x00,       /* 0 */
+    0x00,       /* 0 */
+    0x00,       /* 0 */
+    0x00,       /* 0 */
+    0x00,       /* 0 */
 };
 
 //
@@ -128,33 +128,33 @@ IMPLEMENT_DYNAMIC(CTR3SaveGame, CTRSaveGame)
 /////////////////////////////////////////////////////////////////////////////
 CTR3SaveGame::CTR3SaveGame()
 {
-	m_iVersion			= 30;
+    m_iVersion          = 30;
 
-	m_iSaveLength		= TR3LEVELMAXSIZE;
-	m_iMaxLevel			= TR3MAXLEVEL;
+    m_iSaveLength       = TR3LEVELMAXSIZE;
+    m_iMaxLevel         = TR3MAXLEVEL;
 
-	//
-	iMaskCompass		= 0x0001;
-	iMaskPistol			= 0x0002;
-	iMaskDesertEagle	= 0x0004;
-	iMaskUzi            = 0x0008;
-	iMaskShotGun        = 0x0010;
-	iMaskMP5            = 0x0020;
-	iMaskRocket			= 0x0040;
-	iMaskGrenade		= 0x0080;
-	iMaskHarpoon		= 0x0100;
+    //
+    iMaskCompass        = 0x0001;
+    iMaskPistol         = 0x0002;
+    iMaskDesertEagle    = 0x0004;
+    iMaskUzi            = 0x0008;
+    iMaskShotGun        = 0x0010;
+    iMaskMP5            = 0x0020;
+    iMaskRocket         = 0x0040;
+    iMaskGrenade        = 0x0080;
+    iMaskHarpoon        = 0x0100;
 
-	m_pLife				= NULL;
+    m_pLife             = NULL;
 
-	m_pGun				= NULL;
+    m_pGun              = NULL;
 
-	m_pBuffer			= new ( TR3SAVE );
-	ZeroMemory ( m_pBuffer, sizeof(TR3SAVE) );
+    m_pBuffer           = new ( TR3SAVE );
+    ZeroMemory ( m_pBuffer, sizeof(TR3SAVE) );
 
-	m_pBufferBackup		= new ( TR3SAVE );
-	ZeroMemory ( m_pBufferBackup, sizeof(TR3SAVE) );
+    m_pBufferBackup     = new ( TR3SAVE );
+    ZeroMemory ( m_pBufferBackup, sizeof(TR3SAVE) );
 
-	m_iSubVersion		= 0;
+    m_iSubVersion       = 0;
 }
 
 //
@@ -163,17 +163,17 @@ CTR3SaveGame::CTR3SaveGame()
 /////////////////////////////////////////////////////////////////////////////
 CTR3SaveGame::~CTR3SaveGame()
 {
-	if ( m_pBuffer )
-	{
-		delete m_pBuffer;
-		m_pBuffer = NULL;
-	}
+    if ( m_pBuffer )
+    {
+        delete m_pBuffer;
+        m_pBuffer = NULL;
+    }
 
-	if ( m_pBufferBackup )
-	{
-		delete m_pBufferBackup;
-		m_pBufferBackup = NULL;
-	}
+    if ( m_pBufferBackup )
+    {
+        delete m_pBufferBackup;
+        m_pBufferBackup = NULL;
+    }
 }
 
 //
@@ -191,23 +191,23 @@ int CTR3SaveGame::ReadSavegame( const char *pFilename )
 {
 
         FILE                    *hFile;
-        size_t	                uLenBuffer;
+        size_t                  uLenBuffer;
 
         char                    szEmpty [ 1 ];
 
         strcpy_s ( m_Filename, sizeof(m_Filename), pFilename );
-		strcpy_s ( m_Status, sizeof(m_Status), "" );
+        strcpy_s ( m_Status, sizeof(m_Status), "" );
 
-		memset ( ( char * ) m_pBuffer, 0, sizeof ( TR3SAVE ) );
+        memset ( ( char * ) m_pBuffer, 0, sizeof ( TR3SAVE ) );
 
         /*
          *      Read file.
          */
         hFile = NULL;
-		fopen_s ( &hFile,  m_Filename, "rb" );
+        fopen_s ( &hFile,  m_Filename, "rb" );
         if ( hFile == NULL )
         {
-			strcpy_s ( m_Status, sizeof(m_Status), "Unable to read file." );
+            strcpy_s ( m_Status, sizeof(m_Status), "Unable to read file." );
             return 0;
         }
 
@@ -216,8 +216,8 @@ int CTR3SaveGame::ReadSavegame( const char *pFilename )
          */
         if (  m_iSaveLength < TR3LEVELMINSIZE || m_iSaveLength > TR3LEVELMAXSIZE )
         {
-			strcpy_s ( m_Status, sizeof(m_Status), "Internal error in length." );
-			fclose ( hFile );
+            strcpy_s ( m_Status, sizeof(m_Status), "Internal error in length." );
+            fclose ( hFile );
             return 0;
         }
 
@@ -225,27 +225,27 @@ int CTR3SaveGame::ReadSavegame( const char *pFilename )
         uLenBuffer = fread ( ( char * ) m_pBuffer, 1, m_iSaveLength, hFile );
         if ( uLenBuffer != m_iSaveLength )
         {
-			strcpy_s ( m_Status, sizeof(m_Status), "File size is not correct." );
-			fclose ( hFile );
+            strcpy_s ( m_Status, sizeof(m_Status), "File size is not correct." );
+            fclose ( hFile );
             return 0;
         }
 
-		//
+        //
         if ( fread ( &szEmpty, 1, 1, hFile ) != 0  )
         {
-			strcpy_s ( m_Status, sizeof(m_Status), "File size is too large." );
-			fclose ( hFile );
+            strcpy_s ( m_Status, sizeof(m_Status), "File size is too large." );
+            fclose ( hFile );
             return 0;
         }
 
-		memcpy ( m_pBufferBackup, m_pBuffer, sizeof(TR3SAVE) );
+        memcpy ( m_pBufferBackup, m_pBuffer, sizeof(TR3SAVE) );
 
         /*
          *      Close file.
          */
         fclose ( hFile );
 
-		return 1;
+        return 1;
 }
 
 //
@@ -257,59 +257,59 @@ void CTR3SaveGame::writeSaveGame()
         FILE                    *hFile;
         unsigned                uLenBuffer;
 
-		strcpy_s ( m_Status, sizeof(m_Status), "" );
+        strcpy_s ( m_Status, sizeof(m_Status), "" );
 
-		/*
-		 *		Correct guns.
-		 */
-		int		iX		= getLevelIndex ();
+        /*
+         *      Correct guns.
+         */
+        int     iX      = getLevelIndex ();
 
-		if ( ! ( m_pBuffer->trTable [ iX ].cGunBitmap & iMaskDesertEagle ) )
-		{
-			m_pGun->m_iDesertEagle  = 0 ;
-		}
+        if ( ! ( m_pBuffer->trTable [ iX ].cGunBitmap & iMaskDesertEagle ) )
+        {
+            m_pGun->m_iDesertEagle  = 0 ;
+        }
 
-		if ( ! ( m_pBuffer->trTable [ iX ].cGunBitmap & iMaskUzi ) )
-		{
-			m_pGun->m_iUzis = 0;
-		}
+        if ( ! ( m_pBuffer->trTable [ iX ].cGunBitmap & iMaskUzi ) )
+        {
+            m_pGun->m_iUzis = 0;
+        }
 
-		if ( ! ( m_pBuffer->trTable [ iX ].cGunBitmap & iMaskShotGun ) )
-		{
-			m_pGun->m_iRiotGun = 0;
-		}
+        if ( ! ( m_pBuffer->trTable [ iX ].cGunBitmap & iMaskShotGun ) )
+        {
+            m_pGun->m_iRiotGun = 0;
+        }
 
-		if ( ! ( m_pBuffer->trTable [ iX ].cGunBitmap & iMaskGrenade ) )
-		{
-			m_pGun->m_iGrenades = 0;
-		}
+        if ( ! ( m_pBuffer->trTable [ iX ].cGunBitmap & iMaskGrenade ) )
+        {
+            m_pGun->m_iGrenades = 0;
+        }
 
-		if ( ! ( m_pBuffer->trTable [ iX ].cGunBitmap & iMaskRocket ) )
-		{
-			m_pGun->m_iRockets = 0;
-		}
+        if ( ! ( m_pBuffer->trTable [ iX ].cGunBitmap & iMaskRocket ) )
+        {
+            m_pGun->m_iRockets = 0;
+        }
 
-		if ( ! ( m_pBuffer->trTable [ iX ].cGunBitmap & iMaskHarpoon ) )
-		{
-			m_pGun->m_iHarpoon = 0;
-		}
+        if ( ! ( m_pBuffer->trTable [ iX ].cGunBitmap & iMaskHarpoon ) )
+        {
+            m_pGun->m_iHarpoon = 0;
+        }
 
-		if ( ! ( m_pBuffer->trTable [ iX ].cGunBitmap & iMaskMP5 ) )
-		{
-			m_pGun->m_iMP5 = 0;
-		}
+        if ( ! ( m_pBuffer->trTable [ iX ].cGunBitmap & iMaskMP5 ) )
+        {
+            m_pGun->m_iMP5 = 0;
+        }
 
-		//
-		Backup_Savegame();
+        //
+        Backup_Savegame();
 
-		/*
+        /*
          *      Write file.
          */
         hFile = NULL;
-		fopen_s ( &hFile,  m_Filename, "wb" );
+        fopen_s ( &hFile,  m_Filename, "wb" );
         if ( hFile == NULL )
         {
-			strcpy_s ( m_Status, sizeof(m_Status), "Unable to write the file." );
+            strcpy_s ( m_Status, sizeof(m_Status), "Unable to write the file." );
             return;
         }
 
@@ -318,16 +318,16 @@ void CTR3SaveGame::writeSaveGame()
          */
         if ( m_iSaveLength < TR3LEVELMINSIZE || m_iSaveLength > TR3LEVELMAXSIZE )
         {
-			strcpy_s ( m_Status, sizeof(m_Status), "Internal error in length." );
-			fclose ( hFile );
+            strcpy_s ( m_Status, sizeof(m_Status), "Internal error in length." );
+            fclose ( hFile );
             return;
         }
 
         uLenBuffer = (unsigned) fwrite ( ( char * ) m_pBuffer, 1, m_iSaveLength, hFile );
         if ( uLenBuffer != m_iSaveLength )
         {
-			strcpy_s ( m_Status, sizeof(m_Status), "File size is not correct." );
-			fclose ( hFile );
+            strcpy_s ( m_Status, sizeof(m_Status), "File size is not correct." );
+            fclose ( hFile );
             return;
         }
 
@@ -336,10 +336,10 @@ void CTR3SaveGame::writeSaveGame()
          */
         fclose ( hFile );
 
-		//
-		memcpy ( m_pBufferBackup,  m_pBuffer, m_iSaveLength );
+        //
+        memcpy ( m_pBufferBackup,  m_pBuffer, m_iSaveLength );
 
-		strcpy_s ( m_Status, sizeof(m_Status), "File successfully updated." );
+        strcpy_s ( m_Status, sizeof(m_Status), "File successfully updated." );
 
 }
 
@@ -349,149 +349,149 @@ void CTR3SaveGame::writeSaveGame()
 /////////////////////////////////////////////////////////////////////////////
 void CTR3SaveGame::RetrieveInformation( const char *pFilename )
 {
-	char			*pStartAddress;
-	char			*pGunAddress;
-	char			*pAddress;
+    char            *pStartAddress;
+    char            *pGunAddress;
+    char            *pAddress;
 
-	unsigned		iPosition;
-	int				iX;
-	int				iPos;
-	int				iCount;
+    unsigned        iPosition;
+    int             iX;
+    int             iPos;
+    int             iCount;
 
-	int				bExactFound;
+    int             bExactFound;
 
-	TR3AMMOS		*pGun;
+    TR3AMMOS        *pGun;
 
-	/*
-	 *	Set address to error.
-	 */
-	m_pGun			 = NULL;
+    /*
+     *  Set address to error.
+     */
+    m_pGun           = NULL;
 
-	m_iSubVersion	= 0;
+    m_iSubVersion   = 0;
 
     /*
      *      Read file.
      */
     if ( ReadSavegame ( pFilename ) )
-	{
-		RetrieveHeader ( );
+    {
+        RetrieveHeader ( );
 
-		if ( m_pBuffer->ind1 == 0xFA )
-		{
-			m_iSubVersion = 0;
-		}
-		else
-		{
-			m_iSubVersion = 9;
-		}
+        if ( m_pBuffer->ind1 == 0xFA )
+        {
+            m_iSubVersion = 0;
+        }
+        else
+        {
+            m_iSubVersion = 9;
+        }
 
-		/*
-		 *		Search for health in file.
-		 */ 
-		iPos			= -1;
-		iCount			= 0;
-		bExactFound		= 0;
+        /*
+         *      Search for health in file.
+         */
+        iPos            = -1;
+        iCount          = 0;
+        bExactFound     = 0;
 
-		/*
-		 *		Get Level.
-		 */
-		iX = getLevelIndex ();
+        /*
+         *      Get Level.
+         */
+        iX = getLevelIndex ();
 
-		do
-		{
-			pGun = SearchGunStructure ( m_iGunAmmos, m_pBuffer->trTable [ iX ].cGunBitmap, &iPos );
+        do
+        {
+            pGun = SearchGunStructure ( m_iGunAmmos, m_pBuffer->trTable [ iX ].cGunBitmap, &iPos );
 
-			if ( pGun != NULL )
-			{
-				iCount++;
+            if ( pGun != NULL )
+            {
+                iCount++;
 
-				m_pGun = pGun;
-				strcpy_s ( m_Status, sizeof(m_Status), "Data loaded from the saved game.");
+                m_pGun = pGun;
+                strcpy_s ( m_Status, sizeof(m_Status), "Data loaded from the saved game.");
 
-				/*
-				 *		Test if it it the same as in the table.
-				 */
-	 			pStartAddress = ( char * ) m_pBuffer;
-				pGunAddress = pStartAddress + TR3Positions [ iX ];
-				if ( ( char * ) m_pGun == pGunAddress )
-				{
-					bExactFound = 1;
-				}
-			}
-		}
-		while ( iPos >= 0 /* && ! bExactFound */ );
+                /*
+                 *      Test if it it the same as in the table.
+                 */
+                pStartAddress = ( char * ) m_pBuffer;
+                pGunAddress = pStartAddress + TR3Positions [ iX ];
+                if ( ( char * ) m_pGun == pGunAddress )
+                {
+                    bExactFound = 1;
+                }
+            }
+        }
+        while ( iPos >= 0 /* && ! bExactFound */ );
 
-		/*
-		 *		If the exact position has been found set it.
-		 */
-		if ( bExactFound )
-		{
- 			pStartAddress = ( char * ) m_pBuffer;
-			pGunAddress   = pStartAddress + TR3Positions [ iX ];
-			m_pGun = (TR3AMMOS * ) pGunAddress;
-		}
+        /*
+         *      If the exact position has been found set it.
+         */
+        if ( bExactFound )
+        {
+            pStartAddress = ( char * ) m_pBuffer;
+            pGunAddress   = pStartAddress + TR3Positions [ iX ];
+            m_pGun = (TR3AMMOS * ) pGunAddress;
+        }
 
-		/*
-		 *		If nothing found set the position to the default.
-		 */
-		if ( m_pGun == NULL )
-		{
-			/*
-			 *		Get Level.
-			 */
-			iX = getLevelIndex ();
+        /*
+         *      If nothing found set the position to the default.
+         */
+        if ( m_pGun == NULL )
+        {
+            /*
+             *      Get Level.
+             */
+            iX = getLevelIndex ();
 
- 			pStartAddress = ( char * ) m_pBuffer;
-			pGunAddress   = pStartAddress + TR3Positions [ iX ];
-			m_pGun = (TR3AMMOS * ) pGunAddress;
+            pStartAddress = ( char * ) m_pBuffer;
+            pGunAddress   = pStartAddress + TR3Positions [ iX ];
+            m_pGun = (TR3AMMOS * ) pGunAddress;
 
-			sprintf_s ( m_Status, sizeof(m_Status), "Unable to find something in the file: Setting the address %x.",
-				TR3Positions [ iX ] );
+            sprintf_s ( m_Status, sizeof(m_Status), "Unable to find something in the file: Setting the address %x.",
+                TR3Positions [ iX ] );
 
-			m_pGun->m_iGunAmmos = m_iGunAmmos;
-			m_pGun = NULL;
+            m_pGun->m_iGunAmmos = m_iGunAmmos;
+            m_pGun = NULL;
 
-			return;
-		}
-		else
-		{
-			sprintf_s( m_Status, sizeof(m_Status), "%d good position(s) found.", iCount );
-			if ( bExactFound )
-			{
-				strcat_s ( m_Status, sizeof(m_Status), " Exact position found too." );
-			}
-		}
+            return;
+        }
+        else
+        {
+            sprintf_s( m_Status, sizeof(m_Status), "%d good position(s) found.", iCount );
+            if ( bExactFound )
+            {
+                strcat_s ( m_Status, sizeof(m_Status), " Exact position found too." );
+            }
+        }
 
-		/*
-		 *		Verify address.
-		 */
- 		pStartAddress = ( char * ) m_pBuffer;
+        /*
+         *      Verify address.
+         */
+        pStartAddress = ( char * ) m_pBuffer;
 
-		/*
-		 *		Get Level.
-		 */
-		iX = getLevelIndex ();
+        /*
+         *      Get Level.
+         */
+        iX = getLevelIndex ();
 
-		pGunAddress = pStartAddress + TR3Positions [ iX ];
-		if ( ( char * ) m_pGun != pGunAddress )
-		{
-			pAddress = ( char * ) m_pGun;
-			iPosition = (unsigned) ( pAddress - pStartAddress );
-			sprintf_s( m_Status, sizeof(m_Status), 
-				"The %d address(es) differ(s): Reference is at the address %lx instead of %lx.",
-				iCount, TR3Positions [ iX ], iPosition );
+        pGunAddress = pStartAddress + TR3Positions [ iX ];
+        if ( ( char * ) m_pGun != pGunAddress )
+        {
+            pAddress = ( char * ) m_pGun;
+            iPosition = (unsigned) ( pAddress - pStartAddress );
+            sprintf_s( m_Status, sizeof(m_Status),
+                "The %d address(es) differ(s): Reference is at the address %lx instead of %lx.",
+                iCount, TR3Positions [ iX ], iPosition );
 
-			if ( false )
-			{
-				sprintf_s( m_Status, sizeof(m_Status), 
-					"The %d address(es) differ(s): Setting the address %lx instead of %lx.",
-					iCount, TR3Positions [ iX ], iPosition );
-				m_pGun = ( TR3AMMOS * ) pGunAddress;
-				m_pGun->m_iGunAmmos = m_iGunAmmos;
-			}
+            if ( false )
+            {
+                sprintf_s( m_Status, sizeof(m_Status),
+                    "The %d address(es) differ(s): Setting the address %lx instead of %lx.",
+                    iCount, TR3Positions [ iX ], iPosition );
+                m_pGun = ( TR3AMMOS * ) pGunAddress;
+                m_pGun->m_iGunAmmos = m_iGunAmmos;
+            }
 
-		}
-	}
+        }
+    }
 }
 
 //
@@ -502,37 +502,37 @@ TR3AMMOS *CTR3SaveGame::SearchGunStructure ( unsigned short m_iGunAmmos, WORD gu
 {
         int                     iX;
         unsigned char           *pString;
-		TR3AMMOS					*pGun;
-		
-		if ( *iPos == -1 )
-		{
-			iX = TR3BUFFEREND - sizeof ( TR3AMMOS );
-		}
-		else
-		{
-			iX = *iPos;
-		}
+        TR3AMMOS                    *pGun;
+        
+        if ( *iPos == -1 )
+        {
+            iX = TR3BUFFEREND - sizeof ( TR3AMMOS );
+        }
+        else
+        {
+            iX = *iPos;
+        }
 
         while ( iX >= 0 )
         {
             pString = & ( m_pBuffer->szRemain [ iX ] );
             pGun = ( TR3AMMOS * )(  pString );
             if (    ( pGun->m_iGunAmmos == ( unsigned short )( m_iGunAmmos     ) )
-				 || ( pGun->m_iGunAmmos == ( unsigned short )( m_iGunAmmos + 1 ) )
-				 || ( pGun->m_iGunAmmos == ( unsigned short )( m_iGunAmmos - 1 ) ) )
+                 || ( pGun->m_iGunAmmos == ( unsigned short )( m_iGunAmmos + 1 ) )
+                 || ( pGun->m_iGunAmmos == ( unsigned short )( m_iGunAmmos - 1 ) ) )
             {
                 if ( CheckIfAmmosMatch ( pGun, gunBitmap ) )
                 {
-					*iPos = iX - 1;
-	                return ( pGun );
+                    *iPos = iX - 1;
+                    return ( pGun );
                 }
             }
 
             iX--;
         }
 
-		*iPos = -1;
-		pGun = NULL;
+        *iPos = -1;
+        pGun = NULL;
 
         return ( pGun );
 
@@ -545,116 +545,116 @@ TR3AMMOS *CTR3SaveGame::SearchGunStructure ( unsigned short m_iGunAmmos, WORD gu
 /////////////////////////////////////////////////////////////////////////////
 int CTR3SaveGame::CheckIfAmmosMatch ( TR3AMMOS *pGun, WORD gunBitmap )
 {
-	int				iX;
+    int             iX;
 
-	iX = getLevelIndex ();
+    iX = getLevelIndex ();
 
-	if ( m_pBuffer->trTable [ iX ].cGunBitmap & iMaskDesertEagle )
-	{
-		if ( pGun->m_iDesertEagle  != m_iDesertEagle  ) 
-		{
-			return 0;
-		}
-	}
-	else
-	{
-		if ( pGun->m_iDesertEagle  != 0 && pGun->m_iDesertEagle  != m_iDesertEagle ) 
-		{
-			return 0;
-		}
-	}
+    if ( m_pBuffer->trTable [ iX ].cGunBitmap & iMaskDesertEagle )
+    {
+        if ( pGun->m_iDesertEagle  != m_iDesertEagle  )
+        {
+            return 0;
+        }
+    }
+    else
+    {
+        if ( pGun->m_iDesertEagle  != 0 && pGun->m_iDesertEagle  != m_iDesertEagle )
+        {
+            return 0;
+        }
+    }
 
-	if ( m_pBuffer->trTable [ iX ].cGunBitmap & iMaskUzi )
-	{
-		if ( pGun->m_iUzis     != m_iUzis  ) 
-		{
-			return 0;
-		}
-	}
-	else
-	{
-		if (    pGun->m_iUzis  != 0 && pGun->m_iUzis  != m_iUzis ) 
-		{
-			return 0;
-		}
-	}
+    if ( m_pBuffer->trTable [ iX ].cGunBitmap & iMaskUzi )
+    {
+        if ( pGun->m_iUzis     != m_iUzis  )
+        {
+            return 0;
+        }
+    }
+    else
+    {
+        if (    pGun->m_iUzis  != 0 && pGun->m_iUzis  != m_iUzis )
+        {
+            return 0;
+        }
+    }
 
-	if ( m_pBuffer->trTable [ iX ].cGunBitmap & iMaskShotGun )
-	{
-		if ( pGun->m_iRiotGun != m_iRiotGun  ) 
-		{
-			return 0;
-		}
-	}
-	else
-	{
-		if ( pGun->m_iRiotGun != 0 && pGun->m_iRiotGun != m_iRiotGun ) 
-		{
-			return 0;
-		}
-	}
+    if ( m_pBuffer->trTable [ iX ].cGunBitmap & iMaskShotGun )
+    {
+        if ( pGun->m_iRiotGun != m_iRiotGun  )
+        {
+            return 0;
+        }
+    }
+    else
+    {
+        if ( pGun->m_iRiotGun != 0 && pGun->m_iRiotGun != m_iRiotGun )
+        {
+            return 0;
+        }
+    }
 
-	if ( m_pBuffer->trTable [ iX ].cGunBitmap & iMaskGrenade )
-	{
-		if ( pGun->m_iGrenades != m_iGrenades  ) 
-		{
-			return 0;
-		}
-	}
-	else
-	{
-		if ( pGun->m_iGrenades != 0 && pGun->m_iGrenades != m_iGrenades ) 
-		{
-			return 0;
-		}
-	}
+    if ( m_pBuffer->trTable [ iX ].cGunBitmap & iMaskGrenade )
+    {
+        if ( pGun->m_iGrenades != m_iGrenades  )
+        {
+            return 0;
+        }
+    }
+    else
+    {
+        if ( pGun->m_iGrenades != 0 && pGun->m_iGrenades != m_iGrenades )
+        {
+            return 0;
+        }
+    }
 
-	if ( m_pBuffer->trTable [ iX ].cGunBitmap & iMaskRocket )
-	{
-		if ( pGun->m_iRockets != m_iRockets  ) 
-		{
-			return 0;
-		}
-	}
-	else
-	{
-		if ( pGun->m_iRockets != 0 && pGun->m_iRockets != m_iRockets ) 
-		{
-			return 0;
-		}
-	}
+    if ( m_pBuffer->trTable [ iX ].cGunBitmap & iMaskRocket )
+    {
+        if ( pGun->m_iRockets != m_iRockets  )
+        {
+            return 0;
+        }
+    }
+    else
+    {
+        if ( pGun->m_iRockets != 0 && pGun->m_iRockets != m_iRockets )
+        {
+            return 0;
+        }
+    }
 
-	if ( m_pBuffer->trTable [ iX ].cGunBitmap & iMaskHarpoon )
-	{
-		if ( pGun->m_iHarpoon != m_iHarpoon  )
-		{
-			return 0;
-		}
-	}
-	else
-	{
-		if ( pGun->m_iHarpoon  != 0 && pGun->m_iHarpoon  != m_iHarpoon ) 
-		{
-			return 0;
-		}
-	}
+    if ( m_pBuffer->trTable [ iX ].cGunBitmap & iMaskHarpoon )
+    {
+        if ( pGun->m_iHarpoon != m_iHarpoon  )
+        {
+            return 0;
+        }
+    }
+    else
+    {
+        if ( pGun->m_iHarpoon  != 0 && pGun->m_iHarpoon  != m_iHarpoon )
+        {
+            return 0;
+        }
+    }
 
-	if ( m_pBuffer->trTable [ iX ].cGunBitmap & iMaskMP5 )
-	{
-		if ( pGun->m_iMP5 != m_iMP5  )
-		{
-			return 0;
-		}
-	}
-	else
-	{
-		if ( pGun->m_iMP5 != 0 && pGun->m_iMP5 != m_iMP5 ) 
-		{
-			return 0;
-		}
-	}
+    if ( m_pBuffer->trTable [ iX ].cGunBitmap & iMaskMP5 )
+    {
+        if ( pGun->m_iMP5 != m_iMP5  )
+        {
+            return 0;
+        }
+    }
+    else
+    {
+        if ( pGun->m_iMP5 != 0 && pGun->m_iMP5 != m_iMP5 )
+        {
+            return 0;
+        }
+    }
 
-	return 1;
+    return 1;
 }
 
 //
@@ -663,13 +663,13 @@ int CTR3SaveGame::CheckIfAmmosMatch ( TR3AMMOS *pGun, WORD gunBitmap )
 /////////////////////////////////////////////////////////////////////////////
 void CTR3SaveGame::RetrieveHeader()
 {
-		/*
-		 *		Objects mask.
-		 */
+        /*
+         *      Objects mask.
+         */
         m_pBuffer->trSingle.cObjectMask = 0xff;
 
-		/*
-		 */
+        /*
+         */
         GetAmmosValues ( );
 
 }
@@ -680,11 +680,11 @@ void CTR3SaveGame::RetrieveHeader()
 /////////////////////////////////////////////////////////////////////////////
 void CTR3SaveGame::GetAmmosValues()
 {
-		int		iX;
+        int     iX;
 
-		/*
-		 *		Get gun state.
-		 */
+        /*
+         *      Get gun state.
+         */
         iX = getLevelIndex ();
 
         /*
@@ -707,21 +707,21 @@ void CTR3SaveGame::GetAmmosValues()
 /////////////////////////////////////////////////////////////////////////////
 int CTR3SaveGame::ConvertSecret(int iSecret)
 {
-	int		iResult;
+    int     iResult;
 
-	iResult = 0;
+    iResult = 0;
 
-	while ( iSecret )
-	{
-		if ( ( iSecret & 1 ) != 0 )
-		{
-			iResult++;
-		}
+    while ( iSecret )
+    {
+        if ( ( iSecret & 1 ) != 0 )
+        {
+            iResult++;
+        }
 
-		iSecret /= 2;
-	}
+        iSecret /= 2;
+    }
 
-	return iResult;
+    return iResult;
 }
 
 //
@@ -730,18 +730,18 @@ int CTR3SaveGame::ConvertSecret(int iSecret)
 /////////////////////////////////////////////////////////////////////////////
 int CTR3SaveGame::ConvertSecretBack(int iSecret)
 {
-	int		iResult;
+    int     iResult;
 
-	iResult = 0;
+    iResult = 0;
 
-	while ( iSecret )
-	{
-		iResult *= 2;
-		iResult += 1;
-		iSecret--;
-	}
+    while ( iSecret )
+    {
+        iResult *= 2;
+        iResult += 1;
+        iSecret--;
+    }
 
-	return iResult;
+    return iResult;
 
 }
 
@@ -749,18 +749,18 @@ int CTR3SaveGame::ConvertSecretBack(int iSecret)
 /////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////
-void CTR3SaveGame::GetDetailedInfo (	char *szGame, size_t iSize, int *iGame, int *iLevel,
-										char *szTitle, size_t iSizeTile)
+void CTR3SaveGame::GetDetailedInfo (    char *szGame, size_t iSize, int *iGame, int *iLevel,
+                                        char *szTitle, size_t iSizeTile)
 {
-	strcpy_s ( szGame, iSize, "TR3" );
-	strcpy_s ( szTitle, iSizeTile, m_pBuffer->szSavename );
-	*iGame	= m_pBuffer->iSaveNumber;
-	*iLevel	= m_pBuffer->trSingle.cLevel;
-	if ( m_pBuffer->ind1 != 0xFA )
-	{
-		strcpy_s ( szGame, iSize, "TR3G" );
-		m_iSubVersion = 5;
-	}
+    strcpy_s ( szGame, iSize, "TR3" );
+    strcpy_s ( szTitle, iSizeTile, m_pBuffer->szSavename );
+    *iGame  = m_pBuffer->iSaveNumber;
+    *iLevel = m_pBuffer->trSingle.cLevel;
+    if ( m_pBuffer->ind1 != 0xFA )
+    {
+        strcpy_s ( szGame, iSize, "TR3G" );
+        m_iSubVersion = 5;
+    }
 
 }
 
@@ -770,7 +770,7 @@ void CTR3SaveGame::GetDetailedInfo (	char *szGame, size_t iSize, int *iGame, int
 /////////////////////////////////////////////////////////////////////////////
 const char * CTR3SaveGame::GetStatus()
 {
-	return ( m_Status );
+    return ( m_Status );
 }
 
 //
@@ -779,7 +779,7 @@ const char * CTR3SaveGame::GetStatus()
 /////////////////////////////////////////////////////////////////////////////
 int CTR3SaveGame::getLevel()
 {
-	return m_pBuffer->trSingle.cLevel;
+    return m_pBuffer->trSingle.cLevel;
 }
 
 //
@@ -788,7 +788,7 @@ int CTR3SaveGame::getLevel()
 /////////////////////////////////////////////////////////////////////////////
 int CTR3SaveGame::getLevelIndex()
 {
-	return m_pBuffer->trSingle.cLevel - 1;
+    return m_pBuffer->trSingle.cLevel - 1;
 }
 
 //
@@ -797,12 +797,12 @@ int CTR3SaveGame::getLevelIndex()
 /////////////////////////////////////////////////////////////////////////////
 int CTR3SaveGame::GetAmmos1(int iX )
 {
-	if ( iX >= 0 && iX < m_iMaxLevel )
-	{
-		return ( m_pBuffer->trTable [ iX ].m_iGunAmmos );
-	}
+    if ( iX >= 0 && iX < m_iMaxLevel )
+    {
+        return ( m_pBuffer->trTable [ iX ].m_iGunAmmos );
+    }
 
-	return ( m_pGun->m_iGunAmmos );
+    return ( m_pGun->m_iGunAmmos );
 
 }
 
@@ -812,12 +812,12 @@ int CTR3SaveGame::GetAmmos1(int iX )
 /////////////////////////////////////////////////////////////////////////////
 int CTR3SaveGame::GetAmmos2(int iX )
 {
-	if ( iX >= 0 && iX < m_iMaxLevel )
-	{
-		return ( m_pBuffer->trTable [ iX ].m_iDesertEagleAmmos );
-	}
+    if ( iX >= 0 && iX < m_iMaxLevel )
+    {
+        return ( m_pBuffer->trTable [ iX ].m_iDesertEagleAmmos );
+    }
 
-	return ( m_pGun->m_iDesertEagle );
+    return ( m_pGun->m_iDesertEagle );
 
 }
 
@@ -827,12 +827,12 @@ int CTR3SaveGame::GetAmmos2(int iX )
 /////////////////////////////////////////////////////////////////////////////
 int CTR3SaveGame::GetAmmos3( int iX )
 {
-	if ( iX >= 0 && iX < m_iMaxLevel )
-	{
-		return ( m_pBuffer->trTable [ iX ].m_iUziAmmos );
-	}
+    if ( iX >= 0 && iX < m_iMaxLevel )
+    {
+        return ( m_pBuffer->trTable [ iX ].m_iUziAmmos );
+    }
 
-	return ( m_pGun->m_iUzis );
+    return ( m_pGun->m_iUzis );
 
 }
 
@@ -842,12 +842,12 @@ int CTR3SaveGame::GetAmmos3( int iX )
 /////////////////////////////////////////////////////////////////////////////
 int CTR3SaveGame::GetAmmos4a( int iX )
 {
-	if ( iX >= 0 && iX < m_iMaxLevel )
-	{
-		return ( m_pBuffer->trTable [ iX ].m_iRiotGunAmmos );
-	}
+    if ( iX >= 0 && iX < m_iMaxLevel )
+    {
+        return ( m_pBuffer->trTable [ iX ].m_iRiotGunAmmos );
+    }
 
-	return ( m_pGun->m_iRiotGun );
+    return ( m_pGun->m_iRiotGun );
 
 }
 
@@ -857,12 +857,12 @@ int CTR3SaveGame::GetAmmos4a( int iX )
 /////////////////////////////////////////////////////////////////////////////
 int CTR3SaveGame::GetAmmos5( int iX )
 {
-	if ( iX >= 0 && iX < m_iMaxLevel )
-	{
-		return ( m_pBuffer->trTable [ iX ].m_iMP5Ammos );
-	}
+    if ( iX >= 0 && iX < m_iMaxLevel )
+    {
+        return ( m_pBuffer->trTable [ iX ].m_iMP5Ammos );
+    }
 
-	return ( m_pGun->m_iMP5 );
+    return ( m_pGun->m_iMP5 );
 
 }
 
@@ -872,12 +872,12 @@ int CTR3SaveGame::GetAmmos5( int iX )
 /////////////////////////////////////////////////////////////////////////////
 int CTR3SaveGame::GetAmmos6( int iX )
 {
-	if ( iX >= 0 && iX < m_iMaxLevel )
-	{
-		return ( m_pBuffer->trTable [ iX ].m_iRocketAmmos );
-	}
+    if ( iX >= 0 && iX < m_iMaxLevel )
+    {
+        return ( m_pBuffer->trTable [ iX ].m_iRocketAmmos );
+    }
 
-	return ( m_pGun->m_iRockets );
+    return ( m_pGun->m_iRockets );
 
 }
 
@@ -887,12 +887,12 @@ int CTR3SaveGame::GetAmmos6( int iX )
 /////////////////////////////////////////////////////////////////////////////
 int CTR3SaveGame::GetAmmos7a( int iX )
 {
-	if ( iX >= 0 && iX < m_iMaxLevel )
-	{
-		return ( m_pBuffer->trTable [ iX ].m_iGrenadeAmmos );
-	}
+    if ( iX >= 0 && iX < m_iMaxLevel )
+    {
+        return ( m_pBuffer->trTable [ iX ].m_iGrenadeAmmos );
+    }
 
-	return ( m_pGun->m_iGrenades );
+    return ( m_pGun->m_iGrenades );
 
 }
 
@@ -902,12 +902,12 @@ int CTR3SaveGame::GetAmmos7a( int iX )
 /////////////////////////////////////////////////////////////////////////////
 int CTR3SaveGame::GetAmmos8a( int iX )
 {
-	if ( iX >= 0 && iX < m_iMaxLevel )
-	{
-		return ( m_pBuffer->trTable [ iX ].m_iHarpoonAmmos );
-	}
+    if ( iX >= 0 && iX < m_iMaxLevel )
+    {
+        return ( m_pBuffer->trTable [ iX ].m_iHarpoonAmmos );
+    }
 
-	return ( m_pGun->m_iHarpoon );
+    return ( m_pGun->m_iHarpoon );
 }
 
 //
@@ -916,12 +916,12 @@ int CTR3SaveGame::GetAmmos8a( int iX )
 /////////////////////////////////////////////////////////////////////////////
 void CTR3SaveGame::SetAmmos2 ( const char *szString, int iX )
 {
-	if ( iX >= 0 && iX < m_iMaxLevel )
-	{
-		m_pBuffer->trTable [ iX ].m_iDesertEagleAmmos = atoi ( szString );
-	}
+    if ( iX >= 0 && iX < m_iMaxLevel )
+    {
+        m_pBuffer->trTable [ iX ].m_iDesertEagleAmmos = atoi ( szString );
+    }
 
-	m_pGun->m_iDesertEagle = atoi ( szString );
+    m_pGun->m_iDesertEagle = atoi ( szString );
 
 }
 
@@ -931,12 +931,12 @@ void CTR3SaveGame::SetAmmos2 ( const char *szString, int iX )
 /////////////////////////////////////////////////////////////////////////////
 void CTR3SaveGame::SetAmmos3 ( const char *szString, int iX )
 {
-	if ( iX >= 0 && iX < m_iMaxLevel )
-	{
-		m_pBuffer->trTable [ iX ].m_iUziAmmos = atoi ( szString );
-	}
+    if ( iX >= 0 && iX < m_iMaxLevel )
+    {
+        m_pBuffer->trTable [ iX ].m_iUziAmmos = atoi ( szString );
+    }
 
-	m_pGun->m_iUzis = atoi ( szString );
+    m_pGun->m_iUzis = atoi ( szString );
 
 }
 
@@ -946,12 +946,12 @@ void CTR3SaveGame::SetAmmos3 ( const char *szString, int iX )
 /////////////////////////////////////////////////////////////////////////////
 void CTR3SaveGame::SetAmmos4a ( const char *szString, int iX )
 {
-	if ( iX >= 0 && iX < m_iMaxLevel )
-	{
-		m_pBuffer->trTable [ iX ].m_iRiotGunAmmos = atoi ( szString );
-	}
+    if ( iX >= 0 && iX < m_iMaxLevel )
+    {
+        m_pBuffer->trTable [ iX ].m_iRiotGunAmmos = atoi ( szString );
+    }
 
-	m_pGun->m_iRiotGun = atoi ( szString );
+    m_pGun->m_iRiotGun = atoi ( szString );
 
 }
 
@@ -961,12 +961,12 @@ void CTR3SaveGame::SetAmmos4a ( const char *szString, int iX )
 /////////////////////////////////////////////////////////////////////////////
 void CTR3SaveGame::SetAmmos5 ( const char *szString, int iX )
 {
-	if ( iX >= 0 && iX < m_iMaxLevel )
-	{
-		m_pBuffer->trTable [ iX ].m_iMP5Ammos = atoi ( szString );
-	}
+    if ( iX >= 0 && iX < m_iMaxLevel )
+    {
+        m_pBuffer->trTable [ iX ].m_iMP5Ammos = atoi ( szString );
+    }
 
-	m_pGun->m_iMP5 = atoi ( szString );
+    m_pGun->m_iMP5 = atoi ( szString );
 
 }
 
@@ -976,12 +976,12 @@ void CTR3SaveGame::SetAmmos5 ( const char *szString, int iX )
 /////////////////////////////////////////////////////////////////////////////
 void CTR3SaveGame::SetAmmos6 ( const char *szString, int iX )
 {
-	if ( iX >= 0 && iX < m_iMaxLevel )
-	{
-		m_pBuffer->trTable [ iX ].m_iRocketAmmos = atoi ( szString );
-	}
+    if ( iX >= 0 && iX < m_iMaxLevel )
+    {
+        m_pBuffer->trTable [ iX ].m_iRocketAmmos = atoi ( szString );
+    }
 
-	m_pGun->m_iRockets = atoi ( szString );
+    m_pGun->m_iRockets = atoi ( szString );
 
 }
 
@@ -991,12 +991,12 @@ void CTR3SaveGame::SetAmmos6 ( const char *szString, int iX )
 /////////////////////////////////////////////////////////////////////////////
 void CTR3SaveGame::SetAmmos7a ( const char *szString, int iX )
 {
-	if ( iX >= 0 && iX < m_iMaxLevel )
-	{
-		m_pBuffer->trTable [ iX ].m_iGrenadeAmmos = atoi ( szString );
-	}
+    if ( iX >= 0 && iX < m_iMaxLevel )
+    {
+        m_pBuffer->trTable [ iX ].m_iGrenadeAmmos = atoi ( szString );
+    }
 
-	m_pGun->m_iGrenades = atoi ( szString );
+    m_pGun->m_iGrenades = atoi ( szString );
 }
 
 //
@@ -1005,12 +1005,12 @@ void CTR3SaveGame::SetAmmos7a ( const char *szString, int iX )
 /////////////////////////////////////////////////////////////////////////////
 void CTR3SaveGame::SetAmmos8a ( const char *szString, int iX )
 {
-	if ( iX >= 0 && iX < m_iMaxLevel )
-	{
-		m_pBuffer->trTable [ iX ].m_iHarpoonAmmos = atoi ( szString );
-	}
+    if ( iX >= 0 && iX < m_iMaxLevel )
+    {
+        m_pBuffer->trTable [ iX ].m_iHarpoonAmmos = atoi ( szString );
+    }
 
-	m_pGun->m_iHarpoon = atoi ( szString );
+    m_pGun->m_iHarpoon = atoi ( szString );
 
 }
 
@@ -1020,7 +1020,7 @@ void CTR3SaveGame::SetAmmos8a ( const char *szString, int iX )
 /////////////////////////////////////////////////////////////////////////////
 void CTR3SaveGame::SetUnlimitedAmmos(int iMask)
 {
-	m_pBuffer->trSingle.cUnlimited = iMask;
+    m_pBuffer->trSingle.cUnlimited = iMask;
 }
 
 //
@@ -1029,7 +1029,7 @@ void CTR3SaveGame::SetUnlimitedAmmos(int iMask)
 /////////////////////////////////////////////////////////////////////////////
 int CTR3SaveGame::GetUnlimitedAmmos()
 {
-	return ( m_pBuffer->trSingle.cUnlimited );
+    return ( m_pBuffer->trSingle.cUnlimited );
 }
 
 //
@@ -1038,12 +1038,12 @@ int CTR3SaveGame::GetUnlimitedAmmos()
 /////////////////////////////////////////////////////////////////////////////
 int CTR3SaveGame::Valid()
 {
-	if ( m_pGun != NULL )
-	{
-		return ( 1 );
-	}
+    if ( m_pGun != NULL )
+    {
+        return ( 1 );
+    }
 
-	return 0;
+    return 0;
 }
 
 //
@@ -1052,7 +1052,7 @@ int CTR3SaveGame::Valid()
 /////////////////////////////////////////////////////////////////////////////
 void CTR3SaveGame::SetInvalid()
 {
-	m_pGun = NULL;
+    m_pGun = NULL;
 }
 
 //
@@ -1061,12 +1061,12 @@ void CTR3SaveGame::SetInvalid()
 /////////////////////////////////////////////////////////////////////////////
 int CTR3SaveGame::CheckWeapon1 ( int iX )
 {
-	if ( m_pBuffer->trTable [ iX ].cGunBitmap & iMaskPistol )
-	{
-		return 1;
-	}
+    if ( m_pBuffer->trTable [ iX ].cGunBitmap & iMaskPistol )
+    {
+        return 1;
+    }
 
-	return 0;
+    return 0;
 }
 
 //
@@ -1075,12 +1075,12 @@ int CTR3SaveGame::CheckWeapon1 ( int iX )
 /////////////////////////////////////////////////////////////////////////////
 int CTR3SaveGame::CheckWeapon4 ( int iX )
 {
-	if ( m_pBuffer->trTable [ iX ].cGunBitmap & iMaskShotGun )
-	{
-		return 1;
-	}
+    if ( m_pBuffer->trTable [ iX ].cGunBitmap & iMaskShotGun )
+    {
+        return 1;
+    }
 
-	return 0;
+    return 0;
 }
 
 //
@@ -1089,12 +1089,12 @@ int CTR3SaveGame::CheckWeapon4 ( int iX )
 /////////////////////////////////////////////////////////////////////////////
 int CTR3SaveGame::CheckWeapon2 ( int iX )
 {
-	if ( m_pBuffer->trTable [ iX ].cGunBitmap & iMaskDesertEagle )
-	{
-		return 1;
-	}
+    if ( m_pBuffer->trTable [ iX ].cGunBitmap & iMaskDesertEagle )
+    {
+        return 1;
+    }
 
-	return 0;
+    return 0;
 }
 
 //
@@ -1103,12 +1103,12 @@ int CTR3SaveGame::CheckWeapon2 ( int iX )
 /////////////////////////////////////////////////////////////////////////////
 int CTR3SaveGame::CheckWeapon3 ( int iX )
 {
-	if ( m_pBuffer->trTable [ iX ].cGunBitmap & iMaskUzi )
-	{
-		return 1;
-	}
+    if ( m_pBuffer->trTable [ iX ].cGunBitmap & iMaskUzi )
+    {
+        return 1;
+    }
 
-	return 0;
+    return 0;
 }
 
 //
@@ -1117,12 +1117,12 @@ int CTR3SaveGame::CheckWeapon3 ( int iX )
 /////////////////////////////////////////////////////////////////////////////
 int CTR3SaveGame::CheckWeapon5 ( int iX )
 {
-	if ( m_pBuffer->trTable [ iX ].cGunBitmap & iMaskMP5 )
-	{
-		return 1;
-	}
+    if ( m_pBuffer->trTable [ iX ].cGunBitmap & iMaskMP5 )
+    {
+        return 1;
+    }
 
-	return 0;
+    return 0;
 }
 
 //
@@ -1131,12 +1131,12 @@ int CTR3SaveGame::CheckWeapon5 ( int iX )
 /////////////////////////////////////////////////////////////////////////////
 int CTR3SaveGame::CheckWeapon6 ( int iX )
 {
-	if ( m_pBuffer->trTable [ iX ].cGunBitmap & iMaskRocket )
-	{
-		return 1;
-	}
+    if ( m_pBuffer->trTable [ iX ].cGunBitmap & iMaskRocket )
+    {
+        return 1;
+    }
 
-	return 0;
+    return 0;
 }
 
 //
@@ -1145,12 +1145,12 @@ int CTR3SaveGame::CheckWeapon6 ( int iX )
 /////////////////////////////////////////////////////////////////////////////
 int CTR3SaveGame::CheckWeapon7 ( int iX )
 {
-	if ( m_pBuffer->trTable [ iX ].cGunBitmap & iMaskGrenade )
-	{
-		return 1;
-	}
+    if ( m_pBuffer->trTable [ iX ].cGunBitmap & iMaskGrenade )
+    {
+        return 1;
+    }
 
-	return 0;
+    return 0;
 }
 
 //
@@ -1159,12 +1159,12 @@ int CTR3SaveGame::CheckWeapon7 ( int iX )
 /////////////////////////////////////////////////////////////////////////////
 int CTR3SaveGame::CheckWeapon8 ( int iX )
 {
-	if ( m_pBuffer->trTable [ iX ].cGunBitmap & iMaskHarpoon )
-	{
-		return 1;
-	}
+    if ( m_pBuffer->trTable [ iX ].cGunBitmap & iMaskHarpoon )
+    {
+        return 1;
+    }
 
-	return 0;
+    return 0;
 }
 
 //
@@ -1173,12 +1173,12 @@ int CTR3SaveGame::CheckWeapon8 ( int iX )
 /////////////////////////////////////////////////////////////////////////////
 unsigned char CTR3SaveGame::GrabWeapon0 ( int iX, bool bAdd, bool bChange )
 {
-	unsigned char old = m_pBuffer->trTable [ iX ].cGunBitmap & iMaskCompass;
-	if ( ! bChange ) return old;
+    unsigned char old = m_pBuffer->trTable [ iX ].cGunBitmap & iMaskCompass;
+    if ( ! bChange ) return old;
 
-	if ( bChange ) m_pBuffer->trTable [ iX ].cGunBitmap = iMaskCompass;
-	if ( ! bAdd ) m_pBuffer->trTable [ iX ].cGunBitmap &= ( iMaskCompass ^ 0xff );
-	return old;
+    if ( bChange ) m_pBuffer->trTable [ iX ].cGunBitmap = iMaskCompass;
+    if ( ! bAdd ) m_pBuffer->trTable [ iX ].cGunBitmap &= ( iMaskCompass ^ 0xff );
+    return old;
 }
 
 //
@@ -1187,12 +1187,12 @@ unsigned char CTR3SaveGame::GrabWeapon0 ( int iX, bool bAdd, bool bChange )
 /////////////////////////////////////////////////////////////////////////////
 unsigned char CTR3SaveGame::GrabWeapon1 ( int iX, bool bAdd, bool bChange )
 {
-	unsigned char old = m_pBuffer->trTable [ iX ].cGunBitmap & iMaskPistol;
-	if ( ! bChange ) return old;
+    unsigned char old = m_pBuffer->trTable [ iX ].cGunBitmap & iMaskPistol;
+    if ( ! bChange ) return old;
 
-	if ( bChange ) m_pBuffer->trTable [ iX ].cGunBitmap |= iMaskPistol;
-	if ( ! bAdd ) m_pBuffer->trTable [ iX ].cGunBitmap &= ( iMaskPistol ^ 0xff );
-	return old;
+    if ( bChange ) m_pBuffer->trTable [ iX ].cGunBitmap |= iMaskPistol;
+    if ( ! bAdd ) m_pBuffer->trTable [ iX ].cGunBitmap &= ( iMaskPistol ^ 0xff );
+    return old;
 }
 
 //
@@ -1201,12 +1201,12 @@ unsigned char CTR3SaveGame::GrabWeapon1 ( int iX, bool bAdd, bool bChange )
 /////////////////////////////////////////////////////////////////////////////
 unsigned char CTR3SaveGame::GrabWeapon4 ( int iX, bool bAdd, bool bChange )
 {
-	unsigned char old = m_pBuffer->trTable [ iX ].cGunBitmap & iMaskShotGun;
-	if ( ! bChange ) return old;
+    unsigned char old = m_pBuffer->trTable [ iX ].cGunBitmap & iMaskShotGun;
+    if ( ! bChange ) return old;
 
-	if ( bChange ) m_pBuffer->trTable [ iX ].cGunBitmap |= iMaskShotGun;
-	if ( ! bAdd ) m_pBuffer->trTable [ iX ].cGunBitmap &= ( iMaskShotGun ^ 0xff );
-	return old;
+    if ( bChange ) m_pBuffer->trTable [ iX ].cGunBitmap |= iMaskShotGun;
+    if ( ! bAdd ) m_pBuffer->trTable [ iX ].cGunBitmap &= ( iMaskShotGun ^ 0xff );
+    return old;
 }
 
 //
@@ -1215,12 +1215,12 @@ unsigned char CTR3SaveGame::GrabWeapon4 ( int iX, bool bAdd, bool bChange )
 /////////////////////////////////////////////////////////////////////////////
 unsigned char CTR3SaveGame::GrabWeapon2 ( int iX, bool bAdd, bool bChange )
 {
-	unsigned char old = m_pBuffer->trTable [ iX ].cGunBitmap & iMaskDesertEagle;
-	if ( ! bChange ) return old;
+    unsigned char old = m_pBuffer->trTable [ iX ].cGunBitmap & iMaskDesertEagle;
+    if ( ! bChange ) return old;
 
-	if ( bChange ) m_pBuffer->trTable [ iX ].cGunBitmap |= iMaskDesertEagle;
-	if ( ! bAdd ) m_pBuffer->trTable [ iX ].cGunBitmap &= ( iMaskDesertEagle ^ 0xff );
-	return old;
+    if ( bChange ) m_pBuffer->trTable [ iX ].cGunBitmap |= iMaskDesertEagle;
+    if ( ! bAdd ) m_pBuffer->trTable [ iX ].cGunBitmap &= ( iMaskDesertEagle ^ 0xff );
+    return old;
 }
 
 //
@@ -1229,12 +1229,12 @@ unsigned char CTR3SaveGame::GrabWeapon2 ( int iX, bool bAdd, bool bChange )
 /////////////////////////////////////////////////////////////////////////////
 unsigned char CTR3SaveGame::GrabWeapon3 ( int iX, bool bAdd, bool bChange )
 {
-	unsigned char old = m_pBuffer->trTable [ iX ].cGunBitmap & iMaskUzi;
-	if ( ! bChange ) return old;
+    unsigned char old = m_pBuffer->trTable [ iX ].cGunBitmap & iMaskUzi;
+    if ( ! bChange ) return old;
 
-	if ( bChange ) m_pBuffer->trTable [ iX ].cGunBitmap |= iMaskUzi;
-	if ( ! bAdd ) m_pBuffer->trTable [ iX ].cGunBitmap &= ( iMaskUzi ^ 0xff );
-	return old;
+    if ( bChange ) m_pBuffer->trTable [ iX ].cGunBitmap |= iMaskUzi;
+    if ( ! bAdd ) m_pBuffer->trTable [ iX ].cGunBitmap &= ( iMaskUzi ^ 0xff );
+    return old;
 }
 
 //
@@ -1243,12 +1243,12 @@ unsigned char CTR3SaveGame::GrabWeapon3 ( int iX, bool bAdd, bool bChange )
 /////////////////////////////////////////////////////////////////////////////
 unsigned char CTR3SaveGame::GrabWeapon5 ( int iX, bool bAdd, bool bChange )
 {
-	unsigned char old = m_pBuffer->trTable [ iX ].cGunBitmap & iMaskMP5;
-	if ( ! bChange ) return old;
+    unsigned char old = m_pBuffer->trTable [ iX ].cGunBitmap & iMaskMP5;
+    if ( ! bChange ) return old;
 
-	if ( bChange ) m_pBuffer->trTable [ iX ].cGunBitmap |= iMaskMP5;
-	if ( ! bAdd ) m_pBuffer->trTable [ iX ].cGunBitmap &= ( iMaskMP5 ^ 0xff );
-	return old;
+    if ( bChange ) m_pBuffer->trTable [ iX ].cGunBitmap |= iMaskMP5;
+    if ( ! bAdd ) m_pBuffer->trTable [ iX ].cGunBitmap &= ( iMaskMP5 ^ 0xff );
+    return old;
 }
 
 //
@@ -1257,12 +1257,12 @@ unsigned char CTR3SaveGame::GrabWeapon5 ( int iX, bool bAdd, bool bChange )
 /////////////////////////////////////////////////////////////////////////////
 unsigned char CTR3SaveGame::GrabWeapon8 ( int iX, bool bAdd, bool bChange )
 {
-	unsigned char old = m_pBuffer->trTable [ iX ].cGunBitmap & iMaskHarpoon;
-	if ( ! bChange ) return old;
+    unsigned char old = m_pBuffer->trTable [ iX ].cGunBitmap & iMaskHarpoon;
+    if ( ! bChange ) return old;
 
-	if ( bChange ) m_pBuffer->trTable [ iX ].cGunBitmap |= iMaskHarpoon;
-	if ( ! bAdd ) m_pBuffer->trTable [ iX ].cGunBitmap &= ( iMaskHarpoon ^ 0xff );
-	return old;
+    if ( bChange ) m_pBuffer->trTable [ iX ].cGunBitmap |= iMaskHarpoon;
+    if ( ! bAdd ) m_pBuffer->trTable [ iX ].cGunBitmap &= ( iMaskHarpoon ^ 0xff );
+    return old;
 }
 
 //
@@ -1271,12 +1271,12 @@ unsigned char CTR3SaveGame::GrabWeapon8 ( int iX, bool bAdd, bool bChange )
 /////////////////////////////////////////////////////////////////////////////
 unsigned char CTR3SaveGame::GrabWeapon7 ( int iX, bool bAdd, bool bChange )
 {
-	unsigned char old = m_pBuffer->trTable [ iX ].cGunBitmap & iMaskGrenade;
-	if ( ! bChange ) return old;
+    unsigned char old = m_pBuffer->trTable [ iX ].cGunBitmap & iMaskGrenade;
+    if ( ! bChange ) return old;
 
-	if ( bChange ) m_pBuffer->trTable [ iX ].cGunBitmap |= iMaskGrenade;
-	if ( ! bAdd ) m_pBuffer->trTable [ iX ].cGunBitmap &= ( iMaskGrenade ^ 0xff );
-	return old;
+    if ( bChange ) m_pBuffer->trTable [ iX ].cGunBitmap |= iMaskGrenade;
+    if ( ! bAdd ) m_pBuffer->trTable [ iX ].cGunBitmap &= ( iMaskGrenade ^ 0xff );
+    return old;
 }
 
 //
@@ -1285,12 +1285,12 @@ unsigned char CTR3SaveGame::GrabWeapon7 ( int iX, bool bAdd, bool bChange )
 /////////////////////////////////////////////////////////////////////////////
 unsigned char CTR3SaveGame::GrabWeapon6 ( int iX, bool bAdd, bool bChange )
 {
-	unsigned char old = m_pBuffer->trTable [ iX ].cGunBitmap & iMaskRocket;
-	if ( ! bChange ) return old;
+    unsigned char old = m_pBuffer->trTable [ iX ].cGunBitmap & iMaskRocket;
+    if ( ! bChange ) return old;
 
-	if ( bChange ) m_pBuffer->trTable [ iX ].cGunBitmap |= iMaskRocket;
-	if ( ! bAdd ) m_pBuffer->trTable [ iX ].cGunBitmap &= ( iMaskRocket ^ 0xff );
-	return old;
+    if ( bChange ) m_pBuffer->trTable [ iX ].cGunBitmap |= iMaskRocket;
+    if ( ! bAdd ) m_pBuffer->trTable [ iX ].cGunBitmap &= ( iMaskRocket ^ 0xff );
+    return old;
 }
 
 //
@@ -1299,18 +1299,18 @@ unsigned char CTR3SaveGame::GrabWeapon6 ( int iX, bool bAdd, bool bChange )
 /////////////////////////////////////////////////////////////////////////////
 int CTR3SaveGame::GetGunAmmos ( )
 {
-		int		iX;
+        int     iX;
 
-		/*
-		 *		Get gun state.
-		 */
+        /*
+         *      Get gun state.
+         */
         iX = getLevelIndex ();
-		if ( m_pGun != NULL )
-		{
-			return ( m_pGun->m_iGunAmmos );
-		}
+        if ( m_pGun != NULL )
+        {
+            return ( m_pGun->m_iGunAmmos );
+        }
 
-		return ( m_pBuffer->trTable [ iX ].m_iGunAmmos );
+        return ( m_pBuffer->trTable [ iX ].m_iGunAmmos );
 }
 
 //
@@ -1319,7 +1319,7 @@ int CTR3SaveGame::GetGunAmmos ( )
 /////////////////////////////////////////////////////////////////////////////
 int CTR3SaveGame::GetSmallMedipak ( int iX )
 {
-	return ( m_pBuffer->trTable [ iX ].cSmallPack  );
+    return ( m_pBuffer->trTable [ iX ].cSmallPack  );
 }
 
 //
@@ -1328,7 +1328,7 @@ int CTR3SaveGame::GetSmallMedipak ( int iX )
 /////////////////////////////////////////////////////////////////////////////
 int CTR3SaveGame::GetLargeMedipak ( int iX )
 {
-	return ( m_pBuffer->trTable [ iX ].cLargePack  );
+    return ( m_pBuffer->trTable [ iX ].cLargePack  );
 }
 
 //
@@ -1337,7 +1337,7 @@ int CTR3SaveGame::GetLargeMedipak ( int iX )
 /////////////////////////////////////////////////////////////////////////////
 int CTR3SaveGame::GetFlares ( int iX )
 {
-	return ( m_pBuffer->trTable [ iX ].cFlare );
+    return ( m_pBuffer->trTable [ iX ].cFlare );
 }
 
 //
@@ -1346,7 +1346,7 @@ int CTR3SaveGame::GetFlares ( int iX )
 /////////////////////////////////////////////////////////////////////////////
 int CTR3SaveGame::GetAir ( )
 {
-	return ( m_pGun->iAir );
+    return ( m_pGun->iAir );
 }
 
 //
@@ -1355,7 +1355,7 @@ int CTR3SaveGame::GetAir ( )
 /////////////////////////////////////////////////////////////////////////////
 void CTR3SaveGame::SetSmallMedipak ( const char *szString, int iX )
 {
-	 m_pBuffer->trTable [ iX ].cSmallPack  = atoi ( szString );
+     m_pBuffer->trTable [ iX ].cSmallPack  = atoi ( szString );
 }
 
 //
@@ -1364,7 +1364,7 @@ void CTR3SaveGame::SetSmallMedipak ( const char *szString, int iX )
 /////////////////////////////////////////////////////////////////////////////
 void CTR3SaveGame::SetLargeMedipak ( const char *szString, int iX )
 {
-	m_pBuffer->trTable [ iX ].cLargePack  = atoi ( szString );
+    m_pBuffer->trTable [ iX ].cLargePack  = atoi ( szString );
 }
 
 //
@@ -1373,7 +1373,7 @@ void CTR3SaveGame::SetLargeMedipak ( const char *szString, int iX )
 /////////////////////////////////////////////////////////////////////////////
 void CTR3SaveGame::SetFlares ( const char *szString, int iX )
 {
-	m_pBuffer->trTable [ iX ].cFlare = atoi (  szString );
+    m_pBuffer->trTable [ iX ].cFlare = atoi (  szString );
 }
 
 //
@@ -1382,7 +1382,7 @@ void CTR3SaveGame::SetFlares ( const char *szString, int iX )
 /////////////////////////////////////////////////////////////////////////////
 void CTR3SaveGame::SetAir ( const char *szString )
 {
-	m_pGun->iAir = atoi ( szString );
+    m_pGun->iAir = atoi ( szString );
 }
 
 //
@@ -1391,7 +1391,7 @@ void CTR3SaveGame::SetAir ( const char *szString )
 /////////////////////////////////////////////////////////////////////////////
 char *CTR3SaveGame::GetSaveName ()
 {
-	return ( m_pBuffer->szSavename );
+    return ( m_pBuffer->szSavename );
 }
 
 //
@@ -1400,7 +1400,7 @@ char *CTR3SaveGame::GetSaveName ()
 /////////////////////////////////////////////////////////////////////////////
 int CTR3SaveGame::GetSaveNumber ()
 {
-	return ( m_pBuffer->iSaveNumber );
+    return ( m_pBuffer->iSaveNumber );
 }
 
 //
@@ -1409,7 +1409,7 @@ int CTR3SaveGame::GetSaveNumber ()
 /////////////////////////////////////////////////////////////////////////////
 int CTR3SaveGame::GetCurrentSecrets ()
 {
-	return ( ConvertSecret ( m_pBuffer->trSingle.cSecrets ) );
+    return ( ConvertSecret ( m_pBuffer->trSingle.cSecrets ) );
 }
 
 //
@@ -1418,13 +1418,13 @@ int CTR3SaveGame::GetCurrentSecrets ()
 /////////////////////////////////////////////////////////////////////////////
 void CTR3SaveGame::SetCurrentSecrets ( char *szString, int iX )
 {
-	m_pBuffer->trSingle.cSecrets = 
-		ConvertSecretBack ( atoi ( szString ) );
-	if ( iX >= 0 && iX < m_iMaxLevel )
-	{
-		m_pBuffer->trTable [ iX ].cSecrets =
-			ConvertSecretBack ( atoi ( szString ) );
-	}
+    m_pBuffer->trSingle.cSecrets =
+        ConvertSecretBack ( atoi ( szString ) );
+    if ( iX >= 0 && iX < m_iMaxLevel )
+    {
+        m_pBuffer->trTable [ iX ].cSecrets =
+            ConvertSecretBack ( atoi ( szString ) );
+    }
 }
 
 //
@@ -1433,29 +1433,29 @@ void CTR3SaveGame::SetCurrentSecrets ( char *szString, int iX )
 /////////////////////////////////////////////////////////////////////////////
 void CTR3SaveGame::SetAllSecrets ( )
 {
-	int		iX;
+    int     iX;
 
-	for ( iX = 0; iX < m_iMaxLevel; iX++ )
-	{
-		m_pBuffer->trTable [ iX ].cSecrets =	TR3Secrets [ iX ];
-	}
+    for ( iX = 0; iX < m_iMaxLevel; iX++ )
+    {
+        m_pBuffer->trTable [ iX ].cSecrets =    TR3Secrets [ iX ];
+    }
 }
 
 //
 /////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////
-int	CTR3SaveGame::IsLaraBurning ()
+int CTR3SaveGame::IsLaraBurning ()
 {
-	if ( m_pGun != NULL )
-	{
-		if ( m_pGun->cState & 0x10 )
-		{
-			return 1;
-		}
-	}
+    if ( m_pGun != NULL )
+    {
+        if ( m_pGun->cState & 0x10 )
+        {
+            return 1;
+        }
+    }
 
-	return 0;
+    return 0;
 }
 
 //
@@ -1464,11 +1464,11 @@ int	CTR3SaveGame::IsLaraBurning ()
 /////////////////////////////////////////////////////////////////////////////
 void CTR3SaveGame::SetLaraBurning (int state)
 {
-	if ( m_pGun != NULL && state != -1 )
-	{
-		m_pGun->cState &= 0xEF;
-		m_pGun->cState |= 0x10;
-	}
+    if ( m_pGun != NULL && state != -1 )
+    {
+        m_pGun->cState &= 0xEF;
+        m_pGun->cState |= 0x10;
+    }
 }
 
 //
@@ -1477,10 +1477,10 @@ void CTR3SaveGame::SetLaraBurning (int state)
 /////////////////////////////////////////////////////////////////////////////
 void CTR3SaveGame::SetLaraNoBurning (int state)
 {
-	if ( m_pGun != NULL && state != -1 )
-	{
-		m_pGun->cState &= 0xEF;
-	}
+    if ( m_pGun != NULL && state != -1 )
+    {
+        m_pGun->cState &= 0xEF;
+    }
 }
 
 //
@@ -1489,7 +1489,7 @@ void CTR3SaveGame::SetLaraNoBurning (int state)
 /////////////////////////////////////////////////////////////////////////////
 void CTR3SaveGame::SetAllObjects ()
 {
-	m_pBuffer->trSingle.cObjectMask = 0xff;
+    m_pBuffer->trSingle.cObjectMask = 0xff;
 }
 
 //
@@ -1498,7 +1498,7 @@ void CTR3SaveGame::SetAllObjects ()
 /////////////////////////////////////////////////////////////////////////////
 int CTR3SaveGame::GetMap1 ()
 {
-	return ( m_pBuffer->trSingle.cObject_P1 );
+    return ( m_pBuffer->trSingle.cObject_P1 );
 }
 
 //
@@ -1507,7 +1507,7 @@ int CTR3SaveGame::GetMap1 ()
 /////////////////////////////////////////////////////////////////////////////
 int CTR3SaveGame::GetMap2 ()
 {
-	return ( m_pBuffer->trSingle.cObject_P2 );
+    return ( m_pBuffer->trSingle.cObject_P2 );
 }
 
 //
@@ -1516,7 +1516,7 @@ int CTR3SaveGame::GetMap2 ()
 /////////////////////////////////////////////////////////////////////////////
 int CTR3SaveGame::GetItem1 ()
 {
-	return ( m_pBuffer->trSingle.cObjectP1 );
+    return ( m_pBuffer->trSingle.cObjectP1 );
 }
 
 //
@@ -1525,7 +1525,7 @@ int CTR3SaveGame::GetItem1 ()
 /////////////////////////////////////////////////////////////////////////////
 int CTR3SaveGame::GetItem2 ()
 {
-	return ( m_pBuffer->trSingle.cObjectP2 );
+    return ( m_pBuffer->trSingle.cObjectP2 );
 }
 
 //
@@ -1534,7 +1534,7 @@ int CTR3SaveGame::GetItem2 ()
 /////////////////////////////////////////////////////////////////////////////
 int CTR3SaveGame::GetItem3 ()
 {
-	return ( m_pBuffer->trSingle.cObjectP3 );
+    return ( m_pBuffer->trSingle.cObjectP3 );
 }
 
 //
@@ -1543,7 +1543,7 @@ int CTR3SaveGame::GetItem3 ()
 /////////////////////////////////////////////////////////////////////////////
 int CTR3SaveGame::GetItem4 ()
 {
-	return ( m_pBuffer->trSingle.cObjectP4 );
+    return ( m_pBuffer->trSingle.cObjectP4 );
 }
 
 //
@@ -1552,7 +1552,7 @@ int CTR3SaveGame::GetItem4 ()
 /////////////////////////////////////////////////////////////////////////////
 int CTR3SaveGame::GetKey1 ()
 {
-	return ( m_pBuffer->trSingle.cObjectK1 );
+    return ( m_pBuffer->trSingle.cObjectK1 );
 }
 
 //
@@ -1561,7 +1561,7 @@ int CTR3SaveGame::GetKey1 ()
 /////////////////////////////////////////////////////////////////////////////
 int CTR3SaveGame::GetKey2 ()
 {
-	return ( m_pBuffer->trSingle.cObjectK2 );
+    return ( m_pBuffer->trSingle.cObjectK2 );
 }
 
 //
@@ -1570,7 +1570,7 @@ int CTR3SaveGame::GetKey2 ()
 /////////////////////////////////////////////////////////////////////////////
 int CTR3SaveGame::GetKey3 ()
 {
-	return ( m_pBuffer->trSingle.cObjectK3 );
+    return ( m_pBuffer->trSingle.cObjectK3 );
 }
 
 //
@@ -1579,7 +1579,7 @@ int CTR3SaveGame::GetKey3 ()
 /////////////////////////////////////////////////////////////////////////////
 int CTR3SaveGame::GetKey4 ()
 {
-	return ( m_pBuffer->trSingle.cObjectK4 );
+    return ( m_pBuffer->trSingle.cObjectK4 );
 }
 
 //
@@ -1588,7 +1588,7 @@ int CTR3SaveGame::GetKey4 ()
 /////////////////////////////////////////////////////////////////////////////
 int CTR3SaveGame::GetTreasure1 ( int iX )
 {
-	return ( m_pBuffer->trTable [ iX ].cNbObject1 );
+    return ( m_pBuffer->trTable [ iX ].cNbObject1 );
 }
 
 //
@@ -1597,7 +1597,7 @@ int CTR3SaveGame::GetTreasure1 ( int iX )
 /////////////////////////////////////////////////////////////////////////////
 int CTR3SaveGame::GetTreasure2 ( int iX )
 {
-	return ( m_pBuffer->trTable [ iX ].cNbObject2 );
+    return ( m_pBuffer->trTable [ iX ].cNbObject2 );
 }
 
 //
@@ -1606,7 +1606,7 @@ int CTR3SaveGame::GetTreasure2 ( int iX )
 /////////////////////////////////////////////////////////////////////////////
 int CTR3SaveGame::GetTreasure3 ( int iX )
 {
-	return ( m_pBuffer->trTable [ iX ].cNbObject3 );
+    return ( m_pBuffer->trTable [ iX ].cNbObject3 );
 }
 
 //
@@ -1615,7 +1615,7 @@ int CTR3SaveGame::GetTreasure3 ( int iX )
 /////////////////////////////////////////////////////////////////////////////
 int CTR3SaveGame::GetTreasure4 ( int iX )
 {
-	return ( m_pBuffer->trTable [ iX ].cNbObject4 );
+    return ( m_pBuffer->trTable [ iX ].cNbObject4 );
 }
 
 //
@@ -1624,7 +1624,7 @@ int CTR3SaveGame::GetTreasure4 ( int iX )
 /////////////////////////////////////////////////////////////////////////////
 void CTR3SaveGame::SetMap1 ( char *szString )
 {
-	m_pBuffer->trSingle.cObject_P1 = atoi ( szString );
+    m_pBuffer->trSingle.cObject_P1 = atoi ( szString );
 }
 
 //
@@ -1633,7 +1633,7 @@ void CTR3SaveGame::SetMap1 ( char *szString )
 /////////////////////////////////////////////////////////////////////////////
 void CTR3SaveGame::SetMap2 ( char *szString )
 {
-	m_pBuffer->trSingle.cObject_P2 = atoi ( szString );
+    m_pBuffer->trSingle.cObject_P2 = atoi ( szString );
 }
 
 //
@@ -1642,7 +1642,7 @@ void CTR3SaveGame::SetMap2 ( char *szString )
 /////////////////////////////////////////////////////////////////////////////
 void CTR3SaveGame::SetItem1 ( char *szString )
 {
-	m_pBuffer->trSingle.cObjectP1 = atoi ( szString );
+    m_pBuffer->trSingle.cObjectP1 = atoi ( szString );
 }
 
 //
@@ -1651,7 +1651,7 @@ void CTR3SaveGame::SetItem1 ( char *szString )
 /////////////////////////////////////////////////////////////////////////////
 void CTR3SaveGame::SetItem2 ( char *szString )
 {
-	m_pBuffer->trSingle.cObjectP2 = atoi ( szString );
+    m_pBuffer->trSingle.cObjectP2 = atoi ( szString );
 }
 
 //
@@ -1660,7 +1660,7 @@ void CTR3SaveGame::SetItem2 ( char *szString )
 /////////////////////////////////////////////////////////////////////////////
 void CTR3SaveGame::SetItem3 ( char *szString )
 {
-	m_pBuffer->trSingle.cObjectP3 = atoi ( szString );
+    m_pBuffer->trSingle.cObjectP3 = atoi ( szString );
 }
 
 //
@@ -1669,7 +1669,7 @@ void CTR3SaveGame::SetItem3 ( char *szString )
 /////////////////////////////////////////////////////////////////////////////
 void CTR3SaveGame::SetItem4 ( char *szString )
 {
-	m_pBuffer->trSingle.cObjectP4 = atoi ( szString );
+    m_pBuffer->trSingle.cObjectP4 = atoi ( szString );
 }
 
 //
@@ -1678,7 +1678,7 @@ void CTR3SaveGame::SetItem4 ( char *szString )
 /////////////////////////////////////////////////////////////////////////////
 void CTR3SaveGame::SetKey1 ( char *szString )
 {
-	m_pBuffer->trSingle.cObjectK1 = atoi ( szString );
+    m_pBuffer->trSingle.cObjectK1 = atoi ( szString );
 }
 
 //
@@ -1687,7 +1687,7 @@ void CTR3SaveGame::SetKey1 ( char *szString )
 /////////////////////////////////////////////////////////////////////////////
 void CTR3SaveGame::SetKey2 ( char *szString )
 {
-	m_pBuffer->trSingle.cObjectK2 = atoi ( szString );
+    m_pBuffer->trSingle.cObjectK2 = atoi ( szString );
 }
 
 //
@@ -1696,7 +1696,7 @@ void CTR3SaveGame::SetKey2 ( char *szString )
 /////////////////////////////////////////////////////////////////////////////
 void CTR3SaveGame::SetKey3 ( char *szString )
 {
-	m_pBuffer->trSingle.cObjectK3 = atoi ( szString );
+    m_pBuffer->trSingle.cObjectK3 = atoi ( szString );
 }
 
 //
@@ -1705,7 +1705,7 @@ void CTR3SaveGame::SetKey3 ( char *szString )
 /////////////////////////////////////////////////////////////////////////////
 void CTR3SaveGame::SetKey4 ( char *szString )
 {
-	m_pBuffer->trSingle.cObjectK4 = atoi ( szString );
+    m_pBuffer->trSingle.cObjectK4 = atoi ( szString );
 }
 
 //
@@ -1714,7 +1714,7 @@ void CTR3SaveGame::SetKey4 ( char *szString )
 /////////////////////////////////////////////////////////////////////////////
 void CTR3SaveGame::SetTreasure1 ( char *szString, int iX )
 {
-	m_pBuffer->trTable [ iX ].cNbObject1 = atoi ( szString );
+    m_pBuffer->trTable [ iX ].cNbObject1 = atoi ( szString );
 }
 
 //
@@ -1723,7 +1723,7 @@ void CTR3SaveGame::SetTreasure1 ( char *szString, int iX )
 /////////////////////////////////////////////////////////////////////////////
 void CTR3SaveGame::SetTreasure2 ( char *szString, int iX )
 {
-	m_pBuffer->trTable [ iX ].cNbObject2 = atoi ( szString );
+    m_pBuffer->trTable [ iX ].cNbObject2 = atoi ( szString );
 }
 
 //
@@ -1732,7 +1732,7 @@ void CTR3SaveGame::SetTreasure2 ( char *szString, int iX )
 /////////////////////////////////////////////////////////////////////////////
 void CTR3SaveGame::SetTreasure3 ( char *szString, int iX )
 {
-	m_pBuffer->trTable [ iX ].cNbObject3 = atoi ( szString );
+    m_pBuffer->trTable [ iX ].cNbObject3 = atoi ( szString );
 }
 
 //
@@ -1741,7 +1741,7 @@ void CTR3SaveGame::SetTreasure3 ( char *szString, int iX )
 /////////////////////////////////////////////////////////////////////////////
 void CTR3SaveGame::SetTreasure4 ( char *szString, int iX )
 {
-	m_pBuffer->trTable [ iX ].cNbObject4 = atoi ( szString );
+    m_pBuffer->trTable [ iX ].cNbObject4 = atoi ( szString );
 }
 
 //
@@ -1750,7 +1750,7 @@ void CTR3SaveGame::SetTreasure4 ( char *szString, int iX )
 /////////////////////////////////////////////////////////////////////////////
 int CTR3SaveGame::GetMaximumSecrets ( int iX )
 {
-	return ( ConvertSecret ( TR3Secrets [ iX ] ) );
+    return ( ConvertSecret ( TR3Secrets [ iX ] ) );
 }
 
 //
@@ -1759,18 +1759,18 @@ int CTR3SaveGame::GetMaximumSecrets ( int iX )
 /////////////////////////////////////////////////////////////////////////////
 void CTR3SaveGame::SetGunAmmos ( const char *szGunAmmos )
 {
-	// Do Nothing.
-	/*
-	int				iX;
+    // Do Nothing.
+    /*
+    int             iX;
 
-	if ( m_pGun != NULL )
-	{
-		iX = getLevelIndex ();
-		m_pGun->m_iGunAmmos = atoi ( szHealth );
-		m_pBuffer->trTable [ iX ].m_iGunAmmos = atoi ( szHealth );
-		m_pBuffer->trSingle.m_iGunAmmos = atoi ( szHealth );
-	}
-	 */
+    if ( m_pGun != NULL )
+    {
+        iX = getLevelIndex ();
+        m_pGun->m_iGunAmmos = atoi ( szHealth );
+        m_pBuffer->trTable [ iX ].m_iGunAmmos = atoi ( szHealth );
+        m_pBuffer->trSingle.m_iGunAmmos = atoi ( szHealth );
+    }
+     */
 }
 
 //
@@ -1779,7 +1779,7 @@ void CTR3SaveGame::SetGunAmmos ( const char *szGunAmmos )
 /////////////////////////////////////////////////////////////////////////////
 char *CTR3SaveGame::getBufferAddress ()
 {
-	return ( ( char * ) m_pBuffer );
+    return ( ( char * ) m_pBuffer );
 }
 
 //
@@ -1788,7 +1788,7 @@ char *CTR3SaveGame::getBufferAddress ()
 /////////////////////////////////////////////////////////////////////////////
 char *CTR3SaveGame::getBufferBackupAddress ()
 {
-	return ( ( char * ) m_pBufferBackup );
+    return ( ( char * ) m_pBufferBackup );
 }
 
 //
@@ -1797,7 +1797,7 @@ char *CTR3SaveGame::getBufferBackupAddress ()
 /////////////////////////////////////////////////////////////////////////////
 size_t CTR3SaveGame::getBufferLength()
 {
-	return m_iSaveLength;
+    return m_iSaveLength;
 }
 
 //
@@ -1806,14 +1806,14 @@ size_t CTR3SaveGame::getBufferLength()
 /////////////////////////////////////////////////////////////////////////////
 BOOL CTR3SaveGame::BufferModified ()
 {
-	if ( m_pBuffer != NULL && m_pBufferBackup != NULL && m_iSaveLength > 0 )
-	{
-		if ( CTRXTools::MemoryCompare ( m_pBuffer, m_pBufferBackup, m_iSaveLength ) != 0 )
-		{
-			return TRUE;
-		}
-	}
-	return FALSE;
+    if ( m_pBuffer != NULL && m_pBufferBackup != NULL && m_iSaveLength > 0 )
+    {
+        if ( CTRXTools::MemoryCompare ( m_pBuffer, m_pBufferBackup, m_iSaveLength ) != 0 )
+        {
+            return TRUE;
+        }
+    }
+    return FALSE;
 }
 
 //
@@ -1822,11 +1822,11 @@ BOOL CTR3SaveGame::BufferModified ()
 /////////////////////////////////////////////////////////////////////////////
 void CTR3SaveGame::discard ()
 {
-	if ( m_pBuffer != NULL && m_pBufferBackup != NULL && m_iSaveLength > 0 )
-	{
-		memcpy ( m_pBuffer, m_pBufferBackup, m_iSaveLength );
-	}
-	return;
+    if ( m_pBuffer != NULL && m_pBufferBackup != NULL && m_iSaveLength > 0 )
+    {
+        memcpy ( m_pBuffer, m_pBufferBackup, m_iSaveLength );
+    }
+    return;
 }
 
 //
@@ -1835,42 +1835,42 @@ void CTR3SaveGame::discard ()
 /////////////////////////////////////////////////////////////////////////////
 const TR_POSITION *CTR3SaveGame::GetPosition ( )
 {
-	GetLife ();
-	if ( m_pLife != NULL )
-	{
-		long dwDelta = (long) ( (BYTE* )m_pLife - (BYTE* )m_pBuffer );
-		TR_POSITION *position = ( TR_POSITION *) ( (BYTE *) m_pLife - TR_POSITION_OFFSET );
-		int tombraider = GetFullVersion();
-		int levelIndex = GetLevelIndex();
-		BOOL bCheck = 
-			CheckAreaForCoordinates ( tombraider, levelIndex, 
-				position->wRoom, position->dwWestToEast, position->dwVertical,  position->dwSouthToNorth );
-		if ( bCheck )
-		{
-			return position;
-		}
-	}
+    GetLife ();
+    if ( m_pLife != NULL )
+    {
+        long dwDelta = (long) ( (BYTE* )m_pLife - (BYTE* )m_pBuffer );
+        TR_POSITION *position = ( TR_POSITION *) ( (BYTE *) m_pLife - TR_POSITION_OFFSET );
+        int tombraider = GetFullVersion();
+        int levelIndex = GetLevelIndex();
+        BOOL bCheck =
+            CheckAreaForCoordinates ( tombraider, levelIndex,
+                position->wRoom, position->dwWestToEast, position->dwVertical,  position->dwSouthToNorth );
+        if ( bCheck )
+        {
+            return position;
+        }
+    }
 
-	//
-	//	Search Extended
-	if ( CTRXGlobal::m_iSearchPosExt )
-	{
-		for ( int i = 0xA00; i < 0x2350; i++ )
-		{
-			TR_POSITION *position = ( TR_POSITION *) ( (BYTE *) m_pBuffer + i );
-			int tombraider = GetFullVersion();
-			int levelIndex = GetLevelIndex();
-			BOOL bCheck = 
-				CheckAreaForCoordinates ( tombraider, levelIndex, 
-					position->wRoom, position->dwWestToEast, position->dwVertical,  position->dwSouthToNorth );
-			if ( bCheck )
-			{
-				return position;
-			}
-		}
-	}
+    //
+    //  Search Extended
+    if ( CTRXGlobal::m_iSearchPosExt )
+    {
+        for ( int i = 0xA00; i < 0x2350; i++ )
+        {
+            TR_POSITION *position = ( TR_POSITION *) ( (BYTE *) m_pBuffer + i );
+            int tombraider = GetFullVersion();
+            int levelIndex = GetLevelIndex();
+            BOOL bCheck =
+                CheckAreaForCoordinates ( tombraider, levelIndex,
+                    position->wRoom, position->dwWestToEast, position->dwVertical,  position->dwSouthToNorth );
+            if ( bCheck )
+            {
+                return position;
+            }
+        }
+    }
 
-	return NULL;
+    return NULL;
 }
 
 //
@@ -1879,27 +1879,27 @@ const TR_POSITION *CTR3SaveGame::GetPosition ( )
 /////////////////////////////////////////////////////////////////////////////
 BOOL CTR3SaveGame::SetPosition ( DWORD dwWestToEast, DWORD dwVertical, DWORD dwSouthToNorth, WORD wDirection, WORD wRoom )
 {
-	GetLife ();
+    GetLife ();
 
-	//	Check if position was good
-	if ( GetPosition ( ) == NULL )
-	{
-		return FALSE;
-	}
+    //  Check if position was good
+    if ( GetPosition ( ) == NULL )
+    {
+        return FALSE;
+    }
 
-	if ( m_pLife != NULL )
-	{
-		long dwDelta = (long) ( (BYTE* )m_pLife - (BYTE* )m_pBuffer );
-		TR_POSITION *position = ( TR_POSITION *) ( (BYTE *) m_pLife - TR_POSITION_OFFSET );
-		position->dwWestToEast		= dwWestToEast;
-		position->dwVertical		= dwVertical;
-		position->dwSouthToNorth	= dwSouthToNorth;
-		position->wOrientation		= wDirection;
-		position->wRoom				= wRoom;
+    if ( m_pLife != NULL )
+    {
+        long dwDelta = (long) ( (BYTE* )m_pLife - (BYTE* )m_pBuffer );
+        TR_POSITION *position = ( TR_POSITION *) ( (BYTE *) m_pLife - TR_POSITION_OFFSET );
+        position->dwWestToEast      = dwWestToEast;
+        position->dwVertical        = dwVertical;
+        position->dwSouthToNorth    = dwSouthToNorth;
+        position->wOrientation      = wDirection;
+        position->wRoom             = wRoom;
 
-		return TRUE;
-	}
+        return TRUE;
+    }
 
-	return FALSE;
+    return FALSE;
 }
 

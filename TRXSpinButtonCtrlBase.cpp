@@ -24,8 +24,8 @@ CTRXSpinButtonCtrlBase::~CTRXSpinButtonCtrlBase(void)
 {
 }
 BEGIN_MESSAGE_MAP(CTRXSpinButtonCtrlBase, CSpinButtonCtrl)
-	ON_WM_ERASEBKGND()
-	ON_WM_CTLCOLOR()
+    ON_WM_ERASEBKGND()
+    ON_WM_CTLCOLOR()
 END_MESSAGE_MAP()
 
 //
@@ -34,17 +34,17 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 HBRUSH CTRXSpinButtonCtrlBase::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 {
-	// TODO: Add Code Here
-	HBRUSH hBrush = CTRXTools::OnCtlColor ( pDC, pWnd, nCtlColor );
-	if ( hBrush != NULL )
-	{
-		return hBrush;
-	}
+    // TODO: Add Code Here
+    HBRUSH hBrush = CTRXTools::OnCtlColor ( pDC, pWnd, nCtlColor );
+    if ( hBrush != NULL )
+    {
+        return hBrush;
+    }
 
-	HBRUSH hbr = CSpinButtonCtrl::OnCtlColor(pDC, pWnd, nCtlColor);
+    HBRUSH hbr = CSpinButtonCtrl::OnCtlColor(pDC, pWnd, nCtlColor);
 
-	// TODO: Add Code Here
-	return hbr;
+    // TODO: Add Code Here
+    return hbr;
 }
 
 //
@@ -53,12 +53,12 @@ HBRUSH CTRXSpinButtonCtrlBase::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 /////////////////////////////////////////////////////////////////////////////
 BOOL CTRXSpinButtonCtrlBase::OnEraseBkgnd(CDC* pDC)
 {
-	// TODO: Add Code Here
-	if ( CTRXTools::OnEraseBkgnd(pDC, this ) )
-	{
-		return TRUE;
-	}
+    // TODO: Add Code Here
+    if ( CTRXTools::OnEraseBkgnd(pDC, this ) )
+    {
+        return TRUE;
+    }
 
-	return CSpinButtonCtrl::OnEraseBkgnd(pDC);
+    return CSpinButtonCtrl::OnEraseBkgnd(pDC);
 }
 

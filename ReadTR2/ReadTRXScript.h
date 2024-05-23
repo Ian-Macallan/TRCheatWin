@@ -15,42 +15,42 @@ Options is a set of bit flags with several global game settings (name of the set
 
  **/
 
-//	Size : 7
+//  Size : 7
 struct tr4_script_header // 9 bytes
 {
-	xuint8_t		Options;
-	xuint8_t		Filler[3];     // Unused
-	xuint32_t		InputTimeout;
-	xuint8_t		Security;
+    xuint8_t        Options;
+    xuint8_t        Filler[3];     // Unused
+    xuint32_t       InputTimeout;
+    xuint8_t        Security;
 };
 
-//	Size : 15
+//  Size : 15
 struct tr4_script_levelheader
 {
-	xuint8_t		NumTotalLevels;
-	xuint16_t		NumUniqueLevelPaths;
+    xuint8_t        NumTotalLevels;
+    xuint16_t       NumUniqueLevelPaths;
 
-	xuint16_t		LevelpathStringLen;
-	xuint16_t		LevelBlockLen;
+    xuint16_t       LevelpathStringLen;
+    xuint16_t       LevelBlockLen;
 
-	xuint8_t		PSXLevelString [5];    //  typically ".PSX"
-	xuint8_t		PSXFMVString   [5];    //  typically ".FMV"
-	xuint8_t		PSXCutString [5];    //  typically ".CUT"
-	xuint8_t		Filler [5];            //  Possibly for some additional extension type?
+    xuint8_t        PSXLevelString [5];    //  typically ".PSX"
+    xuint8_t        PSXFMVString   [5];    //  typically ".FMV"
+    xuint8_t        PSXCutString [5];    //  typically ".CUT"
+    xuint8_t        Filler [5];            //  Possibly for some additional extension type?
 
-	xuint8_t		PCLevelString  [5];    //  typically ".TR4"
-	xuint8_t		PCFMVString    [5];    //  typically ".BIK"
-	xuint8_t		PCCutString    [5];    //  typically ".TR4"
-	xuint8_t		Unused [5];
+    xuint8_t        PCLevelString  [5];    //  typically ".TR4"
+    xuint8_t        PCFMVString    [5];    //  typically ".BIK"
+    xuint8_t        PCCutString    [5];    //  typically ".TR4"
+    xuint8_t        Unused [5];
 };
 
 //
 struct tr4_script_levellisting
 {
-	xuint16_t OffsetsToLevelpathString[1 /* NumTotalLevels */ ];
-	xuint8_t LevelpathStringBlock [1 /* LevelpathStringLen */ ];
+    xuint16_t OffsetsToLevelpathString[1 /* NumTotalLevels */ ];
+    xuint8_t LevelpathStringBlock [1 /* LevelpathStringLen */ ];
 
-	xuint16_t OffsetsToLevelData [1 /* NumTotalLevels */ ];
+    xuint16_t OffsetsToLevelData [1 /* NumTotalLevels */ ];
 };
 
 //
@@ -77,149 +77,149 @@ struct tr4_lang_stringdata
 };
 #endif
 
-//	FMV
+//  FMV
 struct LevelDatax80
 {
-	BYTE	opcode;
-	xbitu8	val; // 4 least significant bits represent the FMV index; 4 most significant bits (y) represent the FMV trigger bitfield as in y=1<->bit 8 set
+    BYTE    opcode;
+    xbitu8  val; // 4 least significant bits represent the FMV index; 4 most significant bits (y) represent the FMV trigger bitfield as in y=1<->bit 8 set
 };
 
-//	Level
-struct LevelDatax81 
+//  Level
+struct LevelDatax81
 {
-	BYTE		opcode;
-	xbitu8		stringIndex;
-	xuint16_t	levelOptions;
-	xbitu8		pathIndex;
-	xbitu8		audio;
+    BYTE        opcode;
+    xbitu8      stringIndex;
+    xuint16_t   levelOptions;
+    xbitu8      pathIndex;
+    xbitu8      audio;
 };
 
-//	Title
+//  Title
 struct LevelDatax82
 {
-	BYTE		opcode;
-	xbitu8		pathIndex;		// Path Index seems to have another meaning in TR5
-	xuint16_t	titleOptions;
-	xbitu8		audio;
+    BYTE        opcode;
+    xbitu8      pathIndex;      // Path Index seems to have another meaning in TR5
+    xuint16_t   titleOptions;
+    xbitu8      audio;
 };
 
-//	 level-data-end  no arguments - this opcode appears at the end of every level (incl. title) block
+//   level-data-end  no arguments - this opcode appears at the end of every level (incl. title) block
 struct LevelDatax83
 {
-	BYTE	opcode;
+    BYTE    opcode;
 };
 
-//	CUT
+//  CUT
 struct LevelDatax84
 {
-	BYTE	opcode;
-	xbitu8	cutIndex;
+    BYTE    opcode;
+    xbitu8  cutIndex;
 };
 
-//	ResidentCut
-//	85 86 87 88
+//  ResidentCut
+//  85 86 87 88
 struct LevelDatax85
 {
-	BYTE	opcode;
-	xbitu8	cutIndex;
+    BYTE    opcode;
+    xbitu8  cutIndex;
 };
 
-//	Layer1
+//  Layer1
 struct LevelDatax89
 {
-	BYTE	opcode;
-	xbitu8	red; xbitu8 green; xbitu8 blue; xbiti8 speed;
+    BYTE    opcode;
+    xbitu8  red; xbitu8 green; xbitu8 blue; xbiti8 speed;
 };
 
-//	Layer2
+//  Layer2
 struct LevelDatax8A
 {
-	BYTE	opcode;
-	xbitu8	red; xbitu8 green; xbitu8 blue; xbiti8 speed;
+    BYTE    opcode;
+    xbitu8  red; xbitu8 green; xbitu8 blue; xbiti8 speed;
 };
 
-//	UVrotate
+//  UVrotate
 struct LevelDatax8B
 {
-	BYTE	opcode;
-	xbiti8	speed;
+    BYTE    opcode;
+    xbiti8  speed;
 };
 
-//	Legend
+//  Legend
 struct LevelDatax8C
 {
-	BYTE	opcode;
-	xbitu8	stringIndex;
+    BYTE    opcode;
+    xbitu8  stringIndex;
 };
 
-//	LensFlare
+//  LensFlare
 struct LevelDatax8D
 {
-	BYTE	opcode;
-	xuint16_t yClicks; xuint16_t zClicks; xuint16_t xClicks; xbitu8 red; xbitu8 green; xbitu8 blue;
+    BYTE    opcode;
+    xuint16_t yClicks; xuint16_t zClicks; xuint16_t xClicks; xbitu8 red; xbitu8 green; xbitu8 blue;
 };
 
-//	Mirror
+//  Mirror
 struct LevelDatax8E
 {
-	BYTE	opcode;
-	xbitu8	room; xbit32 xAxis;
+    BYTE    opcode;
+    xbitu8  room; xbit32 xAxis;
 };
 
-//	Fog
+//  Fog
 struct LevelDatax8F
 {
-	BYTE	opcode;
-	xbitu8	red; xbitu8 green; xbitu8 blue;
+    BYTE    opcode;
+    xbitu8  red; xbitu8 green; xbitu8 blue;
 };
 
-//	AnimatingMIP
+//  AnimatingMIP
 struct LevelDatax90
 {
-	BYTE	opcode;
-	xbitu8	val; //: 4 least significant bits represent animatingObjectIndex - 1; 4 most significant bits represent the distance
+    BYTE    opcode;
+    xbitu8  val; //: 4 least significant bits represent animatingObjectIndex - 1; 4 most significant bits represent the distance
 };
 
-//	LoadCamera
+//  LoadCamera
 struct LevelDatax91
 {
-	BYTE	opcode;
-	xbit32	srcX; xbit32 srcY; xbit32 srcZ; xbit32 targX; xbit32 targY; xbit32 targZ; xbitu8 room;
+    BYTE    opcode;
+    xbit32  srcX; xbit32 srcY; xbit32 srcZ; xbit32 targX; xbit32 targY; xbit32 targZ; xbitu8 room;
 };
 
-//	ResetHUB
+//  ResetHUB
 struct LevelDatax92
 {
-	BYTE	opcode;
-	xbitu8	levelIndex;
+    BYTE    opcode;
+    xbitu8  levelIndex;
 };
 
-//	ResetHUB
+//  ResetHUB
 struct LevelDatax92_5
 {
-	BYTE	opcode;
-	xbitu8	levelIndex;
-	xbitu8	other [ 13 ];
+    BYTE    opcode;
+    xbitu8  levelIndex;
+    xbitu8  other [ 13 ];
 };
 
-//	0x93 -> 0xD9
+//  0x93 -> 0xD9
 struct LevelDatax93
 {
-	BYTE		opcode;
-	xuint16_t	stringIndex; 
-	xuint16_t	height; 
-	xuint16_t	size; 
-	xuint16_t	yAngle; 
-	xuint16_t	zAngle; 
-	xuint16_t	xAngle; 
-	xuint16_t	unknown;
+    BYTE        opcode;
+    xuint16_t   stringIndex;
+    xuint16_t   height;
+    xuint16_t   size;
+    xuint16_t   yAngle;
+    xuint16_t   zAngle;
+    xuint16_t   xAngle;
+    xuint16_t   unknown;
 };
 
-//	LoseItemAtStartup
+//  LoseItemAtStartup
 struct LevelDataxDA
 {
-	BYTE		opcode;
-	xuint16_t	itemNumber;
+    BYTE        opcode;
+    xuint16_t   itemNumber;
 };
 
 //
@@ -227,13 +227,13 @@ struct LevelDataxDA
 
 
 //
-//	For Adding Items Label
-//	For Lavel What is 0
+//  For Adding Items Label
+//  For Lavel What is 0
 typedef void (*FCT_AddToItemsLabels)( int what, int level, int button, const char *pText, const char *pLevelName );
 
-extern BOOL ReadTRXLanguage (	const char *pFilename, const char *pDirectory, int iLang, int version, bool bWrite = true );
-extern BOOL ReadTRXScript (		const char *pathname, const char *pDirectory, int version = 4, bool bWrite = true,
-								FCT_AddToItemsLabels function = NULL );
+extern BOOL ReadTRXLanguage (   const char *pFilename, const char *pDirectory, int iLang, int version, bool bWrite = true );
+extern BOOL ReadTRXScript (     const char *pathname, const char *pDirectory, int version = 4, bool bWrite = true,
+                                FCT_AddToItemsLabels function = NULL );
 
 //
 extern BOOL WriteTRXLanguage ( const char *pFilename, const char *pDirectory, int iLang, int version );

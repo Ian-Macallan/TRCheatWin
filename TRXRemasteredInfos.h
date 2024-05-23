@@ -12,28 +12,28 @@
 /////////////////////////////////////////////////////////////////////////////
 class CTRXRemasteredInfos : public CTRXDialogBase
 {
-		DECLARE_DYNAMIC(CTRXRemasteredInfos)
+        DECLARE_DYNAMIC(CTRXRemasteredInfos)
 
-	public:
-		CTRXRemasteredInfos(CWnd* pParent = NULL);   // constructeur standard
-		virtual ~CTRXRemasteredInfos();
+    public:
+        CTRXRemasteredInfos(CWnd* pParent = NULL);   // constructeur standard
+        virtual ~CTRXRemasteredInfos();
 
-	// Données de boîte de dialogue
-		enum { IDD = IDD_REMASTERED_INFO };
+    // Données de boîte de dialogue
+        enum { IDD = IDD_REMASTERED_INFO };
 
-	public:
-		int				m_iTombraider;
-		int				m_iBlock;
-		int				m_iSlot;
-		int				m_iLevel;
+    public:
+        int             m_iTombraider;
+        int             m_iBlock;
+        int             m_iSlot;
+        int             m_iLevel;
 
-	protected:
-		virtual void DoDataExchange(CDataExchange* pDX);    // Prise en charge de DDX/DDV
+    protected:
+        virtual void DoDataExchange(CDataExchange* pDX);    // Prise en charge de DDX/DDV
 
-		DECLARE_MESSAGE_MAP()
-	public:
-		virtual BOOL OnInitDialog();
-		CTRXEditBase m_Text;
-		CTRXButtonBase m_OK;
-		CTRXButtonBase m_Cancel;
+        DECLARE_MESSAGE_MAP()
+    public:
+        virtual BOOL OnInitDialog();
+        CTRXEditBase m_Text;
+        CTRXButtonBase m_OK;
+        CTRXButtonBase m_Cancel;
 };

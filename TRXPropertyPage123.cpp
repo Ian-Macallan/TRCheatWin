@@ -21,13 +21,13 @@ IMPLEMENT_DYNAMIC(CTRXPropertyPage123, CTRXPropertyPageBase)
 /////////////////////////////////////////////////////////////////////////////
 CTRXPropertyPage123::CTRXPropertyPage123( UINT code ) : CTRXPropertyPageBase(code)
 {
-	m_bModified			= FALSE;
-	m_bApplyActive		= FALSE;
+    m_bModified         = FALSE;
+    m_bApplyActive      = FALSE;
 
-	m_SetManualCombo	= true;
-	m_SetManualList		= true;
+    m_SetManualCombo    = true;
+    m_SetManualList     = true;
 
-	m_pContextMenu		= NULL;
+    m_pContextMenu      = NULL;
 }
 
 //
@@ -44,7 +44,7 @@ CTRXPropertyPage123::~CTRXPropertyPage123()
 /////////////////////////////////////////////////////////////////////////////
 void CTRXPropertyPage123::DoDataExchange(CDataExchange* pDX)
 {
-	CTRXPropertyPageBase::DoDataExchange(pDX);
+    CTRXPropertyPageBase::DoDataExchange(pDX);
 }
 
 //
@@ -52,8 +52,8 @@ void CTRXPropertyPage123::DoDataExchange(CDataExchange* pDX)
 //
 /////////////////////////////////////////////////////////////////////////////
 BEGIN_MESSAGE_MAP(CTRXPropertyPage123, CTRXPropertyPageBase)
-	ON_WM_SIZE()
-	ON_WM_MOVE()
+    ON_WM_SIZE()
+    ON_WM_MOVE()
 END_MESSAGE_MAP()
 
 //
@@ -67,9 +67,9 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 void CTRXPropertyPage123::OnSize(UINT nType, int cx, int cy)
 {
-	CTRXPropertyPageBase::OnSize(nType, cx, cy);
+    CTRXPropertyPageBase::OnSize(nType, cx, cy);
 
-	// TODO: Add Your handler here
+    // TODO: Add Your handler here
 }
 
 //
@@ -78,9 +78,9 @@ void CTRXPropertyPage123::OnSize(UINT nType, int cx, int cy)
 /////////////////////////////////////////////////////////////////////////////
 void CTRXPropertyPage123::OnMove(int x, int y)
 {
-	CTRXPropertyPageBase::OnMove(x, y);
+    CTRXPropertyPageBase::OnMove(x, y);
 
-	// TODO: Add Your handler here
+    // TODO: Add Your handler here
 }
 
 //
@@ -89,9 +89,9 @@ void CTRXPropertyPage123::OnMove(int x, int y)
 /////////////////////////////////////////////////////////////////////////////
 void CTRXPropertyPage123::OnCancel()
 {
-	// TODO: Add Your handler here
+    // TODO: Add Your handler here
 
-	CTRXPropertyPageBase::OnCancel();
+    CTRXPropertyPageBase::OnCancel();
 }
 
 //
@@ -100,9 +100,9 @@ void CTRXPropertyPage123::OnCancel()
 /////////////////////////////////////////////////////////////////////////////
 void CTRXPropertyPage123::OnOK()
 {
-	// TODO: Add Your handler here
+    // TODO: Add Your handler here
 
-	CTRXPropertyPageBase::OnOK();
+    CTRXPropertyPageBase::OnOK();
 }
 
 //
@@ -111,21 +111,21 @@ void CTRXPropertyPage123::OnOK()
 /////////////////////////////////////////////////////////////////////////////
 int CTRXPropertyPage123::GetValue ( CEdit &edit )
 {
-	//
-	char szString [ 32 ];
-	ZeroMemory ( szString, sizeof(szString) );
-	edit.GetWindowText ( szString, sizeof(szString) );
-	int result = 0;
-	if ( strncmp ( szString, "0x", 2 ) == 0 )
-	{
-		sscanf_s ( szString + 2, "%x", &result );
-	}
-	else
-	{
-		result = atoi(szString);
-	}
+    //
+    char szString [ 32 ];
+    ZeroMemory ( szString, sizeof(szString) );
+    edit.GetWindowText ( szString, sizeof(szString) );
+    int result = 0;
+    if ( strncmp ( szString, "0x", 2 ) == 0 )
+    {
+        sscanf_s ( szString + 2, "%x", &result );
+    }
+    else
+    {
+        result = atoi(szString);
+    }
 
-	return result;
+    return result;
 }
 
 //
@@ -134,7 +134,7 @@ int CTRXPropertyPage123::GetValue ( CEdit &edit )
 /////////////////////////////////////////////////////////////////////////////
 int CTRXPropertyPage123::GetValue ( CButton &button )
 {
-	return button.GetCheck();
+    return button.GetCheck();
 }
 
 //
@@ -143,10 +143,10 @@ int CTRXPropertyPage123::GetValue ( CButton &button )
 /////////////////////////////////////////////////////////////////////////////
 BOOL CTRXPropertyPage123::PreTranslateMessage(MSG* pMsg)
 {
-	// TODO: Add Your Code Here
-	m_ToolTip.RelayEvent(pMsg);
+    // TODO: Add Your Code Here
+    m_ToolTip.RelayEvent(pMsg);
 
-	return CTRXPropertyPageBase::PreTranslateMessage(pMsg);
+    return CTRXPropertyPageBase::PreTranslateMessage(pMsg);
 }
 
 //
@@ -155,11 +155,11 @@ BOOL CTRXPropertyPage123::PreTranslateMessage(MSG* pMsg)
 /////////////////////////////////////////////////////////////////////////////
 BOOL CTRXPropertyPage123::OnInitDialog()
 {
-	CTRXPropertyPageBase::OnInitDialog();
+    CTRXPropertyPageBase::OnInitDialog();
 
-	//
-	return TRUE;  // return TRUE unless you set the focus to a control
-	// EXCEPTION : les pages de propriétés OCX devraient retourner FALSE
+    //
+    return TRUE;  // return TRUE unless you set the focus to a control
+    // EXCEPTION : les pages de propriétés OCX devraient retourner FALSE
 }
 
 //
@@ -168,17 +168,17 @@ BOOL CTRXPropertyPage123::OnInitDialog()
 /////////////////////////////////////////////////////////////////////////////
 void  CTRXPropertyPage123::SetGUIModified( BOOL bChanged )
 {
-	if ( CTR9SaveGame::I(FALSE) == NULL )
-	{
-		m_bModified	= FALSE;
-		return;
-	}
+    if ( CTR9SaveGame::I(FALSE) == NULL )
+    {
+        m_bModified = FALSE;
+        return;
+    }
 
-	m_bModified	= bChanged;
-	if ( m_bApplyActive )
-	{
-		CTRXPropertyPageBase::SetModified ( bChanged );
-	}
+    m_bModified = bChanged;
+    if ( m_bApplyActive )
+    {
+        CTRXPropertyPageBase::SetModified ( bChanged );
+    }
 }
 
 //
@@ -187,7 +187,7 @@ void  CTRXPropertyPage123::SetGUIModified( BOOL bChanged )
 /////////////////////////////////////////////////////////////////////////////
 BOOL CTRXPropertyPage123::IsGUIModified()
 {
-	return m_bModified;
+    return m_bModified;
 }
 
 //
@@ -196,6 +196,6 @@ BOOL CTRXPropertyPage123::IsGUIModified()
 /////////////////////////////////////////////////////////////////////////////
 void CTRXPropertyPage123::SetApply(BOOL bApply )
 {
-	 m_bApplyActive	= bApply;
+     m_bApplyActive = bApply;
 }
 

@@ -3,7 +3,7 @@
 #include "GunGrids.h"
 
 #ifndef TR4NGMAXLEVEL
-#define TR4NGMAXLEVEL		38
+#define TR4NGMAXLEVEL       38
 #endif
 
 //
@@ -12,17 +12,17 @@
 /////////////////////////////////////////////////////////////////////////////
 struct TwoLabels
 {
-	char *label1;
-	char *label2;
+    char *label1;
+    char *label2;
 };
 
 //
 struct FourLabels
 {
-	char *label1;
-	char *label2;
-	char *label3;
-	char *label4;
+    char *label1;
+    char *label2;
+    char *label3;
+    char *label4;
 };
 
 
@@ -39,14 +39,14 @@ extern FourLabels TR3_Object_Label [TR3_LEVELS];
 extern TwoLabels TR3_Map_Label [TR3_LEVELS];
 extern FourLabels TR3_Treasure_Label [TR3_LEVELS];
 
-#define		NB_BUTTONS		29
-//	TR4
+#define     NB_BUTTONS      29
+//  TR4
 extern char *TR4ItemsName [NB_BUTTONS];
 
-//	TR4
+//  TR4
 extern char *TR4ItemsName01 [NB_BUTTONS];
-//	Race For Iris
-#define	TR4ItemsName02	TR4ItemsName01
+//  Race For Iris
+#define TR4ItemsName02  TR4ItemsName01
 
 //
 extern char *TR4ItemsName03 [NB_BUTTONS];
@@ -84,10 +84,10 @@ extern char *TR4ItemsName34 [NB_BUTTONS];
 extern char *TR4ItemsName35 [NB_BUTTONS];
 extern char *TR4ItemsName36 [NB_BUTTONS];
 extern char *TR4ItemsName37 [NB_BUTTONS];
-//	Temple Of Horus
-#define	TR4ItemsName38	TR4ItemsName37
+//  Temple Of Horus
+#define TR4ItemsName38  TR4ItemsName37
 
-//	TR5
+//  TR5
 extern char *TR5ItemsName [NB_BUTTONS];
 
 //
@@ -105,7 +105,7 @@ extern char *TR5ItemsName11 [NB_BUTTONS];
 extern char *TR5ItemsName12 [NB_BUTTONS];
 extern char *TR5ItemsName14 [NB_BUTTONS];
 
-//	TR4 Custom Levels
+//  TR4 Custom Levels
 extern char *TR49ItemsNameInd [ TR4NGMAXLEVEL ] [ NB_BUTTONS ];
 extern char *TR49ItemsNameGen [ NB_BUTTONS ];
 
