@@ -172,18 +172,18 @@ CTRXCHEATWINApp theApp;
 /////////////////////////////////////////////////////////////////////////////
 void SetStdOutToNewConsole()
 {
-    int hConHandle;
-    long lStdHandle;
-    FILE *fp;
+    int			hConHandle;
+    intptr_t	lStdHandle;
+    FILE		*fp;
 
     // Allocate a console for this app
     AllocConsole();
 
     // Redirect unbuffered STDOUT to the console
-    lStdHandle = (long)GetStdHandle(STD_OUTPUT_HANDLE);
-    hConHandle = _open_osfhandle(lStdHandle, _O_TEXT);
-    fp = _fdopen(hConHandle, "w");
-    *stdout = *fp;
+    lStdHandle	= (intptr_t) GetStdHandle(STD_OUTPUT_HANDLE);
+    hConHandle	= _open_osfhandle(lStdHandle, _O_TEXT);
+    fp			= _fdopen(hConHandle, "w");
+    *stdout		= *fp;
 
     setvbuf(stdout, NULL, _IONBF, 0);
 }
