@@ -1589,7 +1589,8 @@ void *CTR4NGSaveGame::GetIndicatorAddress ()
     BYTE *pBuffer   = ( BYTE * ) m_pBuffer;
     for ( int i = 0x0280; i < 0x3000; i++ )
     {
-        if ( ( pBuffer [ i ] == 0x02 &&  pBuffer [ i + 1 ] == 0x02 /* && pBuffer [ i + 2 ] == 0x00 */ && pBuffer [ i + 3 ] == 0x67 ) )  // Normal
+        if ( ( pBuffer [ i ] == 0x02 &&  pBuffer [ i + 1 ] == 0x02 /* && pBuffer [ i + 2 ] == 0x00 */ && pBuffer [ i + 3 ] == 0x67 ) ||     // Standing
+             ( pBuffer [ i ] == 0x03 &&  pBuffer [ i + 1 ] == 0x00 /* && pBuffer [ i + 2 ] == 0x00 */ && pBuffer [ i + 3 ] == 0x02 )      ) // With Guns
         {
             return pBuffer + i;
         }
@@ -1791,7 +1792,27 @@ TR4NG_POSITION *CTR4NGSaveGame::GetTR4Position ( )
             DWORD dwVertical        = pTR4Position->wVertical * TR4NG_FACTOR;
             DWORD dwWestToEast      = pTR4Position->wWestToEast * TR4NG_FACTOR;
             WORD wRoom              = pTR4Position->cRoom;
-            if ( dwSouthToNorth == 0 && dwVertical == 0 && dwWestToEast == 0 && wRoom == 0 )
+
+            int countZero = 0;
+            if ( dwSouthToNorth == 0 )
+            {
+                countZero++;
+            }
+            if ( dwVertical == 0 )
+            {
+                countZero++;
+            }
+            if ( dwWestToEast == 0 )
+            {
+                countZero++;
+            }
+            if ( wRoom == 0 )
+            {
+                countZero++;
+            }
+
+            //  Too Much Zeroes
+            if ( countZero >= 3 )
             {
                 continue;
             }
@@ -1819,7 +1840,27 @@ TR4NG_POSITION *CTR4NGSaveGame::GetTR4Position ( )
             DWORD dwVertical        = ( DWORD ) pTR4Position->wVertical * TR4NG_FACTOR;
             DWORD dwWestToEast      = ( DWORD ) pTR4Position->wWestToEast * TR4NG_FACTOR;
             WORD wRoom              = pTR4Position->cRoom;
-            if ( dwSouthToNorth == 0 && dwVertical == 0 && dwWestToEast == 0 && wRoom == 0 )
+
+            int countZero = 0;
+            if ( dwSouthToNorth == 0 )
+            {
+                countZero++;
+            }
+            if ( dwVertical == 0 )
+            {
+                countZero++;
+            }
+            if ( dwWestToEast == 0 )
+            {
+                countZero++;
+            }
+            if ( wRoom == 0 )
+            {
+                countZero++;
+            }
+
+            //  Too Much Zeroes
+            if ( countZero >= 2 )
             {
                 continue;
             }

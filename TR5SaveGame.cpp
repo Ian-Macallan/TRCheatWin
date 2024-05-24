@@ -1737,7 +1737,7 @@ TR5_POSITION *CTR5SaveGame::GetTR5Position ( )
 {
     const int extraSearch = 8;
 
-    char *pBuffer = (char * )GetIndicatorAddress();
+    char *pBuffer = (char * ) GetIndicatorAddress();
     if ( pBuffer )
     {
         //
@@ -1749,7 +1749,27 @@ TR5_POSITION *CTR5SaveGame::GetTR5Position ( )
             DWORD dwVertical        = ( DWORD ) pTR5Position->wVertical * TR5_FACTOR;
             DWORD dwWestToEast      = ( DWORD ) pTR5Position->wWestToEast * TR5_FACTOR;
             WORD wRoom              = pTR5Position->cRoom;
-            if ( dwSouthToNorth == 0 && dwVertical == 0 && dwWestToEast == 0 && wRoom == 0 )
+
+            int countZero = 0;
+            if ( dwSouthToNorth == 0 )
+            {
+                countZero++;
+            }
+            if ( dwVertical == 0 )
+            {
+                countZero++;
+            }
+            if ( dwWestToEast == 0 )
+            {
+                countZero++;
+            }
+            if ( wRoom == 0 )
+            {
+                countZero++;
+            }
+
+            //  Too Much Zeroes
+            if ( countZero >= 3 )
             {
                 continue;
             }
@@ -1775,7 +1795,27 @@ TR5_POSITION *CTR5SaveGame::GetTR5Position ( )
             DWORD dwVertical        = ( DWORD ) pTR5Position->wVertical * TR5_FACTOR;
             DWORD dwWestToEast      = ( DWORD ) pTR5Position->wWestToEast * TR5_FACTOR;
             WORD wRoom              = pTR5Position->cRoom;
-            if ( dwSouthToNorth == 0 && dwVertical == 0 && dwWestToEast == 0 && wRoom == 0 )
+
+            int countZero = 0;
+            if ( dwSouthToNorth == 0 )
+            {
+                countZero++;
+            }
+            if ( dwVertical == 0 )
+            {
+                countZero++;
+            }
+            if ( dwWestToEast == 0 )
+            {
+                countZero++;
+            }
+            if ( wRoom == 0 )
+            {
+                countZero++;
+            }
+
+            //  Too Much Zeroes
+            if ( countZero >= 2 )
             {
                 continue;
             }
