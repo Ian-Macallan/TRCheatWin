@@ -394,7 +394,6 @@
     <ClCompile Include="TR_Areas.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="hlp\TRXCHEATWIN.hpj" />
     <None Include="res\Aire 51.bmp" />
     <None Include="res\Aldwych.bmp" />
     <None Include="res\Ammos Desert Eagle.bmp" />
@@ -502,25 +501,6 @@
     <None Include="res\TUB Start.bmp" />
     <None Include="res\Uzis 2.bmp" />
     <None Include="res\Uzis.bmp" />
-    <None Include="hlp\AfxDlg.rtf" />
-    <CustomBuild Include="hlp\TR3CHEATWIN.cnt">
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Copying contents file...</Message>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Copying contents file...</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">copy "hlp\%(Filename).cnt" $(OutDir)
-</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">copy "hlp\%(Filename).cnt" $(OutDir)
-</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)%(Filename).cnt;%(Outputs)</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(OutDir)%(Filename).cnt;%(Outputs)</Outputs>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Copying contents file...</Message>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Copying contents file...</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">copy "hlp\%(Filename).cnt" $(OutDir)
-</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">copy "hlp\%(Filename).cnt" $(OutDir)
-</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)%(Filename).cnt;%(Outputs)</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(OutDir)%(Filename).cnt;%(Outputs)</Outputs>
-    </CustomBuild>
     <None Include="ReadMe.txt" />
     <None Include="TR_Areas_inc.h" />
   </ItemGroup>
@@ -588,80 +568,7 @@
     <ClInclude Include="TRXVerticalMap.h" />
     <ClInclude Include="TRXWallPicture.h" />
     <ClInclude Include="TR_Areas.h" />
-    <CustomBuild Include="Resource.h">
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Making help include file...</Message>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Making help include file...</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">echo. &gt;"hlp\$(TargetName).hm"
-echo // Commands (ID_* and IDM_*) &gt;&gt;"hlp\$(TargetName).hm"
-makehm ID_,HID_,0x10000 IDM_,HIDM_,0x10000 resource.h &gt;&gt;"hlp\$(TargetName).hm"
-echo. &gt;&gt;"hlp\$(TargetName).hm"
-echo // Prompts (IDP_*) &gt;&gt;"hlp\$(TargetName).hm"
-makehm IDP_,HIDP_,0x30000 resource.h &gt;&gt;"hlp\$(TargetName).hm"
-echo. &gt;&gt;"hlp\$(TargetName).hm"
-echo // Resources (IDR_*) &gt;&gt;"hlp\$(TargetName).hm"
-makehm IDR_,HIDR_,0x20000 resource.h &gt;&gt;"hlp\$(TargetName).hm"
-echo. &gt;&gt;"hlp\$(TargetName).hm"
-echo // Dialogs (IDD_*) &gt;&gt;"hlp\$(TargetName).hm"
-makehm IDD_,HIDD_,0x20000 resource.h &gt;&gt;"hlp\$(TargetName).hm"
-echo. &gt;&gt;"hlp\$(TargetName).hm"
-echo // Frame Controls (IDW_*) &gt;&gt;"hlp\$(TargetName).hm"
-makehm IDW_,HIDW_,0x50000 resource.h &gt;&gt;"hlp\$(TargetName).hm"
-</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">echo. &gt;"hlp\$(TargetName).hm"
-echo // Commands (ID_* and IDM_*) &gt;&gt;"hlp\$(TargetName).hm"
-makehm ID_,HID_,0x10000 IDM_,HIDM_,0x10000 resource.h &gt;&gt;"hlp\$(TargetName).hm"
-echo. &gt;&gt;"hlp\$(TargetName).hm"
-echo // Prompts (IDP_*) &gt;&gt;"hlp\$(TargetName).hm"
-makehm IDP_,HIDP_,0x30000 resource.h &gt;&gt;"hlp\$(TargetName).hm"
-echo. &gt;&gt;"hlp\$(TargetName).hm"
-echo // Resources (IDR_*) &gt;&gt;"hlp\$(TargetName).hm"
-makehm IDR_,HIDR_,0x20000 resource.h &gt;&gt;"hlp\$(TargetName).hm"
-echo. &gt;&gt;"hlp\$(TargetName).hm"
-echo // Dialogs (IDD_*) &gt;&gt;"hlp\$(TargetName).hm"
-makehm IDD_,HIDD_,0x20000 resource.h &gt;&gt;"hlp\$(TargetName).hm"
-echo. &gt;&gt;"hlp\$(TargetName).hm"
-echo // Frame Controls (IDW_*) &gt;&gt;"hlp\$(TargetName).hm"
-makehm IDW_,HIDW_,0x50000 resource.h &gt;&gt;"hlp\$(TargetName).hm"
-</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">hlp\$(TargetName).hm;%(Outputs)</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">hlp\$(TargetName).hm;%(Outputs)</Outputs>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Making help include file...</Message>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Making help include file...</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">echo. &gt;"hlp\$(TargetName).hm"
-echo // Commands (ID_* and IDM_*) &gt;&gt;"hlp\$(TargetName).hm"
-makehm ID_,HID_,0x10000 IDM_,HIDM_,0x10000 resource.h &gt;&gt;"hlp\$(TargetName).hm"
-echo. &gt;&gt;"hlp\$(TargetName).hm"
-echo // Prompts (IDP_*) &gt;&gt;"hlp\$(TargetName).hm"
-makehm IDP_,HIDP_,0x30000 resource.h &gt;&gt;"hlp\$(TargetName).hm"
-echo. &gt;&gt;"hlp\$(TargetName).hm"
-echo // Resources (IDR_*) &gt;&gt;"hlp\$(TargetName).hm"
-makehm IDR_,HIDR_,0x20000 resource.h &gt;&gt;"hlp\$(TargetName).hm"
-echo. &gt;&gt;"hlp\$(TargetName).hm"
-echo // Dialogs (IDD_*) &gt;&gt;"hlp\$(TargetName).hm"
-makehm IDD_,HIDD_,0x20000 resource.h &gt;&gt;"hlp\$(TargetName).hm"
-echo. &gt;&gt;"hlp\$(TargetName).hm"
-echo // Frame Controls (IDW_*) &gt;&gt;"hlp\$(TargetName).hm"
-makehm IDW_,HIDW_,0x50000 resource.h &gt;&gt;"hlp\$(TargetName).hm"
-</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">echo. &gt;"hlp\$(TargetName).hm"
-echo // Commands (ID_* and IDM_*) &gt;&gt;"hlp\$(TargetName).hm"
-makehm ID_,HID_,0x10000 IDM_,HIDM_,0x10000 resource.h &gt;&gt;"hlp\$(TargetName).hm"
-echo. &gt;&gt;"hlp\$(TargetName).hm"
-echo // Prompts (IDP_*) &gt;&gt;"hlp\$(TargetName).hm"
-makehm IDP_,HIDP_,0x30000 resource.h &gt;&gt;"hlp\$(TargetName).hm"
-echo. &gt;&gt;"hlp\$(TargetName).hm"
-echo // Resources (IDR_*) &gt;&gt;"hlp\$(TargetName).hm"
-makehm IDR_,HIDR_,0x20000 resource.h &gt;&gt;"hlp\$(TargetName).hm"
-echo. &gt;&gt;"hlp\$(TargetName).hm"
-echo // Dialogs (IDD_*) &gt;&gt;"hlp\$(TargetName).hm"
-makehm IDD_,HIDD_,0x20000 resource.h &gt;&gt;"hlp\$(TargetName).hm"
-echo. &gt;&gt;"hlp\$(TargetName).hm"
-echo // Frame Controls (IDW_*) &gt;&gt;"hlp\$(TargetName).hm"
-makehm IDW_,HIDW_,0x50000 resource.h &gt;&gt;"hlp\$(TargetName).hm"
-</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">hlp\$(TargetName).hm;%(Outputs)</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">hlp\$(TargetName).hm;%(Outputs)</Outputs>
-    </CustomBuild>
+    <ClInclude Include="Resource.h" />
     <ClInclude Include="StdAfx.h" />
     <ClInclude Include="TR10SaveGame.h" />
     <ClInclude Include="TR2SaveGame.h" />

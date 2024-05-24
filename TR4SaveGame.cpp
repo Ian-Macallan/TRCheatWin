@@ -1769,7 +1769,7 @@ void CTR4SaveGame::discard ()
 /////////////////////////////////////////////////////////////////////////////
 TR4_POSITION *CTR4SaveGame::GetTR4Position ( )
 {
-    const int extraSearch = 16;
+    const int extraSearch = 8;
 
     char *pBuffer = (char * )GetIndicatorAddress();
     if ( pBuffer )
@@ -1782,6 +1782,10 @@ TR4_POSITION *CTR4SaveGame::GetTR4Position ( )
             DWORD dwVertical        = pTR4Position->wVertical * TR4_FACTOR;
             DWORD dwWestToEast      = pTR4Position->wWestToEast * TR4_FACTOR;
             WORD wRoom              = pTR4Position->cRoom;
+            if ( dwSouthToNorth == 0 && dwVertical == 0 && dwWestToEast == 0 && wRoom == 0 )
+            {
+                continue;
+            }
 
             int tombraider = GetFullVersion();
             int levelIndex = GetLevelIndex();
@@ -1806,6 +1810,10 @@ TR4_POSITION *CTR4SaveGame::GetTR4Position ( )
             DWORD dwVertical        = ( DWORD ) pTR4Position->wVertical * TR4_FACTOR;
             DWORD dwWestToEast      = ( DWORD ) pTR4Position->wWestToEast * TR4_FACTOR;
             WORD wRoom              = pTR4Position->cRoom;
+            if ( dwSouthToNorth == 0 && dwVertical == 0 && dwWestToEast == 0 && wRoom == 0 )
+            {
+                continue;
+            }
 
             BOOL bCheck = CheckAreaForCoordinates ( GetFullVersion(), GetLevelIndex(),  wRoom, dwWestToEast, dwVertical, dwSouthToNorth );
             if ( bCheck )

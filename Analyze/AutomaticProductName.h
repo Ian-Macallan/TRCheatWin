@@ -1,20 +1,20 @@
 #ifdef _WIN64
 #ifdef UNICODE
 #define ORIGINAL_FILENAME   L"Analyze (x64 Unicode) (VC11.0/u5)\0"
-#define PRODUCT_NAME        L"Analyze - Version 4.1.09.008\r\n(Build 621) - (x64 Unicode) (VC11.0/u5)\0"
+#define PRODUCT_NAME        L"Analyze - Version 4.1.09.010\r\n(Build 623) - (x64 Unicode) (VC11.0/u5)\0"
 #else
 #define ORIGINAL_FILENAME   "Analyze (x64 MBCS) (VC11.0/u5)\0"
-#define PRODUCT_NAME        "Analyze - Version 4.1.09.008\r\n(Build 621) - (x64 MBCS) (VC11.0/u5)\0"
+#define PRODUCT_NAME        "Analyze - Version 4.1.09.010\r\n(Build 623) - (x64 MBCS) (VC11.0/u5)\0"
 #endif
 #elif _WIN32
 #ifdef UNICODE
 #define ORIGINAL_FILENAME   L"Analyze (x86 Unicode) (VC11.0/u5)\0"
-#define PRODUCT_NAME        L"Analyze - Version 4.1.09.008\r\n(Build 621) - (x86 Unicode) (VC11.0/u5)\0"
+#define PRODUCT_NAME        L"Analyze - Version 4.1.09.010\r\n(Build 623) - (x86 Unicode) (VC11.0/u5)\0"
 #else
 #define ORIGINAL_FILENAME   "Analyze (x86 MBCS) (VC11.0/u5)\0"
-#define PRODUCT_NAME        "Analyze - Version 4.1.09.008\r\n(Build 621) - (x86 MBCS) (VC11.0/u5)\0"
+#define PRODUCT_NAME        "Analyze - Version 4.1.09.010\r\n(Build 623) - (x86 MBCS) (VC11.0/u5)\0"
 #endif
 #else
 #define ORIGINAL_FILENAME   "Analyze (VC11.0/u5)\0"
-#define PRODUCT_NAME        "Analyze - Version 4.1.09.008\r\n(Build 621) - (VC11.0/u5)\0"
+#define PRODUCT_NAME        "Analyze - Version 4.1.09.010\r\n(Build 623) - (VC11.0/u5)\0"
 #endif

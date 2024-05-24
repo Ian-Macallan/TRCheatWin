@@ -5,7 +5,7 @@
 //
 //	(c) 2003 - 2024 Macallan - mailto:ian.macallan@gmail.com
 //
-//	Generated : 23/05/2024 12:32:28
+//	Generated : 24/05/2024 08:07:12
 //
 //===========================================================================================
 //
@@ -55,22 +55,22 @@
 #endif
 
 #ifdef UNICODE
-#define PROGRAM_DATE    L"Thu May 23 12:32"
-#define PROGRAM_DATE_F  L"Thu May 23 12:32 2024"
+#define PROGRAM_DATE    L"Fri May 24 08:07"
+#define PROGRAM_DATE_F  L"Fri May 24 08:07 2024"
 #define PROGRAM_YEAR    L"2024"
-#define PROGRAM_TIME    L"2024/05/23 12:32:28"
+#define PROGRAM_TIME    L"2024/05/24 08:07:12"
 #else
-#define PROGRAM_DATE    "Thu May 23 12:32"
-#define PROGRAM_DATE_F  "Thu May 23 12:32 2024"
+#define PROGRAM_DATE    "Fri May 24 08:07"
+#define PROGRAM_DATE_F  "Fri May 24 08:07 2024"
 #define PROGRAM_YEAR    "2024"
-#define PROGRAM_TIME    "2024/05/23 12:32:28"
+#define PROGRAM_TIME    "2024/05/24 08:07:12"
 #endif
 
 #ifdef UNICODE
-#define PROGRAM_VERSION L"4.1.09.008"
-#define PROGRAM_INSTALL L"4.1.09008"
-#define PROGRAM_VER_NUM 40109008
-#define PROGRAM_BUILD   L"756"
+#define PROGRAM_VERSION L"4.1.09.010"
+#define PROGRAM_INSTALL L"4.1.09010"
+#define PROGRAM_VER_NUM 40109010
+#define PROGRAM_BUILD   L"758"
 #define PROGRAM_TITLE   L"TRCheat Win"
 #ifdef _WIN64
 #define PROGRAM_TITLE_P L"TRCheat Win (x64 Unicode)"
@@ -78,10 +78,10 @@
 #define PROGRAM_TITLE_P L"TRCheat Win (x86 Unicode)"
 #endif
 #else
-#define PROGRAM_VERSION "4.1.09.008"
-#define PROGRAM_INSTALL "4.1.09008"
-#define PROGRAM_VER_NUM 40109008
-#define PROGRAM_BUILD   "756"
+#define PROGRAM_VERSION "4.1.09.010"
+#define PROGRAM_INSTALL "4.1.09010"
+#define PROGRAM_VER_NUM 40109010
+#define PROGRAM_BUILD   "758"
 #define PROGRAM_TITLE   "TRCheat Win"
 #ifdef _WIN64
 #define PROGRAM_TITLE_P "TRCheat Win (x64 MBCS)"

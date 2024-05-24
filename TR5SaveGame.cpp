@@ -1735,7 +1735,7 @@ void CTR5SaveGame::discard ()
 /////////////////////////////////////////////////////////////////////////////
 TR5_POSITION *CTR5SaveGame::GetTR5Position ( )
 {
-    const int extraSearch = 16;
+    const int extraSearch = 8;
 
     char *pBuffer = (char * )GetIndicatorAddress();
     if ( pBuffer )
@@ -1749,6 +1749,10 @@ TR5_POSITION *CTR5SaveGame::GetTR5Position ( )
             DWORD dwVertical        = ( DWORD ) pTR5Position->wVertical * TR5_FACTOR;
             DWORD dwWestToEast      = ( DWORD ) pTR5Position->wWestToEast * TR5_FACTOR;
             WORD wRoom              = pTR5Position->cRoom;
+            if ( dwSouthToNorth == 0 && dwVertical == 0 && dwWestToEast == 0 && wRoom == 0 )
+            {
+                continue;
+            }
 
             BOOL bCheck = CheckAreaForCoordinates ( GetFullVersion(), GetLevelIndex(),  wRoom, dwWestToEast, dwVertical, dwSouthToNorth );
             if ( bCheck )
@@ -1771,6 +1775,10 @@ TR5_POSITION *CTR5SaveGame::GetTR5Position ( )
             DWORD dwVertical        = ( DWORD ) pTR5Position->wVertical * TR5_FACTOR;
             DWORD dwWestToEast      = ( DWORD ) pTR5Position->wWestToEast * TR5_FACTOR;
             WORD wRoom              = pTR5Position->cRoom;
+            if ( dwSouthToNorth == 0 && dwVertical == 0 && dwWestToEast == 0 && wRoom == 0 )
+            {
+                continue;
+            }
 
             BOOL bCheck = CheckAreaForCoordinates ( GetFullVersion(), GetLevelIndex(),  wRoom, dwWestToEast, dwVertical, dwSouthToNorth, true );
             if ( bCheck )

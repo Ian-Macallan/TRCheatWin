@@ -568,9 +568,6 @@
       <Filter>Resource Files\Help Files</Filter>
     </None>
     <None Include="ReadMe.txt" />
-    <None Include="hlp\TRXCHEATWIN.hpj">
-      <Filter>Source Files</Filter>
-    </None>
     <None Include="TR_Areas_inc.h">
       <Filter>Header Files</Filter>
     </None>
@@ -816,14 +813,9 @@
     <ClInclude Include="TRXGDI.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <CustomBuild Include="Resource.h">
+    <ClInclude Include="Resource.h">
       <Filter>Header Files</Filter>
-    </CustomBuild>
-    <CustomBuild Include="hlp\TR3CHEATWIN.cnt">
-      <Filter>Resource Files\Help Files</Filter>
-    </CustomBuild>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="TRCheatWin.rc">
