@@ -36,12 +36,12 @@ static const int RoomMargin     = 5;
 /////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////
-static BOOL bPasteEnabled           = FALSE;
-static DWORD dwWestToEastCopy       = 0;
-static DWORD dwVerticalCopy         = 0;
-static DWORD dwSouthToNorthCopy     = 0;
-static WORD wDirectionCopy          = 0;
-static WORD wRoomCopy               = 0;
+static BOOL     bPasteEnabled           = FALSE;
+static DWORD    dwWestToEastCopy        = 0;
+static DWORD    dwVerticalCopy          = 0;
+static DWORD    dwSouthToNorthCopy      = 0;
+static WORD     wDirectionCopy          = 0;
+static WORD     wRoomCopy               = 0;
 
 //
 /////////////////////////////////////////////////////////////////////////////
@@ -3205,9 +3205,11 @@ void CTRXInfoPage::OnBnClickedCopypos()
     m_South_North.GetWindowText ( szString, sizeof(szString) );
     dwSouthToNorthCopy      = atol(szString);
     m_Direction.GetWindowText ( szString, sizeof(szString) );
+
     double dfOrientation    = atof ( szString );
     wDirectionCopy          = CTRXTools::ConvertOrientationFromDouble ( dfOrientation );
     m_Area.GetWindowText ( szString, sizeof(szString) );
+
     wRoomCopy               = atoi ( szString );
 
     bPasteEnabled           = TRUE;
@@ -3230,7 +3232,7 @@ void CTRXInfoPage::OnBnClickedPastepos()
         m_Vertical.SetWindowText ( szString );
         sprintf_s ( szString, sizeof(szString), "%ld", dwSouthToNorthCopy );
         m_South_North.SetWindowText ( szString );
-        sprintf_s ( szString, sizeof(szString), "%.2f", wDirectionCopy );
+        sprintf_s ( szString, sizeof(szString), "%.2f", CTRXTools::ConvertOrientationFromWORD ( wDirectionCopy ) );
         m_Direction.SetWindowText ( szString );
         sprintf_s ( szString, sizeof(szString), "%d", wRoomCopy );
         m_Area.SetWindowText ( szString );

@@ -780,6 +780,9 @@ BOOL CTRXCHEATWINApp::InitInstance()
 ////////////////////////////////////////////////////////////////////////
 BOOL CTRXCHEATWINApp::WriteProfileIniFile ( const char *section,  const char *keyName, const char *pValue )
 {
+    // 
+    // WritePrivateProfileSection  could be used to delete a section;
+
     BOOL bWritten =
         WritePrivateProfileString (
             section,            //  __in  LPCTSTR lpAppName,

@@ -22,7 +22,7 @@ typedef struct  structLocation
     char    szPathname [ MAX_PATH ];
 } STRUCTLOCATION;
 
-#define LEN_LOCATION    128
+#define LEN_LOCATION    192
 
 //
 /////////////////////////////////////////////////////////////////////////////

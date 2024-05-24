@@ -108,7 +108,7 @@ BOOL CTRXPropertyPageBase::AddLocation ( STRUCTLOCATION *pTable, const char *pLo
     for ( int i = 0; i < LEN_LOCATION; i++ )
     {
         //  Already Here
-        if ( strcmp ( pTable [ i ].szPathname, pLocation ) == 0 )
+        if ( _stricmp ( pTable [ i ].szPathname, pLocation ) == 0 )
         {
             return FALSE;
         }
@@ -147,7 +147,7 @@ BOOL CTRXPropertyPageBase::RemoveLocation ( STRUCTLOCATION *pTable, const char *
     for ( int i = 0; i < LEN_LOCATION; i++ )
     {
         //  Here
-        if ( strcmp ( pTable [ i ].szPathname, pLocation ) == 0 )
+        if ( _stricmp ( pTable [ i ].szPathname, pLocation ) == 0 )
         {
             // Move Up
             for ( int j = i + 1; j < LEN_LOCATION; j++ )
@@ -179,7 +179,7 @@ BOOL CTRXPropertyPageBase::RemoveFromCombo ( CComboBox *pCombo, const char *pTSt
     {
         ZeroMemory ( szText, sizeof(szText) );
         pCombo->GetLBText( i, szText );
-        if ( strcmp ( szText, pTString ) == 0 )
+        if ( _stricmp ( szText, pTString ) == 0 )
         {
             pCombo->DeleteString ( i );
         }
@@ -261,7 +261,6 @@ void CTRXPropertyPageBase::LoadLocation ( STRUCTLOCATION *pTable, const char *pC
         if ( strlen(szTemp) > 0 )
         {
             AddLocation ( pTable, szTemp );
-
         }
     }
 }
@@ -283,6 +282,12 @@ void CTRXPropertyPageBase::SaveLocation ( STRUCTLOCATION *pTable, const char *pC
             sprintf_s ( szKeyname, sizeof(szKeyname), pKeyFormat, iCount );
             theApp.WriteProfileString( PROFILE_SETTING, szKeyname, pTable [ i ].szPathname );
             iCount++;
+        }
+        else
+        {
+            //  Delete Key
+            sprintf_s ( szKeyname, sizeof(szKeyname), pKeyFormat, iCount );
+            theApp.WriteProfileString( PROFILE_SETTING, szKeyname, NULL );
         }
     }
 

@@ -811,7 +811,7 @@ void CTRXRemastered::SetComboSelection ( const char *pFilename )
     {
         CString selected;
         m_Combo.GetLBText ( i, selected );
-        if ( strcmp ( selected, pFilename ) == 0 )
+        if ( _stricmp ( selected, pFilename ) == 0 )
         {
             m_SetManualCombo = false;
             m_Combo.SetCurSel ( i );
@@ -3402,7 +3402,7 @@ static int CALLBACK SortFuncRemastered(LPARAM lParam1, LPARAM lParam2, LPARAM lP
 
     if ( pData1 != NULL && pData2 != NULL )
     {
-        return iSortAscending * strcmp ( pData1->szText, pData2->szText );
+        return iSortAscending * _stricmp ( pData1->szText, pData2->szText );
     }
 
     return 0;
