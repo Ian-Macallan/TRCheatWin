@@ -23,6 +23,7 @@ class CTRXPosition : public CTRXDialogBase
         void ResizeRoom ( long x, long z, long xSectors, long zSectors, long yTop, long yBottom );
         void ClickRoom ( UINT nFlags, CPoint point );
         void ChangeAreas();
+        void ChangeAreas( int room );
 
         CPoint ComputeRoomPoint ( );
     // Données de boîte de dialogue
@@ -50,6 +51,8 @@ class CTRXPosition : public CTRXDialogBase
         afx_msg void OnChangeWestEastM();
         afx_msg void OnChangeSouthNorthM();
         afx_msg void OnChangeOrientationD();
+        afx_msg void OnBnClickedCopypos();
+        afx_msg void OnBnClickedPastepos();
 
         CTRXEditBase m_West_East;
         CTRXEditBase m_West_East_M;
@@ -95,4 +98,6 @@ class CTRXPosition : public CTRXDialogBase
         CTRXButtonBase m_OK;
         CTRXButtonBase m_Map;
         CTRXStaticBase m_Ranges;
+        CTRXButtonBase m_CopyPos;
+        CTRXButtonBase m_PastePos;
 };

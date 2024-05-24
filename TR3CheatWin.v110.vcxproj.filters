@@ -564,9 +564,6 @@
     <None Include="res\Uzis.bmp">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="hlp\AfxDlg.rtf">
-      <Filter>Resource Files\Help Files</Filter>
-    </None>
     <None Include="ReadMe.txt" />
     <None Include="TR_Areas_inc.h">
       <Filter>Header Files</Filter>

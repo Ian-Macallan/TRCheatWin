@@ -112,6 +112,9 @@ class CTRXInfoPage : public CTRXPropertyPage
         CTRXButtonBase      m_Add_Custom;
         CTRXButtonBase      m_See_Custom;
         CTRXButtonBase      m_Sort;
+        CTRXStaticBase      m_Square;
+        CTRXButtonBase      m_CopyPosition;
+        CTRXButtonBase      m_PastePosition;
 
         //}}AFX_DATA
 
@@ -168,6 +171,7 @@ class CTRXInfoPage : public CTRXPropertyPage
         afx_msg void OnBnClickedSeeCustom();
         afx_msg void OnBnClickedSort();
         afx_msg void OnDropFiles(HDROP hDropInfo);
-        CStatic m_Square;
+        afx_msg void OnBnClickedCopypos();
+        afx_msg void OnBnClickedPastepos();
 };
 

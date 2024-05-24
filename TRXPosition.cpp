@@ -19,6 +19,18 @@ static const int RoomMargin     = 10;
 /////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////
+static BOOL bPasteEnabled           = FALSE;
+
+static DWORD dwWestToEastCopy       = 0;
+static DWORD dwVerticalCopy         = 0;
+static DWORD dwSouthToNorthCopy     = 0;
+static WORD wOrientationCopy        = 0;
+static WORD wRoomCopy               = 0;
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
 IMPLEMENT_DYNAMIC(CTRXPosition, CTRXDialogBase)
 
 //
@@ -89,6 +101,8 @@ void CTRXPosition::DoDataExchange(CDataExchange* pDX)
     DDX_Control(pDX, IDOK, m_OK);
     DDX_Control(pDX, IDC_MAP, m_Map);
     DDX_Control(pDX, IDC_RANGES, m_Ranges);
+    DDX_Control(pDX, IDC_COPYPOS, m_CopyPos);
+    DDX_Control(pDX, IDC_PASTEPOS, m_PastePos);
 }
 
 //
@@ -103,6 +117,8 @@ BEGIN_MESSAGE_MAP(CTRXPosition, CTRXDialogBase)
     ON_EN_CHANGE(IDC_WEST_EAST_M, &CTRXPosition::OnChangeWestEastM)
     ON_EN_CHANGE(IDC_SOUTH_NORTH_M, &CTRXPosition::OnChangeSouthNorthM)
     ON_EN_CHANGE(IDC_ORIENTATION_D, &CTRXPosition::OnChangeOrientationD)
+    ON_BN_CLICKED(IDC_COPYPOS, &CTRXPosition::OnBnClickedCopypos)
+    ON_BN_CLICKED(IDC_PASTEPOS, &CTRXPosition::OnBnClickedPastepos)
 END_MESSAGE_MAP()
 
 
@@ -632,6 +648,26 @@ void CTRXPosition::OnBnClickedSearch()
 /////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////
+void CTRXPosition::ChangeAreas( int room )
+{
+    if ( room != -1 )
+    {
+        int levelNumber     = CTR9SaveGame::I()->GetBlockLevelNumber ( m_iTombraider, m_iBlock );
+        int levelIndex      = levelNumber - 1;
+        TR_AREA trArea;
+        ZeroMemory ( &trArea, sizeof(trArea) );
+        BOOL bDone = EnumAreaForCoordinates ( m_iTombraider, levelIndex, room, &trArea );
+        if ( bDone )
+        {
+            ResizeRoom ( trArea.x, trArea.z, trArea.xSectors, trArea.zSectors, trArea.yTop, trArea.yBottom );
+        }
+    }
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
 void CTRXPosition::ChangeAreas()
 {
     // TODO: Add Code Here
@@ -836,5 +872,109 @@ void CTRXPosition::OnChangeOrientationD()
         m_Room.GetWindowRect ( &roomRect );
         ScreenToClient ( &roomRect );
         InvalidateRect ( &roomRect );
+    }
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
+void CTRXPosition::OnBnClickedCopypos()
+{
+    //
+    char szText [ 64 ];
+
+    m_West_East_M.GetWindowText ( szText, sizeof(szText) );
+    double dfValue = atof ( szText );
+    dwWestToEastCopy    = (DWORD) ( dfValue * POSITION_DIVIDER );
+
+    //
+    m_Vertical_M.GetWindowText ( szText, sizeof(szText) );
+    dfValue = atof ( szText );
+    dwVerticalCopy  = (DWORD) ( dfValue * POSITION_DIVIDER );
+
+    //
+    m_South_North_M.GetWindowText ( szText, sizeof(szText) );
+    dfValue = atof ( szText );
+    dwSouthToNorthCopy  = (DWORD) ( dfValue * POSITION_DIVIDER );
+
+    //  Orientation
+    m_Word1_D.GetWindowText ( szText, sizeof(szText) );
+    dfValue = atof ( szText );
+    unsigned wValue  = CTRXTools::ConvertOrientationFromDouble ( dfValue );
+    wOrientationCopy = wValue;
+
+    //  Room
+    m_Word4_X.GetWindowText ( szText, sizeof(szText) );
+    if ( strncmp ( szText, "0x", 2 ) == 0 )
+    {
+        sscanf_s ( szText + 2, "%x", &wValue );
+    }
+    else if ( strncmp ( szText, "x", 1 ) == 0 )
+    {
+        sscanf_s ( szText + 1, "%x", &wValue );
+    }
+    else
+    {
+        sscanf_s ( szText, "%d", &wValue );
+    }
+    wRoomCopy  = wValue;
+
+    bPasteEnabled   = TRUE;
+
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
+void CTRXPosition::OnBnClickedPastepos()
+{
+    //
+    char szText [ 64 ];
+
+    if ( bPasteEnabled )
+    {
+        ZeroMemory ( szText, sizeof(szText) );
+        sprintf_s ( szText, sizeof(szText), "%.3f", (double) (long) dwWestToEastCopy / POSITION_DIVIDER );
+        m_West_East_M.SetWindowText ( szText );
+
+        //
+        ZeroMemory ( szText, sizeof(szText) );
+        sprintf_s ( szText, sizeof(szText), "%.3f", (double) (long) dwVerticalCopy / POSITION_DIVIDER );
+        m_Vertical_M.SetWindowText ( szText );
+
+        //
+        ZeroMemory ( szText, sizeof(szText) );
+        sprintf_s ( szText, sizeof(szText), "%.3f", (double) (long) dwSouthToNorthCopy / POSITION_DIVIDER );
+        m_South_North_M.SetWindowText ( szText );
+
+        //  Orientation
+        double dfOrientation = CTRXTools::ConvertOrientationFromWORD ( wOrientationCopy );
+        ZeroMemory ( szText, sizeof(szText) );
+        sprintf_s ( szText, sizeof(szText), "%.3f", dfOrientation );
+        m_Word1_D.SetWindowText ( szText );
+
+        //  Special
+        ZeroMemory ( szText, sizeof(szText) );
+        sprintf_s ( szText, sizeof(szText), "%d",  wRoomCopy );
+        m_Word4_X.SetWindowText ( szText );
+
+        TR_CUR_POSITION                 currentPosition;
+        ZeroMemory ( &currentPosition, sizeof(currentPosition) );
+        currentPosition.x               = dwWestToEastCopy;
+        currentPosition.z               = dwSouthToNorthCopy;
+        currentPosition.orientation     = dfOrientation;
+
+        int levelNumber     = CTR9SaveGame::I()->GetBlockLevelNumber ( m_iTombraider, m_iBlock );
+        int levelIndex      = levelNumber - 1;
+        TR_AREA *pArea = GetTRArea ( m_iTombraider, levelIndex, wRoomCopy );
+        if ( pArea )
+        {
+            m_Room.SetAreaAndPosition ( pArea, &currentPosition );
+        }
+
+        //
+        ChangeAreas ( wRoomCopy );
     }
 }

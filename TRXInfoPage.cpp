@@ -24,9 +24,24 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 //
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
 static const char *MessageTitle = "Tombraider Standard Editions";
 static const int RoomDivider    = 150;
 static const int RoomMargin     = 5;
+
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
+static BOOL bPasteEnabled           = FALSE;
+static DWORD dwWestToEastCopy       = 0;
+static DWORD dwVerticalCopy         = 0;
+static DWORD dwSouthToNorthCopy     = 0;
+static WORD wDirectionCopy          = 0;
+static WORD wRoomCopy               = 0;
 
 //
 /////////////////////////////////////////////////////////////////////////////
@@ -331,6 +346,8 @@ void CTRXInfoPage::DoDataExchange(CDataExchange* pDX)
     DDX_Control(pDX, IDC_SEE_CUSTOM, m_See_Custom);
     DDX_Control(pDX, IDC_SORT, m_Sort);
     DDX_Control(pDX, IDC_SQUARE, m_Square);
+    DDX_Control(pDX, IDC_COPYPOS, m_CopyPosition);
+    DDX_Control(pDX, IDC_PASTEPOS, m_PastePosition);
     //}}AFX_DATA_MAP
 }
 
@@ -370,6 +387,8 @@ BEGIN_MESSAGE_MAP(CTRXInfoPage, CTRXPropertyPage)
     ON_BN_CLICKED(IDC_SEE_CUSTOM, &CTRXInfoPage::OnBnClickedSeeCustom)
     ON_BN_CLICKED(IDC_SORT, &CTRXInfoPage::OnBnClickedSort)
     ON_WM_DROPFILES()
+    ON_BN_CLICKED(IDC_COPYPOS, &CTRXInfoPage::OnBnClickedCopypos)
+    ON_BN_CLICKED(IDC_PASTEPOS, &CTRXInfoPage::OnBnClickedPastepos)
 END_MESSAGE_MAP()
 //}}AFX_MSG_MAP
 
@@ -2111,6 +2130,8 @@ BOOL CTRXInfoPage::OnInitDialog()
         m_ToolTip.AddTool( &m_Write, ("Write Current File"));
         m_ToolTip.AddTool( &m_Map, "Show Corresponding Map" );
         m_ToolTip.AddTool( &m_Sort, "Sort List" );
+        m_ToolTip.AddTool( &m_CopyPosition, "Copy Position" );
+        m_ToolTip.AddTool( &m_PastePosition, "Paste Position" );
         m_ToolTip.AddTool( &m_ListCtrl, LPSTR_TEXTCALLBACK );
         m_ToolTip.Activate(TRUE);
     }
@@ -3090,8 +3111,7 @@ void CTRXInfoPage::SetThemeChanged ( bool bDarkTheme )
 /////////////////////////////////////////////////////////////////////////////
 void CTRXInfoPage::OnDropFiles(HDROP hDropInfo)
 {
-    // TODO: ajoutez ici le code de votre gestionnaire de messages et/ou les paramètres par défaut des appels
-    // TODO: Add your message handler code here and/or call default
+    //
     static char         szFilename [ MAX_PATH ];
     static char         szDirectory [ MAX_PATH ];
 
@@ -3166,4 +3186,53 @@ void CTRXInfoPage::OnDropFiles(HDROP hDropInfo)
         }
     }
     CTRXPropertyPage::OnDropFiles(hDropInfo);
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
+void CTRXInfoPage::OnBnClickedCopypos()
+{
+    //
+    static char     szString [ 64 ];
+
+    //
+    m_West_East.GetWindowText ( szString, sizeof(szString) );
+    dwWestToEastCopy        = atol(szString);
+    m_Vertical.GetWindowText ( szString, sizeof(szString) );
+    dwVerticalCopy          = atol(szString);
+    m_South_North.GetWindowText ( szString, sizeof(szString) );
+    dwSouthToNorthCopy      = atol(szString);
+    m_Direction.GetWindowText ( szString, sizeof(szString) );
+    double dfOrientation    = atof ( szString );
+    wDirectionCopy          = CTRXTools::ConvertOrientationFromDouble ( dfOrientation );
+    m_Area.GetWindowText ( szString, sizeof(szString) );
+    wRoomCopy               = atoi ( szString );
+
+    bPasteEnabled           = TRUE;
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
+void CTRXInfoPage::OnBnClickedPastepos()
+{
+    //
+    static char     szString [ 64 ];
+
+    if ( bPasteEnabled )
+    {
+        sprintf_s ( szString, sizeof(szString), "%ld", dwWestToEastCopy );
+        m_West_East.SetWindowText ( szString );
+        sprintf_s ( szString, sizeof(szString), "%ld", dwVerticalCopy );
+        m_Vertical.SetWindowText ( szString );
+        sprintf_s ( szString, sizeof(szString), "%ld", dwSouthToNorthCopy );
+        m_South_North.SetWindowText ( szString );
+        sprintf_s ( szString, sizeof(szString), "%.2f", wDirectionCopy );
+        m_Direction.SetWindowText ( szString );
+        sprintf_s ( szString, sizeof(szString), "%d", wRoomCopy );
+        m_Area.SetWindowText ( szString );
+    }
 }

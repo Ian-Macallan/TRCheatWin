@@ -134,7 +134,9 @@ BEGIN
     EDITTEXT        IDC_WEST_EAST,157,257,40,14,ES_AUTOHSCROLL
     EDITTEXT        IDC_VERTICAL,201,257,40,14,ES_AUTOHSCROLL
     EDITTEXT        IDC_SOUTH_NORTH,243,257,40,14,ES_AUTOHSCROLL
-    CONTROL         "Map",IDC_MAP,"Button",BS_OWNERDRAW | WS_TABSTOP,411,193,32,14
+    CONTROL         "C",IDC_COPYPOS,"Button",BS_OWNERDRAW | WS_TABSTOP,404,193,15,14
+    CONTROL         "P",IDC_PASTEPOS,"Button",BS_OWNERDRAW | WS_TABSTOP,421,193,15,14
+    CONTROL         "Map",IDC_MAP,"Button",BS_OWNERDRAW | WS_TABSTOP,439,193,32,14
     CONTROL         "JNL",IDC_JOURNAL,"Button",BS_OWNERDRAW | WS_TABSTOP,473,193,32,14
     CONTROL         187,IDC_LEVEL_PLACE,"Static",SS_BITMAP | SS_REALSIZEIMAGE | SS_SUNKEN | WS_BORDER,399,208,113,80,WS_EX_DLGMODALFRAME | WS_EX_CLIENTEDGE
     CONTROL         210,IDC_LEVEL_PICTURE,"Static",SS_BITMAP | SS_REALSIZEIMAGE | SS_SUNKEN | WS_BORDER,7,194,113,80,WS_EX_DLGMODALFRAME | WS_EX_CLIENTEDGE
@@ -608,6 +610,8 @@ BEGIN
     EDITTEXT        IDC_WEST_EAST_RANGE,354,30,93,14,ES_AUTOHSCROLL | ES_READONLY | NOT WS_TABSTOP
     EDITTEXT        IDC_VERTICAL_RANGE,354,49,93,14,ES_AUTOHSCROLL | ES_READONLY | NOT WS_TABSTOP
     EDITTEXT        IDC_SOUTH_NORTH_RANGE,354,65,93,14,ES_AUTOHSCROLL | ES_READONLY | NOT WS_TABSTOP
+    CONTROL         "C",IDC_COPYPOS,"Button",BS_OWNERDRAW | WS_TABSTOP,201,192,15,14
+    CONTROL         "P",IDC_PASTEPOS,"Button",BS_OWNERDRAW | WS_TABSTOP,219,192,15,14
     COMBOBOX        IDC_AREAS,7,209,457,85,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
     CONTROL         "Map",IDC_MAP,"Button",BS_OWNERDRAW | WS_TABSTOP,275,228,42,14
     CONTROL         "Search",IDC_SEARCH,"Button",BS_OWNERDRAW | WS_TABSTOP,325,228,42,14
@@ -685,8 +689,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 4,1,09,011
- PRODUCTVERSION 4,1,09,011
+ FILEVERSION 4,1,09,012
+ PRODUCTVERSION 4,1,09,012
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x29L
@@ -704,15 +708,15 @@ BEGIN
             VALUE "Comments", "mailto:ian.macallan@gmail.com\0"
             VALUE "CompanyName", "Macallan (c)\0"
             VALUE "FileDescription", "TRCheatWin - (VC11.0/u5)\0"
-            VALUE "FileVersion", "4.1.09.011\0"
+            VALUE "FileVersion", "4.1.09.012\0"
             VALUE "InternalName", "https://www.macallan.org/\0"
-            VALUE "LegalCopyright", "Copyright (C) Fri May 24 09:27, 2024\0"
+            VALUE "LegalCopyright", "Copyright (C) Fri May 24 12:36, 2024\0"
             VALUE "LegalTrademarks", "Author: Ian Macallan\0"
             VALUE "OriginalFilename", ORIGINAL_FILENAME
-            VALUE "PrivateBuild", "759\0"
+            VALUE "PrivateBuild", "760\0"
             VALUE "ProductName", PRODUCT_NAME
-            VALUE "ProductVersion", "4.1.09.011\0"
-            VALUE "SpecialBuild", "759\0"
+            VALUE "ProductVersion", "4.1.09.012\0"
+            VALUE "SpecialBuild", "760\0"
         END
     END
     BLOCK "VarFileInfo"
