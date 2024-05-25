@@ -169,12 +169,10 @@
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <PrecompiledHeader>Use</PrecompiledHeader>
-      <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
       <BrowseInformation>true</BrowseInformation>
       <WarningLevel>Level3</WarningLevel>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <AdditionalIncludeDirectories>.;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <DebugInformationFormat>None</DebugInformationFormat>
       <Optimization>Full</Optimization>
     </ClCompile>
     <ResourceCompile>
@@ -214,7 +212,7 @@
       <WarningLevel>Level3</WarningLevel>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <AdditionalIncludeDirectories>.;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <DebugInformationFormat>None</DebugInformationFormat>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <Optimization>Full</Optimization>
     </ClCompile>
     <ResourceCompile>
@@ -508,6 +506,7 @@
     <ResourceCompile Include="TRCheatWin.rc" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AutomaticProductName.h" />
     <ClInclude Include="AutomaticVersionHeader.h" />
     <ClInclude Include="GunGrids.h" />
     <ClInclude Include="ReadTR2\MCMemA.h" />
