@@ -237,10 +237,10 @@ BOOL CTRXNC::PaintWindow( CWnd *pWnd, BOOL bActive )
     int xFrame      = GetSystemMetrics ( SM_CXDLGFRAME );
     int yFrame      = GetSystemMetrics ( SM_CYDLGFRAME );
 
-    int height      = GetSystemMetrics(SM_CYCAPTION);
-
     int iconWidth   = GetSystemMetrics(SM_CXICON);
     int iconHeight  = GetSystemMetrics(SM_CYICON);
+
+    int height      = GetSystemMetrics(SM_CYCAPTION);
 
     int xLeft       = xBorder + xFrame;
     int yTop        = yBorder + yFrame;
@@ -249,7 +249,7 @@ BOOL CTRXNC::PaintWindow( CWnd *pWnd, BOOL bActive )
     int x       = xLeft;
     int y       = yTop;
     int cx      = windowsRECT.Width() - 2 * xFrame - xBorder;
-    int cy      = height - yBorder;
+    int cy      = height /* - yBorder */;
 
     CRect captionRECT;
     captionRECT.left    = x;
