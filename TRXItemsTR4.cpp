@@ -3,6 +3,8 @@
 
 #include "stdafx.h"
 
+#include <math.h>
+
 #include "TRXCHEATWIN.h"
 #include "TRXCHEATWINDlg.h"
 
@@ -11,6 +13,7 @@
 
 #include "TRXTools.h"
 #include "TRLabelItems.h"
+#include "resource.h"
 
 //
 static  UINT IDArray [ ] =
@@ -22,9 +25,33 @@ static  UINT IDArray [ ] =
     IDC_ITEM_29,
 };
 
+//
+static  UINT NIDArray [ ] =
+{
+    IDC_NITEM_01, IDC_NITEM_02, IDC_NITEM_03, IDC_NITEM_04, IDC_NITEM_05, IDC_NITEM_06, IDC_NITEM_07,
+    IDC_NITEM_08, IDC_NITEM_09, IDC_NITEM_10, IDC_NITEM_11, IDC_NITEM_12, IDC_NITEM_13, IDC_NITEM_14,
+    IDC_NITEM_15, IDC_NITEM_16, IDC_NITEM_17, IDC_NITEM_18, IDC_NITEM_19, IDC_NITEM_20, IDC_NITEM_21,
+    IDC_NITEM_22, IDC_NITEM_23, IDC_NITEM_24, IDC_NITEM_25, IDC_NITEM_26, IDC_NITEM_27, IDC_NITEM_28,
+    IDC_NITEM_29,
+};
+
+static  UINT IDMenuItem [] =
+{
+    ID_ITEMS_ITEM1, ID_ITEMS_ITEM2, ID_ITEMS_ITEM3, ID_ITEMS_ITEM4, 
+    ID_ITEMS_ITEM5, ID_ITEMS_ITEM6, ID_ITEMS_ITEM7, ID_ITEMS_ITEM8, 
+};
+
+//
+static CTRXButtonBase buttomItems [ 29 ];
 
 //
 static const    char *MessageTitle = "Tombraider Standard Editions";
+
+//
+#define MAX_MENU_LABEL          8
+#define MAX_MENU_LABEL_STRING   256
+
+static char     menuLabel [ MAX_MENU_LABEL ][ MAX_MENU_LABEL_STRING ];
 
 //
 /////////////////////////////////////////////////////////////////////////////
@@ -45,6 +72,7 @@ IMPLEMENT_DYNAMIC(CTRXItemsTR4, CTRXPropertyPage)
 CTRXItemsTR4::CTRXItemsTR4() : CTRXPropertyPage(CTRXItemsTR4::IDD)
 {
     SetGUIModified ( FALSE );
+    m_MenuItemIndex     = -1;
 }
 
 //
@@ -161,8 +189,48 @@ BEGIN_MESSAGE_MAP(CTRXItemsTR4, CTRXPropertyPage)
     // ON_NOTIFY_EX( TTN_NEEDTEXT, IDC_ITEM_01, OnToolTipNotify )
     ON_NOTIFY_EX_RANGE(TTN_NEEDTEXT, 0, 0xFFFF, OnToolTipNotify)
 
+    ON_NOTIFY(NM_RCLICK, IDC_ITEM_01, OnRClicked)
+    ON_NOTIFY(NM_RCLICK, IDC_ITEM_02, OnRClicked)
+    ON_NOTIFY(NM_RCLICK, IDC_ITEM_03, OnRClicked)
+    ON_NOTIFY(NM_RCLICK, IDC_ITEM_04, OnRClicked)
+    ON_NOTIFY(NM_RCLICK, IDC_ITEM_05, OnRClicked)
+    ON_NOTIFY(NM_RCLICK, IDC_ITEM_06, OnRClicked)
+    ON_NOTIFY(NM_RCLICK, IDC_ITEM_07, OnRClicked)
+    ON_NOTIFY(NM_RCLICK, IDC_ITEM_08, OnRClicked)
+    ON_NOTIFY(NM_RCLICK, IDC_ITEM_09, OnRClicked)
+    ON_NOTIFY(NM_RCLICK, IDC_ITEM_10, OnRClicked)
+    ON_NOTIFY(NM_RCLICK, IDC_ITEM_11, OnRClicked)
+    ON_NOTIFY(NM_RCLICK, IDC_ITEM_12, OnRClicked)
+    ON_NOTIFY(NM_RCLICK, IDC_ITEM_13, OnRClicked)
+    ON_NOTIFY(NM_RCLICK, IDC_ITEM_14, OnRClicked)
+    ON_NOTIFY(NM_RCLICK, IDC_ITEM_15, OnRClicked)
+    ON_NOTIFY(NM_RCLICK, IDC_ITEM_16, OnRClicked)
+    ON_NOTIFY(NM_RCLICK, IDC_ITEM_17, OnRClicked)
+    ON_NOTIFY(NM_RCLICK, IDC_ITEM_18, OnRClicked)
+    ON_NOTIFY(NM_RCLICK, IDC_ITEM_19, OnRClicked)
+    ON_NOTIFY(NM_RCLICK, IDC_ITEM_20, OnRClicked)
+    ON_NOTIFY(NM_RCLICK, IDC_ITEM_21, OnRClicked)
+    ON_NOTIFY(NM_RCLICK, IDC_ITEM_22, OnRClicked)
+    ON_NOTIFY(NM_RCLICK, IDC_ITEM_23, OnRClicked)
+    ON_NOTIFY(NM_RCLICK, IDC_ITEM_24, OnRClicked)
+    ON_NOTIFY(NM_RCLICK, IDC_ITEM_25, OnRClicked)
+    ON_NOTIFY(NM_RCLICK, IDC_ITEM_26, OnRClicked)
+    ON_NOTIFY(NM_RCLICK, IDC_ITEM_27, OnRClicked)
+    ON_NOTIFY(NM_RCLICK, IDC_ITEM_28, OnRClicked)
+    ON_NOTIFY(NM_RCLICK, IDC_ITEM_29, OnRClicked)
+
+    ON_COMMAND(ID_ITEMS_ITEM1, &CTRXItemsTR4::OnItemsItem1)
+    ON_COMMAND(ID_ITEMS_ITEM2, &CTRXItemsTR4::OnItemsItem2)
+    ON_COMMAND(ID_ITEMS_ITEM3, &CTRXItemsTR4::OnItemsItem3)
+    ON_COMMAND(ID_ITEMS_ITEM4, &CTRXItemsTR4::OnItemsItem4)
+    ON_COMMAND(ID_ITEMS_ITEM5, &CTRXItemsTR4::OnItemsItem5)
+    ON_COMMAND(ID_ITEMS_ITEM6, &CTRXItemsTR4::OnItemsItem6)
+    ON_COMMAND(ID_ITEMS_ITEM7, &CTRXItemsTR4::OnItemsItem7)
+    ON_COMMAND(ID_ITEMS_ITEM8, &CTRXItemsTR4::OnItemsItem8)
+
     ON_WM_CTLCOLOR()
-END_MESSAGE_MAP()
+
+    END_MESSAGE_MAP()
 
 
 //
@@ -381,6 +449,182 @@ BOOL CTRXItemsTR4::OnSetActive()
     SetGUIModified ( bModified, "ItemsTR4 SetActive" );
 
     return CTRXPropertyPage::OnSetActive();
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
+BOOL CTRXItemsTR4::GetMenuLabel ( int button )
+{
+    //
+    static char szLabels [ 4096 ];
+    ZeroMemory ( szLabels, sizeof(szLabels) );
+
+    //
+    ZeroMemory ( menuLabel, sizeof(menuLabel) );
+
+    //
+    char **pTableGen = NULL;
+    char **pTableInd = NULL;
+    int iVersion = CTRSaveGame::GetVersion();
+
+    //
+    bool bStandardLevel = true;
+    if ( TR49ItemsNameGen [ 0 ] != NULL )
+    {
+        bStandardLevel = false;
+    }
+
+    //
+    int iLevelIndex = CTRSaveGame::GetLevelIndex();
+
+    if ( iVersion == 4 || ( iVersion >= 40 && iVersion <= 45 ) )
+    {
+        //
+        if ( bStandardLevel )
+        {
+            pTableGen = TR4ItemsName;
+            switch ( iLevelIndex )
+            {
+                case 0  : pTableInd = TR4ItemsName01; break;
+                case 1  : pTableInd = TR4ItemsName02; break;
+                case 2  : pTableInd = TR4ItemsName03; break;
+                case 3  : pTableInd = TR4ItemsName04; break;
+                case 4  : pTableInd = TR4ItemsName05; break;
+                case 5  : pTableInd = TR4ItemsName06; break;
+                case 6  : pTableInd = TR4ItemsName07; break;
+                case 7  : pTableInd = TR4ItemsName08; break;
+                case 8  : pTableInd = TR4ItemsName09; break;
+                case 9  : pTableInd = TR4ItemsName10; break;
+                case 10 : pTableInd = TR4ItemsName11; break;
+                case 11 : pTableInd = TR4ItemsName12; break;
+                case 12 : pTableInd = TR4ItemsName13; break;
+                case 13 : pTableInd = TR4ItemsName14; break;
+                case 14 : pTableInd = TR4ItemsName15; break;
+                case 15 : pTableInd = TR4ItemsName16; break;
+                case 16 : pTableInd = TR4ItemsName17; break;
+                case 17 : pTableInd = TR4ItemsName18; break;
+                case 18 : pTableInd = TR4ItemsName19; break;
+                case 19 : pTableInd = TR4ItemsName20; break;
+                case 20 : pTableInd = TR4ItemsName21; break;
+                case 21 : pTableInd = TR4ItemsName22; break;
+                case 22 : pTableInd = TR4ItemsName23; break;
+                case 23 : pTableInd = TR4ItemsName24; break;
+                case 24 : pTableInd = TR4ItemsName25; break;
+                case 25 : pTableInd = TR4ItemsName26; break;
+                case 26 : pTableInd = TR4ItemsName27; break;
+                case 27 : pTableInd = TR4ItemsName28; break;
+                case 28 : pTableInd = TR4ItemsName29; break;
+                case 29 : pTableInd = TR4ItemsName30; break;
+                case 30 : pTableInd = TR4ItemsName31; break;
+                case 31 : pTableInd = TR4ItemsName32; break;
+                case 32 : pTableInd = TR4ItemsName33; break;
+                case 33 : pTableInd = TR4ItemsName34; break;
+                case 34 : pTableInd = TR4ItemsName35; break;
+                case 35 : pTableInd = TR4ItemsName36; break;
+                case 36 : pTableInd = TR4ItemsName37; break;
+                case 37 : pTableInd = TR4ItemsName38; break;
+            }
+        }
+        else
+        {
+            pTableGen = TR49ItemsNameGen;
+
+            //  Skip Title
+            pTableInd = TR49ItemsNameInd [ iLevelIndex + 1 ];
+        }
+    }
+    else if ( iVersion == 49 )
+    {
+        pTableGen = TR49ItemsNameGen;
+
+        //  Skip Title
+        pTableInd = TR49ItemsNameInd [ iLevelIndex + 1 ];
+    }
+    else if ( iVersion == 5 || iVersion == 50 )
+    {
+        pTableGen = TR5ItemsName;
+        switch ( iLevelIndex )
+        {
+            case 0  : pTableInd = TR5ItemsName01; break;
+            case 1  : pTableInd = TR5ItemsName02; break;
+            case 2  : pTableInd = TR5ItemsName03; break;
+            case 3  : pTableInd = TR5ItemsName04; break;
+            case 4  : pTableInd = TR5ItemsName05; break;
+            case 5  : pTableInd = TR5ItemsName06; break;
+            case 6  : pTableInd = TR5ItemsName07; break;
+            case 7  : pTableInd = TR5ItemsName08; break;
+            case 8  : pTableInd = TR5ItemsName09; break;
+            case 9  : pTableInd = TR5ItemsName10; break;
+            case 10 : pTableInd = TR5ItemsName11; break;
+            case 11 : pTableInd = TR5ItemsName12; break;
+            case 12 : // No 12 Level
+            case 13 : pTableInd = TR5ItemsName14; break;
+        }
+    }
+
+    //
+    if ( pTableInd != NULL )
+    {
+        strcat_s ( szLabels, sizeof(szLabels), pTableInd [ button ] );
+    }
+
+    //
+    if ( pTableGen != NULL )
+    {
+        strcat_s ( szLabels, sizeof(szLabels), pTableGen [ button ] );
+    }
+
+    char *nextToken = NULL;
+    char *token = strtok_s( szLabels, "\r\n", &nextToken);
+    while ( token != NULL) 
+    {
+        char *parenthesis = NULL;
+        for ( int l = strlen(token) - 1; l >= 0; l-- )
+        {
+            if ( token [ l ] == '(' )
+            {
+                parenthesis = token + l;
+                break;
+            }
+        }
+        
+        //
+        if ( parenthesis != NULL )
+        {
+            int val  = atoi ( parenthesis + 1 );
+            int bit = 0;
+            *parenthesis = L'\0';
+
+            //
+            while ( val > 0 )
+            {
+                bit++;
+                val = val / 2;
+            }
+
+            if ( bit >= 1 && bit <= MAX_MENU_LABEL )
+            {
+                if ( strstr ( menuLabel [ bit - 1 ], token ) == NULL )
+                {
+                    if ( strlen(menuLabel [ bit - 1 ]) == 0 )
+                    {
+                        strcpy_s ( menuLabel [ bit - 1 ], sizeof(menuLabel [ bit - 1 ]), token );
+                    }
+                    else
+                    {
+                        strcat_s ( menuLabel [ bit - 1 ], sizeof(menuLabel [ bit - 1 ]), "/ " );
+                        strcat_s ( menuLabel [ bit - 1 ], sizeof(menuLabel [ bit - 1 ]), token );
+                    }
+                }
+            }
+        }
+
+        token = strtok_s( NULL, "\r\n", &nextToken);
+    }
+
+    return TRUE;
 }
 
 //
@@ -842,6 +1086,14 @@ BOOL CTRXItemsTR4::OnInitDialog()
         m_ToolTip.Activate(TRUE);
     }
 
+    //
+    //  SubClass
+    for ( int iX = 0; iX < sizeof(IDArray)/sizeof(UINT); iX++ )
+    {
+        UINT id             = IDArray[iX];
+        buttomItems [ iX ].SubclassDlgItem ( id, this );
+    }
+
     m_bInitDone = true;
 
     return TRUE;  // return TRUE unless you set the focus to a control
@@ -1001,3 +1253,191 @@ BOOL CTRXItemsTR4::OnToolTipNotify(UINT id, NMHDR *pNMH, LRESULT *pResult)
     return FALSE;
 }
 
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
+void CTRXItemsTR4::OnRClicked(NMHDR * pNotifyStruct, LRESULT * result)
+{
+    //
+    POINT           point;
+    GetCursorPos ( &point );
+    ScreenToClient ( &point );
+
+    //
+    char    szValue [ 32 ];
+
+    //
+    for ( int iX = 0; iX < sizeof(IDArray)/sizeof(UINT); iX++ )
+    {
+        UINT id             = IDArray[iX];
+        CWnd *pCheckWnd     = GetDlgItem(id);
+
+        //
+        RECT rect;
+        pCheckWnd->GetWindowRect ( &rect );
+        ScreenToClient ( &rect );
+        if ( point.x >= rect.left && point.x <= rect.right && point.y >= rect.top && point.y <= rect.bottom )
+        {
+            UINT nid            = NIDArray[iX];
+            CWnd *pEditWnd      = GetDlgItem(nid);
+
+            CPoint menuPoint    = point;
+            ClientToScreen ( &menuPoint );
+
+            //
+            BOOL bGetMenuLabel = GetMenuLabel ( iX );
+
+            //
+            CTRXMenuBase        menu;
+            menu.LoadMenu ( IDR_MENU_ITEMS );
+
+            //
+            m_pContextMenu = menu.GetSubMenu ( 0 );
+
+            for ( int iM = 0; iM < sizeof(IDMenuItem)/sizeof(UINT); iM++ )
+            {
+                if ( strlen ( menuLabel [ iM ] ) > 0 )
+                {
+                    m_pContextMenu->ModifyMenu ( IDMenuItem [ iM ], MF_BYCOMMAND | MF_STRING, IDMenuItem [ iM ], menuLabel [ iM ] );
+                }
+            }
+
+            //
+            pEditWnd->GetWindowText ( szValue, sizeof(szValue) );
+            UINT val = atoi(szValue);
+
+            //
+            for ( int iM = 0; iM < sizeof(IDMenuItem)/sizeof(UINT); iM++ )
+            {
+                //
+                UINT bit = (UINT) pow ( 2.0, iM );
+                //
+                if ( val & bit )
+                {
+                    m_pContextMenu->CheckMenuItem(IDMenuItem [ iM ],MF_CHECKED|MF_BYCOMMAND);
+                }
+                else
+                {
+                    m_pContextMenu->CheckMenuItem(IDMenuItem [ iM ],MF_UNCHECKED|MF_BYCOMMAND);
+                }
+            }
+
+            //
+            m_pContextMenu->TrackPopupMenu ( TPM_LEFTALIGN | TPM_LEFTBUTTON | TPM_RIGHTBUTTON, menuPoint.x, menuPoint.y, this );
+
+            m_MenuItemIndex    = iX;
+        }
+    }
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
+void CTRXItemsTR4::OnItemsItemN(int menuId)
+{
+    //
+    char    szValue [ 32 ];
+
+    //
+    if ( m_MenuItemIndex != -1 )
+    {
+        UINT bit            = ( (UINT)pow ( 2.0, menuId - 1) ) &  0xFF;
+        UINT mask           = 0xFF ^ bit;
+
+        UINT nid            = NIDArray[m_MenuItemIndex];
+        CWnd *pEditWnd      = GetDlgItem(nid);
+
+        pEditWnd->GetWindowText ( szValue, sizeof(szValue) );
+        UINT val = atoi(szValue);
+
+        UINT check          = val & bit;
+        if ( check )
+        {
+            val             = val & mask;
+        }
+        else
+        {
+            val             = val | bit;
+        }
+
+        sprintf_s ( szValue, sizeof(szValue), "%d", val );
+        pEditWnd->SetWindowText ( szValue );
+    }
+
+    //
+    m_MenuItemIndex    = -1;
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
+void CTRXItemsTR4::OnItemsItem1()
+{
+    OnItemsItemN(1);
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
+void CTRXItemsTR4::OnItemsItem2()
+{
+    OnItemsItemN(2);
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
+void CTRXItemsTR4::OnItemsItem3()
+{
+    OnItemsItemN(3);
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
+void CTRXItemsTR4::OnItemsItem4()
+{
+    OnItemsItemN(4);
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
+void CTRXItemsTR4::OnItemsItem5()
+{
+    OnItemsItemN(5);
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
+void CTRXItemsTR4::OnItemsItem6()
+{
+    OnItemsItemN(6);
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
+void CTRXItemsTR4::OnItemsItem7()
+{
+    OnItemsItemN(7);
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
+void CTRXItemsTR4::OnItemsItem8()
+{
+    OnItemsItemN(8);
+}

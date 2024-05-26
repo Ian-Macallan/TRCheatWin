@@ -16,5 +16,6 @@ class CTRXButtonBase : public CButton
         afx_msg BOOL OnEraseBkgnd(CDC* pDC);
         afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
         virtual void DrawItem(LPDRAWITEMSTRUCT /*lpDrawItemStruct*/);
+        afx_msg void OnRButtonUp(UINT nFlags, CPoint point);
 };
 

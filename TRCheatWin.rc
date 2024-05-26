@@ -689,8 +689,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 4,1,10,002
- PRODUCTVERSION 4,1,10,002
+ FILEVERSION 4,1,10,004
+ PRODUCTVERSION 4,1,10,004
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x29L
@@ -708,15 +708,15 @@ BEGIN
             VALUE "Comments", "mailto:ian.macallan@gmail.com\0"
             VALUE "CompanyName", "Macallan (c)\0"
             VALUE "FileDescription", "TRCheatWin - (MSVC)\0"
-            VALUE "FileVersion", "4.1.10.002\0"
+            VALUE "FileVersion", "4.1.10.004\0"
             VALUE "InternalName", "https://www.macallan.org/\0"
-            VALUE "LegalCopyright", "Copyright (C) Sun May 26 09:00, 2024\0"
+            VALUE "LegalCopyright", "Copyright (C) Sun May 26 14:50, 2024\0"
             VALUE "LegalTrademarks", "Author: Ian Macallan\0"
             VALUE "OriginalFilename", ORIGINAL_FILENAME
-            VALUE "PrivateBuild", "769\0"
+            VALUE "PrivateBuild", "771\0"
             VALUE "ProductName", PRODUCT_NAME
-            VALUE "ProductVersion", "4.1.10.002\0"
-            VALUE "SpecialBuild", "769\0"
+            VALUE "ProductVersion", "4.1.10.004\0"
+            VALUE "SpecialBuild", "771\0"
         END
     END
     BLOCK "VarFileInfo"
@@ -1023,6 +1023,21 @@ BEGIN
         MENUITEM "Reset To +",                  ID_MENULIST_RESETTO
         MENUITEM "Reset To Start",              ID_MENULIST_RESETTOSTART
         MENUITEM "Renumber All",                ID_MENULIST_RENUMBER
+    END
+END
+
+IDR_MENU_ITEMS MENU
+BEGIN
+    POPUP "Items"
+    BEGIN
+        MENUITEM "Item ( 1 )",                  ID_ITEMS_ITEM1
+        MENUITEM "Item ( 2 )",                  ID_ITEMS_ITEM2
+        MENUITEM "Item ( 4 )",                  ID_ITEMS_ITEM3
+        MENUITEM "Item ( 8 )",                  ID_ITEMS_ITEM4
+        MENUITEM "Item ( 16 )",                 ID_ITEMS_ITEM5
+        MENUITEM "Item ( 32 )",                 ID_ITEMS_ITEM6
+        MENUITEM "Item ( 64 )",                 ID_ITEMS_ITEM7
+        MENUITEM "Item ( 128 )",                ID_ITEMS_ITEM8
     END
 END
 

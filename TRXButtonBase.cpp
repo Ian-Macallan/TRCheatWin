@@ -29,6 +29,7 @@ CTRXButtonBase::~CTRXButtonBase(void)
 BEGIN_MESSAGE_MAP(CTRXButtonBase, CButton)
     ON_WM_ERASEBKGND()
     ON_WM_CTLCOLOR()
+    ON_WM_RBUTTONUP()
 END_MESSAGE_MAP()
 
 //
@@ -135,4 +136,18 @@ void CTRXButtonBase::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct )
         pDC->SetTextColor( crOldColor);
     }
 
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
+void CTRXButtonBase::OnRButtonUp(UINT nFlags, CPoint point)
+{
+    //
+    NMHDR hdr;
+    hdr.code        = NM_RCLICK;
+    hdr.hwndFrom    = this->GetSafeHwnd();
+    hdr.idFrom      = GetDlgCtrlID();
+    this->GetParent()->SendMessage(WM_NOTIFY, (WPARAM)hdr.idFrom, (LPARAM)&hdr );
 }

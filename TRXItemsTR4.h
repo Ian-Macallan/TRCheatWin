@@ -38,11 +38,14 @@ class CTRXItemsTR4 : public CTRXPropertyPage
         DECLARE_MESSAGE_MAP()
 
     public:
-        CTRXEditBase m_Status;
-        CTRXButtonBase m_Zero;
-        CTRXButtonBase m_One;
-        CTRXButtonBase m_Four;
+        CTRXEditBase    m_Status;
 
+        CTRXButtonBase  m_Zero;
+        CTRXButtonBase  m_One;
+        CTRXButtonBase  m_Four;
+
+        //
+        int             m_MenuItemIndex;
 
         virtual BOOL OnSetActive();
         virtual BOOL OnKillActive();
@@ -81,10 +84,23 @@ class CTRXItemsTR4 : public CTRXPropertyPage
         afx_msg void OnBnClickedFour();
         afx_msg void OnChangeEdit();
         afx_msg void OnHelp();
+        afx_msg void OnRClicked( NMHDR * pNotifyStruct, LRESULT * result );
+        afx_msg void OnItemsItem1();
+        afx_msg void OnItemsItem2();
+        afx_msg void OnItemsItem3();
+        afx_msg void OnItemsItem4();
+        afx_msg void OnItemsItem5();
+        afx_msg void OnItemsItem6();
+        afx_msg void OnItemsItem7();
+        afx_msg void OnItemsItem8();
 
         virtual BOOL OnInitDialog();
         virtual void OnOK();
         virtual void OnCancel();
         virtual BOOL OnApply();
         virtual BOOL OnToolTipNotify(UINT id, NMHDR *pNMH, LRESULT *pResult);
+
+        void OnItemsItemN( int menuId );
+        BOOL GetMenuLabel( int button );
 };
+        
