@@ -35,7 +35,9 @@ class CTRXNC
         void DrawAllIcons (  CWnd *pWnd, UINT iconOnly = 0 );
 
         //  Return TRUE if treated, FALSE if default must be done
-        BOOL PaintWindow( CWnd *pWnd, BOOL bActive = TRUE );
+        BOOL PaintCaption( CWnd *pWnd, BOOL bActive = FALSE );
+        BOOL PaintWindow( CWnd *pWnd, BOOL bActive = FALSE );
+        BOOL Activate( CWnd *pWnd, BOOL bActive = FALSE );
 
         //  Return TRUE if treated, FALSE if default must be done
         BOOL OnNcLButtonDown(CWnd *pWnd, UINT nHitTest, CPoint point);

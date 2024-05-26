@@ -607,7 +607,7 @@ void CTRXPropertySheet::OnNcPaint()
 BOOL CTRXPropertySheet::OnNcActivate(BOOL bActive)
 {
     // TODO: Add Code Here
-    BOOL bTreated = m_NC.PaintWindow(this, bActive);
+    BOOL bTreated = m_NC.Activate(this, bActive);
     if ( bTreated )
     {
         return TRUE;

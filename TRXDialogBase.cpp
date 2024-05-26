@@ -234,7 +234,7 @@ INT_PTR CTRXDialogBase::DoModal()
 BOOL CTRXDialogBase::OnNcActivate(BOOL bActive)
 {
     // TODO: Add Code Here
-    BOOL bTreated = m_NC.PaintWindow(this, bActive);
+    BOOL bTreated = m_NC.Activate(this, bActive);
     if ( bTreated )
     {
         return TRUE;

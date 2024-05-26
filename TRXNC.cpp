@@ -9,16 +9,13 @@
 #include "TRXGDI.h"
 
 //
-static  int iconSize    = 16;
-
-//
 /////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////
 CTRXNC::CTRXNC(void)
 {
-    m_pContextMenu  = NULL;
-    m_iHover        = ICON_NOT_SET;
+    m_pContextMenu          = NULL;
+    m_iHover                = ICON_NOT_SET;
 }
 
 //
@@ -42,8 +39,8 @@ void CTRXNC::DrawResizedIcon ( CDC *pDC, HICON hIcon, const RECT *pRect )
     BITMAP bmp;
     ZeroMemory(&bmp, sizeof(bmp));
 
-    int iconWidth   = 0;
-    int iconHeight  = 0;
+    int xIcon   = 0;
+    int yIcon  = 0;
     int pixels      = 0;
 
     //
@@ -55,8 +52,8 @@ void CTRXNC::DrawResizedIcon ( CDC *pDC, HICON hIcon, const RECT *pRect )
         const int nWrittenBytes = GetObject(info.hbmColor, sizeof(bmp), &bmp);
         if ( nWrittenBytes > 0 )
         {
-            iconWidth   = bmp.bmWidth;
-            iconHeight  = bmp.bmHeight;
+            xIcon   = bmp.bmWidth;
+            yIcon  = bmp.bmHeight;
             pixels      = bmp.bmBitsPixel;
         }
     }
@@ -66,8 +63,8 @@ void CTRXNC::DrawResizedIcon ( CDC *pDC, HICON hIcon, const RECT *pRect )
         const int nWrittenBytes = GetObject(info.hbmMask, sizeof(bmp), &bmp);
         if(nWrittenBytes > 0)
         {
-            iconWidth   = bmp.bmWidth;
-            iconHeight  = bmp.bmHeight / 2;
+            xIcon   = bmp.bmWidth;
+            yIcon  = bmp.bmHeight / 2;
             pixels      = 1;
         }
     }
@@ -93,8 +90,8 @@ void CTRXNC::DrawResizedIcon ( CDC *pDC, HICON hIcon, const RECT *pRect )
             //  Source
             &memDC,             // source device context
             0, 0,               // x and y upper left
-            iconWidth,          // source bitmap width
-            iconHeight,         // source bitmap height
+            xIcon,          // source bitmap width
+            yIcon,         // source bitmap height
             SRCCOPY );          // raster operation
     }
     else
@@ -189,82 +186,85 @@ void CTRXNC::DrawIcon ( CDC *pDC, UINT icon, const CRect crect, bool bFillRect, 
     //
     if ( icon != 0 )
     {
-        int xMargin = ( crect.Width() - iconSize ) / 2;
-        int yMargin = ( crect.Height() - iconSize ) / 2;
+        int xIconSmall  = GetSystemMetrics(SM_CXSMICON);
+        int yIconSmall  = GetSystemMetrics(SM_CYSMICON);
+
+        int xMargin = ( crect.Width() - xIconSmall ) / 2;
+        int yMargin = ( crect.Height() - yIconSmall ) / 2;
+
         HICON hIcon = AfxGetApp()->LoadIcon(icon);
-        DrawIconEx(pDC->m_hDC, crect.left + xMargin, crect.top + yMargin, hIcon, iconSize, iconSize, 0, NULL, DI_NORMAL);
+        DrawIconEx(pDC->m_hDC, crect.left + xMargin, crect.top + yMargin, hIcon, xIconSmall, yIconSmall, 0, NULL, DI_NORMAL);
     }
 }
 
-
 //
 /////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////
-BOOL CTRXNC::PaintWindow( CWnd *pWnd, BOOL bActive )
+BOOL CTRXNC::PaintCaption( CWnd *pWnd, BOOL bActive )
 {
     if ( CTRXGlobal::m_iDarkTheme == 0 )
     {
         return FALSE;
     }
 
+    //  EG : 1
+    int xBorder         = GetSystemMetrics(SM_CXBORDER);
+    int yBorder         = GetSystemMetrics(SM_CYBORDER);
+
+    //  EG : 3
+    int xFrame          = GetSystemMetrics ( SM_CXDLGFRAME );
+    int yFrame          = GetSystemMetrics ( SM_CYDLGFRAME );
+
+    int xIcon           = GetSystemMetrics(SM_CXICON);
+    int yIcon           = GetSystemMetrics(SM_CYICON);
+
+    int xIconSmall      = GetSystemMetrics(SM_CXSMICON);
+    int yIconSmall      = GetSystemMetrics(SM_CYSMICON);
+
+    int yCaption        = GetSystemMetrics(SM_CYCAPTION);
+
+    int xLeft           = xBorder + xFrame;
+    int yTop            = yBorder + yFrame;
+
+    //
     CDC* pDC = pWnd->GetWindowDC();
 
     //
     CRect windowsRECT;
     pWnd->GetWindowRect(&windowsRECT);
 
-    CRect areaRECT;
-    areaRECT.top    = 0;
-    areaRECT.left   = 0;
-    areaRECT.bottom = windowsRECT.Height();
-    areaRECT.right  = windowsRECT.Width();
-
-    //
-    areaRECT.top    = areaRECT.top + 1;
-    areaRECT.left   = areaRECT.left + 1;
-    areaRECT.bottom = areaRECT.bottom - 1;
-    areaRECT.right  = areaRECT.right - 1;
-
     //
     COLORREF foregroundColor = CTRXColors::GetWhiteCR();
 
-    //  EG : 1
-    int xBorder     = GetSystemMetrics(SM_CXBORDER);
-    int yBorder     = GetSystemMetrics(SM_CYBORDER);
-
-    //  EG : 3
-    int xFrame      = GetSystemMetrics ( SM_CXDLGFRAME );
-    int yFrame      = GetSystemMetrics ( SM_CYDLGFRAME );
-
-    int iconWidth   = GetSystemMetrics(SM_CXICON);
-    int iconHeight  = GetSystemMetrics(SM_CYICON);
-
-    int height      = GetSystemMetrics(SM_CYCAPTION);
-
-    int xLeft       = xBorder + xFrame;
-    int yTop        = yBorder + yFrame;
+    //
+    //  Caption Rect
+    int x               = xLeft;
+    int y               = yTop;
+    int cx              = windowsRECT.Width() - 2 * xFrame - xBorder;
+    int cy              = yCaption;
 
     //
-    int x       = xLeft;
-    int y       = yTop;
-    int cx      = windowsRECT.Width() - 2 * xFrame - xBorder;
-    int cy      = height /* - yBorder */;
+    CRect captionFullRECT;
+    captionFullRECT.left    = 0;
+    captionFullRECT.top     = 0;
+    captionFullRECT.right   = windowsRECT.Width();
+    captionFullRECT.bottom  = yCaption + 2 * yBorder + yFrame;
+
+    if ( bActive )
+    {
+        pDC->FillSolidRect(&captionFullRECT, CTRXColors::GetBlack32CR());
+    }
+    else
+    {
+        pDC->FillSolidRect(&captionFullRECT, CTRXColors::GetBlack48CR());
+    }
 
     CRect captionRECT;
     captionRECT.left    = x;
     captionRECT.top     = y;
     captionRECT.right   = captionRECT.left + cx;
     captionRECT.bottom  = captionRECT.top + cy;
-
-    if ( bActive )
-    {
-        pDC->FillSolidRect(&captionRECT, CTRXColors::GetBlack32CR());
-    }
-    else
-    {
-        pDC->FillSolidRect(&captionRECT, CTRXColors::GetBlack48CR());
-    }
 
     // Draw Old FRame (Window XP)
     UINT captionOption  = DFCS_CAPTIONMIN | DFCS_CAPTIONMAX | DFCS_CAPTIONCLOSE | DFCS_CAPTIONRESTORE | DFCS_CAPTIONHELP;
@@ -274,7 +274,7 @@ BOOL CTRXNC::PaintWindow( CWnd *pWnd, BOOL bActive )
     char szTitle [ MAX_PATH ];
     pWnd->GetWindowText ( szTitle, sizeof(szTitle));
     CRect textRECT = captionRECT;
-    textRECT.left   = textRECT.left + iconWidth + xBorder;
+    textRECT.left   = textRECT.left + xIcon + xBorder;
 
     pDC->SetBkMode (TRANSPARENT);
     pDC->SetTextColor (foregroundColor);
@@ -288,25 +288,25 @@ BOOL CTRXNC::PaintWindow( CWnd *pWnd, BOOL bActive )
     //  Icon is small
     m_IconRect.left         = xLeft;
     m_IconRect.top          = captionRECT.top;
-    m_IconRect.right        = m_IconRect.left + iconWidth;
-    m_IconRect.bottom       = m_IconRect.top + height - 1;
+    m_IconRect.right        = m_IconRect.left + xIcon;
+    m_IconRect.bottom       = m_IconRect.top + yCaption - 1;
     if ( ( dwStyle & WS_SYSMENU ) && ( dwStyle & WS_CAPTION ) )
     {
         DrawIcon ( pDC, IDR_MAINFRAME, m_IconRect );
     }
 
     // Close
-    m_CloseRect.left        = captionRECT.right - iconWidth;
+    m_CloseRect.left        = captionRECT.right - xIcon;
     m_CloseRect.top         = captionRECT.top;
-    m_CloseRect.right       = m_CloseRect.left + iconWidth;
-    m_CloseRect.bottom      = m_CloseRect.top + height - 1;
+    m_CloseRect.right       = m_CloseRect.left + xIcon;
+    m_CloseRect.bottom      = m_CloseRect.top + yCaption - 1;
     DrawIcon ( pDC, IDI_CLOSE, m_CloseRect );
 
     //  Maximize
-    m_MaximizeRect.left     = m_CloseRect.left - iconWidth;
+    m_MaximizeRect.left     = m_CloseRect.left - xIcon;
     m_MaximizeRect.top      = m_CloseRect.top;
     m_MaximizeRect.right    = m_CloseRect.left - 1;
-    m_MaximizeRect.bottom   = m_MaximizeRect.top + height - 1;
+    m_MaximizeRect.bottom   = m_MaximizeRect.top + yCaption - 1;
     if ( dwStyle & WS_MAXIMIZEBOX )
     {
         if ( wp.showCmd == SW_NORMAL )
@@ -320,10 +320,10 @@ BOOL CTRXNC::PaintWindow( CWnd *pWnd, BOOL bActive )
     }
 
     //  Minilmize
-    m_MinimizeRect.left     = m_MaximizeRect.left - iconWidth;
+    m_MinimizeRect.left     = m_MaximizeRect.left - xIcon;
     m_MinimizeRect.top      = m_MaximizeRect.top;
     m_MinimizeRect.right    = m_MaximizeRect.left - 1;
-    m_MinimizeRect.bottom   = m_MinimizeRect.top + height - 1;
+    m_MinimizeRect.bottom   = m_MinimizeRect.top + yCaption - 1;
     if ( dwStyle & WS_MINIMIZEBOX )
     {
         DrawIcon ( pDC, IDI_MINIMIZE, m_MinimizeRect );
@@ -333,6 +333,92 @@ BOOL CTRXNC::PaintWindow( CWnd *pWnd, BOOL bActive )
     pWnd->ReleaseDC ( pDC );
 
     return TRUE;
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
+BOOL CTRXNC::PaintWindow( CWnd *pWnd, BOOL bActive )
+{
+    if ( CTRXGlobal::m_iDarkTheme == 0 )
+    {
+        return FALSE;
+    }
+
+    //  EG : 1
+    int xBorder         = GetSystemMetrics(SM_CXBORDER);
+    int yBorder         = GetSystemMetrics(SM_CYBORDER);
+
+    //  EG : 3
+    int xFrame          = GetSystemMetrics ( SM_CXDLGFRAME );
+    int yFrame          = GetSystemMetrics ( SM_CYDLGFRAME );
+
+    int xIcon           = GetSystemMetrics(SM_CXICON);
+    int yIcon           = GetSystemMetrics(SM_CYICON);
+
+    int xIconSmall      = GetSystemMetrics(SM_CXSMICON);
+    int yIconSmall      = GetSystemMetrics(SM_CYSMICON);
+
+    int yCaption        = GetSystemMetrics(SM_CYCAPTION);
+
+    int xLeft           = xBorder + xFrame;
+    int yTop            = yBorder + yFrame;
+
+    //
+    CDC* pDC = pWnd->GetWindowDC();
+
+    //
+    //  Fill Background
+    CRect windowsRECT;
+    pWnd->GetWindowRect(&windowsRECT);
+
+    //
+    RECT fullRect;
+    fullRect.top        = yBorder + yFrame + yCaption + yBorder;
+    fullRect.left       = 0;
+    fullRect.bottom     = windowsRECT.Height();
+    fullRect.right      = windowsRECT.Width();
+
+    {
+        RECT clientRect;
+        clientRect.top      = yBorder + yFrame + yCaption + yBorder;
+        clientRect.left     = xBorder + xFrame;
+        clientRect.bottom   = fullRect.bottom - yBorder - yFrame;
+        clientRect.right    = fullRect.right - xBorder - xFrame;
+        // pDC->ExcludeClipRect ( &clientRect );
+
+        pDC->FillRect ( &fullRect, CTRXColors::GetBlack48CBrush() );
+    }
+
+    //
+    pWnd->ReleaseDC ( pDC );
+
+    //
+    PaintCaption ( pWnd, bActive );
+
+    //
+    {
+        RECT clientRect;
+        pWnd->GetClientRect( &clientRect );
+        pWnd->InvalidateRect ( &clientRect );
+    }
+    return TRUE;
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
+BOOL CTRXNC::Activate( CWnd *pWnd, BOOL bActive )
+{
+    if ( CTRXGlobal::m_iDarkTheme == 0 )
+    {
+        return FALSE;
+    }
+
+    return PaintCaption ( pWnd, bActive );
+    // return PaintWindow( pWnd, bActive );
 }
 
 //
@@ -364,7 +450,7 @@ BOOL CTRXNC::OnNcLButtonDown(CWnd *pWnd, UINT nHitTest, CPoint point)
             return TRUE;
         }
 
-        int iconWidth   = GetSystemMetrics(SM_CXICON);
+        int xIcon   = GetSystemMetrics(SM_CXICON);
 
         //
         CRect iconsRect;
@@ -372,7 +458,7 @@ BOOL CTRXNC::OnNcLButtonDown(CWnd *pWnd, UINT nHitTest, CPoint point)
         iconsRect.bottom    = m_CloseRect.bottom;
         iconsRect.left      = min(min(m_CloseRect.left, m_MinimizeRect.left), m_MaximizeRect.left);
         iconsRect.right     = max(max(m_CloseRect.right, m_MinimizeRect.right), m_MaximizeRect.right);
-        iconsRect.left      = iconsRect.left - iconWidth;
+        iconsRect.left      = iconsRect.left - xIcon;
         if ( ScreenPointOverRect( pWnd, point, iconsRect ) )
         {
             return TRUE;

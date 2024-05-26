@@ -6,9 +6,6 @@
 #include "resource.h"
 #include "TRXGDI.h"
 
-static  const int BITMAP_PIXELS_WIDTH   = 32;
-static  const int BITMAP_PIXELS_HEIGHT  = 16;
-
 static  const int EXTRA_PIXELS_WIDTH    = 8;
 static  const int EXTRA_PIXELS_HEIGHT   = 6;
 static  const int SEPARATOR_HEIGHT      = 7;
@@ -316,17 +313,20 @@ void CTRXMenuBase::MeasureMenuItem ( CDC *pDC, const char *pText, CSize *pSize )
 {
     //
     //      Initial Size
-    pSize->cx = BITMAP_PIXELS_WIDTH + EXTRA_PIXELS_WIDTH;
+    int xCheckIcon  = GetSystemMetrics(SM_CXMENUCHECK);
+    int yCheckIcon  = GetSystemMetrics(SM_CYMENUCHECK);
+
+    pSize->cx = xCheckIcon + EXTRA_PIXELS_WIDTH;
 
     //
     if ( pText != NULL && strlen ( pText ) > 0 )
     {
-        pSize->cy = EXTRA_PIXELS_HEIGHT + BITMAP_PIXELS_HEIGHT;
+        pSize->cy = yCheckIcon + EXTRA_PIXELS_HEIGHT;
 
         CFont* pOldFont     = ( CFont * ) pDC->SelectStockObject( ANSI_VAR_FONT );
         INT tabStop         = ( INT ) strlen ( pText );
         CSize sizeText      = pDC->GetOutputTabbedTextExtent ( pText, -1, 1, &tabStop );
-        pSize->cx           += sizeText.cx + BITMAP_PIXELS_WIDTH;
+        pSize->cx           += sizeText.cx + xCheckIcon;
         if ( sizeText.cy > pSize->cy )
         {
             pSize->cy = sizeText.cy;
@@ -404,6 +404,9 @@ void CTRXMenuBase::MeasureMenuItem(LPMEASUREITEMSTRUCT lpMeasureItemStruct )
 void CTRXMenuBase::DrawMenuItem (   LPDRAWITEMSTRUCT lpDrawItemStruct, CDC *pDC,
                                     CRect *pRect, const char *pText )
 {
+    int xCheckIcon  = GetSystemMetrics(SM_CXMENUCHECK);
+    int yCheckIcon  = GetSystemMetrics(SM_CYMENUCHECK);
+
     const   int     TextAttrLeft    =   DT_EXPANDTABS | DT_LEFT | DT_VCENTER | DT_SINGLELINE;
     const   int     TextAttrRight   =   DT_EXPANDTABS | DT_RIGHT | DT_VCENTER | DT_SINGLELINE;
 
@@ -447,7 +450,7 @@ void CTRXMenuBase::DrawMenuItem (   LPDRAWITEMSTRUCT lpDrawItemStruct, CDC *pDC,
         bDone = pDC->DrawFrameControl ( &lpDrawItemStruct->rcItem, DFC_POPUPMENU, 0 );
         RECT rect = *pRect;
         rect.top        = rect.top + 1;
-        rect.left       = rect.top + 1;
+        rect.left       = rect.left + 1;
         rect.right      = rect.right  - 1;
         rect.bottom     = rect.bottom  - 1;
         pDC->FillRect ( pRect, brBKNormal);
@@ -457,14 +460,19 @@ void CTRXMenuBase::DrawMenuItem (   LPDRAWITEMSTRUCT lpDrawItemStruct, CDC *pDC,
     if ( lpDrawItemStruct->itemState & ODS_CHECKED )
     {
         // We Will Have to Draw a Bitmap
-        hOldBrush = ( HBRUSH ) pDC->SelectObject ( hForeground );
+        hOldBrush       = ( HBRUSH ) pDC->SelectObject ( hForeground );
+        int xIconSmall  = GetSystemMetrics(SM_CXSMICON);
+        int yIconSmall  = GetSystemMetrics(SM_CYSMICON);
+
         if ( CTRXGlobal::m_iDarkTheme != 0 )
         {
-            bDone = pDC->DrawIcon ( lpDrawItemStruct->rcItem.left, lpDrawItemStruct->rcItem.top, m_hCheckWhiteIcon );
+            // bDone = pDC->DrawIcon ( lpDrawItemStruct->rcItem.left, lpDrawItemStruct->rcItem.top, m_hCheckWhiteIcon );
+            DrawIconEx ( pDC->m_hDC, lpDrawItemStruct->rcItem.left, lpDrawItemStruct->rcItem.top, m_hCheckWhiteIcon, xIconSmall, yIconSmall, 0, NULL, DI_NORMAL );
         }
         else
         {
-            bDone = pDC->DrawIcon ( lpDrawItemStruct->rcItem.left, lpDrawItemStruct->rcItem.top, m_hCheckBlackIcon );
+            // bDone = pDC->DrawIcon ( lpDrawItemStruct->rcItem.left, lpDrawItemStruct->rcItem.top, m_hCheckBlackIcon );
+            DrawIconEx ( pDC->m_hDC, lpDrawItemStruct->rcItem.left, lpDrawItemStruct->rcItem.top, m_hCheckBlackIcon, xIconSmall, yIconSmall, 0, NULL, DI_NORMAL );
         }
         // bDone = pDC->DrawFrameControl ( &lpDrawItemStruct->rcItem, DFC_MENU, DFCS_CHECKED );
         pDC->SelectObject ( hOldBrush );
@@ -505,7 +513,7 @@ void CTRXMenuBase::DrawMenuItem (   LPDRAWITEMSTRUCT lpDrawItemStruct, CDC *pDC,
     }
 
     //
-    pRect->left += BITMAP_PIXELS_WIDTH;
+    pRect->left += xCheckIcon;
 
     if ( pText != NULL && strlen ( pText ) > 0 )
     {
