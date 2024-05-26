@@ -581,7 +581,7 @@ BOOL CTRXItemsTR4::GetMenuLabel ( int button )
     while ( token != NULL) 
     {
         char *parenthesis = NULL;
-        for ( int l = strlen(token) - 1; l >= 0; l-- )
+        for ( int l = (int) strlen(token) - 1; l >= 0; l-- )
         {
             if ( token [ l ] == '(' )
             {
