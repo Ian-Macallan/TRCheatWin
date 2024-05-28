@@ -15,9 +15,6 @@ This Program can modify savegames files from :
 - Tombraider IV The Last Revelation, IV Times Exclusive and
 - Tombraider V Chronicles and
 - Tombraider Remastered 1 2 3.
-The executable for x86 is TRCheatWin.zip.
-The executable for x64 is TRCheatWinx64.zip
-For the both versions you will need Visual Sudio Redistribuable
 
 The features are :
 - Getting all guns and ammos, life pak, flares,
