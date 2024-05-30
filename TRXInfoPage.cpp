@@ -11,6 +11,14 @@
 #include "ReadTR2\ReadTRX.h"
 #include "ReadTR2\\ReadTRXScript.h"
 #include "TRLabelItems.h"
+#include "TRXGunPage.h" // Added by ClassView
+#include "TRXInfoPage.h"    // Added by ClassView
+#include "TRXItems.h"   // Added by ClassView
+#include "TRXItemsTR4.h"    // Added by ClassView
+#include "TRXAmmosPage.h"   // Added by ClassView
+#include "TRXEquipmentPage.h"   // Added by ClassView
+#include "TRXPropertySheet.h"
+#include "TRXRemastered.h"
 
 #include "AutomaticVersionHeader.h"
 
@@ -3014,7 +3022,7 @@ BOOL CTRXInfoPage::SelectCustomFromDir (const char *pDirectory)
     {
         ZeroMemory ( szFilename, sizeof(szFilename) );
         m_Custom_Combo.GetLBText ( i, szFilename );
-        if ( strncmp ( szFilename, pDirectory, strlen(pDirectory) ) == 0 )
+        if ( _strnicmp ( szFilename, pDirectory, strlen(pDirectory) ) == 0 )
         {
             m_Custom_Combo.SetCurSel ( i );
             return TRUE;
@@ -3122,6 +3130,42 @@ void CTRXInfoPage::OnDropFiles(HDROP hDropInfo)
         UINT iRes = DragQueryFile ( hDropInfo, 0, szFilename, sizeof ( szFilename ) );
         if ( iRes != 0 )
         {
+            HANDLE hFile = CreateFile (
+                szFilename,                 //  _In_      LPCTSTR lpFileName,
+                GENERIC_READ,               //   _In_      DWORD dwDesiredAccess,
+                FILE_SHARE_READ,            //  _In_      DWORD dwShareMode,
+                NULL,                       //  _In_opt_  LPSECURITY_ATTRIBUTES lpSecurityAttributes,
+                OPEN_EXISTING,              //  _In_      DWORD dwCreationDisposition,
+                FILE_ATTRIBUTE_NORMAL ,     //  _In_      DWORD dwFlagsAndAttributes,
+                NULL                        //  _In_opt_  HANDLE hTemplateFile
+            );
+
+            if ( hFile == INVALID_HANDLE_VALUE )
+            {
+                return;
+            }
+            DWORD dwSizeHigh    = 0;
+            DWORD dwSize        = GetFileSize ( hFile, &dwSizeHigh );
+
+            CloseHandle ( hFile );
+
+            //
+            if ( dwSize == INVALID_FILE_SIZE  )
+            {
+                return;
+            }
+
+            //
+            if ( dwSize == TR123LEVELSIZE )
+            {
+                CTRXPropertySheet *propertySheet = dynamic_cast<CTRXPropertySheet *>( GetParent() );
+                if ( propertySheet )
+                {
+                    propertySheet->SetActivePage ( propertySheet->m_Remastered_Page );
+                }
+                return;
+            }
+
             /*
              *      The Game.
              */

@@ -105,6 +105,11 @@ BOOL CTRXPropertyPageBase::AddLocation ( STRUCTLOCATION *pTable, const char *pLo
         return FALSE;
     }
 
+    if ( pLocation == NULL || ! PathFileExists ( pLocation ) )
+    {
+        return FALSE;
+    }
+
     for ( int i = 0; i < LEN_LOCATION; i++ )
     {
         //  Already Here

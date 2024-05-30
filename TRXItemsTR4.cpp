@@ -565,13 +565,13 @@ BOOL CTRXItemsTR4::GetMenuLabel ( int button )
     }
 
     //
-    if ( pTableInd != NULL )
+    if ( pTableInd != NULL && pTableInd [ button ] != NULL )
     {
         strcat_s ( szLabels, sizeof(szLabels), pTableInd [ button ] );
     }
 
     //
-    if ( pTableGen != NULL )
+    if ( pTableGen != NULL && pTableGen [ button ] != NULL )
     {
         strcat_s ( szLabels, sizeof(szLabels), pTableGen [ button ] );
     }

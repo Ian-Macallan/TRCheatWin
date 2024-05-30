@@ -13,6 +13,9 @@ class CTRXPropertySheet : public CPropertySheet
 {
         DECLARE_DYNAMIC(CTRXPropertySheet)
 
+        friend class CTRXRemastered;
+        friend class CTRXInfoPage;
+
     protected  :
         CTRXRemastered          *m_Remastered_Page;
         CTRXInfoPage            *m_Info_Page;

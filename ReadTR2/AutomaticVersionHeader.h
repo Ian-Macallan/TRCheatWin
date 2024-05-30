@@ -5,7 +5,7 @@
 //
 //	(c) 2003 - 2024 Macallan - mailto:ian.macallan@gmail.com
 //
-//	Generated : 30/05/2024 12:00:23
+//	Generated : 30/05/2024 14:10:57
 //
 //===========================================================================================
 //
@@ -57,22 +57,22 @@
 #endif
 
 #ifdef UNICODE
-#define PROGRAM_DATE    L"Thu May 30 12:00"
-#define PROGRAM_DATE_F  L"Thu May 30 12:00 2024"
+#define PROGRAM_DATE    L"Thu May 30 14:10"
+#define PROGRAM_DATE_F  L"Thu May 30 14:10 2024"
 #define PROGRAM_YEAR    L"2024"
-#define PROGRAM_TIME    L"2024/05/30 12:00:23"
+#define PROGRAM_TIME    L"2024/05/30 14:10:57"
 #else
-#define PROGRAM_DATE    "Thu May 30 12:00"
-#define PROGRAM_DATE_F  "Thu May 30 12:00 2024"
+#define PROGRAM_DATE    "Thu May 30 14:10"
+#define PROGRAM_DATE_F  "Thu May 30 14:10 2024"
 #define PROGRAM_YEAR    "2024"
-#define PROGRAM_TIME    "2024/05/30 12:00:23"
+#define PROGRAM_TIME    "2024/05/30 14:10:57"
 #endif
 
 #ifdef UNICODE
-#define PROGRAM_VERSION L"4.1.10.011"
-#define PROGRAM_INSTALL L"4.1.10011"
-#define PROGRAM_VER_NUM 40110011
-#define PROGRAM_BUILD   L"367"
+#define PROGRAM_VERSION L"4.1.10.013"
+#define PROGRAM_INSTALL L"4.1.10013"
+#define PROGRAM_VER_NUM 40110013
+#define PROGRAM_BUILD   L"369"
 #define PROGRAM_TITLE   L"Read TR2"
 #ifdef _WIN64
 #define PROGRAM_TITLE_P L"Read TR2 (x64 Unicode)"
@@ -80,10 +80,10 @@
 #define PROGRAM_TITLE_P L"Read TR2 (x86 Unicode)"
 #endif
 #else
-#define PROGRAM_VERSION "4.1.10.011"
-#define PROGRAM_INSTALL "4.1.10011"
-#define PROGRAM_VER_NUM 40110011
-#define PROGRAM_BUILD   "367"
+#define PROGRAM_VERSION "4.1.10.013"
+#define PROGRAM_INSTALL "4.1.10013"
+#define PROGRAM_VER_NUM 40110013
+#define PROGRAM_BUILD   "369"
 #define PROGRAM_TITLE   "Read TR2"
 #ifdef _WIN64
 #define PROGRAM_TITLE_P "Read TR2 (x64 MBCS)"

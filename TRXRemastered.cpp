@@ -20,6 +20,14 @@
 #include "TRXAllMaps.h"
 #include "TRXMenuBase.h"
 
+#include "TRXGunPage.h" // Added by ClassView
+#include "TRXInfoPage.h"    // Added by ClassView
+#include "TRXItems.h"   // Added by ClassView
+#include "TRXItemsTR4.h"    // Added by ClassView
+#include "TRXAmmosPage.h"   // Added by ClassView
+#include "TRXEquipmentPage.h"   // Added by ClassView
+#include "TRXPropertySheet.h"
+
 //
 /////////////////////////////////////////////////////////////////////////////
 // Boîte de dialogue CTRXRemastered
@@ -27,22 +35,22 @@
 /////////////////////////////////////////////////////////////////////////////
 extern CTRXCHEATWINApp theApp;
 
-#define COL_GAME            0       // TR1, TR2, TR3
-#define COL_SUB_GAME        1       // GOLD
-#define COL_SAVE_NO         2
-#define COL_LEVEL_NO        3
-#define COL_LEVEL_NAME      4
-#define COL_ADDRESS_1       5
-#define COL_ADDRESS_2       6
-#define COL_BLOCK           7
-#define COL_SLOT            8
-#define COL_FOUND           9
-#define COL_TOMBRAIDER      10
-#define COL_KILLS           11
-#define COL_PICKUPS         12
-#define COL_ELAPSED         13
-#define COL_DISTANCE        14
-#define COL_EXTRA           15
+#define COLR_GAME            0       // TR1, TR2, TR3
+#define COLR_SUB_GAME        1       // GOLD
+#define COLR_SAVE_NO         2
+#define COLR_LEVEL_NO        3
+#define COLR_LEVEL_NAME      4
+#define COLR_ADDRESS_1       5
+#define COLR_ADDRESS_2       6
+#define COLR_BLOCK           7
+#define COLR_SLOT            8
+#define COLR_FOUND           9
+#define COLR_TOMBRAIDER      10
+#define COLR_KILLS           11
+#define COLR_PICKUPS         12
+#define COLR_ELAPSED         13
+#define COLR_DISTANCE        14
+#define COLR_EXTRA           15
 
 #define MAX_AIR             1800
 #define MAX_HEALTH          1000
@@ -671,22 +679,22 @@ BOOL CTRXRemastered::OnSetActive()
     {
         m_pListCtrl = &m_ListCtrl;
 
-        m_ListCtrl.InsertColumn ( COL_GAME, "Game", LVCFMT_LEFT, 48);
-        m_ListCtrl.InsertColumn ( COL_SUB_GAME, "Variant", LVCFMT_LEFT, 96);
-        m_ListCtrl.InsertColumn ( COL_SAVE_NO, "Save #", LVCFMT_RIGHT, 48);
-        m_ListCtrl.InsertColumn ( COL_LEVEL_NO, "Level #", LVCFMT_RIGHT, 48);
-        m_ListCtrl.InsertColumn ( COL_LEVEL_NAME, "Level Name", LVCFMT_LEFT, 150);
-        m_ListCtrl.InsertColumn ( COL_ADDRESS_1, "Address 1", LVCFMT_LEFT, 80);
-        m_ListCtrl.InsertColumn ( COL_ADDRESS_2, "Address 2", LVCFMT_LEFT, 80);
-        m_ListCtrl.InsertColumn ( COL_BLOCK, "Block", LVCFMT_RIGHT, 48);
-        m_ListCtrl.InsertColumn ( COL_SLOT, "Slot", LVCFMT_RIGHT, 32);
-        m_ListCtrl.InsertColumn ( COL_FOUND, "Found", LVCFMT_RIGHT, 44);
-        m_ListCtrl.InsertColumn ( COL_TOMBRAIDER, "TR", LVCFMT_RIGHT, 28);
-        m_ListCtrl.InsertColumn ( COL_KILLS, "K", LVCFMT_RIGHT, 32);
-        m_ListCtrl.InsertColumn ( COL_PICKUPS, "P", LVCFMT_RIGHT, 32);
-        m_ListCtrl.InsertColumn ( COL_ELAPSED, "Elapsed", LVCFMT_RIGHT, 60);
-        m_ListCtrl.InsertColumn ( COL_DISTANCE, "Distance", LVCFMT_RIGHT, 60);
-        m_ListCtrl.InsertColumn ( COL_EXTRA, "3", LVCFMT_RIGHT, 32);
+        m_ListCtrl.InsertColumn ( COLR_GAME, "Game", LVCFMT_LEFT, 48);
+        m_ListCtrl.InsertColumn ( COLR_SUB_GAME, "Variant", LVCFMT_LEFT, 96);
+        m_ListCtrl.InsertColumn ( COLR_SAVE_NO, "Save #", LVCFMT_RIGHT, 48);
+        m_ListCtrl.InsertColumn ( COLR_LEVEL_NO, "Level #", LVCFMT_RIGHT, 48);
+        m_ListCtrl.InsertColumn ( COLR_LEVEL_NAME, "Level Name", LVCFMT_LEFT, 150);
+        m_ListCtrl.InsertColumn ( COLR_ADDRESS_1, "Address 1", LVCFMT_LEFT, 80);
+        m_ListCtrl.InsertColumn ( COLR_ADDRESS_2, "Address 2", LVCFMT_LEFT, 80);
+        m_ListCtrl.InsertColumn ( COLR_BLOCK, "Block", LVCFMT_RIGHT, 48);
+        m_ListCtrl.InsertColumn ( COLR_SLOT, "Slot", LVCFMT_RIGHT, 32);
+        m_ListCtrl.InsertColumn ( COLR_FOUND, "Found", LVCFMT_RIGHT, 44);
+        m_ListCtrl.InsertColumn ( COLR_TOMBRAIDER, "TR", LVCFMT_RIGHT, 28);
+        m_ListCtrl.InsertColumn ( COLR_KILLS, "K", LVCFMT_RIGHT, 32);
+        m_ListCtrl.InsertColumn ( COLR_PICKUPS, "P", LVCFMT_RIGHT, 32);
+        m_ListCtrl.InsertColumn ( COLR_ELAPSED, "Elapsed", LVCFMT_RIGHT, 60);
+        m_ListCtrl.InsertColumn ( COLR_DISTANCE, "Distance", LVCFMT_RIGHT, 60);
+        m_ListCtrl.InsertColumn ( COLR_EXTRA, "3", LVCFMT_RIGHT, 32);
 
         m_ListCtrl.SetExtendedStyle(LVS_EX_FULLROWSELECT);
 
@@ -2008,7 +2016,7 @@ void CTRXRemastered::DisplayList ( )
     if ( iSortColumn == -1 )
     {
         iSortAscending  = 1;
-        iSortColumn     = COL_GAME;
+        iSortColumn     = COLR_GAME;
     }
 
     SortItems ( iSortColumn );
@@ -2064,71 +2072,71 @@ void CTRXRemastered::DisplayListBrief ( )
         {
             m_ListCtrl.InsertItem ( position, "TR1" );
 
-            m_ListCtrl.SetItemText ( position, COL_SUB_GAME, "Tombraider 1");
+            m_ListCtrl.SetItemText ( position, COLR_SUB_GAME, "Tombraider 1");
             if ( level >= TR1G_START )
             {
-                m_ListCtrl.SetItemText ( position, COL_SUB_GAME, "Unfinished Business");
+                m_ListCtrl.SetItemText ( position, COLR_SUB_GAME, "Unfinished Business");
             }
 
             sprintf_s  ( szString, sizeof(szString), "%03d", save );
-            m_ListCtrl.SetItemText ( position, COL_SAVE_NO, szString);
+            m_ListCtrl.SetItemText ( position, COLR_SAVE_NO, szString);
 
             sprintf_s  ( szString, sizeof(szString), "%02d", level );
-            m_ListCtrl.SetItemText ( position, COL_LEVEL_NO, szString);
+            m_ListCtrl.SetItemText ( position, COLR_LEVEL_NO, szString);
 
             strcpy_s ( szString, sizeof(szString), CTR9SaveGame::GetLevelName ( tombraider, level ) );
             if (  CTR9SaveGame::I()->IsGamePlus ( tombraider, block  ) )
             {
                 strcat_s ( szString, sizeof(szString), "+" );
             }
-            m_ListCtrl.SetItemText ( position, COL_LEVEL_NAME, szString );
+            m_ListCtrl.SetItemText ( position, COLR_LEVEL_NAME, szString );
 
             void *pAddress1 = CTR9SaveGame::I()->SearchBlockEntry ( tombraider, block, &slotFound );
             if ( pAddress1 )
             {
                 sprintf_s  ( szString, sizeof(szString), "0x%07X", RelativeAddress ( pAddress1 ) );
-                m_ListCtrl.SetItemText ( position, COL_ADDRESS_1, szString );
+                m_ListCtrl.SetItemText ( position, COLR_ADDRESS_1, szString );
             }
             else
             {
-                m_ListCtrl.SetItemText ( position, COL_ADDRESS_1, "" );
+                m_ListCtrl.SetItemText ( position, COLR_ADDRESS_1, "" );
             }
 
             void *pAddress2 = CTR9SaveGame::I()->SearchGunEntry ( tombraider, block);
             if ( pAddress2 )
             {
                 sprintf_s  ( szString, sizeof(szString), "0x%07X", RelativeAddress ( pAddress2 ) );
-                m_ListCtrl.SetItemText ( position, COL_ADDRESS_2, szString );
+                m_ListCtrl.SetItemText ( position, COLR_ADDRESS_2, szString );
             }
             else
             {
-                m_ListCtrl.SetItemText ( position, COL_ADDRESS_2, "" );
+                m_ListCtrl.SetItemText ( position, COLR_ADDRESS_2, "" );
             }
 
             //
             sprintf_s  ( szString, sizeof(szString), "%02d", block);
-            m_ListCtrl.SetItemText ( position, COL_BLOCK, szString);
+            m_ListCtrl.SetItemText ( position, COLR_BLOCK, szString);
 
             sprintf_s  ( szString, sizeof(szString), "%02d", slotFound );
-            m_ListCtrl.SetItemText ( position, COL_SLOT, szString);
+            m_ListCtrl.SetItemText ( position, COLR_SLOT, szString);
 
             sprintf_s  ( szString, sizeof(szString), "%02d",  CTR9SaveGame::I()->countTag ( tombraider, block ) );
-            m_ListCtrl.SetItemText ( position, COL_FOUND, szString);
+            m_ListCtrl.SetItemText ( position, COLR_FOUND, szString);
 
-            m_ListCtrl.SetItemText ( position, COL_TOMBRAIDER, "1");
+            m_ListCtrl.SetItemText ( position, COLR_TOMBRAIDER, "1");
 
             sprintf_s  ( szString, sizeof(szString), "%d",  CTR9SaveGame::I()->GetBlockKills ( tombraider, block ) );
-            m_ListCtrl.SetItemText ( position, COL_KILLS, szString);
+            m_ListCtrl.SetItemText ( position, COLR_KILLS, szString);
 
             sprintf_s  ( szString, sizeof(szString), "%d",  CTR9SaveGame::I()->GetBlockPickup ( tombraider, block ) );
-            m_ListCtrl.SetItemText ( position, COL_PICKUPS, szString);
+            m_ListCtrl.SetItemText ( position, COLR_PICKUPS, szString);
 
-            m_ListCtrl.SetItemText ( position, COL_ELAPSED, CTR9SaveGame::I()->GetBlockElapsed ( tombraider, block ) );
+            m_ListCtrl.SetItemText ( position, COLR_ELAPSED, CTR9SaveGame::I()->GetBlockElapsed ( tombraider, block ) );
 
-            m_ListCtrl.SetItemText ( position, COL_DISTANCE, CTR9SaveGame::I()->GetBlockDistance ( tombraider, block ) );
+            m_ListCtrl.SetItemText ( position, COLR_DISTANCE, CTR9SaveGame::I()->GetBlockDistance ( tombraider, block ) );
 
             sprintf_s  ( szString, sizeof(szString), "%02X",  CTR9SaveGame::I()->GetBlockIndicator ( tombraider, block ) );
-            m_ListCtrl.SetItemText ( position, COL_EXTRA, szString);
+            m_ListCtrl.SetItemText ( position, COLR_EXTRA, szString);
 
             //  TR1 + block
             tagData [ position ].tombraider     = tombraider;
@@ -2157,71 +2165,71 @@ void CTRXRemastered::DisplayListBrief ( )
         {
             m_ListCtrl.InsertItem ( position, "TR2" );
 
-            m_ListCtrl.SetItemText ( position, COL_SUB_GAME, "Tombraider 2");
+            m_ListCtrl.SetItemText ( position, COLR_SUB_GAME, "Tombraider 2");
             if ( level >= TR2G_START )
             {
-                m_ListCtrl.SetItemText ( position, COL_SUB_GAME, "Golden Mask");
+                m_ListCtrl.SetItemText ( position, COLR_SUB_GAME, "Golden Mask");
             }
 
             sprintf_s  ( szString, sizeof(szString), "%03d", save );
-            m_ListCtrl.SetItemText ( position, COL_SAVE_NO, szString);
+            m_ListCtrl.SetItemText ( position, COLR_SAVE_NO, szString);
 
             sprintf_s  ( szString, sizeof(szString), "%02d", level );
-            m_ListCtrl.SetItemText ( position, COL_LEVEL_NO, szString);
+            m_ListCtrl.SetItemText ( position, COLR_LEVEL_NO, szString);
 
             strcpy_s ( szString, sizeof(szString), CTR9SaveGame::GetLevelName ( tombraider, level ) );
             if (  CTR9SaveGame::I()->IsGamePlus ( tombraider, block  ) )
             {
                 strcat_s ( szString, sizeof(szString), "+" );
             }
-            m_ListCtrl.SetItemText ( position, COL_LEVEL_NAME, szString );
+            m_ListCtrl.SetItemText ( position, COLR_LEVEL_NAME, szString );
 
 
             void *pAddress1 = CTR9SaveGame::I()->SearchBlockEntry ( tombraider, block, &slotFound);
             if ( pAddress1 )
             {
                 sprintf_s  ( szString, sizeof(szString), "0x%07X", RelativeAddress ( pAddress1 ) );
-                m_ListCtrl.SetItemText ( position, COL_ADDRESS_1, szString );
+                m_ListCtrl.SetItemText ( position, COLR_ADDRESS_1, szString );
             }
             else
             {
-                m_ListCtrl.SetItemText ( position, COL_ADDRESS_1, "" );
+                m_ListCtrl.SetItemText ( position, COLR_ADDRESS_1, "" );
             }
 
             void *pAddress2 = CTR9SaveGame::I()->SearchGunEntry ( tombraider, block);
             if ( pAddress2 )
             {
                 sprintf_s  ( szString, sizeof(szString), "0x%07X", RelativeAddress ( pAddress2 ) );
-                m_ListCtrl.SetItemText ( position, COL_ADDRESS_2, szString );
+                m_ListCtrl.SetItemText ( position, COLR_ADDRESS_2, szString );
             }
             else
             {
-                m_ListCtrl.SetItemText ( position, COL_ADDRESS_2, "" );
+                m_ListCtrl.SetItemText ( position, COLR_ADDRESS_2, "" );
             }
 
             sprintf_s  ( szString, sizeof(szString), "%02d", block);
-            m_ListCtrl.SetItemText ( position, COL_BLOCK, szString);
+            m_ListCtrl.SetItemText ( position, COLR_BLOCK, szString);
 
             sprintf_s  ( szString, sizeof(szString), "%02d", slotFound );
-            m_ListCtrl.SetItemText ( position, COL_SLOT, szString);
+            m_ListCtrl.SetItemText ( position, COLR_SLOT, szString);
 
             sprintf_s  ( szString, sizeof(szString), "%02d",  CTR9SaveGame::I()->countTag ( tombraider, block ) );
-            m_ListCtrl.SetItemText ( position, COL_FOUND, szString);
+            m_ListCtrl.SetItemText ( position, COLR_FOUND, szString);
 
-            m_ListCtrl.SetItemText ( position, COL_TOMBRAIDER, "2");
+            m_ListCtrl.SetItemText ( position, COLR_TOMBRAIDER, "2");
 
             sprintf_s  ( szString, sizeof(szString), "%d",  CTR9SaveGame::I()->GetBlockKills ( tombraider, block ) );
-            m_ListCtrl.SetItemText ( position, COL_KILLS, szString);
+            m_ListCtrl.SetItemText ( position, COLR_KILLS, szString);
 
             sprintf_s  ( szString, sizeof(szString), "%d",  CTR9SaveGame::I()->GetBlockPickup ( tombraider, block ) );
-            m_ListCtrl.SetItemText ( position, COL_PICKUPS, szString);
+            m_ListCtrl.SetItemText ( position, COLR_PICKUPS, szString);
 
-            m_ListCtrl.SetItemText ( position, COL_ELAPSED, CTR9SaveGame::I()->GetBlockElapsed ( tombraider, block ) );
+            m_ListCtrl.SetItemText ( position, COLR_ELAPSED, CTR9SaveGame::I()->GetBlockElapsed ( tombraider, block ) );
 
-            m_ListCtrl.SetItemText ( position, COL_DISTANCE, CTR9SaveGame::I()->GetBlockDistance ( tombraider, block ) );
+            m_ListCtrl.SetItemText ( position, COLR_DISTANCE, CTR9SaveGame::I()->GetBlockDistance ( tombraider, block ) );
 
             sprintf_s  ( szString, sizeof(szString), "%02X",  CTR9SaveGame::I()->GetBlockIndicator ( tombraider, block ) );
-            m_ListCtrl.SetItemText ( position, COL_EXTRA, szString);
+            m_ListCtrl.SetItemText ( position, COLR_EXTRA, szString);
 
             //  TR2 + block
             tagData [ position ].tombraider     = tombraider;
@@ -2250,71 +2258,71 @@ void CTRXRemastered::DisplayListBrief ( )
         {
             m_ListCtrl.InsertItem ( position, "TR3" );
 
-            m_ListCtrl.SetItemText ( position, COL_SUB_GAME, "Tombraider 3");
+            m_ListCtrl.SetItemText ( position, COLR_SUB_GAME, "Tombraider 3");
             if ( level >= TR3G_START )
             {
-                m_ListCtrl.SetItemText ( position, COL_SUB_GAME, "Lost Artefact");
+                m_ListCtrl.SetItemText ( position, COLR_SUB_GAME, "Lost Artefact");
             }
 
             sprintf_s  ( szString, sizeof(szString), "%03d", save );
-            m_ListCtrl.SetItemText ( position, COL_SAVE_NO, szString);
+            m_ListCtrl.SetItemText ( position, COLR_SAVE_NO, szString);
 
             sprintf_s  ( szString, sizeof(szString), "%02d", level );
-            m_ListCtrl.SetItemText ( position, COL_LEVEL_NO, szString);
+            m_ListCtrl.SetItemText ( position, COLR_LEVEL_NO, szString);
 
             strcpy_s ( szString, sizeof(szString), CTR9SaveGame::GetLevelName ( tombraider, level ) );
             if (  CTR9SaveGame::I()->IsGamePlus ( tombraider, block  ) )
             {
                 strcat_s ( szString, sizeof(szString), "+" );
             }
-            m_ListCtrl.SetItemText ( position, COL_LEVEL_NAME, szString );
+            m_ListCtrl.SetItemText ( position, COLR_LEVEL_NAME, szString );
 
             void *pAddress1 = CTR9SaveGame::I()->SearchBlockEntry ( tombraider, block, &slotFound);
             if ( pAddress1 )
             {
                 sprintf_s  ( szString, sizeof(szString), "0x%07X", RelativeAddress ( pAddress1 ) );
-                m_ListCtrl.SetItemText ( position, COL_ADDRESS_1, szString );
+                m_ListCtrl.SetItemText ( position, COLR_ADDRESS_1, szString );
             }
             else
             {
-                m_ListCtrl.SetItemText ( position, COL_ADDRESS_1, "" );
+                m_ListCtrl.SetItemText ( position, COLR_ADDRESS_1, "" );
             }
 
             void *pAddress2 = CTR9SaveGame::I()->SearchGunEntry ( tombraider, block);
             if ( pAddress2 )
             {
                 sprintf_s  ( szString, sizeof(szString), "0x%07X", RelativeAddress ( pAddress2 ) );
-                m_ListCtrl.SetItemText ( position, COL_ADDRESS_2, szString );
+                m_ListCtrl.SetItemText ( position, COLR_ADDRESS_2, szString );
             }
             else
             {
-                m_ListCtrl.SetItemText ( position, COL_ADDRESS_2, "" );
+                m_ListCtrl.SetItemText ( position, COLR_ADDRESS_2, "" );
             }
 
 
             sprintf_s  ( szString, sizeof(szString), "%02d", block);
-            m_ListCtrl.SetItemText ( position, COL_BLOCK, szString);
+            m_ListCtrl.SetItemText ( position, COLR_BLOCK, szString);
 
             sprintf_s  ( szString, sizeof(szString), "%02d", slotFound );
-            m_ListCtrl.SetItemText ( position, COL_SLOT, szString);
+            m_ListCtrl.SetItemText ( position, COLR_SLOT, szString);
 
             sprintf_s  ( szString, sizeof(szString), "%02d",  CTR9SaveGame::I()->countTag ( tombraider, block ) );
-            m_ListCtrl.SetItemText ( position, COL_FOUND, szString);
+            m_ListCtrl.SetItemText ( position, COLR_FOUND, szString);
 
-            m_ListCtrl.SetItemText ( position, COL_TOMBRAIDER, "3");
+            m_ListCtrl.SetItemText ( position, COLR_TOMBRAIDER, "3");
 
             sprintf_s  ( szString, sizeof(szString), "%d",  CTR9SaveGame::I()->GetBlockKills ( tombraider, block ) );
-            m_ListCtrl.SetItemText ( position, COL_KILLS, szString);
+            m_ListCtrl.SetItemText ( position, COLR_KILLS, szString);
 
             sprintf_s  ( szString, sizeof(szString), "%d",  CTR9SaveGame::I()->GetBlockPickup ( tombraider, block ) );
-            m_ListCtrl.SetItemText ( position, COL_PICKUPS, szString);
+            m_ListCtrl.SetItemText ( position, COLR_PICKUPS, szString);
 
-            m_ListCtrl.SetItemText ( position, COL_ELAPSED, CTR9SaveGame::I()->GetBlockElapsed ( tombraider, block ) );
+            m_ListCtrl.SetItemText ( position, COLR_ELAPSED, CTR9SaveGame::I()->GetBlockElapsed ( tombraider, block ) );
 
-            m_ListCtrl.SetItemText ( position, COL_DISTANCE, CTR9SaveGame::I()->GetBlockDistance ( tombraider, block ) );
+            m_ListCtrl.SetItemText ( position, COLR_DISTANCE, CTR9SaveGame::I()->GetBlockDistance ( tombraider, block ) );
 
             sprintf_s  ( szString, sizeof(szString), "%02X",  CTR9SaveGame::I()->GetBlockIndicator ( tombraider, block ) );
-            m_ListCtrl.SetItemText ( position, COL_EXTRA, szString);
+            m_ListCtrl.SetItemText ( position, COLR_EXTRA, szString);
 
             //  TR3 + block
             tagData [ position ].tombraider     = tombraider;
@@ -2389,67 +2397,67 @@ void CTRXRemastered::DisplayListFull ( bool bShort )
             {
                 m_ListCtrl.InsertItem ( position, "TR1" );
 
-                m_ListCtrl.SetItemText ( position, COL_SUB_GAME, "Tombraider 1");
+                m_ListCtrl.SetItemText ( position, COLR_SUB_GAME, "Tombraider 1");
                 if ( level >= TR1G_START )
                 {
-                    m_ListCtrl.SetItemText ( position, COL_SUB_GAME, "Unfinished Business");
+                    m_ListCtrl.SetItemText ( position, COLR_SUB_GAME, "Unfinished Business");
                 }
 
                 sprintf_s  ( szString, sizeof(szString), "%03d", save );
-                m_ListCtrl.SetItemText ( position, COL_SAVE_NO, szString);
+                m_ListCtrl.SetItemText ( position, COLR_SAVE_NO, szString);
 
                 sprintf_s  ( szString, sizeof(szString), "%02d", level );
-                m_ListCtrl.SetItemText ( position, COL_LEVEL_NO, szString);
+                m_ListCtrl.SetItemText ( position, COLR_LEVEL_NO, szString);
 
                 strcpy_s ( szString, sizeof(szString), CTR9SaveGame::GetLevelName ( tombraider, level ) );
                 if (  CTR9SaveGame::I()->IsGamePlus ( tombraider, block  ) )
                 {
                     strcat_s ( szString, sizeof(szString), "+" );
                 }
-                m_ListCtrl.SetItemText ( position, COL_LEVEL_NAME, szString );
+                m_ListCtrl.SetItemText ( position, COLR_LEVEL_NAME, szString );
 
                 if ( pAddress1 )
                 {
                     sprintf_s  ( szString, sizeof(szString), "0x%07X", RelativeAddress ( pAddress1 ) );
-                    m_ListCtrl.SetItemText ( position, COL_ADDRESS_1, szString );
+                    m_ListCtrl.SetItemText ( position, COLR_ADDRESS_1, szString );
                 }
                 else
                 {
-                    m_ListCtrl.SetItemText ( position, COL_ADDRESS_1, "" );
+                    m_ListCtrl.SetItemText ( position, COLR_ADDRESS_1, "" );
                 }
 
                 if ( pAddress2 )
                 {
                     sprintf_s  ( szString, sizeof(szString), "0x%07X", RelativeAddress ( pAddress2 ) );
-                    m_ListCtrl.SetItemText ( position, COL_ADDRESS_2, szString );
+                    m_ListCtrl.SetItemText ( position, COLR_ADDRESS_2, szString );
                 }
                 else
                 {
-                    m_ListCtrl.SetItemText ( position, COL_ADDRESS_2, "" );
+                    m_ListCtrl.SetItemText ( position, COLR_ADDRESS_2, "" );
                 }
                 sprintf_s  ( szString, sizeof(szString), "%02d", block);
-                m_ListCtrl.SetItemText ( position, COL_BLOCK, szString);
+                m_ListCtrl.SetItemText ( position, COLR_BLOCK, szString);
 
                 sprintf_s  ( szString, sizeof(szString), "%02d", slot );
-                m_ListCtrl.SetItemText ( position, COL_SLOT, szString);
+                m_ListCtrl.SetItemText ( position, COLR_SLOT, szString);
 
                 sprintf_s  ( szString, sizeof(szString), "%02d",  CTR9SaveGame::I()->countTag ( tombraider, block ) );
-                m_ListCtrl.SetItemText ( position, COL_FOUND, szString);
+                m_ListCtrl.SetItemText ( position, COLR_FOUND, szString);
 
-                m_ListCtrl.SetItemText ( position, COL_TOMBRAIDER, "1");
+                m_ListCtrl.SetItemText ( position, COLR_TOMBRAIDER, "1");
 
                 sprintf_s  ( szString, sizeof(szString), "%d",  CTR9SaveGame::I()->GetBlockKills ( tombraider, block ) );
-                m_ListCtrl.SetItemText ( position, COL_KILLS, szString);
+                m_ListCtrl.SetItemText ( position, COLR_KILLS, szString);
 
                 sprintf_s  ( szString, sizeof(szString), "%d",  CTR9SaveGame::I()->GetBlockPickup ( tombraider, block ) );
-                m_ListCtrl.SetItemText ( position, COL_PICKUPS, szString);
+                m_ListCtrl.SetItemText ( position, COLR_PICKUPS, szString);
 
-                m_ListCtrl.SetItemText ( position, COL_ELAPSED, CTR9SaveGame::I()->GetBlockElapsed ( tombraider, block ) );
+                m_ListCtrl.SetItemText ( position, COLR_ELAPSED, CTR9SaveGame::I()->GetBlockElapsed ( tombraider, block ) );
 
-                m_ListCtrl.SetItemText ( position, COL_DISTANCE, CTR9SaveGame::I()->GetBlockDistance ( tombraider, block ) );
+                m_ListCtrl.SetItemText ( position, COLR_DISTANCE, CTR9SaveGame::I()->GetBlockDistance ( tombraider, block ) );
 
                 sprintf_s  ( szString, sizeof(szString), "%02X",  CTR9SaveGame::I()->GetBlockIndicator ( tombraider, block ) );
-                m_ListCtrl.SetItemText ( position, COL_EXTRA, szString);
+                m_ListCtrl.SetItemText ( position, COLR_EXTRA, szString);
 
                 //  TR1 + block
                 tagData [ position ].tombraider     = tombraider;
@@ -2483,67 +2491,67 @@ void CTRXRemastered::DisplayListFull ( bool bShort )
             {
                 m_ListCtrl.InsertItem ( position, "TR2" );
 
-                m_ListCtrl.SetItemText ( position, COL_SUB_GAME, "Tombraider 2");
+                m_ListCtrl.SetItemText ( position, COLR_SUB_GAME, "Tombraider 2");
                 if ( level >= TR2G_START )
                 {
-                    m_ListCtrl.SetItemText ( position, COL_SUB_GAME, "Golden Mask");
+                    m_ListCtrl.SetItemText ( position, COLR_SUB_GAME, "Golden Mask");
                 }
 
                 sprintf_s  ( szString, sizeof(szString), "%03d", save );
-                m_ListCtrl.SetItemText ( position, COL_SAVE_NO, szString);
+                m_ListCtrl.SetItemText ( position, COLR_SAVE_NO, szString);
 
                 sprintf_s  ( szString, sizeof(szString), "%02d", level );
-                m_ListCtrl.SetItemText ( position, COL_LEVEL_NO, szString);
+                m_ListCtrl.SetItemText ( position, COLR_LEVEL_NO, szString);
 
                 strcpy_s ( szString, sizeof(szString), CTR9SaveGame::GetLevelName ( tombraider, level ) );
                 if (  CTR9SaveGame::I()->IsGamePlus ( tombraider, block  ) )
                 {
                     strcat_s ( szString, sizeof(szString), "+" );
                 }
-                m_ListCtrl.SetItemText ( position, COL_LEVEL_NAME, szString );
+                m_ListCtrl.SetItemText ( position, COLR_LEVEL_NAME, szString );
 
                 if ( pAddress1 )
                 {
                     sprintf_s  ( szString, sizeof(szString), "0x%07X", RelativeAddress ( pAddress1 ) );
-                    m_ListCtrl.SetItemText ( position, COL_ADDRESS_1, szString );
+                    m_ListCtrl.SetItemText ( position, COLR_ADDRESS_1, szString );
                 }
                 else
                 {
-                    m_ListCtrl.SetItemText ( position, COL_ADDRESS_1, "" );
+                    m_ListCtrl.SetItemText ( position, COLR_ADDRESS_1, "" );
                 }
 
                 if ( pAddress2 )
                 {
                     sprintf_s  ( szString, sizeof(szString), "0x%07X", RelativeAddress ( pAddress2 ) );
-                    m_ListCtrl.SetItemText ( position, COL_ADDRESS_2, szString );
+                    m_ListCtrl.SetItemText ( position, COLR_ADDRESS_2, szString );
                 }
                 else
                 {
-                    m_ListCtrl.SetItemText ( position, COL_ADDRESS_2, "" );
+                    m_ListCtrl.SetItemText ( position, COLR_ADDRESS_2, "" );
                 }
                 sprintf_s  ( szString, sizeof(szString), "%02d", block);
-                m_ListCtrl.SetItemText ( position, COL_BLOCK, szString);
+                m_ListCtrl.SetItemText ( position, COLR_BLOCK, szString);
 
                 sprintf_s  ( szString, sizeof(szString), "%02d", slot );
-                m_ListCtrl.SetItemText ( position, COL_SLOT, szString);
+                m_ListCtrl.SetItemText ( position, COLR_SLOT, szString);
 
                 sprintf_s  ( szString, sizeof(szString), "%02d",  CTR9SaveGame::I()->countTag ( tombraider, block ) );
-                m_ListCtrl.SetItemText ( position, COL_FOUND, szString);
+                m_ListCtrl.SetItemText ( position, COLR_FOUND, szString);
 
-                m_ListCtrl.SetItemText ( position, COL_TOMBRAIDER, "2");
+                m_ListCtrl.SetItemText ( position, COLR_TOMBRAIDER, "2");
 
                 sprintf_s  ( szString, sizeof(szString), "%d",  CTR9SaveGame::I()->GetBlockKills ( tombraider, block ) );
-                m_ListCtrl.SetItemText ( position, COL_KILLS, szString);
+                m_ListCtrl.SetItemText ( position, COLR_KILLS, szString);
 
                 sprintf_s  ( szString, sizeof(szString), "%d",  CTR9SaveGame::I()->GetBlockPickup ( tombraider, block ) );
-                m_ListCtrl.SetItemText ( position, COL_PICKUPS, szString);
+                m_ListCtrl.SetItemText ( position, COLR_PICKUPS, szString);
 
-                m_ListCtrl.SetItemText ( position, COL_ELAPSED, CTR9SaveGame::I()->GetBlockElapsed ( tombraider, block ) );
+                m_ListCtrl.SetItemText ( position, COLR_ELAPSED, CTR9SaveGame::I()->GetBlockElapsed ( tombraider, block ) );
 
-                m_ListCtrl.SetItemText ( position, COL_DISTANCE, CTR9SaveGame::I()->GetBlockDistance ( tombraider, block ) );
+                m_ListCtrl.SetItemText ( position, COLR_DISTANCE, CTR9SaveGame::I()->GetBlockDistance ( tombraider, block ) );
 
                 sprintf_s  ( szString, sizeof(szString), "%02X",  CTR9SaveGame::I()->GetBlockIndicator ( tombraider, block ) );
-                m_ListCtrl.SetItemText ( position, COL_EXTRA, szString);
+                m_ListCtrl.SetItemText ( position, COLR_EXTRA, szString);
 
                 //  TR1 + block
                 tagData [ position ].tombraider     = tombraider;
@@ -2577,68 +2585,68 @@ void CTRXRemastered::DisplayListFull ( bool bShort )
             {
                 m_ListCtrl.InsertItem ( position, "TR3" );
 
-                m_ListCtrl.SetItemText ( position, COL_SUB_GAME, "Tombraider 3");
+                m_ListCtrl.SetItemText ( position, COLR_SUB_GAME, "Tombraider 3");
                 if ( level >= TR3G_START )
                 {
-                    m_ListCtrl.SetItemText ( position, COL_SUB_GAME, "The Lost Artefact");
+                    m_ListCtrl.SetItemText ( position, COLR_SUB_GAME, "The Lost Artefact");
                 }
 
                 sprintf_s  ( szString, sizeof(szString), "%03d", save );
-                m_ListCtrl.SetItemText ( position, COL_SAVE_NO, szString);
+                m_ListCtrl.SetItemText ( position, COLR_SAVE_NO, szString);
 
                 sprintf_s  ( szString, sizeof(szString), "%02d", level );
-                m_ListCtrl.SetItemText ( position, COL_LEVEL_NO, szString);
+                m_ListCtrl.SetItemText ( position, COLR_LEVEL_NO, szString);
 
                 strcpy_s ( szString, sizeof(szString), CTR9SaveGame::GetLevelName ( tombraider, level ) );
                 if (  CTR9SaveGame::I()->IsGamePlus ( tombraider, block  ) )
                 {
                     strcat_s ( szString, sizeof(szString), "+" );
                 }
-                m_ListCtrl.SetItemText ( position, COL_LEVEL_NAME, szString );
+                m_ListCtrl.SetItemText ( position, COLR_LEVEL_NAME, szString );
 
                 if ( pAddress1 )
                 {
                     sprintf_s  ( szString, sizeof(szString), "0x%07X", RelativeAddress ( pAddress1 ) );
-                    m_ListCtrl.SetItemText ( position, COL_ADDRESS_1, szString );
+                    m_ListCtrl.SetItemText ( position, COLR_ADDRESS_1, szString );
                 }
                 else
                 {
-                    m_ListCtrl.SetItemText ( position, COL_ADDRESS_1, "" );
+                    m_ListCtrl.SetItemText ( position, COLR_ADDRESS_1, "" );
                 }
 
                 if ( pAddress2 )
                 {
                     sprintf_s  ( szString, sizeof(szString), "0x%07X", RelativeAddress ( pAddress2 ) );
-                    m_ListCtrl.SetItemText ( position, COL_ADDRESS_2, szString );
+                    m_ListCtrl.SetItemText ( position, COLR_ADDRESS_2, szString );
                 }
                 else
                 {
-                    m_ListCtrl.SetItemText ( position, COL_ADDRESS_2, "" );
+                    m_ListCtrl.SetItemText ( position, COLR_ADDRESS_2, "" );
                 }
 
                 sprintf_s  ( szString, sizeof(szString), "%02d", block);
-                m_ListCtrl.SetItemText ( position, COL_BLOCK, szString);
+                m_ListCtrl.SetItemText ( position, COLR_BLOCK, szString);
 
                 sprintf_s  ( szString, sizeof(szString), "%02d", slot );
-                m_ListCtrl.SetItemText ( position, COL_SLOT, szString);
+                m_ListCtrl.SetItemText ( position, COLR_SLOT, szString);
 
                 sprintf_s  ( szString, sizeof(szString), "%02d",  CTR9SaveGame::I()->countTag ( tombraider, block ) );
-                m_ListCtrl.SetItemText ( position, COL_FOUND, szString);
+                m_ListCtrl.SetItemText ( position, COLR_FOUND, szString);
 
-                m_ListCtrl.SetItemText ( position, COL_TOMBRAIDER, "3");
+                m_ListCtrl.SetItemText ( position, COLR_TOMBRAIDER, "3");
 
                 sprintf_s  ( szString, sizeof(szString), "%d",  CTR9SaveGame::I()->GetBlockKills ( tombraider, block ) );
-                m_ListCtrl.SetItemText ( position, COL_KILLS, szString);
+                m_ListCtrl.SetItemText ( position, COLR_KILLS, szString);
 
                 sprintf_s  ( szString, sizeof(szString), "%d",  CTR9SaveGame::I()->GetBlockPickup ( tombraider, block ) );
-                m_ListCtrl.SetItemText ( position, COL_PICKUPS, szString);
+                m_ListCtrl.SetItemText ( position, COLR_PICKUPS, szString);
 
-                m_ListCtrl.SetItemText ( position, COL_ELAPSED, CTR9SaveGame::I()->GetBlockElapsed ( tombraider, block ) );
+                m_ListCtrl.SetItemText ( position, COLR_ELAPSED, CTR9SaveGame::I()->GetBlockElapsed ( tombraider, block ) );
 
-                m_ListCtrl.SetItemText ( position, COL_DISTANCE, CTR9SaveGame::I()->GetBlockDistance ( tombraider, block ) );
+                m_ListCtrl.SetItemText ( position, COLR_DISTANCE, CTR9SaveGame::I()->GetBlockDistance ( tombraider, block ) );
 
                 sprintf_s  ( szString, sizeof(szString), "%02X",  CTR9SaveGame::I()->GetBlockIndicator ( tombraider, block ) );
-                m_ListCtrl.SetItemText ( position, COL_EXTRA, szString);
+                m_ListCtrl.SetItemText ( position, COLR_EXTRA, szString);
 
                 //  TR1 + block
                 tagData [ position ].tombraider     = tombraider;
@@ -3107,7 +3115,7 @@ void CTRXRemastered::UpdateBuffer(BOOL bRecurse)
 
         CTR9SaveGame::I()->SetSaveNumber ( tombraider, block, GetValue ( m_Save_No ) );
         sprintf_s ( szText, sizeof(szText), "%03d", GetValue ( m_Save_No ) );
-        m_ListCtrl.SetItemText ( m_Line, COL_SAVE_NO, szText);
+        m_ListCtrl.SetItemText ( m_Line, COLR_SAVE_NO, szText);
 
         //
         if ( pBlockEntry != NULL /* && pGunEntry != NULL */ )
@@ -3434,15 +3442,15 @@ void CTRXRemastered::SortItems ( int col )
         strcpy_s ( pData->szText, sizeof( pData->szText), szString );
 
         ZeroMemory ( szString, sizeof(szString) );
-        m_ListCtrl.GetItemText( i, COL_GAME, szString, sizeof(szString) );
+        m_ListCtrl.GetItemText( i, COLR_GAME, szString, sizeof(szString) );
         strcat_s ( pData->szText, sizeof( pData->szText), szString );
 
         ZeroMemory ( szString, sizeof(szString) );
-        m_ListCtrl.GetItemText( i, COL_LEVEL_NO, szString, sizeof(szString) );
+        m_ListCtrl.GetItemText( i, COLR_LEVEL_NO, szString, sizeof(szString) );
         strcat_s ( pData->szText, sizeof( pData->szText), szString );
 
         ZeroMemory ( szString, sizeof(szString) );
-        m_ListCtrl.GetItemText( i, COL_SLOT, szString, sizeof(szString) );
+        m_ListCtrl.GetItemText( i, COLR_SLOT, szString, sizeof(szString) );
         strcat_s ( pData->szText, sizeof( pData->szText), szString );
     }
 
@@ -4308,7 +4316,7 @@ BOOL CTRXRemastered::OnToolTipNotify(UINT id, NMHDR *pNMH, LRESULT *pResult)
                 int slot                = pInfoData->slot;
 
                 //
-                if ( hitInfo.iSubItem == COL_ADDRESS_1 )
+                if ( hitInfo.iSubItem == COLR_ADDRESS_1 )
                 {
                     sprintf_s ( szText + strlen(szText), sizeof(szText) - strlen(szText),
                         "%d %d:%d:%d\r\n", hitInfo.iItem, tombraider, block, slot );
@@ -4344,7 +4352,7 @@ BOOL CTRXRemastered::OnToolTipNotify(UINT id, NMHDR *pNMH, LRESULT *pResult)
                                     " - E : 0x%08lX\r\n", RelativeAddress ( pAddress ) );
                     }
                 }
-                else if ( hitInfo.iSubItem == COL_ADDRESS_2 )
+                else if ( hitInfo.iSubItem == COLR_ADDRESS_2 )
                 {
                     void *pAddress = NULL;
                     pAddress = ( void *) CTR9SaveGame::I()->GetRealHealthAddress ( tombraider, block );
@@ -4361,7 +4369,7 @@ BOOL CTRXRemastered::OnToolTipNotify(UINT id, NMHDR *pNMH, LRESULT *pResult)
                     }
                 }
                 //
-                else if ( hitInfo.iSubItem == COL_DISTANCE )
+                else if ( hitInfo.iSubItem == COLR_DISTANCE )
                 {
                     strcpy_s ( szText, sizeof(szText), "Distance Travelled\nThe value may differs from Statistics.\r\n" );
                     DWORD *pDistance = CTR9SaveGame::I()->GetBlockDistanceAddress ( tombraider, block);
@@ -5379,6 +5387,42 @@ void CTRXRemastered::OnDropFiles(HDROP hDropInfo)
         UINT iRes = DragQueryFile ( hDropInfo, 0, szFilename, sizeof ( szFilename ) );
         if ( iRes != 0 )
         {
+            HANDLE hFile = CreateFile (
+                szFilename,                 //  _In_      LPCTSTR lpFileName,
+                GENERIC_READ,               //   _In_      DWORD dwDesiredAccess,
+                FILE_SHARE_READ,            //  _In_      DWORD dwShareMode,
+                NULL,                       //  _In_opt_  LPSECURITY_ATTRIBUTES lpSecurityAttributes,
+                OPEN_EXISTING,              //  _In_      DWORD dwCreationDisposition,
+                FILE_ATTRIBUTE_NORMAL ,     //  _In_      DWORD dwFlagsAndAttributes,
+                NULL                        //  _In_opt_  HANDLE hTemplateFile
+            );
+
+            if ( hFile == INVALID_HANDLE_VALUE )
+            {
+                return;
+            }
+
+            DWORD dwSizeHigh    = 0;
+            DWORD dwSize        = GetFileSize ( hFile, &dwSizeHigh );
+            CloseHandle ( hFile );
+
+            //
+            if ( dwSize == INVALID_FILE_SIZE  )
+            {
+                return;
+            }
+
+            if ( dwSize != TR123LEVELSIZE )
+            {
+                CTRXPropertySheet *propertySheet = dynamic_cast<CTRXPropertySheet *>( GetParent() );
+                if ( propertySheet )
+                {
+                    propertySheet->SetActivePage ( propertySheet->m_Info_Page );
+                    propertySheet->m_Info_Page->OnDropFiles ( hDropInfo );
+                }
+                return;
+            }
+
             /*
              *  Set filename Text.
              */
