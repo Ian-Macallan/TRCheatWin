@@ -371,7 +371,7 @@ void CTRXPropertySheetAll::OnSysCommand(UINT nID, LPARAM lParam)
             }
 
             if ( m_Info_Page != NULL ) m_Info_Page->SetThemeChanged ( CTRXGlobal::m_iDarkTheme != 0 );
-            if ( m_Equipment != NULL ) m_Equipment->SetThemeChanged (  CTRXGlobal::m_iDarkTheme != 0 );
+            if ( m_Equipment_Page != NULL ) m_Equipment_Page->SetThemeChanged (  CTRXGlobal::m_iDarkTheme != 0 );
             if ( m_Gun_Page != NULL ) m_Gun_Page->SetThemeChanged (  CTRXGlobal::m_iDarkTheme != 0 );
             if ( m_Ammos_Page != NULL ) m_Ammos_Page->SetThemeChanged (  CTRXGlobal::m_iDarkTheme != 0 );
             if ( m_Item_Page != NULL ) m_Item_Page->SetThemeChanged (  CTRXGlobal::m_iDarkTheme != 0 );

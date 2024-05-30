@@ -45,6 +45,10 @@ extern BOOL TraceMode;
 static char THIS_FILE[] = __FILE__;
 #endif
 
+#define BOTH_PROGRAMS   "Tombraider Remastered And Standard Cheat Program"
+#define TRR_PROGRAM     "Tombraider Remastered Cheat Program"
+#define TR_PROGRAM      "Tombraider Standard Cheat Program"
+
 //
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -455,7 +459,7 @@ BOOL CTRXCHEATWINApp::InitInstance()
                     _stricmp ( pCommandLine, "-r" ) == 0                    ||
                     _stricmp ( pCommandLine, "-remastered" ) == 0       )
         {
-            CTRXPropertySheetRemastered dlg ( "Tombraider Remastered Cheat Program" );
+            CTRXPropertySheetRemastered dlg ( TRR_PROGRAM );
             dlg.SetApply ( TRUE );
             m_pMainWnd = &dlg;
             nResponse = dlg.DoModal();
@@ -465,7 +469,7 @@ BOOL CTRXCHEATWINApp::InitInstance()
                     _strnicmp ( pCommandLine, "-r ", strlen("-r ") ) == 0                   ||
                     _strnicmp ( pCommandLine, "-remastered ", strlen("-remastered ") ) == 0     )
         {
-            CTRXPropertySheetRemastered dlg ( "Tombraider Remastered Cheat Program" );
+            CTRXPropertySheetRemastered dlg ( TRR_PROGRAM );
             dlg.SetApply ( TRUE );
 
             //
@@ -492,7 +496,7 @@ BOOL CTRXCHEATWINApp::InitInstance()
                     _stricmp ( pCommandLine, "-s" ) == 0                    ||
                     _stricmp ( pCommandLine, "-standard" ) == 0     )
         {
-            CTRXPropertySheetStandard   dlg ( "Tombraider Standard Cheat Program" );
+            CTRXPropertySheetStandard   dlg ( TR_PROGRAM );
             dlg.SetApply ( TRUE );
             m_pMainWnd = &dlg;
             nResponse = dlg.DoModal();
@@ -505,7 +509,7 @@ BOOL CTRXCHEATWINApp::InitInstance()
                     _strnicmp ( pCommandLine, "-s ", strlen("-s ") ) == 0                   ||
                     _strnicmp ( pCommandLine, "-standard ", strlen("-standard ") ) == 0     )
         {
-            CTRXPropertySheetStandard   dlg ( "Tombraider Standard Cheat Program" );
+            CTRXPropertySheetStandard   dlg ( TR_PROGRAM );
             dlg.SetApply ( TRUE );
 
             //
@@ -706,7 +710,7 @@ BOOL CTRXCHEATWINApp::InitInstance()
                 }
 
                 //
-                CTRXPropertySheetAll    dlg ( "Tombraider Remastered And Standard Cheat Program" );
+                CTRXPropertySheetAll    dlg ( BOTH_PROGRAMS );
                 m_pMainWnd = &dlg;
                 nResponse = dlg.DoModal();
             }
@@ -717,24 +721,61 @@ BOOL CTRXCHEATWINApp::InitInstance()
             strcpy_s ( szPathname, sizeof(szPathname), pCommandLine );
             RemoveEnclosingQuotes ( szPathname, sizeof(szPathname) );
 
+            //
             LPSTR lpFilepart = NULL;
             GetFullPathName ( szPathname, sizeof(szFullPathname), szFullPathname, &lpFilepart );
-
-            //  Remastered
-            if ( EndsWithI ( szFullPathname, ".dat" ) )
+            if ( PathFileExists(szFullPathname) )
             {
-                CTRXPropertySheetRemastered dlg ( "Tombraider Remastered Cheat Program" );
-                dlg.SetApply ( TRUE );
-                dlg.SetParmPathname ( szFullPathname );
-                m_pMainWnd = &dlg;
-                nResponse = dlg.DoModal();
+                HANDLE hFile = CreateFile (
+                    szFullPathname,                 //  _In_      LPCTSTR lpFileName,
+                    GENERIC_READ,               //   _In_      DWORD dwDesiredAccess,
+                    FILE_SHARE_READ,            //  _In_      DWORD dwShareMode,
+                    NULL,                       //  _In_opt_  LPSECURITY_ATTRIBUTES lpSecurityAttributes,
+                    OPEN_EXISTING,              //  _In_      DWORD dwCreationDisposition,
+                    FILE_ATTRIBUTE_NORMAL ,     //  _In_      DWORD dwFlagsAndAttributes,
+                    NULL                        //  _In_opt_  HANDLE hTemplateFile
+                );
+
+                DWORD dwSizeHigh    = 0;
+                DWORD dwSize        = INVALID_FILE_SIZE;
+                if ( hFile != INVALID_HANDLE_VALUE )
+                {
+                    dwSize        = GetFileSize ( hFile, &dwSizeHigh );
+                    CloseHandle ( hFile );
+                }
+
+                //
+                if ( dwSize != INVALID_FILE_SIZE  )
+                {
+                    //
+                    if ( dwSize == TR123LEVELSIZE )
+                    {
+                        CTRXPropertySheetRemastered dlg ( TRR_PROGRAM );
+                        dlg.SetApply ( TRUE );
+                        dlg.SetParmPathname ( szFullPathname );
+                        m_pMainWnd = &dlg;
+                        nResponse = dlg.DoModal();
+                    }
+                    //  TR123
+                    else
+                    {
+                        CTRXPropertySheetStandard   dlg ( TR_PROGRAM );
+                        dlg.SetApply ( TRUE );
+                        dlg.SetParmPathname ( szFullPathname );
+                        m_pMainWnd = &dlg;
+                        nResponse = dlg.DoModal();
+                    }
+                }
+                else
+                {
+                    CTRXPropertySheetAll    dlg ( BOTH_PROGRAMS );
+                    m_pMainWnd = &dlg;
+                    nResponse = dlg.DoModal();
+                }
             }
-            //  TR123
             else
             {
-                CTRXPropertySheetStandard   dlg ( "Tombraider Standard Cheat Program" );
-                dlg.SetApply ( TRUE );
-                dlg.SetParmPathname ( szFullPathname );
+                CTRXPropertySheetAll    dlg ( BOTH_PROGRAMS );
                 m_pMainWnd = &dlg;
                 nResponse = dlg.DoModal();
             }
@@ -742,7 +783,7 @@ BOOL CTRXCHEATWINApp::InitInstance()
         //
         else
         {
-            CTRXPropertySheetAll    dlg ( "Tombraider Remastered And Standard Cheat Program" );
+            CTRXPropertySheetAll    dlg ( BOTH_PROGRAMS );
             m_pMainWnd = &dlg;
             nResponse = dlg.DoModal();
         }
@@ -750,7 +791,7 @@ BOOL CTRXCHEATWINApp::InitInstance()
     //
     else
     {
-        CTRXPropertySheetAll    dlg ( "Tombraider Remastered And Standard Cheat Program" );
+        CTRXPropertySheetAll    dlg ( BOTH_PROGRAMS );
         m_pMainWnd = &dlg;
         nResponse = dlg.DoModal();
     }

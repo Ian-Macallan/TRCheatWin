@@ -4,6 +4,16 @@
 #include "TRXMenuBase.h"
 #include "TRXNC.h"
 
+enum PROPERTY_PAGE
+{
+    PAGE_REMASTERED,
+    PAGE_INFOS,
+    PAGE_EQUIPMENTS,
+    PAGE_GUNS,
+    PAGE_AMMOS,
+    PAGE_ITEMS,
+    PAGE_ITEMS45,
+};
 //
 /////////////////////////////////////////////////////////////////////////////
 // CTRXPropertySheet
@@ -20,7 +30,7 @@ class CTRXPropertySheet : public CPropertySheet
         CTRXRemastered          *m_Remastered_Page;
         CTRXInfoPage            *m_Info_Page;
         CTRXGunPage             *m_Gun_Page;
-        CTRXEquipmentPage       *m_Equipment;
+        CTRXEquipmentPage       *m_Equipment_Page;
         CTRXItems               *m_Item_Page;
         CTRXItemsTR4            *m_ItemTR4_Page;
         CTRXAmmosPage           *m_Ammos_Page;
@@ -54,6 +64,8 @@ class CTRXPropertySheet : public CPropertySheet
         virtual void SetApply(BOOL bApply );
 
         void SetParmPathname ( const char *pathname );
+        void SetTheActivePage ( PROPERTY_PAGE page );
+        void DropToPage ( PROPERTY_PAGE page, HDROP hDropInfo );
 
     // Attributes
     public:

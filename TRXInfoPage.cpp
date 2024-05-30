@@ -3159,9 +3159,10 @@ void CTRXInfoPage::OnDropFiles(HDROP hDropInfo)
             if ( dwSize == TR123LEVELSIZE )
             {
                 CTRXPropertySheet *propertySheet = dynamic_cast<CTRXPropertySheet *>( GetParent() );
-                if ( propertySheet )
+                if ( propertySheet != NULL && propertySheet->m_Remastered_Page != NULL )
                 {
-                    propertySheet->SetActivePage ( propertySheet->m_Remastered_Page );
+                    propertySheet->SetTheActivePage ( PAGE_REMASTERED );
+                    propertySheet->DropToPage ( PAGE_REMASTERED, hDropInfo );
                 }
                 return;
             }

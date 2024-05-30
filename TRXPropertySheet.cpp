@@ -44,7 +44,7 @@ CTRXPropertySheet::CTRXPropertySheet(UINT nIDCaption, CWnd* pParentWnd, UINT iSe
     m_bApplyActive      = FALSE;
 
     m_Info_Page         = NULL;
-    m_Equipment         = NULL;
+    m_Equipment_Page    = NULL;
     m_Gun_Page          = NULL;
     m_Ammos_Page        = NULL;
     m_Item_Page         = NULL;
@@ -70,7 +70,7 @@ CTRXPropertySheet::CTRXPropertySheet(LPCTSTR pszCaption, CWnd* pParentWnd, UINT 
     m_bApplyActive      = FALSE;
 
     m_Info_Page         = NULL;
-    m_Equipment         = NULL;
+    m_Equipment_Page    = NULL;
     m_Gun_Page          = NULL;
     m_Ammos_Page        = NULL;
     m_Item_Page         = NULL;
@@ -114,6 +114,137 @@ void CTRXPropertySheet::SetParmPathname ( const char *pathname )
         {
             m_Remastered_Page->SetParmPathname ( m_ParmPathname );
             ZeroMemory ( m_ParmPathname, sizeof(m_ParmPathname) );
+        }
+    }
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
+void CTRXPropertySheet::SetTheActivePage ( PROPERTY_PAGE page )
+{
+    switch ( page )
+    {
+        case PAGE_REMASTERED :
+        {
+            if ( m_Remastered_Page != NULL )
+            {
+                SetActivePage ( m_Remastered_Page );
+            }
+            break;
+        }
+        case PAGE_INFOS :
+        {
+            if ( m_Info_Page != NULL )
+            {
+                SetActivePage ( m_Info_Page );
+            }
+            break;
+        }
+        case PAGE_EQUIPMENTS :
+        {
+            if ( m_Equipment_Page != NULL )
+            {
+                SetActivePage ( m_Equipment_Page );
+            }
+            break;
+        }
+        case PAGE_GUNS :
+        {
+            if ( m_Gun_Page != NULL )
+            {
+                SetActivePage ( m_Gun_Page );
+            }
+            break;
+        }
+        case PAGE_AMMOS :
+        {
+            if ( m_Ammos_Page != NULL )
+            {
+                SetActivePage ( m_Ammos_Page );
+            }
+            break;
+        }
+        case PAGE_ITEMS :
+        {
+            if ( m_Item_Page != NULL )
+            {
+                SetActivePage ( m_Item_Page );
+            }
+            break;
+        }
+        case PAGE_ITEMS45 :
+        {
+            if ( m_ItemTR4_Page != NULL )
+            {
+                SetActivePage ( m_ItemTR4_Page );
+            }
+            break;
+        }
+    }
+
+}
+
+void CTRXPropertySheet::DropToPage ( PROPERTY_PAGE page, HDROP hDropInfo )
+{
+    switch ( page )
+    {
+        case PAGE_REMASTERED :
+        {
+            if ( m_Remastered_Page != NULL )
+            {
+                m_Remastered_Page->OnDropFiles ( hDropInfo );
+            }
+            break;
+        }
+        case PAGE_INFOS :
+        {
+            if ( m_Info_Page != NULL )
+            {
+                m_Info_Page->OnDropFiles ( hDropInfo );
+            }
+            break;
+        }
+        case PAGE_EQUIPMENTS :
+        {
+            if ( m_Equipment_Page != NULL )
+            {
+                m_Info_Page->OnDropFiles ( hDropInfo );
+            }
+            break;
+        }
+        case PAGE_GUNS :
+        {
+            if ( m_Gun_Page != NULL )
+            {
+                m_Info_Page->OnDropFiles ( hDropInfo );
+            }
+            break;
+        }
+        case PAGE_AMMOS :
+        {
+            if ( m_Ammos_Page != NULL )
+            {
+                SetActivePage ( m_Ammos_Page );
+            }
+            break;
+        }
+        case PAGE_ITEMS :
+        {
+            if ( m_Item_Page != NULL )
+            {
+                m_Info_Page->OnDropFiles ( hDropInfo );
+            }
+            break;
+        }
+        case PAGE_ITEMS45 :
+        {
+            if ( m_ItemTR4_Page != NULL )
+            {
+                m_Info_Page->OnDropFiles ( hDropInfo );
+            }
+            break;
         }
     }
 }
@@ -257,21 +388,21 @@ void CTRXPropertySheet::AddStandardPage ()
             m_Info_Page->SetParmPathname ( m_ParmPathname );
             ZeroMemory ( m_ParmPathname, sizeof(m_ParmPathname) );
         }
-        m_Equipment = new CTRXEquipmentPage();
+        m_Equipment_Page = new CTRXEquipmentPage();
         m_Gun_Page = new CTRXGunPage();
         m_Ammos_Page = new CTRXAmmosPage();
         m_Item_Page = new CTRXItems();
         m_ItemTR4_Page = new CTRXItemsTR4();
 
         m_Info_Page->SetApply ( m_bApplyActive );
-        m_Equipment->SetApply ( m_bApplyActive );
+        m_Equipment_Page->SetApply ( m_bApplyActive );
         m_Gun_Page->SetApply ( m_bApplyActive );
         m_Ammos_Page->SetApply ( m_bApplyActive );
         m_Item_Page->SetApply ( m_bApplyActive );
         m_ItemTR4_Page->SetApply ( m_bApplyActive );
 
         AddPage ( m_Info_Page );
-        AddPage ( m_Equipment );
+        AddPage ( m_Equipment_Page );
         AddPage ( m_Gun_Page );
         AddPage ( m_Ammos_Page );
         AddPage ( m_Item_Page );
@@ -331,11 +462,11 @@ void CTRXPropertySheet::RemoveStandardPage ()
             m_Info_Page = NULL;
         }
 
-        if ( m_Equipment != NULL )
+        if ( m_Equipment_Page != NULL )
         {
-            RemovePage ( m_Equipment );
-            delete m_Equipment;
-            m_Equipment = NULL;
+            RemovePage ( m_Equipment_Page );
+            delete m_Equipment_Page;
+            m_Equipment_Page = NULL;
         }
 
         if ( m_Gun_Page != NULL )
@@ -417,7 +548,7 @@ void CTRXPropertySheet::SetApply(BOOL bApply )
      m_bApplyActive = bApply;
 
     if ( m_Info_Page != NULL ) m_Info_Page->SetApply ( m_bApplyActive );
-    if ( m_Equipment != NULL ) m_Equipment->SetApply ( m_bApplyActive );
+    if ( m_Equipment_Page != NULL ) m_Equipment_Page->SetApply ( m_bApplyActive );
     if ( m_Gun_Page != NULL ) m_Gun_Page->SetApply ( m_bApplyActive );
     if ( m_Ammos_Page != NULL ) m_Ammos_Page->SetApply ( m_bApplyActive );
     if ( m_Item_Page != NULL ) m_Item_Page->SetApply ( m_bApplyActive );
