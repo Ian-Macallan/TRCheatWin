@@ -193,7 +193,7 @@ BOOL CTRXPropertySheetAll::OnInitDialog()
 
             //
             {
-                int iDarkTheme      = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_DARTKTHEME, 0 );
+                int iDarkTheme      = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_DARKTHEME, 0 );
 
                 CString strDarkTheme;
                 strDarkTheme.LoadString(IDS_DARK_THEME);
@@ -341,14 +341,14 @@ void CTRXPropertySheetAll::OnSysCommand(UINT nID, LPARAM lParam)
     }
     else if ((nID & 0xFFF0) == IDM_DARK_THEME)
     {
-        int iDarkTheme = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_DARTKTHEME, 0 );
+        int iDarkTheme = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_DARKTHEME, 0 );
 
         CMenu* pSysMenu = GetSystemMenu(FALSE);
         if ( pSysMenu )
         {
             if ( CTRXGlobal::m_iDarkTheme )
             {
-                theApp.WriteProfileInt( PROFILE_SETTING, PROFILE_DARTKTHEME, 0 );
+                theApp.WriteProfileInt( PROFILE_SETTING, PROFILE_DARKTHEME, 0 );
                 CTRXGlobal::m_iDarkTheme    = 0;
                 pSysMenu->CheckMenuItem(IDM_DARK_THEME,MF_UNCHECKED|MF_BYCOMMAND);
                 CTabCtrl* pTab = GetTabControl();
@@ -359,7 +359,7 @@ void CTRXPropertySheetAll::OnSysCommand(UINT nID, LPARAM lParam)
             }
             else
             {
-                theApp.WriteProfileInt( PROFILE_SETTING, PROFILE_DARTKTHEME, 1 );
+                theApp.WriteProfileInt( PROFILE_SETTING, PROFILE_DARKTHEME, 1 );
                 CTRXGlobal::m_iDarkTheme    = 1;
                 pSysMenu->CheckMenuItem(IDM_DARK_THEME,MF_CHECKED|MF_BYCOMMAND);
 

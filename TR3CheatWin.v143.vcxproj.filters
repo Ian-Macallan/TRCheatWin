@@ -568,9 +568,6 @@
     <None Include="TR_Areas_inc.h">
       <Filter>Header Files</Filter>
     </None>
-    <None Include="res\helptext.bin">
-      <Filter>Resource Files</Filter>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AutomaticVersionHeader.h">
@@ -814,6 +811,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="AutomaticProductName.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AutomaticCompilerVersion.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -211,6 +211,7 @@ BOOL CTRXPropertySheet::OnInitDialog()
     {
         m_Ok.SubclassDlgItem ( IDOK, this );
         m_Ok.ModifyStyle ( NULL, BS_OWNERDRAW );
+        m_Ok.SetWindowText ( "Ok" );
     }
 
     CWnd *pwndCancel    = GetDlgItem ( IDCANCEL );
@@ -218,6 +219,7 @@ BOOL CTRXPropertySheet::OnInitDialog()
     {
         m_Cancel.SubclassDlgItem ( IDCANCEL, this );
         m_Cancel.ModifyStyle ( NULL, BS_OWNERDRAW );
+        m_Cancel.SetWindowText ( "Cancel" );
     }
 
     CWnd *pwndHelp  = GetDlgItem ( IDHELP );
@@ -225,6 +227,7 @@ BOOL CTRXPropertySheet::OnInitDialog()
     {
         m_Help.SubclassDlgItem ( IDHELP, this );
         m_Help.ModifyStyle ( NULL, BS_OWNERDRAW );
+        m_Help.SetWindowText ( "Help" );
     }
 
     CWnd *pwndApply = GetDlgItem ( ID_APPLY_NOW );
@@ -232,6 +235,7 @@ BOOL CTRXPropertySheet::OnInitDialog()
     {
         m_ApplyNow.SubclassDlgItem ( ID_APPLY_NOW, this );
         m_ApplyNow.ModifyStyle ( NULL, BS_OWNERDRAW );
+        m_ApplyNow.SetWindowText ( "Apply" );
     }
 
     m_bInitDone = true;

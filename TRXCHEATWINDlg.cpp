@@ -7,6 +7,8 @@
 #include "TRXCHEATWIN.h"
 #include "TRXCHEATWINDlg.h"
 
+#include "AutomaticCompilerVersion.h"
+
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #undef THIS_FILE
@@ -37,8 +39,8 @@ void CAboutDlg::DoDataExchange(CDataExchange* pDX)
     DDX_Control(pDX, IDC_EMAIL, m_Email);
     DDX_Control(pDX, IDC_COPYRIGHT, m_Copyright);
     DDX_Control(pDX, IDOK, m_Ok);
-    //}}AFX_DATA_MAP
     DDX_Control(pDX, IDC_MACALLAN, m_Web_Site);
+    //}}AFX_DATA_MAP
 }
 
 BEGIN_MESSAGE_MAP(CAboutDlg, CTRXDialogBase)
@@ -108,24 +110,21 @@ void CAboutDlg::SetVersionFrom()
     {
         pData = new char [ dwLength ];
 
-        bResult =
-            GetFileVersionInfo(szFilename, dwHandle, dwLength, pData );
+        bResult = GetFileVersionInfo(szFilename, dwHandle, dwLength, pData );
         if ( bResult )
         {
-            bResult =
-                VerQueryValue ( pData, "\\", &pBufferInfo, &iBufferLen );
+            bResult = VerQueryValue ( pData, "\\", &pBufferInfo, &iBufferLen );
 
-            bResult =
-                VerQueryValue ( pData, "\\StringFileInfo\\040904b0\\ProductName", &pBufferInfo, &iBufferLen );
+            bResult = VerQueryValue ( pData, "\\StringFileInfo\\040904b0\\ProductName", &pBufferInfo, &iBufferLen );
             if ( bResult )
             {
                 memset ( szText, 0, sizeof ( szText ) );
                 memcpy ( szText, pBufferInfo, iBufferLen );
+                sprintf_s ( szText + strlen(szText), sizeof ( szText ) - strlen(szText), "\r\n%s\r\n(%d)\r\n", VS_VERSION_A, _MSC_FULL_VER );
                 m_Version.SetWindowText ( szText );
             }
 
-            bResult =
-                VerQueryValue ( pData, "\\StringFileInfo\\040904b0\\LegalCopyright", &pBufferInfo, &iBufferLen );
+            bResult = VerQueryValue ( pData, "\\StringFileInfo\\040904b0\\LegalCopyright", &pBufferInfo, &iBufferLen );
             if ( bResult )
             {
                 memset ( szText, 0, sizeof ( szText ) );
@@ -133,8 +132,7 @@ void CAboutDlg::SetVersionFrom()
                 m_Copyright.SetWindowText ( szText );
             }
 
-            bResult =
-                VerQueryValue ( pData, "\\StringFileInfo\\040904b0\\InternalName", &pBufferInfo, &iBufferLen );
+            bResult = VerQueryValue ( pData, "\\StringFileInfo\\040904b0\\InternalName", &pBufferInfo, &iBufferLen );
             if ( bResult )
             {
                 memset ( szText, 0, sizeof ( szText ) );
@@ -142,8 +140,7 @@ void CAboutDlg::SetVersionFrom()
                 m_Web.SetWindowText ( szText );
             }
 
-            bResult =
-                VerQueryValue ( pData, "\\StringFileInfo\\040904b0\\Comments", &pBufferInfo, &iBufferLen );
+            bResult = VerQueryValue ( pData, "\\StringFileInfo\\040904b0\\Comments", &pBufferInfo, &iBufferLen );
             if ( bResult )
             {
                 memset ( szText, 0, sizeof ( szText ) );
@@ -156,7 +153,6 @@ void CAboutDlg::SetVersionFrom()
         delete pData;
 
     }
-
 }
 
 //

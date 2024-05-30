@@ -430,6 +430,7 @@ BEGIN_MESSAGE_MAP(CTRXRemastered, CTRXPropertyPage123)
     ON_BN_CLICKED(IDC_POSITION, &CTRXRemastered::OnBnClickedPosition)
     ON_BN_CLICKED(IDC_SHOW_MAP, &CTRXRemastered::OnBnClickedShowMap)
     ON_WM_DROPFILES()
+    ON_BN_CLICKED(IDC_RECURSE, &CTRXRemastered::OnBnClickedRecurse)
 END_MESSAGE_MAP()
 
 
@@ -636,6 +637,10 @@ BOOL CTRXRemastered::OnInitDialog()
         //m_ToolTip.SetDelayTime(TTDT_RESHOW, 1000);
         m_ToolTip.Activate(TRUE);
     }
+
+    //
+    int RecurseWrite = theApp.GetProfileInt ( PROFILE_SETTING, PROFILE_RECURSE_WRITE, 1 );
+    m_Recurse.SetCheck ( RecurseWrite );
 
     m_Update.SetCheck ( TRUE );
 
@@ -5394,4 +5399,20 @@ void CTRXRemastered::OnDropFiles(HDROP hDropInfo)
     }
 
     CTRXPropertyPage123::OnDropFiles(hDropInfo);
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
+void CTRXRemastered::OnBnClickedRecurse()
+{
+    if ( m_Recurse.GetCheck() )
+    {
+        theApp.WriteProfileInt ( PROFILE_SETTING, PROFILE_RECURSE_WRITE, 1 );
+    }
+    else
+    {
+        theApp.WriteProfileInt ( PROFILE_SETTING, PROFILE_RECURSE_WRITE, 0 );
+    }
 }

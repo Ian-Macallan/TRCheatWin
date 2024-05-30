@@ -421,19 +421,20 @@ BOOL CTRXCHEATWINApp::InitInstance()
     CTRXGlobal::m_iSearchPosExt     = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_SEARCH_POS_EXT, 0 );
 
     //
-    iTmp        = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_DARTKTHEME, -1 );
+    iTmp        = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_DARKTHEME, -1 );
     if ( iTmp == -1 )
     {
-        theApp.WriteProfileInt( PROFILE_SETTING, PROFILE_DARTKTHEME, 0 );
+        theApp.WriteProfileInt( PROFILE_SETTING, PROFILE_DARKTHEME, 0 );
     }
 
     //
-    CTRXGlobal::m_iDarkTheme    = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_DARTKTHEME, 0 );
+    CTRXGlobal::m_iDarkTheme    = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_DARKTHEME, 0 );
 
     //
     int iSizeTR1 = sizeof(TABLE_TR1);
     int iSizeTR2 = sizeof(TABLE_TR2);
     int iSizeTR3 = sizeof(TABLE_TR3);
+
 
     //
     //

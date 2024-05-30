@@ -5,11 +5,14 @@
 //
 //	(c) 2003 - 2024 Macallan - mailto:ian.macallan@gmail.com
 //
-//	Generated : 26/05/2024 18:12:35
+//	Generated : 30/05/2024 12:00:23
 //
 //===========================================================================================
 //
 #pragma once
+
+#ifndef AUTOMATICVERSIONHEADER_H
+#define AUTOMATICVERSIONHEADER_H    1
 
 #ifdef UNICODE
 #define PROGRAM_MAIL    L"mailto:ian.macallan@gmail.com"
@@ -54,22 +57,22 @@
 #endif
 
 #ifdef UNICODE
-#define PROGRAM_DATE    L"Sun May 26 18:12"
-#define PROGRAM_DATE_F  L"Sun May 26 18:12 2024"
+#define PROGRAM_DATE    L"Thu May 30 12:00"
+#define PROGRAM_DATE_F  L"Thu May 30 12:00 2024"
 #define PROGRAM_YEAR    L"2024"
-#define PROGRAM_TIME    L"2024/05/26 18:12:35"
+#define PROGRAM_TIME    L"2024/05/30 12:00:23"
 #else
-#define PROGRAM_DATE    "Sun May 26 18:12"
-#define PROGRAM_DATE_F  "Sun May 26 18:12 2024"
+#define PROGRAM_DATE    "Thu May 30 12:00"
+#define PROGRAM_DATE_F  "Thu May 30 12:00 2024"
 #define PROGRAM_YEAR    "2024"
-#define PROGRAM_TIME    "2024/05/26 18:12:35"
+#define PROGRAM_TIME    "2024/05/30 12:00:23"
 #endif
 
 #ifdef UNICODE
-#define PROGRAM_VERSION L"4.1.10.005"
-#define PROGRAM_INSTALL L"4.1.10005"
-#define PROGRAM_VER_NUM 40110005
-#define PROGRAM_BUILD   L"772"
+#define PROGRAM_VERSION L"4.1.10.011"
+#define PROGRAM_INSTALL L"4.1.10011"
+#define PROGRAM_VER_NUM 40110011
+#define PROGRAM_BUILD   L"778"
 #define PROGRAM_TITLE   L"TRCheat Win"
 #ifdef _WIN64
 #define PROGRAM_TITLE_P L"TRCheat Win (x64 Unicode)"
@@ -77,15 +80,17 @@
 #define PROGRAM_TITLE_P L"TRCheat Win (x86 Unicode)"
 #endif
 #else
-#define PROGRAM_VERSION "4.1.10.005"
-#define PROGRAM_INSTALL "4.1.10005"
-#define PROGRAM_VER_NUM 40110005
-#define PROGRAM_BUILD   "772"
+#define PROGRAM_VERSION "4.1.10.011"
+#define PROGRAM_INSTALL "4.1.10011"
+#define PROGRAM_VER_NUM 40110011
+#define PROGRAM_BUILD   "778"
 #define PROGRAM_TITLE   "TRCheat Win"
 #ifdef _WIN64
 #define PROGRAM_TITLE_P "TRCheat Win (x64 MBCS)"
 #else
 #define PROGRAM_TITLE_P "TRCheat Win (x86 MBCS)"
 #endif
+#endif
+
 #endif
 

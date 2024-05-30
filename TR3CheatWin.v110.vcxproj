@@ -505,6 +505,7 @@
     <ResourceCompile Include="TRCheatWin.rc" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AutomaticCompilerVersion.h" />
     <ClInclude Include="AutomaticProductName.h" />
     <ClInclude Include="AutomaticVersionHeader.h" />
     <ClInclude Include="GunGrids.h" />
