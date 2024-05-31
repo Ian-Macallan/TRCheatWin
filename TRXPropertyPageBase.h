@@ -81,4 +81,5 @@ class CTRXPropertyPageBase : public CPropertyPage
         afx_msg void OnDrawItem(int nIDCtl, LPDRAWITEMSTRUCT lpDrawItemStruct);
 
         virtual BOOL OnInitDialog();
+        afx_msg void OnDropFiles(HDROP hDropInfo);
 };

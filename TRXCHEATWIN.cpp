@@ -716,7 +716,7 @@ BOOL CTRXCHEATWINApp::InitInstance()
             }
         }
         //
-        else if ( __strstri ( pCommandLine, "SAVEGAME." ) != NULL )
+        else if ( __strstri ( pCommandLine, "savegame." ) != NULL )
         {
             strcpy_s ( szPathname, sizeof(szPathname), pCommandLine );
             RemoveEnclosingQuotes ( szPathname, sizeof(szPathname) );
@@ -727,12 +727,12 @@ BOOL CTRXCHEATWINApp::InitInstance()
             if ( PathFileExists(szFullPathname) )
             {
                 HANDLE hFile = CreateFile (
-                    szFullPathname,                 //  _In_      LPCTSTR lpFileName,
-                    GENERIC_READ,               //   _In_      DWORD dwDesiredAccess,
+                    szFullPathname,             //  _In_      LPCTSTR lpFileName,
+                    GENERIC_READ,               //  _In_      DWORD dwDesiredAccess,
                     FILE_SHARE_READ,            //  _In_      DWORD dwShareMode,
                     NULL,                       //  _In_opt_  LPSECURITY_ATTRIBUTES lpSecurityAttributes,
                     OPEN_EXISTING,              //  _In_      DWORD dwCreationDisposition,
-                    FILE_ATTRIBUTE_NORMAL ,     //  _In_      DWORD dwFlagsAndAttributes,
+                    FILE_ATTRIBUTE_NORMAL,      //  _In_      DWORD dwFlagsAndAttributes,
                     NULL                        //  _In_opt_  HANDLE hTemplateFile
                 );
 

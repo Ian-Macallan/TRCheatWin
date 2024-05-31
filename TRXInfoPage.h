@@ -155,6 +155,7 @@ class CTRXInfoPage : public CTRXPropertyPage
     public:
         virtual BOOL OnInitDialog();
         virtual BOOL OnToolTipNotify(UINT id, NMHDR *pNMH, LRESULT *pResult);
+        void DoDropFiles(const char *pFilename);
 
     public:
         afx_msg void OnBnClickedMap();
@@ -170,7 +171,6 @@ class CTRXInfoPage : public CTRXPropertyPage
         afx_msg void OnDropdownCustomCombo();
         afx_msg void OnBnClickedSeeCustom();
         afx_msg void OnBnClickedSort();
-        afx_msg void OnDropFiles(HDROP hDropInfo);
         afx_msg void OnBnClickedCopypos();
         afx_msg void OnBnClickedPastepos();
 };

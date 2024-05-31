@@ -186,7 +186,11 @@ void CTRXPropertySheet::SetTheActivePage ( PROPERTY_PAGE page )
 
 }
 
-void CTRXPropertySheet::DropToPage ( PROPERTY_PAGE page, HDROP hDropInfo )
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
+void CTRXPropertySheet::DropToPage ( PROPERTY_PAGE page, const char *pFilename )
 {
     switch ( page )
     {
@@ -194,7 +198,9 @@ void CTRXPropertySheet::DropToPage ( PROPERTY_PAGE page, HDROP hDropInfo )
         {
             if ( m_Remastered_Page != NULL )
             {
-                m_Remastered_Page->OnDropFiles ( hDropInfo );
+                //  Set Active Must Be done Before
+                SetTheActivePage ( PAGE_REMASTERED );
+                m_Remastered_Page->DoDropFiles ( pFilename );
             }
             break;
         }
@@ -202,7 +208,8 @@ void CTRXPropertySheet::DropToPage ( PROPERTY_PAGE page, HDROP hDropInfo )
         {
             if ( m_Info_Page != NULL )
             {
-                m_Info_Page->OnDropFiles ( hDropInfo );
+                SetTheActivePage ( PAGE_INFOS );
+                m_Info_Page->DoDropFiles ( pFilename );
             }
             break;
         }
@@ -210,7 +217,8 @@ void CTRXPropertySheet::DropToPage ( PROPERTY_PAGE page, HDROP hDropInfo )
         {
             if ( m_Equipment_Page != NULL )
             {
-                m_Info_Page->OnDropFiles ( hDropInfo );
+                SetTheActivePage ( PAGE_INFOS );
+                m_Info_Page->DoDropFiles ( pFilename );
             }
             break;
         }
@@ -218,7 +226,8 @@ void CTRXPropertySheet::DropToPage ( PROPERTY_PAGE page, HDROP hDropInfo )
         {
             if ( m_Gun_Page != NULL )
             {
-                m_Info_Page->OnDropFiles ( hDropInfo );
+                SetTheActivePage ( PAGE_INFOS );
+                m_Info_Page->DoDropFiles ( pFilename );
             }
             break;
         }
@@ -226,6 +235,7 @@ void CTRXPropertySheet::DropToPage ( PROPERTY_PAGE page, HDROP hDropInfo )
         {
             if ( m_Ammos_Page != NULL )
             {
+                SetTheActivePage ( PAGE_INFOS );
                 SetActivePage ( m_Ammos_Page );
             }
             break;
@@ -234,7 +244,8 @@ void CTRXPropertySheet::DropToPage ( PROPERTY_PAGE page, HDROP hDropInfo )
         {
             if ( m_Item_Page != NULL )
             {
-                m_Info_Page->OnDropFiles ( hDropInfo );
+                SetTheActivePage ( PAGE_INFOS );
+                m_Info_Page->DoDropFiles ( pFilename );
             }
             break;
         }
@@ -242,7 +253,8 @@ void CTRXPropertySheet::DropToPage ( PROPERTY_PAGE page, HDROP hDropInfo )
         {
             if ( m_ItemTR4_Page != NULL )
             {
-                m_Info_Page->OnDropFiles ( hDropInfo );
+                SetTheActivePage ( PAGE_INFOS );
+                m_Info_Page->DoDropFiles ( pFilename );
             }
             break;
         }

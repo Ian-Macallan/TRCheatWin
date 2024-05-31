@@ -83,6 +83,7 @@ CTR4NGSaveGame::CTR4NGSaveGame()
 {
 
     m_iVersion          = 49;
+    m_iSubVersion       = 9,
 
     m_iSaveLength       = CTRXGlobal::m_iMaxNGSize;
     m_iMaxLevel         = TR4NGMAXLEVEL;
@@ -107,7 +108,6 @@ CTR4NGSaveGame::CTR4NGSaveGame()
     m_pBufferBackup     = new ( TR4NGSAVE );
     ZeroMemory ( m_pBufferBackup, sizeof(TR4NGSAVE) );
 
-    m_iSubVersion       = 0;
 }
 
 //
@@ -336,7 +336,7 @@ void CTR4NGSaveGame::RetrieveInformation( const char *pFilename )
     if ( ReadSavegame ( pFilename ) )
     {
         RetrieveHeader ( );
-        m_iSubVersion   = 0;
+        m_iSubVersion   = 9;
     }
 }
 

@@ -65,7 +65,7 @@ class CTRXPropertySheet : public CPropertySheet
 
         void SetParmPathname ( const char *pathname );
         void SetTheActivePage ( PROPERTY_PAGE page );
-        void DropToPage ( PROPERTY_PAGE page, HDROP hDropInfo );
+        void DropToPage ( PROPERTY_PAGE page, const char *pFilename );
 
     // Attributes
     public:

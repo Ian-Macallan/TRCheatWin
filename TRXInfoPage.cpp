@@ -11,11 +11,12 @@
 #include "ReadTR2\ReadTRX.h"
 #include "ReadTR2\\ReadTRXScript.h"
 #include "TRLabelItems.h"
-#include "TRXGunPage.h" // Added by ClassView
-#include "TRXInfoPage.h"    // Added by ClassView
-#include "TRXItems.h"   // Added by ClassView
-#include "TRXItemsTR4.h"    // Added by ClassView
-#include "TRXAmmosPage.h"   // Added by ClassView
+
+#include "TRXGunPage.h"         // Added by ClassView
+#include "TRXInfoPage.h"        // Added by ClassView
+#include "TRXItems.h"           // Added by ClassView
+#include "TRXItemsTR4.h"        // Added by ClassView
+#include "TRXAmmosPage.h"       // Added by ClassView
 #include "TRXEquipmentPage.h"   // Added by ClassView
 #include "TRXPropertySheet.h"
 #include "TRXRemastered.h"
@@ -394,7 +395,6 @@ BEGIN_MESSAGE_MAP(CTRXInfoPage, CTRXPropertyPage)
     ON_CBN_DROPDOWN(IDC_CUSTOM_COMBO, &CTRXInfoPage::OnDropdownCustomCombo)
     ON_BN_CLICKED(IDC_SEE_CUSTOM, &CTRXInfoPage::OnBnClickedSeeCustom)
     ON_BN_CLICKED(IDC_SORT, &CTRXInfoPage::OnBnClickedSort)
-    ON_WM_DROPFILES()
     ON_BN_CLICKED(IDC_COPYPOS, &CTRXInfoPage::OnBnClickedCopypos)
     ON_BN_CLICKED(IDC_PASTEPOS, &CTRXInfoPage::OnBnClickedPastepos)
 END_MESSAGE_MAP()
@@ -3117,120 +3117,73 @@ void CTRXInfoPage::SetThemeChanged ( bool bDarkTheme )
 /////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////
-void CTRXInfoPage::OnDropFiles(HDROP hDropInfo)
+void CTRXInfoPage::DoDropFiles(const char *pFilemame)
 {
     //
     static char         szFilename [ MAX_PATH ];
     static char         szDirectory [ MAX_PATH ];
 
-    //      First get the count of files
-    UINT iCount = DragQueryFile ( hDropInfo, 0xFFFFFFFF, szFilename, sizeof ( szFilename ) );
-    if ( iCount >= 0 )
-    {
-        UINT iRes = DragQueryFile ( hDropInfo, 0, szFilename, sizeof ( szFilename ) );
-        if ( iRes != 0 )
-        {
-            HANDLE hFile = CreateFile (
-                szFilename,                 //  _In_      LPCTSTR lpFileName,
-                GENERIC_READ,               //   _In_      DWORD dwDesiredAccess,
-                FILE_SHARE_READ,            //  _In_      DWORD dwShareMode,
-                NULL,                       //  _In_opt_  LPSECURITY_ATTRIBUTES lpSecurityAttributes,
-                OPEN_EXISTING,              //  _In_      DWORD dwCreationDisposition,
-                FILE_ATTRIBUTE_NORMAL ,     //  _In_      DWORD dwFlagsAndAttributes,
-                NULL                        //  _In_opt_  HANDLE hTemplateFile
-            );
+    /*
+     *      The Game.
+     */
+    char                    szGame [ 64 ];
 
-            if ( hFile == INVALID_HANDLE_VALUE )
-            {
-                return;
-            }
-            DWORD dwSizeHigh    = 0;
-            DWORD dwSize        = GetFileSize ( hFile, &dwSizeHigh );
+    /*
+     *      The Game save number.
+     */
+    int                     iGame;
 
-            CloseHandle ( hFile );
+    /*
+     *      The Title
+     */
+    char                    szTitle [ 64 ];
 
-            //
-            if ( dwSize == INVALID_FILE_SIZE  )
-            {
-                return;
-            }
+    /*
+     *      The Version.
+     */
+    int                     iVersion;
 
-            //
-            if ( dwSize == TR123LEVELSIZE )
-            {
-                CTRXPropertySheet *propertySheet = dynamic_cast<CTRXPropertySheet *>( GetParent() );
-                if ( propertySheet != NULL && propertySheet->m_Remastered_Page != NULL )
-                {
-                    propertySheet->SetTheActivePage ( PAGE_REMASTERED );
-                    propertySheet->DropToPage ( PAGE_REMASTERED, hDropInfo );
-                }
-                return;
-            }
-
-            /*
-             *      The Game.
-             */
-            char                    szGame [ 64 ];
-
-            /*
-             *      The Game save number.
-             */
-            int                     iGame;
-
-            /*
-             *      The Title
-             */
-            char                    szTitle [ 64 ];
-
-            /*
-             *      The Version.
-             */
-            int                     iVersion;
-
-            /*
-             *  Set filename Text.
-             */
-            m_Filename.SetWindowText ( szFilename );
+    /*
+     *  Set filename Text.
+     */
+    m_Filename.SetWindowText ( pFilemame );
         
-            strcpy_s ( szDirectory, sizeof(szDirectory), szFilename );
-            theApp.RemoveFilename ( szDirectory );
+    strcpy_s ( szDirectory, sizeof(szDirectory), pFilemame );
+    theApp.RemoveFilename ( szDirectory );
 
-            /*
-             *  Fills list Ctrl.
-             */
-            FillListCtrl ( szDirectory );
+    /*
+     *  Fills list Ctrl.
+     */
+    FillListCtrl ( szDirectory );
 
-            /*
-             *  Retrieve informations.
-             */
-            m_Filename.GetWindowText ( szFilename, sizeof ( szFilename ) - 1 );
-            BOOL bWritten = theApp.WriteProfileString ( PROFILE_SETTING, PROFILE_LAST_OPENED, szFilename );
+    /*
+     *  Retrieve informations.
+     */
+    m_Filename.GetWindowText ( szFilename, sizeof ( szFilename ) - 1 );
+    BOOL bWritten = theApp.WriteProfileString ( PROFILE_SETTING, PROFILE_LAST_OPENED, pFilemame );
 
-            iVersion = CTRSaveGame::InstanciateVersion ( szFilename );
-            if ( iVersion != -1 && CTRSaveGame::I() != NULL )
-            {
-                int iLevel      = 0;
-                int iSub        = 0;
-                iVersion = CTRSaveGame::I()->GetInfo ( szGame, sizeof(szGame), &iGame, &iLevel, szTitle, sizeof(szTitle) );
-                CTRSaveGame::I()->RetrieveInformation (  szFilename );
-                m_Status.SetWindowText ( CTRSaveGame::I()->GetStatus() );
+    iVersion = CTRSaveGame::InstanciateVersion ( szFilename );
+    if ( iVersion != -1 && CTRSaveGame::I() != NULL )
+    {
+        int iLevel      = 0;
+        int iSub        = 0;
+        iVersion = CTRSaveGame::I()->GetInfo ( szGame, sizeof(szGame), &iGame, &iLevel, szTitle, sizeof(szTitle) );
+        CTRSaveGame::I()->RetrieveInformation (  szFilename );
+        m_Status.SetWindowText ( CTRSaveGame::I()->GetStatus() );
 
-                //  Reset Custom Combo
-                ZeroMemory ( CustomDataFiles, sizeof(CustomDataFiles) );
-                ResetCustomLabels ();
+        //  Reset Custom Combo
+        ZeroMemory ( CustomDataFiles, sizeof(CustomDataFiles) );
+        ResetCustomLabels ();
 
-                //  Select Default
-                m_Custom_Combo.SetCurSel ( 0 );
+        //  Select Default
+        m_Custom_Combo.SetCurSel ( 0 );
 
-                //  Change to Normal
-                ChangeCustomCombo( true );
+        //  Change to Normal
+        ChangeCustomCombo( true );
 
-                //
-                DisplayValues ();
-            }
-        }
+        //
+        DisplayValues ();
     }
-    CTRXPropertyPage::OnDropFiles(hDropInfo);
 }
 
 //

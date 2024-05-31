@@ -583,7 +583,7 @@ static TRN_AREA *GetTable ( int tombraider, int &levelIndex, int &count )
             break;
         }
 
-        //
+        //  Times Exclusive
         case 45 :
         {
             if ( levelIndex < 2 )
@@ -595,10 +595,14 @@ static TRN_AREA *GetTable ( int tombraider, int &levelIndex, int &count )
             break;
         }
 
+        //  Custom Levels
         case 49 :
         {
-            count   = sizeof(TR4_AREAS)/sizeof(TRN_AREA);
-            return TR4_AREAS;
+            if ( TRCCustomLevel )
+            {
+                count   = 1;
+                return TRC_AREAS;
+            }
             break;
         }
 
@@ -611,7 +615,7 @@ static TRN_AREA *GetTable ( int tombraider, int &levelIndex, int &count )
             break;
         }
 
-        //
+        //  Custom Level
         case 99 :
         {
             count = 1;
@@ -687,9 +691,14 @@ int GetTRTableSize ( int tombraider )
             return sizeof(TR4_AREAS)/sizeof(TRN_AREA);
             break;
         }
+
+        //  Custom Level
         case 49 :
         {
-            return sizeof(TR4_AREAS)/sizeof(TRN_AREA);
+            if ( TRCCustomLevel )
+            {
+                return TRCCustomCount;
+            }
             break;
         }
 

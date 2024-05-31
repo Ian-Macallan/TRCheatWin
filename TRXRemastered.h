@@ -222,6 +222,7 @@ class CTRXRemastered : public CTRXPropertyPage123
         afx_msg void OnBnClickedPosition();
         afx_msg void OnBnClickedShowMap();
         afx_msg void OnHelp();
+        afx_msg void OnBnClickedRecurse();
 
         virtual BOOL OnToolTipNotify(UINT id, NMHDR *pNMH, LRESULT *pResult);
         virtual BOOL OnInitDialog();
@@ -302,9 +303,8 @@ class CTRXRemastered : public CTRXPropertyPage123
         void WriteFile();
 
         void SingleClick();
+        void DoDropFiles(const char *pFilename);
 
         //  Ca Be Use by other
         static const char *GetLabelForObject ( int tombraider, int levelIndex, int iObject, bool bDouble = false );
-        afx_msg void OnDropFiles(HDROP hDropInfo);
-        afx_msg void OnBnClickedRecurse();
 };

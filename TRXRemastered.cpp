@@ -20,11 +20,11 @@
 #include "TRXAllMaps.h"
 #include "TRXMenuBase.h"
 
-#include "TRXGunPage.h" // Added by ClassView
-#include "TRXInfoPage.h"    // Added by ClassView
-#include "TRXItems.h"   // Added by ClassView
-#include "TRXItemsTR4.h"    // Added by ClassView
-#include "TRXAmmosPage.h"   // Added by ClassView
+#include "TRXGunPage.h"         // Added by ClassView
+#include "TRXInfoPage.h"        // Added by ClassView
+#include "TRXItems.h"           // Added by ClassView
+#include "TRXItemsTR4.h"        // Added by ClassView
+#include "TRXAmmosPage.h"       // Added by ClassView
 #include "TRXEquipmentPage.h"   // Added by ClassView
 #include "TRXPropertySheet.h"
 
@@ -437,7 +437,6 @@ BEGIN_MESSAGE_MAP(CTRXRemastered, CTRXPropertyPage123)
     ON_CBN_SELENDOK(IDC_COMBO, &CTRXRemastered::OnSelendokCombo)
     ON_BN_CLICKED(IDC_POSITION, &CTRXRemastered::OnBnClickedPosition)
     ON_BN_CLICKED(IDC_SHOW_MAP, &CTRXRemastered::OnBnClickedShowMap)
-    ON_WM_DROPFILES()
     ON_BN_CLICKED(IDC_RECURSE, &CTRXRemastered::OnBnClickedRecurse)
 END_MESSAGE_MAP()
 
@@ -5375,74 +5374,19 @@ void CTRXRemastered::SetThemeChanged ( bool bDarkTheme )
 /////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////
-void CTRXRemastered::OnDropFiles(HDROP hDropInfo)
+void CTRXRemastered::DoDropFiles(const char *pFilename)
 {
-    // TODO: ajoutez ici le code de votre gestionnaire de messages et/ou les paramètres par défaut des appels
-    static char         szFilename [ MAX_PATH ];
+    //
+    m_Filename.SetWindowText ( pFilename );
 
-    //      First get the count of files
-    UINT iCount = DragQueryFile ( hDropInfo, 0xFFFFFFFF, szFilename, sizeof ( szFilename ) );
-    if ( iCount >= 0 )
+    DisplayList ( pFilename );
+
+    //
+    BOOL bAdded = AddLocation ( LocationPathname, pFilename );
+    if ( bAdded )
     {
-        UINT iRes = DragQueryFile ( hDropInfo, 0, szFilename, sizeof ( szFilename ) );
-        if ( iRes != 0 )
-        {
-            HANDLE hFile = CreateFile (
-                szFilename,                 //  _In_      LPCTSTR lpFileName,
-                GENERIC_READ,               //   _In_      DWORD dwDesiredAccess,
-                FILE_SHARE_READ,            //  _In_      DWORD dwShareMode,
-                NULL,                       //  _In_opt_  LPSECURITY_ATTRIBUTES lpSecurityAttributes,
-                OPEN_EXISTING,              //  _In_      DWORD dwCreationDisposition,
-                FILE_ATTRIBUTE_NORMAL ,     //  _In_      DWORD dwFlagsAndAttributes,
-                NULL                        //  _In_opt_  HANDLE hTemplateFile
-            );
-
-            if ( hFile == INVALID_HANDLE_VALUE )
-            {
-                return;
-            }
-
-            DWORD dwSizeHigh    = 0;
-            DWORD dwSize        = GetFileSize ( hFile, &dwSizeHigh );
-            CloseHandle ( hFile );
-
-            //
-            if ( dwSize == INVALID_FILE_SIZE  )
-            {
-                return;
-            }
-
-            if ( dwSize != TR123LEVELSIZE )
-            {
-                CTRXPropertySheet *propertySheet = dynamic_cast<CTRXPropertySheet *>( GetParent() );
-                if ( propertySheet != NULL && propertySheet->m_Info_Page != NULL )
-                {
-                    propertySheet->SetTheActivePage ( PAGE_INFOS );
-                    propertySheet->DropToPage ( PAGE_INFOS, hDropInfo );
-                }
-                return;
-            }
-
-            /*
-             *  Set filename Text.
-             */
-            m_Filename.SetWindowText ( szFilename );
-
-            DisplayList ( szFilename );
-
-            /*
-             *  Write Profile String.
-             */
-            //
-            BOOL bAdded = AddLocation ( LocationPathname, szFilename );
-            if ( bAdded )
-            {
-                m_Combo.AddString ( szFilename );
-            }
-        }
+        m_Combo.AddString ( pFilename );
     }
-
-    CTRXPropertyPage123::OnDropFiles(hDropInfo);
 }
 
 //

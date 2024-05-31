@@ -6,6 +6,16 @@
 #include "TRXCHEATWIN.h"
 #include "afxdialogex.h"
 
+#include "TRXRemastered.h"
+#include "TRXInfoPage.h"
+#include "TRXEquipmentPage.h"
+#include "TRXGunPage.h"
+#include "TRXAmmosPage.h"
+#include "TRXItems.h"
+#include "TRXItemsTR4.h"
+
+#include "TRXPropertySheet.h"
+
 //
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -86,6 +96,7 @@ BEGIN_MESSAGE_MAP(CTRXPropertyPageBase, CPropertyPage)
     ON_WM_ERASEBKGND()
     ON_WM_MEASUREITEM()
     ON_WM_DRAWITEM()
+    ON_WM_DROPFILES()
 END_MESSAGE_MAP()
 
 
@@ -459,4 +470,64 @@ void CTRXPropertyPageBase::OnDrawItem(int nIDCtl, LPDRAWITEMSTRUCT lpDrawItemStr
     }
 
     CPropertyPage::OnDrawItem(nIDCtl, lpDrawItemStruct);
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
+void CTRXPropertyPageBase::OnDropFiles(HDROP hDropInfo)
+{
+    static char         szFilename [ MAX_PATH ];
+
+    //
+    //      First get the count of files
+    UINT iCount = DragQueryFile ( hDropInfo, 0xFFFFFFFF, szFilename, sizeof ( szFilename ) );
+    if ( iCount >= 0 )
+    {
+        UINT iRes = DragQueryFile ( hDropInfo, 0, szFilename, sizeof ( szFilename ) );
+        if ( iRes != 0 && strlen(szFilename) > 0 )
+        {
+            HANDLE hFile = CreateFile (
+                szFilename,                 //  _In_      LPCTSTR lpFileName,
+                GENERIC_READ,               //   _In_      DWORD dwDesiredAccess,
+                FILE_SHARE_READ,            //  _In_      DWORD dwShareMode,
+                NULL,                       //  _In_opt_  LPSECURITY_ATTRIBUTES lpSecurityAttributes,
+                OPEN_EXISTING,              //  _In_      DWORD dwCreationDisposition,
+                FILE_ATTRIBUTE_NORMAL,      //  _In_      DWORD dwFlagsAndAttributes,
+                NULL                        //  _In_opt_  HANDLE hTemplateFile
+            );
+
+            if ( hFile == INVALID_HANDLE_VALUE )
+            {
+                return;
+            }
+            DWORD dwSizeHigh    = 0;
+            DWORD dwSize        = GetFileSize ( hFile, &dwSizeHigh );
+
+            CloseHandle ( hFile );
+
+            //
+            if ( dwSize == INVALID_FILE_SIZE  )
+            {
+                return;
+            }
+
+            //
+            CTRXPropertySheet *propertySheet = dynamic_cast<CTRXPropertySheet *>( GetParent() );
+            if ( propertySheet != NULL )
+            {
+                if ( dwSize == TR123LEVELSIZE )
+                {
+                    propertySheet->DropToPage ( PAGE_REMASTERED, szFilename );
+                }
+                else
+                {
+                    propertySheet->DropToPage ( PAGE_INFOS, szFilename );
+                }
+            }
+        }
+    }
+
+    CPropertyPage::OnDropFiles(hDropInfo);
 }
