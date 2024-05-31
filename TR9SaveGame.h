@@ -46,8 +46,8 @@
 #define TR3_MASK_RIOT       0x010
 #define TR3_MASK_M16        0x020
 #define TR3_MASK_ROCKET     0x040
-#define TR3_MASK_HARPOON    0x080
-#define TR3_MASK_GRENADE    0x100
+#define TR3_MASK_GRENADE    0x080
+#define TR3_MASK_HARPOON    0x100
 
 //  Secrets
 //  0x0DB040 = 1000 - Save (db00c): 39 Level 16 (db628) (#62) 16: Floating Islands

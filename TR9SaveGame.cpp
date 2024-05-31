@@ -694,7 +694,7 @@ TR_HEALTH_RANGE TR3_HEALTH_RANGES [32] =
     {   0x1BF4, 0x1C0E+0x20 },  // Highland Fling
     {   0x15EE, 0x15EE  },  // Willard's Lair
     {   0x1338, 0x1352  },  // Shakespeare Cliff
-    {   0xB5A,  0xB5A   },  // Sleeping with the Fishes
+    {   0xB5A,  0xB5A+0x10   },  // Sleeping with the Fishes
     {   0x1084, 0x1084  },  // It's a Madhouse!
     {   0x1810, 0x1844  },  // Reunion
     //
