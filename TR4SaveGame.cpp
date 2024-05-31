@@ -1911,11 +1911,28 @@ BOOL CTR4SaveGame::SetPosition ( DWORD dwWestToEast, DWORD dwVertical, DWORD dwS
         TR4_POSITION *pTR4Position = GetTR4Position ( );
         if ( pTR4Position != NULL )
         {
-            pTR4Position->wSouthToNorth = (WORD) ( dwSouthToNorth / TR4_FACTOR );
-            pTR4Position->wVertical     = (WORD) ( dwVertical / TR4_FACTOR );
-            pTR4Position->wWestToEast   = (WORD) ( dwWestToEast / TR4_FACTOR );
-            pTR4Position->cOrientation  = CTRXTools::MakeOrientationToOneByte ( wDirection );
+            if ( abs ( pTR4Position->wSouthToNorth - (WORD) ( dwSouthToNorth / TR4_FACTOR ) ) > 2 )
+            {
+                pTR4Position->wSouthToNorth = (WORD) ( dwSouthToNorth / TR4_FACTOR );
+            }
+
+            if ( abs ( pTR4Position->wVertical - (WORD) ( dwVertical / TR4_FACTOR ) ) > 2 )
+            {
+                pTR4Position->wVertical     = (WORD) ( dwVertical / TR4_FACTOR );
+            }
+
+            if ( abs ( pTR4Position->wWestToEast - (WORD) ( dwWestToEast / TR4_FACTOR ) ) > 2 )
+            {
+                pTR4Position->wWestToEast   = (WORD) ( dwWestToEast / TR4_FACTOR );
+            }
+
+            if ( abs ( pTR4Position->cOrientation - CTRXTools::MakeOrientationToOneByte ( wDirection ) ) > 2 )
+            {
+                pTR4Position->cOrientation  = CTRXTools::MakeOrientationToOneByte ( wDirection );
+            }
+
             pTR4Position->cRoom         = (BYTE) wRoom;
+
             return TRUE;
         }
     }
