@@ -11,6 +11,9 @@ BOOL            CTRXGlobal::m_iSearchExt        = FALSE;
 unsigned        CTRXGlobal::m_iMinNGSize        = 37400;
 unsigned        CTRXGlobal::m_iMaxNGSize        = 37500;
 
+//  0 Default Color
+//  1 Dark Client Area
+//  2 Dark Client Area and Caption
 int             CTRXGlobal::m_iDarkTheme        = 0;
 
 //

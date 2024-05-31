@@ -12,6 +12,106 @@
 /////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////
+static CRect GetFrameFullRect ( const CRect &windowRECT )
+{
+    CRect frameFullRECT;
+    frameFullRECT.left      = 0;
+    frameFullRECT.top       = 0;
+    frameFullRECT.right     = windowRECT.Width();
+    frameFullRECT.bottom    = windowRECT.Height();
+    return frameFullRECT;
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
+static CRect GetCaptionFullRect ( const CRect &windowRECT )
+{
+    //  EG : 1
+    int yBorder         = GetSystemMetrics(SM_CYBORDER);
+
+    //  EG : 3
+    int yFrame          = GetSystemMetrics ( SM_CYDLGFRAME );
+
+    int yCaption        = GetSystemMetrics(SM_CYCAPTION);
+
+    CRect captionFullRECT;
+    captionFullRECT.left    = 1;
+    captionFullRECT.top     = 1;
+    captionFullRECT.right   = windowRECT.Width() - 1;
+    captionFullRECT.bottom  = yCaption + 2 * yBorder + yFrame;
+    return captionFullRECT;
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
+static CRect GetCaptionInsideRect ( const CRect &windowRECT )
+{
+    //  EG : 1
+    int xBorder         = GetSystemMetrics(SM_CXBORDER);
+    int yBorder         = GetSystemMetrics(SM_CYBORDER);
+
+    //  EG : 3
+    int xFrame          = GetSystemMetrics ( SM_CXDLGFRAME );
+    int yFrame          = GetSystemMetrics ( SM_CYDLGFRAME );
+
+    int yCaption        = GetSystemMetrics(SM_CYCAPTION);
+
+    int xLeft           = xBorder + xFrame;
+    int yTop            = yBorder + yFrame;
+
+    int x               = xLeft;
+    int y               = yTop;
+    int cx              = windowRECT.Width() - 2 * xFrame - xBorder;
+    int cy              = yCaption;
+
+    CRect captionInsideRECT;
+    captionInsideRECT.left      = x; 
+    captionInsideRECT.top       = y;
+    captionInsideRECT.right     = captionInsideRECT.left + cx;
+    captionInsideRECT.bottom    = captionInsideRECT.top + cy;
+
+    return captionInsideRECT;
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
+static CRect GetClientFullRect ( const CRect &windowRECT )
+{
+    //  EG : 1
+    int xBorder         = GetSystemMetrics(SM_CXBORDER);
+    int yBorder         = GetSystemMetrics(SM_CYBORDER);
+
+    //  EG : 3
+    int xFrame          = GetSystemMetrics ( SM_CXDLGFRAME );
+    int yFrame          = GetSystemMetrics ( SM_CYDLGFRAME );
+
+    int xIcon           = GetSystemMetrics(SM_CXICON);
+    int yIcon           = GetSystemMetrics(SM_CYICON);
+
+    int xIconSmall      = GetSystemMetrics(SM_CXSMICON);
+    int yIconSmall      = GetSystemMetrics(SM_CYSMICON);
+
+    int yCaption        = GetSystemMetrics(SM_CYCAPTION);
+
+    CRect clientFullRECT;
+    clientFullRECT.top        = yBorder + yFrame + yCaption + yBorder;
+    clientFullRECT.left       = 0;
+    clientFullRECT.bottom     = windowRECT.Height();
+    clientFullRECT.right      = windowRECT.Width();
+
+    return clientFullRECT;
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
 CTRXNC::CTRXNC(void)
 {
     m_pContextMenu          = NULL;
@@ -131,14 +231,14 @@ void CTRXNC::DrawResizedIcon ( CDC *pDC, HICON hIcon, const RECT *pRect )
 /////////////////////////////////////////////////////////////////////////////
 BOOL CTRXNC::ScreenPointOverRect ( CWnd *pWnd, CPoint pt, CRect cRect )
 {
-    CRect windowsRECT;
-    pWnd->GetWindowRect(&windowsRECT);
+    CRect windowRECT;
+    pWnd->GetWindowRect(&windowRECT);
 
-    cRect.left      += windowsRECT.left;
-    cRect.top       += windowsRECT.top;
+    cRect.left      += windowRECT.left;
+    cRect.top       += windowRECT.top;
 
-    cRect.right     += windowsRECT.left;
-    cRect.bottom    += windowsRECT.top;
+    cRect.right     += windowRECT.left;
+    cRect.bottom    += windowRECT.top;
 
     return cRect.PtInRect( pt );
 }
@@ -203,7 +303,7 @@ void CTRXNC::DrawIcon ( CDC *pDC, UINT icon, const CRect crect, bool bFillRect, 
 /////////////////////////////////////////////////////////////////////////////
 BOOL CTRXNC::PaintCaption( CWnd *pWnd, BOOL bActive )
 {
-    if ( CTRXGlobal::m_iDarkTheme == 0 )
+    if ( CTRXGlobal::m_iDarkTheme != 2 )
     {
         return FALSE;
     }
@@ -231,26 +331,20 @@ BOOL CTRXNC::PaintCaption( CWnd *pWnd, BOOL bActive )
     CDC* pDC = pWnd->GetWindowDC();
 
     //
-    CRect windowsRECT;
-    pWnd->GetWindowRect(&windowsRECT);
+    CRect windowRECT;
+    pWnd->GetWindowRect(&windowRECT);
 
     //
     COLORREF foregroundColor = CTRXColors::GetWhiteCR();
 
-    //
-    //  Caption Rect
-    int x               = xLeft;
-    int y               = yTop;
-    int cx              = windowsRECT.Width() - 2 * xFrame - xBorder;
-    int cy              = yCaption;
+    //  First Draw Frmae Rect Around the window
+    CRect frameFullRECT     = GetFrameFullRect ( windowRECT );
+    pDC->FrameRect ( &frameFullRECT, CTRXColors::GetCyanCBrush() );
+
+    //  The The Caption Rect
+    CRect captionFullRECT   = GetCaptionFullRect ( windowRECT );
 
     //
-    CRect captionFullRECT;
-    captionFullRECT.left    = 0;
-    captionFullRECT.top     = 0;
-    captionFullRECT.right   = windowsRECT.Width();
-    captionFullRECT.bottom  = yCaption + 2 * yBorder + yFrame;
-
     if ( bActive )
     {
         pDC->FillSolidRect(&captionFullRECT, CTRXColors::GetBlack32CR());
@@ -260,20 +354,18 @@ BOOL CTRXNC::PaintCaption( CWnd *pWnd, BOOL bActive )
         pDC->FillSolidRect(&captionFullRECT, CTRXColors::GetBlack48CR());
     }
 
-    CRect captionRECT;
-    captionRECT.left    = x;
-    captionRECT.top     = y;
-    captionRECT.right   = captionRECT.left + cx;
-    captionRECT.bottom  = captionRECT.top + cy;
+    //
+    //  Caption Rect
+    CRect captionInsideRECT = GetCaptionInsideRect ( windowRECT );
 
     // Draw Old FRame (Window XP)
     UINT captionOption  = DFCS_CAPTIONMIN | DFCS_CAPTIONMAX | DFCS_CAPTIONCLOSE | DFCS_CAPTIONRESTORE | DFCS_CAPTIONHELP;
     captionOption       |= DFCS_FLAT;
-    // pDC->DrawFrameControl ( captionRECT, DFC_CAPTION, captionOption );
+    // pDC->DrawFrameControl ( captionInsideRECT, DFC_CAPTION, captionOption );
 
     char szTitle [ MAX_PATH ];
     pWnd->GetWindowText ( szTitle, sizeof(szTitle));
-    CRect textRECT = captionRECT;
+    CRect textRECT = captionInsideRECT;
     textRECT.left   = textRECT.left + xIcon + xBorder;
 
     pDC->SetBkMode (TRANSPARENT);
@@ -287,7 +379,7 @@ BOOL CTRXNC::PaintCaption( CWnd *pWnd, BOOL bActive )
 
     //  Icon is small
     m_IconRect.left         = xLeft;
-    m_IconRect.top          = captionRECT.top;
+    m_IconRect.top          = captionInsideRECT.top;
     m_IconRect.right        = m_IconRect.left + xIcon;
     m_IconRect.bottom       = m_IconRect.top + yCaption - 1;
     if ( ( dwStyle & WS_SYSMENU ) && ( dwStyle & WS_CAPTION ) )
@@ -296,8 +388,8 @@ BOOL CTRXNC::PaintCaption( CWnd *pWnd, BOOL bActive )
     }
 
     // Close
-    m_CloseRect.left        = captionRECT.right - xIcon;
-    m_CloseRect.top         = captionRECT.top;
+    m_CloseRect.left        = captionInsideRECT.right - xIcon;
+    m_CloseRect.top         = captionInsideRECT.top;
     m_CloseRect.right       = m_CloseRect.left + xIcon;
     m_CloseRect.bottom      = m_CloseRect.top + yCaption - 1;
     DrawIcon ( pDC, IDI_CLOSE, m_CloseRect );
@@ -341,55 +433,26 @@ BOOL CTRXNC::PaintCaption( CWnd *pWnd, BOOL bActive )
 /////////////////////////////////////////////////////////////////////////////
 BOOL CTRXNC::PaintWindow( CWnd *pWnd, BOOL bActive )
 {
-    if ( CTRXGlobal::m_iDarkTheme == 0 )
+    if ( CTRXGlobal::m_iDarkTheme != 2 )
     {
         return FALSE;
     }
-
-    //  EG : 1
-    int xBorder         = GetSystemMetrics(SM_CXBORDER);
-    int yBorder         = GetSystemMetrics(SM_CYBORDER);
-
-    //  EG : 3
-    int xFrame          = GetSystemMetrics ( SM_CXDLGFRAME );
-    int yFrame          = GetSystemMetrics ( SM_CYDLGFRAME );
-
-    int xIcon           = GetSystemMetrics(SM_CXICON);
-    int yIcon           = GetSystemMetrics(SM_CYICON);
-
-    int xIconSmall      = GetSystemMetrics(SM_CXSMICON);
-    int yIconSmall      = GetSystemMetrics(SM_CYSMICON);
-
-    int yCaption        = GetSystemMetrics(SM_CYCAPTION);
-
-    int xLeft           = xBorder + xFrame;
-    int yTop            = yBorder + yFrame;
 
     //
     CDC* pDC = pWnd->GetWindowDC();
 
     //
     //  Fill Background
-    CRect windowsRECT;
-    pWnd->GetWindowRect(&windowsRECT);
+    CRect windowRECT;
+    pWnd->GetWindowRect(&windowRECT);
+
+    //  First Draw Frmae Rect Around the window
+    CRect frameFullRECT = GetFrameFullRect ( windowRECT );
+    pDC->FrameRect ( &frameFullRECT, CTRXColors::GetCyanCBrush() );
 
     //
-    RECT fullRect;
-    fullRect.top        = yBorder + yFrame + yCaption + yBorder;
-    fullRect.left       = 0;
-    fullRect.bottom     = windowsRECT.Height();
-    fullRect.right      = windowsRECT.Width();
-
-    {
-        RECT clientRect;
-        clientRect.top      = yBorder + yFrame + yCaption + yBorder;
-        clientRect.left     = xBorder + xFrame;
-        clientRect.bottom   = fullRect.bottom - yBorder - yFrame;
-        clientRect.right    = fullRect.right - xBorder - xFrame;
-        // pDC->ExcludeClipRect ( &clientRect );
-
-        pDC->FillRect ( &fullRect, CTRXColors::GetBlack48CBrush() );
-    }
+    RECT clientFullRect = GetClientFullRect ( windowRECT );
+    pDC->FillRect ( &clientFullRect, CTRXColors::GetBlack48CBrush() );
 
     //
     pWnd->ReleaseDC ( pDC );
@@ -412,7 +475,7 @@ BOOL CTRXNC::PaintWindow( CWnd *pWnd, BOOL bActive )
 /////////////////////////////////////////////////////////////////////////////
 BOOL CTRXNC::Activate( CWnd *pWnd, BOOL bActive )
 {
-    if ( CTRXGlobal::m_iDarkTheme == 0 )
+    if ( CTRXGlobal::m_iDarkTheme != 2 )
     {
         return FALSE;
     }
@@ -428,7 +491,7 @@ BOOL CTRXNC::Activate( CWnd *pWnd, BOOL bActive )
 BOOL CTRXNC::OnNcLButtonDown(CWnd *pWnd, UINT nHitTest, CPoint point)
 {
     // TODO: Add Code Here
-    if ( CTRXGlobal::m_iDarkTheme != 0 )
+    if ( CTRXGlobal::m_iDarkTheme == 2 )
     {
         if ( ScreenPointOverRect( pWnd, point, m_IconRect ) )
         {
@@ -475,7 +538,7 @@ BOOL CTRXNC::OnNcLButtonDown(CWnd *pWnd, UINT nHitTest, CPoint point)
 BOOL CTRXNC::OnNcLButtonUp(CWnd *pWnd, UINT nHitTest, CPoint point)
 {
     // TODO: Add Code Here
-    if ( CTRXGlobal::m_iDarkTheme != 0 )
+    if ( CTRXGlobal::m_iDarkTheme == 2 )
     {
         if ( ScreenPointOverRect( pWnd, point, m_IconRect ) )
         {
@@ -541,7 +604,7 @@ BOOL CTRXNC::OnNcLButtonUp(CWnd *pWnd, UINT nHitTest, CPoint point)
 /////////////////////////////////////////////////////////////////////////////
 BOOL CTRXNC::OnNcRButtonDown(CWnd *pWnd, UINT nHitTest, CPoint point)
 {
-    if ( CTRXGlobal::m_iDarkTheme != 0 )
+    if ( CTRXGlobal::m_iDarkTheme == 2 )
     {
         CMenu *pMenu = pWnd->GetSystemMenu(FALSE);
         if ( pMenu )
@@ -566,7 +629,7 @@ BOOL CTRXNC::OnNcRButtonDown(CWnd *pWnd, UINT nHitTest, CPoint point)
 BOOL CTRXNC::OnMouseMove(CWnd *pWnd, UINT nFlags, CPoint point)
 {
     // TODO: Add Code Here
-    if ( CTRXGlobal::m_iDarkTheme != 0 )
+    if ( CTRXGlobal::m_iDarkTheme == 2 )
     {
         TRACKMOUSEEVENT tme;
         ZeroMemory ( &tme, sizeof(tme) );
@@ -588,14 +651,14 @@ BOOL CTRXNC::OnMouseMove(CWnd *pWnd, UINT nFlags, CPoint point)
 BOOL CTRXNC::OnNcMouseMove(CWnd *pWnd, UINT nHitTest, CPoint point)
 {
     // TODO: Add Code Here
-    if ( CTRXGlobal::m_iDarkTheme != 0 )
+    if ( CTRXGlobal::m_iDarkTheme == 2 )
     {
         TRACKMOUSEEVENT tme;
         ZeroMemory ( &tme, sizeof(tme) );
         tme.cbSize      = sizeof(tme);
         tme.hwndTrack   = pWnd->m_hWnd;
         tme.dwFlags     = TME_NONCLIENT  | TME_HOVER | TME_LEAVE;
-        tme.dwHoverTime = 250; // HOVER_DEFAULT;
+        tme.dwHoverTime = 100; // HOVER_DEFAULT;
         TrackMouseEvent ( &tme );
     }
 

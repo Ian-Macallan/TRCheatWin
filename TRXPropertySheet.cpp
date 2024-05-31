@@ -292,6 +292,11 @@ BOOL CTRXPropertySheet::OnInitDialog()
 {
     BOOL bResult = CPropertySheet::OnInitDialog();
 
+    //
+#if 0
+    SetWindowTheme( m_hWnd, L"Explorer", NULL);
+#endif
+
     // TODO: Add Code Here
     if ( GetParent() == NULL )
     {
@@ -862,3 +867,4 @@ void CTRXPropertySheet::OnNcMouseLeave()
 
     CPropertySheet::OnNcMouseLeave();
 }
+

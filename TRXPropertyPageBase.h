@@ -79,7 +79,8 @@ class CTRXPropertyPageBase : public CPropertyPage
         afx_msg BOOL OnEraseBkgnd(CDC* pDC);
         afx_msg void OnMeasureItem(int nIDCtl, LPMEASUREITEMSTRUCT lpMeasureItemStruct);
         afx_msg void OnDrawItem(int nIDCtl, LPDRAWITEMSTRUCT lpDrawItemStruct);
+        afx_msg void OnDropFiles(HDROP hDropInfo);
 
         virtual BOOL OnInitDialog();
-        afx_msg void OnDropFiles(HDROP hDropInfo);
+
 };

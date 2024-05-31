@@ -369,6 +369,11 @@ BOOL CTRXPropertyPageBase::OnInitDialog()
 {
     CPropertyPage::OnInitDialog();
 
+    //
+#if 0
+    SetWindowTheme( m_hWnd, L"Explorer", NULL);
+#endif
+
     // TODO: Add Code Here
     //
     TEXTMETRIC textMetrics;
@@ -531,3 +536,4 @@ void CTRXPropertyPageBase::OnDropFiles(HDROP hDropInfo)
 
     CPropertyPage::OnDropFiles(hDropInfo);
 }
+
