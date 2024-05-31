@@ -22,6 +22,7 @@ class CTRXNC
         CRect                   m_MaximizeRect;
         CRect                   m_MinimizeRect;
 
+        //
         CTRXMenuBase            *m_pContextMenu;
         UINT                    m_iHover;
 

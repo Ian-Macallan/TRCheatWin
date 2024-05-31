@@ -537,6 +537,7 @@ BOOL CTRXNC::OnNcLButtonDown(CWnd *pWnd, UINT nHitTest, CPoint point)
 /////////////////////////////////////////////////////////////////////////////
 BOOL CTRXNC::OnNcLButtonUp(CWnd *pWnd, UINT nHitTest, CPoint point)
 {
+    //
     // TODO: Add Code Here
     if ( CTRXGlobal::m_iDarkTheme == 2 )
     {
@@ -631,6 +632,7 @@ BOOL CTRXNC::OnMouseMove(CWnd *pWnd, UINT nFlags, CPoint point)
     // TODO: Add Code Here
     if ( CTRXGlobal::m_iDarkTheme == 2 )
     {
+        //  Track Event
         TRACKMOUSEEVENT tme;
         ZeroMemory ( &tme, sizeof(tme) );
         tme.cbSize      = sizeof(tme);

@@ -356,6 +356,9 @@ void CTRXPropertySheetAll::OnSysCommand(UINT nID, LPARAM lParam)
                 {
                     pTab->ModifyStyle ( TCS_OWNERDRAWFIXED, NULL );
                 }
+
+                //  Reset Theme
+                SetWindowTheme( GetSafeHwnd(), NULL, NULL );
             }
             else
             {

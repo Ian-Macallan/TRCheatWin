@@ -294,7 +294,11 @@ BOOL CTRXPropertySheet::OnInitDialog()
 
     //
 #if 0
-    SetWindowTheme( m_hWnd, L"Explorer", NULL);
+    //  Reset To Old Windows Style
+    SetWindowTheme( GetSafeHwnd(), L"Explorer", L"");
+
+    //  Reset To Default Current
+    SetWindowTheme( GetSafeHwnd(), NULL, NULL );
 #endif
 
     // TODO: Add Code Here
