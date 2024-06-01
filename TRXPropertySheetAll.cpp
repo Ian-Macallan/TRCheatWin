@@ -200,7 +200,20 @@ BOOL CTRXPropertySheetAll::OnInitDialog()
                 if (!strDarkTheme.IsEmpty())
                 {
                     pSysMenu->AppendMenu(MF_STRING, IDM_DARK_THEME, strDarkTheme);
-                    if ( iDarkTheme ) pSysMenu->CheckMenuItem(IDM_DARK_THEME,MF_CHECKED|MF_BYCOMMAND);
+                    if ( iDarkTheme == 1 ) pSysMenu->CheckMenuItem(IDM_DARK_THEME,MF_CHECKED|MF_BYCOMMAND);
+                }
+            }
+
+            //
+            {
+                int iDarkTheme      = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_DARKTHEME, 0 );
+
+                CString strDarkFull;
+                strDarkFull.LoadString(IDS_DARK_FULL);
+                if (!strDarkFull.IsEmpty())
+                {
+                    pSysMenu->AppendMenu(MF_STRING, IDM_DARK_FULL, strDarkFull);
+                    if ( iDarkTheme == 2 ) pSysMenu->CheckMenuItem(IDM_DARK_FULL,MF_CHECKED|MF_BYCOMMAND);
                 }
             }
         }
@@ -339,14 +352,14 @@ void CTRXPropertySheetAll::OnSysCommand(UINT nID, LPARAM lParam)
             }
         }
     }
-    else if ((nID & 0xFFF0) == IDM_DARK_THEME)
+    else if ( (nID & 0xFFF0) == IDM_DARK_THEME || (nID & 0xFFF0) == IDM_DARK_FULL )
     {
         int iDarkTheme = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_DARKTHEME, 0 );
 
         CMenu* pSysMenu = GetSystemMenu(FALSE);
         if ( pSysMenu )
         {
-            if ( CTRXGlobal::m_iDarkTheme )
+            if ( (nID & 0xFFF0) == IDM_DARK_THEME && CTRXGlobal::m_iDarkTheme == 1 )
             {
                 theApp.WriteProfileInt( PROFILE_SETTING, PROFILE_DARKTHEME, 0 );
                 CTRXGlobal::m_iDarkTheme    = 0;
@@ -360,17 +373,50 @@ void CTRXPropertySheetAll::OnSysCommand(UINT nID, LPARAM lParam)
                 //  Reset Theme
                 SetWindowTheme( GetSafeHwnd(), NULL, NULL );
             }
-            else
+            else if ( (nID & 0xFFF0) == IDM_DARK_FULL && CTRXGlobal::m_iDarkTheme == 2 )
+            {
+                theApp.WriteProfileInt( PROFILE_SETTING, PROFILE_DARKTHEME, 0 );
+                CTRXGlobal::m_iDarkTheme    = 0;
+                pSysMenu->CheckMenuItem(IDM_DARK_FULL,MF_UNCHECKED|MF_BYCOMMAND);
+                CTabCtrl* pTab = GetTabControl();
+                if ( pTab )
+                {
+                    pTab->ModifyStyle ( TCS_OWNERDRAWFIXED, NULL );
+                }
+
+                //  Reset Theme
+                SetWindowTheme( GetSafeHwnd(), NULL, NULL );
+            }
+            else if ( (nID & 0xFFF0) == IDM_DARK_THEME )
             {
                 theApp.WriteProfileInt( PROFILE_SETTING, PROFILE_DARKTHEME, 1 );
                 CTRXGlobal::m_iDarkTheme    = 1;
                 pSysMenu->CheckMenuItem(IDM_DARK_THEME,MF_CHECKED|MF_BYCOMMAND);
+                pSysMenu->CheckMenuItem(IDM_DARK_FULL,MF_UNCHECKED|MF_BYCOMMAND);
+                CTabCtrl* pTab = GetTabControl();
+                if ( pTab )
+                {
+                    pTab->ModifyStyle ( NULL, TCS_OWNERDRAWFIXED );
+                }
+
+                //  Reset Theme
+                SetWindowTheme( GetSafeHwnd(), NULL, NULL );
+            }
+            else if ( (nID & 0xFFF0) == IDM_DARK_FULL )
+            {
+                theApp.WriteProfileInt( PROFILE_SETTING, PROFILE_DARKTHEME, 2 );
+                CTRXGlobal::m_iDarkTheme    = 2;
+                pSysMenu->CheckMenuItem(IDM_DARK_FULL,MF_CHECKED|MF_BYCOMMAND);
+                pSysMenu->CheckMenuItem(IDM_DARK_THEME,MF_UNCHECKED|MF_BYCOMMAND);
 
                 CTabCtrl* pTab = GetTabControl();
                 if ( pTab )
                 {
                     pTab->ModifyStyle ( NULL, TCS_OWNERDRAWFIXED );
                 }
+
+                //  Reset Theme
+                SetWindowTheme( GetSafeHwnd(), NULL, NULL );
             }
 
             if ( m_Info_Page != NULL ) m_Info_Page->SetThemeChanged ( CTRXGlobal::m_iDarkTheme != 0 );

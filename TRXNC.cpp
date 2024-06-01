@@ -37,10 +37,12 @@ static CRect GetCaptionFullRect ( const CRect &windowRECT )
     int yCaption        = GetSystemMetrics(SM_CYCAPTION);
 
     CRect captionFullRECT;
+
     captionFullRECT.left    = 1;
     captionFullRECT.top     = 1;
     captionFullRECT.right   = windowRECT.Width() - 1;
     captionFullRECT.bottom  = yCaption + 2 * yBorder + yFrame;
+
     return captionFullRECT;
 }
 
@@ -66,14 +68,13 @@ static CRect GetCaptionInsideRect ( const CRect &windowRECT )
     int x               = xLeft;
     int y               = yTop;
     int cx              = windowRECT.Width() - 2 * xFrame - xBorder;
-    int cy              = yCaption;
+    int cy              = yCaption + yBorder + yFrame;
 
-    CRect captionInsideRECT;
+    CRect   captionInsideRECT;
     captionInsideRECT.left      = x; 
     captionInsideRECT.top       = y;
     captionInsideRECT.right     = captionInsideRECT.left + cx;
     captionInsideRECT.bottom    = captionInsideRECT.top + cy;
-
     return captionInsideRECT;
 }
 
@@ -100,6 +101,7 @@ static CRect GetClientFullRect ( const CRect &windowRECT )
     int yCaption        = GetSystemMetrics(SM_CYCAPTION);
 
     CRect clientFullRECT;
+
     clientFullRECT.top        = yBorder + yFrame + yCaption + yBorder;
     clientFullRECT.left       = 0;
     clientFullRECT.bottom     = windowRECT.Height();
@@ -112,10 +114,40 @@ static CRect GetClientFullRect ( const CRect &windowRECT )
 /////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////
+static CRect GetIconFullRECT ( const CRect &windowRECT, int left )
+{
+    int xIcon           = GetSystemMetrics(SM_CXICON);
+    int yIcon           = GetSystemMetrics(SM_CYICON);
+
+    int xIconSmall      = GetSystemMetrics(SM_CXSMICON);
+    int yIconSmall      = GetSystemMetrics(SM_CYSMICON);
+
+    int yCaption        = GetSystemMetrics(SM_CYCAPTION);
+
+    int yBorder         = GetSystemMetrics(SM_CYBORDER);
+    int yFrame          = GetSystemMetrics ( SM_CYDLGFRAME );
+
+    CRect captionFullRECT   = GetCaptionFullRect ( windowRECT );
+
+    CRect iconFullRECT;
+
+    iconFullRECT.left       = left;
+    iconFullRECT.top        = captionFullRECT.top; // yBorder + yFrame;
+    iconFullRECT.right      = iconFullRECT.left + xIcon;
+    iconFullRECT.bottom     = captionFullRECT.bottom; // iconFullRECT.top + yCaption - 1;
+
+    return iconFullRECT;
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
 CTRXNC::CTRXNC(void)
 {
     m_pContextMenu          = NULL;
     m_iHover                = ICON_NOT_SET;
+    m_LeftPressed           = FALSE;
 }
 
 //
@@ -152,8 +184,8 @@ void CTRXNC::DrawResizedIcon ( CDC *pDC, HICON hIcon, const RECT *pRect )
         const int nWrittenBytes = GetObject(info.hbmColor, sizeof(bmp), &bmp);
         if ( nWrittenBytes > 0 )
         {
-            xIcon   = bmp.bmWidth;
-            yIcon  = bmp.bmHeight;
+            xIcon       = bmp.bmWidth;
+            yIcon       = bmp.bmHeight;
             pixels      = bmp.bmBitsPixel;
         }
     }
@@ -367,38 +399,35 @@ BOOL CTRXNC::PaintCaption( CWnd *pWnd, BOOL bActive )
     pWnd->GetWindowText ( szTitle, sizeof(szTitle));
     CRect textRECT = captionInsideRECT;
     textRECT.left   = textRECT.left + xIcon + xBorder;
+    textRECT.top    = textRECT.top + textRECT.Height() / 6;
 
     pDC->SetBkMode (TRANSPARENT);
     pDC->SetTextColor (foregroundColor);
-    pDC->DrawText ( szTitle, &textRECT, DT_LEFT| DT_VCENTER );
+    pDC->DrawText ( szTitle, &textRECT, DT_LEFT | DT_VCENTER );
 
     //
     DWORD dwStyle = pWnd->GetStyle();
     WINDOWPLACEMENT wp;
     pWnd->GetWindowPlacement( &wp );
 
-    //  Icon is small
-    m_IconRect.left         = xLeft;
-    m_IconRect.top          = captionInsideRECT.top;
-    m_IconRect.right        = m_IconRect.left + xIcon;
-    m_IconRect.bottom       = m_IconRect.top + yCaption - 1;
+    //  ICONS
+    //////////////////////////////
+
+    //  LEFT
+    m_IconRect = GetIconFullRECT ( windowRECT, 1 /* xLeft */ );
+
     if ( ( dwStyle & WS_SYSMENU ) && ( dwStyle & WS_CAPTION ) )
     {
         DrawIcon ( pDC, IDR_MAINFRAME, m_IconRect );
     }
 
+    //  RIGHT
     // Close
-    m_CloseRect.left        = captionInsideRECT.right - xIcon;
-    m_CloseRect.top         = captionInsideRECT.top;
-    m_CloseRect.right       = m_CloseRect.left + xIcon;
-    m_CloseRect.bottom      = m_CloseRect.top + yCaption - 1;
+    m_CloseRect = GetIconFullRECT ( windowRECT, /* captionInsideRECT.right */ captionFullRECT.right - xIcon );
     DrawIcon ( pDC, IDI_CLOSE, m_CloseRect );
 
     //  Maximize
-    m_MaximizeRect.left     = m_CloseRect.left - xIcon;
-    m_MaximizeRect.top      = m_CloseRect.top;
-    m_MaximizeRect.right    = m_CloseRect.left - 1;
-    m_MaximizeRect.bottom   = m_MaximizeRect.top + yCaption - 1;
+    m_MaximizeRect = GetIconFullRECT ( windowRECT, m_CloseRect.left - xIcon );
     if ( dwStyle & WS_MAXIMIZEBOX )
     {
         if ( wp.showCmd == SW_NORMAL )
@@ -412,10 +441,7 @@ BOOL CTRXNC::PaintCaption( CWnd *pWnd, BOOL bActive )
     }
 
     //  Minilmize
-    m_MinimizeRect.left     = m_MaximizeRect.left - xIcon;
-    m_MinimizeRect.top      = m_MaximizeRect.top;
-    m_MinimizeRect.right    = m_MaximizeRect.left - 1;
-    m_MinimizeRect.bottom   = m_MinimizeRect.top + yCaption - 1;
+    m_MinimizeRect = GetIconFullRECT ( windowRECT, m_MaximizeRect.left - xIcon );
     if ( dwStyle & WS_MINIMIZEBOX )
     {
         DrawIcon ( pDC, IDI_MINIMIZE, m_MinimizeRect );
@@ -490,6 +516,8 @@ BOOL CTRXNC::Activate( CWnd *pWnd, BOOL bActive )
 /////////////////////////////////////////////////////////////////////////////
 BOOL CTRXNC::OnNcLButtonDown(CWnd *pWnd, UINT nHitTest, CPoint point)
 {
+    m_LeftPressed   = TRUE;
+
     // TODO: Add Code Here
     if ( CTRXGlobal::m_iDarkTheme == 2 )
     {
@@ -537,6 +565,8 @@ BOOL CTRXNC::OnNcLButtonDown(CWnd *pWnd, UINT nHitTest, CPoint point)
 /////////////////////////////////////////////////////////////////////////////
 BOOL CTRXNC::OnNcLButtonUp(CWnd *pWnd, UINT nHitTest, CPoint point)
 {
+    m_LeftPressed   = FALSE;
+
     //
     // TODO: Add Code Here
     if ( CTRXGlobal::m_iDarkTheme == 2 )

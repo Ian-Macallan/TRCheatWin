@@ -25,6 +25,7 @@ class CTRXNC
         //
         CTRXMenuBase            *m_pContextMenu;
         UINT                    m_iHover;
+        BOOL                    m_LeftPressed;
 
     public :
         void DrawResizedIcon ( CDC *pDC, HICON hIcon, const RECT *pRect );
