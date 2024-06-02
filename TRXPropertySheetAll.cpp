@@ -19,6 +19,7 @@
 #include "TRXContainer.h"
 #include "resource.h"
 #include "AutomaticVersionHeader.h"
+#include "TRXColors.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -371,7 +372,7 @@ void CTRXPropertySheetAll::OnSysCommand(UINT nID, LPARAM lParam)
                 }
 
                 //  Reset Theme
-                CTRXTools::SetWindowTheme ( this );
+                CTRXColors::SetWindowTheme ( this );
             }
             else if ( (nID & 0xFFF0) == IDM_DARK_FULL && CTRXGlobal::m_iDarkTheme == 2 )
             {
@@ -385,7 +386,7 @@ void CTRXPropertySheetAll::OnSysCommand(UINT nID, LPARAM lParam)
                 }
 
                 //  Reset Theme
-                CTRXTools::SetWindowTheme ( this );
+                CTRXColors::SetWindowTheme ( this );
             }
             else if ( (nID & 0xFFF0) == IDM_DARK_THEME )
             {
@@ -400,7 +401,7 @@ void CTRXPropertySheetAll::OnSysCommand(UINT nID, LPARAM lParam)
                 }
 
                 //  Reset Theme
-                CTRXTools::SetWindowTheme ( this );
+                CTRXColors::SetWindowTheme ( this );
             }
             else if ( (nID & 0xFFF0) == IDM_DARK_FULL )
             {
@@ -416,7 +417,7 @@ void CTRXPropertySheetAll::OnSysCommand(UINT nID, LPARAM lParam)
                 }
 
                 //  Reset Theme
-                CTRXTools::SetWindowTheme ( this );
+                CTRXColors::SetWindowTheme ( this );
             }
 
             if ( m_Info_Page != NULL ) m_Info_Page->SetThemeChanged ( CTRXGlobal::m_iDarkTheme != 0 );

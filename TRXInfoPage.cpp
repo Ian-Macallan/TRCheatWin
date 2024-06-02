@@ -1195,7 +1195,7 @@ BOOL CTRXInfoPage::OnSetActive()
     }
 
     //
-    m_Status.SetWindowText ( "Tombraider 1, Unfinished Busines, 2, Golden Mask, 3, Lost Artifact, 4 and 5 " );
+    m_Status.SetWindowText ( "Tombraider 1, Unfinished Business, 2, Golden Mask, 3, Lost Artifact, 4 and 5 " );
 
     //  Not Necessary
     // SetCurrent ( );

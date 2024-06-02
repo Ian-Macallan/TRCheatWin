@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "TRXStaticBase.h"
 #include "TRXTools.h"
+#include "TRXColors.h"
 
 //
 /////////////////////////////////////////////////////////////////////////////
@@ -35,7 +36,7 @@ END_MESSAGE_MAP()
 HBRUSH CTRXStaticBase::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 {
     // TODO: Add Code Here
-    HBRUSH hBrush = CTRXTools::OnCtlColor ( pDC, pWnd, nCtlColor );
+    HBRUSH hBrush = CTRXColors::OnCtlColor ( pDC, pWnd, nCtlColor );
     if ( hBrush != NULL )
     {
         return hBrush;
@@ -54,7 +55,7 @@ HBRUSH CTRXStaticBase::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 BOOL CTRXStaticBase::OnEraseBkgnd(CDC* pDC)
 {
     // TODO: Add Code Here
-    if ( CTRXTools::OnEraseBkgnd(pDC, this ) )
+    if ( CTRXColors::OnEraseBkgnd(pDC, this ) )
     {
         return TRUE;
     }

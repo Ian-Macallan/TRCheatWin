@@ -12,7 +12,7 @@
 #include "TRXCComboBoxBase.h"
 #include "TRXCToolTipCtrlBase.h"
 #include "TRXMenuBase.h"
-#include "TRXNC.h"
+#include "TRXNCColor.h"
 
 //
 /////////////////////////////////////////////////////////////////////////////
@@ -50,7 +50,7 @@ class CTRXDialogBase : public CDialog
         CTRXMenuBase            *m_pMenu;
 
         //  Handle Npn Client
-        CTRXNC                  m_NC;
+        CTRXNCColor             m_NC;
 
     protected:
         virtual void DoDataExchange(CDataExchange* pDX);    // Prise en charge de DDX/DDV

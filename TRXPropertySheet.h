@@ -2,7 +2,7 @@
 
 #include "TRXAmmosPage.h"
 #include "TRXMenuBase.h"
-#include "TRXNC.h"
+#include "TRXNCColor.h"
 
 enum PROPERTY_PAGE
 {
@@ -50,7 +50,7 @@ class CTRXPropertySheet : public CPropertySheet
         CTRXMenuBase            *m_pMenu;
 
         //  Handle Npn Client
-        CTRXNC                  m_NC;
+        CTRXNCColor             m_NC;
 
     public:
         CTRXPropertySheet(UINT nIDCaption, CWnd* pParentWnd = NULL, UINT iSelectPage = 0);

@@ -352,7 +352,7 @@
     <ClCompile Include="TRXListCtrlBase.cpp" />
     <ClCompile Include="TRXMenuBase.cpp" />
     <ClCompile Include="TRXMessageBox.cpp" />
-    <ClCompile Include="TRXNC.cpp" />
+    <ClCompile Include="TRXNCColor.cpp" />
     <ClCompile Include="TRXPropertyPageBase.cpp" />
     <ClCompile Include="TRXRectangle.cpp" />
     <ClCompile Include="TRXRoomPicture.cpp" />
@@ -544,7 +544,7 @@
     <ClInclude Include="TRXListCtrlBase.h" />
     <ClInclude Include="TRXMenuBase.h" />
     <ClInclude Include="TRXMessageBox.h" />
-    <ClInclude Include="TRXNC.h" />
+    <ClInclude Include="TRXNCColor.h" />
     <ClInclude Include="TRXPropertyPageBase.h" />
     <ClInclude Include="TRXRectangle.h" />
     <ClInclude Include="TRXRoomPicture.h" />

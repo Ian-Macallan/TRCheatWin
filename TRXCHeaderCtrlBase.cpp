@@ -41,7 +41,7 @@ END_MESSAGE_MAP()
 HBRUSH CTRXCHeaderCtrlBase::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 {
     // TODO: Add Code Here
-    HBRUSH hBrush = CTRXTools::OnCtlColor ( pDC, pWnd, nCtlColor );
+    HBRUSH hBrush = CTRXColors::OnCtlColor ( pDC, pWnd, nCtlColor );
     if ( hBrush != NULL )
     {
         return hBrush;
@@ -60,7 +60,7 @@ HBRUSH CTRXCHeaderCtrlBase::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 BOOL CTRXCHeaderCtrlBase::OnEraseBkgnd(CDC* pDC)
 {
     // TODO: Add Code Here
-    if ( CTRXTools::OnEraseBkgnd(pDC, this ) )
+    if ( CTRXColors::OnEraseBkgnd(pDC, this ) )
     {
         return TRUE;
     }

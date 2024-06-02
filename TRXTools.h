@@ -16,15 +16,6 @@
 #define G_HAR       7       //  Harpoon
 #define G_CRO       8       //  Crowbar
 
-//
-/////////////////////////////////////////////////////////////////////////////
-//  See Also https://www.codeproject.com/Articles/620045/Custom-Controls-in-Win-API-Visual-Styles
-/////////////////////////////////////////////////////////////////////////////
-#define WINDOWS_THEME_NULL      NULL,NULL
-#define WINDOWS_THEME_EXPLORER  L"Explorer",NULL
-#define WINDOWS_THEME_OLD       L"",L""
-
-#define WINDOWS_THEME_RESET     WINDOWS_THEME_EXPLORER
 
 //
 /////////////////////////////////////////////////////////////////////////////
@@ -85,12 +76,5 @@ class CTRXTools
         static WORD ConvertOrientationFromDouble ( double dfOrientation );
         static double ConvertOrientationFromWORD ( WORD dfOrientation );
 
-        static HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
-        static BOOL OnEraseBkgnd(CDC* pDC, CWnd* pWnd);
-
-        static COLORREF GetTextColor();
-        static COLORREF GetBkColor();
-
-        static void SetWindowTheme ( CWnd *pWnd );
 };
 

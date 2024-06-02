@@ -7,6 +7,7 @@
 #include "TRXTools.h"
 #include "resource.h"
 #include "TRXGlobal.h"
+#include "TRXColors.h"
 
 // Boîte de dialogue CTRXDialogBase
 
@@ -190,7 +191,7 @@ BOOL CTRXDialogBase::PreTranslateMessage(MSG* pMsg)
 HBRUSH CTRXDialogBase::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 {
     // TODO: Add Code Here
-    HBRUSH hBrush = CTRXTools::OnCtlColor ( pDC, pWnd, nCtlColor );
+    HBRUSH hBrush = CTRXColors::OnCtlColor ( pDC, pWnd, nCtlColor );
     if ( hBrush != NULL )
     {
         return hBrush;
@@ -209,7 +210,7 @@ HBRUSH CTRXDialogBase::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 BOOL CTRXDialogBase::OnEraseBkgnd(CDC* pDC)
 {
     // TODO: Add Code Here
-    if ( CTRXTools::OnEraseBkgnd(pDC, this) )
+    if ( CTRXColors::OnEraseBkgnd(pDC, this) )
     {
         return TRUE;
     }

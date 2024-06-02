@@ -297,7 +297,7 @@ BOOL CTRXPropertySheet::OnInitDialog()
     BOOL bResult = CPropertySheet::OnInitDialog();
 
     //
-    CTRXTools::SetWindowTheme ( this );
+    CTRXColors::SetWindowTheme ( this );
 
     // TODO: Add Code Here
     if ( GetParent() == NULL )
@@ -586,7 +586,7 @@ void CTRXPropertySheet::SetApply(BOOL bApply )
 HBRUSH CTRXPropertySheet::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 {
     // TODO: Add Code Here
-    HBRUSH hBrush = CTRXTools::OnCtlColor ( pDC, pWnd, nCtlColor );
+    HBRUSH hBrush = CTRXColors::OnCtlColor ( pDC, pWnd, nCtlColor );
     if ( hBrush != NULL )
     {
         return hBrush;
@@ -605,7 +605,7 @@ HBRUSH CTRXPropertySheet::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 BOOL CTRXPropertySheet::OnEraseBkgnd(CDC* pDC)
 {
     // TODO: Add Code Here
-    if ( CTRXTools::OnEraseBkgnd ( pDC, this ) )
+    if ( CTRXColors::OnEraseBkgnd ( pDC, this ) )
     {
         return TRUE;
     }

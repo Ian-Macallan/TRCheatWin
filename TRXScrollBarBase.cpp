@@ -3,6 +3,7 @@
 #include "TRXTools.h"
 #include "TRXRemastered.h"
 #include "TRXInfoPage.h"
+#include "TRXColors.h"
 
 //
 /////////////////////////////////////////////////////////////////////////////
@@ -37,7 +38,7 @@ END_MESSAGE_MAP()
 HBRUSH CTRXScrollBarBase::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 {
     // TODO: Add Code Here
-    HBRUSH hBrush = CTRXTools::OnCtlColor ( pDC, pWnd, nCtlColor );
+    HBRUSH hBrush = CTRXColors::OnCtlColor ( pDC, pWnd, nCtlColor );
     if ( hBrush != NULL )
     {
         return hBrush;
@@ -56,7 +57,7 @@ HBRUSH CTRXScrollBarBase::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 BOOL CTRXScrollBarBase::OnEraseBkgnd(CDC* pDC)
 {
     // TODO: Add Code Here
-    if ( CTRXTools::OnEraseBkgnd(pDC, this ) )
+    if ( CTRXColors::OnEraseBkgnd(pDC, this ) )
     {
         return TRUE;
     }

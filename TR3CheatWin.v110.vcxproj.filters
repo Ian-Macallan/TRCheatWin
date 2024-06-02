@@ -238,13 +238,13 @@
     <ClCompile Include="TRXMenuBase.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="TRXNC.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="TRXCHeaderCtrlBase.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="TRXScrollBarBase.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TRXNCColor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -801,9 +801,6 @@
     <ClInclude Include="TRXMenuBase.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="TRXNC.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="TRXCHeaderCtrlBase.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -820,6 +817,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="TRXScrollBarBase.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TRXNCColor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

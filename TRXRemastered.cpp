@@ -773,21 +773,6 @@ BOOL CTRXRemastered::OnSetActive()
         m_Room.SetPointMode ( TRUE );
         m_Room.SetClickable ( TRUE, FALSE, FALSE );
         CTRXRoomPicture::CreateInstanceInside ( this, &m_Room, &m_Frame_Position, "", SS_NOTIFY );
-#if 0
-        DWORD dwStyle = SS_OWNERDRAW;
-        dwStyle |= SS_NOTIFY;
-
-        RECT frameRect;
-        m_Frame_Position.GetWindowRect ( &frameRect );
-        ScreenToClient( &frameRect );
-        BOOL bCreated = m_Room.Create (
-                "",                             //  LPCTSTR lpszCaption,
-                dwStyle,                        //  DWORD dwStyle,
-                frameRect,                      //   const RECT& rect,
-                this,                           //  CWnd* pParentWnd,
-                -1                              //  UINT nID
-            );
-#endif
         m_bRoomCreated = true;
         m_Room.ShowWindow ( SW_HIDE );
         m_Frame_Position.ShowWindow ( SW_HIDE );
