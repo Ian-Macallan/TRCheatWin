@@ -18,6 +18,16 @@
 
 //
 /////////////////////////////////////////////////////////////////////////////
+//  See Also https://www.codeproject.com/Articles/620045/Custom-Controls-in-Win-API-Visual-Styles
+/////////////////////////////////////////////////////////////////////////////
+#define WINDOWS_THEME_NULL      NULL,NULL
+#define WINDOWS_THEME_EXPLORER  L"Explorer",NULL
+#define WINDOWS_THEME_OLD       L"",L""
+
+#define WINDOWS_THEME_RESET     WINDOWS_THEME_EXPLORER
+
+//
+/////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////
 class CTRXTools
@@ -80,5 +90,7 @@ class CTRXTools
 
         static COLORREF GetTextColor();
         static COLORREF GetBkColor();
+
+        static void SetWindowTheme ( CWnd *pWnd );
 };
 

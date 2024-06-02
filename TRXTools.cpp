@@ -19,6 +19,10 @@ static BYTE         *SecondBlock                    = NULL;
 #define LEN_DIFF_LINE       15
 static char szDifference [ ( LEN_DIFF_LINE + 2 ) * DifferencesMax ] = "";
 
+
+//
+// #pragma comment(lib, "uxtheme.lib")
+
 //
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -859,4 +863,13 @@ COLORREF CTRXTools::GetBkColor()
     }
 
     return CTRXColors::GetBlackCR();
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
+void CTRXTools::SetWindowTheme ( CWnd *pWnd )
+{
+   ::SetWindowTheme ( pWnd->GetSafeHwnd(), WINDOWS_THEME_RESET  );
 }

@@ -1,6 +1,7 @@
 #pragma once
 #include "afxwin.h"
 #include "TRXCHeaderCtrlBase.h"
+#include "TRXScrollBarBase.h"
 
 //
 /////////////////////////////////////////////////////////////////////////////
@@ -19,7 +20,6 @@ class CTRXListCtrlBase : public CListCtrl
         afx_msg void OnNMCustomdraw(NMHDR *pNMHDR, LRESULT *pResult);
 
     public :
-        void SetColorsNotUsed ( );
 
     //
     protected :

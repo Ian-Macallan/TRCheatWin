@@ -384,6 +384,7 @@ void CTRXMenuBase::MeasureMenuItem(LPMEASUREITEMSTRUCT lpMeasureItemStruct )
             CDC *pDC    = m_pWnd->GetDC ( );
             if ( pDC )
             {
+                strcat_s  ( szText, sizeof(szText), "ALT+F99" );
                 MeasureMenuItem ( pDC, szText, &size );
                 size.cx     = size.cx + 1;
                 size.cy     = size.cy + 1;

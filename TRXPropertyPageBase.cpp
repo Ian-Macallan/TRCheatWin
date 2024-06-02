@@ -369,11 +369,6 @@ BOOL CTRXPropertyPageBase::OnInitDialog()
 {
     CPropertyPage::OnInitDialog();
 
-    //
-#if 0
-    //  Reset To Old Windows Style
-    SetWindowTheme( GetSafeHwnd(), L"Explorer", NULL);
-#endif
 
     // TODO: Add Code Here
     //

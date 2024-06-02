@@ -272,15 +272,19 @@ BEGIN_MESSAGE_MAP(CTRXPropertySheet, CPropertySheet)
     ON_WM_DRAWITEM()
     ON_WM_MEASUREITEM()
     ON_WM_INITMENUPOPUP()
+
     ON_WM_NCPAINT()
     ON_WM_NCACTIVATE()
+
     ON_WM_NCLBUTTONDOWN()
     ON_WM_NCLBUTTONUP()
     ON_WM_NCMOUSEMOVE()
-    ON_WM_MOUSEMOVE()
     ON_WM_NCMOUSEMOVE()
     ON_WM_NCMOUSEHOVER()
     ON_WM_NCMOUSELEAVE()
+
+    ON_WM_LBUTTONUP()
+    ON_WM_MOUSEMOVE()
 END_MESSAGE_MAP()
 
 
@@ -293,24 +297,21 @@ BOOL CTRXPropertySheet::OnInitDialog()
     BOOL bResult = CPropertySheet::OnInitDialog();
 
     //
-#if 0
-    //  Reset To Old Windows Style
-    SetWindowTheme( GetSafeHwnd(), L"Explorer", L"");
-
-    //  Reset To Default Current
-    SetWindowTheme( GetSafeHwnd(), NULL, NULL );
-#endif
+    CTRXTools::SetWindowTheme ( this );
 
     // TODO: Add Code Here
     if ( GetParent() == NULL )
     {
         // modify system menu & window styles so we can be
         // minimized and restored
-        //
         DWORD dwStyle   = WS_MINIMIZEBOX | WS_SYSMENU;
+        ModifyStyle ( 0, dwStyle );
 
-        ModifyStyle( 0, dwStyle );
 
+        //  10101 : WS_EX_DLGMODALFRAME WS_EX_WINDOWEDGE WS_EX_CONTROLPARENT
+        DWORD dwStyleEx = GetExStyle();
+
+        //
         CMenu* pSysMenu = GetSystemMenu(FALSE);
         if (pSysMenu != NULL)
         {
@@ -872,3 +873,14 @@ void CTRXPropertySheet::OnNcMouseLeave()
     CPropertySheet::OnNcMouseLeave();
 }
 
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
+void CTRXPropertySheet::OnLButtonUp(UINT nFlags, CPoint point)
+{
+    // TODO: ajoutez ici le code de votre gestionnaire de messages et/ou les paramètres par défaut des appels
+
+    BOOL bTreated = m_NC.OnLButtonUp (this, nFlags, point );
+    CPropertySheet::OnLButtonUp(nFlags, point);
+}

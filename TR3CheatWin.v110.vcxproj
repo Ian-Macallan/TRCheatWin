@@ -383,6 +383,7 @@
     <ClCompile Include="TRXPropertySheetStandard.cpp" />
     <ClCompile Include="TRXRemastered.cpp" />
     <ClCompile Include="TRXRemasteredInfos.cpp" />
+    <ClCompile Include="TRXScrollBarBase.cpp" />
     <ClCompile Include="TRXSecretsDialog.cpp" />
     <ClCompile Include="TRXSpinButtonCtrlBase.cpp" />
     <ClCompile Include="TRXStaticBase.cpp" />
@@ -560,6 +561,7 @@
     <ClInclude Include="TRXPropertySheetStandard.h" />
     <ClInclude Include="TRXRemastered.h" />
     <ClInclude Include="TRXRemasteredInfos.h" />
+    <ClInclude Include="TRXScrollBarBase.h" />
     <ClInclude Include="TRXSecretsDialog.h" />
     <ClInclude Include="TRXSpinButtonCtrlBase.h" />
     <ClInclude Include="TRXStaticBase.h" />

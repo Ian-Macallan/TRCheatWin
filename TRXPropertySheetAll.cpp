@@ -371,7 +371,7 @@ void CTRXPropertySheetAll::OnSysCommand(UINT nID, LPARAM lParam)
                 }
 
                 //  Reset Theme
-                SetWindowTheme( GetSafeHwnd(), NULL, NULL );
+                CTRXTools::SetWindowTheme ( this );
             }
             else if ( (nID & 0xFFF0) == IDM_DARK_FULL && CTRXGlobal::m_iDarkTheme == 2 )
             {
@@ -385,7 +385,7 @@ void CTRXPropertySheetAll::OnSysCommand(UINT nID, LPARAM lParam)
                 }
 
                 //  Reset Theme
-                SetWindowTheme( GetSafeHwnd(), NULL, NULL );
+                CTRXTools::SetWindowTheme ( this );
             }
             else if ( (nID & 0xFFF0) == IDM_DARK_THEME )
             {
@@ -400,7 +400,7 @@ void CTRXPropertySheetAll::OnSysCommand(UINT nID, LPARAM lParam)
                 }
 
                 //  Reset Theme
-                SetWindowTheme( GetSafeHwnd(), NULL, NULL );
+                CTRXTools::SetWindowTheme ( this );
             }
             else if ( (nID & 0xFFF0) == IDM_DARK_FULL )
             {
@@ -416,7 +416,7 @@ void CTRXPropertySheetAll::OnSysCommand(UINT nID, LPARAM lParam)
                 }
 
                 //  Reset Theme
-                SetWindowTheme( GetSafeHwnd(), NULL, NULL );
+                CTRXTools::SetWindowTheme ( this );
             }
 
             if ( m_Info_Page != NULL ) m_Info_Page->SetThemeChanged ( CTRXGlobal::m_iDarkTheme != 0 );

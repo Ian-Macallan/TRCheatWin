@@ -14,6 +14,7 @@ enum PROPERTY_PAGE
     PAGE_ITEMS,
     PAGE_ITEMS45,
 };
+
 //
 /////////////////////////////////////////////////////////////////////////////
 // CTRXPropertySheet
@@ -94,6 +95,7 @@ class CTRXPropertySheet : public CPropertySheet
         afx_msg void OnNcMouseHover(UINT nFlags, CPoint point);
         afx_msg void OnNcMouseLeave();
 
+        afx_msg void OnLButtonUp(UINT nFlags, CPoint point);
 };
 
 

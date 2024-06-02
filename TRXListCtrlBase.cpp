@@ -76,42 +76,11 @@ BOOL CTRXListCtrlBase::OnEraseBkgnd(CDC* pDC)
 /////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////
-void CTRXListCtrlBase::SetColorsNotUsed()
-{
-    if ( CTRXGlobal::m_iDarkTheme == 0 )
-    {
-        if ( m_bDefaultColor )
-        {
-            SetTextBkColor ( m_DefaultBkColor );
-            SetTextColor ( m_DefaultTextColor );
-        }
-
-        return;
-    }
-
-    //
-    if ( ! m_bDefaultColor )
-    {
-        m_DefaultTextColor  = GetTextColor();
-        m_DefaultBkColor    = GetTextBkColor();
-        m_bDefaultColor     = TRUE;
-    }
-
-    //  Does not work
-    SetTextBkColor ( CTRXTools::GetBkColor() );
-    SetTextColor ( CTRXTools::GetTextColor() );
-
-}
-
-//
-/////////////////////////////////////////////////////////////////////////////
-//
-/////////////////////////////////////////////////////////////////////////////
 void CTRXListCtrlBase::OnNMCustomdraw(NMHDR *pNMHDR, LRESULT *pResult)
 {
     LPNMCUSTOMDRAW pNMCD = reinterpret_cast<LPNMCUSTOMDRAW>(pNMHDR);
     // TODO: Add Code Here
-    if( GetHeaderCtrl ( ) && m_bHeaderControlSubclassed == false )
+    if( GetHeaderCtrl ( ) && GetHeaderCtrl()->m_hWnd != NULL && m_bHeaderControlSubclassed == false )
     {
         m_HeaderCtrl.SubclassWindow(GetHeaderCtrl()->m_hWnd);
         m_bHeaderControlSubclassed = true;

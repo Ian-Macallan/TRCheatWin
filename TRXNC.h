@@ -25,7 +25,6 @@ class CTRXNC
         //
         CTRXMenuBase            *m_pContextMenu;
         UINT                    m_iHover;
-        BOOL                    m_LeftPressed;
 
     public :
         void DrawResizedIcon ( CDC *pDC, HICON hIcon, const RECT *pRect );
@@ -46,11 +45,13 @@ class CTRXNC
         BOOL OnNcLButtonUp(CWnd *pWnd, UINT nHitTest, CPoint point);
         BOOL OnNcRButtonDown(CWnd *pWnd, UINT nHitTest, CPoint point);
 
-        BOOL OnMouseMove(CWnd *pWnd, UINT nFlags, CPoint point);
         BOOL OnNcMouseMove(CWnd *pWnd, UINT nHitTest, CPoint point);
 
         BOOL OnNcMouseHover(CWnd *pWnd, UINT nFlags, CPoint point);
         BOOL OnNcMouseLeave(CWnd *pWnd );
+
+        BOOL OnMouseMove(CWnd *pWnd, UINT nFlags, CPoint point);
+        BOOL OnLButtonUp(CWnd *pWnd, UINT nFlags, CPoint point);
 
 };
 

@@ -111,11 +111,6 @@ BOOL CTRXDialogBase::OnInitDialog()
 {
     CDialog::OnInitDialog();
 
-#if 0
-    //  Reset To Old Windows Style
-    SetWindowTheme ( GetSafeHwnd(), L"Explorer", L"");
-#endif
-
     // TODO: Add Code Here
     //
     TEXTMETRIC textMetrics;

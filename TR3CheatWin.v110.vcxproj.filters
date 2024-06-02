@@ -244,6 +244,9 @@
     <ClCompile Include="TRXCHeaderCtrlBase.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="TRXScrollBarBase.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="res\Aire 51.bmp">
@@ -814,6 +817,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="AutomaticCompilerVersion.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TRXScrollBarBase.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

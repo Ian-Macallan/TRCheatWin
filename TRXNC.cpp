@@ -134,7 +134,7 @@ static CRect GetIconFullRECT ( const CRect &windowRECT, int left )
     iconFullRECT.left       = left;
     iconFullRECT.top        = captionFullRECT.top; // yBorder + yFrame;
     iconFullRECT.right      = iconFullRECT.left + xIcon;
-    iconFullRECT.bottom     = captionFullRECT.bottom; // iconFullRECT.top + yCaption - 1;
+    iconFullRECT.bottom     = iconFullRECT.top + yCaption + yFrame - 1; // iconFullRECT.top + yCaption - 1;
 
     return iconFullRECT;
 }
@@ -147,7 +147,6 @@ CTRXNC::CTRXNC(void)
 {
     m_pContextMenu          = NULL;
     m_iHover                = ICON_NOT_SET;
-    m_LeftPressed           = FALSE;
 }
 
 //
@@ -397,12 +396,17 @@ BOOL CTRXNC::PaintCaption( CWnd *pWnd, BOOL bActive )
 
     char szTitle [ MAX_PATH ];
     pWnd->GetWindowText ( szTitle, sizeof(szTitle));
-    CRect textRECT = captionInsideRECT;
+    CRect textRECT  = captionInsideRECT;
     textRECT.left   = textRECT.left + xIcon + xBorder;
-    textRECT.top    = textRECT.top + textRECT.Height() / 6;
 
     pDC->SetBkMode (TRANSPARENT);
     pDC->SetTextColor (foregroundColor);
+#if 0
+    CRect calcRECT  = textRECT;
+    pDC->DrawText ( szTitle, &calcRECT, DT_LEFT | DT_VCENTER | DT_CALCRECT );
+
+    // textRECT.top    = textRECT.top + ( textRECT.Height() - calcRECT.Height() ) / 2;
+#endif
     pDC->DrawText ( szTitle, &textRECT, DT_LEFT | DT_VCENTER );
 
     //
@@ -516,13 +520,12 @@ BOOL CTRXNC::Activate( CWnd *pWnd, BOOL bActive )
 /////////////////////////////////////////////////////////////////////////////
 BOOL CTRXNC::OnNcLButtonDown(CWnd *pWnd, UINT nHitTest, CPoint point)
 {
-    m_LeftPressed   = TRUE;
-
     // TODO: Add Code Here
     if ( CTRXGlobal::m_iDarkTheme == 2 )
     {
         if ( ScreenPointOverRect( pWnd, point, m_IconRect ) )
         {
+            //  Default Treatment
             return FALSE;
         }
 
@@ -541,6 +544,7 @@ BOOL CTRXNC::OnNcLButtonDown(CWnd *pWnd, UINT nHitTest, CPoint point)
             return TRUE;
         }
 
+        //  Icons At RIght
         int xIcon   = GetSystemMetrics(SM_CXICON);
 
         //
@@ -554,6 +558,10 @@ BOOL CTRXNC::OnNcLButtonDown(CWnd *pWnd, UINT nHitTest, CPoint point)
         {
             return TRUE;
         }
+
+        //  Leave Move and Resize to Windows
+        //  So return FALSE
+        //  Otherwise we will be force to handle move and resize
     }
 
     return FALSE;
@@ -565,14 +573,13 @@ BOOL CTRXNC::OnNcLButtonDown(CWnd *pWnd, UINT nHitTest, CPoint point)
 /////////////////////////////////////////////////////////////////////////////
 BOOL CTRXNC::OnNcLButtonUp(CWnd *pWnd, UINT nHitTest, CPoint point)
 {
-    m_LeftPressed   = FALSE;
-
     //
     // TODO: Add Code Here
     if ( CTRXGlobal::m_iDarkTheme == 2 )
     {
         if ( ScreenPointOverRect( pWnd, point, m_IconRect ) )
         {
+            //  Default Treatment
             return FALSE;
         }
 
@@ -615,15 +622,20 @@ BOOL CTRXNC::OnNcLButtonUp(CWnd *pWnd, UINT nHitTest, CPoint point)
             return TRUE;
         }
 
+        //  Icons At RIght
+        int xIcon   = GetSystemMetrics(SM_CXICON);
+
         CRect iconsRect;
         iconsRect.top       = m_CloseRect.top;
         iconsRect.bottom    = m_CloseRect.bottom;
         iconsRect.left      = min(min(m_CloseRect.left, m_MinimizeRect.left), m_MaximizeRect.left);
         iconsRect.right     = max(max(m_CloseRect.right, m_MinimizeRect.right), m_MaximizeRect.right);
+        iconsRect.left      = iconsRect.left - xIcon;
         if ( ScreenPointOverRect( pWnd, point, iconsRect ) )
         {
             return TRUE;
         }
+
     }
 
     return FALSE;
@@ -657,22 +669,9 @@ BOOL CTRXNC::OnNcRButtonDown(CWnd *pWnd, UINT nHitTest, CPoint point)
 /////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////
-BOOL CTRXNC::OnMouseMove(CWnd *pWnd, UINT nFlags, CPoint point)
+BOOL CTRXNC::OnLButtonUp(CWnd *pWnd, UINT nFlags, CPoint point)
 {
-    // TODO: Add Code Here
-    if ( CTRXGlobal::m_iDarkTheme == 2 )
-    {
-        //  Track Event
-        TRACKMOUSEEVENT tme;
-        ZeroMemory ( &tme, sizeof(tme) );
-        tme.cbSize      = sizeof(tme);
-        tme.hwndTrack   = pWnd->m_hWnd;
-        tme.dwFlags     = TME_NONCLIENT  | TME_HOVER | TME_LEAVE;
-        tme.dwHoverTime = HOVER_DEFAULT;
-        TrackMouseEvent ( &tme );
-    }
-
-    //  Always returns FALSE to continue the process
+    // Do Nothing
     return FALSE;
 }
 
@@ -691,6 +690,29 @@ BOOL CTRXNC::OnNcMouseMove(CWnd *pWnd, UINT nHitTest, CPoint point)
         tme.hwndTrack   = pWnd->m_hWnd;
         tme.dwFlags     = TME_NONCLIENT  | TME_HOVER | TME_LEAVE;
         tme.dwHoverTime = 100; // HOVER_DEFAULT;
+        TrackMouseEvent ( &tme );
+    }
+
+    //  Always returns FALSE to continue the process
+    return FALSE;
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
+BOOL CTRXNC::OnMouseMove(CWnd *pWnd, UINT nFlags, CPoint point)
+{
+    // TODO: Add Code Here
+    if ( CTRXGlobal::m_iDarkTheme == 2 )
+    {
+        //  Track Event
+        TRACKMOUSEEVENT tme;
+        ZeroMemory ( &tme, sizeof(tme) );
+        tme.cbSize      = sizeof(tme);
+        tme.hwndTrack   = pWnd->m_hWnd;
+        tme.dwFlags     = TME_NONCLIENT  | TME_HOVER | TME_LEAVE;
+        tme.dwHoverTime = HOVER_DEFAULT;
         TrackMouseEvent ( &tme );
     }
 
@@ -802,7 +824,7 @@ BOOL CTRXNC::OnNcMouseHover(CWnd *pWnd, UINT nFlags, CPoint point)
             }
             else
             {
-                DrawIconFrame ( pDC, m_MaximizeRect, true, CTRXColors::GetCyanCBrush() );
+                DrawIconFrame ( pDC, m_MaximizeRect, true, CTRXColors::GetBlack64CBrush() );
             }
             pWnd->ReleaseDC ( pDC );
             m_iHover    = IDI_MAXIMIZE;
@@ -827,7 +849,7 @@ BOOL CTRXNC::OnNcMouseHover(CWnd *pWnd, UINT nFlags, CPoint point)
             }
             else
             {
-                DrawIconFrame ( pDC, m_MinimizeRect, true, CTRXColors::GetCyanCBrush() );
+                DrawIconFrame ( pDC, m_MinimizeRect, true, CTRXColors::GetBlack64CBrush() );
             }
             pWnd->ReleaseDC ( pDC );
             m_iHover    = IDI_MINIMIZE;
