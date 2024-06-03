@@ -520,7 +520,7 @@ BOOL CTRXNCColor::Activate( CWnd *pWnd, BOOL bActive )
 /////////////////////////////////////////////////////////////////////////////
 BOOL CTRXNCColor::OnNcLButtonDown(CWnd *pWnd, UINT nHitTest, CPoint point)
 {
-    // TODO: Add Code Here
+    // TODO
     if ( CTRXGlobal::m_iDarkTheme == 2 )
     {
         if ( ScreenPointOverRect( pWnd, point, m_IconRect ) )
@@ -574,7 +574,7 @@ BOOL CTRXNCColor::OnNcLButtonDown(CWnd *pWnd, UINT nHitTest, CPoint point)
 BOOL CTRXNCColor::OnNcLButtonUp(CWnd *pWnd, UINT nHitTest, CPoint point)
 {
     //
-    // TODO: Add Code Here
+    // TODO
     if ( CTRXGlobal::m_iDarkTheme == 2 )
     {
         if ( ScreenPointOverRect( pWnd, point, m_IconRect ) )
@@ -681,7 +681,7 @@ BOOL CTRXNCColor::OnLButtonUp(CWnd *pWnd, UINT nFlags, CPoint point)
 /////////////////////////////////////////////////////////////////////////////
 BOOL CTRXNCColor::OnNcMouseMove(CWnd *pWnd, UINT nHitTest, CPoint point)
 {
-    // TODO: Add Code Here
+    // TODO
     if ( CTRXGlobal::m_iDarkTheme == 2 )
     {
         TRACKMOUSEEVENT tme;
@@ -703,7 +703,7 @@ BOOL CTRXNCColor::OnNcMouseMove(CWnd *pWnd, UINT nHitTest, CPoint point)
 /////////////////////////////////////////////////////////////////////////////
 BOOL CTRXNCColor::OnMouseMove(CWnd *pWnd, UINT nFlags, CPoint point)
 {
-    // TODO: Add Code Here
+    // TODO
     if ( CTRXGlobal::m_iDarkTheme == 2 )
     {
         //  Track Event

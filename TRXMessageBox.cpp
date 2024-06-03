@@ -100,7 +100,7 @@ BOOL CTRXMessageBox::OnInitDialog()
 {
     CTRXDialogBase::OnInitDialog();
 
-    // TODO: Add Code Here
+    // TODO
     SetWindowText ( m_szTitle );
     m_Text.SetWindowText ( m_szMessage );
 
@@ -155,7 +155,7 @@ BOOL CTRXMessageBox::OnInitDialog()
 /////////////////////////////////////////////////////////////////////////////
 BOOL CTRXMessageBox::PreTranslateMessage(MSG* pMsg)
 {
-    // TODO: Add Code Here
+    // TODO
 
     return CTRXDialogBase::PreTranslateMessage(pMsg);
 }

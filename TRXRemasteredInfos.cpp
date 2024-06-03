@@ -68,7 +68,7 @@ BOOL CTRXRemasteredInfos::OnInitDialog()
 {
     CTRXDialogBase::OnInitDialog();
 
-    // TODO: Add Code Here
+    // TODO
     //
 
     m_Text.SetFont ( m_pFixedFont );

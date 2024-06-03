@@ -147,7 +147,7 @@ BOOL CTRXHelpDialog::OnInitDialog()
 {
     CTRXDialogBase::OnInitDialog();
 
-    // TODO: Add Code Here
+    // TODO
 
     SetVersionFrom ();
 

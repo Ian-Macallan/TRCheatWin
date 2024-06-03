@@ -353,7 +353,7 @@ void CTRXMenuBase::MeasureMenuItem ( CDC *pDC, const char *pText, CSize *pSize )
 /////////////////////////////////////////////////////////////////////////////
 void CTRXMenuBase::MeasureMenuItem(LPMEASUREITEMSTRUCT lpMeasureItemStruct )
 {
-    // TODO :  Add your code to determine the size of the item
+    // TODO
     if ( lpMeasureItemStruct == NULL )
     {
         return;
@@ -583,7 +583,7 @@ void CTRXMenuBase::DrawMenuItem (   LPDRAWITEMSTRUCT lpDrawItemStruct, CDC *pDC,
 //====================================================================================
 void CTRXMenuBase::DrawMenuItem(LPDRAWITEMSTRUCT lpDrawItemStruct )
 {
-    // TODO :  Add you code to draw the item
+    // TODO
     if ( lpDrawItemStruct == NULL )
     {
         return;

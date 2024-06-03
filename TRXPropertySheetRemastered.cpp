@@ -133,7 +133,7 @@ void CTRXPropertySheetRemastered::OnSize(UINT nType, int cx, int cy)
 {
     CTRXPropertySheet::OnSize(nType, cx, cy);
 
-    // TODO: Add Your handler here
+    // TODO
 }
 
 //
@@ -144,7 +144,7 @@ void CTRXPropertySheetRemastered::OnMove(int x, int y)
 {
     CTRXPropertySheet::OnMove(x, y);
 
-    // TODO: Add Your handler here
+    // TODO
 }
 
 //
@@ -153,7 +153,7 @@ void CTRXPropertySheetRemastered::OnMove(int x, int y)
 /////////////////////////////////////////////////////////////////////////////
 INT_PTR CTRXPropertySheetRemastered::DoModal()
 {
-    // TODO: Add Your handler here
+    // TODO
     return CTRXPropertySheet::DoModal();
 }
 
@@ -163,7 +163,7 @@ INT_PTR CTRXPropertySheetRemastered::DoModal()
 /////////////////////////////////////////////////////////////////////////////
 BOOL CTRXPropertySheetRemastered::PreCreateWindow(CREATESTRUCT& cs)
 {
-    // TODO: Add Your handler here
+    // TODO
     return CTRXPropertySheet::PreCreateWindow(cs);
 }
 
@@ -173,7 +173,7 @@ BOOL CTRXPropertySheetRemastered::PreCreateWindow(CREATESTRUCT& cs)
 /////////////////////////////////////////////////////////////////////////////
 UINT CTRXPropertySheetRemastered::OnGetDlgCode()
 {
-    // TODO: Add Code Here
+    // TODO
     UINT iResult = CTRXPropertySheet::OnGetDlgCode();
     return iResult;
 }

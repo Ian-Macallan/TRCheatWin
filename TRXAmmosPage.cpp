@@ -137,7 +137,7 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 void CTRXAmmosPage::OnHelp()
 {
-    // TODO: Add your control notification handler code here
+    // TODO
     CTRXHelpDialog dlg;
     dlg.DoModal();
 }
@@ -268,7 +268,7 @@ void CTRXAmmosPage::DisplayValues()
 /////////////////////////////////////////////////////////////////////////////
 BOOL CTRXAmmosPage::OnSetActive()
 {
-    // TODO: Add your specialized code here and/or call the base class
+    // TODO
     BOOL bModified = IsGUIModified();
     if ( CTRSaveGame::IsValid( ) )
     {
@@ -376,7 +376,7 @@ void CTRXAmmosPage::UpdateBuffer()
 /////////////////////////////////////////////////////////////////////////////
 BOOL CTRXAmmosPage::OnKillActive()
 {
-    // TODO: Add your specialized code here and/or call the base class
+    // TODO
     UpdateBuffer();
 
     BOOL bModified = IsGUIModified();
@@ -507,7 +507,7 @@ void CTRXAmmosPage::OnCguns()
 /////////////////////////////////////////////////////////////////////////////
 void CTRXAmmosPage::OnCrocketlauncher()
 {
-    // TODO: Add your control notification handler code here
+    // TODO
     m_Ammos_Rocket_Launcher.SetWindowText ( pValue10K );
 }
 
@@ -517,7 +517,7 @@ void CTRXAmmosPage::OnCrocketlauncher()
 /////////////////////////////////////////////////////////////////////////////
 void CTRXAmmosPage::OnCuzis()
 {
-    // TODO: Add your control notification handler code here
+    // TODO
     m_Ammos_Uzis.SetWindowText ( pValue10K );
 }
 
@@ -527,7 +527,7 @@ void CTRXAmmosPage::OnCuzis()
 /////////////////////////////////////////////////////////////////////////////
 void CTRXAmmosPage::OnCmp5()
 {
-    // TODO: Add your control notification handler code here
+    // TODO
     m_C_MP5.SetCheck ( 0 );
     m_Ammos_MP5.SetWindowText ( pValue10K );
 }
@@ -538,7 +538,7 @@ void CTRXAmmosPage::OnCmp5()
 /////////////////////////////////////////////////////////////////////////////
 void CTRXAmmosPage::OnCdeserteagle()
 {
-    // TODO: Add your control notification handler code here
+    // TODO
     m_Ammos_Desert_Eagle.SetWindowText ( pValue10K );
 }
 
@@ -548,7 +548,7 @@ void CTRXAmmosPage::OnCdeserteagle()
 /////////////////////////////////////////////////////////////////////////////
 void CTRXAmmosPage::OnCgrenadelauncher()
 {
-    // TODO: Add your control notification handler code here
+    // TODO
     m_Ammos_Grenade_Launcher.SetWindowText ( pValue10K );
     m_Ammos_Grenade_Launcher2.SetWindowText ( pValue10K );
     m_Ammos_Grenade_Launcher3.SetWindowText ( pValue10K );
@@ -560,7 +560,7 @@ void CTRXAmmosPage::OnCgrenadelauncher()
 /////////////////////////////////////////////////////////////////////////////
 void CTRXAmmosPage::OnCriotgun()
 {
-    // TODO: Add your control notification handler code here
+    // TODO
     m_Ammos_Riot_Gun.SetWindowText ( pSome5K );
     m_Ammos_Riot_Gun2.SetWindowText ( pSome5K);
 }
@@ -571,7 +571,7 @@ void CTRXAmmosPage::OnCriotgun()
 /////////////////////////////////////////////////////////////////////////////
 void CTRXAmmosPage::OnCharpoon()
 {
-    // TODO: Add your control notification handler code here
+    // TODO
     m_Ammos_Harpoon.SetWindowText ( pValue10K );
     m_Ammos_Harpoon2.SetWindowText ( pValue10K );
     m_Ammos_Harpoon3.SetWindowText ( pValue10K );
@@ -583,7 +583,7 @@ void CTRXAmmosPage::OnCharpoon()
 /////////////////////////////////////////////////////////////////////////////
 void CTRXAmmosPage::OnBnClickedUnlimited()
 {
-    // TODO: Add Your handler here
+    // TODO
     if ( CTRSaveGame::I() != NULL && CTRSaveGame::GetVersion() >= 40 )
     {
         SetGUIModified ( TRUE, "Ammos Unlimited" );
@@ -613,7 +613,7 @@ BOOL CTRXAmmosPage::OnInitDialog()
 {
     CTRXPropertyPage::OnInitDialog();
 
-    // TODO: Add Code Here
+    // TODO
     if ( m_bToolTip )
     {
         m_ToolTip.AddTool( &m_Status, ("Status"));
@@ -641,7 +641,7 @@ void CTRXAmmosPage::OnChangeEdit()
 /////////////////////////////////////////////////////////////////////////////
 void CTRXAmmosPage::OnCancel()
 {
-    // TODO: Add Your handler here
+    // TODO
     if ( CTRSaveGame::I() != NULL && ( IsGUIModified() || CTRSaveGame::IsBufferModified() ) )
     {
         INT_PTR response = AskToSave("Ammos");
@@ -657,7 +657,7 @@ void CTRXAmmosPage::OnCancel()
 /////////////////////////////////////////////////////////////////////////////
 void CTRXAmmosPage::OnOK()
 {
-    // TODO: Add Your handler here
+    // TODO
     INT_PTR response = AskToSave("Ammos");
 
     CTRXPropertyPage::OnOK();
@@ -669,7 +669,7 @@ void CTRXAmmosPage::OnOK()
 /////////////////////////////////////////////////////////////////////////////
 BOOL CTRXAmmosPage::OnApply()
 {
-    // TODO: Add Code Here
+    // TODO
     WriteWhenOnApply("Ammos");
 
     return CTRXPropertyPage::OnApply();

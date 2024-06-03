@@ -299,7 +299,7 @@ BOOL CTRXPropertySheet::OnInitDialog()
     //
     CTRXColors::SetWindowTheme ( this );
 
-    // TODO: Add Code Here
+    // TODO
     if ( GetParent() == NULL )
     {
         // modify system menu & window styles so we can be
@@ -323,7 +323,7 @@ BOOL CTRXPropertySheet::OnInitDialog()
     if ( GetParent() == NULL )
     {
 
-        // TODO: Add your specialized code here
+        // TODO
         // Add "About..." menu item to system menu.
 
         // IDM_ABOUTBOX must be in the system command range.
@@ -548,7 +548,7 @@ void CTRXPropertySheet::RemoveRemasteredPage ()
 /////////////////////////////////////////////////////////////////////////////
 void CTRXPropertySheet::OnSysCommand(UINT nID, LPARAM lParam)
 {
-    // TODO: Add Code Here
+    // TODO
 
     if ((nID & 0xFFF0) == IDM_ABOUTBOX)
     {
@@ -585,7 +585,7 @@ void CTRXPropertySheet::SetApply(BOOL bApply )
 /////////////////////////////////////////////////////////////////////////////
 HBRUSH CTRXPropertySheet::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 {
-    // TODO: Add Code Here
+    // TODO
     HBRUSH hBrush = CTRXColors::OnCtlColor ( pDC, pWnd, nCtlColor );
     if ( hBrush != NULL )
     {
@@ -594,7 +594,7 @@ HBRUSH CTRXPropertySheet::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 
     HBRUSH hbr = CPropertySheet::OnCtlColor(pDC, pWnd, nCtlColor);
 
-    // TODO: Add Code Here
+    // TODO
     return hbr;
 }
 
@@ -604,7 +604,7 @@ HBRUSH CTRXPropertySheet::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 /////////////////////////////////////////////////////////////////////////////
 BOOL CTRXPropertySheet::OnEraseBkgnd(CDC* pDC)
 {
-    // TODO: Add Code Here
+    // TODO
     if ( CTRXColors::OnEraseBkgnd ( pDC, this ) )
     {
         return TRUE;
@@ -763,7 +763,7 @@ void CTRXPropertySheet::OnNcPaint()
 /////////////////////////////////////////////////////////////////////////////
 BOOL CTRXPropertySheet::OnNcActivate(BOOL bActive)
 {
-    // TODO: Add Code Here
+    // TODO
     BOOL bTreated = m_NC.Activate(this, bActive);
     if ( bTreated )
     {
@@ -779,7 +779,7 @@ BOOL CTRXPropertySheet::OnNcActivate(BOOL bActive)
 /////////////////////////////////////////////////////////////////////////////
 void CTRXPropertySheet::OnNcLButtonDown(UINT nHitTest, CPoint point)
 {
-    // TODO: Add Code Here
+    // TODO
     BOOL bTreated = m_NC.OnNcLButtonDown ( this, nHitTest, point );
     if ( bTreated )
     {
@@ -795,7 +795,7 @@ void CTRXPropertySheet::OnNcLButtonDown(UINT nHitTest, CPoint point)
 /////////////////////////////////////////////////////////////////////////////
 void CTRXPropertySheet::OnNcLButtonUp(UINT nHitTest, CPoint point)
 {
-    // TODO: Add Code Here
+    // TODO
     BOOL bTreated = m_NC.OnNcLButtonUp ( this, nHitTest, point );
     if ( bTreated )
     {
@@ -811,7 +811,7 @@ void CTRXPropertySheet::OnNcLButtonUp(UINT nHitTest, CPoint point)
 /////////////////////////////////////////////////////////////////////////////
 void CTRXPropertySheet::OnMouseMove(UINT nFlags, CPoint point)
 {
-    // TODO: Add Code Here
+    // TODO
     BOOL bTreated = m_NC.OnMouseMove ( this, nFlags, point );
     if ( bTreated )
     {
@@ -827,7 +827,7 @@ void CTRXPropertySheet::OnMouseMove(UINT nFlags, CPoint point)
 /////////////////////////////////////////////////////////////////////////////
 void CTRXPropertySheet::OnNcMouseMove(UINT nHitTest, CPoint point)
 {
-    // TODO: Add Code Here
+    // TODO
     BOOL bTreated = m_NC.OnNcMouseMove ( this, nHitTest, point );
     if ( bTreated )
     {
@@ -845,7 +845,7 @@ void CTRXPropertySheet::OnNcMouseHover(UINT nFlags, CPoint point)
 {
     // Cette fonctionnalité requiert Windows 2000 ou une version ultérieure.
     // Les symboles _WIN32_WINNT et WINVER doivent être >= 0x0500.
-    // TODO: Add Code Here
+    // TODO
     BOOL bTreated = m_NC.OnNcMouseHover ( this, nFlags, point );
     if ( bTreated )
     {
@@ -863,7 +863,7 @@ void CTRXPropertySheet::OnNcMouseLeave()
 {
     // Cette fonctionnalité requiert Windows 2000 ou une version ultérieure.
     // Les symboles _WIN32_WINNT et WINVER doivent être >= 0x0500.
-    // TODO: Add Code Here
+    // TODO
     BOOL bTreated = m_NC.OnNcMouseLeave (this);
     if ( bTreated )
     {
@@ -879,7 +879,7 @@ void CTRXPropertySheet::OnNcMouseLeave()
 /////////////////////////////////////////////////////////////////////////////
 void CTRXPropertySheet::OnLButtonUp(UINT nFlags, CPoint point)
 {
-    // TODO: ajoutez ici le code de votre gestionnaire de messages et/ou les paramètres par défaut des appels
+    // TODO
 
     BOOL bTreated = m_NC.OnLButtonUp (this, nFlags, point );
     CPropertySheet::OnLButtonUp(nFlags, point);

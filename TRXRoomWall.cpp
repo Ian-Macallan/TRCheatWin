@@ -215,7 +215,7 @@ void CTRXRoomWall::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
 /////////////////////////////////////////////////////////////////////////////
 BOOL CTRXRoomWall::PreTranslateMessage(MSG* pMsg)
 {
-    // TODO: Add Code Here
+    // TODO
     return CStatic::PreTranslateMessage(pMsg);
 }
 
@@ -225,7 +225,7 @@ BOOL CTRXRoomWall::PreTranslateMessage(MSG* pMsg)
 /////////////////////////////////////////////////////////////////////////////
 void CTRXRoomWall::OnLButtonDown(UINT nFlags, CPoint point)
 {
-    // TODO: Add Code Here
+    // TODO
     if ( m_bMoveMouse )
     {
         if ( m_bSetPoint )
@@ -276,7 +276,7 @@ void CTRXRoomWall::OnLButtonDown(UINT nFlags, CPoint point)
 /////////////////////////////////////////////////////////////////////////////
 void CTRXRoomWall::OnLButtonUp(UINT nFlags, CPoint point)
 {
-    // TODO: Add Code Here
+    // TODO
     if ( m_bMoveMouse )
     {
         if ( m_bSetPoint )
@@ -351,7 +351,7 @@ void CTRXRoomWall::OnLButtonUp(UINT nFlags, CPoint point)
 /////////////////////////////////////////////////////////////////////////////
 void CTRXRoomWall::OnMouseMove(UINT nFlags, CPoint point)
 {
-    // TODO: Add Code Here
+    // TODO
     CStatic::OnMouseMove(nFlags, point);
 }
 
@@ -410,7 +410,7 @@ void CTRXRoomWall::OnStnClicked()
 /////////////////////////////////////////////////////////////////////////////
 void CTRXRoomWall::OnRButtonDown(UINT nFlags, CPoint point)
 {
-    // TODO: Add Code Here
+    // TODO
 
     CStatic::OnRButtonDown(nFlags, point);
 }
@@ -421,7 +421,7 @@ void CTRXRoomWall::OnRButtonDown(UINT nFlags, CPoint point)
 /////////////////////////////////////////////////////////////////////////////
 void CTRXRoomWall::OnRButtonUp(UINT nFlags, CPoint point)
 {
-    // TODO: Add Code Here
+    // TODO
     if ( m_bMoveMouse )
     {
         bool bContinue = true;

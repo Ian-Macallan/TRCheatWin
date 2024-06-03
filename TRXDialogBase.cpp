@@ -112,7 +112,7 @@ BOOL CTRXDialogBase::OnInitDialog()
 {
     CDialog::OnInitDialog();
 
-    // TODO: Add Code Here
+    // TODO
     //
     TEXTMETRIC textMetrics;
     CDC *pDC = GetDC();
@@ -151,7 +151,7 @@ BOOL CTRXDialogBase::OnInitDialog()
     strcpy_s(logFont.lfFaceName, sizeof(logFont.lfFaceName), "Courier New");
     m_pFixedBoldFont->CreateFontIndirect(&logFont);    // Create the font.
 
-    // TODO: Add Code Here
+    // TODO
     if( ! m_ToolTip.Create(this))
     {
        TRACE0("Unable to create the ToolTip!");
@@ -178,7 +178,7 @@ BOOL CTRXDialogBase::OnInitDialog()
 /////////////////////////////////////////////////////////////////////////////
 BOOL CTRXDialogBase::PreTranslateMessage(MSG* pMsg)
 {
-    // TODO: Add Your Code Here
+    // TODO
     m_ToolTip.RelayEvent(pMsg);
 
     return CDialog::PreTranslateMessage(pMsg);
@@ -190,7 +190,7 @@ BOOL CTRXDialogBase::PreTranslateMessage(MSG* pMsg)
 /////////////////////////////////////////////////////////////////////////////
 HBRUSH CTRXDialogBase::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 {
-    // TODO: Add Code Here
+    // TODO
     HBRUSH hBrush = CTRXColors::OnCtlColor ( pDC, pWnd, nCtlColor );
     if ( hBrush != NULL )
     {
@@ -199,7 +199,7 @@ HBRUSH CTRXDialogBase::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 
     HBRUSH hbr = CDialog::OnCtlColor(pDC, pWnd, nCtlColor);
 
-    // TODO: Add Code Here
+    // TODO
     return hbr;
 }
 
@@ -209,7 +209,7 @@ HBRUSH CTRXDialogBase::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 /////////////////////////////////////////////////////////////////////////////
 BOOL CTRXDialogBase::OnEraseBkgnd(CDC* pDC)
 {
-    // TODO: Add Code Here
+    // TODO
     if ( CTRXColors::OnEraseBkgnd(pDC, this) )
     {
         return TRUE;
@@ -223,7 +223,7 @@ BOOL CTRXDialogBase::OnEraseBkgnd(CDC* pDC)
 /////////////////////////////////////////////////////////////////////////////
 INT_PTR CTRXDialogBase::DoModal()
 {
-    // TODO: Add Code Here
+    // TODO
 
     return CDialog::DoModal();
 }
@@ -234,7 +234,7 @@ INT_PTR CTRXDialogBase::DoModal()
 /////////////////////////////////////////////////////////////////////////////
 BOOL CTRXDialogBase::OnNcActivate(BOOL bActive)
 {
-    // TODO: Add Code Here
+    // TODO
     BOOL bTreated = m_NC.Activate(this, bActive);
     if ( bTreated )
     {
@@ -266,7 +266,7 @@ void CTRXDialogBase::OnNcPaint()
 /////////////////////////////////////////////////////////////////////////////
 void CTRXDialogBase::OnNcLButtonDown(UINT nHitTest, CPoint point)
 {
-    // TODO: Add Code Here
+    // TODO
     BOOL bTreated = m_NC.OnNcLButtonDown ( this, nHitTest, point );
     if ( bTreated )
     {
@@ -282,7 +282,7 @@ void CTRXDialogBase::OnNcLButtonDown(UINT nHitTest, CPoint point)
 /////////////////////////////////////////////////////////////////////////////
 void CTRXDialogBase::OnNcLButtonUp(UINT nHitTest, CPoint point)
 {
-    // TODO: Add Code Here
+    // TODO
     BOOL bTreated = m_NC.OnNcLButtonUp ( this, nHitTest, point );
     if ( bTreated )
     {
@@ -319,7 +319,7 @@ void CTRXDialogBase::OnInitMenuPopup(CMenu* pPopupMenu, UINT nIndex, BOOL bSysMe
 /////////////////////////////////////////////////////////////////////////////
 void CTRXDialogBase::OnDrawItem(int nIDCtl, LPDRAWITEMSTRUCT lpDrawItemStruct)
 {
-    // TODO: Add Code Here
+    // TODO
     //  Menu
     if ( lpDrawItemStruct != NULL )
     {
@@ -343,7 +343,7 @@ void CTRXDialogBase::OnDrawItem(int nIDCtl, LPDRAWITEMSTRUCT lpDrawItemStruct)
 /////////////////////////////////////////////////////////////////////////////
 void CTRXDialogBase::OnMeasureItem(int nIDCtl, LPMEASUREITEMSTRUCT lpMeasureItemStruct)
 {
-    // TODO: Add Code Here
+    // TODO
     if ( lpMeasureItemStruct != NULL )
     {
         if ( lpMeasureItemStruct->CtlType == ODT_MENU )
@@ -365,7 +365,7 @@ void CTRXDialogBase::OnMeasureItem(int nIDCtl, LPMEASUREITEMSTRUCT lpMeasureItem
 /////////////////////////////////////////////////////////////////////////////
 void CTRXDialogBase::OnMouseMove(UINT nFlags, CPoint point)
 {
-    // TODO: Add Code Here
+    // TODO
     BOOL bTreated = m_NC.OnMouseMove ( this, nFlags, point );
     if ( bTreated )
     {
@@ -381,7 +381,7 @@ void CTRXDialogBase::OnMouseMove(UINT nFlags, CPoint point)
 /////////////////////////////////////////////////////////////////////////////
 void CTRXDialogBase::OnNcMouseMove(UINT nHitTest, CPoint point)
 {
-    // TODO: Add Code Here
+    // TODO
     BOOL bTreated = m_NC.OnNcMouseMove ( this, nHitTest, point );
     if ( bTreated )
     {
@@ -400,7 +400,7 @@ void CTRXDialogBase::OnNcMouseHover(UINT nFlags, CPoint point)
 {
     // Cette fonctionnalité requiert Windows 2000 ou une version ultérieure.
     // Les symboles _WIN32_WINNT et WINVER doivent être >= 0x0500.
-    // TODO: Add Code Here
+    // TODO
     BOOL bTreated = m_NC.OnNcMouseHover ( this, nFlags, point );
     if ( bTreated )
     {
@@ -419,7 +419,7 @@ void CTRXDialogBase::OnNcMouseLeave()
 {
     // Cette fonctionnalité requiert Windows 2000 ou une version ultérieure.
     // Les symboles _WIN32_WINNT et WINVER doivent être >= 0x0500.
-    // TODO: Add Code Here
+    // TODO
     BOOL bTreated = m_NC.OnNcMouseLeave (this);
     if ( bTreated )
     {

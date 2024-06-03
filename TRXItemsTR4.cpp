@@ -94,7 +94,7 @@ CTRXItemsTR4::~CTRXItemsTR4()
 /////////////////////////////////////////////////////////////////////////////
 void CTRXItemsTR4::OnHelp()
 {
-    // TODO: Add your control notification handler code here
+    // TODO
     CTRXHelpDialog dlg;
     dlg.DoModal();
 }
@@ -292,7 +292,7 @@ void CTRXItemsTR4::SetLabel ( UINT checkId, UINT editId, char **pTableInd, char 
 /////////////////////////////////////////////////////////////////////////////
 BOOL CTRXItemsTR4::OnSetActive()
 {
-    // TODO: Add Your Code Here
+    // TODO
 
     //
     m_Status.SetWindowText ( "Tombraider 4 and 5" );
@@ -739,7 +739,7 @@ int CTRXItemsTR4::EnableForVersion()
 /////////////////////////////////////////////////////////////////////////////
 BOOL CTRXItemsTR4::OnKillActive()
 {
-    // TODO: Add Your Code Here
+    // TODO
     UpdateBuffer();
 
     BOOL bModified = IsGUIModified();
@@ -1046,7 +1046,7 @@ BOOL CTRXItemsTR4::OnInitDialog()
 
     CTRXPropertyPage::OnInitDialog();
 
-    // TODO: Add Code Here
+    // TODO
     if ( m_bToolTip )
     {
         m_ToolTip.AddTool( &m_Status, ("Status"));
@@ -1106,7 +1106,7 @@ BOOL CTRXItemsTR4::OnInitDialog()
 /////////////////////////////////////////////////////////////////////////////
 void CTRXItemsTR4::OnOK()
 {
-    // TODO: Add Code Here
+    // TODO
     INT_PTR response = AskToSave("Items TR4");
     DisplayValues ( );
 
@@ -1119,7 +1119,7 @@ void CTRXItemsTR4::OnOK()
 /////////////////////////////////////////////////////////////////////////////
 void CTRXItemsTR4::OnCancel()
 {
-    // TODO: Add Code Here
+    // TODO
     if ( CTRSaveGame::I() != NULL && ( IsGUIModified() || CTRSaveGame::IsBufferModified() ) )
     {
         INT_PTR response = AskToSave("Items TR4");
@@ -1134,7 +1134,7 @@ void CTRXItemsTR4::OnCancel()
 /////////////////////////////////////////////////////////////////////////////
 BOOL CTRXItemsTR4::OnApply()
 {
-    // TODO: Add Code Here
+    // TODO
     WriteWhenOnApply("Items TR4");
 
     return CTRXPropertyPage::OnApply();

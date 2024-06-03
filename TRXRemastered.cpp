@@ -232,7 +232,7 @@ CTRXRemastered::~CTRXRemastered()
 /////////////////////////////////////////////////////////////////////////////
 void CTRXRemastered::OnHelp()
 {
-    // TODO: Add your control notification handler code here
+    // TODO
     CTRXHelpDialog dlg;
     dlg.DoModal();
 }
@@ -539,7 +539,7 @@ void CTRXRemastered::OnBnClickedLoad()
 /////////////////////////////////////////////////////////////////////////////
 void CTRXRemastered::OnBnClickedWrite()
 {
-    // TODO: Add Code Here
+    // TODO
     if ( m_Update.GetCheck() )
     {
         BOOL bRecurse = m_Recurse.GetCheck();
@@ -595,7 +595,7 @@ BOOL CTRXRemastered::OnInitDialog()
 {
     CTRXPropertyPage123::OnInitDialog();
 
-    // TODO: Add Code Here
+    // TODO
     if ( m_bToolTip )
     {
         m_ToolTip.AddTool( &m_ListCtrl, LPSTR_TEXTCALLBACK );
@@ -663,7 +663,7 @@ BOOL CTRXRemastered::OnInitDialog()
 /////////////////////////////////////////////////////////////////////////////
 BOOL CTRXRemastered::OnSetActive()
 {
-    // TODO: Add Your Code Here
+    // TODO
     BOOL bModified = IsGUIModified();
     if ( CTR9SaveGame::I() != NULL )
     {
@@ -671,8 +671,6 @@ BOOL CTRXRemastered::OnSetActive()
     }
 
     //
-    // m_ListCtrl.SetColorsNotUsed();
-
     //
     if ( m_pListCtrl == NULL )
     {
@@ -836,7 +834,7 @@ void CTRXRemastered::SetComboSelection ( )
 /////////////////////////////////////////////////////////////////////////////
 BOOL CTRXRemastered::OnKillActive()
 {
-    // TODO: Add Your Code Here
+    // TODO
     BOOL bRecurse = m_Recurse.GetCheck();
     UpdateBuffer(bRecurse);
 
@@ -3453,7 +3451,7 @@ void CTRXRemastered::SortItems ( int col )
 void CTRXRemastered::OnItemclickListctrl(NMHDR *pNMHDR, LRESULT *pResult)
 {
     LPNMHEADER phdr = reinterpret_cast<LPNMHEADER>(pNMHDR);
-    // TODO: Add Your handler here
+    // TODO
     NMLISTVIEW *pLV = (NMLISTVIEW *) pNMHDR;
     
     if ( pLV->iItem == iSortColumn )
@@ -3811,7 +3809,7 @@ void CTRXRemastered::OnSelchangeCombo()
             }
         }
 
-        // TODO: Add Your handler here
+        // TODO
         int iCurSel = m_Combo.GetCurSel();
         if ( iCurSel >= 0 && iCurSel < m_Combo.GetCount() )
         {
@@ -3850,7 +3848,7 @@ void CTRXRemastered::OnBnClickedBurning()
 /////////////////////////////////////////////////////////////////////////////
 void CTRXRemastered::OnBnClickedRemoveLoc()
 {
-    // TODO: Add Handler Here
+    // TODO
     int iCurSel = m_Combo.GetCurSel();
     if ( iCurSel >= 0 && iCurSel < m_Combo.GetCount() )
     {
@@ -5145,7 +5143,7 @@ void CTRXRemastered::OnClickedRocket()
 /////////////////////////////////////////////////////////////////////////////
 void CTRXRemastered::OnOK()
 {
-    // TODO: Add Code Here
+    // TODO
     BOOL bRecurse = m_Recurse.GetCheck();
     UpdateBuffer(bRecurse);
 
@@ -5173,7 +5171,7 @@ void CTRXRemastered::OnOK()
 /////////////////////////////////////////////////////////////////////////////
 BOOL CTRXRemastered::OnApply()
 {
-    // TODO: Add Code Here
+    // TODO
     BOOL bRecurse = m_Recurse.GetCheck();
     UpdateBuffer(bRecurse);
 
@@ -5349,7 +5347,7 @@ void CTRXRemastered::SetThemeChanged ( bool bDarkTheme )
 {
     if ( m_bInitDone )
     {
-        // m_ListCtrl.SetColorsNotUsed();
+        //
     }
 
     CTRXPropertyPage123::SetThemeChanged ( bDarkTheme );

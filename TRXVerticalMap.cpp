@@ -829,7 +829,7 @@ BOOL CTRXVerticalMap::OnInitDialog()
     ShowWindows();
 
 
-    // TODO: Add Code Here
+    // TODO
     SetIcon(m_hIcon, TRUE);         // Set big icon
     SetIcon(m_hIcon, FALSE);        // Set small icon
 
@@ -1101,7 +1101,7 @@ int CTRXVerticalMap::FindWindowAtPoint( POINT point)
 /////////////////////////////////////////////////////////////////////////////
 void CTRXVerticalMap::OnLButtonUp(UINT nFlags, CPoint point)
 {
-    // TODO: Add Code Here
+    // TODO
     m_iMoving   = -1;
     CTRXDialogBase::OnLButtonUp(nFlags, point);
 }
@@ -1112,7 +1112,7 @@ void CTRXVerticalMap::OnLButtonUp(UINT nFlags, CPoint point)
 /////////////////////////////////////////////////////////////////////////////
 void CTRXVerticalMap::OnLButtonDown(UINT nFlags, CPoint point)
 {
-    // TODO: Add Code Here
+    // TODO
     int index = FindWindowAtCPoint(point);
     if ( index != -1 )
     {
@@ -1130,7 +1130,7 @@ void CTRXVerticalMap::OnLButtonDown(UINT nFlags, CPoint point)
 /////////////////////////////////////////////////////////////////////////////
 void CTRXVerticalMap::OnMouseMove(UINT nFlags, CPoint point)
 {
-    // TODO: Add Code Here
+    // TODO
     if ( m_iMoving != -1 )
     {
         RECT rect;
@@ -1169,7 +1169,7 @@ void CTRXVerticalMap::OnMouseMove(UINT nFlags, CPoint point)
 /////////////////////////////////////////////////////////////////////////////
 BOOL CTRXVerticalMap::PreTranslateMessage(MSG* pMsg)
 {
-    // TODO: Add Code Here
+    // TODO
     m_ToolTip.RelayEvent(pMsg);
 
     return CTRXDialogBase::PreTranslateMessage(pMsg);
@@ -1266,7 +1266,7 @@ void CTRXVerticalMap::OnBnClickedFromEast()
 /////////////////////////////////////////////////////////////////////////////
 void CTRXVerticalMap::OnRButtonUp(UINT nFlags, CPoint point)
 {
-    // TODO: Add Code Here
+    // TODO
     //
     int index = FindWindowAtCPoint(point);
     if ( index != -1 )
@@ -1283,7 +1283,7 @@ void CTRXVerticalMap::OnRButtonUp(UINT nFlags, CPoint point)
 /////////////////////////////////////////////////////////////////////////////
 void CTRXVerticalMap::OnClose()
 {
-    // TODO: Add Code Here
+    // TODO
 
     //  Clean Rooms
     Free();
@@ -1316,7 +1316,7 @@ void CTRXVerticalMap::OnDestroy()
 {
     CTRXDialogBase::OnDestroy();
 
-    // TODO: Add Code Here
+    // TODO
 }
 
 

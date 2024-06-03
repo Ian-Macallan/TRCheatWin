@@ -77,7 +77,7 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 void CAboutDlg::OnMacallan()
 {
-    // TODO: Add your control notification handler code here
+    // TODO
     HINSTANCE hInst;
     hInst = ShellExecute ( NULL, "open", "http://www.macallan.org", "", "", SW_SHOWDEFAULT );
 }
@@ -163,7 +163,7 @@ BOOL CAboutDlg::OnInitDialog()
 {
     CTRXDialogBase::OnInitDialog();
     
-    // TODO: Add extra initialization here
+    // TODO
     SetVersionFrom ( );
 
     m_bInitDone = true;
@@ -178,7 +178,7 @@ BOOL CAboutDlg::OnInitDialog()
 /////////////////////////////////////////////////////////////////////////////
 void CAboutDlg::OnWeb()
 {
-    // TODO: Add your control notification handler code here
+    // TODO
     HINSTANCE   hInst;
     CString     strText;
 
@@ -195,7 +195,7 @@ void CAboutDlg::OnWeb()
 /////////////////////////////////////////////////////////////////////////////
 void CAboutDlg::OnEmail()
 {
-    // TODO: Add your control notification handler code here
+    // TODO
     HINSTANCE   hInst;
     CString     strText;
 

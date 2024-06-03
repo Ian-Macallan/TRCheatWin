@@ -101,7 +101,7 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 void CTRXGunPage::OnHelp()
 {
-    // TODO: Add your control notification handler code here
+    // TODO
     CTRXHelpDialog dlg;
     dlg.DoModal();
 }
@@ -239,7 +239,7 @@ BOOL CTRXGunPage::OnInitDialog()
 {
     CTRXPropertyPage::OnInitDialog();
     
-    // TODO: Add extra initialization here
+    // TODO
     if ( m_bToolTip )
     {
         m_ToolTip.AddTool( &m_Status, ("Status"));
@@ -258,7 +258,7 @@ BOOL CTRXGunPage::OnInitDialog()
 /////////////////////////////////////////////////////////////////////////////
 BOOL CTRXGunPage::OnSetActive()
 {
-    // TODO: Add your specialized code here and/or call the base class
+    // TODO
     BOOL bModified = IsGUIModified();
     if ( CTRSaveGame::IsValid( ) )
     {
@@ -380,7 +380,7 @@ void CTRXGunPage::UpdateBuffer()
 /////////////////////////////////////////////////////////////////////////////
 BOOL CTRXGunPage::OnKillActive()
 {
-    // TODO: Add your specialized code here and/or call the base class
+    // TODO
     UpdateBuffer();
 
     BOOL bModified = IsGUIModified();
@@ -516,7 +516,7 @@ void CTRXGunPage::OnBnClickedCrowbar()
 /////////////////////////////////////////////////////////////////////////////
 void CTRXGunPage::OnOK()
 {
-    // TODO: Add Your handler here
+    // TODO
     INT_PTR response = AskToSave("Gun");
     DisplayValues ( );
 
@@ -529,7 +529,7 @@ void CTRXGunPage::OnOK()
 /////////////////////////////////////////////////////////////////////////////
 void CTRXGunPage::OnCancel()
 {
-    // TODO: Add Your handler here
+    // TODO
     if ( CTRSaveGame::I() != NULL && ( IsGUIModified() || CTRSaveGame::IsBufferModified() ) )
     {
         INT_PTR response = AskToSave("Gun");
@@ -544,7 +544,7 @@ void CTRXGunPage::OnCancel()
 /////////////////////////////////////////////////////////////////////////////
 BOOL CTRXGunPage::OnApply()
 {
-    // TODO: Add Code Here
+    // TODO
     WriteWhenOnApply("Guns");
 
     return CTRXPropertyPage::OnApply();

@@ -65,11 +65,10 @@ BOOL CTRXSecretsDialog::OnInitDialog()
 {
     CTRXDialogBase::OnInitDialog();
 
-    // TODO: Add Code Here
+    // TODO
     char szText [ 16 ];
 
-    // m_List_Secrets.SetColorsNotUsed();
-
+    //
     m_List_Secrets.InsertColumn ( 0, "Level", LVCFMT_LEFT, 128);
     m_List_Secrets.InsertColumn ( 1, "Secrets", LVCFMT_RIGHT, 48);
     m_List_Secrets.InsertColumn ( 2, "Maximum", LVCFMT_RIGHT, 60);

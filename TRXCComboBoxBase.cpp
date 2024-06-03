@@ -37,7 +37,7 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 HBRUSH CTRXCComboBoxBase::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 {
-    // TODO: Add Code Here
+    // TODO
     HBRUSH hBrush = CTRXColors::OnCtlColor ( pDC, pWnd, nCtlColor );
     if ( hBrush != NULL )
     {
@@ -46,7 +46,7 @@ HBRUSH CTRXCComboBoxBase::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 
     HBRUSH hbr = CComboBox::OnCtlColor(pDC, pWnd, nCtlColor);
     
-    // TODO: Add Code Here
+    // TODO
     return hbr;
 }
 
@@ -56,7 +56,7 @@ HBRUSH CTRXCComboBoxBase::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 /////////////////////////////////////////////////////////////////////////////
 BOOL CTRXCComboBoxBase::OnEraseBkgnd(CDC* pDC)
 {
-    // TODO: Add Code Here
+    // TODO
     if ( CTRXColors::OnEraseBkgnd(pDC, this ) )
     {
         return TRUE;

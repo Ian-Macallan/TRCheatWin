@@ -143,8 +143,6 @@ BOOL CTRXDifferences::OnInitDialog()
     m_bInitList     = TRUE;
 
     //
-    // m_ListCtrl.SetColorsNotUsed();
-
     //
     if ( m_pListCtrl == NULL )
     {

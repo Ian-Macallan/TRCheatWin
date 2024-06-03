@@ -139,7 +139,7 @@ BOOL CTRXPosition::OnInitDialog()
     static char szText [ MAX_PATH ];
     static char szLabel [ MAX_PATH ];
 
-    // TODO: Add Code Here
+    // TODO
     if ( CTR9SaveGame::I(FALSE) != NULL )
     {
 
@@ -478,7 +478,7 @@ void CTRXPosition::ClickRoom ( UINT nFlags, CPoint point )
 /////////////////////////////////////////////////////////////////////////////
 void CTRXPosition::OnBnClickedOk()
 {
-    // TODO: Add Code Here
+    // TODO
     static char szText [ 64 ];
 
     //
@@ -604,7 +604,7 @@ void CTRXPosition::OnBnClickedOk()
 /////////////////////////////////////////////////////////////////////////////
 void CTRXPosition::OnBnClickedSearch()
 {
-    // TODO: Add Code Here
+    // TODO
     static char szText [ 64 ];
     double      dfValue = 0.0;
     if ( CTR9SaveGame::I(FALSE) != NULL )
@@ -670,7 +670,7 @@ void CTRXPosition::ChangeAreas( int room )
 /////////////////////////////////////////////////////////////////////////////
 void CTRXPosition::ChangeAreas()
 {
-    // TODO: Add Code Here
+    // TODO
     static char szText [ 64 ];
 
     if ( m_SetManualCombo )
@@ -768,7 +768,7 @@ void CTRXPosition::ChangeAreas()
 /////////////////////////////////////////////////////////////////////////////
 void CTRXPosition::OnSelchangeAreas()
 {
-    // TODO: Add Code Here
+    // TODO
     ChangeAreas();
 }
 
@@ -778,7 +778,7 @@ void CTRXPosition::OnSelchangeAreas()
 /////////////////////////////////////////////////////////////////////////////
 void CTRXPosition::OnBnClickedMap()
 {
-    // TODO: Add Code Here
+    // TODO
     static char szText [ MAX_PATH ];
 
     //

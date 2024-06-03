@@ -80,7 +80,7 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 INT_PTR CTRXContainer::DoModal()
 {
-    // TODO: Add Your handler here
+    // TODO
     return CTRXDialogBase::DoModal();
 }
 
@@ -102,7 +102,7 @@ BOOL CTRXContainer::OnInitDialog()
         pSysMenu->InsertMenu(0,MF_BYPOSITION,SC_RESTORE, _T("&Restore"));
     }
 
-    // TODO: Add your specialized code here
+    // TODO
     // Add "About..." menu item to system menu.
 
     // IDM_ABOUTBOX must be in the system command range.
@@ -149,7 +149,7 @@ BOOL CTRXContainer::OnInitDialog()
     SetIcon(m_hIcon, TRUE);         // Set big icon
     SetIcon(m_hIcon, FALSE);        // Set small icon
 
-    // TODO:  Add Your handler here
+    // TODO
     m_pPropertySheet = new CTRXPropertySheetAll("Tombraider Cheat Program", this );
     m_pPropertySheet->Create ( this, WS_CHILD | WS_TABSTOP | DS_3DLOOK | DS_CONTROL );
     m_pPropertySheet->ShowWindow ( SW_NORMAL );
@@ -216,7 +216,7 @@ void CTRXContainer::OnSize(UINT nType, int cx, int cy)
 {
     CTRXDialogBase::OnSize(nType, cx, cy);
 
-    // TODO: Add Code Here
+    // TODO
     if ( m_pPropertySheet != NULL )
     {
         m_pPropertySheet->OnSize ( nType, cx, cy );
@@ -231,7 +231,7 @@ void CTRXContainer::OnMove(int x, int y)
 {
     CTRXDialogBase::OnMove(x, y);
 
-    // TODO: Add Code Here
+    // TODO
 }
 
 //
@@ -305,7 +305,7 @@ void CTRXContainer::OnSysCommand(UINT nID, LPARAM lParam)
 /////////////////////////////////////////////////////////////////////////////
 BOOL CTRXContainer::PreCreateWindow(CREATESTRUCT& cs)
 {
-    // TODO: Add Your handler here
+    // TODO
     return CTRXDialogBase::PreCreateWindow(cs);
 }
 
@@ -315,7 +315,7 @@ BOOL CTRXContainer::PreCreateWindow(CREATESTRUCT& cs)
 /////////////////////////////////////////////////////////////////////////////
 void CTRXContainer::OnBnClickedOk()
 {
-    // TODO: Add Your handler here
+    // TODO
     if ( CTRSaveGame::IsValid( ) &&
             CTRSaveGame::IsBufferModified() )
     {
@@ -331,7 +331,7 @@ void CTRXContainer::OnBnClickedOk()
 /////////////////////////////////////////////////////////////////////////////
 void CTRXContainer::OnBnClickedCancel()
 {
-    // TODO: Add Your handler here
+    // TODO
     if ( CTRSaveGame::IsValid( ) &&
             CTRSaveGame::IsBufferModified() )
     {
@@ -347,7 +347,7 @@ void CTRXContainer::OnBnClickedCancel()
 /////////////////////////////////////////////////////////////////////////////
 UINT CTRXContainer::OnGetDlgCode()
 {
-    // TODO: Add Code Here
+    // TODO
 
     return CTRXDialogBase::OnGetDlgCode();
 }

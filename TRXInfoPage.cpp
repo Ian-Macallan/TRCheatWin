@@ -404,7 +404,7 @@ END_MESSAGE_MAP()
 // CTRXInfoPage message handlers
 void CTRXInfoPage::OnHelp()
 {
-    // TODO: Add your control notification handler code here
+    // TODO
     CTRXHelpDialog dlg;
     dlg.DoModal();
 }
@@ -546,7 +546,7 @@ void CTRXInfoPage::OnLoad()
 
     }
 
-    // TODO: Add your control notification handler code here
+    // TODO
     LoadDirectory ();   
 }
 
@@ -556,7 +556,7 @@ void CTRXInfoPage::OnLoad()
 /////////////////////////////////////////////////////////////////////////////
 void CTRXInfoPage::OnWrite()
 {
-    // TODO: Add your control notification handler code here
+    // TODO
     if ( CTRSaveGame::I() != NULL )
     {
         UpdateBuffer();
@@ -1117,7 +1117,7 @@ void CTRXInfoPage::ShowRoom ( TR_AREA *pArea, DWORD x, DWORD z, WORD wDirection 
 /////////////////////////////////////////////////////////////////////////////
 BOOL CTRXInfoPage::OnSetActive()
 {
-    // TODO: Add your specialized code here and/or call the base class
+    // TODO
     BOOL bModified = IsGUIModified();
     if ( CTRSaveGame::IsValid( ) )
     {
@@ -1125,8 +1125,6 @@ BOOL CTRXInfoPage::OnSetActive()
     }
 
     //
-    // m_ListCtrl.SetColorsNotUsed();
-
     if ( m_pListCtrl == NULL )
     {
         m_pListCtrl = &m_ListCtrl;
@@ -1313,7 +1311,7 @@ void CTRXInfoPage::UpdateBuffer()
 /////////////////////////////////////////////////////////////////////////////
 BOOL CTRXInfoPage::OnKillActive()
 {
-    // TODO: Add your specialized code here and/or call the base class
+    // TODO
     UpdateBuffer();
 
     BOOL bModified = IsGUIModified();
@@ -1569,7 +1567,7 @@ void CTRXInfoPage::DisplayOne ( int line )
      */
     int                     iVersion;
 
-    // TODO: Add your control notification handler code here
+    // TODO
     char    szFilename [ MAX_PATH ];
 
     //
@@ -1612,7 +1610,7 @@ void CTRXInfoPage::DisplayOne ( int line )
 void CTRXInfoPage::OnClickListctrl(NMHDR* pNMHDR, LRESULT* pResult)
 {
     NM_LISTVIEW* pNMListView = (NM_LISTVIEW*)pNMHDR;
-    // TODO: Add your control notification handler code here
+    // TODO
     
     //  Unselection
     if (    ( pNMListView->uNewState & LVIS_SELECTED ) == 0 &&
@@ -1672,7 +1670,7 @@ void CTRXInfoPage::OnClickListctrl(NMHDR* pNMHDR, LRESULT* pResult)
 void CTRXInfoPage::OnItemchangedListctrl(NMHDR* pNMHDR, LRESULT* pResult)
 {
     NM_LISTVIEW* pNMListView = (NM_LISTVIEW*)pNMHDR;
-    // TODO: Add your control notification handler code here
+    // TODO
     
     //  Unselection
     if (    ( pNMListView->uNewState & LVIS_SELECTED ) == 0 &&
@@ -1795,7 +1793,7 @@ void CTRXInfoPage::SortItems ( int col )
 void CTRXInfoPage::OnItemclickListctrl(NMHDR *pNMHDR, LRESULT *pResult)
 {
     LPNMHEADER phdr = reinterpret_cast<LPNMHEADER>(pNMHDR);
-    // TODO: Add Your handler here
+    // TODO
     NMLISTVIEW *pLV = (NMLISTVIEW *) pNMHDR;
     
     SortItems ( pLV->iItem );
@@ -1812,7 +1810,7 @@ void CTRXInfoPage::OnItemclickListctrl(NMHDR *pNMHDR, LRESULT *pResult)
 /////////////////////////////////////////////////////////////////////////////
 void CTRXInfoPage::OnBnClickedMax()
 {
-    // TODO: Add Your handler here
+    // TODO
     if ( CTRSaveGame::IsValid() )
     {
         /*
@@ -2006,7 +2004,7 @@ void CTRXInfoPage::OnBnClickedMax()
 ///////////////////////////////////////////////////////////////////////////////////////////
 void CTRXInfoPage::OnBnClickedRefresh()
 {
-    // TODO: Add Your handler here
+    // TODO
     if ( CTRSaveGame::IsValid( ) && IsGUIModified() )
     {
         UpdateBuffer();
@@ -2069,7 +2067,7 @@ void CTRXInfoPage::OnSelchangeCombo()
         }
 
         //
-        // TODO: Add Your handler here
+        // TODO
         int iCurSel = m_Combo.GetCurSel();
         if ( iCurSel >= 0 && iCurSel < m_Combo.GetCount() )
         {
@@ -2095,7 +2093,7 @@ void CTRXInfoPage::OnSelchangeCombo()
 ///////////////////////////////////////////////////////////////////////////////////////////
 void CTRXInfoPage::OnBnClickedRemove()
 {
-    // TODO: Add Your handler here
+    // TODO
     int iCurSel = m_Combo.GetCurSel();
     if ( iCurSel >= 0 && iCurSel < m_Combo.GetCount() )
     {
@@ -2124,7 +2122,7 @@ BOOL CTRXInfoPage::OnInitDialog()
 {
     CTRXPropertyPage::OnInitDialog();
 
-    // TODO: Add Code Here
+    // TODO
     if ( m_bToolTip )
     {
         m_ToolTip.AddTool( &m_Status, ("Status"));
@@ -2233,7 +2231,7 @@ void CTRXInfoPage::OnBnClickedLaraburning()
 /////////////////////////////////////////////////////////////////////////////
 void CTRXInfoPage::OnOK()
 {
-    // TODO: Add your specialized code here and/or call the base class
+    // TODO
     INT_PTR response = AskToSave("Info");
     DisplayOne ( m_Line );
 
@@ -2246,7 +2244,7 @@ void CTRXInfoPage::OnOK()
 /////////////////////////////////////////////////////////////////////////////
 BOOL CTRXInfoPage::OnApply()
 {
-    // TODO: Add your specialized code here and/or call the base class
+    // TODO
     WriteWhenOnApply("Info");
 
     return CTRXPropertyPage::OnApply();
@@ -2258,7 +2256,7 @@ BOOL CTRXInfoPage::OnApply()
 /////////////////////////////////////////////////////////////////////////////
 void CTRXInfoPage::OnCancel()
 {
-    // TODO: Add your specialized code here and/or call the base class
+    // TODO
     if ( CTRSaveGame::I() != NULL && ( IsGUIModified() || CTRSaveGame::IsBufferModified() ) )
     {
         INT_PTR response = AskToSave("Info");
@@ -3006,7 +3004,7 @@ void CTRXInfoPage::OnSelchangeCustomCombo()
 /////////////////////////////////////////////////////////////////////////////
 void CTRXInfoPage::OnDropdownCustomCombo()
 {
-    // TODO: Add Code Here
+    // TODO
 }
 
 //
@@ -3107,7 +3105,7 @@ void CTRXInfoPage::SetThemeChanged ( bool bDarkTheme )
 {
     if ( m_bInitDone )
     {
-        // m_ListCtrl.SetColorsNotUsed();
+        //
     }
 
     CTRXPropertyPage::SetThemeChanged ( bDarkTheme );
