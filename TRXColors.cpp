@@ -610,5 +610,5 @@ COLORREF CTRXColors::GetBkColor()
 /////////////////////////////////////////////////////////////////////////////
 void CTRXColors::SetWindowTheme ( CWnd *pWnd )
 {
-   ::SetWindowTheme ( pWnd->GetSafeHwnd(), WINDOWS_THEME_RESET  );
+    ::SetWindowTheme ( pWnd->GetSafeHwnd(), WINDOWS_THEME_RESET  );
 }

@@ -10,7 +10,7 @@ static  const int EXTRA_PIXELS_WIDTH    = 8;
 static  const int EXTRA_PIXELS_HEIGHT   = 6;
 static  const int SEPARATOR_HEIGHT      = 7;
 
-#define MENU_TEXT_SIZE  80
+#define MENU_TEXT_SIZE  256
 
 //
 /////////////////////////////////////////////////////////////////////////////

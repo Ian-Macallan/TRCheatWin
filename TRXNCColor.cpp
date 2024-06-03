@@ -147,6 +147,13 @@ CTRXNCColor::CTRXNCColor(void)
 {
     m_pContextMenu          = NULL;
     m_iHover                = ICON_NOT_SET;
+
+   m_bLeftPressed           = FALSE;
+   m_windowRECT.top         = -1;
+   m_windowRECT.left        = -1;
+   m_LeftPressedPoint.x     = -1;
+   m_LeftPressedPoint.y     = -1;
+
 }
 
 //
@@ -559,9 +566,24 @@ BOOL CTRXNCColor::OnNcLButtonDown(CWnd *pWnd, UINT nHitTest, CPoint point)
             return TRUE;
         }
 
-        //  Leave Move and Resize to Windows
-        //  So return FALSE
-        //  Otherwise we will be force to handle move and resize
+        //  We Could handle move here
+        CRect windowRECT;
+        pWnd->GetWindowRect(&windowRECT);
+        CRect captionRect = GetCaptionFullRect ( windowRECT );
+        if ( ScreenPointOverRect( pWnd, point, captionRect ) )
+        {
+            if ( SquaredCorners )
+            {
+                m_bLeftPressed      = TRUE;
+            }
+            else
+            {
+                m_bLeftPressed      = FALSE;
+            }
+            m_windowRECT        = windowRECT;
+            m_LeftPressedPoint  = point;
+            return m_bLeftPressed;
+        }
     }
 
     return FALSE;
@@ -573,6 +595,8 @@ BOOL CTRXNCColor::OnNcLButtonDown(CWnd *pWnd, UINT nHitTest, CPoint point)
 /////////////////////////////////////////////////////////////////////////////
 BOOL CTRXNCColor::OnNcLButtonUp(CWnd *pWnd, UINT nHitTest, CPoint point)
 {
+    m_bLeftPressed  = FALSE;
+
     //
     // TODO
     if ( CTRXGlobal::m_iDarkTheme == 2 )
@@ -671,7 +695,7 @@ BOOL CTRXNCColor::OnNcRButtonDown(CWnd *pWnd, UINT nHitTest, CPoint point)
 /////////////////////////////////////////////////////////////////////////////
 BOOL CTRXNCColor::OnLButtonUp(CWnd *pWnd, UINT nFlags, CPoint point)
 {
-    // Do Nothing
+    m_bLeftPressed  = FALSE;
     return FALSE;
 }
 
@@ -691,6 +715,14 @@ BOOL CTRXNCColor::OnNcMouseMove(CWnd *pWnd, UINT nHitTest, CPoint point)
         tme.dwFlags     = TME_NONCLIENT  | TME_HOVER | TME_LEAVE;
         tme.dwHoverTime = 100; // HOVER_DEFAULT;
         TrackMouseEvent ( &tme );
+
+        if ( m_bLeftPressed )
+        {
+            pWnd->SetWindowPos ( NULL, 
+                m_windowRECT.left + point.x - m_LeftPressedPoint.x,
+                m_windowRECT.top + point.y - m_LeftPressedPoint.y, 0, 0, SWP_NOSIZE | SWP_NOZORDER );
+        }
+
     }
 
     //  Always returns FALSE to continue the process
@@ -714,6 +746,8 @@ BOOL CTRXNCColor::OnMouseMove(CWnd *pWnd, UINT nFlags, CPoint point)
         tme.dwFlags     = TME_NONCLIENT  | TME_HOVER | TME_LEAVE;
         tme.dwHoverTime = HOVER_DEFAULT;
         TrackMouseEvent ( &tme );
+
+        m_bLeftPressed  = FALSE;
     }
 
     //  Always returns FALSE to continue the process
@@ -871,7 +905,7 @@ BOOL CTRXNCColor::OnNcMouseLeave(CWnd *pWnd )
 {
     //  Always returns FALSE to continue the process
     DrawAllIcons ( pWnd, m_iHover );
-    m_iHover = ICON_NOT_SET;
-
+    m_iHover        = ICON_NOT_SET;
+    m_bLeftPressed  = FALSE;
     return FALSE;
 }

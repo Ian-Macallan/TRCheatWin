@@ -5,6 +5,13 @@
 
 #define ICON_NOT_SET    0xFFFF
 
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
+const bool SquaredCorners = false;
+
 //
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -25,6 +32,11 @@ class CTRXNCColor
         //
         CTRXMenuBase            *m_pContextMenu;
         UINT                    m_iHover;
+
+        //
+        BOOL                    m_bLeftPressed;
+        CRect                   m_windowRECT;
+        CPoint                  m_LeftPressedPoint;
 
     public :
         void DrawResizedIcon ( CDC *pDC, HICON hIcon, const RECT *pRect );
