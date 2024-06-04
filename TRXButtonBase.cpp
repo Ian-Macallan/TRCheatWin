@@ -99,7 +99,7 @@ void CTRXButtonBase::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct )
             rect.left       = rect.left + 1;
             rect.bottom     = rect.bottom - 2;
             rect.right      = rect.right - 2;
-            pDC->FillRect ( &rect, CTRXColors::GetBlack32CBrush() );
+            pDC->FillRect ( &rect, CTRXColors::GetBKNormalCBrush( true ) );
         }
 
         // Get the button's text.
@@ -111,22 +111,22 @@ void CTRXButtonBase::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct )
         {
             if ( CTRXGlobal::m_iDarkTheme != 0 )
             {
-                crOldColor = pDC->SetTextColor ( CTRXColors::GetGreyCR() );
+                crOldColor = pDC->SetTextColor ( CTRXColors::GetFGDisabledCR(  CTRXGlobal::m_iDarkTheme != 0) );
             }
             else
             {
-                crOldColor = pDC->SetTextColor ( CTRXColors::GetGreyCR() );
+                crOldColor = pDC->SetTextColor ( CTRXColors::GetFGDisabledCR(  CTRXGlobal::m_iDarkTheme != 0 ) );
             }
         }
         else
         {
             if ( CTRXGlobal::m_iDarkTheme != 0 )
             {
-                crOldColor = pDC->SetTextColor ( CTRXColors::GetWhiteCR() );
+                crOldColor = pDC->SetTextColor ( CTRXColors::GetFGNormalCR( CTRXGlobal::m_iDarkTheme != 0) );
             }
             else
             {
-                crOldColor = pDC->SetTextColor ( CTRXColors::GetBlackCR() );
+                crOldColor = pDC->SetTextColor ( CTRXColors::GetFGNormalCR( CTRXGlobal::m_iDarkTheme != 0) );
             }
 
         }

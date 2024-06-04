@@ -6,29 +6,31 @@
 /////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////
-static DWORD rgbBlack           = RGB(0,0,0);
-static DWORD rgbWhite           = RGB(255,255,255);
-static DWORD rgbGrey            = RGB(128,128,128);
-static DWORD rgbGrey192         = RGB(192,192,192);
+static DWORD rgbBlack           = RGB(0x00,0x00,0x00);
+static DWORD rgbWhite           = RGB(0xFF,0xFF,0xFF);
+static DWORD rgbGrey            = RGB(0x80,0x80,0x80);
+static DWORD rgbGreyC0          = RGB(0xC0,0xC0,0xC0);
 
-static DWORD rgbRed             = RGB(255,0,0);
-static DWORD rgbGreen           = RGB(0,255,0);
-static DWORD rgbBlue            = RGB(0,0,255);
+static DWORD rgbRed             = RGB(0xFF,0x00,0x00);
+static DWORD rgbGreen           = RGB(0x00,0xFF,0x00);
+static DWORD rgbBlue            = RGB(0x00,0x00,0xFF);
 
-static DWORD rgbCyan            = RGB(0,255,255);
-static DWORD rgbMagenta         = RGB(255,0,255);
-static DWORD rgbYellow          = RGB(255,255,0);
+static DWORD rgbCyan            = RGB(0x00,0xFF,0xFF);
+static DWORD rgbMagenta         = RGB(0xFF,0x00,0xFF);
+static DWORD rgbYellow          = RGB(0xFF,0xFF,0x00);
 
-static DWORD rgbBlack32         = RGB(32,32,32);
-static DWORD rgbBlack48         = RGB(48,48,48);
-static DWORD rgbBlack64         = RGB(64,64,64);
-static DWORD rgbWhite208        = RGB(208,208,208);
-static DWORD rgbWhite224        = RGB(224,224,224);
+static DWORD rgbBlack10         = RGB(0x10,0x10,0x10);
+static DWORD rgbBlack20         = RGB(0x20,0x20,0x20);
+static DWORD rgbBlack30         = RGB(0x30,0x30,0x30);
+static DWORD rgbBlack40         = RGB(0x40,0x40,0x40);
+static DWORD rgbWhiteCF         = RGB(0xCF,0xCF,0xCF);
+static DWORD rgbWhiteDF         = RGB(0xDF,0xDF,0xDF);
+static DWORD rgbWhiteEF         = RGB(0xEF,0xEF,0xEF);
 
 static COLORREF crBlack         = COLORREF(rgbBlack);
 static COLORREF crWhite         = COLORREF(rgbWhite);
 static COLORREF crGrey          = COLORREF(rgbGrey);
-static COLORREF crGrey192       = COLORREF(rgbGrey192);
+static COLORREF crGreyC0        = COLORREF(rgbGreyC0);
 
 static COLORREF crRed           = COLORREF(rgbRed);
 static COLORREF crGreen         = COLORREF(rgbGreen);
@@ -38,11 +40,13 @@ static COLORREF crCyan          = COLORREF(rgbCyan);
 static COLORREF crMagenta       = COLORREF(rgbMagenta);
 static COLORREF crYellow        = COLORREF(rgbYellow);
 
-static COLORREF crBlack32           = COLORREF(rgbBlack32);
-static COLORREF crBlack48       = COLORREF(rgbBlack48);
-static COLORREF crBlack64       = COLORREF(rgbBlack64);
-static COLORREF crWhite208      = COLORREF(rgbWhite208);
-static COLORREF crWhite224      = COLORREF(rgbWhite224);
+static COLORREF crBlack10       = COLORREF(rgbBlack10);
+static COLORREF crBlack20       = COLORREF(rgbBlack20);
+static COLORREF crBlack30       = COLORREF(rgbBlack30);
+static COLORREF crBlack40       = COLORREF(rgbBlack40);
+static COLORREF crWhiteCF       = COLORREF(rgbWhiteCF);
+static COLORREF crWhiteDF       = COLORREF(rgbWhiteDF);
+static COLORREF crWhiteEF       = COLORREF(rgbWhiteEF);
 
 
 //
@@ -63,11 +67,13 @@ CBrush CTRXColors::YellowBrush;
 
 CBrush CTRXColors::Grey192Brush;
 
-CBrush CTRXColors::Black32Brush;
-CBrush CTRXColors::Black48Brush;
-CBrush CTRXColors::Black64Brush;
-CBrush CTRXColors::White208Brush;
-CBrush CTRXColors::White224Brush;
+CBrush CTRXColors::Black10Brush;
+CBrush CTRXColors::Black20Brush;
+CBrush CTRXColors::Black30Brush;
+CBrush CTRXColors::Black40Brush;
+CBrush CTRXColors::WhiteCFBrush;
+CBrush CTRXColors::WhiteDFBrush;
+CBrush CTRXColors::WhiteEFBrush;
 
 //
 /////////////////////////////////////////////////////////////////////////////
@@ -162,45 +168,59 @@ void CTRXColors::Instanciate()
     }
 
     //
-    bBrush = Grey192Brush.CreateSolidBrush ( crGrey192 );
+    bBrush = Grey192Brush.CreateSolidBrush ( crGreyC0 );
     if ( bBrush )
     {
         Grey192Brush.UnrealizeObject ( );
     }
 
     //
-    bBrush = Black32Brush.CreateSolidBrush ( crBlack32 );
+    bBrush = Black10Brush.CreateSolidBrush ( crBlack10 );
     if ( bBrush )
     {
-        Black32Brush.UnrealizeObject ( );
+        Black10Brush.UnrealizeObject ( );
     }
 
     //
-    bBrush = Black48Brush.CreateSolidBrush ( crBlack48 );
+    bBrush = Black20Brush.CreateSolidBrush ( crBlack20 );
     if ( bBrush )
     {
-        Black48Brush.UnrealizeObject ( );
+        Black20Brush.UnrealizeObject ( );
     }
 
     //
-    bBrush = Black64Brush.CreateSolidBrush ( crBlack64 );
+    bBrush = Black30Brush.CreateSolidBrush ( crBlack30 );
     if ( bBrush )
     {
-        Black64Brush.UnrealizeObject ( );
+        Black30Brush.UnrealizeObject ( );
     }
 
     //
-    bBrush = White208Brush.CreateSolidBrush ( crWhite208 );
+    bBrush = Black40Brush.CreateSolidBrush ( crBlack40 );
     if ( bBrush )
     {
-        White208Brush.UnrealizeObject ( );
+        Black40Brush.UnrealizeObject ( );
     }
 
     //
-    bBrush = White224Brush.CreateSolidBrush ( crWhite224 );
+    bBrush = WhiteCFBrush.CreateSolidBrush ( crWhiteCF );
     if ( bBrush )
     {
-        White224Brush.UnrealizeObject ( );
+        WhiteCFBrush.UnrealizeObject ( );
+    }
+
+    //
+    bBrush = WhiteDFBrush.CreateSolidBrush ( crWhiteDF );
+    if ( bBrush )
+    {
+        WhiteDFBrush.UnrealizeObject ( );
+    }
+
+    //
+    bBrush = WhiteEFBrush.CreateSolidBrush ( crWhiteEF );
+    if ( bBrush )
+    {
+        WhiteEFBrush.UnrealizeObject ( );
     }
 }
 
@@ -253,34 +273,44 @@ HBRUSH CTRXColors::GetYellowBrush()
     return ( HBRUSH ) YellowBrush.GetSafeHandle ( );
 }
 
-HBRUSH CTRXColors::GetGrey192Brush()
+HBRUSH CTRXColors::GetGreyC0Brush()
 {
     return ( HBRUSH ) Grey192Brush.GetSafeHandle ( );
 }
 
-HBRUSH CTRXColors::GetBlack32Brush()
+HBRUSH CTRXColors::GetBlack10Brush()
 {
-    return ( HBRUSH ) Black32Brush.GetSafeHandle ( );
+    return ( HBRUSH ) Black10Brush.GetSafeHandle ( );
 }
 
-HBRUSH CTRXColors::GetBlack48Brush()
+HBRUSH CTRXColors::GetBlack20Brush()
 {
-    return ( HBRUSH ) Black48Brush.GetSafeHandle ( );
+    return ( HBRUSH ) Black20Brush.GetSafeHandle ( );
 }
 
-HBRUSH CTRXColors::GetBlack64Brush()
+HBRUSH CTRXColors::GetBlack30Brush()
 {
-    return ( HBRUSH ) Black64Brush.GetSafeHandle ( );
+    return ( HBRUSH ) Black30Brush.GetSafeHandle ( );
 }
 
-HBRUSH CTRXColors::GetWhite208Brush()
+HBRUSH CTRXColors::GetBlack40Brush()
 {
-    return ( HBRUSH ) White208Brush.GetSafeHandle ( );
+    return ( HBRUSH ) Black40Brush.GetSafeHandle ( );
 }
 
-HBRUSH CTRXColors::GetWhite224Brush()
+HBRUSH CTRXColors::GetWhiteCFBrush()
 {
-    return ( HBRUSH ) White224Brush.GetSafeHandle ( );
+    return ( HBRUSH ) WhiteCFBrush.GetSafeHandle ( );
+}
+
+HBRUSH CTRXColors::GetWhiteDFBrush()
+{
+    return ( HBRUSH ) WhiteDFBrush.GetSafeHandle ( );
+}
+
+HBRUSH CTRXColors::GetWhiteEFBrush()
+{
+    return ( HBRUSH ) WhiteEFBrush.GetSafeHandle ( );
 }
 
 //
@@ -332,34 +362,44 @@ CBrush *CTRXColors::GetYellowCBrush()
     return &YellowBrush;
 }
 
-CBrush *CTRXColors::GetGrey192CBrush()
+CBrush *CTRXColors::GetGreyC0CBrush()
 {
     return &Grey192Brush;
 }
 
-CBrush *CTRXColors::GetBlack32CBrush()
+CBrush *CTRXColors::GetBlack10CBrush()
 {
-    return &Black32Brush;
+    return &Black10Brush;
 }
 
-CBrush *CTRXColors::GetBlack48CBrush()
+CBrush *CTRXColors::GetBlack20CBrush()
 {
-    return &Black48Brush;
+    return &Black20Brush;
 }
 
-CBrush *CTRXColors::GetBlack64CBrush()
+CBrush *CTRXColors::GetBlack30CBrush()
 {
-    return &Black64Brush;
+    return &Black30Brush;
 }
 
-CBrush *CTRXColors::GetWhite208CBrush()
+CBrush *CTRXColors::GetBlack40CBrush()
 {
-    return &White208Brush;
+    return &Black40Brush;
 }
 
-CBrush *CTRXColors::GetWhite224CBrush()
+CBrush *CTRXColors::GetWhiteCFCBrush()
 {
-    return &White224Brush;
+    return &WhiteCFBrush;
+}
+
+CBrush *CTRXColors::GetWhiteDFCBrush()
+{
+    return &WhiteDFBrush;
+}
+
+CBrush *CTRXColors::GetWhiteEFCBrush()
+{
+    return &WhiteEFBrush;
 }
 
 //
@@ -411,34 +451,44 @@ COLORREF CTRXColors::GetYellowCR()
     return crYellow;
 }
 
-COLORREF CTRXColors::GetGrey192CR()
+COLORREF CTRXColors::GetGreyC0CR()
 {
-    return crGrey192;
+    return crGreyC0;
 }
 
-COLORREF CTRXColors::GetBlack32CR()
+COLORREF CTRXColors::GetBlack10CR()
 {
-    return crBlack32;
+    return crBlack10;
 }
 
-COLORREF CTRXColors::GetBlack48CR()
+COLORREF CTRXColors::GetBlack20CR()
 {
-    return crBlack48;
+    return crBlack20;
 }
 
-COLORREF CTRXColors::GetBlack64CR()
+COLORREF CTRXColors::GetBlack30CR()
 {
-    return crBlack64;
+    return crBlack30;
 }
 
-COLORREF CTRXColors::GetWhite208CR()
+COLORREF CTRXColors::GetBlack40CR()
 {
-    return crWhite208;
+    return crBlack40;
 }
 
-COLORREF CTRXColors::GetWhite224CR()
+COLORREF CTRXColors::GetWhiteCFCR()
 {
-    return crWhite224;
+    return crWhiteCF;
+}
+
+COLORREF CTRXColors::GetWhiteDFCR()
+{
+    return crWhiteDF;
+}
+
+COLORREF CTRXColors::GetWhiteEFCR()
+{
+    return crWhiteEF;
 }
 
 
@@ -453,7 +503,6 @@ COLORREF CTRXColors::GetWhite224CR()
 /////////////////////////////////////////////////////////////////////////////
 HBRUSH CTRXColors::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 {
-
     //
     HBRUSH hBrush = NULL;
 
@@ -473,54 +522,54 @@ HBRUSH CTRXColors::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
         case CTLCOLOR_MSGBOX :
         {
             pDC->SetTextColor(CTRXColors::GetWhiteCR());
-            pDC->SetBkColor(CTRXColors::GetBlack48CR());
+            pDC->SetBkColor(CTRXColors::GetBlack30CR());
             pDC->SetBkMode ( TRANSPARENT );
-            hBrush = CTRXColors::GetBlack48Brush();
+            hBrush = CTRXColors::GetBlack30Brush();
             break;
         }
 
         case CTLCOLOR_EDIT:
         {
             pDC->SetTextColor(CTRXColors::GetWhiteCR());
-            pDC->SetBkColor(CTRXColors::GetBlack32CR());
+            pDC->SetBkColor(CTRXColors::GetBlack10CR());
             pDC->SetBkMode ( TRANSPARENT );
-            hBrush = CTRXColors::GetBlack32Brush();
+            hBrush = CTRXColors::GetBlack10Brush();
             break;
         }
 
         case CTLCOLOR_LISTBOX:
         {
             pDC->SetTextColor(CTRXColors::GetWhiteCR());
-            pDC->SetBkColor(CTRXColors::GetBlack32CR());
+            pDC->SetBkColor(CTRXColors::GetBlack30CR());
             pDC->SetBkMode ( TRANSPARENT );
-            hBrush = CTRXColors::GetBlack32Brush();
+            hBrush = CTRXColors::GetBlack20Brush();
             break;
         }
 
         case CTLCOLOR_BTN:
         {
             pDC->SetTextColor(CTRXColors::GetWhiteCR());
-            pDC->SetBkColor(CTRXColors::GetBlack48CR());
+            pDC->SetBkColor(CTRXColors::GetBlack30CR());
             pDC->SetBkMode ( TRANSPARENT );
-            hBrush = CTRXColors::GetBlack48Brush();
+            hBrush = CTRXColors::GetBlack30Brush();
             break;
         }
 
         case CTLCOLOR_DLG:
         {
             pDC->SetTextColor(CTRXColors::GetWhiteCR());
-            pDC->SetBkColor(CTRXColors::GetBlack48CR());
+            pDC->SetBkColor(CTRXColors::GetBlack30CR());
             pDC->SetBkMode ( TRANSPARENT );
-            hBrush = CTRXColors::GetBlack48Brush();
+            hBrush = CTRXColors::GetBlack30Brush();
             break;
         }
 
         case CTLCOLOR_SCROLLBAR:
         {
             pDC->SetTextColor(CTRXColors::GetWhiteCR());
-            pDC->SetBkColor(CTRXColors::GetBlack48CR());
+            pDC->SetBkColor(CTRXColors::GetBlack30CR());
             pDC->SetBkMode ( TRANSPARENT );
-            hBrush = CTRXColors::GetBlack48Brush();
+            hBrush = CTRXColors::GetBlack30Brush();
             break;
         }
 
@@ -528,19 +577,19 @@ HBRUSH CTRXColors::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
         case CTLCOLOR_STATIC:
         {
             pDC->SetTextColor(CTRXColors::GetWhiteCR());
-            pDC->SetBkColor(CTRXColors::GetBlack64CR());
+            pDC->SetBkColor(CTRXColors::GetBlack30CR());
             //  Transparent makes scroll garbage
             // pDC->SetBkMode ( TRANSPARENT );
-            hBrush = CTRXColors::GetBlack64Brush();
+            hBrush = CTRXColors::GetBlack30Brush();
             break;
         }
 
         default :
         {
             pDC->SetTextColor(CTRXColors::GetWhiteCR());
-            pDC->SetBkColor(CTRXColors::GetBlack48CR());
+            pDC->SetBkColor(CTRXColors::GetBlack30CR());
             pDC->SetBkMode ( TRANSPARENT );
-            hBrush = CTRXColors::GetBlack48Brush();
+            hBrush = CTRXColors::GetBlack30Brush();
             break;
         }
     }
@@ -570,7 +619,7 @@ BOOL CTRXColors::OnEraseBkgnd(CDC* pDC, CWnd* pWnd)
     pWnd->GetClientRect ( &rectFrame );
 
     //
-    pDC->FillRect ( &rectFrame, CTRXColors::GetBlack64CBrush() );
+    pDC->FillRect ( &rectFrame, CTRXColors::GetBlack30CBrush() );
 
     //
     return TRUE;
@@ -612,3 +661,323 @@ void CTRXColors::SetWindowTheme ( CWnd *pWnd )
 {
     ::SetWindowTheme ( pWnd->GetSafeHwnd(), WINDOWS_THEME_RESET  );
 }
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//  Public
+/////////////////////////////////////////////////////////////////////////////
+//
+//  Foreground COLORREF
+COLORREF CTRXColors::GetFGNormalCR ( bool bDark )
+{
+    if ( bDark )
+    {
+        return GetWhiteDFCR();
+    }
+    else
+    {
+        return GetBlack30CR();
+    }
+}
+
+COLORREF CTRXColors::GetFGSelectedCR ( bool bDark )
+{
+    if ( bDark )
+    {
+        return GetWhiteCR();
+    }
+    else
+    {
+        return GetBlackCR();
+    }
+}
+
+
+COLORREF CTRXColors::GetFGDisabledCR ( bool bDark )
+{
+    if ( bDark )
+    {
+        return GetGreyCR();
+    }
+    else
+    {
+        return GetGreyCR();
+    }
+}
+
+COLORREF CTRXColors::GetFGMenuCR ( bool bDark )
+{
+    if ( bDark )
+    {
+        return GetWhiteDFCR();
+    }
+    else
+    {
+        return GetBlack40CR();
+    }
+}
+
+COLORREF CTRXColors::GetFGMenuSelectedCR ( bool bDark )
+{
+    if ( bDark )
+    {
+        return GetWhiteCR();
+    }
+    else
+    {
+        return GetBlackCR();
+    }
+}
+
+COLORREF CTRXColors::GetFGHeaderCR ( bool bDark )
+{
+    if ( bDark )
+    {
+        return GetWhiteEFCR();
+    }
+    else
+    {
+        return GetBlack10CR();
+    }
+}
+
+//
+//  Background COLORREF
+COLORREF CTRXColors::GetBKNormalCR ( bool bDark )
+{
+    return GetFGNormalCR ( ! bDark );
+}
+
+COLORREF CTRXColors::GetBKSelectedCR ( bool bDark )
+{
+    return GetFGSelectedCR ( ! bDark );
+}
+
+COLORREF CTRXColors::GetBKDisabledCR ( bool bDark )
+{
+    return GetFGDisabledCR ( ! bDark );
+}
+
+COLORREF CTRXColors::GetBKMenuCR ( bool bDark )
+{
+    return GetFGMenuCR ( ! bDark );
+}
+
+COLORREF CTRXColors::GetBKMenuSelectedCR ( bool bDark )
+{
+    return GetFGMenuSelectedCR ( ! bDark );
+}
+
+COLORREF CTRXColors::GetBKHeaderCR ( bool bDark )
+{
+    return GetFGHeaderCR ( ! bDark );
+}
+
+//  Foreground CBrush
+CBrush * CTRXColors::GetFGNormalCBrush ( bool bDark )
+{
+    if ( bDark )
+    {
+        return GetWhiteDFCBrush();
+    }
+    else
+    {
+        return GetBlack30CBrush();
+    }
+}
+
+CBrush * CTRXColors::GetFGSelectedCBrush ( bool bDark )
+{
+    if ( bDark )
+    {
+        return GetWhiteCBrush();
+    }
+    else
+    {
+        return GetBlackCBrush();
+    }
+}
+
+CBrush * CTRXColors::GetFGDisabledCBrush ( bool bDark )
+{
+    if ( bDark )
+    {
+        return GetGreyCBrush();
+    }
+    else
+    {
+        return GetGreyCBrush();
+    }
+}
+
+CBrush * CTRXColors::GetFGMenuCBrush ( bool bDark )
+{
+    if ( bDark )
+    {
+        return GetWhiteDFCBrush();
+    }
+    else
+    {
+        return GetBlack40CBrush();
+    }
+}
+
+CBrush * CTRXColors::GetFGMenuSelectedCBrush ( bool bDark )
+{
+    if ( bDark )
+    {
+        return GetWhiteCBrush();
+    }
+    else
+    {
+        return GetBlackCBrush();
+    }
+}
+
+CBrush * CTRXColors::GetFGHeaderCBrush ( bool bDark )
+{
+    if ( bDark )
+    {
+        return GetWhiteEFCBrush();
+    }
+    else
+    {
+        return GetBlack10CBrush();
+    }
+}
+
+//
+CBrush * CTRXColors::GetBKNormalCBrush ( bool bDark )
+{
+    return GetFGNormalCBrush ( ! bDark );
+}
+
+CBrush * CTRXColors::GetBKSelectedCBrush( bool bDark )
+{
+    return GetFGSelectedCBrush ( ! bDark );
+}
+
+CBrush * CTRXColors::GetBKDisabledCBrush ( bool bDark )
+{
+    return GetFGDisabledCBrush ( ! bDark );
+}
+
+CBrush * CTRXColors::GetBKMenuCBrush( bool bDark )
+{
+    return GetFGMenuCBrush ( ! bDark );
+}
+
+CBrush * CTRXColors::GetBKMenuSelectedCBrush( bool bDark )
+{
+    return GetFGMenuSelectedCBrush ( ! bDark );
+}
+
+CBrush * CTRXColors::GetBKHeaderCBrush( bool bDark )
+{
+    return GetFGHeaderCBrush ( ! bDark );
+}
+
+//  Foreground HBRUSH
+HBRUSH CTRXColors::GetFGNormalBrush ( bool bDark )
+{
+    if ( bDark )
+    {
+        return GetWhiteDFBrush();
+    }
+    else
+    {
+        return GetBlack30Brush();
+    }
+}
+
+HBRUSH CTRXColors::GetFGSelectedBrush ( bool bDark )
+{
+    if ( bDark )
+    {
+        return GetWhiteBrush();
+    }
+    else
+    {
+        return GetBlackBrush();
+    }
+}
+
+HBRUSH CTRXColors::GetFGDisabledBrush ( bool bDark )
+{
+    if ( bDark )
+    {
+        return GetGreyBrush();
+    }
+    else
+    {
+        return GetGreyBrush();
+    }
+}
+
+HBRUSH CTRXColors::GetFGMenuBrush ( bool bDark )
+{
+    if ( bDark )
+    {
+        return GetWhiteDFBrush();
+    }
+    else
+    {
+        return GetBlack40Brush();
+    }
+}
+
+HBRUSH CTRXColors::GetFGMenuSelectedBrush ( bool bDark )
+{
+    if ( bDark )
+    {
+        return GetWhiteBrush();
+    }
+    else
+    {
+        return GetBlackBrush();
+    }
+}
+
+HBRUSH CTRXColors::GetFGHeaderBrush ( bool bDark )
+{
+    if ( bDark )
+    {
+        return GetWhiteEFBrush();
+    }
+    else
+    {
+        return GetBlack10Brush();
+    }
+}
+
+//
+HBRUSH CTRXColors::GetBKNormalBrush ( bool bDark )
+{
+    return GetFGNormalBrush ( ! bDark );
+}
+
+HBRUSH CTRXColors::GetBKSelectedBrush( bool bDark )
+{
+    return GetFGSelectedBrush ( ! bDark );
+}
+
+HBRUSH CTRXColors::GetBKDisabledBrush ( bool bDark )
+{
+    return GetFGDisabledBrush ( ! bDark );
+}
+
+HBRUSH CTRXColors::GetBKMenuBrush( bool bDark )
+{
+    return GetFGMenuBrush ( ! bDark );
+}
+
+HBRUSH CTRXColors::GetBKMenuSelectedBrush( bool bDark )
+{
+    return GetFGMenuSelectedBrush ( ! bDark );
+}
+
+HBRUSH CTRXColors::GetBKHeaderBrush( bool bDark )
+{
+    return GetFGHeaderBrush ( ! bDark );
+}
+

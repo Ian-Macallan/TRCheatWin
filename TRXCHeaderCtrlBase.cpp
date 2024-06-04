@@ -125,22 +125,22 @@ void CTRXCHeaderCtrlBase::OnNMCustomdraw(NMHDR *pNMHDR, LRESULT *pResult)
                 CDC *pDC= CDC::FromHandle ( pNMCD->hdc );
 
                 pDC->SetBkMode ( TRANSPARENT );
-                pDC->SetTextColor ( CTRXColors::GetWhiteCR() );
+                pDC->SetTextColor ( CTRXColors::GetFGHeaderCR(true) );
                 if ( tagHeaderInfo.iImage == 0 )
                 {
-                    pDC->FillRect ( &rectLabel, CTRXColors::GetBlack32CBrush() );
+                    pDC->FillRect ( &rectLabel, CTRXColors::GetBKHeaderCBrush(true) );
                     // EraseRectWithGrade0 ( &rectLabel, pDC );
                     // DrawBitmap ( pDC->m_hDC, &rectLabel );
                 }
                 else if ( tagHeaderInfo.iImage == 1 )
                 {
-                    pDC->FillRect ( &rectLabel, CTRXColors::GetBlack32CBrush() );
+                    pDC->FillRect ( &rectLabel, CTRXColors::GetBKHeaderCBrush(true) );
                     // EraseRectWithGrade1 ( &rectLabel, pDC );
                     // DrawBitmapDes ( pDC->m_hDC, &rectLabel );
                 }
                 else if ( tagHeaderInfo.iImage == 2 )
                 {
-                    pDC->FillRect ( &rectLabel, CTRXColors::GetBlack32CBrush() );
+                    pDC->FillRect ( &rectLabel, CTRXColors::GetBKHeaderCBrush(true) );
                     // EraseRectWithGrade2 ( &rectLabel, pDC );
                     // DrawBitmapAsc ( pDC->m_hDC, &rectLabel );
                 }
@@ -148,11 +148,11 @@ void CTRXCHeaderCtrlBase::OnNMCustomdraw(NMHDR *pNMHDR, LRESULT *pResult)
                 {
                     if ( iCol % 2 == 0 )
                     {
-                        pDC->FillRect ( &rectLabel, CTRXColors::GetBlack32CBrush() );
+                        pDC->FillRect ( &rectLabel, CTRXColors::GetBKHeaderCBrush(true) );
                     }
                     else
                     {
-                        pDC->FillRect ( &rectLabel, CTRXColors::GetBlack48CBrush() );
+                        pDC->FillRect ( &rectLabel, CTRXColors::GetBKHeaderCBrush(true) );
                     }
 
                     //DrawBitmap ( pDC->m_hDC, &rectLabel );
@@ -191,3 +191,4 @@ void CTRXCHeaderCtrlBase::OnNMCustomdraw(NMHDR *pNMHDR, LRESULT *pResult)
         }
     }
 }
+

@@ -4,14 +4,6 @@
 #include "TRXCHEATWIN.h"
 #include "TRXCHEATWINDlg.h"
 
-#include "TRXEquipmentPage.h"   // Added by ClassView
-#include "TRXGunPage.h" // Added by ClassView
-#include "TRXInfoPage.h"    // Added by ClassView
-#include "TRXItems.h"   // Added by ClassView
-#include "TRXItemsTR4.h"    // Added by ClassView
-#include "TRXAmmosPage.h"   // Added by ClassView
-#include "TRXRemastered.h"  // Added by ClassView
-
 #include "TRXPropertySheet.h"
 #include "TRXColors.h"
 #include "TRXGlobal.h"
@@ -20,7 +12,8 @@
 extern CTRXCHEATWINApp theApp;
 
 //
-#define TAB_TEXT_SIZE   60
+#define TAB_TEXT_SIZE       60
+#define MAX_TAB_SIZE        60
 
 //
 /////////////////////////////////////////////////////////////////////////////
@@ -58,6 +51,14 @@ CTRXPropertySheet::CTRXPropertySheet(UINT nIDCaption, CWnd* pParentWnd, UINT iSe
     m_hIcon             = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 
     m_pMenu             = NULL;
+
+    m_bToolTip          = FALSE;
+
+    m_pNormalFont       = NULL;
+    m_pItalicFont       = NULL;
+    m_pBoldFont         = NULL;
+    m_pFixedFont        = NULL;
+    m_pFixedBoldFont    = NULL;
 }
 
 //
@@ -84,6 +85,14 @@ CTRXPropertySheet::CTRXPropertySheet(LPCTSTR pszCaption, CWnd* pParentWnd, UINT 
     m_hIcon             = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 
     m_pMenu             = NULL;
+
+    m_bToolTip          = FALSE;
+
+    m_pNormalFont       = NULL;
+    m_pItalicFont       = NULL;
+    m_pBoldFont         = NULL;
+    m_pFixedFont        = NULL;
+    m_pFixedBoldFont    = NULL;
 }
 
 //
@@ -92,8 +101,15 @@ CTRXPropertySheet::CTRXPropertySheet(LPCTSTR pszCaption, CWnd* pParentWnd, UINT 
 /////////////////////////////////////////////////////////////////////////////
 CTRXPropertySheet::~CTRXPropertySheet()
 {
+#define DELETE_OBJECT(o) if ( o != NULL ) { delete o; o = NULL; }
+
     RemoveStandardPage ();
     RemoveRemasteredPage();
+
+    DELETE_OBJECT(m_pItalicFont)
+    DELETE_OBJECT(m_pBoldFont)
+    DELETE_OBJECT(m_pFixedFont)
+    DELETE_OBJECT(m_pFixedBoldFont)
 }
 
 //
@@ -285,6 +301,7 @@ BEGIN_MESSAGE_MAP(CTRXPropertySheet, CPropertySheet)
 
     ON_WM_LBUTTONUP()
     ON_WM_MOUSEMOVE()
+
 END_MESSAGE_MAP()
 
 
@@ -295,6 +312,45 @@ END_MESSAGE_MAP()
 BOOL CTRXPropertySheet::OnInitDialog()
 {
     BOOL bResult = CPropertySheet::OnInitDialog();
+
+    // TODO
+    //
+    TEXTMETRIC textMetrics;
+    CDC *pDC = GetDC();
+    GetTextMetrics ( pDC->m_hDC, &textMetrics );
+    ReleaseDC ( pDC );
+
+    //  Create Fonts
+    LOGFONT logDefaultFont;
+    LOGFONT logFont;
+
+    m_pNormalFont               = GetFont();
+    m_pNormalFont->GetLogFont(&logDefaultFont);
+
+    logFont                     = logDefaultFont;
+    logFont.lfWeight            = FW_BOLD;
+    m_pBoldFont                 = new CFont();
+    m_pBoldFont->CreateFontIndirect(&logFont);    // Create the font.
+
+    logFont                     = logDefaultFont;
+    logFont.lfItalic            = TRUE;
+    m_pItalicFont               = new CFont();
+    m_pItalicFont->CreateFontIndirect(&logFont);    // Create the font.
+
+    logFont                     = logDefaultFont;
+    m_pFixedFont                = new CFont();
+    logFont.lfPitchAndFamily    = FIXED_PITCH;
+    logFont.lfHeight            = (LONG) ( (float) textMetrics.tmHeight * 1.10 );
+    strcpy_s(logFont.lfFaceName, sizeof(logFont.lfFaceName), "Courier New");
+    m_pFixedFont->CreateFontIndirect(&logFont);    // Create the font.
+
+    logFont                     = logDefaultFont;
+    m_pFixedBoldFont            = new CFont();
+    logFont.lfPitchAndFamily    = FIXED_PITCH;
+    logFont.lfWeight            = FW_BOLD;
+    logFont.lfHeight            = (LONG) ( (float) textMetrics.tmHeight * 1.10 );
+    strcpy_s(logFont.lfFaceName, sizeof(logFont.lfFaceName), "Courier New");
+    m_pFixedBoldFont->CreateFontIndirect(&logFont);    // Create the font.
 
     //
     CTRXColors::SetWindowTheme ( this );
@@ -322,7 +378,6 @@ BOOL CTRXPropertySheet::OnInitDialog()
 
     if ( GetParent() == NULL )
     {
-
         // TODO
         // Add "About..." menu item to system menu.
 
@@ -358,6 +413,17 @@ BOOL CTRXPropertySheet::OnInitDialog()
         }
     }
 
+    if ( ! m_bToolTip )
+    {
+        if ( m_ToolTip.Create(this) )
+        {
+            m_bToolTip  = TRUE;
+            m_ToolTip.SetMaxTipWidth ( 392 );
+            m_ToolTip.SetFont ( m_pFixedBoldFont );
+            m_ToolTip.SetColors ( );
+        }
+    }
+
     //  Subclass Buttons
     CWnd *pwndOK        = GetDlgItem ( IDOK );
     if ( pwndOK )
@@ -389,6 +455,12 @@ BOOL CTRXPropertySheet::OnInitDialog()
         m_ApplyNow.SubclassDlgItem ( ID_APPLY_NOW, this );
         m_ApplyNow.ModifyStyle ( NULL, BS_OWNERDRAW );
         m_ApplyNow.SetWindowText ( "Apply" );
+    }
+
+    //
+    if ( m_bToolTip )
+    {
+        m_ToolTip.Activate(  TRUE );
     }
 
     m_bInitDone = true;
@@ -438,6 +510,7 @@ void CTRXPropertySheet::AddStandardPage ()
             GetPage(i)->m_psp.dwFlags &= ~PSP_HASHELP;
         }
 #endif
+
     }
 }
 
@@ -633,7 +706,7 @@ void CTRXPropertySheet::OnDrawItem(int nIDCtl, LPDRAWITEMSTRUCT lpDrawItemStruct
 
             tci.mask            = TCIF_TEXT;
             tci.pszText         = szTabText;
-            tci.cchTextMax       = sizeof ( szTabText );
+            tci.cchTextMax      = sizeof ( szTabText );
 
             pTab->GetItem ( lpDrawItemStruct->itemID, &tci );
 
@@ -645,34 +718,18 @@ void CTRXPropertySheet::OnDrawItem(int nIDCtl, LPDRAWITEMSTRUCT lpDrawItemStruct
                 UINT uStyle = 0; // DFCS_ADJUSTRECT; // DFCS_FLAT; // ;
                 CRect   rect = lpDrawItemStruct->rcItem;
                 // pDC->DrawFrameControl ( &lpDrawItemStruct->rcItem, DFC_BUTTON, uStyle );
-                if ( CTRXGlobal::m_iDarkTheme != 0 )
                 {
                     RECT rect       = lpDrawItemStruct->rcItem;
                     rect.top        = rect.top;
                     rect.left       = rect.left;
                     rect.bottom     = rect.bottom;
                     rect.right      = rect.right;
-                    pDC->FillRect ( &rect, CTRXColors::GetBlack32CBrush() );
+                    pDC->FillRect ( &rect, CTRXColors::GetBKHeaderCBrush( CTRXGlobal::m_iDarkTheme != 0 ) );
                 }
-                else
-                {
-                    RECT rect       = lpDrawItemStruct->rcItem;
-                    rect.top        = rect.top;
-                    rect.left       = rect.left;
-                    rect.bottom     = rect.bottom;
-                    rect.right      = rect.right;
-                    pDC->FillRect ( &rect, CTRXColors::GetWhite224CBrush() );
-                }
-                if ( CTRXGlobal::m_iDarkTheme != 0 )
+
                 {
                     pDC->SetBkMode( TRANSPARENT );
-                    pDC->SetTextColor ( CTRXColors::GetWhiteCR() );
-                }
-                else
-                {
-                    pDC->SetBkMode( TRANSPARENT );
-                    //pDC->SetBkColor( );
-                    pDC->SetTextColor ( CTRXColors::GetBlackCR() );
+                    pDC->SetTextColor ( CTRXColors::GetFGHeaderCR ( CTRXGlobal::m_iDarkTheme != 0 ) );
                 }
 
                 pDC->DrawText ( szTabText, &lpDrawItemStruct->rcItem, DT_SINGLELINE|DT_VCENTER|DT_CENTER );
@@ -798,9 +855,6 @@ void CTRXPropertySheet::OnNcLButtonDown(UINT nHitTest, CPoint point)
     }
 
     CPropertySheet::OnNcLButtonDown(nHitTest, point);
-#if 0
-     m_NC.PaintCaption ( this, TRUE );
-#endif
 }
 
 //
@@ -857,8 +911,6 @@ void CTRXPropertySheet::OnNcMouseMove(UINT nHitTest, CPoint point)
 /////////////////////////////////////////////////////////////////////////////
 void CTRXPropertySheet::OnNcMouseHover(UINT nFlags, CPoint point)
 {
-    // Cette fonctionnalité requiert Windows 2000 ou une version ultérieure.
-    // Les symboles _WIN32_WINNT et WINVER doivent être >= 0x0500.
     // TODO
     BOOL bTreated = m_NC.OnNcMouseHover ( this, nFlags, point );
     if ( bTreated )
@@ -875,8 +927,6 @@ void CTRXPropertySheet::OnNcMouseHover(UINT nFlags, CPoint point)
 /////////////////////////////////////////////////////////////////////////////
 void CTRXPropertySheet::OnNcMouseLeave()
 {
-    // Cette fonctionnalité requiert Windows 2000 ou une version ultérieure.
-    // Les symboles _WIN32_WINNT et WINVER doivent être >= 0x0500.
     // TODO
     BOOL bTreated = m_NC.OnNcMouseLeave (this);
     if ( bTreated )
@@ -898,3 +948,16 @@ void CTRXPropertySheet::OnLButtonUp(UINT nFlags, CPoint point)
     BOOL bTreated = m_NC.OnLButtonUp (this, nFlags, point );
     CPropertySheet::OnLButtonUp(nFlags, point);
 }
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
+void CTRXPropertySheet::SetThemeChanged ( bool bDarkTheme )
+{
+    if ( m_bToolTip )
+    {
+        m_ToolTip.SetColors();
+    }
+}
+

@@ -428,6 +428,8 @@ void CTRXPropertySheetAll::OnSysCommand(UINT nID, LPARAM lParam)
             if ( m_ItemTR4_Page != NULL ) m_ItemTR4_Page->SetThemeChanged (  CTRXGlobal::m_iDarkTheme != 0 );
             if ( m_Remastered_Page != NULL ) m_Remastered_Page->SetThemeChanged (  CTRXGlobal::m_iDarkTheme != 0 );
 
+            SetThemeChanged (  CTRXGlobal::m_iDarkTheme != 0 );
+
             //  Redraw Window
             Invalidate();
         }

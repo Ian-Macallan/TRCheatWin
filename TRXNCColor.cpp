@@ -301,7 +301,7 @@ void CTRXNCColor::DrawIconFrame ( CDC *pDC, const CRect crect, bool bFillRect, C
         }
         else
         {
-            pDC->FillRect ( &rect, CTRXColors::GetBlack48CBrush() );
+            pDC->FillRect ( &rect, CTRXColors::GetBKNormalCBrush( true ) );
         }
     }
 
@@ -373,7 +373,7 @@ BOOL CTRXNCColor::PaintCaption( CWnd *pWnd, BOOL bActive )
     pWnd->GetWindowRect(&windowRECT);
 
     //
-    COLORREF foregroundColor = CTRXColors::GetWhiteCR();
+    COLORREF foregroundColor = CTRXColors::GetFGNormalCR(true);
 
     //  First Draw Frmae Rect Around the window
     CRect frameFullRECT     = GetFrameFullRect ( windowRECT );
@@ -385,11 +385,11 @@ BOOL CTRXNCColor::PaintCaption( CWnd *pWnd, BOOL bActive )
     //
     if ( bActive )
     {
-        pDC->FillSolidRect(&captionFullRECT, CTRXColors::GetBlack32CR());
+        pDC->FillSolidRect(&captionFullRECT, CTRXColors::GetBKSelectedCR(true));
     }
     else
     {
-        pDC->FillSolidRect(&captionFullRECT, CTRXColors::GetBlack48CR());
+        pDC->FillSolidRect(&captionFullRECT, CTRXColors::GetBKNormalCR(true));
     }
 
     //
@@ -489,7 +489,7 @@ BOOL CTRXNCColor::PaintWindow( CWnd *pWnd, BOOL bActive )
 
     //
     RECT clientFullRect = GetClientFullRect ( windowRECT );
-    pDC->FillRect ( &clientFullRect, CTRXColors::GetBlack48CBrush() );
+    pDC->FillRect ( &clientFullRect, CTRXColors::GetBKNormalCBrush(true) );
 
     //
     pWnd->ReleaseDC ( pDC );
@@ -858,7 +858,7 @@ BOOL CTRXNCColor::OnNcMouseHover(CWnd *pWnd, UINT nFlags, CPoint point)
             }
             else
             {
-                DrawIconFrame ( pDC, m_MaximizeRect, true, CTRXColors::GetBlack64CBrush() );
+                DrawIconFrame ( pDC, m_MaximizeRect, true, CTRXColors::GetBKNormalCBrush(true) );
             }
             pWnd->ReleaseDC ( pDC );
             m_iHover    = IDI_MAXIMIZE;
@@ -883,7 +883,7 @@ BOOL CTRXNCColor::OnNcMouseHover(CWnd *pWnd, UINT nFlags, CPoint point)
             }
             else
             {
-                DrawIconFrame ( pDC, m_MinimizeRect, true, CTRXColors::GetBlack64CBrush() );
+                DrawIconFrame ( pDC, m_MinimizeRect, true, CTRXColors::GetBKNormalCBrush(true) );
             }
             pWnd->ReleaseDC ( pDC );
             m_iHover    = IDI_MINIMIZE;

@@ -1,8 +1,15 @@
 #pragma once
 
-#include "TRXAmmosPage.h"
 #include "TRXMenuBase.h"
 #include "TRXNCColor.h"
+
+#include "TRXEquipmentPage.h"   // Added by ClassView
+#include "TRXGunPage.h" // Added by ClassView
+#include "TRXInfoPage.h"    // Added by ClassView
+#include "TRXItems.h"   // Added by ClassView
+#include "TRXItemsTR4.h"    // Added by ClassView
+#include "TRXAmmosPage.h"   // Added by ClassView
+#include "TRXRemastered.h"  // Added by ClassView
 
 enum PROPERTY_PAGE
 {
@@ -24,8 +31,8 @@ class CTRXPropertySheet : public CPropertySheet
 {
         DECLARE_DYNAMIC(CTRXPropertySheet)
 
-        friend class CTRXRemastered;
-        friend class CTRXInfoPage;
+        // friend class CTRXRemastered;
+        // friend class CTRXInfoPage;
 
     protected  :
         CTRXRemastered          *m_Remastered_Page;
@@ -52,6 +59,17 @@ class CTRXPropertySheet : public CPropertySheet
         //  Handle Npn Client
         CTRXNCColor             m_NC;
 
+    protected :
+        CTRXCToolTipCtrlBase    m_ToolTip;
+        BOOL                    m_bToolTip;
+
+    public :    
+        CFont                   *m_pBoldFont;
+        CFont                   *m_pItalicFont;
+        CFont                   *m_pNormalFont;
+        CFont                   *m_pFixedFont;
+        CFont                   *m_pFixedBoldFont;
+
     public:
         CTRXPropertySheet(UINT nIDCaption, CWnd* pParentWnd = NULL, UINT iSelectPage = 0);
         CTRXPropertySheet(LPCTSTR pszCaption, CWnd* pParentWnd = NULL, UINT iSelectPage = 0);
@@ -68,6 +86,8 @@ class CTRXPropertySheet : public CPropertySheet
         void SetTheActivePage ( PROPERTY_PAGE page );
         void DropToPage ( PROPERTY_PAGE page, const char *pFilename );
 
+        virtual void SetThemeChanged ( bool bDarkTheme );
+
     // Attributes
     public:
         BOOL    m_bApplyActive;
@@ -80,6 +100,7 @@ class CTRXPropertySheet : public CPropertySheet
 
     public:
         virtual BOOL OnInitDialog();
+
         afx_msg void OnSysCommand(UINT nID, LPARAM lParam);
         afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
         afx_msg BOOL OnEraseBkgnd(CDC* pDC);
@@ -94,8 +115,8 @@ class CTRXPropertySheet : public CPropertySheet
         afx_msg void OnNcMouseMove(UINT nHitTest, CPoint point);
         afx_msg void OnNcMouseHover(UINT nFlags, CPoint point);
         afx_msg void OnNcMouseLeave();
-
         afx_msg void OnLButtonUp(UINT nFlags, CPoint point);
+
 };
 
 

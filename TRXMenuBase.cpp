@@ -421,28 +421,16 @@ void CTRXMenuBase::DrawMenuItem (   LPDRAWITEMSTRUCT lpDrawItemStruct, CDC *pDC,
     ZeroMemory ( szText, sizeof(szText) );
 
     //
-    HBRUSH      hForeground     = CTRXColors::GetWhite208Brush();
-    HBRUSH      hFGSelected     = CTRXColors::GetWhiteBrush();
+    HBRUSH      hForeground     = CTRXColors::GetFGMenuBrush(CTRXGlobal::m_iDarkTheme != 0);
+    HBRUSH      hFGSelected     = CTRXColors::GetFGMenuSelectedBrush(CTRXGlobal::m_iDarkTheme != 0);
 
-    CBrush      *brBKNormal     = CTRXColors::GetBlack32CBrush();
-    CBrush      *brBKSelected   = CTRXColors::GetWhite208CBrush();
+    CBrush      *brBKNormal     = CTRXColors::GetBKMenuCBrush(CTRXGlobal::m_iDarkTheme != 0);
+    CBrush      *brBKSelected   = CTRXColors::GetBKMenuSelectedCBrush(CTRXGlobal::m_iDarkTheme != 0);
 
-    COLORREF    crForeground    = CTRXColors::GetWhite208CR();
-    COLORREF    crFGSelected    = CTRXColors::GetWhiteCR();
-    COLORREF    crDisabled      = CTRXColors::GetGreyCR();
+    COLORREF    crForeground    = CTRXColors::GetFGMenuCR(CTRXGlobal::m_iDarkTheme != 0);
+    COLORREF    crFGSelected    = CTRXColors::GetFGMenuSelectedCR(CTRXGlobal::m_iDarkTheme != 0);
 
-    if ( CTRXGlobal::m_iDarkTheme == 0 )
-    {
-        hForeground     = CTRXColors::GetBlack64Brush();
-        hFGSelected     = CTRXColors::GetMagentaBrush();
-
-        brBKNormal      = CTRXColors::GetWhite208CBrush();
-        brBKSelected    = CTRXColors::GetBlack32CBrush();
-
-        crForeground    = CTRXColors::GetBlack32CR();
-        crFGSelected    = CTRXColors::GetMagentaCR();
-        crDisabled      = CTRXColors::GetGreyCR();
-    }
+    COLORREF    crDisabled      = CTRXColors::GetFGDisabledCR(CTRXGlobal::m_iDarkTheme != 0);
 
     //  The entire control needs to be drawn
     //  This is called line by line
@@ -467,15 +455,15 @@ void CTRXMenuBase::DrawMenuItem (   LPDRAWITEMSTRUCT lpDrawItemStruct, CDC *pDC,
 
         if ( CTRXGlobal::m_iDarkTheme != 0 )
         {
-            // bDone = pDC->DrawIcon ( lpDrawItemStruct->rcItem.left, lpDrawItemStruct->rcItem.top, m_hCheckWhiteIcon );
+            //
             DrawIconEx ( pDC->m_hDC, lpDrawItemStruct->rcItem.left, lpDrawItemStruct->rcItem.top, m_hCheckWhiteIcon, xIconSmall, yIconSmall, 0, NULL, DI_NORMAL );
         }
         else
         {
-            // bDone = pDC->DrawIcon ( lpDrawItemStruct->rcItem.left, lpDrawItemStruct->rcItem.top, m_hCheckBlackIcon );
+            //
             DrawIconEx ( pDC->m_hDC, lpDrawItemStruct->rcItem.left, lpDrawItemStruct->rcItem.top, m_hCheckBlackIcon, xIconSmall, yIconSmall, 0, NULL, DI_NORMAL );
         }
-        // bDone = pDC->DrawFrameControl ( &lpDrawItemStruct->rcItem, DFC_MENU, DFCS_CHECKED );
+        //
         pDC->SelectObject ( hOldBrush );
     }
 
@@ -518,8 +506,14 @@ void CTRXMenuBase::DrawMenuItem (   LPDRAWITEMSTRUCT lpDrawItemStruct, CDC *pDC,
 
     if ( pText != NULL && strlen ( pText ) > 0 )
     {
-        pDC->FillRect ( pRect, brBKNormal );
-
+        if ( lpDrawItemStruct->itemState & ODS_SELECTED )
+        {
+            pDC->FillRect ( pRect, brBKSelected );
+        }
+        else
+        {
+            pDC->FillRect ( pRect, brBKNormal );
+        }
 
         bkMode          = pDC->SetBkMode ( TRANSPARENT );
         pRect->left     += EXTRA_PIXELS_WIDTH / 2;
@@ -544,20 +538,20 @@ void CTRXMenuBase::DrawMenuItem (   LPDRAWITEMSTRUCT lpDrawItemStruct, CDC *pDC,
     }
     else
     {
-        pDC->FillRect ( pRect, brBKNormal );
+        if ( lpDrawItemStruct->itemState & ODS_SELECTED )
+        {
+            pDC->FillRect ( pRect, brBKSelected );
+        }
+        else
+        {
+            pDC->FillRect ( pRect, brBKNormal );
+        }
 
         bkMode          = pDC->SetBkMode ( TRANSPARENT );
 
         int penSize = 1;
         CTRXPen penBlack;
-        if ( CTRXGlobal::m_iDarkTheme != 0 )
-        {
-            penBlack.CreatePen(PS_SOLID, penSize, CTRXColors::GetWhiteCR() );
-        }
-        else
-        {
-            penBlack.CreatePen(PS_SOLID, penSize, CTRXColors::GetBlackCR() );
-        }
+        penBlack.CreatePen(PS_SOLID, penSize, CTRXColors::GetFGMenuCR(CTRXGlobal::m_iDarkTheme != 0) );
         CPen* pOldPen = pDC->SelectObject(&penBlack);
 
         pRect->left     += EXTRA_PIXELS_WIDTH / 2;

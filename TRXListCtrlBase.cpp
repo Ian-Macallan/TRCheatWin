@@ -137,20 +137,20 @@ void CTRXListCtrlBase::OnNMCustomdraw(NMHDR *pNMHDR, LRESULT *pResult)
                 //  Test If line is selected
                 if ( bSelected )
                 {
-                    pDC->FillRect ( &rectLabel, CTRXColors::GetBlackCBrush() );
-                    pDC->SetTextColor ( CTRXColors::GetWhiteCR() );
+                    pDC->FillRect ( &rectLabel, CTRXColors::GetBKSelectedCBrush(true) );
+                    pDC->SetTextColor ( CTRXColors::GetFGSelectedCR(true)  );
                 }
                 else
                 {
                     if ( iCol % 1 == 0 )
                     {
-                        pDC->FillRect ( &rectLabel, CTRXColors::GetBlack64CBrush() );
-                        pDC->SetTextColor ( CTRXColors::GetWhite208CR() );
+                        pDC->FillRect ( &rectLabel, CTRXColors::GetBKNormalCBrush(true) );
+                        pDC->SetTextColor ( CTRXColors::GetFGNormalCR(true) );
                     }
                     else
                     {
-                        pDC->FillRect ( &rectLabel, CTRXColors::GetBlack32CBrush() );
-                        pDC->SetTextColor ( CTRXColors::GetWhite224CR() );
+                        pDC->FillRect ( &rectLabel, CTRXColors::GetBKNormalCBrush(true) );
+                        pDC->SetTextColor ( CTRXColors::GetFGNormalCR(true) );
                     }
                 }
 

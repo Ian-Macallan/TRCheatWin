@@ -1050,9 +1050,7 @@ BOOL CTRXItemsTR4::OnInitDialog()
     if ( m_bToolTip )
     {
         m_ToolTip.AddTool( &m_Status, ("Status"));
-#if 0
-        m_ToolTip.AddTool ( this, LPSTR_TEXTCALLBACK );
-#else
+
         m_ToolTip.AddTool ( GetDlgItem(IDC_ITEM_01), LPSTR_TEXTCALLBACK );
         m_ToolTip.AddTool ( GetDlgItem(IDC_ITEM_02), LPSTR_TEXTCALLBACK );
         m_ToolTip.AddTool ( GetDlgItem(IDC_ITEM_03), LPSTR_TEXTCALLBACK );
@@ -1082,7 +1080,7 @@ BOOL CTRXItemsTR4::OnInitDialog()
         m_ToolTip.AddTool ( GetDlgItem(IDC_ITEM_27), LPSTR_TEXTCALLBACK );
         m_ToolTip.AddTool ( GetDlgItem(IDC_ITEM_28), LPSTR_TEXTCALLBACK );
         m_ToolTip.AddTool ( GetDlgItem(IDC_ITEM_29), LPSTR_TEXTCALLBACK );
-#endif
+
         m_ToolTip.Activate(TRUE);
     }
 
