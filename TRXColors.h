@@ -147,6 +147,9 @@ class CTRXColors
         static HBRUSH GetBKMenuSelectedBrush ( bool bDark );
         static HBRUSH GetBKHeaderBrush ( bool bDark );
 
+        static COLORREF GetFGTipColor(bool bDark);
+        static COLORREF GetBKTipColor(bool bDark);
+
     public :
         static void Instanciate();
 
@@ -177,9 +180,6 @@ class CTRXColors
     public :
         static HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
         static BOOL OnEraseBkgnd(CDC* pDC, CWnd* pWnd);
-
-        static COLORREF GetTextColor();
-        static COLORREF GetBkColor();
 
         static void SetWindowTheme ( CWnd *pWnd );
 

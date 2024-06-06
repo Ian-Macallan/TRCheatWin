@@ -697,40 +697,59 @@ void CTRXPropertySheet::OnDrawItem(int nIDCtl, LPDRAWITEMSTRUCT lpDrawItemStruct
         CTabCtrl* pTab = GetTabControl();
         if ( pTab != NULL )
         {
-            //
-            //      Get Text
-            char                szTabText[TAB_TEXT_SIZE];
-            TC_ITEM             tci;
-
-            ZeroMemory ( szTabText, sizeof(szTabText) );
-
-            tci.mask            = TCIF_TEXT;
-            tci.pszText         = szTabText;
-            tci.cchTextMax      = sizeof ( szTabText );
-
-            pTab->GetItem ( lpDrawItemStruct->itemID, &tci );
-
-            //
-            //      Get DC
             CDC *pDC = CDC::FromHandle ( lpDrawItemStruct->hDC );
             if ( pDC )
             {
-                UINT uStyle = 0; // DFCS_ADJUSTRECT; // DFCS_FLAT; // ;
-                CRect   rect = lpDrawItemStruct->rcItem;
-                // pDC->DrawFrameControl ( &lpDrawItemStruct->rcItem, DFC_BUTTON, uStyle );
-                {
-                    RECT rect       = lpDrawItemStruct->rcItem;
-                    rect.top        = rect.top;
-                    rect.left       = rect.left;
-                    rect.bottom     = rect.bottom;
-                    rect.right      = rect.right;
-                    pDC->FillRect ( &rect, CTRXColors::GetBKHeaderCBrush( CTRXGlobal::m_iDarkTheme != 0 ) );
-                }
+                char        szTabText[TAB_TEXT_SIZE];
+                TC_ITEM     tci;
 
+                //
+                RECT fullTabRect;
+                pTab->GetClientRect ( &fullTabRect );
+                
+                pDC->FillRect ( &fullTabRect, CTRXColors::GetBKHeaderCBrush ( CTRXGlobal::m_iDarkTheme != 0 ) );
+
+                //  Redraw All Tabs
+                for ( int i = 0; i < pTab->GetItemCount(); i++ )
                 {
+                    RECT itemRect;
+                    pTab->GetItemRect ( i, &itemRect );
+                    pDC->FillRect ( &itemRect, CTRXColors::GetBKHeaderCBrush( CTRXGlobal::m_iDarkTheme != 0 ) );
+
+                    ZeroMemory ( &tci, sizeof(tci) );
+
+                    tci.mask            = TCIF_TEXT;
+                    tci.pszText         = szTabText;
+                    tci.cchTextMax      = sizeof ( szTabText );
+
+                    ZeroMemory ( szTabText, sizeof(szTabText) );
+                    pTab->GetItem ( i, &tci );
+
                     pDC->SetBkMode( TRANSPARENT );
                     pDC->SetTextColor ( CTRXColors::GetFGHeaderCR ( CTRXGlobal::m_iDarkTheme != 0 ) );
+                    pDC->DrawText ( szTabText, &itemRect, DT_SINGLELINE|DT_VCENTER|DT_CENTER );
                 }
+
+
+                //
+                //      Draw The Tab Selected
+                ZeroMemory ( &tci, sizeof(tci) );
+                tci.mask            = TCIF_TEXT;
+                tci.pszText         = szTabText;
+                tci.cchTextMax      = sizeof ( szTabText );
+
+                ZeroMemory ( szTabText, sizeof(szTabText) );
+                pTab->GetItem ( lpDrawItemStruct->itemID, &tci );
+
+                RECT rect       = lpDrawItemStruct->rcItem;
+                rect.top        = rect.top;
+                rect.left       = rect.left;
+                rect.bottom     = rect.bottom;
+                rect.right      = rect.right;
+                pDC->FillRect ( &rect, CTRXColors::GetBKHeaderCBrush( CTRXGlobal::m_iDarkTheme != 0 ) );
+
+                pDC->SetBkMode( TRANSPARENT );
+                pDC->SetTextColor ( CTRXColors::GetFGHeaderCR ( CTRXGlobal::m_iDarkTheme != 0 ) );
 
                 pDC->DrawText ( szTabText, &lpDrawItemStruct->rcItem, DT_SINGLELINE|DT_VCENTER|DT_CENTER );
             }

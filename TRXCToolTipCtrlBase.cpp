@@ -90,7 +90,7 @@ void CTRXCToolTipCtrlBase::SetColors ( )
         m_bDefaultColor     = TRUE;
     }
 
-    SetTipBkColor ( CTRXColors::GetBkColor() );
-    SetTipTextColor ( CTRXColors::GetTextColor() );
+    SetTipTextColor ( CTRXColors::GetFGTipColor(CTRXGlobal::m_iDarkTheme != 0) );
+    SetTipBkColor ( CTRXColors::GetBKTipColor(CTRXGlobal::m_iDarkTheme != 0) );
 }
 

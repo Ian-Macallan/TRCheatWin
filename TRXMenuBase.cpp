@@ -456,12 +456,14 @@ void CTRXMenuBase::DrawMenuItem (   LPDRAWITEMSTRUCT lpDrawItemStruct, CDC *pDC,
         if ( CTRXGlobal::m_iDarkTheme != 0 )
         {
             //
-            DrawIconEx ( pDC->m_hDC, lpDrawItemStruct->rcItem.left, lpDrawItemStruct->rcItem.top, m_hCheckWhiteIcon, xIconSmall, yIconSmall, 0, NULL, DI_NORMAL );
+            DrawIconEx ( pDC->m_hDC, lpDrawItemStruct->rcItem.left, lpDrawItemStruct->rcItem.top, 
+                m_hCheckWhiteIcon, xIconSmall, yIconSmall, 0, NULL, DI_NORMAL );
         }
         else
         {
             //
-            DrawIconEx ( pDC->m_hDC, lpDrawItemStruct->rcItem.left, lpDrawItemStruct->rcItem.top, m_hCheckBlackIcon, xIconSmall, yIconSmall, 0, NULL, DI_NORMAL );
+            DrawIconEx ( pDC->m_hDC, lpDrawItemStruct->rcItem.left, lpDrawItemStruct->rcItem.top, 
+                m_hCheckBlackIcon, xIconSmall, yIconSmall, 0, NULL, DI_NORMAL );
         }
         //
         pDC->SelectObject ( hOldBrush );
