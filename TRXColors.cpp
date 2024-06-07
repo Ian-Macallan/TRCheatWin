@@ -1,6 +1,5 @@
 #include "stdafx.h"
 #include "TRXColors.h"
-#include "TRXGlobal.h"
 
 //
 /////////////////////////////////////////////////////////////////////////////
@@ -74,6 +73,14 @@ CBrush CTRXColors::Black40Brush;
 CBrush CTRXColors::WhiteCFBrush;
 CBrush CTRXColors::WhiteDFBrush;
 CBrush CTRXColors::WhiteEFBrush;
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//  0 Default Color
+//  1 Dark Client Area
+//  2 Dark Client Area and Caption
+int             CTRXColors::m_iDarkTheme        = 0;
+
 
 //
 /////////////////////////////////////////////////////////////////////////////
@@ -506,7 +513,7 @@ HBRUSH CTRXColors::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
     //
     HBRUSH hBrush = NULL;
 
-    if ( CTRXGlobal::m_iDarkTheme == 0 )
+    if ( CTRXColors::m_iDarkTheme == 0 )
     {
         return hBrush;
     }
@@ -604,7 +611,7 @@ HBRUSH CTRXColors::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 /////////////////////////////////////////////////////////////////////////////
 BOOL CTRXColors::OnEraseBkgnd(CDC* pDC, CWnd* pWnd)
 {
-    if ( CTRXGlobal::m_iDarkTheme == 0 )
+    if ( CTRXColors::m_iDarkTheme == 0 )
     {
         return FALSE;
     }
@@ -648,7 +655,7 @@ COLORREF CTRXColors::GetFGNormalCR ( bool bDark )
     }
     else
     {
-        return GetBlack30CR();
+        return GetBlack20CR();
     }
 }
 
@@ -685,7 +692,7 @@ COLORREF CTRXColors::GetFGMenuCR ( bool bDark )
     }
     else
     {
-        return GetBlack40CR();
+        return GetBlack20CR();
     }
 }
 
@@ -754,7 +761,7 @@ CBrush * CTRXColors::GetFGNormalCBrush ( bool bDark )
     }
     else
     {
-        return GetBlack30CBrush();
+        return GetBlack20CBrush();
     }
 }
 
@@ -790,7 +797,7 @@ CBrush * CTRXColors::GetFGMenuCBrush ( bool bDark )
     }
     else
     {
-        return GetBlack40CBrush();
+        return GetBlack20CBrush();
     }
 }
 
@@ -858,7 +865,7 @@ HBRUSH CTRXColors::GetFGNormalBrush ( bool bDark )
     }
     else
     {
-        return GetBlack30Brush();
+        return GetBlack20Brush();
     }
 }
 
@@ -894,7 +901,7 @@ HBRUSH CTRXColors::GetFGMenuBrush ( bool bDark )
     }
     else
     {
-        return GetBlack40Brush();
+        return GetBlack20Brush();
     }
 }
 
@@ -965,7 +972,7 @@ COLORREF CTRXColors::GetFGTipColor(bool bDark)
     }
     else
     {
-        return FALSE;
+        return NULL;
     }
 }
 
@@ -981,7 +988,7 @@ COLORREF CTRXColors::GetBKTipColor(bool bDark)
     }
     else
     {
-        return FALSE;
+        return NULL;
     }
 }
 

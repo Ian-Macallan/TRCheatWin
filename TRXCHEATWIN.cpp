@@ -432,7 +432,7 @@ BOOL CTRXCHEATWINApp::InitInstance()
     }
 
     //
-    CTRXGlobal::m_iDarkTheme    = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_DARKTHEME, 0 );
+    CTRXColors::m_iDarkTheme    = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_DARKTHEME, 0 );
 
     //
     int iSizeTR1 = sizeof(TABLE_TR1);
@@ -532,7 +532,7 @@ BOOL CTRXCHEATWINApp::InitInstance()
         //
         else if ( _stricmp ( pCommandLine, "-resizable" ) == 0L )
         {
-            CTRXGlobal::m_iDarkTheme    = 0;
+            CTRXColors::m_iDarkTheme    = 0;
             CTRXContainer dlg;
             m_pMainWnd = &dlg;
             nResponse = dlg.DoModal();

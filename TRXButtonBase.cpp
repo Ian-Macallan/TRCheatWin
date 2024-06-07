@@ -26,6 +26,11 @@ CTRXButtonBase::CTRXButtonBase(void)
 CTRXButtonBase::~CTRXButtonBase(void)
 {
 }
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
 BEGIN_MESSAGE_MAP(CTRXButtonBase, CButton)
     ON_WM_ERASEBKGND()
     ON_WM_CTLCOLOR()
@@ -92,14 +97,14 @@ void CTRXButtonBase::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct )
         // Draw the button frame.
         // pDC->DrawEdge ( &lpDrawItemStruct->rcItem, EDGE_ETCHED, BF_ADJUST );
         pDC->DrawFrameControl ( &lpDrawItemStruct->rcItem, DFC_BUTTON, uStyle );
-        if ( CTRXGlobal::m_iDarkTheme != 0 )
+        if ( CTRXColors::m_iDarkTheme != 0 )
         {
             RECT rect = lpDrawItemStruct->rcItem;
             rect.top        = rect.top + 1;
             rect.left       = rect.left + 1;
             rect.bottom     = rect.bottom - 2;
             rect.right      = rect.right - 2;
-            pDC->FillRect ( &rect, CTRXColors::GetBKNormalCBrush( CTRXGlobal::m_iDarkTheme != 0 ) );
+            pDC->FillRect ( &rect, CTRXColors::GetBKNormalCBrush( CTRXColors::m_iDarkTheme != 0 ) );
         }
 
         // Get the button's text.
@@ -109,15 +114,15 @@ void CTRXButtonBase::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct )
         COLORREF crOldColor;
         if ( lpDrawItemStruct->itemState & ODS_DISABLED )
         {
-            crOldColor = pDC->SetTextColor ( CTRXColors::GetFGDisabledCR( CTRXGlobal::m_iDarkTheme != 0 ) );
+            crOldColor = pDC->SetTextColor ( CTRXColors::GetFGDisabledCR( CTRXColors::m_iDarkTheme != 0 ) );
         }
         else if ( lpDrawItemStruct->itemState & ODS_FOCUS )
         {
-            crOldColor = pDC->SetTextColor ( CTRXColors::GetFGSelectedCR( CTRXGlobal::m_iDarkTheme != 0 ) );
+            crOldColor = pDC->SetTextColor ( CTRXColors::GetFGSelectedCR( CTRXColors::m_iDarkTheme != 0 ) );
         }
         else
         {
-            crOldColor = pDC->SetTextColor ( CTRXColors::GetFGNormalCR( CTRXGlobal::m_iDarkTheme != 0 ) );
+            crOldColor = pDC->SetTextColor ( CTRXColors::GetFGNormalCR( CTRXColors::m_iDarkTheme != 0 ) );
         }
 
         pDC->DrawText ( szText, &lpDrawItemStruct->rcItem, DT_SINGLELINE|DT_VCENTER|DT_CENTER );

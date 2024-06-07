@@ -23,6 +23,9 @@ class CTRXColors
         virtual ~CTRXColors(void);
 
     public :
+        static int          m_iDarkTheme;
+
+    public :
         //
         static COLORREF GetBlackCR();
         static COLORREF GetWhiteCR();

@@ -6,6 +6,7 @@
 #include "afxdialogex.h"
 
 #include "TRXGlobal.h"
+#include "TRXColors.h"
 
 //
 /////////////////////////////////////////////////////////////////////////////
@@ -152,7 +153,7 @@ BOOL CTRXHelpDialog::OnInitDialog()
     SetVersionFrom ();
 
     //
-    if ( CTRXGlobal::m_iDarkTheme == 0 )
+    if ( CTRXColors::m_iDarkTheme == 0 )
     {
         m_Help_Text.ModifyStyle ( ES_AUTOVSCROLL, WS_VSCROLL );
 

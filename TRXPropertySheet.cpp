@@ -404,7 +404,7 @@ BOOL CTRXPropertySheet::OnInitDialog()
     }
 
     //
-    if ( CTRXGlobal::m_iDarkTheme != 0 )
+    if ( CTRXColors::m_iDarkTheme != 0 )
     {
         CTabCtrl* pTab = GetTabControl();
         if ( pTab )
@@ -707,14 +707,14 @@ void CTRXPropertySheet::OnDrawItem(int nIDCtl, LPDRAWITEMSTRUCT lpDrawItemStruct
                 RECT fullTabRect;
                 pTab->GetClientRect ( &fullTabRect );
                 
-                pDC->FillRect ( &fullTabRect, CTRXColors::GetBKHeaderCBrush ( CTRXGlobal::m_iDarkTheme != 0 ) );
+                pDC->FillRect ( &fullTabRect, CTRXColors::GetBKHeaderCBrush ( CTRXColors::m_iDarkTheme != 0 ) );
 
                 //  Redraw All Tabs
                 for ( int i = 0; i < pTab->GetItemCount(); i++ )
                 {
                     RECT itemRect;
                     pTab->GetItemRect ( i, &itemRect );
-                    pDC->FillRect ( &itemRect, CTRXColors::GetBKHeaderCBrush( CTRXGlobal::m_iDarkTheme != 0 ) );
+                    pDC->FillRect ( &itemRect, CTRXColors::GetBKHeaderCBrush( CTRXColors::m_iDarkTheme != 0 ) );
 
                     ZeroMemory ( &tci, sizeof(tci) );
 
@@ -726,7 +726,7 @@ void CTRXPropertySheet::OnDrawItem(int nIDCtl, LPDRAWITEMSTRUCT lpDrawItemStruct
                     pTab->GetItem ( i, &tci );
 
                     pDC->SetBkMode( TRANSPARENT );
-                    pDC->SetTextColor ( CTRXColors::GetFGHeaderCR ( CTRXGlobal::m_iDarkTheme != 0 ) );
+                    pDC->SetTextColor ( CTRXColors::GetFGHeaderCR ( CTRXColors::m_iDarkTheme != 0 ) );
                     pDC->DrawText ( szTabText, &itemRect, DT_SINGLELINE|DT_VCENTER|DT_CENTER );
                 }
 
@@ -746,10 +746,10 @@ void CTRXPropertySheet::OnDrawItem(int nIDCtl, LPDRAWITEMSTRUCT lpDrawItemStruct
                 rect.left       = rect.left;
                 rect.bottom     = rect.bottom;
                 rect.right      = rect.right;
-                pDC->FillRect ( &rect, CTRXColors::GetBKHeaderCBrush( CTRXGlobal::m_iDarkTheme != 0 ) );
+                pDC->FillRect ( &rect, CTRXColors::GetBKHeaderCBrush( CTRXColors::m_iDarkTheme != 0 ) );
 
                 pDC->SetBkMode( TRANSPARENT );
-                pDC->SetTextColor ( CTRXColors::GetFGHeaderCR ( CTRXGlobal::m_iDarkTheme != 0 ) );
+                pDC->SetTextColor ( CTRXColors::GetFGHeaderCR ( CTRXColors::m_iDarkTheme != 0 ) );
 
                 pDC->DrawText ( szTabText, &lpDrawItemStruct->rcItem, DT_SINGLELINE|DT_VCENTER|DT_CENTER );
             }
@@ -804,7 +804,7 @@ void CTRXPropertySheet::OnInitMenuPopup(CMenu* pPopupMenu, UINT nIndex, BOOL bSy
 {
     CPropertySheet::OnInitMenuPopup(pPopupMenu, nIndex, bSysMenu);
 
-    if ( CTRXGlobal::m_iDarkTheme != 0 )
+    if ( CTRXColors::m_iDarkTheme != 0 )
     {
         static CTRXMenuBase     sysMenu;
         m_pMenu = sysMenu.SetSystemMenu ( this, pPopupMenu );
@@ -824,7 +824,7 @@ void CTRXPropertySheet::OnInitMenuPopup(CMenu* pPopupMenu, UINT nIndex, BOOL bSy
 void CTRXPropertySheet::OnNcPaint()
 {
     //
-    if ( SquaredCorners && CTRXGlobal::m_iDarkTheme == 2 )
+    if ( SquaredCorners && CTRXColors::m_iDarkTheme == 2 )
     {
         RECT rect;
         GetWindowRect ( &rect );

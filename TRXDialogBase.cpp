@@ -250,7 +250,7 @@ BOOL CTRXDialogBase::OnNcActivate(BOOL bActive)
 /////////////////////////////////////////////////////////////////////////////
 void CTRXDialogBase::OnNcPaint()
 {
-    if ( SquaredCorners && CTRXGlobal::m_iDarkTheme == 2 )
+    if ( SquaredCorners && CTRXColors::m_iDarkTheme == 2 )
     {
         RECT rect;
         GetWindowRect ( &rect );
@@ -310,7 +310,7 @@ void CTRXDialogBase::OnInitMenuPopup(CMenu* pPopupMenu, UINT nIndex, BOOL bSysMe
 {
     CDialog::OnInitMenuPopup(pPopupMenu, nIndex, bSysMenu);
 
-    if ( CTRXGlobal::m_iDarkTheme != 0 )
+    if ( CTRXColors::m_iDarkTheme != 0 )
     {
         static CTRXMenuBase     sysMenu;
         m_pMenu = sysMenu.SetSystemMenu ( this, pPopupMenu );

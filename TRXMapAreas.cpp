@@ -11,6 +11,7 @@
 #include "TRXPosition.h"
 #include "TRXInfoPage.h"
 #include "TRXGlobal.h"
+#include "TRXColors.h"
 
 #include "resource.h"
 
@@ -617,7 +618,7 @@ void CTRXMapAreas::OnSize(UINT nType, int cx, int cy)
     }
 
     //
-    if ( CTRXGlobal::m_iDarkTheme != 0 )
+    if ( CTRXColors::m_iDarkTheme != 0 )
     {
     }
 

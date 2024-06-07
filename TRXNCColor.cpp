@@ -341,7 +341,7 @@ void CTRXNCColor::DrawIcon ( CDC *pDC, UINT icon, const CRect crect, bool bFillR
 /////////////////////////////////////////////////////////////////////////////
 BOOL CTRXNCColor::PaintCaption( CWnd *pWnd, BOOL bActive )
 {
-    if ( CTRXGlobal::m_iDarkTheme != 2 )
+    if ( CTRXColors::m_iDarkTheme != 2 )
     {
         return FALSE;
     }
@@ -470,7 +470,7 @@ BOOL CTRXNCColor::PaintCaption( CWnd *pWnd, BOOL bActive )
 /////////////////////////////////////////////////////////////////////////////
 BOOL CTRXNCColor::PaintWindow( CWnd *pWnd, BOOL bActive )
 {
-    if ( CTRXGlobal::m_iDarkTheme != 2 )
+    if ( CTRXColors::m_iDarkTheme != 2 )
     {
         return FALSE;
     }
@@ -512,7 +512,7 @@ BOOL CTRXNCColor::PaintWindow( CWnd *pWnd, BOOL bActive )
 /////////////////////////////////////////////////////////////////////////////
 BOOL CTRXNCColor::Activate( CWnd *pWnd, BOOL bActive )
 {
-    if ( CTRXGlobal::m_iDarkTheme != 2 )
+    if ( CTRXColors::m_iDarkTheme != 2 )
     {
         return FALSE;
     }
@@ -528,7 +528,7 @@ BOOL CTRXNCColor::Activate( CWnd *pWnd, BOOL bActive )
 BOOL CTRXNCColor::OnNcLButtonDown(CWnd *pWnd, UINT nHitTest, CPoint point)
 {
     // TODO
-    if ( CTRXGlobal::m_iDarkTheme == 2 )
+    if ( CTRXColors::m_iDarkTheme == 2 )
     {
         if ( ScreenPointOverRect( pWnd, point, m_IconRect ) )
         {
@@ -599,7 +599,7 @@ BOOL CTRXNCColor::OnNcLButtonUp(CWnd *pWnd, UINT nHitTest, CPoint point)
 
     //
     // TODO
-    if ( CTRXGlobal::m_iDarkTheme == 2 )
+    if ( CTRXColors::m_iDarkTheme == 2 )
     {
         if ( ScreenPointOverRect( pWnd, point, m_IconRect ) )
         {
@@ -671,7 +671,7 @@ BOOL CTRXNCColor::OnNcLButtonUp(CWnd *pWnd, UINT nHitTest, CPoint point)
 /////////////////////////////////////////////////////////////////////////////
 BOOL CTRXNCColor::OnNcRButtonDown(CWnd *pWnd, UINT nHitTest, CPoint point)
 {
-    if ( CTRXGlobal::m_iDarkTheme == 2 )
+    if ( CTRXColors::m_iDarkTheme == 2 )
     {
         CMenu *pMenu = pWnd->GetSystemMenu(FALSE);
         if ( pMenu )
@@ -706,7 +706,7 @@ BOOL CTRXNCColor::OnLButtonUp(CWnd *pWnd, UINT nFlags, CPoint point)
 BOOL CTRXNCColor::OnNcMouseMove(CWnd *pWnd, UINT nHitTest, CPoint point)
 {
     // TODO
-    if ( CTRXGlobal::m_iDarkTheme == 2 )
+    if ( CTRXColors::m_iDarkTheme == 2 )
     {
         TRACKMOUSEEVENT tme;
         ZeroMemory ( &tme, sizeof(tme) );
@@ -736,7 +736,7 @@ BOOL CTRXNCColor::OnNcMouseMove(CWnd *pWnd, UINT nHitTest, CPoint point)
 BOOL CTRXNCColor::OnMouseMove(CWnd *pWnd, UINT nFlags, CPoint point)
 {
     // TODO
-    if ( CTRXGlobal::m_iDarkTheme == 2 )
+    if ( CTRXColors::m_iDarkTheme == 2 )
     {
         //  Track Event
         TRACKMOUSEEVENT tme;

@@ -224,7 +224,7 @@ BOOL CTRXMenuBase::TrackPopupMenu(UINT nFlags, int x, int y, CWnd* pWnd, LPCRECT
 
     if ( m_pSubMenu != NULL )
     {
-        if ( CTRXGlobal::m_iDarkTheme != 0 )
+        if ( CTRXColors::m_iDarkTheme != 0 )
         {
             SetOwnDraw(m_pSubMenu->m_hMenu);
         }
@@ -232,7 +232,7 @@ BOOL CTRXMenuBase::TrackPopupMenu(UINT nFlags, int x, int y, CWnd* pWnd, LPCRECT
     }
     else
     {
-        if ( CTRXGlobal::m_iDarkTheme != 0 )
+        if ( CTRXColors::m_iDarkTheme != 0 )
         {
             SetOwnDraw(m_hMenu);
         }
@@ -421,16 +421,16 @@ void CTRXMenuBase::DrawMenuItem (   LPDRAWITEMSTRUCT lpDrawItemStruct, CDC *pDC,
     ZeroMemory ( szText, sizeof(szText) );
 
     //
-    HBRUSH      hForeground     = CTRXColors::GetFGMenuBrush(CTRXGlobal::m_iDarkTheme != 0);
-    HBRUSH      hFGSelected     = CTRXColors::GetFGMenuSelectedBrush(CTRXGlobal::m_iDarkTheme != 0);
+    HBRUSH      hForeground     = CTRXColors::GetFGMenuBrush(CTRXColors::m_iDarkTheme != 0);
+    HBRUSH      hFGSelected     = CTRXColors::GetFGMenuSelectedBrush(CTRXColors::m_iDarkTheme != 0);
 
-    CBrush      *brBKNormal     = CTRXColors::GetBKMenuCBrush(CTRXGlobal::m_iDarkTheme != 0);
-    CBrush      *brBKSelected   = CTRXColors::GetBKMenuSelectedCBrush(CTRXGlobal::m_iDarkTheme != 0);
+    CBrush      *brBKNormal     = CTRXColors::GetBKMenuCBrush(CTRXColors::m_iDarkTheme != 0);
+    CBrush      *brBKSelected   = CTRXColors::GetBKMenuSelectedCBrush(CTRXColors::m_iDarkTheme != 0);
 
-    COLORREF    crForeground    = CTRXColors::GetFGMenuCR(CTRXGlobal::m_iDarkTheme != 0);
-    COLORREF    crFGSelected    = CTRXColors::GetFGMenuSelectedCR(CTRXGlobal::m_iDarkTheme != 0);
+    COLORREF    crForeground    = CTRXColors::GetFGMenuCR(CTRXColors::m_iDarkTheme != 0);
+    COLORREF    crFGSelected    = CTRXColors::GetFGMenuSelectedCR(CTRXColors::m_iDarkTheme != 0);
 
-    COLORREF    crDisabled      = CTRXColors::GetFGDisabledCR(CTRXGlobal::m_iDarkTheme != 0);
+    COLORREF    crDisabled      = CTRXColors::GetFGDisabledCR(CTRXColors::m_iDarkTheme != 0);
 
     //  The entire control needs to be drawn
     //  This is called line by line
@@ -453,7 +453,7 @@ void CTRXMenuBase::DrawMenuItem (   LPDRAWITEMSTRUCT lpDrawItemStruct, CDC *pDC,
         int xIconSmall  = GetSystemMetrics(SM_CXSMICON);
         int yIconSmall  = GetSystemMetrics(SM_CYSMICON);
 
-        if ( CTRXGlobal::m_iDarkTheme != 0 )
+        if ( CTRXColors::m_iDarkTheme != 0 )
         {
             //
             DrawIconEx ( pDC->m_hDC, lpDrawItemStruct->rcItem.left, lpDrawItemStruct->rcItem.top, 
@@ -553,7 +553,7 @@ void CTRXMenuBase::DrawMenuItem (   LPDRAWITEMSTRUCT lpDrawItemStruct, CDC *pDC,
 
         int penSize = 1;
         CTRXPen penBlack;
-        penBlack.CreatePen(PS_SOLID, penSize, CTRXColors::GetFGMenuCR(CTRXGlobal::m_iDarkTheme != 0) );
+        penBlack.CreatePen(PS_SOLID, penSize, CTRXColors::GetFGMenuCR(CTRXColors::m_iDarkTheme != 0) );
         CPen* pOldPen = pDC->SelectObject(&penBlack);
 
         pRect->left     += EXTRA_PIXELS_WIDTH / 2;

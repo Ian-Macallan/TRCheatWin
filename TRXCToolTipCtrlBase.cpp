@@ -71,7 +71,7 @@ BOOL CTRXCToolTipCtrlBase::OnEraseBkgnd(CDC* pDC)
 /////////////////////////////////////////////////////////////////////////////
 void CTRXCToolTipCtrlBase::SetColors ( )
 {
-    if ( CTRXGlobal::m_iDarkTheme == 0 )
+    if ( CTRXColors::m_iDarkTheme == 0 )
     {
         if ( m_bDefaultColor )
         {
@@ -90,7 +90,7 @@ void CTRXCToolTipCtrlBase::SetColors ( )
         m_bDefaultColor     = TRUE;
     }
 
-    SetTipTextColor ( CTRXColors::GetFGTipColor(CTRXGlobal::m_iDarkTheme != 0) );
-    SetTipBkColor ( CTRXColors::GetBKTipColor(CTRXGlobal::m_iDarkTheme != 0) );
+    SetTipTextColor ( CTRXColors::GetFGTipColor(CTRXColors::m_iDarkTheme != 0) );
+    SetTipBkColor ( CTRXColors::GetBKTipColor(CTRXColors::m_iDarkTheme != 0) );
 }
 

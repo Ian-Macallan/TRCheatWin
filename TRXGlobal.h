@@ -19,6 +19,5 @@ class CTRXGlobal
         static unsigned     m_iMinNGSize;
         static unsigned     m_iMaxNGSize;
 
-        static int          m_iDarkTheme;
 };
 

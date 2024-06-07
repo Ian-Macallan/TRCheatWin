@@ -360,10 +360,10 @@ void CTRXPropertySheetAll::OnSysCommand(UINT nID, LPARAM lParam)
         CMenu* pSysMenu = GetSystemMenu(FALSE);
         if ( pSysMenu )
         {
-            if ( (nID & 0xFFF0) == IDM_DARK_THEME && CTRXGlobal::m_iDarkTheme == 1 )
+            if ( (nID & 0xFFF0) == IDM_DARK_THEME && CTRXColors::m_iDarkTheme == 1 )
             {
                 theApp.WriteProfileInt( PROFILE_SETTING, PROFILE_DARKTHEME, 0 );
-                CTRXGlobal::m_iDarkTheme    = 0;
+                CTRXColors::m_iDarkTheme    = 0;
                 pSysMenu->CheckMenuItem(IDM_DARK_THEME,MF_UNCHECKED|MF_BYCOMMAND);
                 CTabCtrl* pTab = GetTabControl();
                 if ( pTab )
@@ -374,10 +374,10 @@ void CTRXPropertySheetAll::OnSysCommand(UINT nID, LPARAM lParam)
                 //  Reset Theme
                 CTRXColors::SetWindowTheme ( this );
             }
-            else if ( (nID & 0xFFF0) == IDM_DARK_FULL && CTRXGlobal::m_iDarkTheme == 2 )
+            else if ( (nID & 0xFFF0) == IDM_DARK_FULL && CTRXColors::m_iDarkTheme == 2 )
             {
                 theApp.WriteProfileInt( PROFILE_SETTING, PROFILE_DARKTHEME, 0 );
-                CTRXGlobal::m_iDarkTheme    = 0;
+                CTRXColors::m_iDarkTheme    = 0;
                 pSysMenu->CheckMenuItem(IDM_DARK_FULL,MF_UNCHECKED|MF_BYCOMMAND);
                 CTabCtrl* pTab = GetTabControl();
                 if ( pTab )
@@ -391,7 +391,7 @@ void CTRXPropertySheetAll::OnSysCommand(UINT nID, LPARAM lParam)
             else if ( (nID & 0xFFF0) == IDM_DARK_THEME )
             {
                 theApp.WriteProfileInt( PROFILE_SETTING, PROFILE_DARKTHEME, 1 );
-                CTRXGlobal::m_iDarkTheme    = 1;
+                CTRXColors::m_iDarkTheme    = 1;
                 pSysMenu->CheckMenuItem(IDM_DARK_THEME,MF_CHECKED|MF_BYCOMMAND);
                 pSysMenu->CheckMenuItem(IDM_DARK_FULL,MF_UNCHECKED|MF_BYCOMMAND);
                 CTabCtrl* pTab = GetTabControl();
@@ -406,7 +406,7 @@ void CTRXPropertySheetAll::OnSysCommand(UINT nID, LPARAM lParam)
             else if ( (nID & 0xFFF0) == IDM_DARK_FULL )
             {
                 theApp.WriteProfileInt( PROFILE_SETTING, PROFILE_DARKTHEME, 2 );
-                CTRXGlobal::m_iDarkTheme    = 2;
+                CTRXColors::m_iDarkTheme    = 2;
                 pSysMenu->CheckMenuItem(IDM_DARK_FULL,MF_CHECKED|MF_BYCOMMAND);
                 pSysMenu->CheckMenuItem(IDM_DARK_THEME,MF_UNCHECKED|MF_BYCOMMAND);
 
@@ -420,15 +420,15 @@ void CTRXPropertySheetAll::OnSysCommand(UINT nID, LPARAM lParam)
                 CTRXColors::SetWindowTheme ( this );
             }
 
-            if ( m_Info_Page != NULL ) m_Info_Page->SetThemeChanged ( CTRXGlobal::m_iDarkTheme != 0 );
-            if ( m_Equipment_Page != NULL ) m_Equipment_Page->SetThemeChanged (  CTRXGlobal::m_iDarkTheme != 0 );
-            if ( m_Gun_Page != NULL ) m_Gun_Page->SetThemeChanged (  CTRXGlobal::m_iDarkTheme != 0 );
-            if ( m_Ammos_Page != NULL ) m_Ammos_Page->SetThemeChanged (  CTRXGlobal::m_iDarkTheme != 0 );
-            if ( m_Item_Page != NULL ) m_Item_Page->SetThemeChanged (  CTRXGlobal::m_iDarkTheme != 0 );
-            if ( m_ItemTR4_Page != NULL ) m_ItemTR4_Page->SetThemeChanged (  CTRXGlobal::m_iDarkTheme != 0 );
-            if ( m_Remastered_Page != NULL ) m_Remastered_Page->SetThemeChanged (  CTRXGlobal::m_iDarkTheme != 0 );
+            if ( m_Info_Page != NULL ) m_Info_Page->SetThemeChanged ( CTRXColors::m_iDarkTheme != 0 );
+            if ( m_Equipment_Page != NULL ) m_Equipment_Page->SetThemeChanged (  CTRXColors::m_iDarkTheme != 0 );
+            if ( m_Gun_Page != NULL ) m_Gun_Page->SetThemeChanged (  CTRXColors::m_iDarkTheme != 0 );
+            if ( m_Ammos_Page != NULL ) m_Ammos_Page->SetThemeChanged (  CTRXColors::m_iDarkTheme != 0 );
+            if ( m_Item_Page != NULL ) m_Item_Page->SetThemeChanged (  CTRXColors::m_iDarkTheme != 0 );
+            if ( m_ItemTR4_Page != NULL ) m_ItemTR4_Page->SetThemeChanged (  CTRXColors::m_iDarkTheme != 0 );
+            if ( m_Remastered_Page != NULL ) m_Remastered_Page->SetThemeChanged (  CTRXColors::m_iDarkTheme != 0 );
 
-            SetThemeChanged (  CTRXGlobal::m_iDarkTheme != 0 );
+            SetThemeChanged (  CTRXColors::m_iDarkTheme != 0 );
 
             //  Redraw Window
             Invalidate();

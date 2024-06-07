@@ -92,7 +92,7 @@ void CTRXListCtrlBase::OnNMCustomdraw(NMHDR *pNMHDR, LRESULT *pResult)
     //  draw action. So, we'll need to cast the generic pNMHDR pointer.
     LPNMLVCUSTOMDRAW    pLVCD   = (LPNMLVCUSTOMDRAW)pNMHDR;
 
-    if ( CTRXGlobal::m_iDarkTheme == 0 )
+    if ( CTRXColors::m_iDarkTheme == 0 )
     {
         *pResult = CDRF_DODEFAULT;
         return;

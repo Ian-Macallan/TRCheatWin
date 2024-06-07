@@ -78,7 +78,7 @@ void CTRXCHeaderCtrlBase::OnNMCustomdraw(NMHDR *pNMHDR, LRESULT *pResult)
 
     // TODO
 
-    if ( CTRXGlobal::m_iDarkTheme == 0 )
+    if ( CTRXColors::m_iDarkTheme == 0 )
     {
         *pResult = CDRF_DODEFAULT;
         return;
