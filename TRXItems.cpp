@@ -173,7 +173,7 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 void CTRXItems::OnKey1()
 {
-    // TODO
+    //
     if ( m_Key1.GetCheck ( ) )
     {
         m_N_Key1.SetWindowText ( "1" );
@@ -190,7 +190,7 @@ void CTRXItems::OnKey1()
 /////////////////////////////////////////////////////////////////////////////
 void CTRXItems::OnKey2()
 {
-    // TODO
+    //
     if ( m_Key2.GetCheck ( ) )
     {
         m_N_Key2.SetWindowText ( "1" );
@@ -208,7 +208,7 @@ void CTRXItems::OnKey2()
 /////////////////////////////////////////////////////////////////////////////
 void CTRXItems::OnKey3()
 {
-    // TODO
+    //
     if ( m_Key3.GetCheck ( ) )
     {
         m_N_Key3.SetWindowText ( "1" );
@@ -226,7 +226,7 @@ void CTRXItems::OnKey3()
 /////////////////////////////////////////////////////////////////////////////
 void CTRXItems::OnKey4()
 {
-    // TODO
+    //
     if ( m_Key4.GetCheck ( ) )
     {
         m_N_Key4.SetWindowText ( "1" );
@@ -244,7 +244,7 @@ void CTRXItems::OnKey4()
 /////////////////////////////////////////////////////////////////////////////
 void CTRXItems::OnMap1()
 {
-    // TODO
+    //
     if ( m_Map1.GetCheck ( ) )
     {
         m_N_Map1.SetWindowText ( "1" );
@@ -260,7 +260,7 @@ void CTRXItems::OnMap1()
 /////////////////////////////////////////////////////////////////////////////
 void CTRXItems::OnMap2()
 {
-    // TODO
+    //
     if ( m_Map2.GetCheck ( ) )
     {
         m_N_Map2.SetWindowText ( "1" );
@@ -278,7 +278,7 @@ void CTRXItems::OnMap2()
 /////////////////////////////////////////////////////////////////////////////
 void CTRXItems::OnItem1()
 {
-    // TODO
+    //
     if ( m_Item1.GetCheck () )
     {
         m_N_Item1.SetWindowText ( "1" );
@@ -296,7 +296,7 @@ void CTRXItems::OnItem1()
 /////////////////////////////////////////////////////////////////////////////
 void CTRXItems::OnItem2()
 {
-    // TODO
+    //
     if ( m_Item2.GetCheck () )
     {
         m_N_Item2.SetWindowText ( "1" );
@@ -314,7 +314,7 @@ void CTRXItems::OnItem2()
 /////////////////////////////////////////////////////////////////////////////
 void CTRXItems::OnItem3()
 {
-    // TODO
+    //
     if ( m_Item3.GetCheck () )
     {
         m_N_Item3.SetWindowText ( "1" );
@@ -332,7 +332,7 @@ void CTRXItems::OnItem3()
 /////////////////////////////////////////////////////////////////////////////
 void CTRXItems::OnItem4()
 {
-    // TODO
+    //
     if ( m_Item4.GetCheck () )
     {
         m_N_Item4.SetWindowText ( "1" );
@@ -350,7 +350,7 @@ void CTRXItems::OnItem4()
 /////////////////////////////////////////////////////////////////////////////
 void CTRXItems::OnTreasure1()
 {
-    // TODO
+    //
     if ( m_Treasure1.GetCheck ( ) )
     {
         m_N_Treasure1.SetWindowText ( "1" );
@@ -368,7 +368,7 @@ void CTRXItems::OnTreasure1()
 /////////////////////////////////////////////////////////////////////////////
 void CTRXItems::OnTreasure2()
 {
-    // TODO
+    //
     if ( m_Treasure2.GetCheck ( ) )
     {
         m_N_Treasure2.SetWindowText ( "1" );
@@ -385,7 +385,7 @@ void CTRXItems::OnTreasure2()
 /////////////////////////////////////////////////////////////////////////////
 void CTRXItems::OnTreasure3()
 {
-    // TODO
+    //
     if ( m_Treasure3.GetCheck ( ) )
     {
         m_N_Treasure3.SetWindowText ( "1" );
@@ -402,7 +402,7 @@ void CTRXItems::OnTreasure3()
 /////////////////////////////////////////////////////////////////////////////
 void CTRXItems::OnTreasure4()
 {
-    // TODO
+    //
     if ( m_Treasure4.GetCheck ( ) )
     {
         m_N_Treasure4.SetWindowText ( "1" );
@@ -419,7 +419,7 @@ void CTRXItems::OnTreasure4()
 /////////////////////////////////////////////////////////////////////////////
 void CTRXItems::OnHelp()
 {
-    // TODO
+    //
     CTRXHelpDialog dlg;
     dlg.DoModal();
 }
@@ -604,7 +604,7 @@ void CTRXItems::DisplayValues()
 /////////////////////////////////////////////////////////////////////////////
 BOOL CTRXItems::OnSetActive()
 {
-    // TODO
+    //
     //
     m_Status.SetWindowText ( "Tombraider 1, Unfinished Busines, 2, Golden Mask, 3, Lost Artifact" );
 
@@ -773,7 +773,7 @@ void CTRXItems::UpdateBuffer()
 /////////////////////////////////////////////////////////////////////////////
 BOOL CTRXItems::OnKillActive()
 {
-    // TODO
+    //
     UpdateBuffer();
 
     BOOL bModified = IsGUIModified();
@@ -987,7 +987,7 @@ BOOL CTRXItems::OnInitDialog()
 {
     CTRXPropertyPage::OnInitDialog();
 
-    // TODO
+    //
     if ( m_bToolTip )
     {
         m_ToolTip.AddTool( &m_Status, ("Status"));
@@ -1025,7 +1025,7 @@ BOOL CTRXItems::OnInitDialog()
 /////////////////////////////////////////////////////////////////////////////
 BOOL CTRXItems::OnApply()
 {
-    // TODO
+    //
     WriteWhenOnApply("Items");
 
     return CTRXPropertyPage::OnApply();
@@ -1037,7 +1037,7 @@ BOOL CTRXItems::OnApply()
 /////////////////////////////////////////////////////////////////////////////
 void CTRXItems::OnCancel()
 {
-    // TODO
+    //
     if ( CTRSaveGame::I() != NULL && ( IsGUIModified() || CTRSaveGame::IsBufferModified() ) )
     {
         INT_PTR response = AskToSave("Items");

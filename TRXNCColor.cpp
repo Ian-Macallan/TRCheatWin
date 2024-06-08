@@ -373,7 +373,7 @@ BOOL CTRXNCColor::PaintCaption( CWnd *pWnd, BOOL bActive )
     pWnd->GetWindowRect(&windowRECT);
 
     //
-    COLORREF foregroundColor = CTRXColors::GetFGNormalCR(true);
+    COLORREF foregroundColor = CTRXColors::GetFGNormalCR(CTRXColors::m_iDarkTheme != 0);
 
     //  First Draw Frmae Rect Around the window
     CRect frameFullRECT     = GetFrameFullRect ( windowRECT );
@@ -385,11 +385,11 @@ BOOL CTRXNCColor::PaintCaption( CWnd *pWnd, BOOL bActive )
     //
     if ( bActive )
     {
-        pDC->FillSolidRect(&captionFullRECT, CTRXColors::GetBKSelectedCR(true));
+        pDC->FillSolidRect(&captionFullRECT, CTRXColors::GetBKSelectedCR(CTRXColors::m_iDarkTheme != 0));
     }
     else
     {
-        pDC->FillSolidRect(&captionFullRECT, CTRXColors::GetBKNormalCR(true));
+        pDC->FillSolidRect(&captionFullRECT, CTRXColors::GetBKNormalCR(CTRXColors::m_iDarkTheme != 0));
     }
 
     //
@@ -489,7 +489,7 @@ BOOL CTRXNCColor::PaintWindow( CWnd *pWnd, BOOL bActive )
 
     //
     RECT clientFullRect = GetClientFullRect ( windowRECT );
-    pDC->FillRect ( &clientFullRect, CTRXColors::GetBKNormalCBrush(true) );
+    pDC->FillRect ( &clientFullRect, CTRXColors::GetBKNormalCBrush(CTRXColors::m_iDarkTheme != 0) );
 
     //
     pWnd->ReleaseDC ( pDC );
@@ -527,7 +527,7 @@ BOOL CTRXNCColor::Activate( CWnd *pWnd, BOOL bActive )
 /////////////////////////////////////////////////////////////////////////////
 BOOL CTRXNCColor::OnNcLButtonDown(CWnd *pWnd, UINT nHitTest, CPoint point)
 {
-    // TODO
+    //
     if ( CTRXColors::m_iDarkTheme == 2 )
     {
         if ( ScreenPointOverRect( pWnd, point, m_IconRect ) )
@@ -598,7 +598,7 @@ BOOL CTRXNCColor::OnNcLButtonUp(CWnd *pWnd, UINT nHitTest, CPoint point)
     m_bLeftPressed  = FALSE;
 
     //
-    // TODO
+    //
     if ( CTRXColors::m_iDarkTheme == 2 )
     {
         if ( ScreenPointOverRect( pWnd, point, m_IconRect ) )
@@ -705,7 +705,7 @@ BOOL CTRXNCColor::OnLButtonUp(CWnd *pWnd, UINT nFlags, CPoint point)
 /////////////////////////////////////////////////////////////////////////////
 BOOL CTRXNCColor::OnNcMouseMove(CWnd *pWnd, UINT nHitTest, CPoint point)
 {
-    // TODO
+    //
     if ( CTRXColors::m_iDarkTheme == 2 )
     {
         TRACKMOUSEEVENT tme;
@@ -735,7 +735,7 @@ BOOL CTRXNCColor::OnNcMouseMove(CWnd *pWnd, UINT nHitTest, CPoint point)
 /////////////////////////////////////////////////////////////////////////////
 BOOL CTRXNCColor::OnMouseMove(CWnd *pWnd, UINT nFlags, CPoint point)
 {
-    // TODO
+    //
     if ( CTRXColors::m_iDarkTheme == 2 )
     {
         //  Track Event
@@ -858,7 +858,7 @@ BOOL CTRXNCColor::OnNcMouseHover(CWnd *pWnd, UINT nFlags, CPoint point)
             }
             else
             {
-                DrawIconFrame ( pDC, m_MaximizeRect, true, CTRXColors::GetBKNormalCBrush(true) );
+                DrawIconFrame ( pDC, m_MaximizeRect, true, CTRXColors::GetBKNormalCBrush(CTRXColors::m_iDarkTheme != 0) );
             }
             pWnd->ReleaseDC ( pDC );
             m_iHover    = IDI_MAXIMIZE;
@@ -883,7 +883,7 @@ BOOL CTRXNCColor::OnNcMouseHover(CWnd *pWnd, UINT nFlags, CPoint point)
             }
             else
             {
-                DrawIconFrame ( pDC, m_MinimizeRect, true, CTRXColors::GetBKNormalCBrush(true) );
+                DrawIconFrame ( pDC, m_MinimizeRect, true, CTRXColors::GetBKNormalCBrush(CTRXColors::m_iDarkTheme != 0) );
             }
             pWnd->ReleaseDC ( pDC );
             m_iHover    = IDI_MINIMIZE;

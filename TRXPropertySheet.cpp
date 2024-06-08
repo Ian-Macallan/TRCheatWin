@@ -313,7 +313,7 @@ BOOL CTRXPropertySheet::OnInitDialog()
 {
     BOOL bResult = CPropertySheet::OnInitDialog();
 
-    // TODO
+    //
     //
     TEXTMETRIC textMetrics;
     CDC *pDC = GetDC();
@@ -355,7 +355,7 @@ BOOL CTRXPropertySheet::OnInitDialog()
     //
     CTRXColors::SetWindowTheme ( this );
 
-    // TODO
+    //
     if ( GetParent() == NULL )
     {
         // modify system menu & window styles so we can be
@@ -378,7 +378,7 @@ BOOL CTRXPropertySheet::OnInitDialog()
 
     if ( GetParent() == NULL )
     {
-        // TODO
+        //
         // Add "About..." menu item to system menu.
 
         // IDM_ABOUTBOX must be in the system command range.
@@ -621,7 +621,7 @@ void CTRXPropertySheet::RemoveRemasteredPage ()
 /////////////////////////////////////////////////////////////////////////////
 void CTRXPropertySheet::OnSysCommand(UINT nID, LPARAM lParam)
 {
-    // TODO
+    //
 
     if ((nID & 0xFFF0) == IDM_ABOUTBOX)
     {
@@ -658,7 +658,7 @@ void CTRXPropertySheet::SetApply(BOOL bApply )
 /////////////////////////////////////////////////////////////////////////////
 HBRUSH CTRXPropertySheet::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 {
-    // TODO
+    //
     HBRUSH hBrush = CTRXColors::OnCtlColor ( pDC, pWnd, nCtlColor );
     if ( hBrush != NULL )
     {
@@ -667,7 +667,7 @@ HBRUSH CTRXPropertySheet::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 
     HBRUSH hbr = CPropertySheet::OnCtlColor(pDC, pWnd, nCtlColor);
 
-    // TODO
+    //
     return hbr;
 }
 
@@ -677,7 +677,7 @@ HBRUSH CTRXPropertySheet::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 /////////////////////////////////////////////////////////////////////////////
 BOOL CTRXPropertySheet::OnEraseBkgnd(CDC* pDC)
 {
-    // TODO
+    //
     if ( CTRXColors::OnEraseBkgnd ( pDC, this ) )
     {
         return TRUE;
@@ -850,7 +850,7 @@ void CTRXPropertySheet::OnNcPaint()
 /////////////////////////////////////////////////////////////////////////////
 BOOL CTRXPropertySheet::OnNcActivate(BOOL bActive)
 {
-    // TODO
+    //
     BOOL bTreated = m_NC.Activate(this, bActive);
     if ( bTreated )
     {
@@ -866,7 +866,7 @@ BOOL CTRXPropertySheet::OnNcActivate(BOOL bActive)
 /////////////////////////////////////////////////////////////////////////////
 void CTRXPropertySheet::OnNcLButtonDown(UINT nHitTest, CPoint point)
 {
-    // TODO
+    //
     BOOL bTreated = m_NC.OnNcLButtonDown ( this, nHitTest, point );
     if ( bTreated )
     {
@@ -882,7 +882,7 @@ void CTRXPropertySheet::OnNcLButtonDown(UINT nHitTest, CPoint point)
 /////////////////////////////////////////////////////////////////////////////
 void CTRXPropertySheet::OnNcLButtonUp(UINT nHitTest, CPoint point)
 {
-    // TODO
+    //
     BOOL bTreated = m_NC.OnNcLButtonUp ( this, nHitTest, point );
     if ( bTreated )
     {
@@ -898,7 +898,7 @@ void CTRXPropertySheet::OnNcLButtonUp(UINT nHitTest, CPoint point)
 /////////////////////////////////////////////////////////////////////////////
 void CTRXPropertySheet::OnMouseMove(UINT nFlags, CPoint point)
 {
-    // TODO
+    //
     BOOL bTreated = m_NC.OnMouseMove ( this, nFlags, point );
     if ( bTreated )
     {
@@ -914,7 +914,7 @@ void CTRXPropertySheet::OnMouseMove(UINT nFlags, CPoint point)
 /////////////////////////////////////////////////////////////////////////////
 void CTRXPropertySheet::OnNcMouseMove(UINT nHitTest, CPoint point)
 {
-    // TODO
+    //
     BOOL bTreated = m_NC.OnNcMouseMove ( this, nHitTest, point );
     if ( bTreated )
     {
@@ -930,7 +930,7 @@ void CTRXPropertySheet::OnNcMouseMove(UINT nHitTest, CPoint point)
 /////////////////////////////////////////////////////////////////////////////
 void CTRXPropertySheet::OnNcMouseHover(UINT nFlags, CPoint point)
 {
-    // TODO
+    //
     BOOL bTreated = m_NC.OnNcMouseHover ( this, nFlags, point );
     if ( bTreated )
     {
@@ -946,7 +946,7 @@ void CTRXPropertySheet::OnNcMouseHover(UINT nFlags, CPoint point)
 /////////////////////////////////////////////////////////////////////////////
 void CTRXPropertySheet::OnNcMouseLeave()
 {
-    // TODO
+    //
     BOOL bTreated = m_NC.OnNcMouseLeave (this);
     if ( bTreated )
     {
@@ -962,7 +962,7 @@ void CTRXPropertySheet::OnNcMouseLeave()
 /////////////////////////////////////////////////////////////////////////////
 void CTRXPropertySheet::OnLButtonUp(UINT nFlags, CPoint point)
 {
-    // TODO
+    //
 
     BOOL bTreated = m_NC.OnLButtonUp (this, nFlags, point );
     CPropertySheet::OnLButtonUp(nFlags, point);

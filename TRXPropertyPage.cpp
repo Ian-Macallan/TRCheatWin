@@ -180,7 +180,7 @@ void CTRXPropertyPage::OnSize(UINT nType, int cx, int cy)
 {
     CTRXPropertyPageBase::OnSize(nType, cx, cy);
 
-    // TODO
+    //
 }
 
 //
@@ -191,7 +191,7 @@ void CTRXPropertyPage::OnMove(int x, int y)
 {
     CTRXPropertyPageBase::OnMove(x, y);
 
-    // TODO
+    //
 }
 
 //
@@ -200,7 +200,7 @@ void CTRXPropertyPage::OnMove(int x, int y)
 /////////////////////////////////////////////////////////////////////////////
 void CTRXPropertyPage::OnCancel()
 {
-    // TODO
+    //
 
     CTRXPropertyPageBase::OnCancel();
 }
@@ -211,7 +211,7 @@ void CTRXPropertyPage::OnCancel()
 /////////////////////////////////////////////////////////////////////////////
 void CTRXPropertyPage::OnOK()
 {
-    // TODO
+    //
 
     CTRXPropertyPageBase::OnOK();
 }
@@ -263,7 +263,7 @@ int CTRXPropertyPage::GetValue ( CButton &button )
 /////////////////////////////////////////////////////////////////////////////
 BOOL CTRXPropertyPage::PreTranslateMessage(MSG* pMsg)
 {
-    // TODO
+    //
     m_ToolTip.RelayEvent(pMsg);
 
     return CTRXPropertyPageBase::PreTranslateMessage(pMsg);

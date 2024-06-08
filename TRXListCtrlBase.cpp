@@ -42,7 +42,7 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 HBRUSH CTRXListCtrlBase::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 {
-    // TODO
+    //
 
     HBRUSH hBrush = CTRXColors::OnCtlColor ( pDC, pWnd, nCtlColor );
     if ( hBrush != NULL )
@@ -52,7 +52,7 @@ HBRUSH CTRXListCtrlBase::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 
     HBRUSH hbr = CListCtrl::OnCtlColor(pDC, pWnd, nCtlColor);
 
-    // TODO
+    //
     return hbr;
 }
 
@@ -62,7 +62,7 @@ HBRUSH CTRXListCtrlBase::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 /////////////////////////////////////////////////////////////////////////////
 BOOL CTRXListCtrlBase::OnEraseBkgnd(CDC* pDC)
 {
-    // TODO
+    //
 
     if ( CTRXColors::OnEraseBkgnd(pDC, this ) )
     {
@@ -79,7 +79,7 @@ BOOL CTRXListCtrlBase::OnEraseBkgnd(CDC* pDC)
 void CTRXListCtrlBase::OnNMCustomdraw(NMHDR *pNMHDR, LRESULT *pResult)
 {
     LPNMCUSTOMDRAW pNMCD = reinterpret_cast<LPNMCUSTOMDRAW>(pNMHDR);
-    // TODO
+    //
     if( GetHeaderCtrl ( ) && GetHeaderCtrl()->m_hWnd != NULL && m_bHeaderControlSubclassed == false )
     {
         m_HeaderCtrl.SubclassWindow(GetHeaderCtrl()->m_hWnd);

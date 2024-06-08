@@ -68,7 +68,7 @@ BOOL CTRXAllMaps::OnInitDialog()
 {
     CTRXDialogBase::OnInitDialog();
 
-    // TODO
+    //
     m_Versions.ResetContent();
     m_Versions.AddString ( "01: Remastered Tombraider 1 and Unfinished Business" );
     m_Versions.AddString ( "02: Remastered Tombraider 2 and The Golden Mask" );
@@ -95,7 +95,7 @@ BOOL CTRXAllMaps::OnInitDialog()
 /////////////////////////////////////////////////////////////////////////////
 void CTRXAllMaps::OnSelchangeVersions()
 {
-    // TODO
+    //
     static char szText [ MAX_PATH ];
 
     int iCurSel = m_Versions.GetCurSel();
@@ -126,7 +126,7 @@ void CTRXAllMaps::OnSelchangeVersions()
 /////////////////////////////////////////////////////////////////////////////
 void CTRXAllMaps::OnSelchangeAreas()
 {
-    // TODO
+    //
 }
 
 

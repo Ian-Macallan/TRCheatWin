@@ -65,7 +65,7 @@ BOOL CTRXSecretsDialog::OnInitDialog()
 {
     CTRXDialogBase::OnInitDialog();
 
-    // TODO
+    //
     char szText [ 16 ];
 
     //

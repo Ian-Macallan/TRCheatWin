@@ -232,7 +232,7 @@ CTRXRemastered::~CTRXRemastered()
 /////////////////////////////////////////////////////////////////////////////
 void CTRXRemastered::OnHelp()
 {
-    // TODO
+    //
     CTRXHelpDialog dlg;
     dlg.DoModal();
 }
@@ -539,7 +539,7 @@ void CTRXRemastered::OnBnClickedLoad()
 /////////////////////////////////////////////////////////////////////////////
 void CTRXRemastered::OnBnClickedWrite()
 {
-    // TODO
+    //
     if ( m_Update.GetCheck() )
     {
         BOOL bRecurse = m_Recurse.GetCheck();
@@ -595,7 +595,7 @@ BOOL CTRXRemastered::OnInitDialog()
 {
     CTRXPropertyPage123::OnInitDialog();
 
-    // TODO
+    //
     if ( m_bToolTip )
     {
         m_ToolTip.AddTool( &m_ListCtrl, LPSTR_TEXTCALLBACK );
@@ -663,7 +663,7 @@ BOOL CTRXRemastered::OnInitDialog()
 /////////////////////////////////////////////////////////////////////////////
 BOOL CTRXRemastered::OnSetActive()
 {
-    // TODO
+    //
     BOOL bModified = IsGUIModified();
     if ( CTR9SaveGame::I() != NULL )
     {
@@ -834,7 +834,7 @@ void CTRXRemastered::SetComboSelection ( )
 /////////////////////////////////////////////////////////////////////////////
 BOOL CTRXRemastered::OnKillActive()
 {
-    // TODO
+    //
     BOOL bRecurse = m_Recurse.GetCheck();
     UpdateBuffer(bRecurse);
 
@@ -3451,7 +3451,7 @@ void CTRXRemastered::SortItems ( int col )
 void CTRXRemastered::OnItemclickListctrl(NMHDR *pNMHDR, LRESULT *pResult)
 {
     LPNMHEADER phdr = reinterpret_cast<LPNMHEADER>(pNMHDR);
-    // TODO
+    //
     NMLISTVIEW *pLV = (NMLISTVIEW *) pNMHDR;
     
     if ( pLV->iItem == iSortColumn )
@@ -3809,7 +3809,7 @@ void CTRXRemastered::OnSelchangeCombo()
             }
         }
 
-        // TODO
+        //
         int iCurSel = m_Combo.GetCurSel();
         if ( iCurSel >= 0 && iCurSel < m_Combo.GetCount() )
         {
@@ -3848,7 +3848,7 @@ void CTRXRemastered::OnBnClickedBurning()
 /////////////////////////////////////////////////////////////////////////////
 void CTRXRemastered::OnBnClickedRemoveLoc()
 {
-    // TODO
+    //
     int iCurSel = m_Combo.GetCurSel();
     if ( iCurSel >= 0 && iCurSel < m_Combo.GetCount() )
     {
@@ -5143,7 +5143,7 @@ void CTRXRemastered::OnClickedRocket()
 /////////////////////////////////////////////////////////////////////////////
 void CTRXRemastered::OnOK()
 {
-    // TODO
+    //
     BOOL bRecurse = m_Recurse.GetCheck();
     UpdateBuffer(bRecurse);
 
@@ -5171,7 +5171,7 @@ void CTRXRemastered::OnOK()
 /////////////////////////////////////////////////////////////////////////////
 BOOL CTRXRemastered::OnApply()
 {
-    // TODO
+    //
     BOOL bRecurse = m_Recurse.GetCheck();
     UpdateBuffer(bRecurse);
 

@@ -37,7 +37,7 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 HBRUSH CTRXScrollBarBase::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 {
-    // TODO
+    //
     HBRUSH hBrush = CTRXColors::OnCtlColor ( pDC, pWnd, nCtlColor );
     if ( hBrush != NULL )
     {
@@ -46,7 +46,7 @@ HBRUSH CTRXScrollBarBase::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 
     HBRUSH hbr = CScrollBar::OnCtlColor(pDC, pWnd, nCtlColor);
 
-    // TODO
+    //
     return hbr;
 }
 
@@ -56,7 +56,7 @@ HBRUSH CTRXScrollBarBase::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 /////////////////////////////////////////////////////////////////////////////
 BOOL CTRXScrollBarBase::OnEraseBkgnd(CDC* pDC)
 {
-    // TODO
+    //
     if ( CTRXColors::OnEraseBkgnd(pDC, this ) )
     {
         return TRUE;

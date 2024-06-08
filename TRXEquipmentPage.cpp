@@ -109,7 +109,7 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 void CTRXEquipmentPage::OnHelp()
 {
-    // TODO
+    //
     CTRXHelpDialog dlg;
     dlg.DoModal();
 
@@ -215,7 +215,7 @@ void CTRXEquipmentPage::DisplayValues()
 /////////////////////////////////////////////////////////////////////////////
 BOOL CTRXEquipmentPage::OnSetActive()
 {
-    // TODO
+    //
     BOOL bModified = IsGUIModified();
     if ( CTRSaveGame::IsValid( ) )
     {
@@ -281,7 +281,7 @@ void CTRXEquipmentPage::UpdateBuffer()
 /////////////////////////////////////////////////////////////////////////////
 BOOL CTRXEquipmentPage::OnKillActive()
 {
-    // TODO
+    //
     UpdateBuffer();
 
     BOOL bModified = IsGUIModified();
@@ -358,7 +358,7 @@ void CTRXEquipmentPage::OnUnfiniteAir()
     SetGUIModified ( TRUE, "Equipment UnfiniteAir" );
 
     char        szString [ 32 ];
-    // TODO
+    //
     if ( m_Unfinite_Air.GetCheck () )
     {
         sprintf_s ( szString, sizeof(szString), "%d", Many32K );
@@ -377,7 +377,7 @@ void CTRXEquipmentPage::OnUnfiniteAir()
 /////////////////////////////////////////////////////////////////////////////
 void CTRXEquipmentPage::OnButSmedi()
 {
-    // TODO
+    //
     SetGUIModified ( TRUE, "Equipment Smedi" );
     m_But_Small_MediPak.SetCheck ( 0 );
     if ( CTRSaveGame::I() != NULL && CTRSaveGame::GetVersion () >= 40 )
@@ -396,7 +396,7 @@ void CTRXEquipmentPage::OnButSmedi()
 /////////////////////////////////////////////////////////////////////////////
 void CTRXEquipmentPage::OnButLmedi()
 {
-    // TODO
+    //
     SetGUIModified ( TRUE, "Equipment Lmedi" );
 
     m_But_Large_MediPak.SetCheck ( 0 );
@@ -416,7 +416,7 @@ void CTRXEquipmentPage::OnButLmedi()
 /////////////////////////////////////////////////////////////////////////////
 void CTRXEquipmentPage::OnButFlares()
 {
-    // TODO
+    //
     int     iX;
 
     SetGUIModified ( TRUE );
@@ -452,7 +452,7 @@ void CTRXEquipmentPage::OnGod()
 
     char                    szString [ 32 ];
 
-    // TODO
+    //
     if ( m_God.GetCheck () )
     {
         sprintf_s ( szString, sizeof(szString), "%d", Many32K );
@@ -490,7 +490,7 @@ BOOL CTRXEquipmentPage::OnInitDialog()
 {
     CTRXPropertyPage::OnInitDialog();
 
-    // TODO
+    //
     if ( m_bToolTip )
     {
         m_ToolTip.AddTool( &m_Status, ("Status"));
@@ -520,7 +520,7 @@ BOOL CTRXEquipmentPage::OnApply()
 /////////////////////////////////////////////////////////////////////////////
 void CTRXEquipmentPage::OnOK()
 {
-    // TODO
+    //
     INT_PTR response = AskToSave("Equipment");
     DisplayValues ( );
 
@@ -533,7 +533,7 @@ void CTRXEquipmentPage::OnOK()
 /////////////////////////////////////////////////////////////////////////////
 void CTRXEquipmentPage::OnCancel()
 {
-    // TODO
+    //
     if ( CTRSaveGame::I() != NULL && ( IsGUIModified() || CTRSaveGame::IsBufferModified() ) )
     {
         INT_PTR response = AskToSave("Equipment");

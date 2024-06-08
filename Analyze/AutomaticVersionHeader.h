@@ -5,7 +5,7 @@
 //
 //	(c) 2003 - 2024 Macallan - mailto:ian.macallan@gmail.com
 //
-//	Generated : 07/06/2024 17:35:47
+//	Generated : 08/06/2024 13:27:47
 //
 //===========================================================================================
 //
@@ -57,22 +57,22 @@
 #endif
 
 #ifdef UNICODE
-#define PROGRAM_DATE    L"Fri Jun 07 17:35"
-#define PROGRAM_DATE_F  L"Fri Jun 07 17:35 2024"
+#define PROGRAM_DATE    L"Sat Jun 08 13:27"
+#define PROGRAM_DATE_F  L"Sat Jun 08 13:27 2024"
 #define PROGRAM_YEAR    L"2024"
-#define PROGRAM_TIME    L"2024/06/07 17:35:47"
+#define PROGRAM_TIME    L"2024/06/08 13:27:47"
 #else
-#define PROGRAM_DATE    "Fri Jun 07 17:35"
-#define PROGRAM_DATE_F  "Fri Jun 07 17:35 2024"
+#define PROGRAM_DATE    "Sat Jun 08 13:27"
+#define PROGRAM_DATE_F  "Sat Jun 08 13:27 2024"
 #define PROGRAM_YEAR    "2024"
-#define PROGRAM_TIME    "2024/06/07 17:35:47"
+#define PROGRAM_TIME    "2024/06/08 13:27:47"
 #endif
 
 #ifdef UNICODE
-#define PROGRAM_VERSION L"4.1.12.005"
-#define PROGRAM_INSTALL L"4.1.12005"
-#define PROGRAM_VER_NUM 40112005
-#define PROGRAM_BUILD   L"675"
+#define PROGRAM_VERSION L"4.1.12.007"
+#define PROGRAM_INSTALL L"4.1.12007"
+#define PROGRAM_VER_NUM 40112007
+#define PROGRAM_BUILD   L"677"
 #define PROGRAM_TITLE   L"Analyze"
 #ifdef _WIN64
 #define PROGRAM_TITLE_P L"Analyze (x64 Unicode)"
@@ -80,10 +80,10 @@
 #define PROGRAM_TITLE_P L"Analyze (x86 Unicode)"
 #endif
 #else
-#define PROGRAM_VERSION "4.1.12.005"
-#define PROGRAM_INSTALL "4.1.12005"
-#define PROGRAM_VER_NUM 40112005
-#define PROGRAM_BUILD   "675"
+#define PROGRAM_VERSION "4.1.12.007"
+#define PROGRAM_INSTALL "4.1.12007"
+#define PROGRAM_VER_NUM 40112007
+#define PROGRAM_BUILD   "677"
 #define PROGRAM_TITLE   "Analyze"
 #ifdef _WIN64
 #define PROGRAM_TITLE_P "Analyze (x64 MBCS)"

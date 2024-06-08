@@ -152,7 +152,7 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 CTRXCHEATWINApp::CTRXCHEATWINApp()
 {
-    // TODO
+    //
     // Place all significant initialization in InitInstance
 }
 
@@ -328,7 +328,7 @@ static char *RemoveFileType ( char *pText )
 /////////////////////////////////////////////////////////////////////////////
 void CTRXCHEATWINApp::OnHelp()
 {
-    // TODO
+    //
     CAboutDlg dlgAbout;
     dlgAbout.DoModal();
 
@@ -799,12 +799,12 @@ BOOL CTRXCHEATWINApp::InitInstance()
     //
     if (nResponse == IDOK)
     {
-        // TODO
+        //
         //  dismissed with OK
     }
     else if (nResponse == IDCANCEL)
     {
-        // TODO
+        //
         //  dismissed with Cancel
     }
 

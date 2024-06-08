@@ -353,7 +353,7 @@ void CTRXMenuBase::MeasureMenuItem ( CDC *pDC, const char *pText, CSize *pSize )
 /////////////////////////////////////////////////////////////////////////////
 void CTRXMenuBase::MeasureMenuItem(LPMEASUREITEMSTRUCT lpMeasureItemStruct )
 {
-    // TODO
+    //
     if ( lpMeasureItemStruct == NULL )
     {
         return;
@@ -557,8 +557,9 @@ void CTRXMenuBase::DrawMenuItem (   LPDRAWITEMSTRUCT lpDrawItemStruct, CDC *pDC,
         CPen* pOldPen = pDC->SelectObject(&penBlack);
 
         pRect->left     += EXTRA_PIXELS_WIDTH / 2;
-        pDC->MoveTo ( pRect->left, pRect->top + SEPARATOR_HEIGHT / 2 );
-        pDC->LineTo ( pRect->right - EXTRA_PIXELS_WIDTH / 2, pRect->top + SEPARATOR_HEIGHT / 2 );
+        int middle = ( pRect->bottom  - pRect->top ) / 2;
+        pDC->MoveTo ( pRect->left, pRect->top + middle );
+        pDC->LineTo ( pRect->right - EXTRA_PIXELS_WIDTH / 2, pRect->top + middle );
 
         pDC->SelectObject(pOldPen);
         penBlack.DeleteObject();
@@ -579,7 +580,7 @@ void CTRXMenuBase::DrawMenuItem (   LPDRAWITEMSTRUCT lpDrawItemStruct, CDC *pDC,
 //====================================================================================
 void CTRXMenuBase::DrawMenuItem(LPDRAWITEMSTRUCT lpDrawItemStruct )
 {
-    // TODO
+    //
     if ( lpDrawItemStruct == NULL )
     {
         return;

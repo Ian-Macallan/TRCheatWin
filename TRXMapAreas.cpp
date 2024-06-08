@@ -622,7 +622,7 @@ void CTRXMapAreas::OnSize(UINT nType, int cx, int cy)
     {
     }
 
-    // TODO
+    //
     if ( m_bInitDone )
     {
         double factorX = (double) cx / (double) m_iCx;
@@ -654,7 +654,7 @@ void CTRXMapAreas::OnMove(int x, int y)
 {
     CTRXDialogBase::OnMove(x, y);
 
-    // TODO
+    //
 }
 
 //
@@ -801,7 +801,7 @@ int CTRXMapAreas::FindWindowAtPoint( POINT point)
 /////////////////////////////////////////////////////////////////////////////
 void CTRXMapAreas::OnLButtonDown(UINT nFlags, CPoint point)
 {
-    // TODO
+    //
     int index = FindWindowAtCPoint(point);
     if ( index != -1 )
     {
@@ -818,7 +818,7 @@ void CTRXMapAreas::OnLButtonDown(UINT nFlags, CPoint point)
 /////////////////////////////////////////////////////////////////////////////
 void CTRXMapAreas::OnLButtonUp(UINT nFlags, CPoint point)
 {
-    // TODO
+    //
     m_iMoving   = -1;
 
     CTRXDialogBase::OnLButtonUp(nFlags, point);
@@ -830,7 +830,7 @@ void CTRXMapAreas::OnLButtonUp(UINT nFlags, CPoint point)
 /////////////////////////////////////////////////////////////////////////////
 void CTRXMapAreas::OnMouseMove(UINT nFlags, CPoint point)
 {
-    // TODO
+    //
     if ( m_iMoving != -1 )
     {
         RECT rect;
@@ -919,7 +919,7 @@ void CTRXMapAreas::ShowMap()
 /////////////////////////////////////////////////////////////////////////////
 void CTRXMapAreas::OnBnClickedRefresh()
 {
-    // TODO
+    //
     ShowMap();
 }
 
@@ -1037,7 +1037,7 @@ void CTRXMapAreas::OnChangeArea()
 /////////////////////////////////////////////////////////////////////////////
 BOOL CTRXMapAreas::PreTranslateMessage(MSG* pMsg)
 {
-    // TODO
+    //
     m_ToolTip.RelayEvent(pMsg);
 
     return CDialog::PreTranslateMessage(pMsg);
@@ -1049,7 +1049,7 @@ BOOL CTRXMapAreas::PreTranslateMessage(MSG* pMsg)
 /////////////////////////////////////////////////////////////////////////////
 void CTRXMapAreas::OnRButtonDown(UINT nFlags, CPoint point)
 {
-    // TODO
+    //
 
     CTRXDialogBase::OnRButtonDown(nFlags, point);
 }
@@ -1103,7 +1103,7 @@ void CTRXMapAreas::OnRButtonUp(UINT nFlags, CPoint point)
 /////////////////////////////////////////////////////////////////////////////
 void CTRXMapAreas::OnSelchangeLevelTop()
 {
-    // TODO
+    //
     if ( m_SetManualCombo )
     {
         char szText [ 32 ];
@@ -1135,7 +1135,7 @@ void CTRXMapAreas::OnSelchangeLevelBottom()
 /////////////////////////////////////////////////////////////////////////////
 void CTRXMapAreas::OnOK()
 {
-    // TODO
+    //
 
     CTRXDialogBase::OnOK();
 }
@@ -1146,7 +1146,7 @@ void CTRXMapAreas::OnOK()
 /////////////////////////////////////////////////////////////////////////////
 void CTRXMapAreas::OnCancel()
 {
-    // TODO
+    //
 
     CTRXDialogBase::OnCancel();
 }
@@ -1157,7 +1157,7 @@ void CTRXMapAreas::OnCancel()
 /////////////////////////////////////////////////////////////////////////////
 INT_PTR CTRXMapAreas::DoModal()
 {
-    // TODO
+    //
 
     INT_PTR result = CTRXDialogBase::DoModal();
     if ( result == IDOK )
@@ -1392,8 +1392,8 @@ void CTRXMapAreas::SetVerticalMap ( CTRXVerticalMap *pVerticalMap )
 /////////////////////////////////////////////////////////////////////////////
 void CTRXMapAreas::OnSysCommand(UINT nID, LPARAM lParam)
 {
-    // TODO
-    // TODO
+    //
+    //
      if ((nID & 0xFFF0) == IDM_VERTICALVIEW)
      {
         if ( m_pVerticalMap == NULL )
@@ -1424,7 +1424,7 @@ void CTRXMapAreas::OnSysCommand(UINT nID, LPARAM lParam)
 /////////////////////////////////////////////////////////////////////////////
 void CTRXMapAreas::OnClose()
 {
-    // TODO
+    //
     if ( m_pVerticalMap != NULL )
     {
         m_pVerticalMap->SetParent ( NULL );

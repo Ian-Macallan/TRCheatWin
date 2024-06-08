@@ -318,7 +318,7 @@ void CTRXPropertyPageBase::SaveLocation ( STRUCTLOCATION *pTable, const char *pC
 /////////////////////////////////////////////////////////////////////////////
 HBRUSH CTRXPropertyPageBase::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 {
-    // TODO
+    //
     HBRUSH hBrush = CTRXColors::OnCtlColor ( pDC, pWnd, nCtlColor );
     if ( hBrush != NULL )
     {
@@ -327,7 +327,7 @@ HBRUSH CTRXPropertyPageBase::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 
     HBRUSH hbr = CPropertyPage::OnCtlColor(pDC, pWnd, nCtlColor);
 
-    // TODO
+    //
     return hbr;
 }
 
@@ -337,7 +337,7 @@ HBRUSH CTRXPropertyPageBase::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 /////////////////////////////////////////////////////////////////////////////
 BOOL CTRXPropertyPageBase::OnEraseBkgnd(CDC* pDC)
 {
-    // TODO
+    //
     if ( CTRXColors::OnEraseBkgnd(pDC, this) )
     {
         return TRUE;
@@ -371,7 +371,7 @@ BOOL CTRXPropertyPageBase::OnInitDialog()
     CPropertyPage::OnInitDialog();
 
 
-    // TODO
+    //
     //
     TEXTMETRIC textMetrics;
     CDC *pDC = GetDC();
@@ -411,7 +411,7 @@ BOOL CTRXPropertyPageBase::OnInitDialog()
     strcpy_s(logFont.lfFaceName, sizeof(logFont.lfFaceName), "Courier New");
     m_pFixedBoldFont->CreateFontIndirect(&logFont);    // Create the font.
 
-    // TODO
+    //
     if( ! m_ToolTip.Create(this))
     {
        TRACE0("Unable to create the ToolTip!");
@@ -435,7 +435,7 @@ BOOL CTRXPropertyPageBase::OnInitDialog()
 /////////////////////////////////////////////////////////////////////////////
 void CTRXPropertyPageBase::OnMeasureItem(int nIDCtl, LPMEASUREITEMSTRUCT lpMeasureItemStruct)
 {
-    // TODO
+    //
     if ( lpMeasureItemStruct != NULL )
     {
         if ( lpMeasureItemStruct->CtlType == ODT_MENU )
@@ -458,7 +458,7 @@ void CTRXPropertyPageBase::OnMeasureItem(int nIDCtl, LPMEASUREITEMSTRUCT lpMeasu
 /////////////////////////////////////////////////////////////////////////////
 void CTRXPropertyPageBase::OnDrawItem(int nIDCtl, LPDRAWITEMSTRUCT lpDrawItemStruct)
 {
-    // TODO
+    //
     if ( lpDrawItemStruct != NULL )
     {
         if ( lpDrawItemStruct->CtlType == ODT_MENU )

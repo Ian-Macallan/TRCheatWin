@@ -40,7 +40,7 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 HBRUSH CTRXCHeaderCtrlBase::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 {
-    // TODO
+    //
     HBRUSH hBrush = CTRXColors::OnCtlColor ( pDC, pWnd, nCtlColor );
     if ( hBrush != NULL )
     {
@@ -49,7 +49,7 @@ HBRUSH CTRXCHeaderCtrlBase::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 
     HBRUSH hbr = CHeaderCtrl::OnCtlColor(pDC, pWnd, nCtlColor);
 
-    // TODO
+    //
     return hbr;
 }
 
@@ -59,7 +59,7 @@ HBRUSH CTRXCHeaderCtrlBase::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 /////////////////////////////////////////////////////////////////////////////
 BOOL CTRXCHeaderCtrlBase::OnEraseBkgnd(CDC* pDC)
 {
-    // TODO
+    //
     if ( CTRXColors::OnEraseBkgnd(pDC, this ) )
     {
         return TRUE;
@@ -76,7 +76,7 @@ void CTRXCHeaderCtrlBase::OnNMCustomdraw(NMHDR *pNMHDR, LRESULT *pResult)
 {
     LPNMCUSTOMDRAW pNMCD = reinterpret_cast<LPNMCUSTOMDRAW>(pNMHDR);
 
-    // TODO
+    //
 
     if ( CTRXColors::m_iDarkTheme == 0 )
     {
