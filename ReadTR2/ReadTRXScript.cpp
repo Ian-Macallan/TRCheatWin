@@ -1711,7 +1711,7 @@ static BOOL TreatLevelData (    FILE *hOutFile, xuint16_t offset, int len,
                         if ( step == 2 )
                         {
                             CorrespondanceType corr = Correspondance [ index ];
-                            char szItemName [ 64 ];
+                            static char szItemName [ MAX_PATH ];
                             sprintf_s ( szItemName, sizeof(szItemName), "%s (%d)", pString, corr.value );
 
                             if ( hOutFile != NULL )

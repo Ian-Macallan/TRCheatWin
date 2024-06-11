@@ -339,9 +339,9 @@ void CTRXNCColor::DrawIcon ( CDC *pDC, UINT icon, const CRect crect, bool bFillR
 /////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////
-BOOL CTRXNCColor::PaintCaption( CWnd *pWnd, BOOL bActive )
+BOOL CTRXNCColor::PaintCaption( CWnd *pWnd, BOOL bActive, int darkIndicator )
 {
-    if ( CTRXColors::m_iDarkTheme != 2 )
+    if ( CTRXColors::m_iDarkTheme != 2 && CTRXColors::m_iDarkTheme != darkIndicator )
     {
         return FALSE;
     }
@@ -468,9 +468,9 @@ BOOL CTRXNCColor::PaintCaption( CWnd *pWnd, BOOL bActive )
 /////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////
-BOOL CTRXNCColor::PaintWindow( CWnd *pWnd, BOOL bActive )
+BOOL CTRXNCColor::PaintWindow( CWnd *pWnd, BOOL bActive, int darkIndicator )
 {
-    if ( CTRXColors::m_iDarkTheme != 2 )
+    if ( CTRXColors::m_iDarkTheme != 2 && CTRXColors::m_iDarkTheme != darkIndicator )
     {
         return FALSE;
     }
@@ -495,7 +495,7 @@ BOOL CTRXNCColor::PaintWindow( CWnd *pWnd, BOOL bActive )
     pWnd->ReleaseDC ( pDC );
 
     //
-    PaintCaption ( pWnd, bActive );
+    PaintCaption ( pWnd, bActive, darkIndicator );
 
     //
     {
@@ -510,14 +510,14 @@ BOOL CTRXNCColor::PaintWindow( CWnd *pWnd, BOOL bActive )
 /////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////
-BOOL CTRXNCColor::Activate( CWnd *pWnd, BOOL bActive )
+BOOL CTRXNCColor::Activate( CWnd *pWnd, BOOL bActive, int darkIndicator )
 {
-    if ( CTRXColors::m_iDarkTheme != 2 )
+    if ( CTRXColors::m_iDarkTheme != 2 && CTRXColors::m_iDarkTheme != darkIndicator )
     {
         return FALSE;
     }
 
-    return PaintCaption ( pWnd, bActive );
+    return PaintCaption ( pWnd, bActive, darkIndicator );
     // return PaintWindow( pWnd, bActive );
 }
 
@@ -525,10 +525,10 @@ BOOL CTRXNCColor::Activate( CWnd *pWnd, BOOL bActive )
 /////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////
-BOOL CTRXNCColor::OnNcLButtonDown(CWnd *pWnd, UINT nHitTest, CPoint point)
+BOOL CTRXNCColor::OnNcLButtonDown(CWnd *pWnd, UINT nHitTest, CPoint point, int darkIndicator )
 {
     //
-    if ( CTRXColors::m_iDarkTheme == 2 )
+    if ( CTRXColors::m_iDarkTheme == 2 || CTRXColors::m_iDarkTheme == darkIndicator )
     {
         if ( ScreenPointOverRect( pWnd, point, m_IconRect ) )
         {
@@ -593,13 +593,13 @@ BOOL CTRXNCColor::OnNcLButtonDown(CWnd *pWnd, UINT nHitTest, CPoint point)
 /////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////
-BOOL CTRXNCColor::OnNcLButtonUp(CWnd *pWnd, UINT nHitTest, CPoint point)
+BOOL CTRXNCColor::OnNcLButtonUp(CWnd *pWnd, UINT nHitTest, CPoint point, int darkIndicator)
 {
     m_bLeftPressed  = FALSE;
 
     //
     //
-    if ( CTRXColors::m_iDarkTheme == 2 )
+    if ( CTRXColors::m_iDarkTheme == 2 || CTRXColors::m_iDarkTheme == darkIndicator )
     {
         if ( ScreenPointOverRect( pWnd, point, m_IconRect ) )
         {
@@ -669,9 +669,9 @@ BOOL CTRXNCColor::OnNcLButtonUp(CWnd *pWnd, UINT nHitTest, CPoint point)
 /////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////
-BOOL CTRXNCColor::OnNcRButtonDown(CWnd *pWnd, UINT nHitTest, CPoint point)
+BOOL CTRXNCColor::OnNcRButtonDown(CWnd *pWnd, UINT nHitTest, CPoint point, int darkIndicator )
 {
-    if ( CTRXColors::m_iDarkTheme == 2 )
+    if ( CTRXColors::m_iDarkTheme == 2 || CTRXColors::m_iDarkTheme == darkIndicator )
     {
         CMenu *pMenu = pWnd->GetSystemMenu(FALSE);
         if ( pMenu )
@@ -703,10 +703,10 @@ BOOL CTRXNCColor::OnLButtonUp(CWnd *pWnd, UINT nFlags, CPoint point)
 /////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////
-BOOL CTRXNCColor::OnNcMouseMove(CWnd *pWnd, UINT nHitTest, CPoint point)
+BOOL CTRXNCColor::OnNcMouseMove(CWnd *pWnd, UINT nHitTest, CPoint point, int darkIndicator )
 {
     //
-    if ( CTRXColors::m_iDarkTheme == 2 )
+    if ( CTRXColors::m_iDarkTheme == 2 || CTRXColors::m_iDarkTheme == darkIndicator )
     {
         TRACKMOUSEEVENT tme;
         ZeroMemory ( &tme, sizeof(tme) );
@@ -733,10 +733,10 @@ BOOL CTRXNCColor::OnNcMouseMove(CWnd *pWnd, UINT nHitTest, CPoint point)
 /////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////
-BOOL CTRXNCColor::OnMouseMove(CWnd *pWnd, UINT nFlags, CPoint point)
+BOOL CTRXNCColor::OnMouseMove(CWnd *pWnd, UINT nFlags, CPoint point, int darkIndicator )
 {
     //
-    if ( CTRXColors::m_iDarkTheme == 2 )
+    if ( CTRXColors::m_iDarkTheme == 2 || CTRXColors::m_iDarkTheme == darkIndicator )
     {
         //  Track Event
         TRACKMOUSEEVENT tme;

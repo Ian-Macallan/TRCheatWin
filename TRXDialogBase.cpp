@@ -256,7 +256,7 @@ void CTRXDialogBase::OnNcPaint()
         GetWindowRect ( &rect );
     
         CRgn region;
-        region.CreateRectRgn ( 0, 0,rect.right - rect.left, rect.bottom - rect.top );
+        region.CreateRectRgn ( 0, 0, rect.right - rect.left, rect.bottom - rect.top );
         SetWindowRgn ( (HRGN) region.GetSafeHandle(), FALSE );
     }
 

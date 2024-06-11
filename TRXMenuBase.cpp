@@ -420,17 +420,6 @@ void CTRXMenuBase::DrawMenuItem (   LPDRAWITEMSTRUCT lpDrawItemStruct, CDC *pDC,
     char    szText [ MENU_TEXT_SIZE ];
     ZeroMemory ( szText, sizeof(szText) );
 
-    //
-    HBRUSH      hForeground     = CTRXColors::GetFGMenuBrush(CTRXColors::m_iDarkTheme != 0);
-    HBRUSH      hFGSelected     = CTRXColors::GetFGMenuSelectedBrush(CTRXColors::m_iDarkTheme != 0);
-
-    CBrush      *brBKNormal     = CTRXColors::GetBKMenuCBrush(CTRXColors::m_iDarkTheme != 0);
-    CBrush      *brBKSelected   = CTRXColors::GetBKMenuSelectedCBrush(CTRXColors::m_iDarkTheme != 0);
-
-    COLORREF    crForeground    = CTRXColors::GetFGMenuCR(CTRXColors::m_iDarkTheme != 0);
-    COLORREF    crFGSelected    = CTRXColors::GetFGMenuSelectedCR(CTRXColors::m_iDarkTheme != 0);
-
-    COLORREF    crDisabled      = CTRXColors::GetFGDisabledCR(CTRXColors::m_iDarkTheme != 0);
 
     //  The entire control needs to be drawn
     //  This is called line by line
@@ -442,14 +431,14 @@ void CTRXMenuBase::DrawMenuItem (   LPDRAWITEMSTRUCT lpDrawItemStruct, CDC *pDC,
         rect.left       = rect.left + 1;
         rect.right      = rect.right  - 1;
         rect.bottom     = rect.bottom  - 1;
-        pDC->FillRect ( pRect, brBKNormal);
+        pDC->FillRect ( pRect, CTRXColors::GetBKMenuCBrush(CTRXColors::m_iDarkTheme != 0));
     }
 
     //
     if ( lpDrawItemStruct->itemState & ODS_CHECKED )
     {
         // We Will Have to Draw a Bitmap
-        hOldBrush       = ( HBRUSH ) pDC->SelectObject ( hForeground );
+        hOldBrush       = ( HBRUSH ) pDC->SelectObject ( CTRXColors::GetFGMenuBrush(CTRXColors::m_iDarkTheme != 0) );
         int xIconSmall  = GetSystemMetrics(SM_CXSMICON);
         int yIconSmall  = GetSystemMetrics(SM_CYSMICON);
 
@@ -472,11 +461,11 @@ void CTRXMenuBase::DrawMenuItem (   LPDRAWITEMSTRUCT lpDrawItemStruct, CDC *pDC,
     //
     if ( lpDrawItemStruct->itemAction & ( ODA_FOCUS | ODA_SELECT ) )
     {
-        hOldBrush = ( HBRUSH ) pDC->SelectObject ( hFGSelected );
+        hOldBrush = ( HBRUSH ) pDC->SelectObject ( CTRXColors::GetFGMenuSelectedBrush(CTRXColors::m_iDarkTheme != 0) );
     }
     else
     {
-        hOldBrush = ( HBRUSH ) pDC->SelectObject ( hForeground );
+        hOldBrush = ( HBRUSH ) pDC->SelectObject ( CTRXColors::GetFGMenuBrush(CTRXColors::m_iDarkTheme != 0) );
     }
 
     //
@@ -484,22 +473,22 @@ void CTRXMenuBase::DrawMenuItem (   LPDRAWITEMSTRUCT lpDrawItemStruct, CDC *pDC,
     {
         if ( lpDrawItemStruct->itemState & ( ODS_GRAYED | ODS_DISABLED ) )
         {
-            colorFg = pDC->SetTextColor ( crDisabled );
+            colorFg = pDC->SetTextColor ( CTRXColors::GetFGDisabledCR(CTRXColors::m_iDarkTheme != 0) );
         }
         else
         {
-            colorFg = pDC->SetTextColor ( crFGSelected );
+            colorFg = pDC->SetTextColor ( CTRXColors::GetFGMenuSelectedCR(CTRXColors::m_iDarkTheme != 0) );
         }
     }
     else
     {
         if ( lpDrawItemStruct->itemState & ( ODS_GRAYED | ODS_DISABLED ) )
         {
-            colorFg = pDC->SetTextColor ( crDisabled );
+            colorFg = pDC->SetTextColor ( CTRXColors::GetFGDisabledCR(CTRXColors::m_iDarkTheme != 0) );
         }
         else
         {
-            colorFg = pDC->SetTextColor ( crForeground );
+            colorFg = pDC->SetTextColor ( CTRXColors::GetFGMenuCR(CTRXColors::m_iDarkTheme != 0) );
         }
     }
 
@@ -510,11 +499,11 @@ void CTRXMenuBase::DrawMenuItem (   LPDRAWITEMSTRUCT lpDrawItemStruct, CDC *pDC,
     {
         if ( lpDrawItemStruct->itemState & ODS_SELECTED )
         {
-            pDC->FillRect ( pRect, brBKSelected );
+            pDC->FillRect ( pRect, CTRXColors::GetBKMenuSelectedCBrush(CTRXColors::m_iDarkTheme != 0) );
         }
         else
         {
-            pDC->FillRect ( pRect, brBKNormal );
+            pDC->FillRect ( pRect, CTRXColors::GetBKMenuCBrush(CTRXColors::m_iDarkTheme != 0) );
         }
 
         bkMode          = pDC->SetBkMode ( TRANSPARENT );
@@ -542,11 +531,11 @@ void CTRXMenuBase::DrawMenuItem (   LPDRAWITEMSTRUCT lpDrawItemStruct, CDC *pDC,
     {
         if ( lpDrawItemStruct->itemState & ODS_SELECTED )
         {
-            pDC->FillRect ( pRect, brBKSelected );
+            pDC->FillRect ( pRect, CTRXColors::GetBKMenuSelectedCBrush(CTRXColors::m_iDarkTheme != 0) );
         }
         else
         {
-            pDC->FillRect ( pRect, brBKNormal );
+            pDC->FillRect ( pRect, CTRXColors::GetBKMenuCBrush(CTRXColors::m_iDarkTheme != 0) );
         }
 
         bkMode          = pDC->SetBkMode ( TRANSPARENT );

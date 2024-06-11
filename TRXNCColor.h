@@ -48,21 +48,21 @@ class CTRXNCColor
         void DrawAllIcons (  CWnd *pWnd, UINT iconOnly = 0 );
 
         //  Return TRUE if treated, FALSE if default must be done
-        BOOL PaintCaption( CWnd *pWnd, BOOL bActive = FALSE );
-        BOOL PaintWindow( CWnd *pWnd, BOOL bActive = FALSE );
-        BOOL Activate( CWnd *pWnd, BOOL bActive = FALSE );
+        BOOL PaintCaption( CWnd *pWnd, BOOL bActive = FALSE, int darkIndicator = 2 );
+        BOOL PaintWindow( CWnd *pWnd, BOOL bActive = FALSE, int darkIndicator = 2 );
+        BOOL Activate( CWnd *pWnd, BOOL bActive = FALSE, int darkIndicator = 2 );
 
         //  Return TRUE if treated, FALSE if default must be done
-        BOOL OnNcLButtonDown(CWnd *pWnd, UINT nHitTest, CPoint point);
-        BOOL OnNcLButtonUp(CWnd *pWnd, UINT nHitTest, CPoint point);
-        BOOL OnNcRButtonDown(CWnd *pWnd, UINT nHitTest, CPoint point);
+        BOOL OnNcLButtonDown(CWnd *pWnd, UINT nHitTest, CPoint point, int darkIndicator = 2 );
+        BOOL OnNcLButtonUp(CWnd *pWnd, UINT nHitTest, CPoint point, int darkIndicator = 2 );
+        BOOL OnNcRButtonDown(CWnd *pWnd, UINT nHitTest, CPoint point, int darkIndicator = 2 );
 
-        BOOL OnNcMouseMove(CWnd *pWnd, UINT nHitTest, CPoint point);
+        BOOL OnNcMouseMove(CWnd *pWnd, UINT nHitTest, CPoint point, int darkIndicator = 2 );
 
         BOOL OnNcMouseHover(CWnd *pWnd, UINT nFlags, CPoint point);
         BOOL OnNcMouseLeave(CWnd *pWnd );
 
-        BOOL OnMouseMove(CWnd *pWnd, UINT nFlags, CPoint point);
+        BOOL OnMouseMove(CWnd *pWnd, UINT nFlags, CPoint point, int darkIndicator = 2 );
         BOOL OnLButtonUp(CWnd *pWnd, UINT nFlags, CPoint point);
 
 };
