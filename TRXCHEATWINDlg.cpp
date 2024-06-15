@@ -183,9 +183,7 @@ void CAboutDlg::OnWeb()
     CString     strText;
 
     m_Web.GetWindowText ( strText );
-    hInst =
-        ShellExecute ( NULL, "open", strText, "", "", SW_SHOWDEFAULT );
-
+    hInst = ShellExecute ( NULL, "open", strText, "", "", SW_SHOWDEFAULT );
     
 }
 
@@ -200,8 +198,6 @@ void CAboutDlg::OnEmail()
     CString     strText;
 
     m_Email.GetWindowText ( strText );
-    hInst =
-        ShellExecute ( NULL, "open", strText, "", "", SW_SHOWDEFAULT );
-
+    hInst = ShellExecute ( NULL, "open", strText, "", "", SW_SHOWDEFAULT );
     
 }

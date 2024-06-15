@@ -114,16 +114,24 @@ static CRect GetClientFullRect ( const CRect &windowRECT )
 /////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////
-static CRect GetIconFullRECT ( const CRect &windowRECT, int left )
+static int GetIconWidth ( )
 {
     int xIcon           = GetSystemMetrics(SM_CXICON);
-    int yIcon           = GetSystemMetrics(SM_CYICON);
+    return xIcon * 3 / 2 - 1;
+}
 
-    int xIconSmall      = GetSystemMetrics(SM_CXSMICON);
-    int yIconSmall      = GetSystemMetrics(SM_CYSMICON);
-
+static int GetIconHeight ( )
+{
     int yCaption        = GetSystemMetrics(SM_CYCAPTION);
+    return yCaption - 1;
+}
 
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
+static CRect GetIconFullRECT ( const CRect &windowRECT, int left )
+{
     int yBorder         = GetSystemMetrics(SM_CYBORDER);
     int yFrame          = GetSystemMetrics ( SM_CYDLGFRAME );
 
@@ -133,8 +141,8 @@ static CRect GetIconFullRECT ( const CRect &windowRECT, int left )
 
     iconFullRECT.left       = left;
     iconFullRECT.top        = captionFullRECT.top; // yBorder + yFrame;
-    iconFullRECT.right      = iconFullRECT.left + xIcon;
-    iconFullRECT.bottom     = iconFullRECT.top + yCaption + yFrame - 1; // iconFullRECT.top + yCaption - 1;
+    iconFullRECT.right      = iconFullRECT.left + GetIconWidth ( );
+    iconFullRECT.bottom     = iconFullRECT.top + GetIconHeight ( ) + yFrame - 1; // iconFullRECT.top + yCaption - 1;
 
     return iconFullRECT;
 }
@@ -354,16 +362,19 @@ BOOL CTRXNCColor::PaintCaption( CWnd *pWnd, BOOL bActive, int darkIndicator )
     int xFrame          = GetSystemMetrics ( SM_CXDLGFRAME );
     int yFrame          = GetSystemMetrics ( SM_CYDLGFRAME );
 
-    int xIcon           = GetSystemMetrics(SM_CXICON);
-    int yIcon           = GetSystemMetrics(SM_CYICON);
+    // int xIcon           = GetSystemMetrics(SM_CXICON);
+    // int yIcon           = GetSystemMetrics(SM_CYICON);
 
-    int xIconSmall      = GetSystemMetrics(SM_CXSMICON);
-    int yIconSmall      = GetSystemMetrics(SM_CYSMICON);
+    // int xIconSmall      = GetSystemMetrics(SM_CXSMICON);
+    // int yIconSmall      = GetSystemMetrics(SM_CYSMICON);
 
-    int yCaption        = GetSystemMetrics(SM_CYCAPTION);
+    // int yCaption        = GetSystemMetrics(SM_CYCAPTION);
 
     int xLeft           = xBorder + xFrame;
     int yTop            = yBorder + yFrame;
+
+    int iconWidth       = GetIconWidth();
+    int iconHeight      = GetIconHeight();
 
     //
     CDC* pDC = pWnd->GetWindowDC();
@@ -404,7 +415,7 @@ BOOL CTRXNCColor::PaintCaption( CWnd *pWnd, BOOL bActive, int darkIndicator )
     char szTitle [ MAX_PATH ];
     pWnd->GetWindowText ( szTitle, sizeof(szTitle));
     CRect textRECT  = captionInsideRECT;
-    textRECT.left   = textRECT.left + xIcon + xBorder;
+    textRECT.left   = textRECT.left + iconWidth + xBorder;
 
     pDC->SetBkMode (TRANSPARENT);
     pDC->SetTextColor (foregroundColor);
@@ -434,11 +445,11 @@ BOOL CTRXNCColor::PaintCaption( CWnd *pWnd, BOOL bActive, int darkIndicator )
 
     //  RIGHT
     // Close
-    m_CloseRect = GetIconFullRECT ( windowRECT, /* captionInsideRECT.right */ captionFullRECT.right - xIcon );
+    m_CloseRect = GetIconFullRECT ( windowRECT, /* captionInsideRECT.right */ captionFullRECT.right - iconWidth );
     DrawIcon ( pDC, IDI_CLOSE, m_CloseRect );
 
     //  Maximize
-    m_MaximizeRect = GetIconFullRECT ( windowRECT, m_CloseRect.left - xIcon );
+    m_MaximizeRect = GetIconFullRECT ( windowRECT, m_CloseRect.left - iconWidth );
     if ( dwStyle & WS_MAXIMIZEBOX )
     {
         if ( wp.showCmd == SW_NORMAL )
@@ -452,7 +463,7 @@ BOOL CTRXNCColor::PaintCaption( CWnd *pWnd, BOOL bActive, int darkIndicator )
     }
 
     //  Minilmize
-    m_MinimizeRect = GetIconFullRECT ( windowRECT, m_MaximizeRect.left - xIcon );
+    m_MinimizeRect = GetIconFullRECT ( windowRECT, m_MaximizeRect.left - iconWidth );
     if ( dwStyle & WS_MINIMIZEBOX )
     {
         DrawIcon ( pDC, IDI_MINIMIZE, m_MinimizeRect );
@@ -518,7 +529,6 @@ BOOL CTRXNCColor::Activate( CWnd *pWnd, BOOL bActive, int darkIndicator )
     }
 
     return PaintCaption ( pWnd, bActive, darkIndicator );
-    // return PaintWindow( pWnd, bActive );
 }
 
 //
@@ -572,14 +582,7 @@ BOOL CTRXNCColor::OnNcLButtonDown(CWnd *pWnd, UINT nHitTest, CPoint point, int d
         CRect captionRect = GetCaptionFullRect ( windowRECT );
         if ( ScreenPointOverRect( pWnd, point, captionRect ) )
         {
-            if ( SquaredCorners )
-            {
-                m_bLeftPressed      = TRUE;
-            }
-            else
-            {
-                m_bLeftPressed      = FALSE;
-            }
+            m_bLeftPressed      = FALSE;
             m_windowRECT        = windowRECT;
             m_LeftPressedPoint  = point;
             return m_bLeftPressed;

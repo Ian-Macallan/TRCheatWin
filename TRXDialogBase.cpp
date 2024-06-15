@@ -2,6 +2,7 @@
 //
 
 #include "stdafx.h"
+
 #include "TRXDialogBase.h"
 #include "afxdialogex.h"
 #include "TRXTools.h"
@@ -250,15 +251,6 @@ BOOL CTRXDialogBase::OnNcActivate(BOOL bActive)
 /////////////////////////////////////////////////////////////////////////////
 void CTRXDialogBase::OnNcPaint()
 {
-    if ( SquaredCorners && CTRXColors::m_iDarkTheme == 2 )
-    {
-        RECT rect;
-        GetWindowRect ( &rect );
-    
-        CRgn region;
-        region.CreateRectRgn ( 0, 0, rect.right - rect.left, rect.bottom - rect.top );
-        SetWindowRgn ( (HRGN) region.GetSafeHandle(), FALSE );
-    }
 
     //
     BOOL bTreated = m_NC.PaintWindow(this);

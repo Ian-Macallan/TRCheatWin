@@ -8,7 +8,7 @@
 
 static  const int EXTRA_PIXELS_WIDTH    = 8;
 static  const int EXTRA_PIXELS_HEIGHT   = 6;
-static  const int SEPARATOR_HEIGHT      = 7;
+static  const int SEPARATOR_HEIGHT      = 3;
 
 #define MENU_TEXT_SIZE  256
 
@@ -386,8 +386,11 @@ void CTRXMenuBase::MeasureMenuItem(LPMEASUREITEMSTRUCT lpMeasureItemStruct )
             {
                 strcat_s  ( szText, sizeof(szText), "ALT+F99" );
                 MeasureMenuItem ( pDC, szText, &size );
-                size.cx     = size.cx + 1;
-                size.cy     = size.cy + 1;
+                if ( strlen(szText) > 0 )
+                {
+                    size.cx     = size.cx + 1;
+                    size.cy     = size.cy + 1;
+                }
                 int iRes    = m_pWnd->ReleaseDC ( pDC );
             }
         }

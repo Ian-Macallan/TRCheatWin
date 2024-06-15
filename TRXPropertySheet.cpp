@@ -302,6 +302,8 @@ BEGIN_MESSAGE_MAP(CTRXPropertySheet, CPropertySheet)
     ON_WM_LBUTTONUP()
     ON_WM_MOUSEMOVE()
 
+    ON_WM_CREATE()
+    ON_WM_NCCALCSIZE()
 END_MESSAGE_MAP()
 
 
@@ -824,17 +826,6 @@ void CTRXPropertySheet::OnInitMenuPopup(CMenu* pPopupMenu, UINT nIndex, BOOL bSy
 void CTRXPropertySheet::OnNcPaint()
 {
     //
-    if ( SquaredCorners && CTRXColors::m_iDarkTheme == 2 )
-    {
-        RECT rect;
-        GetWindowRect ( &rect );
-    
-        CRgn region;
-        region.CreateRectRgn ( 0, 0,rect.right - rect.left, rect.bottom - rect.top );
-        SetWindowRgn ( (HRGN) region.GetSafeHandle(), FALSE );
-    }
-
-    //
     BOOL bTreated = m_NC.PaintWindow(this);
     if ( bTreated )
     {
@@ -980,3 +971,28 @@ void CTRXPropertySheet::SetThemeChanged ( bool bDarkTheme )
     }
 }
 
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
+int CTRXPropertySheet::OnCreate(LPCREATESTRUCT lpCreateStruct)
+{
+    //
+    if (CPropertySheet::OnCreate(lpCreateStruct) == -1)
+    {
+        return -1;
+    }
+    //
+
+    return 0;
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
+void CTRXPropertySheet::OnNcCalcSize(BOOL bCalcValidRects, NCCALCSIZE_PARAMS* lpncsp)
+{
+    //
+    CPropertySheet::OnNcCalcSize(bCalcValidRects, lpncsp);
+}

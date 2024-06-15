@@ -356,6 +356,8 @@ BOOL CTRXCHEATWINApp::InitInstance()
     }
 #endif
 
+    // InitCommonControls();
+
     //  Dtop
     // Initialize OLE 2.0 libraries
     BOOL bOle = AfxOleInit();
