@@ -1984,20 +1984,24 @@ BOOL ReadTRXScript (    const char *pathname, const char *pDirectory, int versio
         return bResult;
     }
 
+    //  Preserve Buffer
     //  The crypted part covers the two headers and it will remain 8 bytes.
     DecriptaScript ( cryptHeader );
     tr4_script_header       *pScriptHeader      = (tr4_script_header *) cryptHeader;
     tr4_script_levelheader  *pScriptLevelHeader = (tr4_script_levelheader *)( cryptHeader + sizeof(tr4_script_header) );
-    BYTE *pCryptHeader = cryptHeader;
+    BYTE *pCryptHeader                          = cryptHeader;
 
     //
     //  Check
+    bool bGood = false;
     if (    memcmp ( (char *) pScriptLevelHeader->PCLevelString, ".TR4", strlen(".TR4") ) == 0  &&
             memcmp ( (char *) pScriptLevelHeader->PCCutString, ".TR4", strlen(".TR4") ) == 0    &&
-            memcmp ( (char *) pScriptLevelHeader->PCFMVString, ".BIK", strlen(".BIK") ) == 0        )
+            ( memcmp ( (char *) pScriptLevelHeader->PCFMVString, ".BIK", strlen(".BIK") ) == 0  ||
+              memcmp ( (char *) pScriptLevelHeader->PCFMVString, ".WMV", strlen(".WMV") ) == 0      ) )
     {
         fileIsCrypted   = TRUE;
         Print ( hOutFile, "; File is Crypted TRNG\n" );
+        bGood = true;
     }
 
     //  File not Crypted : Rewind and Read Normally

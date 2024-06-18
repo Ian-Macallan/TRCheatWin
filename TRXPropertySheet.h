@@ -118,6 +118,7 @@ class CTRXPropertySheet : public CPropertySheet
         afx_msg void OnLButtonUp(UINT nFlags, CPoint point);
         afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
         afx_msg void OnNcCalcSize(BOOL bCalcValidRects, NCCALCSIZE_PARAMS* lpncsp);
+        
 };
 
 

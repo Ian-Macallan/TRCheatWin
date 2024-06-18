@@ -1,6 +1,11 @@
 #pragma once
 #include "afxwin.h"
 
+//  Menu Indicator
+#define ID_MNU_MASK         0xff
+#define ID_SYS_MENU         0xff
+#define ID_POP_MENU         0xfe
+
 //
 /////////////////////////////////////////////////////////////////////////////
 //

@@ -74,4 +74,5 @@ class CTRXDialogBase : public CDialog
         afx_msg void OnNcMouseMove(UINT nHitTest, CPoint point);
         afx_msg void OnNcMouseHover(UINT nFlags, CPoint point);
         afx_msg void OnNcMouseLeave();
+        
 };

@@ -892,6 +892,18 @@
     <Image Include="res\Windowed.ico">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="res\Copy.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\Paste.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\PasteBlack.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\CopyBlack.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <Text Include="res\HelpText.txt" />

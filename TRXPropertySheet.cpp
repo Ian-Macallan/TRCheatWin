@@ -534,6 +534,7 @@ void CTRXPropertySheet::AddRemasteredPage ()
 
         AddPage ( m_Remastered_Page );
         m_iRemasteredAdded  = TRUE;
+
 #if 0
         m_psh.dwFlags &= ~PSH_HASHELP;
         for(int i = 0; i < GetPageCount(); ++i )
@@ -842,7 +843,7 @@ void CTRXPropertySheet::OnNcPaint()
 BOOL CTRXPropertySheet::OnNcActivate(BOOL bActive)
 {
     //
-    BOOL bTreated = m_NC.Activate(this, bActive);
+    BOOL bTreated = m_NC.Activate(this, NULL, bActive);
     if ( bTreated )
     {
         return TRUE;
@@ -996,3 +997,4 @@ void CTRXPropertySheet::OnNcCalcSize(BOOL bCalcValidRects, NCCALCSIZE_PARAMS* lp
     //
     CPropertySheet::OnNcCalcSize(bCalcValidRects, lpncsp);
 }
+

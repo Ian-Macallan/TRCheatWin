@@ -155,6 +155,7 @@ void CTRXMenuBase::SetOwnDraw ( HMENU hMenu, bool bOwnDrawn )
             {
                 menuItemInfo.fType          ^= MFT_OWNERDRAW;
             }
+            //  Set Index in dwItemData
             menuItemInfo.dwItemData     = iPos;
             menuItemInfo.cch            = ( UINT ) strlen ( szText );
             bRes = menu->SetMenuItemInfo ( iPos, &menuItemInfo, TRUE );
@@ -375,8 +376,13 @@ void CTRXMenuBase::MeasureMenuItem(LPMEASUREITEMSTRUCT lpMeasureItemStruct )
     menuItemInfo.fMask          = MIIM_STRING;
     menuItemInfo.cch            = sizeof ( szText );
     menuItemInfo.dwTypeData     = szText;
-    UINT uItem  = ( UINT ) lpMeasureItemStruct->itemData;
-    BOOL bRes = GetMenuItemInfo ( uItem, &menuItemInfo, TRUE );
+    //  itemData contains the position / index
+    UINT iPos   = ( UINT ) lpMeasureItemStruct->itemData;
+    //  We could search by itemID
+    UINT id     = lpMeasureItemStruct->itemID;
+
+    //
+    BOOL bRes = GetMenuItemInfo ( iPos, &menuItemInfo, TRUE );
     if ( bRes )
     {
         if ( m_pWnd )
@@ -592,7 +598,12 @@ void CTRXMenuBase::DrawMenuItem(LPDRAWITEMSTRUCT lpDrawItemStruct )
     menuItemInfo.fMask      =  MIIM_STRING;
     menuItemInfo.cch        = sizeof ( szText ) - 1;
     menuItemInfo.dwTypeData = szText;
+    //  itemData contains the position / index
     UINT iPos   = ( UINT ) lpDrawItemStruct->itemData;
+    //  We could search by itemID
+    UINT id     = lpDrawItemStruct->itemID;
+
+    //
     BOOL bRes = GetMenuItemInfo ( iPos, &menuItemInfo, TRUE );
     if ( bRes )
     {
@@ -735,8 +746,13 @@ int CTRXMenuBase::DrawBitmap(LPDRAWITEMSTRUCT lpDrawItemStruct)
     menuItemInfo.cbSize  = sizeof ( menuItemInfo );
 
     menuItemInfo.fMask      = MIIM_BITMAP | MIIM_CHECKMARKS;
-    UINT uItem  = ( UINT ) lpDrawItemStruct->itemData;
-    BOOL bRes = GetMenuItemInfo ( uItem, &menuItemInfo, TRUE );
+    //  itemData contains the position / index
+    UINT iPos   = ( UINT ) lpDrawItemStruct->itemData;
+    //  We could search by itemID
+    UINT id     = lpDrawItemStruct->itemID;
+
+    //
+    BOOL bRes = GetMenuItemInfo ( iPos, &menuItemInfo, TRUE );
     if ( bRes )
     {
 

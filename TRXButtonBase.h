@@ -13,9 +13,15 @@ class CTRXButtonBase : public CButton
         CTRXButtonBase(void);
         virtual ~CTRXButtonBase(void);
         DECLARE_MESSAGE_MAP()
+
+        UINT m_IconResource;
+
+    public :
+        void SetIconResource ( UINT resource );
+
         afx_msg BOOL OnEraseBkgnd(CDC* pDC);
         afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
-        virtual void DrawItem(LPDRAWITEMSTRUCT /*lpDrawItemStruct*/);
         afx_msg void OnRButtonUp(UINT nFlags, CPoint point);
+        virtual void DrawItem(LPDRAWITEMSTRUCT /*lpDrawItemStruct*/);
 };
 

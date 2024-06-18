@@ -58,25 +58,21 @@
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC70.props" />
     
     
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC70.props" />
     
     
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC70.props" />
     
     
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC70.props" />
     
     
   </ImportGroup>
@@ -601,6 +597,8 @@
     <Image Include="res\Chronicles.0.bmp" />
     <Image Include="res\Chronicles.1.bmp" />
     <Image Include="res\Close.ico" />
+    <Image Include="res\Copy.ico" />
+    <Image Include="res\CopyBlack.ico" />
     <Image Include="res\Crossbow.bmp" />
     <Image Include="res\crowbar.bmp" />
     <Image Include="res\Grappling100.bmp" />
@@ -610,6 +608,8 @@
     <Image Include="res\Last.Revelation.1.bmp" />
     <Image Include="res\Maximize.ico" />
     <Image Include="res\Mininize.ico" />
+    <Image Include="res\Paste.ico" />
+    <Image Include="res\PasteBlack.ico" />
     <Image Include="res\revolver.bmp" />
     <Image Include="res\Windowed.ico" />
   </ItemGroup>

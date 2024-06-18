@@ -17,6 +17,7 @@ IMPLEMENT_DYNAMIC(CTRXButtonBase, CButton)
 /////////////////////////////////////////////////////////////////////////////
 CTRXButtonBase::CTRXButtonBase(void)
 {
+    m_IconResource = 0;
 }
 
 //
@@ -25,6 +26,15 @@ CTRXButtonBase::CTRXButtonBase(void)
 /////////////////////////////////////////////////////////////////////////////
 CTRXButtonBase::~CTRXButtonBase(void)
 {
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
+void CTRXButtonBase::SetIconResource ( UINT resource )
+{
+    m_IconResource = resource;
 }
 
 //
@@ -125,7 +135,30 @@ void CTRXButtonBase::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct )
             crOldColor = pDC->SetTextColor ( CTRXColors::GetFGNormalCR( CTRXColors::m_iDarkTheme != 0 ) );
         }
 
-        pDC->DrawText ( szText, &lpDrawItemStruct->rcItem, DT_SINGLELINE|DT_VCENTER|DT_CENTER );
+        if ( m_IconResource != 0 )
+        {
+            int xIconSmall  = GetSystemMetrics(SM_CXSMICON);
+            int yIconSmall  = GetSystemMetrics(SM_CYSMICON);
+
+            int xMargin = ( ( lpDrawItemStruct->rcItem.right - lpDrawItemStruct->rcItem.left ) - xIconSmall ) / 2;
+            int yMargin = ( ( lpDrawItemStruct->rcItem.bottom - lpDrawItemStruct->rcItem.top ) - yIconSmall ) / 2;
+            if ( xMargin < 0 )
+            {
+                xMargin = 0;
+            }
+            if ( yMargin < 0 )
+            {
+                yMargin = 0;
+            }
+            HICON hIcon = AfxGetApp()->LoadIcon ( m_IconResource );
+
+            DrawIconEx ( pDC->m_hDC, lpDrawItemStruct->rcItem.left + xMargin, lpDrawItemStruct->rcItem.top + yMargin, 
+                hIcon, xIconSmall, yIconSmall, 0, NULL, DI_NORMAL );
+        }
+        else
+        {
+            pDC->DrawText ( szText, &lpDrawItemStruct->rcItem, DT_SINGLELINE|DT_VCENTER|DT_CENTER );
+        }
 
         pDC->SetTextColor( crOldColor);
     }

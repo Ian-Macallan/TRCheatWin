@@ -347,6 +347,15 @@ void CTRXNCColor::DrawIcon ( CDC *pDC, UINT icon, const CRect crect, bool bFillR
 /////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////
+CDC *CTRXNCColor::GetDeviceContext ( CWnd *pWnd )
+{
+    return  pWnd->GetWindowDC();
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
 BOOL CTRXNCColor::PaintCaption( CWnd *pWnd, BOOL bActive, int darkIndicator )
 {
     if ( CTRXColors::m_iDarkTheme != 2 && CTRXColors::m_iDarkTheme != darkIndicator )
@@ -377,7 +386,7 @@ BOOL CTRXNCColor::PaintCaption( CWnd *pWnd, BOOL bActive, int darkIndicator )
     int iconHeight      = GetIconHeight();
 
     //
-    CDC* pDC = pWnd->GetWindowDC();
+    CDC* pDC = GetDeviceContext ( pWnd );
 
     //
     CRect windowRECT;
@@ -487,7 +496,7 @@ BOOL CTRXNCColor::PaintWindow( CWnd *pWnd, BOOL bActive, int darkIndicator )
     }
 
     //
-    CDC* pDC = pWnd->GetWindowDC();
+    CDC* pDC = GetDeviceContext ( pWnd );
 
     //
     //  Fill Background
@@ -774,7 +783,7 @@ void CTRXNCColor::DrawAllIcons (  CWnd *pWnd, UINT iconOnly )
     pWnd->GetWindowPlacement( &wp );
 
     //
-    CDC* pDC = pWnd->GetWindowDC();
+    CDC* pDC = GetDeviceContext ( pWnd );
 
     if ( iconOnly == 0 || iconOnly == IDI_CLOSE )
     {

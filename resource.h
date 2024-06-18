@@ -183,6 +183,12 @@
 #define IDI_ICON2                       288
 #define IDI_WINDOWED                    288
 #define IDR_MENU_ITEMS                  289
+#define IDI_ICOPY                       292
+#define IDI_COPY                        292
+#define IDI_PASTE                       293
+#define IDI_PASTE_BLACK                 295
+#define IDI_ICON3                       296
+#define IDI_COPY_BLACK                  296
 #define IDC_DESERTEAGLE                 1001
 #define IDC_ITEM_02                     1002
 #define IDC_CROWBAR                     1002
@@ -627,7 +633,7 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        290
+#define _APS_NEXT_RESOURCE_VALUE        297
 #define _APS_NEXT_COMMAND_VALUE         32788
 #define _APS_NEXT_CONTROL_VALUE         1276
 #define _APS_NEXT_SYMED_VALUE           125

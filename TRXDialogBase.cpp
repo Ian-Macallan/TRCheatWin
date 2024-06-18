@@ -236,7 +236,7 @@ INT_PTR CTRXDialogBase::DoModal()
 BOOL CTRXDialogBase::OnNcActivate(BOOL bActive)
 {
     //
-    BOOL bTreated = m_NC.Activate(this, bActive);
+    BOOL bTreated = m_NC.Activate(this, NULL, bActive);
     if ( bTreated )
     {
         return TRUE;
@@ -412,7 +412,6 @@ void CTRXDialogBase::OnNcMouseHover(UINT nFlags, CPoint point)
     CDialog::OnNcMouseHover(nFlags, point);
 }
 
-
 //
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -430,3 +429,4 @@ void CTRXDialogBase::OnNcMouseLeave()
 
     CDialog::OnNcMouseLeave();
 }
+

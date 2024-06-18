@@ -23,6 +23,10 @@
 
 #include "AutomaticVersionHeader.h"
 
+#include "TRXColors.h"
+
+#include "resource.h"
+
 #include <direct.h>
 #include <io.h>
 
@@ -2144,6 +2148,19 @@ BOOL CTRXInfoPage::OnInitDialog()
 
     m_Square.ShowWindow ( SW_HIDE );
 
+    //
+    if ( CTRXColors::m_iDarkTheme != 0 )
+    {
+        m_CopyPosition.SetIconResource ( IDI_COPY );
+        m_PastePosition.SetIconResource ( IDI_PASTE );
+    }
+    else
+    {
+        m_CopyPosition.SetIconResource ( IDI_COPY_BLACK );
+        m_PastePosition.SetIconResource ( IDI_PASTE_BLACK );
+    }
+
+    //
     m_bInitDone = true;
 
     return TRUE;  // return TRUE unless you set the focus to a control
@@ -3106,6 +3123,16 @@ void CTRXInfoPage::SetThemeChanged ( bool bDarkTheme )
     if ( m_bInitDone )
     {
         //
+        if ( CTRXColors::m_iDarkTheme != 0 )
+        {
+            m_CopyPosition.SetIconResource ( IDI_COPY );
+            m_PastePosition.SetIconResource ( IDI_PASTE );
+        }
+        else
+        {
+            m_CopyPosition.SetIconResource ( IDI_COPY_BLACK );
+            m_PastePosition.SetIconResource ( IDI_PASTE_BLACK );
+        }
     }
 
     CTRXPropertyPage::SetThemeChanged ( bDarkTheme );

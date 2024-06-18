@@ -5,7 +5,6 @@
 
 #define ICON_NOT_SET    0xFFFF
 
-
 //
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -40,6 +39,9 @@ class CTRXNCColor
         void DrawIconFrame ( CDC *pDC, const CRect rect, bool bFillRect = true, CBrush *pbr = NULL );
         void DrawIcon ( CDC *pDC, UINT icon, const CRect rect, bool bFillRect = true, CBrush *pbr = NULL );
         void DrawAllIcons (  CWnd *pWnd, UINT iconOnly = 0 );
+
+        //
+        CDC *GetDeviceContext ( CWnd *pWnd );
 
         //  Return TRUE if treated, FALSE if default must be done
         BOOL PaintCaption( CWnd *pWnd, BOOL bActive = FALSE, int darkIndicator = 2 );
