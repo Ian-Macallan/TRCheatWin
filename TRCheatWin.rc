@@ -694,8 +694,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 4,1,13,002
- PRODUCTVERSION 4,1,13,002
+ FILEVERSION 4,1,13,003
+ PRODUCTVERSION 4,1,13,003
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x29L
@@ -713,15 +713,15 @@ BEGIN
             VALUE "Comments", "mailto:ian.macallan@gmail.com\0"
             VALUE "CompanyName", "Macallan (c)\0"
             VALUE "FileDescription", "TRCheatWin - (MSVC)\0"
-            VALUE "FileVersion", "4.1.13.002\0"
+            VALUE "FileVersion", "4.1.13.003\0"
             VALUE "InternalName", "https://www.macallan.org/\0"
-            VALUE "LegalCopyright", "Copyright (C) Tue Jun 18 13:18, 2024\0"
+            VALUE "LegalCopyright", "Copyright (C) Tue Jun 18 13:50, 2024\0"
             VALUE "LegalTrademarks", "Author: Ian Macallan\0"
             VALUE "OriginalFilename", ORIGINAL_FILENAME
-            VALUE "PrivateBuild", "826\0"
+            VALUE "PrivateBuild", "827\0"
             VALUE "ProductName", PRODUCT_NAME
-            VALUE "ProductVersion", "4.1.13.002\0"
-            VALUE "SpecialBuild", "826\0"
+            VALUE "ProductVersion", "4.1.13.003\0"
+            VALUE "SpecialBuild", "827\0"
         END
     END
     BLOCK "VarFileInfo"
@@ -1005,7 +1005,7 @@ IDB_AMMOS_GRAP          BITMAP                  "res\\Ammos.Grappling.bmp"
 // remains consistent on all systems.
 IDR_MAINFRAME           ICON                    "res\\TR3CHEATWIN.ico"
 IDI_CHECK_WHITE         ICON                    "res\\Check.ico"
-IDI_CHECK_BLACK         ICON                    "M:\\Project\\T\\TR3CHEATWIN4\\res\\CheckBlack.ico"
+IDI_CHECK_BLACK         ICON                    "res\\CheckBlack.ico"
 IDI_CLOSE               ICON                    "res\\Close.ico"
 IDI_MAXIMIZE            ICON                    "res\\Maximize.ico"
 IDI_MINIMIZE            ICON                    "res\\Mininize.ico"
