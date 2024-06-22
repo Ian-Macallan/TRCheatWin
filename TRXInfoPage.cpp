@@ -49,12 +49,14 @@ static const int RoomMargin     = 5;
 /////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////
-static BOOL     bPasteEnabled           = FALSE;
-static DWORD    dwWestToEastCopy        = 0;
-static DWORD    dwVerticalCopy          = 0;
-static DWORD    dwSouthToNorthCopy      = 0;
-static WORD     wDirectionCopy          = 0;
-static WORD     wRoomCopy               = 0;
+BOOL     g_bPasteEnabled            = FALSE;
+DWORD    g_dwWestToEastCopy         = 0;
+DWORD    g_dwVerticalCopy           = 0;
+DWORD    g_dwSouthToNorthCopy       = 0;
+WORD     g_wDirectionCopy           = 0;
+WORD     g_wRoomCopy                = 0;
+int      g_GameCopy                 = -1;
+int      g_LevelCopy                = -1;
 
 //
 /////////////////////////////////////////////////////////////////////////////
@@ -3222,20 +3224,24 @@ void CTRXInfoPage::OnBnClickedCopypos()
 
     //
     m_West_East.GetWindowText ( szString, sizeof(szString) );
-    dwWestToEastCopy        = atol(szString);
+    g_dwWestToEastCopy          = atol(szString);
     m_Vertical.GetWindowText ( szString, sizeof(szString) );
-    dwVerticalCopy          = atol(szString);
+    g_dwVerticalCopy            = atol(szString);
     m_South_North.GetWindowText ( szString, sizeof(szString) );
-    dwSouthToNorthCopy      = atol(szString);
+    g_dwSouthToNorthCopy        = atol(szString);
     m_Direction.GetWindowText ( szString, sizeof(szString) );
 
-    double dfOrientation    = atof ( szString );
-    wDirectionCopy          = CTRXTools::ConvertOrientationFromDouble ( dfOrientation );
+    double dfOrientation        = atof ( szString );
+    g_wDirectionCopy            = CTRXTools::ConvertOrientationFromDouble ( dfOrientation );
     m_Area.GetWindowText ( szString, sizeof(szString) );
 
-    wRoomCopy               = atoi ( szString );
+    //
+    g_wRoomCopy                 = atoi ( szString );
+    g_GameCopy                  = CTRSaveGame::I()->GetVersion();
+    g_LevelCopy                 = CTRSaveGame::I()->GetLevel();
 
-    bPasteEnabled           = TRUE;
+    //
+    g_bPasteEnabled             = TRUE;
 }
 
 //
@@ -3247,17 +3253,17 @@ void CTRXInfoPage::OnBnClickedPastepos()
     //
     static char     szString [ 64 ];
 
-    if ( bPasteEnabled )
+    if ( g_bPasteEnabled )
     {
-        sprintf_s ( szString, sizeof(szString), "%ld", dwWestToEastCopy );
+        sprintf_s ( szString, sizeof(szString), "%ld", g_dwWestToEastCopy );
         m_West_East.SetWindowText ( szString );
-        sprintf_s ( szString, sizeof(szString), "%ld", dwVerticalCopy );
+        sprintf_s ( szString, sizeof(szString), "%ld", g_dwVerticalCopy );
         m_Vertical.SetWindowText ( szString );
-        sprintf_s ( szString, sizeof(szString), "%ld", dwSouthToNorthCopy );
+        sprintf_s ( szString, sizeof(szString), "%ld", g_dwSouthToNorthCopy );
         m_South_North.SetWindowText ( szString );
-        sprintf_s ( szString, sizeof(szString), "%.2f", CTRXTools::ConvertOrientationFromWORD ( wDirectionCopy ) );
+        sprintf_s ( szString, sizeof(szString), "%.2f", CTRXTools::ConvertOrientationFromWORD ( g_wDirectionCopy ) );
         m_Direction.SetWindowText ( szString );
-        sprintf_s ( szString, sizeof(szString), "%d", wRoomCopy );
+        sprintf_s ( szString, sizeof(szString), "%d", g_wRoomCopy );
         m_Area.SetWindowText ( szString );
     }
 }

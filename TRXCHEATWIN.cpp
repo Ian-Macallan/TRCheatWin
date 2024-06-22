@@ -441,6 +441,38 @@ BOOL CTRXCHEATWINApp::InitInstance()
     int iSizeTR2 = sizeof(TABLE_TR2);
     int iSizeTR3 = sizeof(TABLE_TR3);
 
+	//	Get OS Version
+    //
+    OSHVersion  = 0;
+    OSLVersion  = 0;
+    ZeroMemory ( OSVersion, sizeof(OSVersion) );
+
+    //
+	const char *kernel32Dll = "kernel32.dll";
+	DWORD dwHandle = NULL;
+	DWORD dwLen = GetFileVersionInfoSize( kernel32Dll, &dwHandle);
+
+	BYTE *lpData = (BYTE *) malloc ( dwLen );
+	BOOL bInfoFound = GetFileVersionInfo( kernel32Dll, dwHandle, dwLen, lpData);
+	VS_FIXEDFILEINFO *lpBuffer = NULL;
+	if ( bInfoFound )
+	{
+		UINT uLen = 0;
+		BOOL itemFound = VerQueryValueW ( lpData, L"\\", (LPVOID *)&lpBuffer, &uLen );
+	}
+
+	if ( lpBuffer != NULL )
+	{
+        OSHVersion      = lpBuffer->dwFileVersionMS;
+        OSLVersion      = lpBuffer->dwFileVersionLS;
+
+		OSVersion [ 0 ] = HIWORD(OSHVersion);
+		OSVersion [ 1 ] = LOWORD(OSHVersion);
+		OSVersion [ 2 ] = HIWORD(OSLVersion);
+		OSVersion [ 3 ] = LOWORD(OSLVersion);
+	}
+
+	free ( lpData );
 
     //
     //

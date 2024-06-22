@@ -15,6 +15,8 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
+extern CTRXCHEATWINApp theApp;
+
 //
 /////////////////////////////////////////////////////////////////////////////
 // CAboutDlg dialog used for App About
@@ -40,6 +42,7 @@ void CAboutDlg::DoDataExchange(CDataExchange* pDX)
     DDX_Control(pDX, IDC_COPYRIGHT, m_Copyright);
     DDX_Control(pDX, IDOK, m_Ok);
     DDX_Control(pDX, IDC_MACALLAN, m_Web_Site);
+    DDX_Control(pDX, IDC_OSVER, m_OSVersion);
     //}}AFX_DATA_MAP
 }
 
@@ -99,10 +102,7 @@ void CAboutDlg::SetVersionFrom()
     UINT            iBufferLen;
 
     //      Get module name
-    dwResult =
-        GetModuleFileName(  NULL,
-                            szFilename,
-                            sizeof ( szFilename ) );
+    dwResult = GetModuleFileName(  NULL, szFilename, sizeof ( szFilename ) );
 
     //      Get Size to allocate for info
     dwLength = GetFileVersionInfoSize ( szFilename, &dwHandle );
@@ -151,8 +151,12 @@ void CAboutDlg::SetVersionFrom()
         }
 
         delete pData;
-
     }
+
+    memset ( szText, 0, sizeof ( szText ) );
+    sprintf_s ( szText, sizeof ( szText ), "OS : %u.%u %u.%u", 
+        theApp.OSVersion [ 0 ], theApp.OSVersion [ 1 ], theApp.OSVersion [ 2 ], theApp.OSVersion [ 3 ] );
+    m_OSVersion.SetWindowText ( szText );
 }
 
 //

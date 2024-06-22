@@ -787,7 +787,7 @@ GUN_TR3 *CTR9SaveGame::m_TR3_Guns [ NB_TR3_BLOCKS ] [ NB_OF_SLOTS ] = { NULL };
 
 char    *CTR9SaveGame::m_pBuffer            = NULL;
 char    *CTR9SaveGame::m_pBufferBackup      = NULL;
-int     CTR9SaveGame::m_iSaveLength     = 0;
+int     CTR9SaveGame::m_iSaveLength         = 0;
 
 //
 BOOL TraceMode                              = FALSE;

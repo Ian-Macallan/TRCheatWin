@@ -3,7 +3,7 @@
 
 #include "stdafx.h"
 #include "TRXDifferences.h"
-#include "afxdialogex.h"
+// #include "afxdialogex.h"
 // #include <Commctrl.h>
 
 #include "TRXTools.h"

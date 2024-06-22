@@ -7,6 +7,9 @@
 #include "TRXGlobal.h"
 #include "TRXMenuBase.h"
 #include "TRXGDI.h"
+#include "TRXCHEATWIN.h"
+
+extern CTRXCHEATWINApp theApp;
 
 //
 /////////////////////////////////////////////////////////////////////////////
@@ -358,6 +361,11 @@ CDC *CTRXNCColor::GetDeviceContext ( CWnd *pWnd )
 /////////////////////////////////////////////////////////////////////////////
 BOOL CTRXNCColor::PaintCaption( CWnd *pWnd, BOOL bActive, int darkIndicator )
 {
+	if ( theApp.OSVersion [ 0 ] < 6 )
+	{
+		return FALSE;
+	}
+
     if ( CTRXColors::m_iDarkTheme != 2 && CTRXColors::m_iDarkTheme != darkIndicator )
     {
         return FALSE;
@@ -490,7 +498,12 @@ BOOL CTRXNCColor::PaintCaption( CWnd *pWnd, BOOL bActive, int darkIndicator )
 /////////////////////////////////////////////////////////////////////////////
 BOOL CTRXNCColor::PaintWindow( CWnd *pWnd, BOOL bActive, int darkIndicator )
 {
-    if ( CTRXColors::m_iDarkTheme != 2 && CTRXColors::m_iDarkTheme != darkIndicator )
+	if ( theApp.OSVersion [ 0 ] < 6 )
+	{
+		return FALSE;
+	}
+
+	if ( CTRXColors::m_iDarkTheme != 2 && CTRXColors::m_iDarkTheme != darkIndicator )
     {
         return FALSE;
     }
@@ -532,7 +545,12 @@ BOOL CTRXNCColor::PaintWindow( CWnd *pWnd, BOOL bActive, int darkIndicator )
 /////////////////////////////////////////////////////////////////////////////
 BOOL CTRXNCColor::Activate( CWnd *pWnd, BOOL bActive, int darkIndicator )
 {
-    if ( CTRXColors::m_iDarkTheme != 2 && CTRXColors::m_iDarkTheme != darkIndicator )
+	if ( theApp.OSVersion [ 0 ] < 6 )
+	{
+		return FALSE;
+	}
+
+	if ( CTRXColors::m_iDarkTheme != 2 && CTRXColors::m_iDarkTheme != darkIndicator )
     {
         return FALSE;
     }
@@ -546,7 +564,12 @@ BOOL CTRXNCColor::Activate( CWnd *pWnd, BOOL bActive, int darkIndicator )
 /////////////////////////////////////////////////////////////////////////////
 BOOL CTRXNCColor::OnNcLButtonDown(CWnd *pWnd, UINT nHitTest, CPoint point, int darkIndicator )
 {
-    //
+	if ( theApp.OSVersion [ 0 ] < 6 )
+	{
+		return FALSE;
+	}
+
+	//
     if ( CTRXColors::m_iDarkTheme == 2 || CTRXColors::m_iDarkTheme == darkIndicator )
     {
         if ( ScreenPointOverRect( pWnd, point, m_IconRect ) )
@@ -609,7 +632,12 @@ BOOL CTRXNCColor::OnNcLButtonUp(CWnd *pWnd, UINT nHitTest, CPoint point, int dar
 {
     m_bLeftPressed  = FALSE;
 
-    //
+	if ( theApp.OSVersion [ 0 ] < 6 )
+	{
+		return FALSE;
+	}
+
+	//
     //
     if ( CTRXColors::m_iDarkTheme == 2 || CTRXColors::m_iDarkTheme == darkIndicator )
     {
@@ -683,7 +711,12 @@ BOOL CTRXNCColor::OnNcLButtonUp(CWnd *pWnd, UINT nHitTest, CPoint point, int dar
 /////////////////////////////////////////////////////////////////////////////
 BOOL CTRXNCColor::OnNcRButtonDown(CWnd *pWnd, UINT nHitTest, CPoint point, int darkIndicator )
 {
-    if ( CTRXColors::m_iDarkTheme == 2 || CTRXColors::m_iDarkTheme == darkIndicator )
+	if ( theApp.OSVersion [ 0 ] < 6 )
+	{
+		return FALSE;
+	}
+
+	if ( CTRXColors::m_iDarkTheme == 2 || CTRXColors::m_iDarkTheme == darkIndicator )
     {
         CMenu *pMenu = pWnd->GetSystemMenu(FALSE);
         if ( pMenu )
@@ -705,7 +738,7 @@ BOOL CTRXNCColor::OnNcRButtonDown(CWnd *pWnd, UINT nHitTest, CPoint point, int d
 /////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////
-BOOL CTRXNCColor::OnLButtonUp(CWnd *pWnd, UINT nFlags, CPoint point)
+BOOL CTRXNCColor::OnLButtonUp(CWnd *pWnd, UINT nFlags, CPoint point, int darkIndicator)
 {
     m_bLeftPressed  = FALSE;
     return FALSE;
@@ -717,6 +750,11 @@ BOOL CTRXNCColor::OnLButtonUp(CWnd *pWnd, UINT nFlags, CPoint point)
 /////////////////////////////////////////////////////////////////////////////
 BOOL CTRXNCColor::OnNcMouseMove(CWnd *pWnd, UINT nHitTest, CPoint point, int darkIndicator )
 {
+	if ( theApp.OSVersion [ 0 ] < 6 )
+	{
+		return FALSE;
+	}
+
     //
     if ( CTRXColors::m_iDarkTheme == 2 || CTRXColors::m_iDarkTheme == darkIndicator )
     {
@@ -747,6 +785,11 @@ BOOL CTRXNCColor::OnNcMouseMove(CWnd *pWnd, UINT nHitTest, CPoint point, int dar
 /////////////////////////////////////////////////////////////////////////////
 BOOL CTRXNCColor::OnMouseMove(CWnd *pWnd, UINT nFlags, CPoint point, int darkIndicator )
 {
+	if ( theApp.OSVersion [ 0 ] < 6 )
+	{
+		return FALSE;
+	}
+
     //
     if ( CTRXColors::m_iDarkTheme == 2 || CTRXColors::m_iDarkTheme == darkIndicator )
     {
@@ -770,12 +813,23 @@ BOOL CTRXNCColor::OnMouseMove(CWnd *pWnd, UINT nFlags, CPoint point, int darkInd
 /////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////
-void CTRXNCColor::DrawAllIcons (  CWnd *pWnd, UINT iconOnly )
+void CTRXNCColor::DrawAllIcons (  CWnd *pWnd, UINT iconOnly, int darkIndicator )
 {
     if ( iconOnly == ICON_NOT_SET )
     {
         return;
     }
+
+	if ( theApp.OSVersion [ 0 ] < 6 )
+	{
+		return;
+	}
+
+    //
+    if ( CTRXColors::m_iDarkTheme != 2 && CTRXColors::m_iDarkTheme != darkIndicator )
+    {
+        return;
+	}
 
     //
     DWORD dwStyle = pWnd->GetStyle();
@@ -829,8 +883,19 @@ void CTRXNCColor::DrawAllIcons (  CWnd *pWnd, UINT iconOnly )
 /////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////
-BOOL CTRXNCColor::OnNcMouseHover(CWnd *pWnd, UINT nFlags, CPoint point)
+BOOL CTRXNCColor::OnNcMouseHover(CWnd *pWnd, UINT nFlags, CPoint point, int darkIndicator)
 {
+	if ( theApp.OSVersion [ 0 ] < 6 )
+	{
+		return FALSE;
+	}
+
+    //
+    if ( CTRXColors::m_iDarkTheme != 2 && CTRXColors::m_iDarkTheme != darkIndicator )
+    {
+        return FALSE;
+	}
+
     //  Always returns FALSE to continue the process
     if ( ScreenPointOverRect( pWnd, point, m_CloseRect ) )
     {
@@ -913,8 +978,19 @@ BOOL CTRXNCColor::OnNcMouseHover(CWnd *pWnd, UINT nFlags, CPoint point)
 /////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////
-BOOL CTRXNCColor::OnNcMouseLeave(CWnd *pWnd )
+BOOL CTRXNCColor::OnNcMouseLeave(CWnd *pWnd, int darkIndicator )
 {
+	if ( theApp.OSVersion [ 0 ] < 6 )
+	{
+		return FALSE;
+	}
+
+    //
+    if ( CTRXColors::m_iDarkTheme != 2 && CTRXColors::m_iDarkTheme != darkIndicator )
+    {
+        return FALSE;
+	}
+
     //  Always returns FALSE to continue the process
     DrawAllIcons ( pWnd, m_iHover );
     m_iHover        = ICON_NOT_SET;

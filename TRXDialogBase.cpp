@@ -3,8 +3,9 @@
 
 #include "stdafx.h"
 
+// #include "afxdialogex.h"
+
 #include "TRXDialogBase.h"
-#include "afxdialogex.h"
 #include "TRXTools.h"
 #include "resource.h"
 #include "TRXGlobal.h"
@@ -48,8 +49,6 @@ CTRXDialogBase::~CTRXDialogBase()
     DELETE_OBJECT(m_pBoldFont)
     DELETE_OBJECT(m_pFixedFont)
     DELETE_OBJECT(m_pFixedBoldFont)
-
-
 }
 
 //

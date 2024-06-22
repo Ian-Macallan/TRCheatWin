@@ -2,9 +2,9 @@
 //
 
 #include "stdafx.h"
+// #include "afxdialogex.h"
 #include "TRXPropertyPageBase.h"
 #include "TRXCHEATWIN.h"
-#include "afxdialogex.h"
 
 #include "TRXRemastered.h"
 #include "TRXInfoPage.h"

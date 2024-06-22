@@ -2,8 +2,8 @@
 //
 
 #include "stdafx.h"
+// #include "afxdialogex.h"
 #include "TRXMessageBox.h"
-#include "afxdialogex.h"
 
 
 //

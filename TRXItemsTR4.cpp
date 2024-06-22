@@ -4,12 +4,12 @@
 #include "stdafx.h"
 
 #include <math.h>
+// #include "afxdialogex.h"
 
 #include "TRXCHEATWIN.h"
 #include "TRXCHEATWINDlg.h"
 
 #include "TRXItemsTR4.h"
-#include "afxdialogex.h"
 
 #include "TRXTools.h"
 #include "TRLabelItems.h"

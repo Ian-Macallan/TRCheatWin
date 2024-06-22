@@ -56,6 +56,12 @@ class CTRXCHEATWINApp : public CWinApp
         char                ModuleFileName [ MAX_PATH ];
         char                InitFileName [ MAX_PATH ];
 
+	public :
+		WORD		        OSVersion [ 4 ];
+        //  Ex 0x00060001   for Windows 7
+        DWORD               OSHVersion;
+        //  Release Details
+        DWORD               OSLVersion;
 
     //
     public :

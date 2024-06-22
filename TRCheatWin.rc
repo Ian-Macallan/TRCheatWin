@@ -36,9 +36,10 @@ BEGIN
     LTEXT           "Yann",IDC_WEB,225,78,157,16,SS_NOTIFY | SS_SUNKEN | WS_BORDER
     LTEXT           "ian.macallan@gmail.com",IDC_EMAIL,225,98,157,16,SS_NOTIFY | SS_SUNKEN | WS_BORDER
     CONTROL         132,IDC_STATIC,"Static",SS_BITMAP | SS_SUNKEN | WS_BORDER,7,7,216,150
-    CONTROL         "Visit my Personall Web Site at http://www.macallan.org/",IDC_MACALLAN,
+    CONTROL         "Visit my Personal Web Site at http://www.macallan.org/",IDC_MACALLAN,
                     "Button",BS_OWNERDRAW | WS_TABSTOP,7,180,319,12
     LTEXT           "Cheat Eidos / Core Design \nTomb Raider I, I Gold, II, \nII Gold and III",IDC_STATIC,225,118,157,39,SS_SUNKEN | WS_BORDER
+    LTEXT           "OS Version",IDC_OSVER,7,159,157,16,SS_NOTIFY | SS_SUNKEN | WS_BORDER
 END
 
 IDD_GUN_PAGE DIALOGEX 0, 0, 520, 330
@@ -208,7 +209,7 @@ BEGIN
     CONTROL         215,IDC_STATIC,"Static",SS_BITMAP | SS_REALSIZEIMAGE | SS_SUNKEN | WS_BORDER,437,195,34,47
     CONTROL         216,IDC_STATIC,"Static",SS_BITMAP,193,79,21,23
     GROUPBOX        "Keys, Pass",IDC_STATIC,246,7,240,146
-    GROUPBOX        "Items",IDC_STATIC,13,7,172,273
+    GROUPBOX        "Items",IDC_STATIC,13,7,172,275
     CONTROL         217,IDC_STATIC,"Static",SS_BITMAP | SS_REALSIZEIMAGE | SS_SUNKEN | WS_BORDER,260,32,35,15
     CONTROL         218,IDC_STATIC,"Static",SS_BITMAP | SS_REALSIZEIMAGE | SS_SUNKEN | WS_BORDER,253,50,49,32
     CONTROL         220,IDC_STATIC,"Static",SS_BITMAP | SS_REALSIZEIMAGE | SS_SUNKEN | WS_BORDER,307,51,45,18
@@ -240,8 +241,8 @@ BEGIN
     CONTROL         247,IDC_STATIC,"Static",SS_BITMAP | SS_REALSIZEIMAGE | SS_SUNKEN | WS_BORDER,22,202,24,24
     CONTROL         248,IDC_STATIC,"Static",SS_BITMAP | SS_REALSIZEIMAGE | SS_SUNKEN | WS_BORDER,23,240,35,12
     CONTROL         249,IDC_STATIC,"Static",SS_BITMAP | SS_REALSIZEIMAGE | SS_SUNKEN | WS_BORDER,134,204,24,22
-    GROUPBOX        "Maps",IDC_STATIC,189,7,54,272
-    GROUPBOX        "Treasures",IDC_STATIC,247,156,240,122
+    GROUPBOX        "Maps",IDC_STATIC,189,7,54,275
+    GROUPBOX        "Treasures",IDC_STATIC,247,156,240,125
     CONTROL         "0",IDC_ZERO,"Button",BS_OWNERDRAW | WS_TABSTOP,440,287,16,14
     CONTROL         "1",IDC_ONE,"Button",BS_OWNERDRAW | WS_TABSTOP,462,287,16,14
     CONTROL         "4",IDC_FOUR,"Button",BS_OWNERDRAW | WS_TABSTOP,484,287,16,14
@@ -694,8 +695,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 4,1,13,003
- PRODUCTVERSION 4,1,13,003
+ FILEVERSION 4,1,13,005
+ PRODUCTVERSION 4,1,13,005
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x29L
@@ -713,15 +714,15 @@ BEGIN
             VALUE "Comments", "mailto:ian.macallan@gmail.com\0"
             VALUE "CompanyName", "Macallan (c)\0"
             VALUE "FileDescription", "TRCheatWin - (MSVC)\0"
-            VALUE "FileVersion", "4.1.13.003\0"
+            VALUE "FileVersion", "4.1.13.005\0"
             VALUE "InternalName", "https://www.macallan.org/\0"
-            VALUE "LegalCopyright", "Copyright (C) Tue Jun 18 13:50, 2024\0"
+            VALUE "LegalCopyright", "Copyright (C) Sat Jun 22 14:53, 2024\0"
             VALUE "LegalTrademarks", "Author: Ian Macallan\0"
             VALUE "OriginalFilename", ORIGINAL_FILENAME
-            VALUE "PrivateBuild", "827\0"
+            VALUE "PrivateBuild", "829\0"
             VALUE "ProductName", PRODUCT_NAME
-            VALUE "ProductVersion", "4.1.13.003\0"
-            VALUE "SpecialBuild", "827\0"
+            VALUE "ProductVersion", "4.1.13.005\0"
+            VALUE "SpecialBuild", "829\0"
         END
     END
     BLOCK "VarFileInfo"

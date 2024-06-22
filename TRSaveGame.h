@@ -113,7 +113,9 @@ class CTRSaveGame  : public CObject
         unsigned            m_iSaveLength;
         int                 m_iMaxLevel;
 
+        //  Version 10, 15, 20, 30, 40, 49, 50
         int                 m_iVersion;
+        //  Subversion 0, 5, 9
         int                 m_iSubVersion;
 
     // Operations

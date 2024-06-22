@@ -2,8 +2,9 @@
 //
 
 #include "stdafx.h"
+// #include "afxdialogex.h"
+
 #include "TRXAllMaps.h"
-#include "afxdialogex.h"
 #include "TR_Areas.h"
 #include "TRXMapAreas.h"
 #include "TR9SaveGame.h"

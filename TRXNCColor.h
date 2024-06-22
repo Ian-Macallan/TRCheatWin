@@ -38,7 +38,7 @@ class CTRXNCColor
         //  To draw Background only set icon to zero
         void DrawIconFrame ( CDC *pDC, const CRect rect, bool bFillRect = true, CBrush *pbr = NULL );
         void DrawIcon ( CDC *pDC, UINT icon, const CRect rect, bool bFillRect = true, CBrush *pbr = NULL );
-        void DrawAllIcons (  CWnd *pWnd, UINT iconOnly = 0 );
+        void DrawAllIcons (  CWnd *pWnd, UINT iconOnly = 0, int darkIndicator = 2 );
 
         //
         CDC *GetDeviceContext ( CWnd *pWnd );
@@ -55,11 +55,11 @@ class CTRXNCColor
 
         BOOL OnNcMouseMove(CWnd *pWnd, UINT nHitTest, CPoint point, int darkIndicator = 2 );
 
-        BOOL OnNcMouseHover(CWnd *pWnd, UINT nFlags, CPoint point);
-        BOOL OnNcMouseLeave(CWnd *pWnd );
+        BOOL OnNcMouseHover(CWnd *pWnd, UINT nFlags, CPoint point, int darkIndicator = 2 );
+        BOOL OnNcMouseLeave(CWnd *pWnd, int darkIndicator = 2 );
 
         BOOL OnMouseMove(CWnd *pWnd, UINT nFlags, CPoint point, int darkIndicator = 2 );
-        BOOL OnLButtonUp(CWnd *pWnd, UINT nFlags, CPoint point);
+        BOOL OnLButtonUp(CWnd *pWnd, UINT nFlags, CPoint point, int darkIndicator = 2 );
 
 };
 

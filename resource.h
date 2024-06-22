@@ -353,6 +353,8 @@
 #define IDC_COPYRIGHT                   1095
 #define IDC_WEB                         1097
 #define IDC_BM_RIOTGUN                  1098
+#define IDC_WEB2                        1098
+#define IDC_OSVER                       1098
 #define IDC_BM_DESERTEAGLE              1099
 #define IDC_BM_UZIS                     1100
 #define IDC_BM_GRENADE                  1101
@@ -611,6 +613,7 @@
 #define IDC_SQUARE                      1274
 #define IDC_COPYPOS                     1275
 #define IDC_PASTEPOS                    1276
+#define IDC_COPYPOS2                    1277
 #define ID_MENULIST_EXPORT              32771
 #define ID_MENULIST_IMPORT              32772
 #define ID_MENULIST_DELETE              32773

@@ -2,12 +2,15 @@
 //
 
 #include "stdafx.h"
-#include "TRXPosition.h"
-#include "afxdialogex.h"
+// #include "afxdialogex.h"
 #include <math.h>
+
+#include "TRXPosition.h"
 #include "TR9SaveGame.h"
 #include "TR_Areas.h"
 #include "TRXMapAreas.h"
+#include "TRXGlobal.h"
+#include "TRXColors.h"
 
 // Boîte de dialogue CTRXPosition
 
@@ -19,13 +22,6 @@ static const int RoomMargin     = 10;
 /////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////
-static BOOL bPasteEnabled           = FALSE;
-
-static DWORD dwWestToEastCopy       = 0;
-static DWORD dwVerticalCopy         = 0;
-static DWORD dwSouthToNorthCopy     = 0;
-static WORD wOrientationCopy        = 0;
-static WORD wRoomCopy               = 0;
 
 //
 /////////////////////////////////////////////////////////////////////////////
@@ -403,9 +399,25 @@ BOOL CTRXPosition::OnInitDialog()
         m_ToolTip.AddTool( &m_South_North_M, pTools);
         m_ToolTip.AddTool( &m_Vertical_M, pTools);
         m_ToolTip.AddTool( &m_Room, "You can click on the bitmap\r\nto position Lara precisely\r\nGenerally walls are 1.0 width\r\n" );
+        m_ToolTip.AddTool( &m_CopyPos, "Copy Position" );
+        m_ToolTip.AddTool( &m_PastePos, "Paste Position" );
+
         m_ToolTip.Activate(TRUE);
 
     }
+
+    //
+    if ( CTRXColors::m_iDarkTheme != 0 )
+    {
+        m_CopyPos.SetIconResource ( IDI_COPY );
+        m_PastePos.SetIconResource ( IDI_PASTE );
+    }
+    else
+    {
+        m_CopyPos.SetIconResource ( IDI_COPY_BLACK );
+        m_PastePos.SetIconResource ( IDI_PASTE_BLACK );
+    }
+
 
     m_bInitDone = true;
 
@@ -886,23 +898,23 @@ void CTRXPosition::OnBnClickedCopypos()
 
     m_West_East_M.GetWindowText ( szText, sizeof(szText) );
     double dfValue = atof ( szText );
-    dwWestToEastCopy    = (DWORD) ( dfValue * POSITION_DIVIDER );
+    g_dwWestToEastCopy    = (DWORD) ( dfValue * POSITION_DIVIDER );
 
     //
     m_Vertical_M.GetWindowText ( szText, sizeof(szText) );
     dfValue = atof ( szText );
-    dwVerticalCopy  = (DWORD) ( dfValue * POSITION_DIVIDER );
+    g_dwVerticalCopy  = (DWORD) ( dfValue * POSITION_DIVIDER );
 
     //
     m_South_North_M.GetWindowText ( szText, sizeof(szText) );
     dfValue = atof ( szText );
-    dwSouthToNorthCopy  = (DWORD) ( dfValue * POSITION_DIVIDER );
+    g_dwSouthToNorthCopy  = (DWORD) ( dfValue * POSITION_DIVIDER );
 
     //  Orientation
     m_Word1_D.GetWindowText ( szText, sizeof(szText) );
     dfValue = atof ( szText );
     unsigned wValue  = CTRXTools::ConvertOrientationFromDouble ( dfValue );
-    wOrientationCopy = wValue;
+    g_wDirectionCopy = wValue;
 
     //  Room
     m_Word4_X.GetWindowText ( szText, sizeof(szText) );
@@ -918,9 +930,11 @@ void CTRXPosition::OnBnClickedCopypos()
     {
         sscanf_s ( szText, "%d", &wValue );
     }
-    wRoomCopy  = wValue;
 
-    bPasteEnabled   = TRUE;
+    g_wRoomCopy         = wValue;
+    g_GameCopy          = m_iTombraider;
+    g_LevelCopy         = m_iLevel;
+    g_bPasteEnabled     = TRUE;
 
 }
 
@@ -933,48 +947,48 @@ void CTRXPosition::OnBnClickedPastepos()
     //
     char szText [ 64 ];
 
-    if ( bPasteEnabled )
+    if ( g_bPasteEnabled )
     {
         ZeroMemory ( szText, sizeof(szText) );
-        sprintf_s ( szText, sizeof(szText), "%.3f", (double) (long) dwWestToEastCopy / POSITION_DIVIDER );
+        sprintf_s ( szText, sizeof(szText), "%.3f", (double) (long) g_dwWestToEastCopy / POSITION_DIVIDER );
         m_West_East_M.SetWindowText ( szText );
 
         //
         ZeroMemory ( szText, sizeof(szText) );
-        sprintf_s ( szText, sizeof(szText), "%.3f", (double) (long) dwVerticalCopy / POSITION_DIVIDER );
+        sprintf_s ( szText, sizeof(szText), "%.3f", (double) (long) g_dwVerticalCopy / POSITION_DIVIDER );
         m_Vertical_M.SetWindowText ( szText );
 
         //
         ZeroMemory ( szText, sizeof(szText) );
-        sprintf_s ( szText, sizeof(szText), "%.3f", (double) (long) dwSouthToNorthCopy / POSITION_DIVIDER );
+        sprintf_s ( szText, sizeof(szText), "%.3f", (double) (long) g_dwSouthToNorthCopy / POSITION_DIVIDER );
         m_South_North_M.SetWindowText ( szText );
 
         //  Orientation
-        double dfOrientation = CTRXTools::ConvertOrientationFromWORD ( wOrientationCopy );
+        double dfOrientation = CTRXTools::ConvertOrientationFromWORD ( g_wDirectionCopy );
         ZeroMemory ( szText, sizeof(szText) );
         sprintf_s ( szText, sizeof(szText), "%.3f", dfOrientation );
         m_Word1_D.SetWindowText ( szText );
 
         //  Special
         ZeroMemory ( szText, sizeof(szText) );
-        sprintf_s ( szText, sizeof(szText), "%d",  wRoomCopy );
+        sprintf_s ( szText, sizeof(szText), "%d",  g_wRoomCopy );
         m_Word4_X.SetWindowText ( szText );
 
         TR_CUR_POSITION                 currentPosition;
         ZeroMemory ( &currentPosition, sizeof(currentPosition) );
-        currentPosition.x               = dwWestToEastCopy;
-        currentPosition.z               = dwSouthToNorthCopy;
+        currentPosition.x               = g_dwWestToEastCopy;
+        currentPosition.z               = g_dwSouthToNorthCopy;
         currentPosition.orientation     = dfOrientation;
 
         int levelNumber     = CTR9SaveGame::I()->GetBlockLevelNumber ( m_iTombraider, m_iBlock );
         int levelIndex      = levelNumber - 1;
-        TR_AREA *pArea = GetTRArea ( m_iTombraider, levelIndex, wRoomCopy );
+        TR_AREA *pArea = GetTRArea ( m_iTombraider, levelIndex, g_wRoomCopy );
         if ( pArea )
         {
             m_Room.SetAreaAndPosition ( pArea, &currentPosition );
         }
 
         //
-        ChangeAreas ( wRoomCopy );
+        ChangeAreas ( g_wRoomCopy );
     }
 }

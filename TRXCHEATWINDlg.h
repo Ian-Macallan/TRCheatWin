@@ -53,6 +53,8 @@ class CAboutDlg : public CTRXDialogBase
         afx_msg void OnEmail();
         //}}AFX_MSG
         DECLARE_MESSAGE_MAP()
+public:
+    CStatic m_OSVersion;
 };
 
 #endif // !defined(AFX_TR3CHEATWINDLG_H__7B7A8C29_9CDD_11D2_8146_444553540000__INCLUDED_)

@@ -2,10 +2,10 @@
 //
 
 #include "stdafx.h"
+// #include "afxdialogex.h"
 
 #include "TR9SaveGame.h"
 
-#include "afxdialogex.h"
 
 #include "TRXRemastered.h"
 #include "TRXCHEATWIN.h"
