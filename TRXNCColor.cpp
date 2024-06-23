@@ -361,7 +361,7 @@ CDC *CTRXNCColor::GetDeviceContext ( CWnd *pWnd )
 /////////////////////////////////////////////////////////////////////////////
 BOOL CTRXNCColor::PaintCaption( CWnd *pWnd, BOOL bActive, int darkIndicator )
 {
-	if ( theApp.OSVersion [ 0 ] < 6 )
+	if ( theApp.OSVersionLowerThan ( 6, 1 ) )
 	{
 		return FALSE;
 	}
@@ -498,7 +498,7 @@ BOOL CTRXNCColor::PaintCaption( CWnd *pWnd, BOOL bActive, int darkIndicator )
 /////////////////////////////////////////////////////////////////////////////
 BOOL CTRXNCColor::PaintWindow( CWnd *pWnd, BOOL bActive, int darkIndicator )
 {
-	if ( theApp.OSVersion [ 0 ] < 6 )
+	if ( theApp.OSVersionLowerThan ( 6, 1 ) )
 	{
 		return FALSE;
 	}
@@ -545,7 +545,7 @@ BOOL CTRXNCColor::PaintWindow( CWnd *pWnd, BOOL bActive, int darkIndicator )
 /////////////////////////////////////////////////////////////////////////////
 BOOL CTRXNCColor::Activate( CWnd *pWnd, BOOL bActive, int darkIndicator )
 {
-	if ( theApp.OSVersion [ 0 ] < 6 )
+	if ( theApp.OSVersionLowerThan ( 6, 1 ) )
 	{
 		return FALSE;
 	}
@@ -564,7 +564,7 @@ BOOL CTRXNCColor::Activate( CWnd *pWnd, BOOL bActive, int darkIndicator )
 /////////////////////////////////////////////////////////////////////////////
 BOOL CTRXNCColor::OnNcLButtonDown(CWnd *pWnd, UINT nHitTest, CPoint point, int darkIndicator )
 {
-	if ( theApp.OSVersion [ 0 ] < 6 )
+	if ( theApp.OSVersionLowerThan ( 6, 1 ) )
 	{
 		return FALSE;
 	}
@@ -632,7 +632,7 @@ BOOL CTRXNCColor::OnNcLButtonUp(CWnd *pWnd, UINT nHitTest, CPoint point, int dar
 {
     m_bLeftPressed  = FALSE;
 
-	if ( theApp.OSVersion [ 0 ] < 6 )
+	if ( theApp.OSVersionLowerThan ( 6, 1 ) )
 	{
 		return FALSE;
 	}
@@ -711,7 +711,7 @@ BOOL CTRXNCColor::OnNcLButtonUp(CWnd *pWnd, UINT nHitTest, CPoint point, int dar
 /////////////////////////////////////////////////////////////////////////////
 BOOL CTRXNCColor::OnNcRButtonDown(CWnd *pWnd, UINT nHitTest, CPoint point, int darkIndicator )
 {
-	if ( theApp.OSVersion [ 0 ] < 6 )
+	if ( theApp.OSVersionLowerThan ( 6, 1 ) )
 	{
 		return FALSE;
 	}
@@ -750,7 +750,7 @@ BOOL CTRXNCColor::OnLButtonUp(CWnd *pWnd, UINT nFlags, CPoint point, int darkInd
 /////////////////////////////////////////////////////////////////////////////
 BOOL CTRXNCColor::OnNcMouseMove(CWnd *pWnd, UINT nHitTest, CPoint point, int darkIndicator )
 {
-	if ( theApp.OSVersion [ 0 ] < 6 )
+	if ( theApp.OSVersionLowerThan ( 6, 1 ) )
 	{
 		return FALSE;
 	}
@@ -785,7 +785,7 @@ BOOL CTRXNCColor::OnNcMouseMove(CWnd *pWnd, UINT nHitTest, CPoint point, int dar
 /////////////////////////////////////////////////////////////////////////////
 BOOL CTRXNCColor::OnMouseMove(CWnd *pWnd, UINT nFlags, CPoint point, int darkIndicator )
 {
-	if ( theApp.OSVersion [ 0 ] < 6 )
+	if ( theApp.OSVersionLowerThan ( 6, 1 ) )
 	{
 		return FALSE;
 	}
@@ -820,7 +820,7 @@ void CTRXNCColor::DrawAllIcons (  CWnd *pWnd, UINT iconOnly, int darkIndicator )
         return;
     }
 
-	if ( theApp.OSVersion [ 0 ] < 6 )
+	if ( theApp.OSVersionLowerThan ( 6, 1 ) )
 	{
 		return;
 	}
@@ -885,7 +885,7 @@ void CTRXNCColor::DrawAllIcons (  CWnd *pWnd, UINT iconOnly, int darkIndicator )
 /////////////////////////////////////////////////////////////////////////////
 BOOL CTRXNCColor::OnNcMouseHover(CWnd *pWnd, UINT nFlags, CPoint point, int darkIndicator)
 {
-	if ( theApp.OSVersion [ 0 ] < 6 )
+	if ( theApp.OSVersionLowerThan ( 6, 1 ) )
 	{
 		return FALSE;
 	}
@@ -980,7 +980,7 @@ BOOL CTRXNCColor::OnNcMouseHover(CWnd *pWnd, UINT nFlags, CPoint point, int dark
 /////////////////////////////////////////////////////////////////////////////
 BOOL CTRXNCColor::OnNcMouseLeave(CWnd *pWnd, int darkIndicator )
 {
-	if ( theApp.OSVersion [ 0 ] < 6 )
+	if ( theApp.OSVersionLowerThan ( 6, 1 ) )
 	{
 		return FALSE;
 	}

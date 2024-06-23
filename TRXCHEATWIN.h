@@ -71,6 +71,12 @@ class CTRXCHEATWINApp : public CWinApp
         static char *SkipSpaces ( char *pText );
         static void RemoveEnclosingQuotes ( char *pText, size_t iLength );
 
+        //  Strictly Lower
+        bool OSVersionLowerThan ( WORD major, WORD minor );
+
+        //  Greater Or Equal
+        bool OSVersionGreaterThan ( WORD major, WORD minor );
+
         void GetModule ();
         bool SearchInitFile ( const char *pInitFileName, size_t iInitFileName );
 
