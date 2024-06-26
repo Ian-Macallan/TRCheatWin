@@ -355,7 +355,6 @@
     <ClCompile Include="TRXRoomWall.cpp" />
     <ClCompile Include="TRXCHEATWIN.cpp" />
     <ClCompile Include="TRXCHEATWINDlg.cpp" />
-    <ClCompile Include="TRXContainer.cpp" />
     <ClCompile Include="TRXDialogBase.cpp" />
     <ClCompile Include="TRXDifferences.cpp" />
     <ClCompile Include="TRXEquipmentPage.cpp" />
@@ -573,7 +572,6 @@
     <ClInclude Include="TRXAmmosPage.h" />
     <ClInclude Include="TRXCHEATWIN.h" />
     <ClInclude Include="TRXCHEATWINDlg.h" />
-    <ClInclude Include="TRXContainer.h" />
     <ClInclude Include="TRXEquipmentPage.h" />
     <ClInclude Include="TRXGunPage.h" />
     <ClInclude Include="TRXInfoPage.h" />

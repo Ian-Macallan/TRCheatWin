@@ -67,9 +67,6 @@
     <ClCompile Include="TRXPropertyPage.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="TRXContainer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="TR9SaveGame.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -622,9 +619,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="TRXPropertyPage.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="TRXContainer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="TR9SaveGame.h">

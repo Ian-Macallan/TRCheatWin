@@ -189,6 +189,8 @@
 #define IDI_PASTE_BLACK                 295
 #define IDI_ICON3                       296
 #define IDI_COPY_BLACK                  296
+#define IDR_MENU1                       297
+#define IDR_DLGMENU1                    298
 #define IDC_DESERTEAGLE                 1001
 #define IDC_ITEM_02                     1002
 #define IDC_CROWBAR                     1002
@@ -631,13 +633,29 @@
 #define ID_ITEMS_ITEM6                  32785
 #define ID_ITEMS_ITEM7                  32786
 #define ID_ITEMS_ITEM8                  32787
+#define ID_SYSMENU_CLOSE                32795
+#define ID_SYSTEMMENU_RESTORE           32801
+#define ID_SYSTEMMENU_MOVE              32802
+#define ID_SYSTEMMENU_MINIMIZE          32803
+#define ID_SYSTEMMENU_ABOUTTOMBRAIDERCHEATPROGRAM 32804
+#define ID_SYSTEMMENU_REMASTEREDTOMBRAIDER 32805
+#define ID_SYSTEMMENU_STANDARDTOMBRAIDER 32806
+#define ID_SYSTEMMENU_SEARCHEXTENDED    32807
+#define ID_SYSTEMMENU_SEARCHPOSITIONEXTENDED 32808
+#define ID_SYSTEMMENU_DARKTHEME         32809
+#define ID_SYSTEMMENU_DARKTHEMEFULL     32810
+#define ID_SYSTEMMENU_UNHECKED          32811
+#define ID_SYSMENU_ABOUTTOMBRAIDERCHEATPROGRAM 32815
+#define ID_SYSTEMMENU_SIZE              32824
+#define ID_SYSTEMMENU_MAXIMIZE          32826
+#define ID_DIALOGMENU_VERTICALVIEW      32828
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        297
-#define _APS_NEXT_COMMAND_VALUE         32788
+#define _APS_NEXT_RESOURCE_VALUE        298
+#define _APS_NEXT_COMMAND_VALUE         32830
 #define _APS_NEXT_CONTROL_VALUE         1276
 #define _APS_NEXT_SYMED_VALUE           125
 #endif

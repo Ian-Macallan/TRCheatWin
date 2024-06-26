@@ -110,6 +110,7 @@ extern void ResetCustomLabels ();
 #define PROFILE_MIN_NG_SIZE         "Min NG Size"
 #define PROFILE_MAX_NG_SIZE         "Max NG Size"
 #define PROFILE_DARKTHEME           "DarkTheme"
+#define PROFILE_SQUARECORNERS       "Square Corners"
 #define PROFILE_RECURSE_WRITE       "TRX Recurse Write"
 
 /////////////////////////////////////////////////////////////////////////////

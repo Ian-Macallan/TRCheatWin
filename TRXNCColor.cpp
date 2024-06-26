@@ -8,6 +8,9 @@
 #include "TRXMenuBase.h"
 #include "TRXGDI.h"
 #include "TRXCHEATWIN.h"
+#include "TRXDialogBase.h"
+#include "TRXMapAreas.h"
+#include "TRXPropertySheet.h"
 
 extern CTRXCHEATWINApp theApp;
 
@@ -157,6 +160,7 @@ static CRect GetIconFullRECT ( const CRect &windowRECT, int left )
 CTRXNCColor::CTRXNCColor(void)
 {
     m_pContextMenu          = NULL;
+
     m_iHover                = ICON_NOT_SET;
 
    m_bLeftPressed           = FALSE;
@@ -164,7 +168,6 @@ CTRXNCColor::CTRXNCColor(void)
    m_windowRECT.left        = -1;
    m_LeftPressedPoint.x     = -1;
    m_LeftPressedPoint.y     = -1;
-
 }
 
 //
@@ -454,10 +457,16 @@ BOOL CTRXNCColor::PaintCaption( CWnd *pWnd, BOOL bActive, int darkIndicator )
 
     //  LEFT
     m_IconRect = GetIconFullRECT ( windowRECT, 1 /* xLeft */ );
-
-    if ( ( dwStyle & WS_SYSMENU ) && ( dwStyle & WS_CAPTION ) )
+    if ( CTRXColors::m_iSquareCorner == 1 )
     {
         DrawIcon ( pDC, IDR_MAINFRAME, m_IconRect );
+    }
+    else
+    {
+        if ( ( dwStyle & WS_SYSMENU ) && ( dwStyle & WS_CAPTION ) )
+        {
+            DrawIcon ( pDC, IDR_MAINFRAME, m_IconRect );
+        }
     }
 
     //  RIGHT
@@ -558,6 +567,7 @@ BOOL CTRXNCColor::Activate( CWnd *pWnd, BOOL bActive, int darkIndicator )
     return PaintCaption ( pWnd, bActive, darkIndicator );
 }
 
+
 //
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -575,9 +585,25 @@ BOOL CTRXNCColor::OnNcLButtonDown(CWnd *pWnd, UINT nHitTest, CPoint point, int d
         if ( ScreenPointOverRect( pWnd, point, m_IconRect ) )
         {
             //  Default Treatment
-            return FALSE;
+            if ( CTRXColors::m_iSquareCorner == 1 )
+            {
+                RECT clientRect;
+                pWnd->GetClientRect ( &clientRect );
+                pWnd->ClientToScreen ( &clientRect );
+                CPoint pt;
+                pt.x = clientRect.left;
+                pt.y = clientRect.top;
+
+                BOOL bTreated = PopupSystemMenu ( pWnd, nHitTest, pt, darkIndicator );
+                return bTreated;
+            }
+            else
+            {
+                return FALSE;
+            }
         }
 
+        //
         else if ( ScreenPointOverRect( pWnd, point, m_CloseRect ) )
         {
             return TRUE;
@@ -709,7 +735,56 @@ BOOL CTRXNCColor::OnNcLButtonUp(CWnd *pWnd, UINT nHitTest, CPoint point, int dar
 /////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////
-BOOL CTRXNCColor::OnNcRButtonDown(CWnd *pWnd, UINT nHitTest, CPoint point, int darkIndicator )
+BOOL CTRXNCColor::PopupSystemMenu ( CWnd *pWnd, UINT nHitTest, CPoint point, int darkIndicator )
+{
+    CMenu *pMenu = pWnd->GetSystemMenu(FALSE);
+    if ( pMenu )
+    {
+        //
+        CTRXPropertySheet *pSheet = dynamic_cast<CTRXPropertySheet *>(pWnd);
+        if ( pSheet != NULL )
+        {
+            CTRXMenuBase        menu;
+            menu.Attach ( pMenu->m_hMenu );
+            m_pContextMenu = menu.GetSubMenu ( 0 );
+            pSheet->SetContextMenu ( m_pContextMenu );
+            //  Use System Menu as Popup Menu
+            LPARAM lParam = m_pContextMenu->TrackPopupMenu ( TPM_LEFTALIGN | TPM_LEFTBUTTON | TPM_RIGHTBUTTON /* | TPM_NONOTIFY */ | TPM_RETURNCMD, point.x, point.y, pWnd );
+            if ( lParam ) 
+            {
+                PostMessage(pWnd->GetSafeHwnd(), WM_SYSCOMMAND, lParam, 0);
+            }
+            menu.Detach ( );
+            return TRUE;
+        }
+
+        //
+        CTRXDialogBase *pDialog = dynamic_cast<CTRXDialogBase *>(pWnd);
+        if ( pDialog != NULL )
+        {
+            CTRXMenuBase        menu;
+            menu.Attach ( pMenu->m_hMenu );
+            m_pContextMenu = menu.GetSubMenu ( 0 );
+            pDialog->SetContextMenu ( m_pContextMenu );
+            //  Use System Menu as Popup Menu
+            LPARAM lParam = m_pContextMenu->TrackPopupMenu ( TPM_LEFTALIGN | TPM_LEFTBUTTON | TPM_RIGHTBUTTON /* | TPM_NONOTIFY */ | TPM_RETURNCMD, point.x, point.y, pWnd );
+            if ( lParam ) 
+            {
+                PostMessage(pWnd->GetSafeHwnd(), WM_SYSCOMMAND, lParam, 0);
+            }
+            menu.Detach ( );
+            return TRUE;
+        }
+    }
+
+    return FALSE;
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
+BOOL CTRXNCColor::OnNcRButtonDown( CWnd *pWnd, UINT nHitTest, CPoint point, int darkIndicator )
 {
 	if ( theApp.OSVersionLowerThan ( 6, 1 ) )
 	{
@@ -718,17 +793,8 @@ BOOL CTRXNCColor::OnNcRButtonDown(CWnd *pWnd, UINT nHitTest, CPoint point, int d
 
 	if ( CTRXColors::m_iDarkTheme == 2 || CTRXColors::m_iDarkTheme == darkIndicator )
     {
-        CMenu *pMenu = pWnd->GetSystemMenu(FALSE);
-        if ( pMenu )
-        {
-            //
-            CTRXMenuBase        menu;
-            menu.Attach ( pMenu->m_hMenu );
-            m_pContextMenu = menu.GetSubMenu ( 0 );
-            m_pContextMenu->TrackPopupMenu ( TPM_LEFTALIGN | TPM_LEFTBUTTON | TPM_RIGHTBUTTON, point.x, point.y, pWnd );
-            menu.Detach ( );
-            return TRUE;
-        }
+        BOOL bTreated = PopupSystemMenu ( pWnd, nHitTest, point, darkIndicator );
+        return bTreated;
     }
 
     return FALSE;
@@ -996,4 +1062,96 @@ BOOL CTRXNCColor::OnNcMouseLeave(CWnd *pWnd, int darkIndicator )
     m_iHover        = ICON_NOT_SET;
     m_bLeftPressed  = FALSE;
     return FALSE;
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
+CMenu *CTRXNCColor::GetSystemMenu(CWnd *pWnd, BOOL bRevert )
+{
+	if ( theApp.OSVersionLowerThan ( 6, 1 ) )
+	{
+        //
+        CMenu *pMenu  = pWnd->GetSystemMenu ( bRevert );
+        return pMenu;
+	}
+
+	//
+    if ( CTRXColors::m_iDarkTheme != 2 )
+    {
+        //
+        CMenu *pMenu  = pWnd->GetSystemMenu ( bRevert );
+        return pMenu;
+    }
+
+    //
+    CMenu *pMenu  = pWnd->GetSystemMenu ( bRevert );
+    return pMenu;
+
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
+BOOL CTRXNCColor::InsertSystemMenu ( CWnd *pWnd, BOOL bRevert, UINT nPosition, UINT nFlags, UINT_PTR nIDNewItem, LPCTSTR lpszNewItem )
+{
+    BOOL bInserted = FALSE;
+
+    CMenu *pMenu  = GetSystemMenu ( pWnd, bRevert );
+    if ( pMenu != NULL )
+    {
+        bInserted = pMenu->InsertMenu ( nPosition, nFlags, nIDNewItem, lpszNewItem );
+    }
+
+    return bInserted;
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
+BOOL CTRXNCColor::AppendSystemMenu ( CWnd *pWnd, BOOL bRevert, UINT nFlags, UINT_PTR nIDNewItem, LPCTSTR lpszNewItem )
+{
+    BOOL bAppended = FALSE;
+
+    CMenu *pMenu  = GetSystemMenu ( pWnd, bRevert );
+    if ( pMenu != NULL )
+    {
+        bAppended = pMenu->AppendMenu ( nFlags, nIDNewItem, lpszNewItem );
+    }
+
+    return bAppended;
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
+UINT CTRXNCColor::CheckSystemMenuItem ( CWnd *pWnd, BOOL bRevert, UINT nIDCheckItem, UINT nCheck )
+{
+    UINT result = 0;
+    CMenu *pMenu  = GetSystemMenu ( pWnd, bRevert );
+    if ( pMenu != NULL )
+    {
+        result = pMenu->CheckMenuItem ( nIDCheckItem, nCheck );
+    }
+    return result;
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
+UINT CTRXNCColor::GetSystemMenuState ( CWnd *pWnd, BOOL bRevert, UINT nID, UINT nFlags )
+{
+    UINT result = 0;
+    CMenu *pMenu  = GetSystemMenu ( pWnd, bRevert );
+    if ( pMenu != NULL )
+    {
+        result = pMenu->GetMenuState ( nID, nFlags );
+    }
+
+    return result;
 }

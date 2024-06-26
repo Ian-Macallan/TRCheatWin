@@ -14,7 +14,6 @@
 #include "TRXRemastered.h"  // Added by ClassView
 
 #include "TRXPropertySheetStandard.h"
-#include "TRXContainer.h"
 
 #include "AutomaticVersionHeader.h"
 

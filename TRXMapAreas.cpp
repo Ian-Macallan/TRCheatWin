@@ -516,17 +516,13 @@ BOOL CTRXMapAreas::OnInitDialog()
     SetIcon(m_hIcon, FALSE);        // Set small icon
 
     //
-    CMenu* pSysMenu = GetSystemMenu(FALSE);
-    if (pSysMenu != NULL)
-    {
-        pSysMenu->AppendMenu(MF_SEPARATOR);
+    m_NC.AppendSystemMenu ( this, FALSE, MF_SEPARATOR);
 
-        CString strVerticalView;
-        strVerticalView.LoadString(IDS_VERTICALVIEW);
-        if (!strVerticalView.IsEmpty())
-        {
-            pSysMenu->AppendMenu(MF_STRING, IDM_VERTICALVIEW, strVerticalView);
-        }
+    CString strVerticalView;
+    strVerticalView.LoadString(IDS_VERTICALVIEW);
+    if (!strVerticalView.IsEmpty())
+    {
+        m_NC.AppendSystemMenu ( this, FALSE, MF_STRING, IDM_VERTICALVIEW, strVerticalView);
     }
 
     //

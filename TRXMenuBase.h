@@ -19,7 +19,8 @@ class CTRXMenuBase : public CMenu
         virtual ~CTRXMenuBase(void);
 
         //
-        void SetOwnDraw ( HMENU hMenu, bool bOwnDrawn = true );
+        static void SetOwnDraw ( HMENU hMenu, bool bOwnDrawn = true );
+        static void SetOwnDraw ( CMenu *pMenu, bool bOwnDrawn = true );
 
         int         m_iBitmapWidth;
         int         m_iBitmapHeight;
@@ -57,6 +58,8 @@ class CTRXMenuBase : public CMenu
         void        DrawBitmap ( CDC *pDC, CBitmap *pBitmap, CRect *pRect );
         int         DrawBitmap(LPDRAWITEMSTRUCT lpDrawItemStruct );
         BOOL        SetMenuItemBitmaps ( UINT nPosition, UINT nFlags, const CBitmap *pBmpUnchecked, const CBitmap *pBmpChecked );
+
+       static void  AdjustMenu ( CWnd *pWnd, CMenu *pMenu );
 
     protected :
         CWnd        *m_pWnd;

@@ -20,7 +20,6 @@
 #include "TR9SaveGame.h"
 #include "TRXGlobal.h"
 
-#include "TRXContainer.h"
 #include "TRXPropertySheetAll.h"
 #include "TRXPropertySheetStandard.h"
 #include "TRXPropertySheetRemastered.h"
@@ -470,9 +469,16 @@ BOOL CTRXCHEATWINApp::InitInstance()
     {
         theApp.WriteProfileInt( PROFILE_SETTING, PROFILE_DARKTHEME, 0 );
     }
+    //
+    iTmp        = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_SQUARECORNERS, -1 );
+    if ( iTmp == -1 )
+    {
+        theApp.WriteProfileInt( PROFILE_SETTING, PROFILE_SQUARECORNERS, 0 );
+    }
 
     //
     CTRXColors::m_iDarkTheme    = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_DARKTHEME, 0 );
+    CTRXColors::m_iSquareCorner = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_SQUARECORNERS, 0 );
 
     //
     int iSizeTR1 = sizeof(TABLE_TR1);
@@ -598,14 +604,6 @@ BOOL CTRXCHEATWINApp::InitInstance()
                 dlg.SetParmPathname ( szFullPathname );
             }
 
-            m_pMainWnd = &dlg;
-            nResponse = dlg.DoModal();
-        }
-        //
-        else if ( _stricmp ( pCommandLine, "-resizable" ) == 0L )
-        {
-            CTRXColors::m_iDarkTheme    = 0;
-            CTRXContainer dlg;
             m_pMainWnd = &dlg;
             nResponse = dlg.DoModal();
         }

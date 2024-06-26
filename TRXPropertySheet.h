@@ -85,7 +85,7 @@ class CTRXPropertySheet : public CPropertySheet
         void SetParmPathname ( const char *pathname );
         void SetTheActivePage ( PROPERTY_PAGE page );
         void DropToPage ( PROPERTY_PAGE page, const char *pFilename );
-
+        void SetContextMenu ( CTRXMenuBase *pMenu );
         virtual void SetThemeChanged ( bool bDarkTheme );
 
     // Attributes
@@ -119,6 +119,9 @@ class CTRXPropertySheet : public CPropertySheet
         afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
         afx_msg void OnNcCalcSize(BOOL bCalcValidRects, NCCALCSIZE_PARAMS* lpncsp);
         
+        afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
+
+        afx_msg void OnNcRButtonDown(UINT nHitTest, CPoint point);
 };
 
 

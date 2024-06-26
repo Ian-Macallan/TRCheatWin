@@ -29,6 +29,9 @@ class CTRXDialogBase : public CDialog
 
         CToolTipCtrl    *GetToolTipCtrl();
 
+        //
+        void SetContextMenu ( CTRXMenuBase *pMenu );
+
     // Données de boîte de dialogue
     public :    
         CFont                   *m_pBoldFont;
@@ -67,6 +70,7 @@ class CTRXDialogBase : public CDialog
         afx_msg void OnNcPaint();
         afx_msg void OnNcLButtonDown(UINT nHitTest, CPoint point);
         afx_msg void OnNcLButtonUp(UINT nHitTest, CPoint point);
+        afx_msg void OnNcRButtonDown(UINT nHitTest, CPoint point);
         afx_msg void OnInitMenuPopup(CMenu* pPopupMenu, UINT nIndex, BOOL bSysMenu);
         afx_msg void OnDrawItem(int nIDCtl, LPDRAWITEMSTRUCT lpDrawItemStruct);
         afx_msg void OnMeasureItem(int nIDCtl, LPMEASUREITEMSTRUCT lpMeasureItemStruct);
@@ -74,5 +78,5 @@ class CTRXDialogBase : public CDialog
         afx_msg void OnNcMouseMove(UINT nHitTest, CPoint point);
         afx_msg void OnNcMouseHover(UINT nFlags, CPoint point);
         afx_msg void OnNcMouseLeave();
-        
+       
 };

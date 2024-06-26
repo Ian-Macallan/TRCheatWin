@@ -138,6 +138,15 @@ void CTRXPropertySheet::SetParmPathname ( const char *pathname )
 /////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////
+void CTRXPropertySheet::SetContextMenu ( CTRXMenuBase *pMenu )
+{
+    m_pMenu = pMenu;
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
 void CTRXPropertySheet::SetTheActivePage ( PROPERTY_PAGE page )
 {
     switch ( page )
@@ -300,10 +309,12 @@ BEGIN_MESSAGE_MAP(CTRXPropertySheet, CPropertySheet)
     ON_WM_NCMOUSELEAVE()
 
     ON_WM_LBUTTONUP()
+    ON_WM_LBUTTONDOWN()
     ON_WM_MOUSEMOVE()
 
     ON_WM_CREATE()
     ON_WM_NCCALCSIZE()
+    ON_WM_NCRBUTTONDOWN()
 END_MESSAGE_MAP()
 
 
@@ -365,17 +376,14 @@ BOOL CTRXPropertySheet::OnInitDialog()
         DWORD dwStyle   = WS_MINIMIZEBOX | WS_SYSMENU;
         ModifyStyle ( 0, dwStyle );
 
+        //  Makes Rectangle corners but Old Buttons appears
 
         //  10101 : WS_EX_DLGMODALFRAME WS_EX_WINDOWEDGE WS_EX_CONTROLPARENT
         DWORD dwStyleEx = GetExStyle();
 
         //
-        CMenu* pSysMenu = GetSystemMenu(FALSE);
-        if (pSysMenu != NULL)
-        {
-            pSysMenu->InsertMenu(1,MF_BYPOSITION,SC_MINIMIZE, _T("Mi&nimize"));
-            pSysMenu->InsertMenu(0,MF_BYPOSITION,SC_RESTORE, _T("&Restore"));
-        }
+        m_NC.InsertSystemMenu ( this, FALSE, 1, MF_BYPOSITION, SC_MINIMIZE, _T("Mi&nimize") );
+        m_NC.InsertSystemMenu ( this, FALSE, 0, MF_BYPOSITION, SC_RESTORE, _T("&Restore") );
     }
 
     if ( GetParent() == NULL )
@@ -387,16 +395,12 @@ BOOL CTRXPropertySheet::OnInitDialog()
         ASSERT((IDM_ABOUTBOX & 0xFFF0) == IDM_ABOUTBOX);
         ASSERT(IDM_ABOUTBOX < 0xF000);
 
-        CMenu* pSysMenu = GetSystemMenu(FALSE);
-        if (pSysMenu != NULL)
+        CString strAboutMenu;
+        strAboutMenu.LoadString(IDS_ABOUTBOX);
+        if (!strAboutMenu.IsEmpty())
         {
-            CString strAboutMenu;
-            strAboutMenu.LoadString(IDS_ABOUTBOX);
-            if (!strAboutMenu.IsEmpty())
-            {
-                pSysMenu->AppendMenu(MF_SEPARATOR);
-                pSysMenu->AppendMenu(MF_STRING, IDM_ABOUTBOX, strAboutMenu);
-            }
+            m_NC.AppendSystemMenu( this, FALSE, MF_SEPARATOR );
+            m_NC.AppendSystemMenu( this, FALSE, MF_STRING, IDM_ABOUTBOX, strAboutMenu );
         }
 
         // Set the icon for this dialog.  The framework does this automatically
@@ -465,6 +469,19 @@ BOOL CTRXPropertySheet::OnInitDialog()
         m_ToolTip.Activate(  TRUE );
     }
 
+    //
+    if ( CTRXColors::m_iSquareCorner == 1 )
+    {
+	    if ( theApp.OSVersionGreaterThan ( 6, 1 ) )
+	    {
+            if ( CTRXColors::m_iDarkTheme == 2 )
+            {
+                ModifyStyle ( WS_SYSMENU, NULL );
+            }
+        }
+    }
+
+    //
     m_bInitDone = true;
 
     return bResult;
@@ -807,16 +824,11 @@ void CTRXPropertySheet::OnInitMenuPopup(CMenu* pPopupMenu, UINT nIndex, BOOL bSy
 {
     CPropertySheet::OnInitMenuPopup(pPopupMenu, nIndex, bSysMenu);
 
+    CTRXMenuBase::AdjustMenu ( this, pPopupMenu );
     if ( CTRXColors::m_iDarkTheme != 0 )
     {
-        static CTRXMenuBase     sysMenu;
-        m_pMenu = sysMenu.SetSystemMenu ( this, pPopupMenu );
-    }
-    else if ( false && m_pMenu != NULL )
-    {
-        static CTRXMenuBase     sysMenu;
-        sysMenu.UnSetSystemMenu ( pPopupMenu );
-        m_pMenu = NULL;
+        static CTRXMenuBase     popMenu;
+        m_pMenu = popMenu.SetSystemMenu ( this, pPopupMenu );
     }
 }
 
@@ -875,6 +887,7 @@ void CTRXPropertySheet::OnNcLButtonDown(UINT nHitTest, CPoint point)
 void CTRXPropertySheet::OnNcLButtonUp(UINT nHitTest, CPoint point)
 {
     //
+    CPropertySheet::OnNcLButtonUp(nHitTest, point);
     BOOL bTreated = m_NC.OnNcLButtonUp ( this, nHitTest, point );
     if ( bTreated )
     {
@@ -958,6 +971,18 @@ void CTRXPropertySheet::OnLButtonUp(UINT nFlags, CPoint point)
 
     BOOL bTreated = m_NC.OnLButtonUp (this, nFlags, point );
     CPropertySheet::OnLButtonUp(nFlags, point);
+
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
+void CTRXPropertySheet::OnLButtonDown(UINT nFlags, CPoint point)
+{
+    //
+
+    CPropertySheet::OnLButtonDown(nFlags, point);
 }
 
 //
@@ -969,6 +994,28 @@ void CTRXPropertySheet::SetThemeChanged ( bool bDarkTheme )
     if ( m_bToolTip )
     {
         m_ToolTip.SetColors();
+    }
+
+	if ( theApp.OSVersionGreaterThan ( 6, 1 ) )
+	{
+        if ( CTRXColors::m_iSquareCorner == 1 )
+        {
+            if ( CTRXColors::m_iDarkTheme == 2 )
+            {
+                CTRXColors::SetWindowTheme ( this );
+                ModifyStyle ( WS_SYSMENU, NULL  );
+                SetContextMenu ( NULL );
+                CTRXMenuBase::SetOwnDraw ( GetSystemMenu(FALSE), true );
+            }
+            else
+            {
+                CTRXColors::SetWindowTheme ( this );
+                ModifyStyle ( NULL, WS_SYSMENU );
+                SetContextMenu ( NULL );
+                CTRXMenuBase::SetOwnDraw ( GetSystemMenu(FALSE), false );
+                SetWindowPos ( NULL, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_NOZORDER );
+            }
+	    }
     }
 }
 
@@ -998,3 +1045,18 @@ void CTRXPropertySheet::OnNcCalcSize(BOOL bCalcValidRects, NCCALCSIZE_PARAMS* lp
     CPropertySheet::OnNcCalcSize(bCalcValidRects, lpncsp);
 }
 
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
+void CTRXPropertySheet::OnNcRButtonDown(UINT nHitTest, CPoint point)
+{
+    //
+    if ( m_NC.OnNcRButtonDown ( this, nHitTest, point ) )
+    {
+        return;
+    }
+
+    CPropertySheet::OnNcRButtonDown(nHitTest, point);
+}

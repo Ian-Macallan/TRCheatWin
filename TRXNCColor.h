@@ -24,6 +24,7 @@ class CTRXNCColor
 
         //
         CTRXMenuBase            *m_pContextMenu;
+
         UINT                    m_iHover;
 
         //
@@ -39,6 +40,9 @@ class CTRXNCColor
         void DrawIconFrame ( CDC *pDC, const CRect rect, bool bFillRect = true, CBrush *pbr = NULL );
         void DrawIcon ( CDC *pDC, UINT icon, const CRect rect, bool bFillRect = true, CBrush *pbr = NULL );
         void DrawAllIcons (  CWnd *pWnd, UINT iconOnly = 0, int darkIndicator = 2 );
+
+        //
+        BOOL PopupSystemMenu ( CWnd *pWnd, UINT nHitTest, CPoint point, int darkIndicator = 2  );
 
         //
         CDC *GetDeviceContext ( CWnd *pWnd );
@@ -60,6 +64,12 @@ class CTRXNCColor
 
         BOOL OnMouseMove(CWnd *pWnd, UINT nFlags, CPoint point, int darkIndicator = 2 );
         BOOL OnLButtonUp(CWnd *pWnd, UINT nFlags, CPoint point, int darkIndicator = 2 );
+
+        CMenu *GetSystemMenu(CWnd *pWnd, BOOL bRevert );
+        BOOL  InsertSystemMenu ( CWnd *pWnd, BOOL bRevert, UINT nPosition, UINT nFlags, UINT_PTR nIDNewItem = 0, LPCTSTR lpszNewItem = NULL );
+        BOOL AppendSystemMenu ( CWnd *pWnd, BOOL bRevert, UINT nFlags, UINT_PTR nIDNewItem = 0, LPCTSTR lpszNewItem = NULL );
+        UINT CheckSystemMenuItem ( CWnd *pWnd, BOOL bRevert, UINT nIDCheckItem, UINT nCheck );
+        UINT GetSystemMenuState ( CWnd *pWnd, BOOL bRevert, UINT nID, UINT nFlags );
 
 };
 

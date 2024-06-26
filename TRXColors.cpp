@@ -80,6 +80,7 @@ CBrush CTRXColors::WhiteEFBrush;
 //  1 Dark Client Area
 //  2 Dark Client Area and Caption
 int             CTRXColors::m_iDarkTheme        = 0;
+int             CTRXColors::m_iSquareCorner     = 0;
 
 
 //
@@ -638,7 +639,21 @@ BOOL CTRXColors::OnEraseBkgnd(CDC* pDC, CWnd* pWnd)
 /////////////////////////////////////////////////////////////////////////////
 void CTRXColors::SetWindowTheme ( CWnd *pWnd )
 {
-    ::SetWindowTheme ( pWnd->GetSafeHwnd(), WINDOWS_THEME_RESET  );
+    if ( CTRXColors::m_iSquareCorner == 1 )
+    {
+        if ( CTRXColors::m_iDarkTheme == 2 )
+        {
+            ::SetWindowTheme ( pWnd->GetSafeHwnd(), WINDOWS_THEME_SQUARE  );
+        }
+        else
+        {
+            ::SetWindowTheme ( pWnd->GetSafeHwnd(), WINDOWS_THEME_NULL  );
+        }
+    }
+    else
+    {
+        ::SetWindowTheme ( pWnd->GetSafeHwnd(), WINDOWS_THEME_NULL  );
+    }
 }
 
 //

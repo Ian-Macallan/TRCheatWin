@@ -10,6 +10,9 @@
 #include "resource.h"
 #include "TRXGlobal.h"
 #include "TRXColors.h"
+#include "TRXCHEATWIN.h"
+
+extern CTRXCHEATWINApp theApp;
 
 // Boîte de dialogue CTRXDialogBase
 
@@ -55,6 +58,15 @@ CTRXDialogBase::~CTRXDialogBase()
 /////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////
+void CTRXDialogBase::SetContextMenu ( CTRXMenuBase *pMenu )
+{
+    m_pMenu = pMenu;
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
 CToolTipCtrl *CTRXDialogBase::GetToolTipCtrl()
 {
     if ( m_bToolTip )
@@ -89,6 +101,7 @@ BEGIN_MESSAGE_MAP(CTRXDialogBase, CDialog)
     ON_WM_DRAWITEM()
     ON_WM_MEASUREITEM()
     ON_WM_NCRBUTTONUP()
+    ON_WM_NCRBUTTONDOWN()
     ON_WM_NCRBUTTONDOWN()
     ON_WM_MOUSEMOVE()
     ON_WM_NCMOUSEMOVE()
@@ -166,6 +179,19 @@ BOOL CTRXDialogBase::OnInitDialog()
 
     //  Activate Context Menu
     GetSystemMenu(FALSE);
+
+    //
+    if ( CTRXColors::m_iSquareCorner == 1 )
+    {
+	    if ( theApp.OSVersionGreaterThan ( 6, 1 ) )
+	    {
+            if ( CTRXColors::m_iDarkTheme == 2 )
+            {
+                CTRXColors::SetWindowTheme ( this );
+                ModifyStyle ( WS_SYSMENU, NULL );
+            }
+        }
+    }
 
     //
     return TRUE;  // return TRUE unless you set the focus to a control
@@ -291,6 +317,20 @@ void CTRXDialogBase::OnNcLButtonUp(UINT nHitTest, CPoint point)
     }
 
     CDialog::OnNcLButtonUp(nHitTest, point);
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
+void CTRXDialogBase::OnNcRButtonDown(UINT nHitTest, CPoint point)
+{
+    BOOL bTreated = m_NC.OnNcRButtonDown ( this, nHitTest, point );
+    if ( bTreated )
+    {
+        return;
+    }
+    CDialog::OnNcRButtonDown(nHitTest, point);
 }
 
 //

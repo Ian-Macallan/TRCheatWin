@@ -6,11 +6,11 @@
 /////////////////////////////////////////////////////////////////////////////
 //  See Also https://www.codeproject.com/Articles/620045/Custom-Controls-in-Win-API-Visual-Styles
 /////////////////////////////////////////////////////////////////////////////
-#define WINDOWS_THEME_NULL      NULL,NULL
-#define WINDOWS_THEME_EXPLORER  L"Explorer",NULL
-#define WINDOWS_THEME_OLD       L"",L""
+#define WINDOWS_THEME_NULL          NULL,NULL
+#define WINDOWS_THEME_EXPLORER      L"Explorer",NULL
+#define WINDOWS_THEME_SQUARE        L"",L""
 
-#define WINDOWS_THEME_RESET     WINDOWS_THEME_EXPLORER
+#define WINDOWS_THEME_RESET         WINDOWS_THEME_EXPLORER
 
 //
 /////////////////////////////////////////////////////////////////////////////
@@ -24,6 +24,7 @@ class CTRXColors
 
     public :
         static int          m_iDarkTheme;
+        static int          m_iSquareCorner;
 
     public :
         //

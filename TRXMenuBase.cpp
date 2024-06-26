@@ -5,12 +5,16 @@
 #include "TRXGlobal.h"
 #include "resource.h"
 #include "TRXGDI.h"
+#include "TRXCHEATWIN.h"
 
 static  const int EXTRA_PIXELS_WIDTH    = 8;
 static  const int EXTRA_PIXELS_HEIGHT   = 6;
 static  const int SEPARATOR_HEIGHT      = 3;
 
 #define MENU_TEXT_SIZE  256
+
+//
+extern CTRXCHEATWINApp theApp;
 
 //
 /////////////////////////////////////////////////////////////////////////////
@@ -171,6 +175,18 @@ void CTRXMenuBase::SetOwnDraw ( HMENU hMenu, bool bOwnDrawn )
         }
     }
 
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
+void CTRXMenuBase::SetOwnDraw ( CMenu *pMenu, bool bOwnDrawn )
+{
+    if ( pMenu )
+    {
+        SetOwnDraw ( pMenu->GetSafeHmenu(), bOwnDrawn );
+    }
 }
 
 //
@@ -812,3 +828,132 @@ BOOL CTRXMenuBase::SetMenuItemBitmaps ( UINT nPosition, UINT nFlags, const CBitm
     return FALSE;
 }
 
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
+void CTRXMenuBase::AdjustMenu ( CWnd *pWnd, CMenu *pMenu )
+{
+    if ( pWnd == NULL || pMenu == NULL )
+    {
+        return;
+    }
+
+    DWORD dwStyle = pWnd->GetStyle();
+    WINDOWPLACEMENT wp;
+    pWnd->GetWindowPlacement( &wp );
+
+    int iRemastered     = theApp.GetProfileInt( PROFILE_MENU, PROFILE_REMASTERED, 1 );
+    int iStandard       = theApp.GetProfileInt( PROFILE_MENU, PROFILE_STANDARD, 1 );
+
+    UINT bChecked       = MF_CHECKED | MF_BYCOMMAND;
+    UINT bUnChecked     = MF_UNCHECKED | MF_BYCOMMAND;
+
+    if ( CTRXColors::m_iDarkTheme == 1 )
+    {
+        pMenu->CheckMenuItem ( IDM_DARK_THEME, bChecked );
+    }
+    else
+    {
+        pMenu->CheckMenuItem ( IDM_DARK_THEME, bUnChecked );
+    }
+
+    if ( CTRXColors::m_iDarkTheme == 2 )
+    {
+        pMenu->CheckMenuItem ( IDM_DARK_FULL, bChecked );
+    }
+    else
+    {
+        pMenu->CheckMenuItem ( IDM_DARK_FULL, bUnChecked );
+    }
+
+    if ( iRemastered |= 0 )
+    {
+        pMenu->CheckMenuItem ( IDM_REMASTERED, bChecked );
+    }
+    else
+    {
+        pMenu->CheckMenuItem ( IDM_REMASTERED, bUnChecked );
+    }
+
+    if ( iStandard |= 0 )
+    {
+        pMenu->CheckMenuItem ( IDM_STANDARD, bChecked );
+    }
+    else
+    {
+        pMenu->CheckMenuItem ( IDM_STANDARD, bUnChecked );
+    }
+
+    if ( CTRXGlobal::m_iUnchecked |= 0 )
+    {
+        pMenu->CheckMenuItem ( IDM_UNCHECKED, bChecked );
+    }
+    else
+    {
+        pMenu->CheckMenuItem ( IDM_UNCHECKED, bUnChecked );
+    }
+
+    if ( CTRXGlobal::m_iSearchExt |= 0 )
+    {
+        pMenu->CheckMenuItem ( IDM_SEARCH_EXT, bChecked );
+    }
+    else
+    {
+        pMenu->CheckMenuItem ( IDM_SEARCH_EXT, bUnChecked );
+    }
+
+    if ( CTRXGlobal::m_iSearchPosExt |= 0 )
+    {
+        pMenu->CheckMenuItem ( IDM_SEARCH_POS_EXT, bChecked );
+    }
+    else
+    {
+        pMenu->CheckMenuItem ( IDM_SEARCH_POS_EXT, bUnChecked );
+    }
+
+    UINT bDisabled      = MF_DISABLED | MF_GRAYED | MF_BYCOMMAND;
+    UINT bEnabled       = MF_ENABLED | MF_BYCOMMAND;
+
+    if ( ( dwStyle & WS_MAXIMIZEBOX ) != 0 )
+    {
+        if ( wp.showCmd == SW_NORMAL )
+        {
+            pMenu->EnableMenuItem  ( SC_MAXIMIZE, bEnabled );
+
+            pMenu->EnableMenuItem  ( SC_RESTORE, bDisabled );
+        }
+        else
+        {
+            pMenu->EnableMenuItem  ( SC_MAXIMIZE, bDisabled );
+
+            pMenu->EnableMenuItem  ( SC_RESTORE, bEnabled );
+        }
+    }
+    else
+    {
+        pMenu->EnableMenuItem  ( SC_MAXIMIZE, bDisabled );
+
+        pMenu->EnableMenuItem  ( SC_RESTORE, bDisabled );
+    }
+
+    if ( ( dwStyle & WS_MINIMIZEBOX ) != 0 )
+    {
+        pMenu->EnableMenuItem  ( SC_MINIMIZE, bEnabled );
+    }
+    else
+    {
+        pMenu->EnableMenuItem  ( SC_MINIMIZE, bDisabled );
+    }
+
+    if ( ( dwStyle & WS_SIZEBOX ) != 0 )
+    {
+        pMenu->EnableMenuItem  ( SC_SIZE, bEnabled );
+    }
+    else
+    {
+        pMenu->EnableMenuItem  ( SC_SIZE, bDisabled );
+    }
+
+}
