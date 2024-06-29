@@ -23,8 +23,19 @@ class CTRXColors
         virtual ~CTRXColors(void);
 
     public :
+        //  0 Default Color
+        //  1 Dark Client Area
+        //  2 Dark Client Area and Caption
         static int          m_iDarkTheme;
+        //  Square Corners
+        //  Default true
         static int          m_iSquareCorner;
+        //  Restart On Theme Changed
+        //  Default true
+        static int          m_iThemeRestart;
+        //  Change m_iSquareCorner for Dark Full Mode
+        //  Default true
+        static int          m_iSquareForce;
 
     public :
         //

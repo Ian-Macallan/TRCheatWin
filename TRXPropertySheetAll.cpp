@@ -340,6 +340,11 @@ void CTRXPropertySheetAll::OnSysCommand(UINT nID, LPARAM lParam)
         {
             theApp.WriteProfileInt( PROFILE_SETTING, PROFILE_DARKTHEME, 0 );
             CTRXColors::m_iDarkTheme    = 0;
+            if ( CTRXColors::m_iSquareForce )
+            {
+                theApp.WriteProfileInt( PROFILE_SETTING, PROFILE_SQUARECORNERS, 0 );
+                CTRXColors::m_iSquareCorner     = 0;
+            }
             m_NC.CheckSystemMenuItem( this, FALSE, IDM_DARK_THEME, MF_UNCHECKED|MF_BYCOMMAND);
             CTabCtrl* pTab = GetTabControl();
             if ( pTab )
@@ -349,11 +354,19 @@ void CTRXPropertySheetAll::OnSysCommand(UINT nID, LPARAM lParam)
 
             //  Reset Theme
             CTRXColors::SetWindowTheme ( this );
+
+            //
+            theApp.ReStartProgram(this);
         }
         else if ( (nID & 0xFFF0) == IDM_DARK_FULL && CTRXColors::m_iDarkTheme == 2 )
         {
             theApp.WriteProfileInt( PROFILE_SETTING, PROFILE_DARKTHEME, 0 );
-            CTRXColors::m_iDarkTheme    = 0;
+            CTRXColors::m_iDarkTheme        = 0;
+            if ( CTRXColors::m_iSquareForce )
+            {
+                theApp.WriteProfileInt( PROFILE_SETTING, PROFILE_SQUARECORNERS, 0 );
+                CTRXColors::m_iSquareCorner     = 0;
+            }
             m_NC.CheckSystemMenuItem( this, FALSE, IDM_DARK_FULL, MF_UNCHECKED|MF_BYCOMMAND);
             CTabCtrl* pTab = GetTabControl();
             if ( pTab )
@@ -363,11 +376,19 @@ void CTRXPropertySheetAll::OnSysCommand(UINT nID, LPARAM lParam)
 
             //  Reset Theme
             CTRXColors::SetWindowTheme ( this );
+
+            //
+            theApp.ReStartProgram(this);
         }
         else if ( (nID & 0xFFF0) == IDM_DARK_THEME )
         {
             theApp.WriteProfileInt( PROFILE_SETTING, PROFILE_DARKTHEME, 1 );
-            CTRXColors::m_iDarkTheme    = 1;
+            CTRXColors::m_iDarkTheme        = 1;
+            if ( CTRXColors::m_iSquareForce )
+            {
+                theApp.WriteProfileInt( PROFILE_SETTING, PROFILE_SQUARECORNERS, 0 );
+                CTRXColors::m_iSquareCorner     = 0;
+            }
             m_NC.CheckSystemMenuItem ( this, FALSE, IDM_DARK_THEME, MF_CHECKED|MF_BYCOMMAND);
             m_NC.CheckSystemMenuItem ( this, FALSE, IDM_DARK_FULL, MF_UNCHECKED|MF_BYCOMMAND);
             CTabCtrl* pTab = GetTabControl();
@@ -378,11 +399,19 @@ void CTRXPropertySheetAll::OnSysCommand(UINT nID, LPARAM lParam)
 
             //  Reset Theme
             CTRXColors::SetWindowTheme ( this );
+
+            //
+            theApp.ReStartProgram(this);
         }
         else if ( (nID & 0xFFF0) == IDM_DARK_FULL )
         {
             theApp.WriteProfileInt( PROFILE_SETTING, PROFILE_DARKTHEME, 2 );
-            CTRXColors::m_iDarkTheme    = 2;
+            CTRXColors::m_iDarkTheme        = 2;
+            if ( CTRXColors::m_iSquareForce )
+            {
+                theApp.WriteProfileInt( PROFILE_SETTING, PROFILE_SQUARECORNERS, 1 );
+                CTRXColors::m_iSquareCorner     = 1;
+            }
             m_NC.CheckSystemMenuItem ( this, FALSE, IDM_DARK_FULL, MF_CHECKED|MF_BYCOMMAND);
             m_NC.CheckSystemMenuItem ( this, FALSE, IDM_DARK_THEME, MF_UNCHECKED|MF_BYCOMMAND);
 
@@ -394,6 +423,9 @@ void CTRXPropertySheetAll::OnSysCommand(UINT nID, LPARAM lParam)
 
             //  Reset Theme
             CTRXColors::SetWindowTheme ( this );
+
+            //
+            theApp.ReStartProgram(this);
         }
 
         if ( m_Info_Page != NULL ) m_Info_Page->SetThemeChanged ( CTRXColors::m_iDarkTheme != 0 );

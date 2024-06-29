@@ -366,7 +366,7 @@ BOOL CTRXPropertySheet::OnInitDialog()
     m_pFixedBoldFont->CreateFontIndirect(&logFont);    // Create the font.
 
     //
-    CTRXColors::SetWindowTheme ( this );
+    // CTRXColors::SetWindowTheme ( this );
 
     //
     if ( GetParent() == NULL )
@@ -470,16 +470,10 @@ BOOL CTRXPropertySheet::OnInitDialog()
     }
 
     //
-    if ( CTRXColors::m_iSquareCorner == 1 )
-    {
-	    if ( theApp.OSVersionGreaterThan ( 6, 1 ) )
-	    {
-            if ( CTRXColors::m_iDarkTheme == 2 )
-            {
-                ModifyStyle ( WS_SYSMENU, NULL );
-            }
-        }
-    }
+    CMenu *pMenu = GetSystemMenu ( FALSE );
+
+    //
+    m_NC.HandleSquareCorners ( this );
 
     //
     m_bInitDone = true;
@@ -783,7 +777,8 @@ void CTRXPropertySheet::OnDrawItem(int nIDCtl, LPDRAWITEMSTRUCT lpDrawItemStruct
     {
         if ( lpDrawItemStruct->CtlType == ODT_MENU )
         {
-            if ( m_pMenu != NULL )
+            //  If Own Draw item data contains type | index
+            if ( m_pMenu != NULL || lpDrawItemStruct->itemData != 0 )
             {
                 m_pMenu->DrawItem(lpDrawItemStruct);
                 return;
@@ -805,7 +800,8 @@ void CTRXPropertySheet::OnMeasureItem(int nIDCtl, LPMEASUREITEMSTRUCT lpMeasureI
     {
         if ( lpMeasureItemStruct->CtlType == ODT_MENU )
         {
-            if ( m_pMenu != NULL )
+            //  If Own Draw item data contains type | index
+            if ( m_pMenu != NULL || lpMeasureItemStruct->itemData != 0 )
             {
                 m_pMenu->MeasureItem(lpMeasureItemStruct);
                 return;
@@ -822,13 +818,20 @@ void CTRXPropertySheet::OnMeasureItem(int nIDCtl, LPMEASUREITEMSTRUCT lpMeasureI
 /////////////////////////////////////////////////////////////////////////////
 void CTRXPropertySheet::OnInitMenuPopup(CMenu* pPopupMenu, UINT nIndex, BOOL bSysMenu)
 {
+    //
     CPropertySheet::OnInitMenuPopup(pPopupMenu, nIndex, bSysMenu);
 
+    //
     CTRXMenuBase::AdjustMenu ( this, pPopupMenu );
     if ( CTRXColors::m_iDarkTheme != 0 )
     {
         static CTRXMenuBase     popMenu;
         m_pMenu = popMenu.SetSystemMenu ( this, pPopupMenu );
+    }
+
+    if ( CTRXColors::m_iDarkTheme == 0 )
+    {
+        CTRXMenuBase::SetOwnDraw ( pPopupMenu, false, ID_POP_MENU );
     }
 }
 
@@ -970,6 +973,7 @@ void CTRXPropertySheet::OnLButtonUp(UINT nFlags, CPoint point)
     //
 
     BOOL bTreated = m_NC.OnLButtonUp (this, nFlags, point );
+
     CPropertySheet::OnLButtonUp(nFlags, point);
 
 }
@@ -996,27 +1000,9 @@ void CTRXPropertySheet::SetThemeChanged ( bool bDarkTheme )
         m_ToolTip.SetColors();
     }
 
-	if ( theApp.OSVersionGreaterThan ( 6, 1 ) )
-	{
-        if ( CTRXColors::m_iSquareCorner == 1 )
-        {
-            if ( CTRXColors::m_iDarkTheme == 2 )
-            {
-                CTRXColors::SetWindowTheme ( this );
-                ModifyStyle ( WS_SYSMENU, NULL  );
-                SetContextMenu ( NULL );
-                CTRXMenuBase::SetOwnDraw ( GetSystemMenu(FALSE), true );
-            }
-            else
-            {
-                CTRXColors::SetWindowTheme ( this );
-                ModifyStyle ( NULL, WS_SYSMENU );
-                SetContextMenu ( NULL );
-                CTRXMenuBase::SetOwnDraw ( GetSystemMenu(FALSE), false );
-                SetWindowPos ( NULL, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_NOZORDER );
-            }
-	    }
-    }
+    //
+    m_NC.SetThemeChanged ( this );
+
 }
 
 //

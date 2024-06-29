@@ -181,17 +181,7 @@ BOOL CTRXDialogBase::OnInitDialog()
     GetSystemMenu(FALSE);
 
     //
-    if ( CTRXColors::m_iSquareCorner == 1 )
-    {
-	    if ( theApp.OSVersionGreaterThan ( 6, 1 ) )
-	    {
-            if ( CTRXColors::m_iDarkTheme == 2 )
-            {
-                CTRXColors::SetWindowTheme ( this );
-                ModifyStyle ( WS_SYSMENU, NULL );
-            }
-        }
-    }
+    m_NC.HandleSquareCorners ( this );
 
     //
     return TRUE;  // return TRUE unless you set the focus to a control
@@ -341,16 +331,15 @@ void CTRXDialogBase::OnInitMenuPopup(CMenu* pPopupMenu, UINT nIndex, BOOL bSysMe
 {
     CDialog::OnInitMenuPopup(pPopupMenu, nIndex, bSysMenu);
 
+    if ( CTRXColors::m_iDarkTheme == 0 )
+    {
+        CTRXMenuBase::SetOwnDraw ( pPopupMenu, false, ID_POP_MENU );
+    }
+
     if ( CTRXColors::m_iDarkTheme != 0 )
     {
         static CTRXMenuBase     sysMenu;
         m_pMenu = sysMenu.SetSystemMenu ( this, pPopupMenu );
-    }
-    else if ( false && m_pMenu != NULL )
-    {
-        static CTRXMenuBase     sysMenu;
-        sysMenu.UnSetSystemMenu ( pPopupMenu );
-        m_pMenu = NULL;
     }
 }
 

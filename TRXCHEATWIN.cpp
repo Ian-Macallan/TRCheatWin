@@ -469,6 +469,7 @@ BOOL CTRXCHEATWINApp::InitInstance()
     {
         theApp.WriteProfileInt( PROFILE_SETTING, PROFILE_DARKTHEME, 0 );
     }
+
     //
     iTmp        = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_SQUARECORNERS, -1 );
     if ( iTmp == -1 )
@@ -477,8 +478,24 @@ BOOL CTRXCHEATWINApp::InitInstance()
     }
 
     //
+    iTmp        = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_SQUAREFORCE, -1 );
+    if ( iTmp == -1 )
+    {
+        theApp.WriteProfileInt( PROFILE_SETTING, PROFILE_SQUAREFORCE, 1 );
+    }
+
+    //
+    iTmp        = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_THEME_RESTART, -1 );
+    if ( iTmp == -1 )
+    {
+        theApp.WriteProfileInt( PROFILE_SETTING, PROFILE_THEME_RESTART, 1 );
+    }
+    
+    //
     CTRXColors::m_iDarkTheme    = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_DARKTHEME, 0 );
     CTRXColors::m_iSquareCorner = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_SQUARECORNERS, 0 );
+    CTRXColors::m_iSquareForce  = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_SQUAREFORCE, 1 );
+    CTRXColors::m_iThemeRestart = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_THEME_RESTART, 1 );
 
     //
     int iSizeTR1 = sizeof(TABLE_TR1);
@@ -1126,11 +1143,35 @@ void CTRXCHEATWINApp::GetModule ()
 
     strcat_s ( InitFileName, sizeof(InitFileName), ".ini" );
 
-
     //
     //      Search Init File and in Path
     SearchInitFile ( InitFileName, sizeof(InitFileName) );
 
     return;
 
+}
+
+//
+////////////////////////////////////////////////////////////////////////
+//
+////////////////////////////////////////////////////////////////////////
+void CTRXCHEATWINApp::ReStartProgram(CWnd *pWnd)
+{
+
+#ifndef _DEBUG
+    if ( CTRXColors::m_iThemeRestart )
+    {
+        DWORD dwResult =
+            GetModuleFileName ( NULL,                       //  __in_opt  HMODULE hModule,
+                                ModuleFileName,             //  __out     LPTSTR lpFilename,
+                                sizeof(ModuleFileName)      //  __in      DWORD nSize
+                                );
+
+        if ( pWnd != NULL )
+        {
+            ShellExecute ( NULL, NULL, ModuleFileName, m_lpCmdLine, NULL, SW_SHOW  );
+            ::SendMessage ( pWnd->GetSafeHwnd(), WM_SYSCOMMAND, SC_CLOSE, NULL );
+        }
+    }
+#endif
 }

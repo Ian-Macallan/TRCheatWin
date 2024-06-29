@@ -3,8 +3,8 @@
 
 //  Menu Indicator
 #define ID_MNU_MASK         0xff
-#define ID_SYS_MENU         0xff
-#define ID_POP_MENU         0xfe
+#define ID_SYS_MENU         0x80
+#define ID_POP_MENU         0xA0
 
 //
 /////////////////////////////////////////////////////////////////////////////
@@ -18,9 +18,11 @@ class CTRXMenuBase : public CMenu
         CTRXMenuBase(void);
         virtual ~CTRXMenuBase(void);
 
+        static void InitIcons();
+
         //
-        static void SetOwnDraw ( HMENU hMenu, bool bOwnDrawn = true );
-        static void SetOwnDraw ( CMenu *pMenu, bool bOwnDrawn = true );
+        static void SetOwnDraw ( HMENU hMenu, bool bOwnDrawn = true, int level = 0 );
+        static void SetOwnDraw ( CMenu *pMenu, bool bOwnDrawn = true, int level = 0 );
 
         int         m_iBitmapWidth;
         int         m_iBitmapHeight;
@@ -48,9 +50,9 @@ class CTRXMenuBase : public CMenu
         virtual BOOL SetMenuItemInfo ( UINT uItem, LPMENUITEMINFO lpMenuItemInfo, BOOL fByPos = FALSE );
         virtual UINT EnableMenuItem ( UINT nIDEnableItem, UINT nEnable );
 
-        void        MeasureMenuItem ( CDC *pDC, const char *pText, CSize *pSize );
+        static void MeasureMenuItem ( CDC *pDC, const char *pText, CSize *pSize );
         void        MeasureMenuItem ( LPMEASUREITEMSTRUCT lpMeasureItemStruct );
-        void        DrawMenuItem (  LPDRAWITEMSTRUCT lpDrawItemStruct, CDC *pDC, CRect *pRect, const char *pText );
+        static void DrawMenuItem (  LPDRAWITEMSTRUCT lpDrawItemStruct, CDC *pDC, CRect *pRect, const char *pText );
         void        DrawMenuItem ( LPDRAWITEMSTRUCT lpDrawItemStruct );
 
         void        ComputeBitmapMaxSize ( );
@@ -63,8 +65,8 @@ class CTRXMenuBase : public CMenu
 
     protected :
         CWnd        *m_pWnd;
-        CMenu       *m_pSubMenu;
-        HICON       m_hCheckWhiteIcon;
-        HICON       m_hCheckBlackIcon;
+        CMenu           *m_pSubMenu;
+        static HICON    m_hCheckWhiteIcon;
+        static HICON    m_hCheckBlackIcon;
 };
 

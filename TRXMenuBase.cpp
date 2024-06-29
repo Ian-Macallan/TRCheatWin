@@ -17,6 +17,10 @@ static  const int SEPARATOR_HEIGHT      = 3;
 extern CTRXCHEATWINApp theApp;
 
 //
+HICON    CTRXMenuBase::m_hCheckWhiteIcon    = NULL;
+HICON    CTRXMenuBase::m_hCheckBlackIcon    = NULL;
+
+//
 /////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////
@@ -30,8 +34,25 @@ CTRXMenuBase::CTRXMenuBase(void)
 {
     m_pWnd              = NULL;
     m_pSubMenu          = NULL;
-    m_hCheckWhiteIcon   = AfxGetApp()->LoadIcon(IDI_CHECK_WHITE);
-    m_hCheckBlackIcon   = AfxGetApp()->LoadIcon(IDI_CHECK_BLACK);
+
+    InitIcons();
+
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
+void CTRXMenuBase::InitIcons()
+{
+    if ( m_hCheckWhiteIcon == NULL )
+    {
+        m_hCheckWhiteIcon   = AfxGetApp()->LoadIcon(IDI_CHECK_WHITE);
+    }
+    if ( m_hCheckBlackIcon == NULL )
+    {
+        m_hCheckBlackIcon   = AfxGetApp()->LoadIcon(IDI_CHECK_BLACK);
+    }
 }
 
 //
@@ -90,7 +111,7 @@ CTRXMenuBase *CTRXMenuBase::SetSystemMenu(CWnd* pWnd, CMenu* pSysMenu)
     if ( pSysMenu != NULL )
     {
         m_pSubMenu = pSysMenu;
-        SetOwnDraw ( m_pSubMenu->m_hMenu );
+        SetOwnDraw ( m_pSubMenu->m_hMenu, true, ID_SYS_MENU );
     }
 
     return this;
@@ -105,14 +126,14 @@ void CTRXMenuBase::UnSetSystemMenu(CMenu* pSysMenu)
     //
     if ( pSysMenu != NULL )
     {
-        SetOwnDraw ( pSysMenu->m_hMenu, false );
+        SetOwnDraw ( pSysMenu->m_hMenu, false, ID_SYS_MENU );
     }
 }
 //
 /////////////////////////////////////////////////////////////////////////////
 //  The hMenu must be the handle of the submenu
 /////////////////////////////////////////////////////////////////////////////
-void CTRXMenuBase::SetOwnDraw ( HMENU hMenu, bool bOwnDrawn )
+void CTRXMenuBase::SetOwnDraw ( HMENU hMenu, bool bOwnDrawn, int level )
 {
     //  MFT_OWNERDRAW
     //
@@ -150,17 +171,19 @@ void CTRXMenuBase::SetOwnDraw ( HMENU hMenu, bool bOwnDrawn )
         BOOL bRes = menu->GetMenuItemInfo ( iPos, &menuItemInfo, TRUE );
         if ( bRes )
         {
+            //  Only Type and Data
             menuItemInfo.fMask          = MIIM_FTYPE | MIIM_DATA;
             if ( bOwnDrawn )
             {
                 menuItemInfo.fType          |= MFT_OWNERDRAW;
+            //  Set Index and level in dwItemData
+                menuItemInfo.dwItemData     = iPos | ( level << 8 );
             }
             else if ( menuItemInfo.fType & MFT_OWNERDRAW )
             {
                 menuItemInfo.fType          ^= MFT_OWNERDRAW;
+                menuItemInfo.dwItemData     = 0;
             }
-            //  Set Index in dwItemData
-            menuItemInfo.dwItemData     = iPos;
             menuItemInfo.cch            = ( UINT ) strlen ( szText );
             bRes = menu->SetMenuItemInfo ( iPos, &menuItemInfo, TRUE );
             if ( ! bRes )
@@ -168,9 +191,16 @@ void CTRXMenuBase::SetOwnDraw ( HMENU hMenu, bool bOwnDrawn )
                 DWORD dwError = GetLastError();
                 int i = 0;
             }
+
+#ifdef _DEBUG
+            static char szDebugString [ MAX_PATH ];
+            sprintf_s ( szDebugString, sizeof(szDebugString), "SetOwnDraw '%s' OwnDrawn %d\n", szText, bOwnDrawn );
+            OutputDebugString ( szDebugString );
+#endif
+
             if ( menuItemInfo.hSubMenu )
             {
-                SetOwnDraw ( menuItemInfo.hSubMenu, bOwnDrawn );
+                SetOwnDraw ( menuItemInfo.hSubMenu, bOwnDrawn, level + 1 );
             }
         }
     }
@@ -181,11 +211,11 @@ void CTRXMenuBase::SetOwnDraw ( HMENU hMenu, bool bOwnDrawn )
 /////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////
-void CTRXMenuBase::SetOwnDraw ( CMenu *pMenu, bool bOwnDrawn )
+void CTRXMenuBase::SetOwnDraw ( CMenu *pMenu, bool bOwnDrawn, int level )
 {
     if ( pMenu )
     {
-        SetOwnDraw ( pMenu->GetSafeHmenu(), bOwnDrawn );
+        SetOwnDraw ( pMenu->GetSafeHmenu(), bOwnDrawn, level );
     }
 }
 
@@ -243,7 +273,11 @@ BOOL CTRXMenuBase::TrackPopupMenu(UINT nFlags, int x, int y, CWnd* pWnd, LPCRECT
     {
         if ( CTRXColors::m_iDarkTheme != 0 )
         {
-            SetOwnDraw(m_pSubMenu->m_hMenu);
+            SetOwnDraw(m_pSubMenu->m_hMenu, true, ID_POP_MENU );
+        }
+        else
+        {
+            SetOwnDraw(m_pSubMenu->m_hMenu, false, ID_POP_MENU );
         }
         return  m_pSubMenu->TrackPopupMenu( nFlags,  x,  y, pWnd, lpRect );
     }
@@ -251,7 +285,11 @@ BOOL CTRXMenuBase::TrackPopupMenu(UINT nFlags, int x, int y, CWnd* pWnd, LPCRECT
     {
         if ( CTRXColors::m_iDarkTheme != 0 )
         {
-            SetOwnDraw(m_hMenu);
+            SetOwnDraw(m_hMenu, true, ID_POP_MENU);
+        }
+        else
+        {
+            SetOwnDraw(m_hMenu, false, ID_POP_MENU);
         }
         return  CMenu::TrackPopupMenu( nFlags,  x,  y, pWnd, lpRect );
     }
@@ -393,12 +431,12 @@ void CTRXMenuBase::MeasureMenuItem(LPMEASUREITEMSTRUCT lpMeasureItemStruct )
     menuItemInfo.cch            = sizeof ( szText );
     menuItemInfo.dwTypeData     = szText;
     //  itemData contains the position / index
-    UINT iPos   = ( UINT ) lpMeasureItemStruct->itemData;
+    UINT iPos   = ( UINT ) lpMeasureItemStruct->itemData & ID_MNU_MASK;
     //  We could search by itemID
     UINT id     = lpMeasureItemStruct->itemID;
 
     //
-    BOOL bRes = GetMenuItemInfo ( iPos, &menuItemInfo, TRUE );
+    BOOL bRes = GetMenuItemInfo ( id, &menuItemInfo, FALSE );
     if ( bRes )
     {
         if ( m_pWnd )
@@ -417,6 +455,12 @@ void CTRXMenuBase::MeasureMenuItem(LPMEASUREITEMSTRUCT lpMeasureItemStruct )
             }
         }
     }
+    else
+    {
+#ifdef _DEBUG
+        OutputDebugString ( "GetMenuItemInfo failed\n" );
+#endif
+    }
 
     lpMeasureItemStruct->itemWidth      = size.cx;
     lpMeasureItemStruct->itemHeight     = size.cy;
@@ -430,6 +474,9 @@ void CTRXMenuBase::MeasureMenuItem(LPMEASUREITEMSTRUCT lpMeasureItemStruct )
 void CTRXMenuBase::DrawMenuItem (   LPDRAWITEMSTRUCT lpDrawItemStruct, CDC *pDC,
                                     CRect *pRect, const char *pText )
 {
+    InitIcons();
+
+    //
     int xCheckIcon  = GetSystemMetrics(SM_CXMENUCHECK);
     int yCheckIcon  = GetSystemMetrics(SM_CYMENUCHECK);
 
@@ -615,12 +662,12 @@ void CTRXMenuBase::DrawMenuItem(LPDRAWITEMSTRUCT lpDrawItemStruct )
     menuItemInfo.cch        = sizeof ( szText ) - 1;
     menuItemInfo.dwTypeData = szText;
     //  itemData contains the position / index
-    UINT iPos   = ( UINT ) lpDrawItemStruct->itemData;
+    UINT iPos   = ( UINT ) lpDrawItemStruct->itemData & ID_MNU_MASK;
     //  We could search by itemID
     UINT id     = lpDrawItemStruct->itemID;
 
     //
-    BOOL bRes = GetMenuItemInfo ( iPos, &menuItemInfo, TRUE );
+    BOOL bRes = GetMenuItemInfo ( id, &menuItemInfo, FALSE );
     if ( bRes )
     {
         //
@@ -632,6 +679,12 @@ void CTRXMenuBase::DrawMenuItem(LPDRAWITEMSTRUCT lpDrawItemStruct )
         {
             DrawMenuItem( lpDrawItemStruct, pDC, &rectMenu, szText );
         }
+    }
+    else
+    {
+#ifdef _DEBUG
+        OutputDebugString ( "GetMenuItemInfo failed\n" );
+#endif
     }
 }
 
@@ -763,12 +816,12 @@ int CTRXMenuBase::DrawBitmap(LPDRAWITEMSTRUCT lpDrawItemStruct)
 
     menuItemInfo.fMask      = MIIM_BITMAP | MIIM_CHECKMARKS;
     //  itemData contains the position / index
-    UINT iPos   = ( UINT ) lpDrawItemStruct->itemData;
+    UINT iPos   = ( UINT ) lpDrawItemStruct->itemData & ID_MNU_MASK;
     //  We could search by itemID
     UINT id     = lpDrawItemStruct->itemID;
 
     //
-    BOOL bRes = GetMenuItemInfo ( iPos, &menuItemInfo, TRUE );
+    BOOL bRes = GetMenuItemInfo ( id, &menuItemInfo, FALSE );
     if ( bRes )
     {
 

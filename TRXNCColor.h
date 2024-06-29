@@ -33,6 +33,14 @@ class CTRXNCColor
         CPoint                  m_LeftPressedPoint;
 
     public :
+        static CRect GetFrameFullRect ( const CRect &windowRECT );
+        static CRect GetCaptionFullRect ( const CRect &windowRECT );
+        static CRect GetCaptionInsideRect ( const CRect &windowRECT );
+        static CRect GetClientFullRect ( const CRect &windowRECT );
+        static int GetIconWidth ( );
+        static int GetIconHeight ( );
+        static CRect GetIconFullRECT ( const CRect &windowRECT, int left );
+
         void DrawResizedIcon ( CDC *pDC, HICON hIcon, const RECT *pRect );
         BOOL ScreenPointOverRect ( CWnd *pWnd, CPoint pt, CRect cRect );
 
@@ -43,6 +51,8 @@ class CTRXNCColor
 
         //
         BOOL PopupSystemMenu ( CWnd *pWnd, UINT nHitTest, CPoint point, int darkIndicator = 2  );
+        BOOL HandleSquareCorners ( CWnd *pWnd );
+        BOOL SetThemeChanged ( CWnd *pWnd );
 
         //
         CDC *GetDeviceContext ( CWnd *pWnd );

@@ -18,7 +18,7 @@ extern CTRXCHEATWINApp theApp;
 /////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////
-static CRect GetFrameFullRect ( const CRect &windowRECT )
+CRect CTRXNCColor::GetFrameFullRect ( const CRect &windowRECT )
 {
     CRect frameFullRECT;
     frameFullRECT.left      = 0;
@@ -32,7 +32,7 @@ static CRect GetFrameFullRect ( const CRect &windowRECT )
 /////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////
-static CRect GetCaptionFullRect ( const CRect &windowRECT )
+CRect CTRXNCColor::GetCaptionFullRect ( const CRect &windowRECT )
 {
     //  EG : 1
     int yBorder         = GetSystemMetrics(SM_CYBORDER);
@@ -56,7 +56,7 @@ static CRect GetCaptionFullRect ( const CRect &windowRECT )
 /////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////
-static CRect GetCaptionInsideRect ( const CRect &windowRECT )
+CRect CTRXNCColor::GetCaptionInsideRect ( const CRect &windowRECT )
 {
     //  EG : 1
     int xBorder         = GetSystemMetrics(SM_CXBORDER);
@@ -88,7 +88,7 @@ static CRect GetCaptionInsideRect ( const CRect &windowRECT )
 /////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////
-static CRect GetClientFullRect ( const CRect &windowRECT )
+CRect CTRXNCColor::GetClientFullRect ( const CRect &windowRECT )
 {
     //  EG : 1
     int xBorder         = GetSystemMetrics(SM_CXBORDER);
@@ -120,13 +120,17 @@ static CRect GetClientFullRect ( const CRect &windowRECT )
 /////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////
-static int GetIconWidth ( )
+int CTRXNCColor::GetIconWidth ( )
 {
     int xIcon           = GetSystemMetrics(SM_CXICON);
     return xIcon * 3 / 2 - 1;
 }
 
-static int GetIconHeight ( )
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
+int CTRXNCColor::GetIconHeight ( )
 {
     int yCaption        = GetSystemMetrics(SM_CYCAPTION);
     return yCaption - 1;
@@ -136,7 +140,7 @@ static int GetIconHeight ( )
 /////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////
-static CRect GetIconFullRECT ( const CRect &windowRECT, int left )
+CRect CTRXNCColor::GetIconFullRECT ( const CRect &windowRECT, int left )
 {
     int yBorder         = GetSystemMetrics(SM_CYBORDER);
     int yFrame          = GetSystemMetrics ( SM_CYDLGFRAME );
@@ -735,6 +739,127 @@ BOOL CTRXNCColor::OnNcLButtonUp(CWnd *pWnd, UINT nHitTest, CPoint point, int dar
 /////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////
+BOOL CTRXNCColor::SetThemeChanged ( CWnd *pWnd )
+{
+    //
+	if ( theApp.OSVersionGreaterThan ( 6, 1 ) )
+	{
+        CMenu *pMenu = GetSystemMenu(pWnd, FALSE);
+
+        if ( pMenu != NULL )
+        {
+            //  Square Corners
+            if ( CTRXColors::m_iSquareCorner == 1 )
+            {
+                //  Dark Theme Full
+                if ( CTRXColors::m_iDarkTheme == 2 )
+                {
+                    CTRXColors::SetWindowTheme ( pWnd );
+                    //  Remove System Menu
+                    pWnd->ModifyStyle ( WS_SYSMENU, NULL, SWP_NOMOVE | SWP_NOSIZE | SWP_NOZORDER );
+                    CTRXMenuBase::SetOwnDraw ( pMenu->GetSubMenu(0), true, ID_SYS_MENU );
+                }
+                //  Dark Theme and Normal Theme
+                else
+                {
+                    CTRXColors::SetWindowTheme ( pWnd );
+                    //  Add System Menu
+                    pWnd->ModifyStyle ( NULL, WS_SYSMENU | WS_MINIMIZEBOX, SWP_NOMOVE | SWP_NOSIZE | SWP_NOZORDER );
+                    if ( false )
+                    {
+                        DWORD dwStyle = GetWindowLong( pWnd->GetSafeHwnd(), GWL_STYLE );
+                        dwStyle |= WS_SYSMENU | WS_MINIMIZEBOX;
+                        SetWindowLong( pWnd->GetSafeHwnd(), GWL_STYLE, dwStyle );
+                    }
+                    CTRXMenuBase::SetOwnDraw ( pMenu->GetSubMenu(0), false, ID_SYS_MENU );
+
+                    pWnd->SetWindowPos ( NULL, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_NOZORDER );
+                }
+	        }
+            //  No Square Corners
+            else
+            {
+                CTRXColors::SetWindowTheme ( pWnd );
+
+                //  Add System Menu
+                pWnd->ModifyStyle ( NULL, WS_SYSMENU | WS_MINIMIZEBOX, SWP_NOMOVE | SWP_NOSIZE | SWP_NOZORDER );
+                if ( false )
+                {
+                    DWORD dwStyle = GetWindowLong( pWnd->GetSafeHwnd(), GWL_STYLE );
+                    dwStyle |= WS_SYSMENU | WS_MINIMIZEBOX;
+                    SetWindowLong( pWnd->GetSafeHwnd(), GWL_STYLE, dwStyle );
+                }
+
+                if ( CTRXColors::m_iDarkTheme == 2 || CTRXColors::m_iDarkTheme == 1 )
+                {
+                    if ( pMenu )
+                    {
+                        CTRXMenuBase::SetOwnDraw ( pMenu->GetSubMenu(0), true, ID_SYS_MENU );
+                    }
+                }
+                else
+                {
+                    if ( pMenu )
+                    {
+                        CTRXMenuBase::SetOwnDraw ( pMenu->GetSubMenu(0), false, ID_SYS_MENU );
+                    }
+                }
+
+                pWnd->SetWindowPos ( NULL, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_NOZORDER );
+
+            }
+
+            if ( CTRXColors::m_iDarkTheme == 0 )
+            {
+                //
+                CTRXPropertySheet *pSheet = dynamic_cast<CTRXPropertySheet *>(pWnd);
+                if ( pSheet != NULL )
+                {
+                    pSheet->SetContextMenu ( NULL );
+                }
+
+                //
+                CTRXDialogBase *pDialog = dynamic_cast<CTRXDialogBase *>(pWnd);
+                if ( pDialog != NULL )
+                {
+                    pDialog->SetContextMenu ( NULL );
+                }
+            }
+        }
+    }
+
+    //
+    return FALSE;
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
+BOOL CTRXNCColor::HandleSquareCorners ( CWnd *pWnd )
+{
+    //
+    if ( CTRXColors::m_iSquareCorner == 1 )
+    {
+	    if ( theApp.OSVersionGreaterThan ( 6, 1 ) )
+	    {
+            if ( CTRXColors::m_iDarkTheme == 2 )
+            {
+                CTRXColors::SetWindowTheme ( pWnd );
+                //  Remove System Menu
+                pWnd->ModifyStyle ( WS_SYSMENU, NULL, SWP_NOMOVE | SWP_NOSIZE | SWP_NOZORDER );
+                return TRUE;
+            }
+        }
+    }
+
+    return FALSE;
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
 BOOL CTRXNCColor::PopupSystemMenu ( CWnd *pWnd, UINT nHitTest, CPoint point, int darkIndicator )
 {
     CMenu *pMenu = pWnd->GetSystemMenu(FALSE);
@@ -749,7 +874,9 @@ BOOL CTRXNCColor::PopupSystemMenu ( CWnd *pWnd, UINT nHitTest, CPoint point, int
             m_pContextMenu = menu.GetSubMenu ( 0 );
             pSheet->SetContextMenu ( m_pContextMenu );
             //  Use System Menu as Popup Menu
-            LPARAM lParam = m_pContextMenu->TrackPopupMenu ( TPM_LEFTALIGN | TPM_LEFTBUTTON | TPM_RIGHTBUTTON /* | TPM_NONOTIFY */ | TPM_RETURNCMD, point.x, point.y, pWnd );
+            LPARAM lParam = m_pContextMenu->TrackPopupMenu ( 
+                TPM_LEFTALIGN | TPM_LEFTBUTTON | TPM_RIGHTBUTTON /* | TPM_NONOTIFY */ | TPM_RETURNCMD, 
+                point.x, point.y, pWnd );
             if ( lParam ) 
             {
                 PostMessage(pWnd->GetSafeHwnd(), WM_SYSCOMMAND, lParam, 0);
@@ -767,7 +894,9 @@ BOOL CTRXNCColor::PopupSystemMenu ( CWnd *pWnd, UINT nHitTest, CPoint point, int
             m_pContextMenu = menu.GetSubMenu ( 0 );
             pDialog->SetContextMenu ( m_pContextMenu );
             //  Use System Menu as Popup Menu
-            LPARAM lParam = m_pContextMenu->TrackPopupMenu ( TPM_LEFTALIGN | TPM_LEFTBUTTON | TPM_RIGHTBUTTON /* | TPM_NONOTIFY */ | TPM_RETURNCMD, point.x, point.y, pWnd );
+            LPARAM lParam = m_pContextMenu->TrackPopupMenu ( 
+                TPM_LEFTALIGN | TPM_LEFTBUTTON | TPM_RIGHTBUTTON /* | TPM_NONOTIFY */ | TPM_RETURNCMD, 
+                point.x, point.y, pWnd );
             if ( lParam ) 
             {
                 PostMessage(pWnd->GetSafeHwnd(), WM_SYSCOMMAND, lParam, 0);
@@ -792,6 +921,13 @@ BOOL CTRXNCColor::OnNcRButtonDown( CWnd *pWnd, UINT nHitTest, CPoint point, int 
 	}
 
 	if ( CTRXColors::m_iDarkTheme == 2 || CTRXColors::m_iDarkTheme == darkIndicator )
+    {
+        BOOL bTreated = PopupSystemMenu ( pWnd, nHitTest, point, darkIndicator );
+        return bTreated;
+    }
+
+    CTRXPropertySheet *pSheet = dynamic_cast<CTRXPropertySheet *>(pWnd);
+    if ( pSheet != NULL )
     {
         BOOL bTreated = PopupSystemMenu ( pWnd, nHitTest, point, darkIndicator );
         return bTreated;

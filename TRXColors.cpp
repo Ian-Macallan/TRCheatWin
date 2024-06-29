@@ -81,6 +81,8 @@ CBrush CTRXColors::WhiteEFBrush;
 //  2 Dark Client Area and Caption
 int             CTRXColors::m_iDarkTheme        = 0;
 int             CTRXColors::m_iSquareCorner     = 0;
+int             CTRXColors::m_iSquareForce      = 0;
+int             CTRXColors::m_iThemeRestart     = 0;
 
 
 //
