@@ -93,7 +93,7 @@ void CTRXMapAreas::DoDataExchange(CDataExchange* pDX)
     DDX_Control(pDX, IDC_LEVEL_BOTTOM, m_LevelBottom);
     DDX_Control(pDX, IDC_REFRESH, m_Refresh);
     DDX_Control(pDX, IDC_AREA, m_Area);
-    DDX_Control(pDX, IDC_EAST, m_East);
+    DDX_Control(pDX, IDC_DIRECTION, m_Direction);
     DDX_Control(pDX, IDC_CURRENT, m_Current);
 }
 
@@ -234,7 +234,7 @@ BOOL CTRXMapAreas::OnInitDialog()
     //
     static char szText [ MAX_PATH ];
 
-    m_East.SetWindowText ( "EAST" );
+    m_Direction.SetWindowText ( "WEST" );
 
     //
     const char *pAreaName   = GetAreaLevelName ( m_iTombraiderFull, m_iLevel - 1 );
@@ -507,7 +507,16 @@ BOOL CTRXMapAreas::OnInitDialog()
         m_ToolTip.Activate(TRUE);
         m_ToolTip.AddTool ( &m_LevelTop, "List of Levels for Top\r\nValues are inverted\r\n" );
         m_ToolTip.AddTool ( &m_LevelBottom, "List of Levels for Bottom\r\nValues are inverted\r\n" );
-        m_ToolTip.AddTool ( &m_East, "     East     \r\nNorth     South\r\n     West     \r\n" );
+        if ( m_iTombraiderFull < 40 )
+        {
+            //  Tomb Raider 1 2 3 has bad orientation
+            m_ToolTip.AddTool ( &m_Direction, "     West  \r\nNorth     South\r\n     East  \r\n\r\nThere is a problem With Compass in TR 1 2 3" );
+        }
+        else
+        {
+            //  Tomb Raider 4 5 has good orientation
+            m_ToolTip.AddTool ( &m_Direction, "     West  \r\nSouth     North\r\n     East  \r\n" );
+        }
         m_ToolTip.AddTool ( &m_Refresh, "Rearrange Map\r\nThe Top are the room that are at Top\r\nYou can also resize the window\r\n" );
         m_ToolTip.AddTool ( &m_Area, "Filter to show where is a room\r\nYou can also move room\r\n" );
     }

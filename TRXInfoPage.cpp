@@ -651,6 +651,7 @@ void CTRXInfoPage::DisplayValues()
 
         //
         STRUCTLOCATION  *pTable = NULL;
+
         //
         switch ( tombraider )
         {
@@ -660,6 +661,10 @@ void CTRXInfoPage::DisplayValues()
                 m_pBitmapLevel->LoadBitmap ( IDB_TR1_END );
                 m_pBitmapContinent->LoadBitmap ( IDB_TR1_START );
                 pTable  = CustomPathnames1;
+
+                //
+                m_Position.SetWindowText ( "North South");
+
                 break;
             }
 
@@ -668,6 +673,10 @@ void CTRXInfoPage::DisplayValues()
                 m_pBitmapLevel->LoadBitmap ( IDB_TUB_END );
                 m_pBitmapContinent->LoadBitmap ( IDB_TUB_START );
                 pTable  = CustomPathnames1;
+
+                //
+                m_Position.SetWindowText ( "North South");
+
                 break;
             }
 
@@ -678,6 +687,9 @@ void CTRXInfoPage::DisplayValues()
                 m_pBitmapLevel->LoadBitmap ( IDB_TR2_END );
                 m_pBitmapContinent->LoadBitmap ( IDB_TR2_START );
                 pTable  = CustomPathnames2;
+
+                //
+                m_Position.SetWindowText ( "North South");
                 break;
             }
 
@@ -836,6 +848,10 @@ void CTRXInfoPage::DisplayValues()
                 } /* Swich Game */
 
                 pTable  = CustomPathnames3;
+
+                //
+                m_Position.SetWindowText ( "North South");
+
                 break;
 
             } /* Case Version */
@@ -848,6 +864,9 @@ void CTRXInfoPage::DisplayValues()
                 m_pBitmapLevel->LoadBitmap ( IDB_LAST_REV_0 );
                 m_pBitmapContinent->LoadBitmap ( IDB_LAST_REV_1 );
                 pTable  = CustomPathnames4;
+
+                //
+                m_Position.SetWindowText ( "South North");
                 break;
             }
 
@@ -858,6 +877,8 @@ void CTRXInfoPage::DisplayValues()
                 m_pBitmapContinent->LoadBitmap ( IDB_CHRONICLES_1 );
 
                 pTable  = CustomPathnames5;
+                //
+                m_Position.SetWindowText ( "South North");
                 break;
             }
 
@@ -1217,6 +1238,7 @@ BOOL CTRXInfoPage::OnSetActive()
     DisplayValues ();
 
     SetGUIModified ( bModified );
+
 
     //
     return CTRXPropertyPage::OnSetActive();

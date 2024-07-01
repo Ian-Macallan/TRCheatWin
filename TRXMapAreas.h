@@ -93,7 +93,7 @@ class CTRXMapAreas : public CTRXDialogBase
         CTRXCComboBoxBase   m_LevelBottom;
         CTRXButtonBase      m_Refresh;
         CTRXEditBase        m_Area;
-        CTRXEditBase        m_East;
+        CTRXEditBase        m_Direction;
 
 
         CTRXVerticalMap     *m_pVerticalMap;
