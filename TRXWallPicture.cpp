@@ -264,154 +264,125 @@ void CTRXWallPicture::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct )
         pDC->SetTextColor( crOldColor);
 
         //  Draw Orientation
+        //  For Vertical View y is the base of the cross
+        //  Center of the cross is x,y -3
+        int xCenter = m_Point.x;
+        int yCenter = m_Point.y - lenCross - 1;
         if ( m_bPointMode )
         {
+            //
+            int iOrientation    = (int) m_Orientation % 360;
+            m_Orientation       = (float) ( iOrientation );
+
             //  Line
             //  Top
-            pDC->MoveTo ( m_Point.x, m_Point.y - 5 );
-            //  Bottom
-            pDC->LineTo ( m_Point.x, m_Point.y );
-            //  Left Middle
-            pDC->MoveTo ( m_Point.x - 2, m_Point.y - 3 );
-            //  Right Middle
-            pDC->LineTo ( m_Point.x + 3, m_Point.y - 3 );
+            DrawCross ( pDC, xCenter, yCenter, lenCross );
 
+            float quarter = 90.0;
 
             //  Orientation From the center
             //  Looking West : 90
-            if ( m_Orientation >= 45 && m_Orientation < 135.0 )
+            if ( m_Orientation >= 0.5 * quarter  && m_Orientation < 1.5 * quarter )
             {
                 //  Wiew from South
                 if ( m_Wall == WallSouth )
                 {
-                    pDC->MoveTo ( m_Point.x, m_Point.y - 5 );
-                    pDC->LineTo ( m_Point.x + 2, m_Point.y - 3 );
-                    pDC->LineTo ( m_Point.x, m_Point.y - 1 );
+                    DrawArrowLeft ( pDC, xCenter, yCenter, lenCross );
                 }
                 //  Wiew from North
                 else if ( m_Wall == WallNorth )
                 {
-                    pDC->MoveTo ( m_Point.x, m_Point.y - 5 );
-                    pDC->LineTo ( m_Point.x - 2, m_Point.y - 3 );
-                    pDC->LineTo ( m_Point.x, m_Point.y - 1 );
+                    DrawArrowRight ( pDC, xCenter, yCenter, lenCross );
                 }
                 //  View From Front
                 else if ( m_Wall == WallWest )
                 {
                     //  From Left Middle
-                    pDC->MoveTo ( m_Point.x - 2, m_Point.y - 3 );
-                    pDC->LineTo ( m_Point.x, m_Point.y - 1 );
-                    pDC->LineTo ( m_Point.x + 2, m_Point.y - 3 );
+                    DrawArrowDown ( pDC, xCenter, yCenter, lenCross );
                 }
                 //  View From Back
                 else if ( m_Wall == WallEast )
                 {
                     //  From Left Middle
-                    pDC->MoveTo ( m_Point.x - 2, m_Point.y - 3 );
-                    pDC->LineTo ( m_Point.x, m_Point.y - 5 );
-                    pDC->LineTo ( m_Point.x + 2, m_Point.y - 3 );
+                    DrawArrowUp ( pDC, xCenter, yCenter, lenCross );
                 }
             }
             //  Facing North : 180
-            else if ( m_Orientation >= 135.0 && m_Orientation < 225.0 )
+            else if ( m_Orientation >= 1.5 * quarter && m_Orientation < 2.5 * quarter )
             {
                 //  View from East
                 if ( m_Wall == WallEast )
                 {
-                    pDC->MoveTo ( m_Point.x, m_Point.y - 5 );
-                    pDC->LineTo ( m_Point.x + 2, m_Point.y - 3 );
-                    pDC->LineTo ( m_Point.x, m_Point.y - 1 );
+                    DrawArrowRight ( pDC, xCenter, yCenter, lenCross );
                 }
                 //  View from West
                 else if ( m_Wall == WallWest )
                 {
-                    pDC->MoveTo ( m_Point.x, m_Point.y - 5 );
-                    pDC->LineTo ( m_Point.x - 2, m_Point.y - 3 );
-                    pDC->LineTo ( m_Point.x, m_Point.y - 1 );
+                    DrawArrowLeft ( pDC, xCenter, yCenter, lenCross );
                 }
-                //  View From Front
+                //  View From Back
                 else if ( m_Wall == WallSouth )
                 {
                     //  From Left Middle
-                    pDC->MoveTo ( m_Point.x - 2, m_Point.y - 3 );
-                    pDC->LineTo ( m_Point.x, m_Point.y - 5 );
-                    pDC->LineTo ( m_Point.x + 2, m_Point.y - 3 );
+                    DrawArrowUp ( pDC, xCenter, yCenter, lenCross );
                 }
-                //  View From Back
+                //  View From Front
                 else if ( m_Wall == WallNorth )
                 {
                     //  From Left Middle
-                    pDC->MoveTo ( m_Point.x - 2, m_Point.y - 3 );
-                    pDC->LineTo ( m_Point.x, m_Point.y );
-                    pDC->LineTo ( m_Point.x + 2, m_Point.y - 3 );
+                    DrawArrowDown ( pDC, xCenter, yCenter, lenCross );
                 }
             }
             //  Looking East : 270
-            else if ( m_Orientation >= 225.0 && m_Orientation < 315.0 )
+            else if ( m_Orientation >= 2.5 * quarter && m_Orientation < 3.5 * quarter )
             {
                 //  Wiew from South
                 if ( m_Wall == WallSouth )
                 {
-                    pDC->MoveTo ( m_Point.x, m_Point.y - 5 );
-                    pDC->LineTo ( m_Point.x + 2, m_Point.y - 3 );
-                    pDC->LineTo ( m_Point.x, m_Point.y - 1 );
+                    DrawArrowRight ( pDC, xCenter, yCenter, lenCross );
                 }
                 //  Wiew from North
                 else if ( m_Wall == WallNorth )
                 {
-                    pDC->MoveTo ( m_Point.x, m_Point.y - 5 );
-                    pDC->LineTo ( m_Point.x - 2, m_Point.y - 3 );
-                    pDC->LineTo ( m_Point.x, m_Point.y - 1 );
+                    DrawArrowLeft ( pDC, xCenter, yCenter, lenCross );
                 }
                 //  View From Front
                 else if ( m_Wall == WallEast)
                 {
                     //  From Left Middle
-                    pDC->MoveTo ( m_Point.x - 2, m_Point.y - 3 );
-                    pDC->LineTo ( m_Point.x, m_Point.y - 5 );
-                    pDC->LineTo ( m_Point.x + 2, m_Point.y - 3 );
+                    DrawArrowDown ( pDC, xCenter, yCenter, lenCross );
                 }
                 //  View From Back
                 else if ( m_Wall == WallWest )
                 {
                     //  From Left Middle
-                    pDC->MoveTo ( m_Point.x - 2, m_Point.y - 3 );
-                    pDC->LineTo ( m_Point.x, m_Point.y - 1 );
-                    pDC->LineTo ( m_Point.x + 2, m_Point.y - 3 );
+                    DrawArrowUp ( pDC, xCenter, yCenter, lenCross );
                 }
             }
             //  Facing South : 0
-            else
+            else if ( m_Orientation >= 3.5 * quarter || m_Orientation < 0.5 * quarter )
             {
                 //  View from East
                 if ( m_Wall == WallEast )
                 {
-                    pDC->MoveTo ( m_Point.x, m_Point.y - 5 );
-                    pDC->LineTo ( m_Point.x - 2, m_Point.y - 3 );
-                    pDC->LineTo ( m_Point.x, m_Point.y - 1 );
+                    DrawArrowLeft ( pDC, xCenter, yCenter, lenCross );
                 }
                 //  View from West
                 else if ( m_Wall == WallWest )
                 {
-                    pDC->MoveTo ( m_Point.x, m_Point.y - 5 );
-                    pDC->LineTo ( m_Point.x + 2, m_Point.y - 3 );
-                    pDC->LineTo ( m_Point.x, m_Point.y - 1 );
+                    DrawArrowRight ( pDC, xCenter, yCenter, lenCross );
                 }
-                //  View From Front
+                //  View From Back
                 else if ( m_Wall == WallNorth )
                 {
                     //  From Left Middle
-                    pDC->MoveTo ( m_Point.x - 2, m_Point.y - 3 );
-                    pDC->LineTo ( m_Point.x, m_Point.y - 5 );
-                    pDC->LineTo ( m_Point.x + 2, m_Point.y - 3 );
+                    DrawArrowUp ( pDC, xCenter, yCenter, lenCross );
                 }
-                //  View From Back
+                //  View From Front
                 else if ( m_Wall == WallSouth )
                 {
                     //  From Left Middle
-                    pDC->MoveTo ( m_Point.x - 2, m_Point.y - 3 );
-                    pDC->LineTo ( m_Point.x, m_Point.y - 1 );
-                    pDC->LineTo ( m_Point.x + 2, m_Point.y - 3 );
+                    DrawArrowDown ( pDC, xCenter, yCenter, lenCross );
                 }
             }
         }

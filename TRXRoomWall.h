@@ -52,6 +52,12 @@
 
 //
 /////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
+const int lenCross = 2;
+
+//
+/////////////////////////////////////////////////////////////////////////////
 // CTRXRoomWall
 //
 /////////////////////////////////////////////////////////////////////////////
@@ -72,6 +78,16 @@ class CTRXRoomWall : public CStatic
         void SetPointMode ( BOOL bPointMode );
         void SetClickable ( BOOL bClickable );
         void SetClickable ( BOOL bClickable, BOOL bMoveMouse, BOOL bSetPoint );
+
+        void DrawCross ( CDC *pDC, int xCenter, int yCenter, int len );
+        //  Toward East or Going Far Away
+        void DrawArrowUp ( CDC *pDC, int xCenter, int yCenter, int len );
+        //  Toward West or Going Toward Us
+        void DrawArrowDown ( CDC *pDC, int xCenter, int yCenter, int len );
+        //  Toward North
+        void DrawArrowLeft ( CDC *pDC, int xCenter, int yCenter, int len );
+        //  Toward South
+        void DrawArrowRight ( CDC *pDC, int xCenter, int yCenter, int len );
 
     protected :
         char        m_szText [ 256 ];

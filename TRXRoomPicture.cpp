@@ -264,42 +264,37 @@ void CTRXRoomPicture::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct )
         pDC->SetTextColor( crOldColor);
 
         //  Draw Orientation
+        //  Center of the cross is x,y
         if ( m_bPointMode )
         {
-            //  Cross
-            pDC->MoveTo ( m_Point.x - 2, m_Point.y );
-            pDC->LineTo ( m_Point.x + 3, m_Point.y );
-            pDC->MoveTo ( m_Point.x, m_Point.y - 2 );
-            pDC->LineTo ( m_Point.x, m_Point.y + 3 );
+            //
+            int iOrientation    = (int) m_Orientation % 360;
+            m_Orientation       = (float) ( iOrientation );
 
-            //  Orientation From the center
-            //  West : 90
-            if ( m_Orientation >= 45.0 && m_Orientation < 135.0 )
+            //  Cross
+            DrawCross ( pDC, m_Point.x, m_Point.y, lenCross );
+
+            float quarter = 90.0;
+
+            //  Facing West : 90
+            if ( m_Orientation >= 0.5 * quarter /* 45.0 */ && m_Orientation < 1.5 * quarter /* 135.0 */ )
             {
-                pDC->MoveTo ( m_Point.x - 2, m_Point.y );
-                pDC->LineTo ( m_Point.x, m_Point.y + 2 );
-                pDC->LineTo ( m_Point.x + 2, m_Point.y );
+                DrawArrowDown ( pDC, m_Point.x, m_Point.y, lenCross );
             }
             //  Facing North : 180
-            else if ( m_Orientation >= 135.0 && m_Orientation < 225.0 )
+            else if ( m_Orientation >= 1.5 * quarter /* 135.0 */ && m_Orientation < 2.5 * quarter /* 225.0 */ )
             {
-                pDC->MoveTo ( m_Point.x, m_Point.y - 2 );
-                pDC->LineTo ( m_Point.x - 2, m_Point.y );
-                pDC->LineTo ( m_Point.x, m_Point.y + 2 );
+                DrawArrowLeft ( pDC, m_Point.x, m_Point.y, lenCross );
             }
             //  East : 270
-            else if ( m_Orientation >= 225.0 && m_Orientation < 315.0 )
+            else if ( m_Orientation >= 2.5 * quarter /* 225.0 */ && m_Orientation < 3.5 * quarter /* 315.0 */ )
             {
-                pDC->MoveTo ( m_Point.x - 2, m_Point.y );
-                pDC->LineTo ( m_Point.x, m_Point.y - 2 );
-                pDC->LineTo ( m_Point.x + 2, m_Point.y );
+                DrawArrowUp ( pDC, m_Point.x, m_Point.y, lenCross );
             }
-            //  Facing South : 0
-            else
+            //  Facing South : 0 
+            else if ( m_Orientation >= 3.5 * quarter /* 315.0 */ || m_Orientation < 0.5 * quarter /* 45.0 */ )
             {
-                pDC->MoveTo ( m_Point.x, m_Point.y - 2 );
-                pDC->LineTo ( m_Point.x + 2, m_Point.y );
-                pDC->LineTo ( m_Point.x, m_Point.y + 2 );
+                DrawArrowRight ( pDC, m_Point.x, m_Point.y, lenCross );
             }
         }
     }

@@ -201,10 +201,7 @@ void CTRXRoomWall::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
 
         if ( m_bPointMode && m_bPointSet && m_Point.x >= 0 && m_Point.y >= 0 )
         {
-            pDC->MoveTo ( m_Point.x - 2, m_Point.y );
-            pDC->LineTo ( m_Point.x + 3, m_Point.y );
-            pDC->MoveTo ( m_Point.x, m_Point.y - 2 );
-            pDC->LineTo ( m_Point.x, m_Point.y + 3 );
+            DrawCross ( pDC, m_Point.x, m_Point.y, lenCross);
         }
     }
 }
@@ -457,3 +454,67 @@ void CTRXRoomWall::OnRButtonUp(UINT nFlags, CPoint point)
 
     CStatic::OnRButtonUp(nFlags, point);
 }
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
+void CTRXRoomWall::DrawCross ( CDC *pDC, int xCenter, int yCenter, int len )
+{
+    //     !
+    //  *------
+    //     !
+    pDC->MoveTo ( xCenter - len, yCenter );
+    pDC->LineTo ( xCenter + len + 1, yCenter );
+    //     y
+    //  -------
+    //     !
+    pDC->MoveTo ( xCenter, yCenter - len );
+    pDC->LineTo ( xCenter, yCenter + len + 1 );
+
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//  Toward East
+/////////////////////////////////////////////////////////////////////////////
+void CTRXRoomWall::DrawArrowUp ( CDC *pDC, int xCenter, int yCenter, int len )
+{
+    pDC->MoveTo ( xCenter - len, yCenter );
+    pDC->LineTo ( xCenter, yCenter - len );
+    pDC->LineTo ( xCenter + 2, yCenter );
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//  Toward West
+/////////////////////////////////////////////////////////////////////////////
+void CTRXRoomWall::DrawArrowDown ( CDC *pDC, int xCenter, int yCenter, int len )
+{
+    pDC->MoveTo ( xCenter - len, yCenter );
+    pDC->LineTo ( xCenter, yCenter + len );
+    pDC->LineTo ( xCenter + len, yCenter );
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//  Toward North
+/////////////////////////////////////////////////////////////////////////////
+void CTRXRoomWall::DrawArrowLeft ( CDC *pDC, int xCenter, int yCenter, int len )
+{
+    pDC->MoveTo ( xCenter, yCenter - len );
+    pDC->LineTo ( xCenter - len, yCenter );
+    pDC->LineTo ( xCenter, yCenter + len );
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//  Toward South
+/////////////////////////////////////////////////////////////////////////////
+void CTRXRoomWall::DrawArrowRight ( CDC *pDC, int xCenter, int yCenter, int len )
+{
+    pDC->MoveTo ( xCenter, yCenter - len );
+    pDC->LineTo ( xCenter + len, yCenter );
+    pDC->LineTo ( xCenter, yCenter + len );
+}
+
