@@ -70,6 +70,23 @@ static char    TR4NBSecrets [ ] =
 
 //
 /////////////////////////////////////////////////////////////////////////////
+//  Indicator Table
+/////////////////////////////////////////////////////////////////////////////
+typedef struct indicatorStruct
+{
+    BYTE    b1;
+    BYTE    b2;
+    BYTE    b4;
+} INDICATORS;
+
+static INDICATORS IndicatorsTable [] =
+{
+    {   0x02,   0x02,   0x67 },
+    {   0x02,   0x02,   0x28 },
+};
+
+//
+/////////////////////////////////////////////////////////////////////////////
 // CTR4SaveGame
 //
 /////////////////////////////////////////////////////////////////////////////
@@ -1583,16 +1600,25 @@ void CTR4SaveGame::SetGunAmmos ( const char *szGunAmmos )
 /////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////
-void *CTR4SaveGame::GetIndicatorAddress ()
+void *CTR4SaveGame::GetIndicatorAddress (int index)
 {
     //
     BYTE *pBuffer   = ( BYTE * ) m_pBuffer;
+    int count = 0;
     for ( int i = 0x0280; i < 0x3000; i++ )
     {
-        if ( ( pBuffer [ i ] == 0x02 &&  pBuffer [ i + 1 ] == 0x02 /* && pBuffer [ i + 2 ] == 0x00 */ && pBuffer [ i + 3 ] == 0x67 ) ||     // Standing
-             ( pBuffer [ i ] == 0x03 &&  pBuffer [ i + 1 ] == 0x00 /* && pBuffer [ i + 2 ] == 0x00 */ && pBuffer [ i + 3 ] == 0x02 )      ) // With Guns
+        for ( int j = 0; j < sizeof(IndicatorsTable)/sizeof(INDICATORS);  j++ )
         {
-            return pBuffer + i;
+            if (    pBuffer [ i ] == IndicatorsTable [ j ].b1 &&
+                    pBuffer [ i + 1 ] == IndicatorsTable [ j ].b2 /* && pBuffer [ i + 2 ] == 0x00 */ &&
+                    pBuffer [ i + 3 ] == IndicatorsTable [ j ].b4 )
+            {
+                count++;
+                if ( count > index )
+                {
+                    return pBuffer + i;
+                }
+            }
         }
     }
 

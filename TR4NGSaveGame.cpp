@@ -70,6 +70,23 @@ static char    TR4NBSecrets [ ] =
 
 //
 /////////////////////////////////////////////////////////////////////////////
+//  Indicator Table
+/////////////////////////////////////////////////////////////////////////////
+typedef struct indicatorStruct
+{
+    BYTE    b1;
+    BYTE    b2;
+    BYTE    b4;
+} INDICATORS;
+
+static INDICATORS IndicatorsTable [] =
+{
+    {   0x02,   0x02,   0x67 },
+    {   0x02,   0x02,   0x28 },
+};
+
+//
+/////////////////////////////////////////////////////////////////////////////
 // CTR4NGSaveGame
 //
 /////////////////////////////////////////////////////////////////////////////
@@ -1583,16 +1600,25 @@ void CTR4NGSaveGame::SetGunAmmos ( const char *szGunAmmos )
 /////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////
-void *CTR4NGSaveGame::GetIndicatorAddress ()
+void *CTR4NGSaveGame::GetIndicatorAddress (int index)
 {
     //
     BYTE *pBuffer   = ( BYTE * ) m_pBuffer;
+    int count = 0;
     for ( int i = 0x0280; i < 0x3000; i++ )
     {
-        if ( ( pBuffer [ i ] == 0x02 &&  pBuffer [ i + 1 ] == 0x02 /* && pBuffer [ i + 2 ] == 0x00 */ && pBuffer [ i + 3 ] == 0x67 ) ||     // Standing
-             ( pBuffer [ i ] == 0x03 &&  pBuffer [ i + 1 ] == 0x00 /* && pBuffer [ i + 2 ] == 0x00 */ && pBuffer [ i + 3 ] == 0x02 )      ) // With Guns
+        for ( int j = 0; j < sizeof(IndicatorsTable)/sizeof(INDICATORS);  j++ )
         {
-            return pBuffer + i;
+            if (    pBuffer [ i ] == IndicatorsTable [ j ].b1 &&
+                    pBuffer [ i + 1 ] == IndicatorsTable [ j ].b2 /* && pBuffer [ i + 2 ] == 0x00 */ &&
+                    pBuffer [ i + 3 ] == IndicatorsTable [ j ].b4 )
+            {
+                count++;
+                if ( count > index )
+                {
+                    return pBuffer + i;
+                }
+            }
         }
     }
 
@@ -1781,7 +1807,7 @@ TR4NG_POSITION *CTR4NGSaveGame::GetTR4Position ( )
 {
     const int extraSearch = 8;
 
-    char *pBuffer = (char * )GetIndicatorAddress();
+    char *pBuffer = (char * ) GetIndicatorAddress();
     if ( pBuffer )
     {
         for ( int i = 0; i < extraSearch; i++ )
@@ -1819,9 +1845,14 @@ TR4NG_POSITION *CTR4NGSaveGame::GetTR4Position ( )
 
             int tombraider = GetFullVersion();
             int levelIndex = GetLevelIndex();
-            BOOL bCheck = CheckAreaForCoordinates ( tombraider, levelIndex, wRoom, dwWestToEast, dwVertical, dwSouthToNorth );
+
+            DWORD dwExtraVertical   = 0;
+            dwExtraVertical         = ( 0x0100 << 16 ) | 0x0100;
+            dwExtraVertical         = 0;
+            BOOL bCheck = CheckAreaForCoordinates ( tombraider, levelIndex, wRoom, dwWestToEast, dwVertical, dwSouthToNorth, dwExtraVertical );
             if ( bCheck )
             {
+                DWORD dwRelativeAddress = CTRXTools::RelativeAddress ( pBuffer + i, m_pBuffer );
                 return pTR4Position;
             }
         }
@@ -1832,6 +1863,8 @@ TR4NG_POSITION *CTR4NGSaveGame::GetTR4Position ( )
     if ( CTRXGlobal::m_iSearchPosExt )
     {
         pBuffer = ( char * ) m_pBuffer;
+
+        //
         for ( int i = 0x280; i < 0x3000; i++ )
         {
             TR4NG_POSITION *pTR4Position = (TR4NG_POSITION *) ( ( BYTE * ) pBuffer + i );
@@ -1868,9 +1901,11 @@ TR4NG_POSITION *CTR4NGSaveGame::GetTR4Position ( )
             BOOL bCheck = CheckAreaForCoordinates ( GetFullVersion(), GetLevelIndex(),  wRoom, dwWestToEast, dwVertical, dwSouthToNorth );
             if ( bCheck )
             {
+                DWORD dwRelativeAddress = CTRXTools::RelativeAddress ( pBuffer + i, m_pBuffer );
                 return pTR4Position;
             }
         }
+
     }
 
     return NULL;

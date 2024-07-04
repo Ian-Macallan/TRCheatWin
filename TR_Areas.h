@@ -125,11 +125,13 @@ struct TR_CUR_POSITION
 /////////////////////////////////////////////////////////////////////////////
 extern short FindAreaForCoordinates ( int tombraider, int levelIndex, long x, long y, long z );
 extern BOOL EnumAreaForCoordinates (    int tombraider, int levelIndex, int index, TR_AREA *pArea );
-extern BOOL InsideVertical ( long y, long yTop, long yBottom, bool bSpecial = false );
+extern BOOL InsideVertical ( long y, long yTop, long yBottom, DWORD extraVertical = 0  );
 
 //  x : East West
 //  z : South North
-extern BOOL CheckAreaForCoordinates ( int tombraider, int levelIndex, int area, long x, long y, long z, bool bSpecial = false );
+//  extra is a value for vertical.
+//  LOWAORD is the low added / HIWORD is the high added : could be 0x01000000
+extern BOOL CheckAreaForCoordinates ( int tombraider, int levelIndex, int area, long x, long y, long z, DWORD extraVertical = 0 );
 
 //  Get Table :! m_iTombraoder may be the full version 1 2 3 4 10 15 20...
 extern TR_AREA *GetTRArea ( int tombraider, int levelIndex, int index );

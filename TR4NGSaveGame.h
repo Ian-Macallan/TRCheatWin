@@ -363,7 +363,7 @@ class CTR4NGSaveGame : public CTRSaveGame
 
         int GetLife ();
         void SetLife ( const char *szLife );
-        void *GetIndicatorAddress ();
+        void *GetIndicatorAddress ( int index = 0 );
 
         int GetMap1 ();
         int GetMap2 ();

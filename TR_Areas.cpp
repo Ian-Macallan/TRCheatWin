@@ -469,11 +469,12 @@ BOOL IsCustomArea ( )
 /////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////
-BOOL InsideVertical ( long y, long yTop, long yBottom, bool bSpecial )
+BOOL InsideVertical ( long y, long yTop, long yBottom, DWORD extraVertical )
 {
-    static const int extra = 100;
+    int low     = (int) LOWORD(extraVertical);
+    int high    = (int) HIWORD(extraVertical);
 
-    if ( y >= yTop && y <= yBottom )
+    if ( y >= yTop - low && y <= yBottom + high )
     {
         return TRUE;
     }
@@ -878,12 +879,12 @@ short FindAreaForCoordinates ( int tombraider, int levelIndex, long x, long y, l
 //  x : East West
 //  z : South North
 /////////////////////////////////////////////////////////////////////////////
-BOOL CheckAreaForCoordinates ( int tombraider, int levelIndex, int area, long x, long y, long z, bool bSpecial )
+BOOL CheckAreaForCoordinates ( int tombraider, int levelIndex, int area, long x, long y, long z, DWORD extraVertical )
 {
     TR_AREA *pArea = GetTRArea ( tombraider, levelIndex, area );
     if ( pArea )
     {
-        if ( InsideVertical ( y, pArea->yTop, pArea->yBottom, bSpecial ) )
+        if ( InsideVertical ( y, pArea->yTop, pArea->yBottom, extraVertical ) )
         {
             long xEnd = pArea->x + pArea->xSectors * TR_SECTOR_SIZE;
             long zEnd = pArea->z + pArea->zSectors * TR_SECTOR_SIZE;
@@ -899,7 +900,7 @@ BOOL CheckAreaForCoordinates ( int tombraider, int levelIndex, int area, long x,
         pArea = GetTRArea ( CUSTOM_GAME, CUSTOM_LEVEL_INDEX, area );
         if ( pArea )
         {
-            if ( InsideVertical ( y, pArea->yTop, pArea->yBottom, bSpecial ) )
+            if ( InsideVertical ( y, pArea->yTop, pArea->yBottom, extraVertical ) )
             {
                 long xEnd = pArea->x + pArea->xSectors * TR_SECTOR_SIZE;
                 long zEnd = pArea->z + pArea->zSectors * TR_SECTOR_SIZE;

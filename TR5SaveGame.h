@@ -314,8 +314,8 @@ class CTR5SaveGame : public CTRSaveGame
         int GetLaraState ( );
         void SetLaraState ( int state );
 
-        void *GetIndicatorAddress ();
-        WORD *GetTR5LifeAddress ();
+        void *GetIndicatorAddress ( int index = 0 );
+        WORD *GetTR5LifeAddress (  );
         int GetLife ();
         void SetLife ( const char *szLife );
 

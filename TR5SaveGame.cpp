@@ -17,6 +17,34 @@ static char THIS_FILE[] = __FILE__;
 
 extern CTRXCHEATWINApp theApp;
 
+//
+/////////////////////////////////////////////////////////////////////////////
+//  Indicator Table
+/////////////////////////////////////////////////////////////////////////////
+typedef struct indicatorStruct
+{
+    BYTE    b1;
+    BYTE    b2;
+    BYTE    b4;
+} INDICATORS;
+
+static INDICATORS IndicatorsTable [] =
+{
+    {   0x02,   0x02,   0x67 },
+    {   0x02,   0x02,   0x0b },
+    {   0x0d,   0x0d,   0x6c },
+    {   0x0d,   0x12,   0x6c },
+    {   0x12,   0x12,   0x57 },
+    {   0x47,   0x47,   0xde },         // Crawling
+    {   0x50,   0x50,   0x07 }, 
+    {   0x47,   0x47,   0xde },         // Crawling
+    {   0x47,   0x57,   0xde },         // Crawling
+    {   0x02,   0x02,   0x0b },         // Jumping
+    {   0x09,   0x09,   0x17 },         // Falling
+    {   0x01,   0x02,   0x0a },         // Running
+
+};
+
 /*
  *      ------------------------------------------------
  *      Data.
@@ -1544,26 +1572,25 @@ void CTR5SaveGame::SetGunAmmos ( const char *szGunAmmos )
 /////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////
-void *CTR5SaveGame::GetIndicatorAddress ()
+void *CTR5SaveGame::GetIndicatorAddress (int index)
 {
     //
     BYTE *pBuffer   = ( BYTE * ) m_pBuffer;
+    int count = 0;
     for ( int i = 0x400; i < 0xD00; i++ )
     {
-        if ( ( pBuffer [ i ] == 0x02 &&  pBuffer [ i + 1 ] == 0x02 /* && pBuffer [ i + 2 ] == 0x00 */ && pBuffer [ i + 3 ] == 0x67 ) ||
-             ( pBuffer [ i ] == 0x02 &&  pBuffer [ i + 1 ] == 0x02 /* && pBuffer [ i + 2 ] == 0x00 */ && pBuffer [ i + 3 ] == 0x0b ) ||
-             ( pBuffer [ i ] == 0x0d &&  pBuffer [ i + 1 ] == 0x0d /* && pBuffer [ i + 2 ] == 0x00 */ && pBuffer [ i + 3 ] == 0x6c ) ||
-             ( pBuffer [ i ] == 0x0d &&  pBuffer [ i + 1 ] == 0x12 /* && pBuffer [ i + 2 ] == 0x00 */ && pBuffer [ i + 3 ] == 0x6c ) ||
-             ( pBuffer [ i ] == 0x12 &&  pBuffer [ i + 1 ] == 0x12 /* && pBuffer [ i + 2 ] == 0x00 */ && pBuffer [ i + 3 ] == 0x57 ) ||
-             ( pBuffer [ i ] == 0x47 &&  pBuffer [ i + 1 ] == 0x47 /* && pBuffer [ i + 2 ] == 0x00 */ && pBuffer [ i + 3 ] == 0xde ) ||         // Crawling
-             ( pBuffer [ i ] == 0x50 &&  pBuffer [ i + 1 ] == 0x50 /* && pBuffer [ i + 2 ] == 0x00 */ && pBuffer [ i + 3 ] == 0x07 ) || 
-             ( pBuffer [ i ] == 0x47 &&  pBuffer [ i + 1 ] == 0x47 /* && pBuffer [ i + 2 ] == 0x00 */ && pBuffer [ i + 3 ] == 0xde ) ||         // Crawling
-             ( pBuffer [ i ] == 0x47 &&  pBuffer [ i + 1 ] == 0x57 /* && pBuffer [ i + 2 ] == 0x00 */ && pBuffer [ i + 3 ] == 0xde ) ||         // Crawling
-             ( pBuffer [ i ] == 0x02 &&  pBuffer [ i + 1 ] == 0x02 /* && pBuffer [ i + 2 ] == 0x00 */ && pBuffer [ i + 3 ] == 0x0b ) ||         //  Jumping
-             ( pBuffer [ i ] == 0x09 &&  pBuffer [ i + 1 ] == 0x09 /* && pBuffer [ i + 2 ] == 0x00 */ && pBuffer [ i + 3 ] == 0x17 ) ||         //  Falling
-             ( pBuffer [ i ] == 0x01 &&  pBuffer [ i + 1 ] == 0x02 /* && pBuffer [ i + 2 ] == 0x00 */ && pBuffer [ i + 3 ] == 0x0a )    )       //  Running
+        for ( int j = 0; j < sizeof(IndicatorsTable)/sizeof(INDICATORS);  j++ )
         {
-            return pBuffer + i;
+            if (    pBuffer [ i ] == IndicatorsTable [ j ].b1 &&
+                    pBuffer [ i + 1 ] == IndicatorsTable [ j ].b2 /* && pBuffer [ i + 2 ] == 0x00 */ &&
+                    pBuffer [ i + 3 ] == IndicatorsTable [ j ].b4 )
+            {
+                count++;
+                if ( count > index )
+                {
+                    return pBuffer + i;
+                }
+            }
         }
     }
 
@@ -1823,6 +1850,8 @@ TR5_POSITION *CTR5SaveGame::GetTR5Position ( )
             BOOL bCheck = CheckAreaForCoordinates ( GetFullVersion(), GetLevelIndex(),  wRoom, dwWestToEast, dwVertical, dwSouthToNorth, true );
             if ( bCheck )
             {
+                DWORD dwRelative = CTRXTools::RelativeAddress ( pBuffer + i, m_pBuffer );
+
                 return pTR5Position;
             }
         }
