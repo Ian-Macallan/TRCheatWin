@@ -116,6 +116,7 @@ extern void ResetCustomLabels ();
 #define PROFILE_SQUARECORNERS       "Square Corners"
 #define PROFILE_SQUAREFORCE         "Square Force"
 #define PROFILE_RECURSE_WRITE       "TRX Recurse Write"
+#define PROFILE_EXTEND_VERTICAL     "Extend Vertical"
 
 /////////////////////////////////////////////////////////////////////////////
 

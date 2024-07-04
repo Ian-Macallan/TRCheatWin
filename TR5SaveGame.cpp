@@ -1764,47 +1764,50 @@ TR5_POSITION *CTR5SaveGame::GetTR5Position ( )
 {
     const int extraSearch = 8;
 
-    char *pBuffer = (char * ) GetIndicatorAddress();
-    if ( pBuffer )
+    for ( int index = 0; index < 8; index++ )
     {
-        //
-        for ( int i = 0; i < extraSearch; i++ )
+        char *pBuffer = (char * ) GetIndicatorAddress(index);
+        if ( pBuffer )
         {
-            TR5_POSITION *pTR5Position = (TR5_POSITION *) ( ( ( BYTE * ) pBuffer - i - TR5_POSITION_OFFSET ) );
+            //
+            for ( int i = 0; i < extraSearch; i++ )
+            {
+                TR5_POSITION *pTR5Position = (TR5_POSITION *) ( ( ( BYTE * ) pBuffer - i - TR5_POSITION_OFFSET ) );
             
-            DWORD dwSouthToNorth    = ( DWORD) pTR5Position->wSouthToNorth * TR5_FACTOR;
-            DWORD dwVertical        = ( DWORD ) pTR5Position->wVertical * TR5_FACTOR;
-            DWORD dwWestToEast      = ( DWORD ) pTR5Position->wWestToEast * TR5_FACTOR;
-            WORD wRoom              = pTR5Position->cRoom;
+                DWORD dwSouthToNorth    = ( DWORD) pTR5Position->wSouthToNorth * TR5_FACTOR;
+                DWORD dwVertical        = ( DWORD ) pTR5Position->wVertical * TR5_FACTOR;
+                DWORD dwWestToEast      = ( DWORD ) pTR5Position->wWestToEast * TR5_FACTOR;
+                WORD wRoom              = pTR5Position->cRoom;
 
-            int countZero = 0;
-            if ( dwSouthToNorth == 0 )
-            {
-                countZero++;
-            }
-            if ( dwVertical == 0 )
-            {
-                countZero++;
-            }
-            if ( dwWestToEast == 0 )
-            {
-                countZero++;
-            }
-            if ( wRoom == 0 )
-            {
-                countZero++;
-            }
+                int countZero = 0;
+                if ( dwSouthToNorth == 0 )
+                {
+                    countZero++;
+                }
+                if ( dwVertical == 0 )
+                {
+                    countZero++;
+                }
+                if ( dwWestToEast == 0 )
+                {
+                    countZero++;
+                }
+                if ( wRoom == 0 )
+                {
+                    countZero++;
+                }
 
-            //  Too Much Zeroes
-            if ( countZero >= 3 )
-            {
-                continue;
-            }
+                //  Too Much Zeroes
+                if ( countZero >= 3 )
+                {
+                    continue;
+                }
 
-            BOOL bCheck = CheckAreaForCoordinates ( GetFullVersion(), GetLevelIndex(),  wRoom, dwWestToEast, dwVertical, dwSouthToNorth );
-            if ( bCheck )
-            {
-                return pTR5Position;
+                BOOL bCheck = CheckAreaForCoordinates ( GetFullVersion(), GetLevelIndex(),  wRoom, dwWestToEast, dwVertical, dwSouthToNorth );
+                if ( bCheck )
+                {
+                    return pTR5Position;
+                }
             }
         }
     }
@@ -1813,7 +1816,8 @@ TR5_POSITION *CTR5SaveGame::GetTR5Position ( )
     //  Search Extended
     if ( CTRXGlobal::m_iSearchPosExt )
     {
-        pBuffer = ( char * ) m_pBuffer;
+        char *pBuffer = ( char * ) m_pBuffer;
+
         for ( int i = 0x380; i < 0xD00; i++ )
         {
             TR5_POSITION *pTR5Position = (TR5_POSITION *) ( ( BYTE * ) pBuffer + i );

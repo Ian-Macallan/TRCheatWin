@@ -8,6 +8,7 @@
 BOOL            CTRXGlobal::m_iUnchecked        = FALSE;
 BOOL            CTRXGlobal::m_iSearchPosExt     = FALSE;
 BOOL            CTRXGlobal::m_iSearchExt        = FALSE;
+int             CTRXGlobal::m_iExtendVertical   = 0;
 unsigned        CTRXGlobal::m_iMinNGSize        = 37400;
 unsigned        CTRXGlobal::m_iMaxNGSize        = 37500;
 

@@ -131,7 +131,7 @@ extern BOOL InsideVertical ( long y, long yTop, long yBottom, DWORD extraVertica
 //  z : South North
 //  extra is a value for vertical.
 //  LOWAORD is the low added / HIWORD is the high added : could be 0x01000000
-extern BOOL CheckAreaForCoordinates ( int tombraider, int levelIndex, int area, long x, long y, long z, DWORD extraVertical = 0 );
+extern BOOL CheckAreaForCoordinates ( int tombraider, int levelIndex, int area, long x, long y, long z, bool bCustomFirst = false, DWORD extraVertical = 0 );
 
 //  Get Table :! m_iTombraoder may be the full version 1 2 3 4 10 15 20...
 extern TR_AREA *GetTRArea ( int tombraider, int levelIndex, int index );

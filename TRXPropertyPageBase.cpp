@@ -186,6 +186,33 @@ BOOL CTRXPropertyPageBase::RemoveLocation ( STRUCTLOCATION *pTable, const char *
 /////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////
+BOOL CTRXPropertyPageBase::AddComboString ( CComboBox *pCombo, const char *pText )
+{
+    static char szText [ MAX_PATH ];
+    if ( pCombo != NULL )
+    {
+        int count = pCombo->GetCount();
+
+        for ( int i = 0; i < pCombo->GetCount(); i++ )
+        {
+            ZeroMemory ( szText, sizeof(szText) );
+            pCombo->GetLBText ( i, szText );
+            if ( _strcmpi ( szText, pText ) == 0 )
+            {
+                return FALSE;
+            }
+        }
+    }
+
+    //
+    pCombo->AddString ( pText );
+    return TRUE;
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
 BOOL CTRXPropertyPageBase::RemoveFromCombo ( CComboBox *pCombo, const char *pTString )
 {
     static char szText [ MAX_PATH ];

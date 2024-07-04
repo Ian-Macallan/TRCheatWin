@@ -492,10 +492,18 @@ BOOL CTRXCHEATWINApp::InitInstance()
     }
     
     //
-    CTRXColors::m_iDarkTheme    = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_DARKTHEME, 0 );
-    CTRXColors::m_iSquareCorner = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_SQUARECORNERS, 0 );
-    CTRXColors::m_iSquareForce  = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_SQUAREFORCE, 1 );
-    CTRXColors::m_iThemeRestart = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_THEME_RESTART, 1 );
+    iTmp        = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_EXTEND_VERTICAL, -1 );
+    if ( iTmp == -1 )
+    {
+        theApp.WriteProfileInt( PROFILE_SETTING, PROFILE_EXTEND_VERTICAL, 0 );
+    }
+    
+    //
+    CTRXColors::m_iDarkTheme        = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_DARKTHEME, 0 );
+    CTRXColors::m_iSquareCorner     = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_SQUARECORNERS, 0 );
+    CTRXColors::m_iSquareForce      = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_SQUAREFORCE, 1 );
+    CTRXColors::m_iThemeRestart     = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_THEME_RESTART, 1 );
+    CTRXGlobal::m_iExtendVertical   = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_EXTEND_VERTICAL, 0 );
 
     //
     int iSizeTR1 = sizeof(TABLE_TR1);

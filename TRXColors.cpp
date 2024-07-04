@@ -84,7 +84,6 @@ int             CTRXColors::m_iSquareCorner     = 0;
 int             CTRXColors::m_iSquareForce      = 0;
 int             CTRXColors::m_iThemeRestart     = 0;
 
-
 //
 /////////////////////////////////////////////////////////////////////////////
 //

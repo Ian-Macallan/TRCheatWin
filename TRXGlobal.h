@@ -17,6 +17,7 @@ class CTRXGlobal
         static BOOL         m_iUnchecked;
         static BOOL         m_iSearchExt;
         static BOOL         m_iSearchPosExt;
+        static int          m_iExtendVertical;
 
         static unsigned     m_iMinNGSize;
         static unsigned     m_iMaxNGSize;

@@ -626,7 +626,8 @@ void CTRXInfoPage::DisplayValues()
     //
     m_SetManualCombo = false;
     m_Custom_Combo.ResetContent();
-    m_Custom_Combo.AddString("Tombraider Standard Levels");
+    AddComboString ( &m_Custom_Combo,  "Tombraider Standard Levels" );
+
     m_SetManualCombo = true;
 
     /*
@@ -897,7 +898,7 @@ void CTRXInfoPage::DisplayValues()
             {
                 if ( strlen(pTable [ i ].szPathname) > 0 )
                 {
-                    m_Custom_Combo.AddString ( pTable [ i ].szPathname );
+                    AddComboString ( &m_Custom_Combo, pTable [ i ].szPathname );
                 }
             }
 
@@ -1170,7 +1171,7 @@ BOOL CTRXInfoPage::OnSetActive()
         {
             if ( strlen(LocationPathname [ i ].szPathname) > 0 )
             {
-                m_Combo.AddString ( LocationPathname [ i ].szPathname );
+                AddComboString ( &m_Combo, LocationPathname [ i ].szPathname );
             }
         }
     }
@@ -1210,7 +1211,7 @@ BOOL CTRXInfoPage::OnSetActive()
             if ( m_Combo.GetCount() == 0 )
             {
                 _getcwd ( szDirectory, sizeof ( szDirectory ) - 1 );
-                m_Combo.AddString ( szDirectory );
+                AddComboString ( &m_Combo, szDirectory );
             }
         }
 
@@ -1431,10 +1432,7 @@ void CTRXInfoPage::FillListCtrl(const char *pDirectory)
 
     //
     BOOL bAdded = AddLocation ( LocationPathname, pDirectory );
-    if ( bAdded )
-    {
-        m_Combo.AddString ( pDirectory );
-    }
+    bAdded      = AddComboString ( &m_Combo, pDirectory );
 
     //
     SetComboSelection ( pDirectory );
@@ -2729,10 +2727,7 @@ void CTRXInfoPage::OnBnClickedAddCustom()
         if ( bExtracted )
         {
             BOOL bAdded = AddLocation ( pTable, szPathname );
-            if ( bAdded )
-            {
-                m_Custom_Combo.AddString ( szPathname );
-            }
+            bAdded      = AddComboString ( &m_Custom_Combo,  szPathname );
         }
         else
         {
@@ -2996,10 +2991,7 @@ BOOL CTRXInfoPage::ExtractAfterScript ( int tombraider, TR_MODE trMode, STRUCTLO
             if ( bExtracted )
             {
                 BOOL bAdded = AddLocation ( pTable, szTRPathname );
-                if ( bAdded )
-                {
-                    m_Custom_Combo.AddString ( szTRPathname );
-                }
+                bAdded      = AddComboString ( &m_Custom_Combo,  szTRPathname );
 
                 //
                 m_SetManualCombo = false;
@@ -3127,13 +3119,17 @@ void CTRXInfoPage::OnBnClickedSort()
 
     //
     m_Combo.ResetContent();
+
+    //
     for ( int i = 0; i < LEN_LOCATION; i++ )
     {
         if ( strlen(LocationPathname [ i ].szPathname) > 0 )
         {
-            m_Combo.AddString ( LocationPathname [ i ].szPathname );
+            AddComboString ( &m_Combo, LocationPathname [ i ].szPathname );
         }
     }
+
+    //
     SetComboSelection();
     m_SetManualCombo = true;
 }

@@ -83,6 +83,10 @@ static INDICATORS IndicatorsTable [] =
 {
     {   0x02,   0x02,   0x67 },
     {   0x02,   0x02,   0x28 },
+    {   0x02,   0x02,   0x0b },
+    {   0x02,   0x02,   0x0c },
+    {   0x02,   0x02,   0xbd },
+    {   0x0d,   0x0d,   0x6c },
 };
 
 //
@@ -1807,62 +1811,69 @@ TR4NG_POSITION *CTR4NGSaveGame::GetTR4Position ( )
 {
     const int extraSearch = 8;
 
-    char *pBuffer = (char * ) GetIndicatorAddress();
-    if ( pBuffer )
+    //
+    for ( int index = 0; index < 8; index++ )
     {
-        for ( int i = 0; i < extraSearch; i++ )
+        char *pBuffer = (char * ) GetIndicatorAddress(index);
+        if ( pBuffer )
         {
-            TR4NG_POSITION *pTR4Position = (TR4NG_POSITION *) ( ( ( BYTE * ) pBuffer - i - TR4NG_POSITION_OFFSET ) );
+            for ( int i = 0; i < extraSearch; i++ )
+            {
+                TR4NG_POSITION *pTR4Position = (TR4NG_POSITION *) ( ( ( BYTE * ) pBuffer - i - TR4NG_POSITION_OFFSET ) );
 
-            DWORD dwSouthToNorth    = pTR4Position->wSouthToNorth * TR4NG_FACTOR;
-            DWORD dwVertical        = pTR4Position->wVertical * TR4NG_FACTOR;
-            DWORD dwWestToEast      = pTR4Position->wWestToEast * TR4NG_FACTOR;
-            WORD wRoom              = pTR4Position->cRoom;
+                DWORD dwSouthToNorth    = pTR4Position->wSouthToNorth * TR4NG_FACTOR;
+                DWORD dwVertical        = pTR4Position->wVertical * TR4NG_FACTOR;
+                DWORD dwWestToEast      = pTR4Position->wWestToEast * TR4NG_FACTOR;
+                WORD wRoom              = pTR4Position->cRoom;
 
-            int countZero = 0;
-            if ( dwSouthToNorth == 0 )
-            {
-                countZero++;
-            }
-            if ( dwVertical == 0 )
-            {
-                countZero++;
-            }
-            if ( dwWestToEast == 0 )
-            {
-                countZero++;
-            }
-            if ( wRoom == 0 )
-            {
-                countZero++;
-            }
+                int countZero = 0;
+                if ( dwSouthToNorth == 0 )
+                {
+                    countZero++;
+                }
+                if ( dwVertical == 0 )
+                {
+                    countZero++;
+                }
+                if ( dwWestToEast == 0 )
+                {
+                    countZero++;
+                }
+                if ( wRoom == 0 )
+                {
+                    countZero++;
+                }
 
-            //  Too Much Zeroes
-            if ( countZero >= 3 )
-            {
-                continue;
-            }
+                //  Too Much Zeroes
+                if ( countZero >= 3 )
+                {
+                    continue;
+                }
 
-            int tombraider = GetFullVersion();
-            int levelIndex = GetLevelIndex();
+                int tombraider = GetFullVersion();
+                int levelIndex = GetLevelIndex();
 
-            DWORD dwExtraVertical   = 0;
-            dwExtraVertical         = ( 0x0100 << 16 ) | 0x0100;
-            dwExtraVertical         = 0;
-            BOOL bCheck = CheckAreaForCoordinates ( tombraider, levelIndex, wRoom, dwWestToEast, dwVertical, dwSouthToNorth, dwExtraVertical );
-            if ( bCheck )
-            {
-                DWORD dwRelativeAddress = CTRXTools::RelativeAddress ( pBuffer + i, m_pBuffer );
-                return pTR4Position;
+                DWORD dwExtraVertical   = 0;
+                if ( CTRXGlobal::m_iExtendVertical )
+                {
+                    dwExtraVertical         = ( 0x0100 << 16 ) | 0x0100;
+                    dwExtraVertical         = ( 0x0100 << 16 );
+                }
+                BOOL bCheck = CheckAreaForCoordinates ( tombraider, levelIndex, wRoom, dwWestToEast, dwVertical, dwSouthToNorth, true, dwExtraVertical );
+                if ( bCheck )
+                {
+                    DWORD dwRelativeAddress = CTRXTools::RelativeAddress ( pBuffer + i, m_pBuffer );
+                    return pTR4Position;
+                }
             }
         }
     }
-
+    
     //
     //  Search Extended
     if ( CTRXGlobal::m_iSearchPosExt )
     {
-        pBuffer = ( char * ) m_pBuffer;
+        char *pBuffer = ( char * ) m_pBuffer;
 
         //
         for ( int i = 0x280; i < 0x3000; i++ )
@@ -1898,7 +1909,13 @@ TR4NG_POSITION *CTR4NGSaveGame::GetTR4Position ( )
                 continue;
             }
 
-            BOOL bCheck = CheckAreaForCoordinates ( GetFullVersion(), GetLevelIndex(),  wRoom, dwWestToEast, dwVertical, dwSouthToNorth );
+            DWORD dwExtraVertical   = 0;
+            if ( CTRXGlobal::m_iExtendVertical )
+            {
+                dwExtraVertical         = ( 0x0100 << 16 ) | 0x0100;
+                dwExtraVertical         = ( 0x0100 << 16 );
+            }
+            BOOL bCheck = CheckAreaForCoordinates ( GetFullVersion(), GetLevelIndex(),  wRoom, dwWestToEast, dwVertical, dwSouthToNorth, true, dwExtraVertical );
             if ( bCheck )
             {
                 DWORD dwRelativeAddress = CTRXTools::RelativeAddress ( pBuffer + i, m_pBuffer );

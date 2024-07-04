@@ -60,6 +60,8 @@ class CTRXPropertyPageBase : public CPropertyPage
         static BOOL RemoveLocation ( STRUCTLOCATION *pTable, const char *pLocation );
         static int CountLocation ( STRUCTLOCATION *pTable );
 
+        static BOOL AddComboString ( CComboBox *pCombo, const char *pText );
+
         static void LoadLocation ( STRUCTLOCATION *pTable, const char *pCountKey, const char *pKeyFormat );
         static void SaveLocation ( STRUCTLOCATION *pTable, const char *pCountKey, const char *pKeyFormat );
 
