@@ -85,8 +85,11 @@ static INDICATORS IndicatorsTable [] =
     {   0x02,   0x02,   0x28 },
     {   0x02,   0x02,   0x0b },
     {   0x02,   0x02,   0x0c },
+    {   0x02,   0x02,   0x1f },
     {   0x02,   0x02,   0xbd },
+    {   0x12,   0x00,   0x02 },     // Flare
     {   0x0d,   0x0d,   0x6c },
+    {   0xfd,   0xff,   0x00 },     // Jeep
 };
 
 //
@@ -1812,7 +1815,7 @@ TR4NG_POSITION *CTR4NGSaveGame::GetTR4Position ( )
     const int extraSearch = 8;
 
     //
-    for ( int index = 0; index < 8; index++ )
+    for ( int index = 0; index < sizeof(IndicatorsTable)/sizeof(INDICATORS); index++ )
     {
         char *pBuffer = (char * ) GetIndicatorAddress(index);
         if ( pBuffer )
@@ -1863,6 +1866,13 @@ TR4NG_POSITION *CTR4NGSaveGame::GetTR4Position ( )
                 if ( bCheck )
                 {
                     DWORD dwRelativeAddress = CTRXTools::RelativeAddress ( pBuffer + i, m_pBuffer );
+#ifdef _DEBUG
+                    static char szDebugString [ MAX_PATH ];
+                    sprintf_s ( szDebugString, sizeof(szDebugString), "Indicators 0x%08x : 0x%02x 0x%02x 0x%02x %u %d %d %d \n", 
+                        dwRelativeAddress, pTR4Position->indicator1, pTR4Position->indicator2, pTR4Position->indicator4, 
+                        pTR4Position->cRoom, pTR4Position->wVertical, pTR4Position->wSouthToNorth, pTR4Position->wWestToEast ); 
+                    OutputDebugString ( szDebugString );
+#endif
                     return pTR4Position;
                 }
             }
@@ -1876,14 +1886,19 @@ TR4NG_POSITION *CTR4NGSaveGame::GetTR4Position ( )
         char *pBuffer = ( char * ) m_pBuffer;
 
         //
+        TR4NG_POSITION *pCurrent        = NULL;
+        TR4NG_POSITION *pTR4Position    = NULL;
+
+        int count                       = 0;
+
         for ( int i = 0x280; i < 0x3000; i++ )
         {
-            TR4NG_POSITION *pTR4Position = (TR4NG_POSITION *) ( ( BYTE * ) pBuffer + i );
+            pCurrent                = (TR4NG_POSITION *) ( ( BYTE * ) pBuffer + i );
 
-            DWORD dwSouthToNorth    = ( DWORD) pTR4Position->wSouthToNorth * TR4NG_FACTOR;
-            DWORD dwVertical        = ( DWORD ) pTR4Position->wVertical * TR4NG_FACTOR;
-            DWORD dwWestToEast      = ( DWORD ) pTR4Position->wWestToEast * TR4NG_FACTOR;
-            WORD wRoom              = pTR4Position->cRoom;
+            DWORD dwSouthToNorth    = ( DWORD) pCurrent->wSouthToNorth * TR4NG_FACTOR;
+            DWORD dwVertical        = ( DWORD ) pCurrent->wVertical * TR4NG_FACTOR;
+            DWORD dwWestToEast      = ( DWORD ) pCurrent->wWestToEast * TR4NG_FACTOR;
+            WORD wRoom              = pCurrent->cRoom;
 
             int countZero = 0;
             if ( dwSouthToNorth == 0 )
@@ -1918,11 +1933,34 @@ TR4NG_POSITION *CTR4NGSaveGame::GetTR4Position ( )
             BOOL bCheck = CheckAreaForCoordinates ( GetFullVersion(), GetLevelIndex(),  wRoom, dwWestToEast, dwVertical, dwSouthToNorth, true, dwExtraVertical );
             if ( bCheck )
             {
+                count++;
+
                 DWORD dwRelativeAddress = CTRXTools::RelativeAddress ( pBuffer + i, m_pBuffer );
-                return pTR4Position;
+                if ( pTR4Position == NULL )
+                {
+                    pTR4Position    = pCurrent;
+                }
+
+#ifdef _DEBUG
+                static char szDebugString [ MAX_PATH ];
+                sprintf_s ( szDebugString, sizeof(szDebugString), "Indicators 0x%08x : 0x%02x 0x%02x 0x%02x %u %d %d %d\n", 
+                    dwRelativeAddress, pCurrent->indicator1, pCurrent->indicator2, pCurrent->indicator4,
+                    pCurrent->cRoom, pCurrent->wVertical, pCurrent->wSouthToNorth, pCurrent->wWestToEast ); 
+                OutputDebugString ( szDebugString );
+#endif
+                if ( count > 20 )
+                {
+                    return NULL;
+                }
             }
         }
 
+        if ( count > 1 )
+        {
+            return NULL;
+        }
+
+        return pTR4Position;
     }
 
     return NULL;

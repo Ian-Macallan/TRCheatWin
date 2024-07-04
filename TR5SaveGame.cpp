@@ -32,6 +32,7 @@ static INDICATORS IndicatorsTable [] =
 {
     {   0x02,   0x02,   0x67 },
     {   0x02,   0x02,   0x0b },
+    {   0x02,   0x02,   0x1f },
     {   0x0d,   0x0d,   0x6c },
     {   0x0d,   0x12,   0x6c },
     {   0x12,   0x12,   0x57 },
@@ -1764,7 +1765,7 @@ TR5_POSITION *CTR5SaveGame::GetTR5Position ( )
 {
     const int extraSearch = 8;
 
-    for ( int index = 0; index < 8; index++ )
+    for ( int index = 0; index < sizeof(IndicatorsTable)/sizeof(INDICATORS); index++ )
     {
         char *pBuffer = (char * ) GetIndicatorAddress(index);
         if ( pBuffer )
@@ -1806,6 +1807,13 @@ TR5_POSITION *CTR5SaveGame::GetTR5Position ( )
                 BOOL bCheck = CheckAreaForCoordinates ( GetFullVersion(), GetLevelIndex(),  wRoom, dwWestToEast, dwVertical, dwSouthToNorth );
                 if ( bCheck )
                 {
+                    DWORD dwRelativeAddress = CTRXTools::RelativeAddress ( pBuffer + i, m_pBuffer );
+#ifdef _DEBUG
+                    static char szDebugString [ MAX_PATH ];
+                    sprintf_s ( szDebugString, sizeof(szDebugString), "Indicators 0x%08x : 0x%02x 0x%02x 0x%02x %u\n", 
+                        dwRelativeAddress, pTR5Position->indicator1, pTR5Position->indicator2, pTR5Position->indicator4, pTR5Position->cRoom ); 
+                    OutputDebugString ( szDebugString );
+#endif
                     return pTR5Position;
                 }
             }
@@ -1818,14 +1826,19 @@ TR5_POSITION *CTR5SaveGame::GetTR5Position ( )
     {
         char *pBuffer = ( char * ) m_pBuffer;
 
+        TR5_POSITION *pCurrent          = NULL;
+        TR5_POSITION *pTR5Position      = NULL;
+
+        int count                       = 0;
+
         for ( int i = 0x380; i < 0xD00; i++ )
         {
-            TR5_POSITION *pTR5Position = (TR5_POSITION *) ( ( BYTE * ) pBuffer + i );
+            pCurrent                = (TR5_POSITION *) ( ( BYTE * ) pBuffer + i );
 
-            DWORD dwSouthToNorth    = ( DWORD) pTR5Position->wSouthToNorth * TR5_FACTOR;
-            DWORD dwVertical        = ( DWORD ) pTR5Position->wVertical * TR5_FACTOR;
-            DWORD dwWestToEast      = ( DWORD ) pTR5Position->wWestToEast * TR5_FACTOR;
-            WORD wRoom              = pTR5Position->cRoom;
+            DWORD dwSouthToNorth    = ( DWORD) pCurrent->wSouthToNorth * TR5_FACTOR;
+            DWORD dwVertical        = ( DWORD ) pCurrent->wVertical * TR5_FACTOR;
+            DWORD dwWestToEast      = ( DWORD ) pCurrent->wWestToEast * TR5_FACTOR;
+            WORD wRoom              = pCurrent->cRoom;
 
             int countZero = 0;
             if ( dwSouthToNorth == 0 )
@@ -1854,11 +1867,33 @@ TR5_POSITION *CTR5SaveGame::GetTR5Position ( )
             BOOL bCheck = CheckAreaForCoordinates ( GetFullVersion(), GetLevelIndex(),  wRoom, dwWestToEast, dwVertical, dwSouthToNorth, true );
             if ( bCheck )
             {
-                DWORD dwRelative = CTRXTools::RelativeAddress ( pBuffer + i, m_pBuffer );
+                count++;
 
-                return pTR5Position;
+                DWORD dwRelativeAddress = CTRXTools::RelativeAddress ( pBuffer + i, m_pBuffer );
+                if ( pTR5Position == NULL )
+                {
+                    pTR5Position = pCurrent;
+                }
+
+#ifdef _DEBUG
+                static char szDebugString [ MAX_PATH ];
+                sprintf_s ( szDebugString, sizeof(szDebugString), "Indicators 0x%08x : 0x%02x 0x%02x 0x%02x %u\n", 
+                    dwRelativeAddress, pCurrent->indicator1, pCurrent->indicator2, pCurrent->indicator4, pCurrent->cRoom ); 
+                OutputDebugString ( szDebugString );
+#endif
+                if ( count > 20 )
+                {
+                    return NULL;
+                }
             }
         }
+
+        if ( count > 1 )
+        {
+            return NULL;
+        }
+
+        return pTR5Position;
     }
 
     return NULL;

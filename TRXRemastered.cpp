@@ -525,10 +525,7 @@ void CTRXRemastered::OnBnClickedLoad()
          */
         //
         BOOL bAdded = AddLocation ( LocationPathname, szFilename );
-        if ( bAdded )
-        {
-            m_Combo.AddString ( szFilename );
-        }
+        bAdded      = AddComboString ( &m_Combo, szFilename );
     }
 
 }
@@ -736,7 +733,7 @@ BOOL CTRXRemastered::OnSetActive()
         {
             if ( strlen(LocationPathname [ i ].szPathname) > 0 )
             {
-                m_Combo.AddString ( LocationPathname [ i ].szPathname );
+                AddComboString ( &m_Combo, LocationPathname [ i ].szPathname );
             }
         }
 
@@ -5366,10 +5363,7 @@ void CTRXRemastered::DoDropFiles(const char *pFilename)
 
     //
     BOOL bAdded = AddLocation ( LocationPathname, pFilename );
-    if ( bAdded )
-    {
-        m_Combo.AddString ( pFilename );
-    }
+    bAdded      = AddComboString ( &m_Combo, pFilename );
 }
 
 //
