@@ -1810,8 +1810,9 @@ TR5_POSITION *CTR5SaveGame::GetTR5Position ( )
                     DWORD dwRelativeAddress = CTRXTools::RelativeAddress ( pBuffer + i, m_pBuffer );
 #ifdef _DEBUG
                     static char szDebugString [ MAX_PATH ];
-                    sprintf_s ( szDebugString, sizeof(szDebugString), "Indicators 0x%08x : 0x%02x 0x%02x 0x%02x %u\n", 
-                        dwRelativeAddress, pTR5Position->indicator1, pTR5Position->indicator2, pTR5Position->indicator4, pTR5Position->cRoom ); 
+                    sprintf_s ( szDebugString, sizeof(szDebugString), "Indicators 0x%08x : 0x%02x 0x%02x 0x%02x %3u %5d %5d %5d\n", 
+                        dwRelativeAddress, pTR5Position->indicator1, pTR5Position->indicator2, pTR5Position->indicator4,
+                        pTR5Position->cRoom, pTR5Position->wVertical, pTR5Position->wSouthToNorth, pTR5Position->wWestToEast ); 
                     OutputDebugString ( szDebugString );
 #endif
                     return pTR5Position;
@@ -1877,11 +1878,16 @@ TR5_POSITION *CTR5SaveGame::GetTR5Position ( )
 
 #ifdef _DEBUG
                 static char szDebugString [ MAX_PATH ];
-                sprintf_s ( szDebugString, sizeof(szDebugString), "Indicators 0x%08x : 0x%02x 0x%02x 0x%02x %u\n", 
-                    dwRelativeAddress, pCurrent->indicator1, pCurrent->indicator2, pCurrent->indicator4, pCurrent->cRoom ); 
+                sprintf_s ( szDebugString, sizeof(szDebugString), "Indicators 0x%08x : 0x%02x 0x%02x 0x%02x %3u %5d %5d %5d\n", 
+                    dwRelativeAddress, pCurrent->indicator1, pCurrent->indicator2, pCurrent->indicator4,
+                    pCurrent->cRoom, pCurrent->wVertical, pCurrent->wSouthToNorth, pCurrent->wWestToEast ); 
                 OutputDebugString ( szDebugString );
-#endif
                 if ( count > 20 )
+                {
+                    return NULL;
+                }
+#endif
+                if ( count > 2 )
                 {
                     return NULL;
                 }

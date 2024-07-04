@@ -87,8 +87,11 @@ static INDICATORS IndicatorsTable [] =
     {   0x02,   0x02,   0x0c },
     {   0x02,   0x02,   0x1f },
     {   0x02,   0x02,   0xbd },
-    {   0x12,   0x00,   0x02 },     // Flare
+    {   0x02,   0x02,   0xdd },
+    {   0x03,   0x00,   0x02 },
     {   0x0d,   0x0d,   0x6c },
+    {   0x0e,   0x00,   0x02 },
+    {   0x12,   0x00,   0x02 },     // Flare
     {   0xfd,   0xff,   0x00 },     // Jeep
 };
 
@@ -1868,7 +1871,7 @@ TR4NG_POSITION *CTR4NGSaveGame::GetTR4Position ( )
                     DWORD dwRelativeAddress = CTRXTools::RelativeAddress ( pBuffer + i, m_pBuffer );
 #ifdef _DEBUG
                     static char szDebugString [ MAX_PATH ];
-                    sprintf_s ( szDebugString, sizeof(szDebugString), "Indicators 0x%08x : 0x%02x 0x%02x 0x%02x %u %d %d %d \n", 
+                    sprintf_s ( szDebugString, sizeof(szDebugString), "Indicators 0x%08x : 0x%02x 0x%02x 0x%02x %3u %5d %5d %5d \n", 
                         dwRelativeAddress, pTR4Position->indicator1, pTR4Position->indicator2, pTR4Position->indicator4, 
                         pTR4Position->cRoom, pTR4Position->wVertical, pTR4Position->wSouthToNorth, pTR4Position->wWestToEast ); 
                     OutputDebugString ( szDebugString );
@@ -1943,12 +1946,16 @@ TR4NG_POSITION *CTR4NGSaveGame::GetTR4Position ( )
 
 #ifdef _DEBUG
                 static char szDebugString [ MAX_PATH ];
-                sprintf_s ( szDebugString, sizeof(szDebugString), "Indicators 0x%08x : 0x%02x 0x%02x 0x%02x %u %d %d %d\n", 
+                sprintf_s ( szDebugString, sizeof(szDebugString), "Indicators 0x%08x : 0x%02x 0x%02x 0x%02x %3u %5d %5d %5d\n", 
                     dwRelativeAddress, pCurrent->indicator1, pCurrent->indicator2, pCurrent->indicator4,
                     pCurrent->cRoom, pCurrent->wVertical, pCurrent->wSouthToNorth, pCurrent->wWestToEast ); 
                 OutputDebugString ( szDebugString );
-#endif
                 if ( count > 20 )
+                {
+                    return NULL;
+                }
+#endif
+                if ( count > 2 )
                 {
                     return NULL;
                 }
