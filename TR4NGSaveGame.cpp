@@ -93,7 +93,17 @@ static INDICATORS IndicatorsTable [] =
     {   0x0e,   0x00,   0x02 },
     {   0x12,   0x00,   0x02 },     // Flare
     {   0xfd,   0xff,   0x00 },     // Jeep
+#ifdef _DEBUG
+    {   0x00,   0x02,   0x02 },
+    {   0x00,   0x02,   0x03 },
+    {   0x0c,   0x00,   0x02 },
+#endif
 };
+
+//
+#define MAX_POSITION    32
+static int positionCount = 0;
+static TR4NG_POSITION *positionTable [ MAX_POSITION ];
 
 //
 /////////////////////////////////////////////////////////////////////////////
@@ -1817,6 +1827,9 @@ TR4NG_POSITION *CTR4NGSaveGame::GetTR4Position ( )
 {
     const int extraSearch = 8;
 
+    ZeroMemory ( positionTable, sizeof(positionTable) );
+    positionCount   = 0;
+
     //
     for ( int index = 0; index < sizeof(IndicatorsTable)/sizeof(INDICATORS); index++ )
     {
@@ -1868,14 +1881,16 @@ TR4NG_POSITION *CTR4NGSaveGame::GetTR4Position ( )
                 BOOL bCheck = CheckAreaForCoordinates ( tombraider, levelIndex, wRoom, dwWestToEast, dwVertical, dwSouthToNorth, true, dwExtraVertical );
                 if ( bCheck )
                 {
-                    DWORD dwRelativeAddress = CTRXTools::RelativeAddress ( pBuffer + i, m_pBuffer );
 #ifdef _DEBUG
+                    DWORD dwRelativeAddress = CTRXTools::RelativeAddress ( pBuffer + i, m_pBuffer );
                     static char szDebugString [ MAX_PATH ];
-                    sprintf_s ( szDebugString, sizeof(szDebugString), "Indicators 0x%08x : 0x%02x 0x%02x 0x%02x %3u %5d %5d %5d \n", 
-                        dwRelativeAddress, pTR4Position->indicator1, pTR4Position->indicator2, pTR4Position->indicator4, 
+                    sprintf_s ( szDebugString, sizeof(szDebugString), "Indicators 0x%08x : 0x%02x 0x%02x 0x%02x 0x%02x %3u %5d %5d %5d \n", 
+                        dwRelativeAddress, pTR4Position->indicator1, pTR4Position->indicator2, pTR4Position->indicator3, pTR4Position->indicator4, 
                         pTR4Position->cRoom, pTR4Position->wVertical, pTR4Position->wSouthToNorth, pTR4Position->wWestToEast ); 
                     OutputDebugString ( szDebugString );
 #endif
+                    positionTable [ 0 ] = pTR4Position;
+                    positionCount       = 1;
                     return pTR4Position;
                 }
             }
@@ -1891,8 +1906,6 @@ TR4NG_POSITION *CTR4NGSaveGame::GetTR4Position ( )
         //
         TR4NG_POSITION *pCurrent        = NULL;
         TR4NG_POSITION *pTR4Position    = NULL;
-
-        int count                       = 0;
 
         for ( int i = 0x280; i < 0x3000; i++ )
         {
@@ -1936,35 +1949,48 @@ TR4NG_POSITION *CTR4NGSaveGame::GetTR4Position ( )
             BOOL bCheck = CheckAreaForCoordinates ( GetFullVersion(), GetLevelIndex(),  wRoom, dwWestToEast, dwVertical, dwSouthToNorth, true, dwExtraVertical );
             if ( bCheck )
             {
-                count++;
+                positionTable [ positionCount ] = pCurrent;
 
-                DWORD dwRelativeAddress = CTRXTools::RelativeAddress ( pBuffer + i, m_pBuffer );
                 if ( pTR4Position == NULL )
                 {
                     pTR4Position    = pCurrent;
                 }
 
+                positionCount++;
+
 #ifdef _DEBUG
+                DWORD dwRelativeAddress = CTRXTools::RelativeAddress ( pBuffer + i, m_pBuffer );
                 static char szDebugString [ MAX_PATH ];
-                sprintf_s ( szDebugString, sizeof(szDebugString), "Indicators 0x%08x : 0x%02x 0x%02x 0x%02x %3u %5d %5d %5d\n", 
-                    dwRelativeAddress, pCurrent->indicator1, pCurrent->indicator2, pCurrent->indicator4,
+                sprintf_s ( szDebugString, sizeof(szDebugString), "Indicators 0x%08x : 0x%02x 0x%02x 0x%02x 0x%02x %3u %5d %5d %5d\n", 
+                    dwRelativeAddress, pCurrent->indicator1, pCurrent->indicator2, pCurrent->indicator3, pCurrent->indicator4,
                     pCurrent->cRoom, pCurrent->wVertical, pCurrent->wSouthToNorth, pCurrent->wWestToEast ); 
                 OutputDebugString ( szDebugString );
-                if ( count > 20 )
+
+                if ( CTRXGlobal::m_iUnchecked == FALSE )
                 {
-                    return NULL;
+                    if ( positionCount > MAX_POSITION )
+                    {
+                        return NULL;
+                    }
+                }
+#else
+                if ( CTRXGlobal::m_iUnchecked == FALSE )
+                {
+                    if ( positionCount > 2 )
+                    {
+                        return NULL;
+                    }
                 }
 #endif
-                if ( count > 2 )
-                {
-                    return NULL;
-                }
             }
         }
 
-        if ( count > 1 )
+        if ( CTRXGlobal::m_iUnchecked == FALSE )
         {
-            return NULL;
+            if ( positionCount > 1 )
+            {
+                return NULL;
+            }
         }
 
         return pTR4Position;
