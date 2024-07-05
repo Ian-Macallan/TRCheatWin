@@ -3096,6 +3096,17 @@ void CTRXInfoPage::OnBnClickedSeeCustom()
     if ( strlen(szFilename) > 0 )
     {
         //
+        //
+        qsort ( CustomPathnames1, LEN_LOCATION, sizeof ( STRUCTLOCATION ), SortLocation );
+        qsort ( CustomPathnames2, LEN_LOCATION, sizeof ( STRUCTLOCATION ), SortLocation );
+        qsort ( CustomPathnames3, LEN_LOCATION, sizeof ( STRUCTLOCATION ), SortLocation );
+        qsort ( CustomPathnames4, LEN_LOCATION, sizeof ( STRUCTLOCATION ), SortLocation );
+        qsort ( CustomPathnames5, LEN_LOCATION, sizeof ( STRUCTLOCATION ), SortLocation );
+
+        //
+        DisplayValues();
+
+        //
         BOOL bSelected = SelectCustomFromPath ( szFilename );
         if ( bSelected )
         {

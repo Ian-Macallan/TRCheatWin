@@ -76,27 +76,29 @@ typedef struct indicatorStruct
 {
     BYTE    b1;
     BYTE    b2;
+    BYTE    b3;
     BYTE    b4;
+    BOOL    useB3;
 } INDICATORS;
 
 static INDICATORS IndicatorsTable [] =
 {
-    {   0x02,   0x02,   0x67 },
-    {   0x02,   0x02,   0x28 },
-    {   0x02,   0x02,   0x0b },
-    {   0x02,   0x02,   0x0c },
-    {   0x02,   0x02,   0x1f },
-    {   0x02,   0x02,   0xbd },
-    {   0x02,   0x02,   0xdd },
-    {   0x03,   0x00,   0x02 },
-    {   0x0d,   0x0d,   0x6c },
-    {   0x0e,   0x00,   0x02 },
-    {   0x12,   0x00,   0x02 },     // Flare
-    {   0xfd,   0xff,   0x00 },     // Jeep
+    {   0x02,   0x02,   0x00,   0x67,   FALSE },
+    {   0x02,   0x02,   0x00,   0x28,   FALSE },
+    {   0x02,   0x02,   0x00,   0x0b,   FALSE },
+    {   0x02,   0x02,   0x00,   0x0c,   FALSE },
+    {   0x02,   0x02,   0x00,   0x1f,   FALSE },
+    {   0x02,   0x02,   0x00,   0xbd,   FALSE },
+    {   0x02,   0x02,   0x00,   0xdd,   FALSE },
+    {   0x03,   0x00,   0x00,   0x02,   FALSE },
+    {   0x0d,   0x0d,   0x00,   0x6c,   FALSE },
+    {   0x0e,   0x00,   0x00,   0x02,   FALSE },
+    {   0x12,   0x00,   0x00,   0x02,   FALSE },     // Flare
+    {   0xfd,   0xff,   0x00,   0x00,   FALSE },     // Jeep
 #ifdef _DEBUG
-    {   0x00,   0x02,   0x02 },
-    {   0x00,   0x02,   0x03 },
-    {   0x0c,   0x00,   0x02 },
+    {   0x00,   0x02,   0x00,   0x02,   FALSE },
+    {   0x00,   0x02,   0x00,   0x03,   FALSE },
+    {   0x0c,   0x00,   0x00,   0x02,   FALSE },
 #endif
 };
 
@@ -1630,9 +1632,14 @@ void *CTR4SaveGame::GetIndicatorAddress (int index)
         for ( int j = 0; j < sizeof(IndicatorsTable)/sizeof(INDICATORS);  j++ )
         {
             if (    pBuffer [ i ] == IndicatorsTable [ j ].b1 &&
-                    pBuffer [ i + 1 ] == IndicatorsTable [ j ].b2 /* && pBuffer [ i + 2 ] == 0x00 */ &&
+                    pBuffer [ i + 1 ] == IndicatorsTable [ j ].b2 &&
                     pBuffer [ i + 3 ] == IndicatorsTable [ j ].b4 )
             {
+                if ( IndicatorsTable [ j ].useB3 && pBuffer [ i + 2 ] != IndicatorsTable [ j ].b3 )
+                {
+                    continue;
+                }
+
                 count++;
                 if ( count > index )
                 {
