@@ -2182,7 +2182,7 @@ BOOL ReadTRXScript (    const char *pathname, const char *pDirectory, int versio
         int toRead = sizeof(xuint16_t)*nbLevelPath - toCopy;
         if ( toRead > 0 )
         {
-            uRead = fread ( ( (char*) &LevelpathStringOffsets ) + toRead, 1, toRead, hInpFile );
+            uRead = fread ( ( (char*) &LevelpathStringOffsets ) + toCopy, 1, toRead, hInpFile );
             if ( uRead != toRead )
             {
                 CloseOne ( &hOutFile );

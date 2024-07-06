@@ -3,7 +3,7 @@
 #include "GunGrids.h"
 
 #ifndef TR4NGMAXLEVEL
-#define TR4NGMAXLEVEL       38
+#define TR4NGMAXLEVEL       64
 #endif
 
 //
