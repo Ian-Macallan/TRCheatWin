@@ -1,6 +1,7 @@
 #pragma once
 
 #include "TRXTools.h"
+#include "GunGrids.h"
 
 #pragma once
 
@@ -32,9 +33,6 @@
  *      Definition.
  *      ------------------------------------------------
  */
-#ifndef TR4NGMAXLEVEL
-#define TR4NGMAXLEVEL       64
-#endif
 
 #define TR4NGBUFFEREND      14014
 
