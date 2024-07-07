@@ -142,19 +142,26 @@ static int SortLocation(const void *pVoid1, const void *pVoid2)
     int iResult = 0;
     if ( pData1 != NULL && pData2 != NULL )
     {
-        if ( strlen(pData1->szPathname) == 0 && strlen(pData1->szPathname) == 0 )
+        if ( strlen(pData1->szPathname) == 0 && strlen(pData2->szPathname) == 0 )
         {
             return 0;
         }
-        if ( strlen(pData1->szPathname) == 0 )
+
+        if ( strlen(pData1->szPathname) == 0 && strlen(pData2->szPathname) > 0 )
         {
             return 1;
         }
-        if ( strlen(pData2->szPathname) == 0 )
+
+        if ( strlen(pData1->szPathname) > 0 && strlen(pData2->szPathname) == 0 )
         {
             return -1;
         }
-        iResult = strcmp(pData1->szPathname, pData2->szPathname );
+
+        iResult = _stricmp(pData1->szPathname, pData2->szPathname );
+    }
+    else
+    {
+        return iResult;
     }
 
     return iResult;
@@ -1052,7 +1059,7 @@ void CTRXInfoPage::SetCurrent ( )
     for ( int iX = 0; iX < m_ListCtrl.GetItemCount(); iX++ )
     {
         m_ListCtrl.GetItemText ( iX, COL_PATHNAME, szCurrentFilename, sizeof(szCurrentFilename) );
-        if ( strcmp ( szFilename, szCurrentFilename ) == 0 )
+        if ( _stricmp ( szFilename, szCurrentFilename ) == 0 )
         {
             m_ListCtrl.SetItemState(-1, 0, LVIS_SELECTED);
             m_ListCtrl.SetItemState(iX, LVIS_SELECTED|LVIS_FOCUSED, LVIS_SELECTED|LVIS_FOCUSED);
@@ -1359,7 +1366,7 @@ void CTRXInfoPage::SetComboSelection ( const char *pDirectory )
     {
         CString directory;
         m_Combo.GetLBText ( i, directory );
-        if ( strcmp ( directory, pDirectory ) == 0 )
+        if ( _stricmp ( directory, pDirectory ) == 0 )
         {
             m_SetManualCombo = false;
             m_Combo.SetCurSel ( i );
@@ -2649,6 +2656,7 @@ void CTRXInfoPage::OnBnClickedAddCustom()
     STRUCTLOCATION  *pTable     = NULL;
     char BASED_CODE *pFilter    = NULL;
     char            *pNames     = NULL;
+    char            *typeName   = NULL;
 
     //
     switch ( tombraider )
@@ -2657,30 +2665,33 @@ void CTRXInfoPage::OnBnClickedAddCustom()
         case 10 :
         case 15 :
         {
-            trMode  = TRR1_MODE;
-            pTable  = CustomPathnames1;
-            pFilter = "Tombraider 1 Files|*.PHD|All Files (*.*)|*.*||";
-            pNames  = "*.PHD";
+            trMode      = TRR1_MODE;
+            pTable      = CustomPathnames1;
+            pFilter     = "Tombraider 1 Files|*.PHD|All Files (*.*)|*.*||";
+            pNames      = "*.PHD";
+            typeName    = ".PHD";
             break;
         }
         case 2:
         case 20 :
         case 25 :
         {
-            trMode  = TRR2_MODE;
-            pTable  = CustomPathnames2;
-            pFilter = "Tombraider 2 Files|*.tr2|All Files (*.*)|*.*||";
-            pNames  = "*.tr2";
+            trMode      = TRR2_MODE;
+            pTable      = CustomPathnames2;
+            pFilter     = "Tombraider 2 Files|*.tr2|All Files (*.*)|*.*||";
+            pNames      = "*.tr2";
+            typeName    = ".tr2";
             break;
         }
         case 3:
         case 30 :
         case 35 :
         {
-            trMode  = TRR3_MODE;
-            pTable  = CustomPathnames3;
-            pFilter = "Tombraider 3 Files|*.tr2|All Files (*.*)|*.*||";
-            pNames  = "*.tr2";
+            trMode      = TRR3_MODE;
+            pTable      = CustomPathnames3;
+            pFilter     = "Tombraider 3 Files|*.tr2|All Files (*.*)|*.*||";
+            pNames      = "*.tr2";
+            typeName    = ".tr2";
             break;
         }
         case 4:
@@ -2688,19 +2699,21 @@ void CTRXInfoPage::OnBnClickedAddCustom()
         case 45 :
         case 49 :
         {
-            trMode  = TR4_MODE;
-            pTable  = CustomPathnames4;
-            pFilter = "Tombraider 4 Files|*.tr4|All Files (*.*)|*.*||";
-            pNames  = "*.tr4";
+            trMode      = TR4_MODE;
+            pTable      = CustomPathnames4;
+            pFilter     = "Tombraider 4 Files|*.tr4|All Files (*.*)|*.*||";
+            pNames      = "*.tr4";
+            typeName    = ".tr4";
             break;
         }
         case 5:
         case 50 :
         {
-            trMode  = TR5_MODE;
-            pTable  = CustomPathnames5;
-            pFilter = "Tombraider 5 Files|*.trc|All Files (*.*)|*.*||";
-            pNames  = "*.trc";
+            trMode      = TR5_MODE;
+            pTable      = CustomPathnames5;
+            pFilter     = "Tombraider 5 Files|*.trc|All Files (*.*)|*.*||";
+            pNames      = "*.trc";
+            typeName    = ".trc";
             break;
         }
         default:
@@ -2728,6 +2741,7 @@ void CTRXInfoPage::OnBnClickedAddCustom()
         {
             BOOL bAdded = AddLocation ( pTable, szPathname );
             bAdded      = AddComboString ( &m_Custom_Combo,  szPathname );
+            qsort ( pTable, LEN_LOCATION, sizeof ( STRUCTLOCATION ), SortLocation );
         }
         else
         {
@@ -2736,7 +2750,7 @@ void CTRXInfoPage::OnBnClickedAddCustom()
 
         //
         //  Read Script
-        strcpy_s ( szScriptDirectory, sizeof(szScriptDirectory), szPathname );
+        strcpy_s ( szScriptDirectory, sizeof(szScriptDirectory), szPathname );  // EG root\game\DATA\level.tr4
         theApp.RemoveFilename ( szScriptDirectory );
         theApp.RemoveFilename ( szScriptDirectory );
         strcpy_s ( szScript, sizeof(szScript), szScriptDirectory );
@@ -2749,6 +2763,27 @@ void CTRXInfoPage::OnBnClickedAddCustom()
 
         //
         BOOL bRead = ReadTRXScript ( szScript, szScriptDirectory, tombraider / 10, false, AddToItemsLabels );
+
+        //  If Read Add All Items Found
+        if ( bRead )
+        {
+            static char szDataFile [ MAX_PATH ];
+            for ( int i = 0; i < TR4NGMAXLEVEL; i++ )
+            {
+                if ( strlen(CustomDataFiles [ i ].datafile) > 0 )
+                {
+                    strcpy_s ( szDataFile, sizeof(szDataFile), szScriptDirectory );
+                    strcat_s ( szDataFile, sizeof(szDataFile), "\\" );
+                    strcat_s ( szDataFile, sizeof(szDataFile), CustomDataFiles [ i ].datafile );
+                    strcat_s ( szDataFile, sizeof(szDataFile), typeName );
+
+                    BOOL bAdded = AddLocation ( pTable, szDataFile );
+                    bAdded      = AddComboString ( &m_Custom_Combo,  szDataFile );
+                }
+            } 
+
+            qsort ( pTable, LEN_LOCATION, sizeof ( STRUCTLOCATION ), SortLocation );
+        }
 
         //
         //  When A User choose a file we let him see it
@@ -2831,11 +2866,8 @@ void CTRXInfoPage::OnBnClickedRemoveCustom()
     }
 
     //
-    BOOL bRemoved = RemoveLocation ( pTable, szPathname );
-    if ( bRemoved )
-    {
-        RemoveFromCombo ( &m_Custom_Combo, iCurSel );
-    }
+    BOOL bRemoved   = RemoveLocation ( pTable, szPathname );
+    bRemoved        = RemoveFromCombo ( &m_Custom_Combo, iCurSel );
 }
 
 //
@@ -2943,6 +2975,8 @@ void CTRXInfoPage::ChangeCustomCombo(bool bManualChange)
                 //
                 //  Search The best DATA file for this level
                 bool bSearchBestMap = true;
+
+                //  From OnBnClickedSeeCustom we will search the best Match
                 if ( bSearchBestMap && ! bManualChange )
                 {
                     ExtractAfterScript ( tombraider, trMode, pTable, szScriptDirectory, szPathname );
@@ -2967,6 +3001,9 @@ BOOL CTRXInfoPage::ExtractAfterScript ( int tombraider, TR_MODE trMode, STRUCTLO
     static char szTRPathname [ MAX_PATH ] = "";
 
     BOOL bExtracted = FALSE;
+    
+    //  Search The CustomDataFiles the best match for the Savegame name
+    //  This will give a DATA/level
     int datafileIndex = SearchDataFileIndex ( CTRSaveGame::I()->GetSaveName() );
     if ( datafileIndex >= 0 )
     {
@@ -3088,30 +3125,119 @@ BOOL CTRXInfoPage::SelectCustomFromPath (const char *pathname)
 /////////////////////////////////////////////////////////////////////////////
 void CTRXInfoPage::OnBnClickedSeeCustom()
 {
+
     static char szFilename [ MAX_PATH ];
     ZeroMemory ( szFilename, sizeof(szFilename) );
 
     //
     m_Filename.GetWindowText(szFilename, sizeof(szFilename));
-    if ( strlen(szFilename) > 0 )
+    if ( strlen(szFilename) == 0 )
     {
-        //
-        //
-        qsort ( CustomPathnames1, LEN_LOCATION, sizeof ( STRUCTLOCATION ), SortLocation );
-        qsort ( CustomPathnames2, LEN_LOCATION, sizeof ( STRUCTLOCATION ), SortLocation );
-        qsort ( CustomPathnames3, LEN_LOCATION, sizeof ( STRUCTLOCATION ), SortLocation );
-        qsort ( CustomPathnames4, LEN_LOCATION, sizeof ( STRUCTLOCATION ), SortLocation );
-        qsort ( CustomPathnames5, LEN_LOCATION, sizeof ( STRUCTLOCATION ), SortLocation );
+        return;
+    }
 
-        //
-        DisplayValues();
+    //
+    int tombraider              = CTRSaveGame::GetFullVersion ();
+    TR_MODE trMode              = TR_NONE;
+    STRUCTLOCATION  *pTable     = NULL;
+    char *typeName              = NULL;
 
-        //
-        BOOL bSelected = SelectCustomFromPath ( szFilename );
-        if ( bSelected )
+    //
+    switch ( tombraider )
+    {
+        case 1 :
+        case 10 :
+        case 15 :
         {
-            ChangeCustomCombo(false);
+            trMode      = TRR1_MODE;
+            pTable      = CustomPathnames1;
+            typeName    = ".PHD";
+            break;
         }
+        case 2:
+        case 20 :
+        case 25 :
+        {
+            trMode      = TRR2_MODE;
+            pTable      = CustomPathnames2;
+            typeName    = ".tr2";
+            break;
+        }
+        case 3:
+        case 30 :
+        case 35 :
+        {
+            trMode      = TRR3_MODE;
+            pTable      = CustomPathnames3;
+            typeName    = ".tr2";
+            break;
+        }
+        case 4:
+        case 40 :
+        case 45 :
+        case 49 :
+        {
+            trMode      = TR4_MODE;
+            pTable      = CustomPathnames4;
+            typeName    = ".tr4";
+            break;
+        }
+        case 5:
+        case 50 :
+        {
+            trMode      = TR5_MODE;
+            pTable      = CustomPathnames5;
+            typeName    = ".trc";
+            break;
+        }
+        default:
+        {
+            return;
+        }
+    }
+
+    //
+    static char szScript [ MAX_PATH ];
+    static char szScriptDirectory [ MAX_PATH ];
+
+    strcpy_s ( szScriptDirectory, sizeof(szScriptDirectory), szFilename );
+    theApp.RemoveFilename ( szScriptDirectory );
+    strcpy_s ( szScript, sizeof(szScript), szScriptDirectory );
+    strcat_s ( szScript, sizeof(szScript), "\\SCRIPT.DAT" );
+
+    //
+    BOOL bRead = ReadTRXScript ( szScript, szScriptDirectory, tombraider / 10, false, AddToItemsLabels );
+
+    //  If Read Add All Items Found
+    if ( bRead )
+    {
+        static char szDataFile [ MAX_PATH ];
+        for ( int i = 0; i < TR4NGMAXLEVEL; i++ )
+        {
+            if ( strlen(CustomDataFiles [ i ].datafile) > 0 )
+            {
+                strcpy_s ( szDataFile, sizeof(szDataFile), szScriptDirectory );
+                strcat_s ( szDataFile, sizeof(szDataFile), "\\" );
+                strcat_s ( szDataFile, sizeof(szDataFile), CustomDataFiles [ i ].datafile );
+                strcat_s ( szDataFile, sizeof(szDataFile), typeName );
+
+                BOOL bAdded = AddLocation ( pTable, szDataFile );
+                bAdded      = AddComboString ( &m_Custom_Combo,  szDataFile );
+            }
+        } 
+
+        qsort ( pTable, LEN_LOCATION, sizeof ( STRUCTLOCATION ), SortLocation );
+    }
+
+    //
+    DisplayValues();
+
+    //
+    BOOL bSelected = SelectCustomFromPath ( szFilename );
+    if ( bSelected )
+    {
+        //  This Will select the good level
+        ChangeCustomCombo(false);
     }
 }
 

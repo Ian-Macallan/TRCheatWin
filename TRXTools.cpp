@@ -703,3 +703,37 @@ double CTRXTools::ConvertOrientationFromWORD ( WORD wOrientation )
     return dfOrientation;
 }
 
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
+void CTRXTools::ToLowercase ( char *pText )
+{
+    if ( pText != NULL )
+    {
+        while ( *pText != '\0' )
+        {
+            *pText = tolower(*pText);
+
+            pText++;
+        }
+    }
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
+void CTRXTools::ToUppercase ( char *pText )
+{
+    if ( pText != NULL )
+    {
+        while ( *pText != '\0' )
+        {
+            *pText = toupper(*pText);
+
+            pText++;
+        }
+    }
+}
+

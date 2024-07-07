@@ -76,5 +76,8 @@ class CTRXTools
         static WORD ConvertOrientationFromDouble ( double dfOrientation );
         static double ConvertOrientationFromWORD ( WORD dfOrientation );
 
+        static void ToLowercase ( char *pText );
+        static void ToUppercase ( char *pText );
+
 };
 
