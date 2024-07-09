@@ -28,6 +28,8 @@
 //  0x22 (34) from iLife
 //  Struct Size 3 * 4 + 4 * 2 = 20 bytes
 #define TR_POSITION_OFFSET      24
+
+//  Struct Size 20 in decimal
 struct TR_POSITION
 {
     DWORD   dwWestToEast;
@@ -43,11 +45,12 @@ struct TR_POSITION
     WORD    wRoom;
 };
 
+//  Struct Size 12 in decimal
 struct          TRLife
 {
     WORD  iOne;     /* Must Be 0x0002 */
     WORD  iTwo;     /* Must Be 0x0002 */
-    WORD  cFiller1;
+    WORD  cFiller1;  
     WORD  iThree;   /* Must Be 0x0067 */
     WORD  cFiller2;
     WORD  iLife;    /* This is the Life */

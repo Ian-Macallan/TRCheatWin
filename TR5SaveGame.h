@@ -51,7 +51,6 @@
 //  The room may be 82 (dec) before the 02 02 xx 67
 //  This structure is 8 before the 02 02 xx  67
 #define TR5_POSITION_OFFSET     11
-#define TR5_LIFE_OFFSET         7
 #define TR5_FACTOR              2L
 
 struct TR5_POSITION
@@ -73,7 +72,8 @@ struct TR5_POSITION
     BYTE    unknown4;
     WORD    heath;              //  0012
 };
-
+#define TR5_LIFE_OFFSET         (offsetof(TR5_POSITION,heath)-offsetof(TR5_POSITION,indicator1))
+// #define TR5_LIFE_OFFSET         7
 
 struct          TR5Gun
 {

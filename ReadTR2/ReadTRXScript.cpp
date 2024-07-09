@@ -1462,7 +1462,10 @@ static BOOL TreatLevelData (    FILE *hOutFile, xuint16_t offset, int len,
 
                         if ( function != NULL )
                         {
-                            (*function)(1, levelIndex, -1, pathString, pString );
+                            MCMemA memCoded ( ( int ) strlen(pString) + 2 );
+                            strcpy_s ( memCoded.ptr, memCoded.len, pString );
+                            strcpy_s ( memCoded.ptr, memCoded.len, TextToString ( memCoded.ptr ) );
+                            (*function)(1, levelIndex, -1, pathString, memCoded.ptr );
                         }
                     }
 
@@ -1863,7 +1866,10 @@ static BOOL WriteHeader ( int version, int level, FCT_AddToItemsLabels function 
             Print ( hHeaFile, "\t\"%s\",\t// %d \n", ItemsTable [ b ].text, b + 1 );
             if  ( function != NULL )
             {
-                ( *function ) ( 0, level, b, ItemsTable [ b ].text, "" );
+                MCMemA memCoded ( ( int ) strlen(ItemsTable [ b ].text) + 2 );
+                strcpy_s ( memCoded.ptr, memCoded.len, ItemsTable [ b ].text );
+                strcpy_s ( memCoded.ptr, memCoded.len, TextToString ( memCoded.ptr ) );
+                ( *function ) ( 0, level, b, memCoded.ptr, "" );
             }
         }
         Print (  hHeaFile, "};\n" );
@@ -1888,7 +1894,10 @@ static BOOL WriteHeader ( int version, int level, FCT_AddToItemsLabels function 
             //
             if  ( function != NULL )
             {
-                ( *function ) ( 0, level, b, GlobalItemsTable [ b ].text, "" );
+                MCMemA memCoded ( ( int ) strlen ( GlobalItemsTable [ b ].text ) + 2 );
+                strcpy_s ( memCoded.ptr, memCoded.len, GlobalItemsTable [ b ].text );
+                strcpy_s ( memCoded.ptr, memCoded.len, TextToString ( memCoded.ptr ) );
+                ( *function ) ( 0, level, b, memCoded.ptr, "" );
             }
         }
         Print (  hHeaFile, "};\n" );

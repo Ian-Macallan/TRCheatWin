@@ -75,6 +75,8 @@ class CTRXInfoPage : public CTRXPropertyPage
         void ClickRoom ( UINT nFlags, CPoint point );
         BOOL ExtractAfterScript ( int tombraider, TR_MODE trMode, STRUCTLOCATION *pTable,
                                     const char *pScriptDirectory, const char *pathname );
+        BOOL GetCustomParams ( TR_MODE *pTrMode, STRUCTLOCATION  **ppTable, char BASED_CODE **ppFilter, char **ppNames, char **ppTypeName );
+
         virtual void SetThemeChanged ( bool bDarkTheme );
 
     // Dialog Data

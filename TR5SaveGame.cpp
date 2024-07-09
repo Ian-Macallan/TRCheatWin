@@ -8,6 +8,7 @@
 #include "TRXTools.h"
 #include "TR_Areas.h"
 #include "TRXGlobal.h"
+#include "GunGrids.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -49,7 +50,6 @@ static INDICATORS IndicatorsTable [] =
 };
 
 //
-#define MAX_POSITION    32
 static int positionCount = 0;
 static TR5_POSITION *positionTable [ MAX_POSITION ];
 
@@ -82,7 +82,7 @@ static char    TR5NBSecrets [ ] =
 /////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////
-static WORD HealthPosition [ 14 ] =
+static WORD HealthPosition [ TR5_LEVELS ] =
 {
     0x4f4,  //      For Level 1 Street
     0x542,  //      for Level 2 trajan
@@ -1825,10 +1825,10 @@ TR5_POSITION *CTR5SaveGame::GetTR5Position ( )
 #ifdef _DEBUG
                     DWORD dwRelativeAddress = CTRXTools::RelativeAddress ( pBuffer + i, m_pBuffer );
                     static char szDebugString [ MAX_PATH ];
-                    sprintf_s ( szDebugString, sizeof(szDebugString), "Indicators 0x%08x : 0x%02x 0x%02x 0x%02x 0x%02x %3u %5d %5d %5d\n", 
+                    sprintf_s ( szDebugString, sizeof(szDebugString), "Indicators 0x%08x : 0x%02x 0x%02x 0x%02x 0x%02x %3u %5d %5d %5d %3u\n", 
                         dwRelativeAddress, 
                         pTR5Position->indicator1, pTR5Position->indicator2, pTR5Position->indicator3, pTR5Position->indicator4,
-                        pTR5Position->cRoom, pTR5Position->wVertical, pTR5Position->wSouthToNorth, pTR5Position->wWestToEast ); 
+                        pTR5Position->cRoom, pTR5Position->wVertical, pTR5Position->wSouthToNorth, pTR5Position->wWestToEast, pTR5Position->cOrientation ); 
                     OutputDebugString ( szDebugString );
 #endif
                     positionTable [ 0 ] = pTR5Position;
@@ -1896,9 +1896,9 @@ TR5_POSITION *CTR5SaveGame::GetTR5Position ( )
 #ifdef _DEBUG
                 DWORD dwRelativeAddress = CTRXTools::RelativeAddress ( pBuffer + i, m_pBuffer );
                 static char szDebugString [ MAX_PATH ];
-                sprintf_s ( szDebugString, sizeof(szDebugString), "Indicators 0x%08x : 0x%02x 0x%02x 0x%02x 0x%02x %3u %5d %5d %5d\n", 
+                sprintf_s ( szDebugString, sizeof(szDebugString), "Indicators 0x%08x : 0x%02x 0x%02x 0x%02x 0x%02x %3u %5d %5d %5d %3u\n", 
                     dwRelativeAddress, pCurrent->indicator1, pCurrent->indicator2, pCurrent->indicator3, pCurrent->indicator4,
-                    pCurrent->cRoom, pCurrent->wVertical, pCurrent->wSouthToNorth, pCurrent->wWestToEast ); 
+                    pCurrent->cRoom, pCurrent->wVertical, pCurrent->wSouthToNorth, pCurrent->wWestToEast, pCurrent->cOrientation ); 
                 OutputDebugString ( szDebugString );
 
                 if ( CTRXGlobal::m_iUnchecked == FALSE )

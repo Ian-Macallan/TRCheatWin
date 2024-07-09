@@ -3,7 +3,7 @@
 #include "GunGrids.h"
 
 //
-BOOL GunGrid1 [ TR1_LEVELS ] [ 9 ] =
+BOOL GunGrid1 [ TR1_LEVELS ] [ NB_GUNS ] =
 {
     //  PIS     MAG     UZI     RIO     M16     GRE     ROC     HAR     CRO
     {   TRUE,   TRUE,   TRUE,   TRUE,   FALSE,  FALSE,  FALSE,  FALSE,  FALSE   },  //  1
@@ -27,7 +27,7 @@ BOOL GunGrid1 [ TR1_LEVELS ] [ 9 ] =
     {   TRUE,   TRUE,   TRUE,   TRUE,   FALSE,  FALSE,  FALSE,  FALSE,  FALSE   },  //  19
 };
 
-BOOL GunGrid15 [ TR1G_LEVELS ] [ 9 ] =
+BOOL GunGrid15 [ TR1G_LEVELS ] [ NB_GUNS ] =
 {
     //  PIS     MAG     UZI     RIO     M16     GRE     ROC     HAR     CRO
     {   TRUE,   TRUE,   TRUE,   TRUE,   FALSE,  FALSE,  FALSE,  FALSE,  FALSE   },  //  16  Return to Egypt
@@ -36,7 +36,7 @@ BOOL GunGrid15 [ TR1G_LEVELS ] [ 9 ] =
     {   TRUE,   TRUE,   TRUE,   TRUE,   FALSE,  FALSE,  FALSE,  FALSE,  FALSE   },  //  19
 };
 
-BOOL GunGrid2 [ TR2_LEVELS ] [ 9 ] =
+BOOL GunGrid2 [ TR2_LEVELS ] [ NB_GUNS ] =
 {
     //  PIS     MAG     UZI     RIO     M16     GRE     ROC     HAR     CRO
     {   TRUE,   TRUE,   TRUE,   TRUE,   TRUE,   TRUE,   FALSE,  TRUE,   FALSE   },  //  1
@@ -64,7 +64,7 @@ BOOL GunGrid2 [ TR2_LEVELS ] [ 9 ] =
     {   TRUE,   TRUE,   TRUE,   TRUE,   FALSE,  FALSE,  FALSE,  FALSE,  FALSE   },  //  23  Vegas
 };
 
-BOOL GunGrid25 [ TR2G_LEVELS ] [ 9 ] =
+BOOL GunGrid25 [ TR2G_LEVELS ] [ NB_GUNS ] =
 {
     //  PIS     MAG     UZI     RIO     M16     GRE     ROC     HAR
     {   TRUE,   TRUE,   TRUE,   TRUE,   TRUE,   TRUE,   FALSE,  TRUE,   FALSE   },  //  19  The Cold War
@@ -74,7 +74,7 @@ BOOL GunGrid25 [ TR2G_LEVELS ] [ 9 ] =
     {   TRUE,   TRUE,   TRUE,   TRUE,   FALSE,  FALSE,  FALSE,  FALSE,  FALSE   },  //  23  Vegas
 };
 
-BOOL GunGrid3 [ TR3_LEVELS ] [ 9 ] =
+BOOL GunGrid3 [ TR3_LEVELS ] [ NB_GUNS ] =
 {
     //  PIS     MAG     UZI     RIO     M16     GRE     ROC     HAR     CRO
     {   TRUE,   TRUE,   TRUE,   TRUE,   TRUE,   TRUE,   TRUE,   TRUE,   FALSE   },  //  1
@@ -105,7 +105,7 @@ BOOL GunGrid3 [ TR3_LEVELS ] [ 9 ] =
     {   TRUE,   TRUE,   TRUE,   TRUE,   TRUE,   TRUE,   TRUE,   TRUE,   FALSE   },  //  26  Reunion
 };
 
-BOOL GunGrid35 [ TR3G_LEVELS ] [ 9 ] =
+BOOL GunGrid35 [ TR3G_LEVELS ] [ NB_GUNS ] =
 {
     //  PIS     MAG     UZI     RIO     M16     GRE     ROC     HAR
     {   TRUE,   TRUE,   TRUE,   TRUE,   TRUE,   TRUE,   TRUE,   TRUE,   FALSE   },  //  21  Highland Fling
@@ -116,7 +116,7 @@ BOOL GunGrid35 [ TR3G_LEVELS ] [ 9 ] =
     {   TRUE,   TRUE,   TRUE,   TRUE,   TRUE,   TRUE,   TRUE,   TRUE,   FALSE   },  //  26  Reunion
 };
 
-BOOL GunGrid4 [ TR4_LEVELS ] [ 9 ] =
+BOOL GunGrid4 [ TR4_LEVELS ] [ NB_GUNS ] =
 {
     //  PIS     MAG     UZI     RIO     M16     GRE     ROC     HAR     CRO
     {   TRUE,   TRUE,   TRUE,   TRUE,   FALSE,  TRUE,   FALSE,  TRUE,   TRUE    },  //  1
@@ -160,7 +160,7 @@ BOOL GunGrid4 [ TR4_LEVELS ] [ 9 ] =
 };
 
 //  Grappling is in column HAR
-BOOL GunGrid5 [ TR5_LEVELS ] [ 9 ] =
+BOOL GunGrid5 [ TR5_LEVELS ] [ NB_GUNS ] =
 {
     //  PIS     MAG     UZI     RIO     HK      GRE     ROC     HAR     CRO
     {   TRUE,   TRUE,   TRUE,   FALSE,  FALSE,  TRUE,   FALSE,  FALSE,  TRUE    },  // Level 1  STREETS OF ROME

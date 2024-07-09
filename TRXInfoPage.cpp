@@ -2630,6 +2630,81 @@ void CTRXInfoPage::OnChangeRoom()
 /////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////
+BOOL CTRXInfoPage::GetCustomParams ( TR_MODE *pTrMode, STRUCTLOCATION  **ppTable, char BASED_CODE **ppFilter, char **ppNames, char **ppTypeName )
+{
+    //
+    int tombraider      = CTRSaveGame::GetFullVersion ();
+
+    //
+    switch ( tombraider )
+    {
+        case 1 :
+        case 10 :
+        case 15 :
+        {
+            if ( pTrMode != NULL )      *pTrMode        = TRR1_MODE;
+            if ( ppTable != NULL )      *ppTable        = CustomPathnames1;
+            if ( ppFilter != NULL )     *ppFilter       = "Tombraider 1 Files|*.PHD|All Files (*.*)|*.*||";
+            if ( ppNames != NULL )      *ppNames        = "*.PHD";
+            if ( ppTypeName != NULL )   *ppTypeName     = ".PHD";
+            return TRUE;
+        }
+        case 2:
+        case 20 :
+        case 25 :
+        {
+            if ( pTrMode != NULL )      *pTrMode        = TRR2_MODE;
+            if ( ppTable != NULL )      *ppTable        = CustomPathnames2;
+            if ( ppFilter != NULL )     *ppFilter       = "Tombraider 2 Files|*.tr2|All Files (*.*)|*.*||";
+            if ( ppNames != NULL )      *ppNames        = "*.tr2";
+            if ( ppTypeName != NULL )   *ppTypeName     = ".tr2";
+            return TRUE;
+        }
+        case 3:
+        case 30 :
+        case 35 :
+        {
+            if ( pTrMode != NULL )      *pTrMode        = TRR3_MODE;
+            if ( ppTable != NULL )      *ppTable        = CustomPathnames3;
+            if ( ppFilter != NULL )     *ppFilter       = "Tombraider 3 Files|*.tr2|All Files (*.*)|*.*||";
+            if ( ppNames != NULL )      *ppNames        = "*.tr2";
+            if ( ppTypeName != NULL )   *ppTypeName     = ".tr2";
+            return TRUE;
+        }
+        case 4:
+        case 40 :
+        case 45 :
+        case 49 :
+        {
+            if ( pTrMode != NULL )      *pTrMode        = TR4_MODE;
+            if ( ppTable != NULL )      *ppTable        = CustomPathnames4;
+            if ( ppFilter != NULL )     *ppFilter       = "Tombraider 4 Files|*.tr4|All Files (*.*)|*.*||";
+            if ( ppNames != NULL )      *ppNames        = "*.tr4";
+            if ( ppTypeName != NULL )   *ppTypeName     = ".tr4";
+            return TRUE;
+        }
+        case 5:
+        case 50 :
+        {
+            if ( pTrMode != NULL )      *pTrMode        = TR5_MODE;
+            if ( ppTable != NULL )      *ppTable        = CustomPathnames5;
+            if ( ppFilter != NULL )     *ppFilter       = "Tombraider 5 Files|*.trc|All Files (*.*)|*.*||";
+            if ( ppNames != NULL )      *ppNames        = "*.trc";
+            if ( ppTypeName != NULL )   *ppTypeName     = ".trc";
+            return TRUE;
+        }
+        default:
+        {
+            return FALSE;
+        }
+    }
+
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
 void CTRXInfoPage::OnBnClickedAddCustom()
 {
     static char szPathname [ MAX_PATH ] = "";
@@ -2658,70 +2733,12 @@ void CTRXInfoPage::OnBnClickedAddCustom()
     char            *pNames     = NULL;
     char            *typeName   = NULL;
 
-    //
-    switch ( tombraider )
+    BOOL valid = GetCustomParams ( &trMode, &pTable, &pFilter, &pNames, &typeName );
+    if ( ! valid )
     {
-        case 1 :
-        case 10 :
-        case 15 :
-        {
-            trMode      = TRR1_MODE;
-            pTable      = CustomPathnames1;
-            pFilter     = "Tombraider 1 Files|*.PHD|All Files (*.*)|*.*||";
-            pNames      = "*.PHD";
-            typeName    = ".PHD";
-            break;
-        }
-        case 2:
-        case 20 :
-        case 25 :
-        {
-            trMode      = TRR2_MODE;
-            pTable      = CustomPathnames2;
-            pFilter     = "Tombraider 2 Files|*.tr2|All Files (*.*)|*.*||";
-            pNames      = "*.tr2";
-            typeName    = ".tr2";
-            break;
-        }
-        case 3:
-        case 30 :
-        case 35 :
-        {
-            trMode      = TRR3_MODE;
-            pTable      = CustomPathnames3;
-            pFilter     = "Tombraider 3 Files|*.tr2|All Files (*.*)|*.*||";
-            pNames      = "*.tr2";
-            typeName    = ".tr2";
-            break;
-        }
-        case 4:
-        case 40 :
-        case 45 :
-        case 49 :
-        {
-            trMode      = TR4_MODE;
-            pTable      = CustomPathnames4;
-            pFilter     = "Tombraider 4 Files|*.tr4|All Files (*.*)|*.*||";
-            pNames      = "*.tr4";
-            typeName    = ".tr4";
-            break;
-        }
-        case 5:
-        case 50 :
-        {
-            trMode      = TR5_MODE;
-            pTable      = CustomPathnames5;
-            pFilter     = "Tombraider 5 Files|*.trc|All Files (*.*)|*.*||";
-            pNames      = "*.trc";
-            typeName    = ".trc";
-            break;
-        }
-        default:
-        {
-            CTRXMessageBox::ShowMessage( "Load Custom Data File",
-                "You must load a savegame first to determine the version of Tombraider" );
-            return;
-        }
+        CTRXMessageBox::ShowMessage( "Load Custom Data File",
+            "You must load a savegame first to determine the version of Tombraider" );
+        return;
     }
 
     //
@@ -2892,53 +2909,10 @@ void CTRXInfoPage::ChangeCustomCombo(bool bManualChange)
             TR_MODE trMode              = TR_NONE;
             STRUCTLOCATION  *pTable     = NULL;
 
-            //
-            switch ( tombraider )
+            BOOL valid = GetCustomParams ( &trMode, &pTable, NULL, NULL, NULL );
+            if ( ! valid )
             {
-                case 1 :
-                case 10 :
-                case 15 :
-                {
-                    trMode  = TRR1_MODE;
-                    pTable  = CustomPathnames1;
-                    break;
-                }
-                case 2:
-                case 20 :
-                case 25 :
-                {
-                    trMode  = TRR2_MODE;
-                    pTable  = CustomPathnames2;
-                    break;
-                }
-                case 3:
-                case 30 :
-                case 35 :
-                {
-                    trMode  = TRR3_MODE;
-                    pTable  = CustomPathnames3;
-                    break;
-                }
-                case 4:
-                case 40 :
-                case 45 :
-                case 49 :
-                {
-                    trMode  = TR4_MODE;
-                    pTable  = CustomPathnames4;
-                    break;
-                }
-                case 5:
-                case 50 :
-                {
-                    trMode  = TR5_MODE;
-                    pTable  = CustomPathnames5;
-                    break;
-                }
-                default:
-                {
-                    return;
-                }
+                return;
             }
 
             /*
@@ -3142,58 +3116,12 @@ void CTRXInfoPage::OnBnClickedSeeCustom()
     STRUCTLOCATION  *pTable     = NULL;
     char *typeName              = NULL;
 
-    //
-    switch ( tombraider )
+    BOOL valid = GetCustomParams ( &trMode, &pTable, NULL, NULL, &typeName );
+    if ( ! valid )
     {
-        case 1 :
-        case 10 :
-        case 15 :
-        {
-            trMode      = TRR1_MODE;
-            pTable      = CustomPathnames1;
-            typeName    = ".PHD";
-            break;
-        }
-        case 2:
-        case 20 :
-        case 25 :
-        {
-            trMode      = TRR2_MODE;
-            pTable      = CustomPathnames2;
-            typeName    = ".tr2";
-            break;
-        }
-        case 3:
-        case 30 :
-        case 35 :
-        {
-            trMode      = TRR3_MODE;
-            pTable      = CustomPathnames3;
-            typeName    = ".tr2";
-            break;
-        }
-        case 4:
-        case 40 :
-        case 45 :
-        case 49 :
-        {
-            trMode      = TR4_MODE;
-            pTable      = CustomPathnames4;
-            typeName    = ".tr4";
-            break;
-        }
-        case 5:
-        case 50 :
-        {
-            trMode      = TR5_MODE;
-            pTable      = CustomPathnames5;
-            typeName    = ".trc";
-            break;
-        }
-        default:
-        {
-            return;
-        }
+        CTRXMessageBox::ShowMessage( "Load Custom Data File",
+            "You must load a savegame first to determine the version of Tombraider" );
+        return;
     }
 
     //

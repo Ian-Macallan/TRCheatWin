@@ -8,6 +8,7 @@
 #include "TRXTools.h"
 #include "TR_Areas.h"
 #include "TRXGlobal.h"
+#include "GunGrids.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -103,7 +104,6 @@ static INDICATORS IndicatorsTable [] =
 };
 
 //
-#define MAX_POSITION    32
 static int positionCount = 0;
 static TR4NG_POSITION *positionTable [ MAX_POSITION ];
 
@@ -132,7 +132,7 @@ CTR4NGSaveGame::CTR4NGSaveGame()
     iMaskRiotGun        = TR40NG_GUN_SET1 | TR40NG_GUN_SET8;
     iMaskCrossBow       = TR40NG_GUN_SET1 | TR40NG_GUN_SET8;        // Crossbow
     iMaskGrenade        = TR40NG_GUN_SET1 | TR40NG_GUN_SET8;
-    iMaskRevolver       = TR40NG_GUN_SET1;                      // Revolver
+    iMaskRevolver       = TR40NG_GUN_SET1;                          // Revolver
     iMaskLaser          = TR40NG_GUN_SET1;
     iMaskBinocular      = TR40NG_GUN_SET1;
     iMaskCrowBar        = TR40NG_GUN_SET1;
@@ -1626,7 +1626,8 @@ void *CTR4NGSaveGame::GetIndicatorAddress (int index)
 {
     //
     BYTE *pBuffer   = ( BYTE * ) m_pBuffer;
-    int count = 0;
+    int count       = 0;
+
     for ( int i = 0x0280; i < 0x3000; i++ )
     {
         for ( int j = 0; j < sizeof(IndicatorsTable)/sizeof(INDICATORS);  j++ )
@@ -1640,6 +1641,10 @@ void *CTR4NGSaveGame::GetIndicatorAddress (int index)
                     continue;
                 }
 
+                //  Life is not there
+                WORD life = * (WORD * ) ( pBuffer + i + TR4NG_LIFE_OFFSET );
+
+                //
                 count++;
                 if ( count > index )
                 {
@@ -1687,7 +1692,7 @@ int CTR4NGSaveGame::GetLife ()
     char *pBuffer   = ( char * ) GetIndicatorAddress();
     if ( pBuffer != NULL )
     {
-        WORD *pLife = ( WORD * ) ( &pBuffer [ 20 ] );
+        WORD *pLife = ( WORD * ) ( &pBuffer [ TR4NG_LIFE_OFFSET ] );
         return *pLife;
     }
 
@@ -1704,7 +1709,7 @@ void CTR4NGSaveGame::SetLife ( const char *szLife )
     char *pBuffer   = ( char * ) GetIndicatorAddress();
     if ( pBuffer != NULL )
     {
-        WORD *pLife = ( WORD * ) ( & pBuffer [ 20 ] );
+        WORD *pLife = ( WORD * ) ( & pBuffer [ TR4NG_LIFE_OFFSET ] );
     }
 
 }
@@ -1891,9 +1896,9 @@ TR4NG_POSITION *CTR4NGSaveGame::GetTR4Position ( )
 #ifdef _DEBUG
                     DWORD dwRelativeAddress = CTRXTools::RelativeAddress ( pBuffer + i, m_pBuffer );
                     static char szDebugString [ MAX_PATH ];
-                    sprintf_s ( szDebugString, sizeof(szDebugString), "Indicators 0x%08x : 0x%02x 0x%02x 0x%02x 0x%02x %3u %5d %5d %5d \n", 
+                    sprintf_s ( szDebugString, sizeof(szDebugString), "Indicators 0x%08x : 0x%02x 0x%02x 0x%02x 0x%02x %3u %5d %5d %5d %3u\n", 
                         dwRelativeAddress, pTR4Position->indicator1, pTR4Position->indicator2, pTR4Position->indicator3, pTR4Position->indicator4, 
-                        pTR4Position->cRoom, pTR4Position->wVertical, pTR4Position->wSouthToNorth, pTR4Position->wWestToEast ); 
+                        pTR4Position->cRoom, pTR4Position->wVertical, pTR4Position->wSouthToNorth, pTR4Position->wWestToEast, pTR4Position->cOrientation ); 
                     OutputDebugString ( szDebugString );
 #endif
                     positionTable [ 0 ] = pTR4Position;
@@ -1968,9 +1973,9 @@ TR4NG_POSITION *CTR4NGSaveGame::GetTR4Position ( )
 #ifdef _DEBUG
                 DWORD dwRelativeAddress = CTRXTools::RelativeAddress ( pBuffer + i, m_pBuffer );
                 static char szDebugString [ MAX_PATH ];
-                sprintf_s ( szDebugString, sizeof(szDebugString), "Indicators 0x%08x : 0x%02x 0x%02x 0x%02x 0x%02x %3u %5d %5d %5d\n", 
+                sprintf_s ( szDebugString, sizeof(szDebugString), "Indicators 0x%08x : 0x%02x 0x%02x 0x%02x 0x%02x %3u %5d %5d %5d %3u\n", 
                     dwRelativeAddress, pCurrent->indicator1, pCurrent->indicator2, pCurrent->indicator3, pCurrent->indicator4,
-                    pCurrent->cRoom, pCurrent->wVertical, pCurrent->wSouthToNorth, pCurrent->wWestToEast ); 
+                    pCurrent->cRoom, pCurrent->wVertical, pCurrent->wSouthToNorth, pCurrent->wWestToEast, pCurrent->cOrientation ); 
                 OutputDebugString ( szDebugString );
 
                 if ( CTRXGlobal::m_iUnchecked == FALSE )

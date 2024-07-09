@@ -59,6 +59,7 @@
 //  This structure is 8 before the 02 02 xx  67
 #define TR4NG_POSITION_OFFSET           11
 #define TR4NG_FACTOR                    2L
+
 struct TR4NG_POSITION
 {
     BYTE    cMoving1;           //  0000 Change when moving
@@ -78,6 +79,7 @@ struct TR4NG_POSITION
     BYTE    unknown4;
     WORD    heath;              //  0012
 };
+#define TR4NG_LIFE_OFFSET       (offsetof(TR4NG_POSITION,heath)-offsetof(TR4NG_POSITION,indicator1))
 
 struct          TR4NGGun
 {
