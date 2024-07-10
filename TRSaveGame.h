@@ -684,8 +684,3 @@ class CTRSaveGame  : public CObject
         // Generated message map functions
 };
 
-//{{AFX_INSERT_LOCATION}}
-// Microsoft Visual C++ will insert additional declarations immediately before the previous line.
-// The savegame object.
-
-

@@ -16,6 +16,7 @@
 #include "TR2SaveGame.h"
 #include "TR3SaveGame.h"
 #include "TR4SaveGame.h"
+#include "TR4NGSaveGame.h"
 #include "TR5SaveGame.h"
 #include "TR9SaveGame.h"
 #include "TRXGlobal.h"

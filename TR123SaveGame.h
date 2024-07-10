@@ -1,0 +1,17 @@
+#pragma once
+
+#include "TRSaveGame.h"
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
+class CTR123SaveGame : public CTRSaveGame
+{
+    DECLARE_DYNAMIC(CTR123SaveGame)
+
+    public:
+        CTR123SaveGame(void);
+        virtual ~CTR123SaveGame(void);
+};
+

@@ -1,8 +1,7 @@
 #pragma once
 
 #include "TRXTools.h"
-
-#pragma once
+#include "TR45SaveGame.h"
 
 //
 /////////////////////////////////////////////////////////////////////////////
@@ -306,7 +305,7 @@ typedef struct TR4Save TR4SAVE;
 
 #pragma pack(pop, pack1)
 
-class CTR4SaveGame : public CTRSaveGame
+class CTR4SaveGame : public CTR45SaveGame
 {
     DECLARE_DYNAMIC(CTR4SaveGame)
 
@@ -597,10 +596,4 @@ class CTR4SaveGame : public CTRSaveGame
 
     // Generated message map functions
 };
-
-//{{AFX_INSERT_LOCATION}}
-// Microsoft Visual C++ will insert additional declarations immediately before the previous line.
-// The savegame object.
-
-
 

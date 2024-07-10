@@ -332,7 +332,9 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="TR10SaveGame.cpp" />
+    <ClCompile Include="TR123SaveGame.cpp" />
     <ClCompile Include="TR2SaveGame.cpp" />
+    <ClCompile Include="TR45SaveGame.cpp" />
     <ClCompile Include="TR4NGSaveGame.cpp" />
     <ClCompile Include="TR9SaveGame.cpp" />
     <ClCompile Include="TRLabelItems.cpp" />
@@ -509,6 +511,7 @@
     <ClInclude Include="ReadTR2\ReadTRX.h" />
     <ClInclude Include="ReadTR2\ReadTRXBasicTypes.h" />
     <ClInclude Include="ReadTR2\ReadTRXScript.h" />
+    <ClInclude Include="TR123SaveGame.h" />
     <ClInclude Include="TR1G_Areas_inc.h" />
     <ClInclude Include="TR1_Areas_inc.h" />
     <ClInclude Include="TR2G_Areas_inc.h" />
@@ -516,6 +519,7 @@
     <ClInclude Include="TR2_Areas_inc.h" />
     <ClInclude Include="TR3G_Areas_inc.h" />
     <ClInclude Include="TR3_Areas_inc.h" />
+    <ClInclude Include="TR45SaveGame.h" />
     <ClInclude Include="TR4G_Areas_inc.h" />
     <ClInclude Include="TR4NGSaveGame.h" />
     <ClInclude Include="TR4_Areas_inc.h" />

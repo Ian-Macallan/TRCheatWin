@@ -1,13 +1,8 @@
-#if !defined(AFX_TR5SAVEGAME_H__F8F73C01_A0DB_11D2_8146_444553540000__INCLUDED_)
-#define AFX_TR5SAVEGAME_H__F8F73C01_A0DB_11D2_8146_444553540000__INCLUDED_
+#pragma once
 
-#include "TRSaveGame.h"
+#include "TR45SaveGame.h"
 
 #include "TRXTools.h"
-
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
 
 //
 /////////////////////////////////////////////////////////////////////////////
@@ -260,7 +255,7 @@ typedef struct TR5Save TR5SAVE;
 
 #pragma pack(pop, pack1)
 
-class CTR5SaveGame : public CTRSaveGame
+class CTR5SaveGame : public CTR45SaveGame
 {
     DECLARE_DYNAMIC(CTR5SaveGame)
 
@@ -608,11 +603,4 @@ class CTR5SaveGame : public CTRSaveGame
 
     // Generated message map functions
 };
-
-//{{AFX_INSERT_LOCATION}}
-// Microsoft Visual C++ will insert additional declarations immediately before the previous line.
-// The savegame object.
-
-
-#endif // !defined(AFX_TR5SAVEGAME_H__F8F73C01_A0DB_11D2_8146_444553540000__INCLUDED_)
 

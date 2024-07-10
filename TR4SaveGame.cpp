@@ -73,35 +73,29 @@ static char    TR4NBSecrets [ ] =
 /////////////////////////////////////////////////////////////////////////////
 //  Indicator Table
 /////////////////////////////////////////////////////////////////////////////
-typedef struct indicatorStruct
+static TR45_INDICATORS IndicatorsTR4Table [ MAX_INDICATORS ] =
 {
-    BYTE    b1;
-    BYTE    b2;
-    BYTE    b3;
-    BYTE    b4;
-    BOOL    useB3;
-} INDICATORS;
-
-static INDICATORS IndicatorsTable [] =
-{
-    {   0x02,   0x02,   0x00,   0x67,   FALSE },
-    {   0x02,   0x02,   0x00,   0x28,   FALSE },
-    {   0x02,   0x02,   0x00,   0x0b,   FALSE },
-    {   0x02,   0x02,   0x00,   0x0c,   FALSE },
-    {   0x02,   0x02,   0x00,   0x1f,   FALSE },
-    {   0x02,   0x02,   0x00,   0xbd,   FALSE },
-    {   0x02,   0x02,   0x00,   0xdd,   FALSE },
-    {   0x03,   0x00,   0x00,   0x02,   FALSE },
-    {   0x0d,   0x0d,   0x00,   0x6c,   FALSE },
-    {   0x0e,   0x00,   0x00,   0x02,   FALSE },
-    {   0x12,   0x00,   0x00,   0x02,   FALSE },     // Flare
-    {   0xfd,   0xff,   0x00,   0x00,   FALSE },     // Jeep
+    {   FALSE,  0x02,   0x02,   0x00,   0x67,   FALSE },
+    {   FALSE,  0x02,   0x02,   0x00,   0x28,   FALSE },
+    {   FALSE,  0x02,   0x02,   0x00,   0x0b,   FALSE },
+    {   FALSE,  0x02,   0x02,   0x00,   0x0c,   FALSE },
+    {   FALSE,  0x02,   0x02,   0x00,   0x1f,   FALSE },
+    {   FALSE,  0x02,   0x02,   0x00,   0xbd,   FALSE },
+    {   FALSE,  0x02,   0x02,   0x00,   0xdd,   FALSE },
+    {   FALSE,  0x03,   0x00,   0x00,   0x02,   FALSE },
+    {   FALSE,  0x0d,   0x0d,   0x00,   0x6c,   FALSE },
+    {   FALSE,  0x0e,   0x00,   0x00,   0x02,   FALSE },
+    {   FALSE,  0x12,   0x00,   0x00,   0x02,   FALSE },        // Flare
+    {   FALSE,  0xfd,   0xff,   0x00,   0x00,   FALSE },        // Jeep
 #ifdef _DEBUG
-    {   0x00,   0x02,   0x00,   0x02,   FALSE },
-    {   0x00,   0x02,   0x00,   0x03,   FALSE },
-    {   0x0c,   0x00,   0x00,   0x02,   FALSE },
+    {   FALSE,  0x00,   0x02,   0x00,   0x02,   TRUE },
+    {   FALSE,  0x00,   0x02,   0x00,   0x03,   TRUE },
+    {   FALSE,  0x0c,   0x00,   0x00,   0x02,   TRUE },
 #endif
+
+    {   TRUE,   0xff,   0xff,   0xff,   0xff,   TRUE },         // End
 };
+static int IndicatorsTR4TableCount = sizeof(IndicatorsTR4Table)/sizeof(TR45_INDICATORS);
 
 //
 static int positionCount = 0;
@@ -112,7 +106,7 @@ static TR4_POSITION *positionTable [ MAX_POSITION ];
 // CTR4SaveGame
 //
 /////////////////////////////////////////////////////////////////////////////
-IMPLEMENT_DYNAMIC(CTR4SaveGame, CTRSaveGame)
+IMPLEMENT_DYNAMIC(CTR4SaveGame, CTR45SaveGame)
 
 //
 /////////////////////////////////////////////////////////////////////////////
@@ -1629,13 +1623,19 @@ void *CTR4SaveGame::GetIndicatorAddress (int index)
     int count       = 0;
     for ( int i = 0x0280; i < 0x3000; i++ )
     {
-        for ( int j = 0; j < sizeof(IndicatorsTable)/sizeof(INDICATORS);  j++ )
+        //  Compare with Indicators
+        for ( int j = 0; j < IndicatorsTR4TableCount;  j++ )
         {
-            if (    pBuffer [ i ] == IndicatorsTable [ j ].b1 &&
-                    pBuffer [ i + 1 ] == IndicatorsTable [ j ].b2 &&
-                    pBuffer [ i + 3 ] == IndicatorsTable [ j ].b4 )
+            if ( IndicatorsTR4Table [ j ].bEnd )
             {
-                if ( IndicatorsTable [ j ].useB3 && pBuffer [ i + 2 ] != IndicatorsTable [ j ].b3 )
+                break;
+            }
+
+            if (    pBuffer [ i ] == IndicatorsTR4Table [ j ].b1 &&
+                    pBuffer [ i + 1 ] == IndicatorsTR4Table [ j ].b2 &&
+                    pBuffer [ i + 3 ] == IndicatorsTR4Table [ j ].b4 )
+            {
+                if ( IndicatorsTR4Table [ j ].useB3 && pBuffer [ i + 2 ] != IndicatorsTR4Table [ j ].b3 )
                 {
                     continue;
                 }
@@ -1831,9 +1831,18 @@ TR4_POSITION *CTR4SaveGame::GetTR4Position ( )
     ZeroMemory ( positionTable, sizeof(positionTable) );
     positionCount   = 0;
 
-    //
-    for ( int index = 0; index < sizeof(IndicatorsTable)/sizeof(INDICATORS); index++ )
+    //  We Search n times
+    //  The Goal is to see if there is a =atch with position for an index
+    //  For example we could have an indicator but no position
+    //  So we will look the next indicator
+    for ( int index = 0; index < IndicatorsTR4TableCount; index++ )
     {
+        if ( IndicatorsTR4Table [ index ].bEnd )
+        {
+            break;
+        }
+
+        //
         char *pBuffer = (char * ) GetIndicatorAddress(index);
         if ( pBuffer )
         {

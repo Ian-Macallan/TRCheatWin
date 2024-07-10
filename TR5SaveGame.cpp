@@ -22,32 +22,26 @@ extern CTRXCHEATWINApp theApp;
 /////////////////////////////////////////////////////////////////////////////
 //  Indicator Table
 /////////////////////////////////////////////////////////////////////////////
-typedef struct indicatorStruct
+static TR45_INDICATORS IndicatorsTR5Table [ MAX_INDICATORS ] =
 {
-    BYTE    b1;
-    BYTE    b2;
-    BYTE    b3;
-    BYTE    b4;
-    BOOL    useB3;
-} INDICATORS;
+    {   FALSE,  0x02,   0x02,   0x00,   0x67,   FALSE },
+    {   FALSE,  0x02,   0x02,   0x00,   0x0b,   FALSE },
+    {   FALSE,  0x02,   0x02,   0x00,   0x1f,   FALSE },
+    {   FALSE,  0x0d,   0x0d,   0x00,   0x6c,   FALSE },
+    {   FALSE,  0x0d,   0x12,   0x00,   0x6c,   FALSE },
+    {   FALSE,  0x12,   0x12,   0x00,   0x57,   FALSE },
+    {   FALSE,  0x47,   0x47,   0x00,   0xde,   FALSE },        // Crawling
+    {   FALSE,  0x50,   0x50,   0x00,   0x07,   FALSE }, 
+    {   FALSE,  0x47,   0x47,   0x00,   0xde,   FALSE },        // Crawling
+    {   FALSE,  0x47,   0x57,   0x00,   0xde,   FALSE },        // Crawling
+    {   FALSE,  0x02,   0x02,   0x00,   0x0b,   FALSE },        // Jumping
+    {   FALSE,  0x09,   0x09,   0x00,   0x17,   FALSE },        // Falling
+    {   FALSE,  0x01,   0x02,   0x00,   0x0a,   FALSE },        // Running
 
-static INDICATORS IndicatorsTable [] =
-{
-    {   0x02,   0x02,   0x00,   0x67,   FALSE },
-    {   0x02,   0x02,   0x00,   0x0b,   FALSE },
-    {   0x02,   0x02,   0x00,   0x1f,   FALSE },
-    {   0x0d,   0x0d,   0x00,   0x6c,   FALSE },
-    {   0x0d,   0x12,   0x00,   0x6c,   FALSE },
-    {   0x12,   0x12,   0x00,   0x57,   FALSE },
-    {   0x47,   0x47,   0x00,   0xde,   FALSE },         // Crawling
-    {   0x50,   0x50,   0x00,   0x07,   FALSE }, 
-    {   0x47,   0x47,   0x00,   0xde,   FALSE },         // Crawling
-    {   0x47,   0x57,   0x00,   0xde,   FALSE },         // Crawling
-    {   0x02,   0x02,   0x00,   0x0b,   FALSE },         // Jumping
-    {   0x09,   0x09,   0x00,   0x17,   FALSE },         // Falling
-    {   0x01,   0x02,   0x00,   0x0a,   FALSE },         // Running
+    {   TRUE,   0xff,   0xff,   0xff,   0xff,   TRUE },         // End
 
 };
+static int IndicatorsTR5TableCount = sizeof(IndicatorsTR5Table)/sizeof(TR45_INDICATORS);
 
 //
 static int positionCount = 0;
@@ -105,7 +99,7 @@ static WORD HealthPosition [ TR5_LEVELS ] =
 // CTR5SaveGame
 //
 /////////////////////////////////////////////////////////////////////////////
-IMPLEMENT_DYNAMIC(CTR5SaveGame, CTRSaveGame)
+IMPLEMENT_DYNAMIC(CTR5SaveGame, CTR45SaveGame)
 
 //
 /////////////////////////////////////////////////////////////////////////////
@@ -1587,13 +1581,19 @@ void *CTR5SaveGame::GetIndicatorAddress (int index)
     int count = 0;
     for ( int i = 0x400; i < 0xD00; i++ )
     {
-        for ( int j = 0; j < sizeof(IndicatorsTable)/sizeof(INDICATORS);  j++ )
+        //  Compare with Indicators
+        for ( int j = 0; j < IndicatorsTR5TableCount;  j++ )
         {
-            if (    pBuffer [ i ] == IndicatorsTable [ j ].b1 &&
-                    pBuffer [ i + 1 ] == IndicatorsTable [ j ].b2 &&
-                    pBuffer [ i + 3 ] == IndicatorsTable [ j ].b4 )
+            if ( IndicatorsTR5Table [ j ].bEnd )
             {
-                if ( IndicatorsTable [ j ].useB3 && pBuffer [ i + 2 ] != IndicatorsTable [ j ].b3 )
+                break;
+            }
+
+            if (    pBuffer [ i ] == IndicatorsTR5Table [ j ].b1 &&
+                    pBuffer [ i + 1 ] == IndicatorsTR5Table [ j ].b2 &&
+                    pBuffer [ i + 3 ] == IndicatorsTR5Table [ j ].b4 )
+            {
+                if ( IndicatorsTR5Table [ j ].useB3 && pBuffer [ i + 2 ] != IndicatorsTR5Table [ j ].b3 )
                 {
                     continue;
                 }
@@ -1780,8 +1780,17 @@ TR5_POSITION *CTR5SaveGame::GetTR5Position ( )
     ZeroMemory ( positionTable, sizeof(positionTable) );
     positionCount   = 0;
 
-    for ( int index = 0; index < sizeof(IndicatorsTable)/sizeof(INDICATORS); index++ )
+    //  We Search n times
+    //  The Goal is to see if there is a =atch with position for an index
+    //  For example we could have an indicator but no position
+    //  So we will look the next indicator
+    for ( int index = 0; index < IndicatorsTR5TableCount; index++ )
     {
+        if ( IndicatorsTR5Table [ index ].bEnd )
+        {
+            break;
+        }
+
         char *pBuffer = (char * ) GetIndicatorAddress(index);
         if ( pBuffer )
         {

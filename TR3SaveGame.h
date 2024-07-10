@@ -1,7 +1,7 @@
 #if !defined(AFX_TR3SAVEGAME_H__F8F73C01_A0DB_11D2_8146_444553540000__INCLUDED_)
 #define AFX_TR3SAVEGAME_H__F8F73C01_A0DB_11D2_8146_444553540000__INCLUDED_
 
-#include "TRSaveGame.h"
+#include "TR123SaveGame.h"
 
 #include "TRXTools.h"
 
@@ -203,7 +203,7 @@ typedef struct TR3Save TR3SAVE;
 
 #pragma pack(pop, pack1)
 
-class CTR3SaveGame : public CTRSaveGame
+class CTR3SaveGame : public CTR123SaveGame
 {
     DECLARE_DYNAMIC(CTR3SaveGame)
 
