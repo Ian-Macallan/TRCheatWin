@@ -88,6 +88,7 @@ static TR45_INDICATORS IndicatorsTR4NGTable [ MAX_INDICATORS ] =
     {   FALSE,  0x12,   0x00,   0x00,   0x02,   FALSE },        // Flare
     {   FALSE,  0xfd,   0xff,   0x00,   0x00,   FALSE },        // Jeep
 #ifdef _DEBUG
+    {   FALSE,  0x47,   0x47,   0x47,   0xde,   TRUE },         // Kneel
     {   FALSE,  0x00,   0x02,   0x00,   0x02,   TRUE },
     {   FALSE,  0x00,   0x02,   0x00,   0x03,   TRUE },
     {   FALSE,  0x0c,   0x00,   0x00,   0x02,   TRUE },

@@ -11,6 +11,7 @@
 #include "resource.h"
 
 #include "TRXTools.h"
+#include "AutomaticVersionHeader.h"
 
 //
 // #pragma warning (disable : 4477)

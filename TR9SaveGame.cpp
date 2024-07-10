@@ -1606,24 +1606,34 @@ BOOL CTR9SaveGame::ReadFile ( const char *pFilename )
 /////////////////////////////////////////////////////////////////////////////
 BOOL CTR9SaveGame::writeFile ( const char *pFilename )
 {
-    if ( m_iSaveLength > 0 )
+    if ( m_iSaveLength > 0 && pFilename != NULL && strlen(pFilename) > 0 )
     {
         //  Just Rename Once
-        char szOriginal [ MAX_PATH ];
-        char szRenamed [ MAX_PATH ];
+        static char szOriginal [ MAX_PATH ];
+        static char szRenamed [ MAX_PATH ];
 
         //  32 Backup file
         for ( int i = 32; i >= 1; i-- )
         {
             sprintf_s ( szOriginal, sizeof(szOriginal), "%s.bak.%d", pFilename, i - 1 );
             sprintf_s ( szRenamed, sizeof(szRenamed), "%s.bak.%d", pFilename, i );
-            _unlink ( szRenamed );
-            rename ( szOriginal, szRenamed );
+            if ( PathFileExists ( szRenamed ) )
+            {
+                _unlink ( szRenamed );
+            }
+
+            if ( PathFileExists ( szOriginal ) )
+            {
+                rename ( szOriginal, szRenamed );
+            }
         }
 
         //
         sprintf_s ( szRenamed, sizeof(szRenamed), "%s.bak.%d", pFilename, 0 );
-        rename ( pFilename, szRenamed );
+        if ( PathFileExists ( pFilename ) )
+        {
+            rename ( pFilename, szRenamed );
+        }
 
         //
         fopen_s ( &m_hFile, pFilename, "wb" );

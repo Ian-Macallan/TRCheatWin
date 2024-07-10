@@ -1468,13 +1468,12 @@ void CTRXInfoPage::FillListCtrl(const char *pDirectory)
         strcat_s ( szFiles, sizeof(szFiles), "\\" );
         strcat_s ( szFiles, sizeof(szFiles), tagFile.name );
 
-        //
+        // 
         int iLevel  = 0;
         int iSub    = 0;
 
         //  Treat First
-        if ( (  tagFile.attrib & _A_SUBDIR ) == 0 &&
-                strstr ( tagFile.name, ".bak" ) == NULL && strstr ( tagFile.name, ".BAK" ) == NULL )
+        if ( (  tagFile.attrib & _A_SUBDIR ) == 0 && StrStrI ( tagFile.name, ".bak" ) == NULL )
         {
             iVersion = CTRSaveGame::InstanciateVersion ( szFiles );
 
@@ -1518,8 +1517,7 @@ void CTRXInfoPage::FillListCtrl(const char *pDirectory)
             int iLevel  = 0;
             int iSub    = 0;
 
-            if (  ( tagFile.attrib & _A_SUBDIR ) == 0  &&
-                    strstr ( tagFile.name, ".bak" ) == NULL && strstr ( tagFile.name, ".BAK" ) == NULL )
+            if (  ( tagFile.attrib & _A_SUBDIR ) == 0  && StrStrI ( tagFile.name, ".bak" ) == NULL )
             {
                 iVersion    = CTRSaveGame::InstanciateVersion ( szFiles );
 

@@ -692,13 +692,31 @@ DWORD CTRSaveGame::RelativeAddress( const void *pAddress )
 /////////////////////////////////////////////////////////////////////////////
 void CTRSaveGame::Backup_Savegame()
 {
-    strcpy_s ( m_FilenameBak, sizeof(m_FilenameBak), m_Filename );
-    strcat_s ( m_FilenameBak, sizeof(m_FilenameBak), ".bak" );
+    //  32 Backup file
+    static char szOriginal [ MAX_PATH ];
+    static char szRenamed [ MAX_PATH ];
 
-    //  If .bak file exist then do nothing
-    if ( ! PathFileExists ( m_FilenameBak ) )
+    //  Four Backup Files
+    for ( int i = 4; i >= 1; i-- )
     {
-        rename ( m_Filename, m_FilenameBak );
+        sprintf_s ( szOriginal, sizeof(szOriginal), "%s.bak.%d", m_Filename, i - 1 );
+        sprintf_s ( szRenamed, sizeof(szRenamed), "%s.bak.%d", m_Filename, i );
+        if ( PathFileExists ( szRenamed ) )
+        {
+            _unlink ( szRenamed );
+        }
+
+        if ( PathFileExists ( szOriginal ) )
+        {
+            rename ( szOriginal, szRenamed );
+        }
+    }
+
+    //
+    sprintf_s ( szRenamed, sizeof(szRenamed), "%s.bak.%d", m_Filename, 0 );
+    if ( PathFileExists ( m_Filename ) )
+    {
+        rename ( m_Filename, szRenamed );
     }
 }
 
