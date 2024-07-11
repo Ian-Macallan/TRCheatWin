@@ -24,7 +24,8 @@ extern CTRXCHEATWINApp theApp;
 /////////////////////////////////////////////////////////////////////////////
 static TR45_INDICATORS IndicatorsTR5Table [ MAX_INDICATORS ] =
 {
-    {   FALSE,  0x02,   0x02,   0x00,   0x67,   FALSE },
+    {   FALSE,  0x02,   0x02,   0x00,   0x67,   TRUE },
+    {   FALSE,  0x02,   0x02,   0x47,   0x67,   TRUE },
     {   FALSE,  0x02,   0x02,   0x00,   0x0b,   FALSE },
     {   FALSE,  0x02,   0x02,   0x00,   0x1f,   FALSE },
     {   FALSE,  0x0d,   0x0d,   0x00,   0x6c,   FALSE },
@@ -36,7 +37,17 @@ static TR45_INDICATORS IndicatorsTR5Table [ MAX_INDICATORS ] =
     {   FALSE,  0x47,   0x57,   0x00,   0xde,   FALSE },        // Crawling
     {   FALSE,  0x02,   0x02,   0x00,   0x0b,   FALSE },        // Jumping
     {   FALSE,  0x09,   0x09,   0x00,   0x17,   FALSE },        // Falling
-    {   FALSE,  0x01,   0x02,   0x00,   0x0a,   FALSE },        // Running
+    {   FALSE,  0x01,   0x02,   0x00,   0x0a,   TRUE },         // Running
+#ifdef _DEBUG
+    {   FALSE,  0x27,   0x10,   0x47,   0xa9,   TRUE },
+    {   FALSE,  0x59,   0x16,   0x00,   0xd2,   TRUE },
+    {   FALSE,  0x03,   0x00,   0x01,   0x02,   TRUE },
+    {   FALSE,  0x59,   0x10,   0x47,   0xd8,   TRUE },
+    {   FALSE,  0x59,   0x15,   0x47,   0xd1,   TRUE },
+    {   FALSE,  0x27,   0x10,   0x47,   0x87,   TRUE },
+    {   FALSE,  0x28,   0x0b,   0x47,   0x9e,   TRUE },
+    {   FALSE,  0x59,   0x10,   0x47,   0xd2,   TRUE },
+#endif
 
     {   TRUE,   0xff,   0xff,   0xff,   0xff,   TRUE },         // End
 
@@ -1598,6 +1609,12 @@ void *CTR5SaveGame::GetIndicatorAddress (int index)
                     continue;
                 }
 
+                short life = * ( short * ) ( pBuffer + i + TR5_LIFE_OFFSET );
+                if ( life < 0 || life > 1000 )
+                {
+                    continue;
+                }
+
                 count++;
                 if ( count > index )
                 {
@@ -1780,6 +1797,10 @@ TR5_POSITION *CTR5SaveGame::GetTR5Position ( )
     ZeroMemory ( positionTable, sizeof(positionTable) );
     positionCount   = 0;
 
+#ifdef _DEBUG
+    OutputDebugString ( "\n" );
+#endif
+
     //  We Search n times
     //  The Goal is to see if there is a =atch with position for an index
     //  For example we could have an indicator but no position
@@ -1832,12 +1853,15 @@ TR5_POSITION *CTR5SaveGame::GetTR5Position ( )
                 if ( bCheck )
                 {
 #ifdef _DEBUG
+                    short life = * ( short * ) ( pBuffer + TR5_LIFE_OFFSET );
+
                     DWORD dwRelativeAddress = CTRXTools::RelativeAddress ( pBuffer + i, m_pBuffer );
                     static char szDebugString [ MAX_PATH ];
-                    sprintf_s ( szDebugString, sizeof(szDebugString), "Indicators 0x%08x : 0x%02x 0x%02x 0x%02x 0x%02x %3u %5d %5d %5d %3u\n", 
+                    sprintf_s ( szDebugString, sizeof(szDebugString), "Indicators 0x%08x : 0x%02x 0x%02x 0x%02x 0x%02x %3u %5d %5d %5d %3u %4d\n", 
                         dwRelativeAddress, 
                         pTR5Position->indicator1, pTR5Position->indicator2, pTR5Position->indicator3, pTR5Position->indicator4,
-                        pTR5Position->cRoom, pTR5Position->wVertical, pTR5Position->wSouthToNorth, pTR5Position->wWestToEast, pTR5Position->cOrientation ); 
+                        pTR5Position->cRoom, pTR5Position->wVertical, pTR5Position->wSouthToNorth, pTR5Position->wWestToEast, pTR5Position->cOrientation,
+                        life ); 
                     OutputDebugString ( szDebugString );
 #endif
                     positionTable [ 0 ] = pTR5Position;
@@ -1893,21 +1917,27 @@ TR5_POSITION *CTR5SaveGame::GetTR5Position ( )
             BOOL bCheck = CheckAreaForCoordinates ( GetFullVersion(), GetLevelIndex(),  wRoom, dwWestToEast, dwVertical, dwSouthToNorth, true );
             if ( bCheck )
             {
+                short life = * ( short * ) ( pBuffer + i + TR5_LIFE_OFFSET );
+
                 positionTable [ positionCount ] = pCurrent;
 
-                if ( pTR5Position == NULL )
+                if ( life >= 0 && life <= 1000 )
                 {
-                    pTR5Position = pCurrent;
-                }
+                    if ( pTR5Position == NULL )
+                    {
+                        pTR5Position = pCurrent;
+                    }
 
-                positionCount++;
+                    positionCount++;
+                }
 
 #ifdef _DEBUG
                 DWORD dwRelativeAddress = CTRXTools::RelativeAddress ( pBuffer + i, m_pBuffer );
                 static char szDebugString [ MAX_PATH ];
-                sprintf_s ( szDebugString, sizeof(szDebugString), "Indicators 0x%08x : 0x%02x 0x%02x 0x%02x 0x%02x %3u %5d %5d %5d %3u\n", 
+                sprintf_s ( szDebugString, sizeof(szDebugString), "indicators 0x%08x : 0x%02x 0x%02x 0x%02x 0x%02x %3u %5d %5d %5d %3u %4d\n", 
                     dwRelativeAddress, pCurrent->indicator1, pCurrent->indicator2, pCurrent->indicator3, pCurrent->indicator4,
-                    pCurrent->cRoom, pCurrent->wVertical, pCurrent->wSouthToNorth, pCurrent->wWestToEast, pCurrent->cOrientation ); 
+                    pCurrent->cRoom, pCurrent->wVertical, pCurrent->wSouthToNorth, pCurrent->wWestToEast, pCurrent->cOrientation,
+                    life ); 
                 OutputDebugString ( szDebugString );
 
                 if ( CTRXGlobal::m_iUnchecked == FALSE )

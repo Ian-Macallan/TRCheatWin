@@ -75,23 +75,37 @@ static char    TR4NBSecrets [ ] =
 /////////////////////////////////////////////////////////////////////////////
 static TR45_INDICATORS IndicatorsTR4Table [ MAX_INDICATORS ] =
 {
-    {   FALSE,  0x02,   0x02,   0x00,   0x67,   FALSE },
-    {   FALSE,  0x02,   0x02,   0x00,   0x28,   FALSE },
+    {   FALSE,  0x02,   0x02,   0x00,   0x67,   TRUE },
+    {   FALSE,  0x02,   0x02,   0x47,   0x67,   TRUE },
     {   FALSE,  0x02,   0x02,   0x00,   0x0b,   FALSE },
     {   FALSE,  0x02,   0x02,   0x00,   0x0c,   FALSE },
     {   FALSE,  0x02,   0x02,   0x00,   0x1f,   FALSE },
     {   FALSE,  0x02,   0x02,   0x00,   0xbd,   FALSE },
     {   FALSE,  0x02,   0x02,   0x00,   0xdd,   FALSE },
-    {   FALSE,  0x03,   0x00,   0x00,   0x02,   FALSE },
     {   FALSE,  0x0d,   0x0d,   0x00,   0x6c,   FALSE },
-    {   FALSE,  0x0e,   0x00,   0x00,   0x02,   FALSE },
     {   FALSE,  0x12,   0x00,   0x00,   0x02,   FALSE },        // Flare
     {   FALSE,  0xfd,   0xff,   0x00,   0x00,   FALSE },        // Jeep
+
+    {   FALSE,  0x47,   0x47,   0x47,   0xde,   TRUE },         // Kneeling
+    {   FALSE,  0x10,   0x00,   0x51,   0x51,   TRUE },         // Crawlling
+    {   FALSE,  0x21,   0x21,   0x00,   0x6e,   TRUE },         // In Water
+
 #ifdef _DEBUG
-    {   FALSE,  0x47,   0x47,   0x47,   0xde,   TRUE },         // Kneel
     {   FALSE,  0x00,   0x02,   0x00,   0x02,   TRUE },
     {   FALSE,  0x00,   0x02,   0x00,   0x03,   TRUE },
     {   FALSE,  0x0c,   0x00,   0x00,   0x02,   TRUE },
+    {   FALSE,  0x13,   0x13,   0x00,   0x61,   TRUE },
+    {   FALSE,  0x47,   0x47,   0x00,   0xde,   TRUE },
+    {   FALSE,  0x57,   0x57,   0x47,   0x1f,   TRUE },
+    {   FALSE,  0x61,   0x61,   0x00,   0x44,   TRUE },
+    {   FALSE,  0x01,   0x02,   0x47,   0x08,   TRUE },
+    {   FALSE,  0x50,   0x50,   0x00,   0x07,   TRUE },
+    {   FALSE,  0x21,   0x21,   0x47,   0x6e,   TRUE },
+    {   FALSE,  0x24,   0x24,   0x00,   0x7b,   TRUE },
+    {   FALSE,  0x24,   0x24,   0x47,   0x7b,   TRUE },
+    {   FALSE,  0x43,   0x10,   0x47,   0xcc,   TRUE },
+    {   FALSE,  0x05,   0x05,   0x00,   0x05,   TRUE },
+    // {   FALSE,  0xfd,   0xff,   0xf1,   0xff,   TRUE },
 #endif
 
     {   TRUE,   0xff,   0xff,   0xff,   0xff,   TRUE },         // End
@@ -1641,8 +1655,13 @@ void *CTR4SaveGame::GetIndicatorAddress (int index)
                     continue;
                 }
 
-                //  Life is not there
-                WORD life = * (WORD * ) ( pBuffer + i + TR4_LIFE_OFFSET );
+                // In TR4 Life is between 0 and 999 (0 means 1000)
+                short life = * (short * ) ( pBuffer + i + TR4_LIFE_OFFSET );
+                //  Life Is valid between 0 and 1000
+                if ( life < 0 || life > 1000 )
+                {
+                    continue;
+                }
 
                 count++;
                 if ( count > index )
@@ -1691,7 +1710,7 @@ int CTR4SaveGame::GetLife ()
     char *pBuffer   = ( char * ) GetIndicatorAddress();
     if ( pBuffer != NULL )
     {
-        WORD *pLife = ( WORD * ) ( &pBuffer [ TR4_LIFE_OFFSET ] );
+        short *pLife = ( short * ) ( &pBuffer [ TR4_LIFE_OFFSET ] );
         return *pLife;
     }
 
@@ -1832,6 +1851,10 @@ TR4_POSITION *CTR4SaveGame::GetTR4Position ( )
     ZeroMemory ( positionTable, sizeof(positionTable) );
     positionCount   = 0;
 
+#ifdef _DEBUG
+    OutputDebugString ( "\n" );
+#endif
+
     //  We Search n times
     //  The Goal is to see if there is a =atch with position for an index
     //  For example we could have an indicator but no position
@@ -1892,11 +1915,15 @@ TR4_POSITION *CTR4SaveGame::GetTR4Position ( )
                 if ( bCheck )
                 {
 #ifdef _DEBUG
+                    // In TR4 Life is between 0 and 999 (0 means 1000)
+                    short life = * (short * ) ( pBuffer + TR4_LIFE_OFFSET );
+
                     DWORD dwRelativeAddress = CTRXTools::RelativeAddress ( pBuffer + i, m_pBuffer );
                     static char szDebugString [ MAX_PATH ];
-                    sprintf_s ( szDebugString, sizeof(szDebugString), "Indicators 0x%08x : 0x%02x 0x%02x 0x%02x 0x%02x %3u %5d %5d %5d %3u\n", 
+                    sprintf_s ( szDebugString, sizeof(szDebugString), "Indicators 0x%08x : 0x%02x 0x%02x 0x%02x 0x%02x %3u %5d %5d %5d %3u %4d\n", 
                         dwRelativeAddress, pTR4Position->indicator1, pTR4Position->indicator2, pTR4Position->indicator3, pTR4Position->indicator4, 
-                        pTR4Position->cRoom, pTR4Position->wVertical, pTR4Position->wSouthToNorth, pTR4Position->wWestToEast, pTR4Position->cOrientation ); 
+                        pTR4Position->cRoom, pTR4Position->wVertical, pTR4Position->wSouthToNorth, pTR4Position->wWestToEast, pTR4Position->cOrientation,
+                        life ); 
                     OutputDebugString ( szDebugString );
 #endif
                     positionTable [ 0 ] = pTR4Position;
@@ -1958,21 +1985,27 @@ TR4_POSITION *CTR4SaveGame::GetTR4Position ( )
             BOOL bCheck = CheckAreaForCoordinates ( GetFullVersion(), GetLevelIndex(),  wRoom, dwWestToEast, dwVertical, dwSouthToNorth, false, dwExtraVertical );
             if ( bCheck )
             {
+                //  Life between 0 and 1000
+                short life = * (short * ) ( pBuffer + i + TR4_LIFE_OFFSET );
+
                 positionTable [ positionCount ] = pCurrent;
 
-                if ( pTR4Position == NULL )
+                if ( life >= 0 && life <= 1000 )
                 {
-                    pTR4Position    = pCurrent;
+                    if ( pTR4Position == NULL )
+                    {
+                        pTR4Position    = pCurrent;
+                    }
+                    positionCount++;
                 }
-
-                positionCount++;
 
 #ifdef _DEBUG
                 DWORD dwRelativeAddress = CTRXTools::RelativeAddress ( pBuffer + i, m_pBuffer );
                 static char szDebugString [ MAX_PATH ];
-                sprintf_s ( szDebugString, sizeof(szDebugString), "Indicators 0x%08x : 0x%02x 0x%02x 0x%02x 0x%02x %3u %5d %5d %5d %3u\n", 
+                sprintf_s ( szDebugString, sizeof(szDebugString), "indicators 0x%08x : 0x%02x 0x%02x 0x%02x 0x%02x %3u %5d %5d %5d %3u %4d\n", 
                     dwRelativeAddress, pCurrent->indicator1, pCurrent->indicator2, pCurrent->indicator3, pCurrent->indicator4,
-                    pCurrent->cRoom, pCurrent->wVertical, pCurrent->wSouthToNorth, pCurrent->wWestToEast, pCurrent->cOrientation ); 
+                    pCurrent->cRoom, pCurrent->wVertical, pCurrent->wSouthToNorth, pCurrent->wWestToEast, pCurrent->cOrientation,
+                    life ); 
                 OutputDebugString ( szDebugString );
 
                 if ( CTRXGlobal::m_iUnchecked == FALSE )

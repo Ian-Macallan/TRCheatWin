@@ -216,8 +216,17 @@ static void AddToItemsLabels ( int what, int level, int button, const char *pTex
 /////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////
-int SearchDataFileIndex ( const char *pSavename )
+int SearchDataFileIndex ( const char *pSavename, int levelNumber )
 {
+    if ( levelNumber >= 0 && levelNumber < TR4NGMAXLEVEL )
+    {
+        if ( _strcmpi ( pSavename, CustomDataFiles [ levelNumber ].title ) == 0 )
+        {
+            return levelNumber;
+        }
+    }
+
+    //
     for ( int i = 0; i < TR4NGMAXLEVEL; i++ )
     {
         if ( _strcmpi ( pSavename, CustomDataFiles [ i ].title ) == 0 )
@@ -2976,7 +2985,7 @@ BOOL CTRXInfoPage::ExtractAfterScript ( int tombraider, TR_MODE trMode, STRUCTLO
     
     //  Search The CustomDataFiles the best match for the Savegame name
     //  This will give a DATA/level
-    int datafileIndex = SearchDataFileIndex ( CTRSaveGame::I()->GetSaveName() );
+    int datafileIndex = SearchDataFileIndex ( CTRSaveGame::I()->GetSaveName(), CTRSaveGame::I()->GetLevel() );
     if ( datafileIndex >= 0 )
     {
         strcpy_s ( szTRPathname, sizeof(szTRPathname), pScriptDirectory );
