@@ -462,7 +462,7 @@ void CTRXVerticalMap::ShowWindows()
     //
     static char szText [ 32 ];
 
-    const float xzDivider           = 150.0;
+    const float xzDivider           = 100.0;
     const float yDivider            = 100.0;
     const int minimumVertical       = 4;
 

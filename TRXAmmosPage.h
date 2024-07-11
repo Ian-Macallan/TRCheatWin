@@ -70,6 +70,15 @@ class CTRXAmmosPage : public CTRXPropertyPage
         CTRXStaticBase m_BM_Rocket;
         CTRXStaticBase m_BM_Arrow;
 
+        CTRXButtonBase m_ZeroRiotGun;
+        CTRXButtonBase m_ZeroMP5;
+        CTRXButtonBase m_ZeroHarpoon;
+        CTRXButtonBase m_ZeroDesert;
+        CTRXButtonBase m_ZeroGrenade;
+        CTRXButtonBase m_ZeroUzi;
+        CTRXButtonBase m_ZeroRocket;
+        CTRXButtonBase m_ZeroGuns;
+
         //}}AFX_DATA
 
 
@@ -107,6 +116,14 @@ class CTRXAmmosPage : public CTRXPropertyPage
         virtual void OnOK();
         virtual BOOL OnInitDialog();
         virtual BOOL OnApply();
+        afx_msg void OnBnClickedZriotgun();
+        afx_msg void OnBnClickedZmp5();
+        afx_msg void OnBnClickedZharpoon();
+        afx_msg void OnBnClickedZdesert();
+        afx_msg void OnBnClickedZgrenade();
+        afx_msg void OnBnClickedZuzi();
+        afx_msg void OnBnClickedZrocket();
+        afx_msg void OnBnClickedZguns();
 };
 
 //{{AFX_INSERT_LOCATION}}

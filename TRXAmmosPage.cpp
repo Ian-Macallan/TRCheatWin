@@ -92,6 +92,16 @@ void CTRXAmmosPage::DoDataExchange(CDataExchange* pDX)
     DDX_Control(pDX, IDC_BM_MP5, m_BM_MP5);
     DDX_Control(pDX, IDC_BM_ROCKET, m_BM_Rocket);
     DDX_Control(pDX, IDC_BM_ARROW, m_BM_Arrow);
+
+    //
+    DDX_Control(pDX, IDC_ZRIOTGUN, m_ZeroRiotGun);
+    DDX_Control(pDX, IDC_ZMP5, m_ZeroMP5);
+    DDX_Control(pDX, IDC_ZHARPOON, m_ZeroHarpoon);
+    DDX_Control(pDX, IDC_ZDESERT, m_ZeroDesert);
+    DDX_Control(pDX, IDC_ZGRENADE, m_ZeroGrenade);
+    DDX_Control(pDX, IDC_ZUZI, m_ZeroUzi);
+    DDX_Control(pDX, IDC_ZROCKET, m_ZeroRocket);
+    DDX_Control(pDX, IDC_ZGUNS, m_ZeroGuns);
     //}}AFX_DATA_MAP
 }
 
@@ -128,6 +138,14 @@ BEGIN_MESSAGE_MAP(CTRXAmmosPage, CTRXPropertyPage)
 
     ON_WM_CTLCOLOR()
     //}}AFX_MSG_MAP
+    ON_BN_CLICKED(IDC_ZRIOTGUN, &CTRXAmmosPage::OnBnClickedZriotgun)
+    ON_BN_CLICKED(IDC_ZMP5, &CTRXAmmosPage::OnBnClickedZmp5)
+    ON_BN_CLICKED(IDC_ZHARPOON, &CTRXAmmosPage::OnBnClickedZharpoon)
+    ON_BN_CLICKED(IDC_ZDESERT, &CTRXAmmosPage::OnBnClickedZdesert)
+    ON_BN_CLICKED(IDC_ZGRENADE, &CTRXAmmosPage::OnBnClickedZgrenade)
+    ON_BN_CLICKED(IDC_ZUZI, &CTRXAmmosPage::OnBnClickedZuzi)
+    ON_BN_CLICKED(IDC_ZROCKET, &CTRXAmmosPage::OnBnClickedZrocket)
+    ON_BN_CLICKED(IDC_ZGUNS, &CTRXAmmosPage::OnBnClickedZguns)
 END_MESSAGE_MAP()
 
 //
@@ -398,32 +416,40 @@ int CTRXAmmosPage::EnableForVersion()
     {   
         m_Ammos_Guns.EnableWindow ( CTRSaveGame::I()->HasAmmos1 ( ) );
         m_C_Guns.EnableWindow ( CTRSaveGame::I()->HasAmmos1 ( ) );
+        m_ZeroGuns.EnableWindow ( CTRSaveGame::I()->HasAmmos1 ( ) );
 
         m_Ammos_Desert_Eagle.EnableWindow ( CTRSaveGame::I()->HasAmmos2 ( ) );
         m_C_Desert_Eagle.EnableWindow ( CTRSaveGame::I()->HasAmmos2 ( ) );
+        m_ZeroDesert.EnableWindow ( CTRSaveGame::I()->HasAmmos2 ( ) );
 
         m_Ammos_Uzis.EnableWindow ( CTRSaveGame::I()->HasAmmos3 ( ) );
         m_C_Uzis.EnableWindow ( CTRSaveGame::I()->HasAmmos3 ( ) );
+        m_ZeroUzi.EnableWindow ( CTRSaveGame::I()->HasAmmos3 ( ) );
 
         m_Ammos_Riot_Gun.EnableWindow ( CTRSaveGame::I()->HasAmmos4 ( ) );
         m_Ammos_Riot_Gun2.EnableWindow ( ( iVersion >= 40 ) && CTRSaveGame::I()->HasAmmos4 ( ) );
         m_C_Riot_Gun.EnableWindow ( CTRSaveGame::I()->HasAmmos4 ( ) );
+        m_ZeroRiotGun.EnableWindow ( CTRSaveGame::I()->HasAmmos4 ( ) );
 
         m_Ammos_MP5.EnableWindow ( CTRSaveGame::I()->HasAmmos5 ( ) );
         m_C_MP5.EnableWindow ( (iVersion >= 20 ) && CTRSaveGame::I()->HasAmmos5 ( ) );
+        m_ZeroMP5.EnableWindow ( CTRSaveGame::I()->HasAmmos5 ( ) );
 
         m_Ammos_Rocket_Launcher.EnableWindow ( CTRSaveGame::I()->HasAmmos6 ( ) );
         m_C_Rocket_Launcher.EnableWindow ( ( iVersion >= 30 ) && CTRSaveGame::I()->HasAmmos6 ( ) );
+        m_ZeroRocket.EnableWindow ( CTRSaveGame::I()->HasAmmos6 ( ) );
 
         m_Ammos_Grenade_Launcher.EnableWindow ( CTRSaveGame::I()->HasAmmos7 ( ) );
         m_Ammos_Grenade_Launcher2.EnableWindow ( ( iVersion >= 40 ) && CTRSaveGame::I()->HasAmmos7 ( ) );
         m_Ammos_Grenade_Launcher3.EnableWindow ( ( iVersion >= 40 ) && CTRSaveGame::I()->HasAmmos7 ( ) );
         m_C_Grenade_Launcher.EnableWindow ( (iVersion >= 20 ) && CTRSaveGame::I()->HasAmmos7 ( ) );
+        m_ZeroGrenade.EnableWindow ( CTRSaveGame::I()->HasAmmos7 ( ) );
 
         m_Ammos_Harpoon.EnableWindow ( CTRSaveGame::I()->HasAmmos8 ( ) );
         m_Ammos_Harpoon2.EnableWindow ( ( iVersion >= 40 ) && CTRSaveGame::I()->HasAmmos8 ( ) );
         m_Ammos_Harpoon3.EnableWindow ( ( iVersion >= 40 ) && CTRSaveGame::I()->HasAmmos8 ( ) );
         m_C_Harpoon.EnableWindow ( (iVersion >= 20 ) && CTRSaveGame::I()->HasAmmos8 ( ) );
+        m_ZeroHarpoon.EnableWindow ( CTRSaveGame::I()->HasAmmos8 ( ) );
 
         // m_Guns.EnableWindow ( CTRSaveGame::I()->HasAmmos1( ) );
 
@@ -590,6 +616,8 @@ void CTRXAmmosPage::OnBnClickedUnlimited()
 
         m_Ammos_Uzis.SetWindowText ( pValueMinusOne );
 
+        m_Ammos_MP5.SetWindowText ( pValueMinusOne );
+
         m_Ammos_Harpoon.SetWindowText ( pValueMinusOne );
         m_Ammos_Harpoon2.SetWindowText ( pValueMinusOne );
         m_Ammos_Harpoon3.SetWindowText ( pValueMinusOne );
@@ -598,10 +626,14 @@ void CTRXAmmosPage::OnBnClickedUnlimited()
         m_Ammos_Grenade_Launcher2.SetWindowText ( pValueMinusOne );
         m_Ammos_Grenade_Launcher3.SetWindowText ( pValueMinusOne );
 
+        m_Ammos_Rocket_Launcher.SetWindowText ( pValueMinusOne );
+
         m_Ammos_Riot_Gun.SetWindowText ( pValueMinusOne );
         m_Ammos_Riot_Gun2.SetWindowText ( pValueMinusOne);
 
         m_Ammos_Desert_Eagle.SetWindowText ( pValueMinusOne );
+
+        m_Ammos_Guns.SetWindowText ( pValueMinusOne );
     }
 }
 
@@ -675,3 +707,80 @@ BOOL CTRXAmmosPage::OnApply()
     return CTRXPropertyPage::OnApply();
 }
 
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
+void CTRXAmmosPage::OnBnClickedZriotgun()
+{
+    m_Ammos_Riot_Gun.SetWindowText ( "0" );
+    m_Ammos_Riot_Gun2.SetWindowText ( "0");
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
+void CTRXAmmosPage::OnBnClickedZmp5()
+{
+    m_Ammos_MP5.SetWindowText ( "0" );
+
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
+void CTRXAmmosPage::OnBnClickedZharpoon()
+{
+    m_Ammos_Harpoon.SetWindowText ( "0" );
+    m_Ammos_Harpoon2.SetWindowText ( "0" );
+    m_Ammos_Harpoon3.SetWindowText ( "0" );
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
+void CTRXAmmosPage::OnBnClickedZdesert()
+{
+    m_Ammos_Desert_Eagle.SetWindowText ( "0" );
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
+void CTRXAmmosPage::OnBnClickedZgrenade()
+{
+    m_Ammos_Grenade_Launcher.SetWindowText ( "0" );
+    m_Ammos_Grenade_Launcher2.SetWindowText ( "0" );
+    m_Ammos_Grenade_Launcher3.SetWindowText ( "0" );
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
+void CTRXAmmosPage::OnBnClickedZuzi()
+{
+    m_Ammos_Uzis.SetWindowText ( "0" );
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
+void CTRXAmmosPage::OnBnClickedZrocket()
+{
+    m_Ammos_Rocket_Launcher.SetWindowText ( "0" );
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
+void CTRXAmmosPage::OnBnClickedZguns()
+{
+    m_Ammos_Guns.SetWindowText ( "0" );
+}
