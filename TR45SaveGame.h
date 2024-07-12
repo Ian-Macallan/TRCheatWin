@@ -2,6 +2,14 @@
 
 #include "TRSaveGame.h"
 
+#define TR4_MIN_HEALTH      0
+#define TR4_MAX_HEALTH      1000
+#define TR4_ALT_HEALTH      0x7fff
+
+#define TR5_MIN_HEALTH      0
+#define TR5_MAX_HEALTH      1000
+#define TR5_ALT_HEALTH      0x7fff
+
 //
 /////////////////////////////////////////////////////////////////////////////
 //

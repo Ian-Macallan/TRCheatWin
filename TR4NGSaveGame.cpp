@@ -1646,7 +1646,7 @@ void *CTR4NGSaveGame::GetIndicatorAddress (int index)
                 short life = * (short * ) ( pBuffer + i + TR4NG_LIFE_OFFSET );
 
                 //  Life Is valid between 0 and 1000
-                if ( life < 0 || life > 1000 )
+                if ( life != TR4_ALT_HEALTH && ( life < TR4_MIN_HEALTH || life > TR4_MAX_HEALTH ) )
                 {
                     continue;
                 }
@@ -1699,8 +1699,12 @@ int CTR4NGSaveGame::GetLife ()
     char *pBuffer   = ( char * ) GetIndicatorAddress();
     if ( pBuffer != NULL )
     {
-        short *pLife = ( short * ) ( &pBuffer [ TR4NG_LIFE_OFFSET ] );
-        return *pLife;
+        short life = * ( short * ) ( &pBuffer [ TR4NG_LIFE_OFFSET ] );
+        if ( life == TR4_MIN_HEALTH )
+        {
+            life = TR4_MAX_HEALTH;
+        }
+        return life;
     }
 
     return -1;
@@ -1717,8 +1721,18 @@ void CTR4NGSaveGame::SetLife ( const char *szLife )
     if ( pBuffer != NULL )
     {
         WORD *pLife = ( WORD * ) ( & pBuffer [ TR4NG_LIFE_OFFSET ] );
-    }
+        short life = atoi(szLife);
+        if ( life == TR4_MAX_HEALTH )
+        {
+            life = TR4_MIN_HEALTH;
+        }
 
+#ifndef _DEBUG
+        life = life % TR4_MAX_HEALTH;
+#endif
+
+        *pLife = (WORD) life;
+    }
 }
 
 //
@@ -1850,7 +1864,7 @@ TR4NG_POSITION *CTR4NGSaveGame::GetTR4Position ( )
     positionCount   = 0;
 
 #ifdef _DEBUG
-    OutputDebugString ( "\n" );
+    OutputDebugString ( "GetTR4Position\n" );
 #endif
 
     //  We Search n times
@@ -1989,7 +2003,7 @@ TR4NG_POSITION *CTR4NGSaveGame::GetTR4Position ( )
 
                 positionTable [ positionCount ] = pCurrent;
 
-                if ( life >= 0 && life <= 1000 )
+                if ( life >= TR4_MIN_HEALTH && life <= TR4_MAX_HEALTH )
                 {
                     if ( pTR4Position == NULL )
                     {

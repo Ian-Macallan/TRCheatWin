@@ -1610,7 +1610,7 @@ void *CTR5SaveGame::GetIndicatorAddress (int index)
                 }
 
                 short life = * ( short * ) ( pBuffer + i + TR5_LIFE_OFFSET );
-                if ( life < 0 || life > 1000 )
+                if ( life != TR5_ALT_HEALTH && ( life < TR5_MIN_HEALTH || life > TR5_MAX_HEALTH ) )
                 {
                     continue;
                 }
@@ -1656,7 +1656,7 @@ int CTR5SaveGame::GetLife ()
     WORD *pLife = GetTR5LifeAddress();
     if ( pLife )
     {
-        return *pLife;
+        return (int) *pLife;
     }
 
     return -1;
@@ -1673,7 +1673,7 @@ void CTR5SaveGame::SetLife ( const char *szLife )
     WORD *pLife = GetTR5LifeAddress();
     if ( pLife )
     {
-        *pLife = iLife;
+        *pLife = (WORD) iLife;
     }
 }
 
@@ -1798,7 +1798,7 @@ TR5_POSITION *CTR5SaveGame::GetTR5Position ( )
     positionCount   = 0;
 
 #ifdef _DEBUG
-    OutputDebugString ( "\n" );
+    OutputDebugString ( "GetTR5Position\n" );
 #endif
 
     //  We Search n times
@@ -1921,7 +1921,7 @@ TR5_POSITION *CTR5SaveGame::GetTR5Position ( )
 
                 positionTable [ positionCount ] = pCurrent;
 
-                if ( life >= 0 && life <= 1000 )
+                if ( life >= TR5_MIN_HEALTH && life <= TR5_MAX_HEALTH )
                 {
                     if ( pTR5Position == NULL )
                     {

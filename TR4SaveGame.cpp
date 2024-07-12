@@ -1658,7 +1658,7 @@ void *CTR4SaveGame::GetIndicatorAddress (int index)
                 // In TR4 Life is between 0 and 999 (0 means 1000)
                 short life = * (short * ) ( pBuffer + i + TR4_LIFE_OFFSET );
                 //  Life Is valid between 0 and 1000
-                if ( life < 0 || life > 1000 )
+                if ( life != TR4_ALT_HEALTH && ( life < TR4_MIN_HEALTH || life > TR4_MAX_HEALTH ) )
                 {
                     continue;
                 }
@@ -1710,8 +1710,12 @@ int CTR4SaveGame::GetLife ()
     char *pBuffer   = ( char * ) GetIndicatorAddress();
     if ( pBuffer != NULL )
     {
-        short *pLife = ( short * ) ( &pBuffer [ TR4_LIFE_OFFSET ] );
-        return *pLife;
+        short life = * ( short * ) ( &pBuffer [ TR4_LIFE_OFFSET ] );
+        if ( life == TR4_MIN_HEALTH )
+        {
+            life = TR4_MAX_HEALTH;
+        }
+        return life;
     }
 
     return -1;
@@ -1727,7 +1731,18 @@ void CTR4SaveGame::SetLife ( const char *szLife )
     char *pBuffer   = ( char * ) GetIndicatorAddress();
     if ( pBuffer != NULL )
     {
+        short life  = atoi(szLife);
         WORD *pLife = ( WORD * ) ( & pBuffer [ TR4_LIFE_OFFSET ] );
+        if ( life == TR4_MAX_HEALTH )
+        {
+            life = TR4_MIN_HEALTH;
+        }
+
+#ifndef _DEBUG
+        life = life % TR4_MAX_HEALTH;
+#endif
+
+        *pLife = (WORD) life;
     }
 
 }
@@ -1852,7 +1867,7 @@ TR4_POSITION *CTR4SaveGame::GetTR4Position ( )
     positionCount   = 0;
 
 #ifdef _DEBUG
-    OutputDebugString ( "\n" );
+    OutputDebugString ( "GetTR4Position\n" );
 #endif
 
     //  We Search n times
@@ -1990,7 +2005,7 @@ TR4_POSITION *CTR4SaveGame::GetTR4Position ( )
 
                 positionTable [ positionCount ] = pCurrent;
 
-                if ( life >= 0 && life <= 1000 )
+                if ( life >= TR4_MIN_HEALTH && life <= TR4_MAX_HEALTH )
                 {
                     if ( pTR4Position == NULL )
                     {

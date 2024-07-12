@@ -308,7 +308,7 @@ int CTRXEquipmentPage::EnableForVersion()
         m_Laser.EnableWindow ( iVersion >= 40 );
         m_Binocular.EnableWindow ( iVersion >= 40 );
 
-        m_Life.EnableWindow ( iVersion <= 30 || iVersion == 50 );
+        m_Life.EnableWindow ( iVersion <= 30 || iVersion >= 30 || iVersion == 50 );
         m_GunAmmos.EnableWindow ( iVersion <= 30 );
         m_Unfinite_Air.EnableWindow ( iVersion <= 30 || iVersion == 40 || iVersion == 45 || iVersion == 49 || iVersion == 50 );
         m_Air.EnableWindow ( iVersion <= 30 || iVersion == 40 || iVersion == 45 || iVersion == 49 || iVersion == 50 );

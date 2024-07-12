@@ -218,6 +218,7 @@ static void AddToItemsLabels ( int what, int level, int button, const char *pTex
 /////////////////////////////////////////////////////////////////////////////
 int SearchDataFileIndex ( const char *pSavename, int levelNumber )
 {
+    //  Match Level and Name
     if ( levelNumber >= 0 && levelNumber < TR4NGMAXLEVEL )
     {
         if ( _strcmpi ( pSavename, CustomDataFiles [ levelNumber ].title ) == 0 )
@@ -226,12 +227,21 @@ int SearchDataFileIndex ( const char *pSavename, int levelNumber )
         }
     }
 
-    //
+    //  Match Name
     for ( int i = 0; i < TR4NGMAXLEVEL; i++ )
     {
         if ( _strcmpi ( pSavename, CustomDataFiles [ i ].title ) == 0 )
         {
             return i;
+        }
+    }
+
+    //  Match Level
+    if ( levelNumber >= 0 && levelNumber < TR4NGMAXLEVEL )
+    {
+        if ( strlen ( CustomDataFiles [ levelNumber ].title ) > 0 )
+        {
+            return levelNumber;
         }
     }
 
