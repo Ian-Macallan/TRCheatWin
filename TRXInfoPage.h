@@ -117,6 +117,7 @@ class CTRXInfoPage : public CTRXPropertyPage
         CTRXStaticBase      m_Square;
         CTRXButtonBase      m_CopyPosition;
         CTRXButtonBase      m_PastePosition;
+        CTRXButtonBase      m_Shell;
 
         //}}AFX_DATA
 
@@ -175,5 +176,6 @@ class CTRXInfoPage : public CTRXPropertyPage
         afx_msg void OnBnClickedSort();
         afx_msg void OnBnClickedCopypos();
         afx_msg void OnBnClickedPastepos();
+        afx_msg void OnBnClickedShell();
 };
 

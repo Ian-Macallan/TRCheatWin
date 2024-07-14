@@ -93,6 +93,8 @@ class CTRXCHEATWINApp : public CWinApp
 
         void ReStartProgram(CWnd *pWnd);
 
+        static BOOL AcceptedPattern ( const char *pName );
+
         afx_msg void OnHelp();
 
 };
@@ -117,6 +119,9 @@ extern void ResetCustomLabels ();
 #define PROFILE_SQUAREFORCE         "Square Force"
 #define PROFILE_RECURSE_WRITE       "TRX Recurse Write"
 #define PROFILE_EXTEND_VERTICAL     "Extend Vertical"
+#define PROFILE_TRR_BACKUP          "TRR Backup"
+#define PROFILE_TR_BACKUP           "TR Backup"
+
 
 /////////////////////////////////////////////////////////////////////////////
 

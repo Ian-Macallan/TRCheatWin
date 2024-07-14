@@ -206,11 +206,5 @@ BOOL CTRXHelpDialog::OnInitDialog()
 /////////////////////////////////////////////////////////////////////////////
 void CTRXHelpDialog::OnVscrollHelpText()
 {
-#if 0
-    RECT rect;
-    m_Help_Text.GetWindowRect ( & rect );
-    ScreenToClient ( & rect );
-    InvalidateRect( &rect, TRUE );
-#endif
 }
 

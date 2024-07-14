@@ -498,13 +498,28 @@ BOOL CTRXCHEATWINApp::InitInstance()
     {
         theApp.WriteProfileInt( PROFILE_SETTING, PROFILE_EXTEND_VERTICAL, 0 );
     }
+
+    //
+    iTmp        = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_TRR_BACKUP, -1 );
+    if ( iTmp == -1 )
+    {
+        theApp.WriteProfileInt( PROFILE_SETTING, PROFILE_TRR_BACKUP, 32 );
+    }
     
+    //
+    iTmp        = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_TR_BACKUP, -1 );
+    if ( iTmp == -1 )
+    {
+        theApp.WriteProfileInt( PROFILE_SETTING, PROFILE_TR_BACKUP, 4 );
+    }
     //
     CTRXColors::m_iDarkTheme        = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_DARKTHEME, 0 );
     CTRXColors::m_iSquareCorner     = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_SQUARECORNERS, 0 );
     CTRXColors::m_iSquareForce      = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_SQUAREFORCE, 1 );
     CTRXColors::m_iThemeRestart     = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_THEME_RESTART, 1 );
     CTRXGlobal::m_iExtendVertical   = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_EXTEND_VERTICAL, 0 );
+    CTRXGlobal::m_iTRRBackup        = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_TRR_BACKUP, 32 );
+    CTRXGlobal::m_iTRBackup         = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_TR_BACKUP, 4 );
 
     //
     int iSizeTR1 = sizeof(TABLE_TR1);
@@ -1183,4 +1198,28 @@ void CTRXCHEATWINApp::ReStartProgram(CWnd *pWnd)
         }
     }
 #endif
+}
+
+//
+////////////////////////////////////////////////////////////////////////
+//
+////////////////////////////////////////////////////////////////////////
+BOOL CTRXCHEATWINApp::AcceptedPattern ( const char *pName )
+{
+    if ( __strstri ( pName, ".bak" ) != NULL )
+    {
+        return FALSE;
+    }
+
+    if ( __strstri ( pName, ".zip" ) != NULL )
+    {
+        return FALSE;
+    }
+
+    if ( EndsWithI ( pName, ".sav" ) != NULL )
+    {
+        return FALSE;
+    }
+
+    return TRUE;
 }

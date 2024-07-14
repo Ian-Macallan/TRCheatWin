@@ -84,16 +84,21 @@ static TR45_INDICATORS IndicatorsTR4NGTable [ MAX_INDICATORS ] =
     {   FALSE,  0x02,   0x02,   0x00,   0xbd,   FALSE },
     {   FALSE,  0x02,   0x02,   0x00,   0xdd,   FALSE },
     {   FALSE,  0x0d,   0x0d,   0x00,   0x6c,   FALSE },
+    {   FALSE,  0x0f,   0x0f,   0x00,   0x1f,   TRUE },         // Quad
     {   FALSE,  0x12,   0x00,   0x00,   0x02,   FALSE },        // Flare
     {   FALSE,  0xfd,   0xff,   0x00,   0x00,   FALSE },        // Jeep
 
     {   FALSE,  0x47,   0x47,   0x47,   0xde,   TRUE },         // Kneeling
-    {   FALSE,  0x10,   0x00,   0x51,   0x51,   TRUE },         // Crawlling
+    {   FALSE,  0x10,   0x00,   0x51,   0x51,   TRUE },         // Crawling
     {   FALSE,  0x00,   0x02,   0x00,   0x02,   TRUE },
     {   FALSE,  0x00,   0x02,   0x00,   0x03,   TRUE },
     {   FALSE,  0x0c,   0x00,   0x00,   0x02,   TRUE },
     {   FALSE,  0x21,   0x21,   0x00,   0x6e,   TRUE },         // In Water
 
+    {   FALSE,  0x13,   0x13,   0x47,   0x61,   TRUE },
+    {   FALSE,  0x54,   0x50,   0x47,   0x0d,   TRUE },
+
+    //
     {   TRUE,   0xff,   0xff,   0xff,   0xff,   TRUE },         // End
 };
 static int IndicatorsTR4NGTableCount = sizeof(IndicatorsTR4NGTable)/sizeof(TR45_INDICATORS);
@@ -1858,7 +1863,7 @@ void CTR4NGSaveGame::discard ()
 /////////////////////////////////////////////////////////////////////////////
 TR4NG_POSITION *CTR4NGSaveGame::GetTR4Position ( )
 {
-    const int extraSearch = 8;
+    const int extraSearch = 0;
 
     ZeroMemory ( positionTable, sizeof(positionTable) );
     positionCount   = 0;
@@ -1881,8 +1886,9 @@ TR4NG_POSITION *CTR4NGSaveGame::GetTR4Position ( )
         char *pBuffer = (char * ) GetIndicatorAddress(index);
         if ( pBuffer )
         {
-            for ( int i = 0; i < extraSearch; i++ )
+            for ( int i = 0; i <= extraSearch; i++ )
             {
+                //  We Consider pBuffer - i pointing to indicator1
                 TR4NG_POSITION *pTR4Position = (TR4NG_POSITION *) ( ( ( BYTE * ) pBuffer - i - TR4NG_POSITION_OFFSET ) );
 
                 DWORD dwSouthToNorth    = pTR4Position->wSouthToNorth * TR4NG_FACTOR;
@@ -1930,7 +1936,7 @@ TR4NG_POSITION *CTR4NGSaveGame::GetTR4Position ( )
                     //  Life is not there
                     short life = * (short * ) ( pBuffer + TR4NG_LIFE_OFFSET );
 
-                    DWORD dwRelativeAddress = CTRXTools::RelativeAddress ( pBuffer + i, m_pBuffer );
+                    DWORD dwRelativeAddress = CTRXTools::RelativeAddress ( pBuffer - i, m_pBuffer );
                     static char szDebugString [ MAX_PATH ];
                     sprintf_s ( szDebugString, sizeof(szDebugString), "Indicators 0x%08x : 0x%02x 0x%02x 0x%02x 0x%02x %3u %5d %5d %5d %3u %4d\n", 
                         dwRelativeAddress, pTR4Position->indicator1, pTR4Position->indicator2, pTR4Position->indicator3, pTR4Position->indicator4, 
@@ -1958,7 +1964,8 @@ TR4NG_POSITION *CTR4NGSaveGame::GetTR4Position ( )
 
         for ( int i = 0x280; i < 0x3000; i++ )
         {
-            pCurrent                = (TR4NG_POSITION *) ( ( BYTE * ) pBuffer + i );
+            //  We Consider pBuffer + i pointing to indicator1
+            pCurrent                = (TR4NG_POSITION *) ( ( BYTE * ) pBuffer + i - TR4NG_POSITION_OFFSET );
 
             DWORD dwSouthToNorth    = ( DWORD) pCurrent->wSouthToNorth * TR4NG_FACTOR;
             DWORD dwVertical        = ( DWORD ) pCurrent->wVertical * TR4NG_FACTOR;
@@ -2009,8 +2016,8 @@ TR4NG_POSITION *CTR4NGSaveGame::GetTR4Position ( )
                     {
                         pTR4Position    = pCurrent;
                     }
-                    positionCount++;
                 }
+                positionCount++;
 
 #ifdef _DEBUG
                 DWORD dwRelativeAddress = CTRXTools::RelativeAddress ( pBuffer + i, m_pBuffer );

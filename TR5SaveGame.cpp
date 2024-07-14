@@ -31,6 +31,7 @@ static TR45_INDICATORS IndicatorsTR5Table [ MAX_INDICATORS ] =
     {   FALSE,  0x0d,   0x0d,   0x00,   0x6c,   FALSE },
     {   FALSE,  0x0d,   0x12,   0x00,   0x6c,   FALSE },
     {   FALSE,  0x12,   0x12,   0x00,   0x57,   FALSE },
+    {   FALSE,  0x13,   0x13,   0x47,   0xae,   TRUE },
     {   FALSE,  0x47,   0x47,   0x00,   0xde,   FALSE },        // Crawling
     {   FALSE,  0x50,   0x50,   0x00,   0x07,   FALSE }, 
     {   FALSE,  0x47,   0x47,   0x00,   0xde,   FALSE },        // Crawling
@@ -38,17 +39,15 @@ static TR45_INDICATORS IndicatorsTR5Table [ MAX_INDICATORS ] =
     {   FALSE,  0x02,   0x02,   0x00,   0x0b,   FALSE },        // Jumping
     {   FALSE,  0x09,   0x09,   0x00,   0x17,   FALSE },        // Falling
     {   FALSE,  0x01,   0x02,   0x00,   0x0a,   TRUE },         // Running
-#ifdef _DEBUG
-    {   FALSE,  0x27,   0x10,   0x47,   0xa9,   TRUE },
-    {   FALSE,  0x59,   0x16,   0x00,   0xd2,   TRUE },
-    {   FALSE,  0x03,   0x00,   0x01,   0x02,   TRUE },
-    {   FALSE,  0x59,   0x10,   0x47,   0xd8,   TRUE },
-    {   FALSE,  0x59,   0x15,   0x47,   0xd1,   TRUE },
+    //
     {   FALSE,  0x27,   0x10,   0x47,   0x87,   TRUE },
-    {   FALSE,  0x28,   0x0b,   0x47,   0x9e,   TRUE },
     {   FALSE,  0x59,   0x10,   0x47,   0xd2,   TRUE },
-#endif
+    {   FALSE,  0x59,   0x15,   0x47,   0xd1,   TRUE },
+    {   FALSE,  0x28,   0x0b,   0x47,   0x9e,   TRUE },
+    {   FALSE,  0x02,   0x36,   0x00,   0x0b,   TRUE },
+    {   FALSE,  0x59,   0x16,   0x00,   0xd2,   TRUE },
 
+    //
     {   TRUE,   0xff,   0xff,   0xff,   0xff,   TRUE },         // End
 
 };
@@ -284,26 +283,6 @@ void CTR5SaveGame::writeSaveGame()
             m_pBuffer->tagGuns.m_gunRevolver = 0;
         }
 
-
-        //  Compute CheckSum
-#if 0
-        unsigned char *pBackup = (unsigned char *)m_pBackup;
-        unsigned char *pBuffer = (unsigned char *)m_pBuffer;
-
-        unsigned checkSum = m_pBackup->checkSum;
-        for ( int i = 0; i < sizeof(TR5SAVE) - 1; i++ )
-        {
-            if ( pBackup [ i ] != pBuffer [ i ] )
-            {
-                unsigned delta = pBuffer [ i ] - pBackup [ i ];
-                checkSum -= delta;
-            }
-        }
-
-        //
-        checkSum = checkSum & 0xff;
-        m_pBuffer->checkSum = checkSum;
-#endif
         //
         Backup_Savegame();
 
@@ -1792,7 +1771,7 @@ void CTR5SaveGame::discard ()
 /////////////////////////////////////////////////////////////////////////////
 TR5_POSITION *CTR5SaveGame::GetTR5Position ( )
 {
-    const int extraSearch = 8;
+    const int extraSearch = 0;
 
     ZeroMemory ( positionTable, sizeof(positionTable) );
     positionCount   = 0;
@@ -1816,8 +1795,9 @@ TR5_POSITION *CTR5SaveGame::GetTR5Position ( )
         if ( pBuffer )
         {
             //
-            for ( int i = 0; i < extraSearch; i++ )
+            for ( int i = 0; i <= extraSearch; i++ )
             {
+                //  We Consider pBuffer - i pointing to indicator1
                 TR5_POSITION *pTR5Position = (TR5_POSITION *) ( ( ( BYTE * ) pBuffer - i - TR5_POSITION_OFFSET ) );
             
                 DWORD dwSouthToNorth    = ( DWORD) pTR5Position->wSouthToNorth * TR5_FACTOR;
@@ -1855,7 +1835,7 @@ TR5_POSITION *CTR5SaveGame::GetTR5Position ( )
 #ifdef _DEBUG
                     short life = * ( short * ) ( pBuffer + TR5_LIFE_OFFSET );
 
-                    DWORD dwRelativeAddress = CTRXTools::RelativeAddress ( pBuffer + i, m_pBuffer );
+                    DWORD dwRelativeAddress = CTRXTools::RelativeAddress ( pBuffer - i, m_pBuffer );
                     static char szDebugString [ MAX_PATH ];
                     sprintf_s ( szDebugString, sizeof(szDebugString), "Indicators 0x%08x : 0x%02x 0x%02x 0x%02x 0x%02x %3u %5d %5d %5d %3u %4d\n", 
                         dwRelativeAddress, 
@@ -1883,7 +1863,8 @@ TR5_POSITION *CTR5SaveGame::GetTR5Position ( )
 
         for ( int i = 0x380; i < 0xD00; i++ )
         {
-            pCurrent                = (TR5_POSITION *) ( ( BYTE * ) pBuffer + i );
+            //  We Consider pBuffer + i pointing to indicator1
+            pCurrent                = (TR5_POSITION *) ( ( BYTE * ) pBuffer + i - TR5_POSITION_OFFSET );
 
             DWORD dwSouthToNorth    = ( DWORD) pCurrent->wSouthToNorth * TR5_FACTOR;
             DWORD dwVertical        = ( DWORD ) pCurrent->wVertical * TR5_FACTOR;
@@ -1927,9 +1908,8 @@ TR5_POSITION *CTR5SaveGame::GetTR5Position ( )
                     {
                         pTR5Position = pCurrent;
                     }
-
-                    positionCount++;
                 }
+                positionCount++;
 
 #ifdef _DEBUG
                 DWORD dwRelativeAddress = CTRXTools::RelativeAddress ( pBuffer + i, m_pBuffer );

@@ -168,6 +168,7 @@ class CTRXRemastered : public CTRXPropertyPage123
         CTRXButtonBase m_Show_Map;
 
         CTRXStaticBase m_Frame_Position;
+        CTRXButtonBase m_Shell;
 
         //
         afx_msg void OnBnClickedLoad();
@@ -223,6 +224,7 @@ class CTRXRemastered : public CTRXPropertyPage123
         afx_msg void OnBnClickedShowMap();
         afx_msg void OnHelp();
         afx_msg void OnBnClickedRecurse();
+        afx_msg void OnBnClickedShell();
 
         virtual BOOL OnToolTipNotify(UINT id, NMHDR *pNMH, LRESULT *pResult);
         virtual BOOL OnInitDialog();

@@ -47,6 +47,8 @@ class CTRXItemsTR4 : public CTRXPropertyPage
         //
         int             m_MenuItemIndex;
 
+        BOOL GetTables ( char ***pTableGen, char ***pTableInd );
+
         virtual BOOL OnSetActive();
         virtual BOOL OnKillActive();
 
@@ -93,6 +95,7 @@ class CTRXItemsTR4 : public CTRXPropertyPage
         afx_msg void OnItemsItem6();
         afx_msg void OnItemsItem7();
         afx_msg void OnItemsItem8();
+        afx_msg void OnItemsAll();
 
         virtual BOOL OnInitDialog();
         virtual void OnOK();
@@ -100,7 +103,7 @@ class CTRXItemsTR4 : public CTRXPropertyPage
         virtual BOOL OnApply();
         virtual BOOL OnToolTipNotify(UINT id, NMHDR *pNMH, LRESULT *pResult);
 
-        void OnItemsItemN( int menuId );
+        void OnItemsItemN( int menuId, bool bForceCheck = false );
         BOOL GetMenuLabel( int button );
 };
         

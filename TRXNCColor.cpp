@@ -443,12 +443,6 @@ BOOL CTRXNCColor::PaintCaption( CWnd *pWnd, BOOL bActive, int darkIndicator )
 
     pDC->SetBkMode (TRANSPARENT);
     pDC->SetTextColor (foregroundColor);
-#if 0
-    CRect calcRECT  = textRECT;
-    pDC->DrawText ( szTitle, &calcRECT, DT_LEFT | DT_VCENTER | DT_CALCRECT );
-
-    // textRECT.top    = textRECT.top + ( textRECT.Height() - calcRECT.Height() ) / 2;
-#endif
     pDC->DrawText ( szTitle, &textRECT, DT_LEFT | DT_VCENTER );
 
     //

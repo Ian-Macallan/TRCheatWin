@@ -51,6 +51,7 @@ static const    char *MessageTitle = "Tombraider Standard Editions";
 #define MAX_MENU_LABEL          8
 #define MAX_MENU_LABEL_STRING   256
 
+//
 static char     menuLabel [ MAX_MENU_LABEL ][ MAX_MENU_LABEL_STRING ];
 
 //
@@ -73,6 +74,7 @@ CTRXItemsTR4::CTRXItemsTR4() : CTRXPropertyPage(CTRXItemsTR4::IDD)
 {
     SetGUIModified ( FALSE );
     m_MenuItemIndex     = -1;
+    ZeroMemory ( menuLabel, sizeof(menuLabel) );
 }
 
 //
@@ -227,6 +229,7 @@ BEGIN_MESSAGE_MAP(CTRXItemsTR4, CTRXPropertyPage)
     ON_COMMAND(ID_ITEMS_ITEM6, &CTRXItemsTR4::OnItemsItem6)
     ON_COMMAND(ID_ITEMS_ITEM7, &CTRXItemsTR4::OnItemsItem7)
     ON_COMMAND(ID_ITEMS_ITEM8, &CTRXItemsTR4::OnItemsItem8)
+    ON_COMMAND(ID_ITEMS_ALL, OnItemsAll)
 
     ON_WM_CTLCOLOR()
 
@@ -290,23 +293,8 @@ void CTRXItemsTR4::SetLabel ( UINT checkId, UINT editId, char **pTableInd, char 
 /////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////
-BOOL CTRXItemsTR4::OnSetActive()
+BOOL CTRXItemsTR4::GetTables ( char ***pTableGen, char ***pTableInd )
 {
-    //
-
-    //
-    m_Status.SetWindowText ( "Tombraider 4 and 5" );
-
-    //
-    BOOL bModified = IsGUIModified();
-    if ( CTRSaveGame::IsValid( ) )
-    {
-        bModified = CTRSaveGame::IsBufferModified();
-    }
-
-    //
-    char **pTableGen = NULL;
-    char **pTableInd = NULL;
     int iVersion = CTRSaveGame::GetVersion();
 
     //
@@ -324,85 +312,114 @@ BOOL CTRXItemsTR4::OnSetActive()
         //
         if ( bStandardLevel )
         {
-            pTableGen = TR4ItemsName;
+            *pTableGen = TR4ItemsName;
             switch ( iLevelIndex )
             {
-                case 0  : pTableInd = TR4ItemsName01; break;
-                case 1  : pTableInd = TR4ItemsName02; break;
-                case 2  : pTableInd = TR4ItemsName03; break;
-                case 3  : pTableInd = TR4ItemsName04; break;
-                case 4  : pTableInd = TR4ItemsName05; break;
-                case 5  : pTableInd = TR4ItemsName06; break;
-                case 6  : pTableInd = TR4ItemsName07; break;
-                case 7  : pTableInd = TR4ItemsName08; break;
-                case 8  : pTableInd = TR4ItemsName09; break;
-                case 9  : pTableInd = TR4ItemsName10; break;
-                case 10 : pTableInd = TR4ItemsName11; break;
-                case 11 : pTableInd = TR4ItemsName12; break;
-                case 12 : pTableInd = TR4ItemsName13; break;
-                case 13 : pTableInd = TR4ItemsName14; break;
-                case 14 : pTableInd = TR4ItemsName15; break;
-                case 15 : pTableInd = TR4ItemsName16; break;
-                case 16 : pTableInd = TR4ItemsName17; break;
-                case 17 : pTableInd = TR4ItemsName18; break;
-                case 18 : pTableInd = TR4ItemsName19; break;
-                case 19 : pTableInd = TR4ItemsName20; break;
-                case 20 : pTableInd = TR4ItemsName21; break;
-                case 21 : pTableInd = TR4ItemsName22; break;
-                case 22 : pTableInd = TR4ItemsName23; break;
-                case 23 : pTableInd = TR4ItemsName24; break;
-                case 24 : pTableInd = TR4ItemsName25; break;
-                case 25 : pTableInd = TR4ItemsName26; break;
-                case 26 : pTableInd = TR4ItemsName27; break;
-                case 27 : pTableInd = TR4ItemsName28; break;
-                case 28 : pTableInd = TR4ItemsName29; break;
-                case 29 : pTableInd = TR4ItemsName30; break;
-                case 30 : pTableInd = TR4ItemsName31; break;
-                case 31 : pTableInd = TR4ItemsName32; break;
-                case 32 : pTableInd = TR4ItemsName33; break;
-                case 33 : pTableInd = TR4ItemsName34; break;
-                case 34 : pTableInd = TR4ItemsName35; break;
-                case 35 : pTableInd = TR4ItemsName36; break;
-                case 36 : pTableInd = TR4ItemsName37; break;
-                case 37 : pTableInd = TR4ItemsName38; break;
+                case 0  : *pTableInd = TR4ItemsName01; break;
+                case 1  : *pTableInd = TR4ItemsName02; break;
+                case 2  : *pTableInd = TR4ItemsName03; break;
+                case 3  : *pTableInd = TR4ItemsName04; break;
+                case 4  : *pTableInd = TR4ItemsName05; break;
+                case 5  : *pTableInd = TR4ItemsName06; break;
+                case 6  : *pTableInd = TR4ItemsName07; break;
+                case 7  : *pTableInd = TR4ItemsName08; break;
+                case 8  : *pTableInd = TR4ItemsName09; break;
+                case 9  : *pTableInd = TR4ItemsName10; break;
+                case 10 : *pTableInd = TR4ItemsName11; break;
+                case 11 : *pTableInd = TR4ItemsName12; break;
+                case 12 : *pTableInd = TR4ItemsName13; break;
+                case 13 : *pTableInd = TR4ItemsName14; break;
+                case 14 : *pTableInd = TR4ItemsName15; break;
+                case 15 : *pTableInd = TR4ItemsName16; break;
+                case 16 : *pTableInd = TR4ItemsName17; break;
+                case 17 : *pTableInd = TR4ItemsName18; break;
+                case 18 : *pTableInd = TR4ItemsName19; break;
+                case 19 : *pTableInd = TR4ItemsName20; break;
+                case 20 : *pTableInd = TR4ItemsName21; break;
+                case 21 : *pTableInd = TR4ItemsName22; break;
+                case 22 : *pTableInd = TR4ItemsName23; break;
+                case 23 : *pTableInd = TR4ItemsName24; break;
+                case 24 : *pTableInd = TR4ItemsName25; break;
+                case 25 : *pTableInd = TR4ItemsName26; break;
+                case 26 : *pTableInd = TR4ItemsName27; break;
+                case 27 : *pTableInd = TR4ItemsName28; break;
+                case 28 : *pTableInd = TR4ItemsName29; break;
+                case 29 : *pTableInd = TR4ItemsName30; break;
+                case 30 : *pTableInd = TR4ItemsName31; break;
+                case 31 : *pTableInd = TR4ItemsName32; break;
+                case 32 : *pTableInd = TR4ItemsName33; break;
+                case 33 : *pTableInd = TR4ItemsName34; break;
+                case 34 : *pTableInd = TR4ItemsName35; break;
+                case 35 : *pTableInd = TR4ItemsName36; break;
+                case 36 : *pTableInd = TR4ItemsName37; break;
+                case 37 : *pTableInd = TR4ItemsName38; break;
             }
         }
         else
         {
-            pTableGen = TR49ItemsNameGen;
+            *pTableGen = TR49ItemsNameGen;
 
             //  Skip Title
-            pTableInd = TR49ItemsNameInd [ iLevelIndex + 1 ];
+            *pTableInd = TR49ItemsNameInd [ iLevelIndex + 1 ];
         }
     }
     else if ( iVersion == 49 )
     {
-        pTableGen = TR49ItemsNameGen;
+        *pTableGen = TR49ItemsNameGen;
 
         //  Skip Title
-        pTableInd = TR49ItemsNameInd [ iLevelIndex + 1 ];
+        *pTableInd = TR49ItemsNameInd [ iLevelIndex + 1 ];
     }
     else if ( iVersion == 5 || iVersion == 50 )
     {
-        pTableGen = TR5ItemsName;
+        *pTableGen = TR5ItemsName;
         switch ( iLevelIndex )
         {
-            case 0  : pTableInd = TR5ItemsName01; break;
-            case 1  : pTableInd = TR5ItemsName02; break;
-            case 2  : pTableInd = TR5ItemsName03; break;
-            case 3  : pTableInd = TR5ItemsName04; break;
-            case 4  : pTableInd = TR5ItemsName05; break;
-            case 5  : pTableInd = TR5ItemsName06; break;
-            case 6  : pTableInd = TR5ItemsName07; break;
-            case 7  : pTableInd = TR5ItemsName08; break;
-            case 8  : pTableInd = TR5ItemsName09; break;
-            case 9  : pTableInd = TR5ItemsName10; break;
-            case 10 : pTableInd = TR5ItemsName11; break;
-            case 11 : pTableInd = TR5ItemsName12; break;
+            case 0  : *pTableInd = TR5ItemsName01; break;
+            case 1  : *pTableInd = TR5ItemsName02; break;
+            case 2  : *pTableInd = TR5ItemsName03; break;
+            case 3  : *pTableInd = TR5ItemsName04; break;
+            case 4  : *pTableInd = TR5ItemsName05; break;
+            case 5  : *pTableInd = TR5ItemsName06; break;
+            case 6  : *pTableInd = TR5ItemsName07; break;
+            case 7  : *pTableInd = TR5ItemsName08; break;
+            case 8  : *pTableInd = TR5ItemsName09; break;
+            case 9  : *pTableInd = TR5ItemsName10; break;
+            case 10 : *pTableInd = TR5ItemsName11; break;
+            case 11 : *pTableInd = TR5ItemsName12; break;
             case 12 : // No 12 Level
-            case 13 : pTableInd = TR5ItemsName14; break;
+            case 13 : *pTableInd = TR5ItemsName14; break;
         }
     }
+
+    return TRUE;
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
+BOOL CTRXItemsTR4::OnSetActive()
+{
+    //
+
+    //
+    m_Status.SetWindowText ( "Tombraider 4 and 5" );
+
+    //
+    BOOL bModified = IsGUIModified();
+    if ( CTRSaveGame::IsValid( ) )
+    {
+        bModified = CTRSaveGame::IsBufferModified();
+    }
+
+    //
+    char **pTableGen = NULL;
+    char **pTableInd = NULL;
+
+    GetTables ( &pTableGen, &pTableInd );
+
+    int iVersion = CTRSaveGame::GetVersion();
 
     //
 #define SET_LABEL(id,v) SetLabel ( IDC_ITEM_ ##id, IDC_NITEM_##id, pTableInd, pTableGen, ##v )
@@ -469,100 +486,7 @@ BOOL CTRXItemsTR4::GetMenuLabel ( int button )
     char **pTableInd = NULL;
     int iVersion = CTRSaveGame::GetVersion();
 
-    //
-    bool bStandardLevel = true;
-    if ( TR49ItemsNameGen [ 0 ] != NULL )
-    {
-        bStandardLevel = false;
-    }
-
-    //
-    int iLevelIndex = CTRSaveGame::GetLevelIndex();
-
-    if ( iVersion == 4 || ( iVersion >= 40 && iVersion <= 45 ) )
-    {
-        //
-        if ( bStandardLevel )
-        {
-            pTableGen = TR4ItemsName;
-            switch ( iLevelIndex )
-            {
-                case 0  : pTableInd = TR4ItemsName01; break;
-                case 1  : pTableInd = TR4ItemsName02; break;
-                case 2  : pTableInd = TR4ItemsName03; break;
-                case 3  : pTableInd = TR4ItemsName04; break;
-                case 4  : pTableInd = TR4ItemsName05; break;
-                case 5  : pTableInd = TR4ItemsName06; break;
-                case 6  : pTableInd = TR4ItemsName07; break;
-                case 7  : pTableInd = TR4ItemsName08; break;
-                case 8  : pTableInd = TR4ItemsName09; break;
-                case 9  : pTableInd = TR4ItemsName10; break;
-                case 10 : pTableInd = TR4ItemsName11; break;
-                case 11 : pTableInd = TR4ItemsName12; break;
-                case 12 : pTableInd = TR4ItemsName13; break;
-                case 13 : pTableInd = TR4ItemsName14; break;
-                case 14 : pTableInd = TR4ItemsName15; break;
-                case 15 : pTableInd = TR4ItemsName16; break;
-                case 16 : pTableInd = TR4ItemsName17; break;
-                case 17 : pTableInd = TR4ItemsName18; break;
-                case 18 : pTableInd = TR4ItemsName19; break;
-                case 19 : pTableInd = TR4ItemsName20; break;
-                case 20 : pTableInd = TR4ItemsName21; break;
-                case 21 : pTableInd = TR4ItemsName22; break;
-                case 22 : pTableInd = TR4ItemsName23; break;
-                case 23 : pTableInd = TR4ItemsName24; break;
-                case 24 : pTableInd = TR4ItemsName25; break;
-                case 25 : pTableInd = TR4ItemsName26; break;
-                case 26 : pTableInd = TR4ItemsName27; break;
-                case 27 : pTableInd = TR4ItemsName28; break;
-                case 28 : pTableInd = TR4ItemsName29; break;
-                case 29 : pTableInd = TR4ItemsName30; break;
-                case 30 : pTableInd = TR4ItemsName31; break;
-                case 31 : pTableInd = TR4ItemsName32; break;
-                case 32 : pTableInd = TR4ItemsName33; break;
-                case 33 : pTableInd = TR4ItemsName34; break;
-                case 34 : pTableInd = TR4ItemsName35; break;
-                case 35 : pTableInd = TR4ItemsName36; break;
-                case 36 : pTableInd = TR4ItemsName37; break;
-                case 37 : pTableInd = TR4ItemsName38; break;
-            }
-        }
-        else
-        {
-            pTableGen = TR49ItemsNameGen;
-
-            //  Skip Title
-            pTableInd = TR49ItemsNameInd [ iLevelIndex + 1 ];
-        }
-    }
-    else if ( iVersion == 49 )
-    {
-        pTableGen = TR49ItemsNameGen;
-
-        //  Skip Title
-        pTableInd = TR49ItemsNameInd [ iLevelIndex + 1 ];
-    }
-    else if ( iVersion == 5 || iVersion == 50 )
-    {
-        pTableGen = TR5ItemsName;
-        switch ( iLevelIndex )
-        {
-            case 0  : pTableInd = TR5ItemsName01; break;
-            case 1  : pTableInd = TR5ItemsName02; break;
-            case 2  : pTableInd = TR5ItemsName03; break;
-            case 3  : pTableInd = TR5ItemsName04; break;
-            case 4  : pTableInd = TR5ItemsName05; break;
-            case 5  : pTableInd = TR5ItemsName06; break;
-            case 6  : pTableInd = TR5ItemsName07; break;
-            case 7  : pTableInd = TR5ItemsName08; break;
-            case 8  : pTableInd = TR5ItemsName09; break;
-            case 9  : pTableInd = TR5ItemsName10; break;
-            case 10 : pTableInd = TR5ItemsName11; break;
-            case 11 : pTableInd = TR5ItemsName12; break;
-            case 12 : // No 12 Level
-            case 13 : pTableInd = TR5ItemsName14; break;
-        }
-    }
+    GetTables ( &pTableGen, &pTableInd );
 
     //
     if ( pTableInd != NULL && pTableInd [ button ] != NULL )
@@ -576,6 +500,7 @@ BOOL CTRXItemsTR4::GetMenuLabel ( int button )
         strcat_s ( szLabels, sizeof(szLabels), pTableGen [ button ] );
     }
 
+    //
     char *nextToken = NULL;
     char *token = strtok_s( szLabels, "\r\n", &nextToken);
     while ( token != NULL) 
@@ -1208,26 +1133,6 @@ BOOL CTRXItemsTR4::OnToolTipNotify(UINT id, NMHDR *pNMH, LRESULT *pResult)
             else if ( iVersion == 5 || iVersion == 50 )
             {
                 pTable = TR5ItemsName;
-#if 0
-                int iLevelIndex = CTRSaveGame::GetLevelIndex();
-                switch ( iLevelIndex )
-                {
-                    case 0  : pTable = TR5ItemsName01; break;
-                    case 1  : pTable = TR5ItemsName02; break;
-                    case 2  : pTable = TR5ItemsName03; break;
-                    case 3  : pTable = TR5ItemsName04; break;
-                    case 4  : pTable = TR5ItemsName05; break;
-                    case 5  : pTable = TR5ItemsName06; break;
-                    case 6  : pTable = TR5ItemsName07; break;
-                    case 7  : pTable = TR5ItemsName08; break;
-                    case 8  : pTable = TR5ItemsName09; break;
-                    case 9  : pTable = TR5ItemsName10; break;
-                    case 10 : pTable = TR5ItemsName11; break;
-                    case 11 : pTable = TR5ItemsName12; break;
-                    case 12 : // No 12 Level
-                    case 13 : pTable = TR5ItemsName14; break;
-                }
-#endif
             }
 
             //
@@ -1310,6 +1215,7 @@ void CTRXItemsTR4::OnRClicked(NMHDR * pNotifyStruct, LRESULT * result)
             {
                 //
                 UINT bit = (UINT) pow ( 2.0, iM );
+
                 //
                 if ( val & bit )
                 {
@@ -1333,7 +1239,7 @@ void CTRXItemsTR4::OnRClicked(NMHDR * pNotifyStruct, LRESULT * result)
 /////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////
-void CTRXItemsTR4::OnItemsItemN(int menuId)
+void CTRXItemsTR4::OnItemsItemN(int menuId, bool bForceCheck)
 {
     //
     char    szValue [ 32 ];
@@ -1351,7 +1257,7 @@ void CTRXItemsTR4::OnItemsItemN(int menuId)
         UINT val = atoi(szValue);
 
         UINT check          = val & bit;
-        if ( check )
+        if ( check && ! bForceCheck )
         {
             val             = val & mask;
         }
@@ -1365,7 +1271,10 @@ void CTRXItemsTR4::OnItemsItemN(int menuId)
     }
 
     //
-    m_MenuItemIndex    = -1;
+    if ( ! bForceCheck )
+    {
+        m_MenuItemIndex    = -1;
+    }
 }
 
 //
@@ -1438,4 +1347,23 @@ void CTRXItemsTR4::OnItemsItem7()
 void CTRXItemsTR4::OnItemsItem8()
 {
     OnItemsItemN(8);
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
+void CTRXItemsTR4::OnItemsAll()
+{
+    for ( int i = 0; i < MAX_MENU_LABEL; i++ )
+    {
+        //  No Item ?
+        const char *pNotDefined = "Item (";
+        if ( strlen(menuLabel [ i ]) > 0 && strncmp ( menuLabel [ i ], pNotDefined, strlen(pNotDefined) ) != 0 )
+        {
+            OnItemsItemN(i+1, true);
+        }
+    }
+
+    m_MenuItemIndex    = -1;
 }

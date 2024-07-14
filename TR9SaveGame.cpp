@@ -1613,7 +1613,7 @@ BOOL CTR9SaveGame::writeFile ( const char *pFilename )
         static char szRenamed [ MAX_PATH ];
 
         //  32 Backup file
-        for ( int i = 32; i >= 1; i-- )
+        for ( int i = CTRXGlobal::m_iTRRBackup - 1; i >= 1; i-- )
         {
             sprintf_s ( szOriginal, sizeof(szOriginal), "%s.bak.%d", pFilename, i - 1 );
             sprintf_s ( szRenamed, sizeof(szRenamed), "%s.bak.%d", pFilename, i );
@@ -1629,10 +1629,18 @@ BOOL CTR9SaveGame::writeFile ( const char *pFilename )
         }
 
         //
-        sprintf_s ( szRenamed, sizeof(szRenamed), "%s.bak.%d", pFilename, 0 );
-        if ( PathFileExists ( pFilename ) )
+        if( CTRXGlobal::m_iTRRBackup >= 1 )
         {
-            rename ( pFilename, szRenamed );
+            sprintf_s ( szRenamed, sizeof(szRenamed), "%s.bak.%d", pFilename, 0 );
+            if ( PathFileExists ( szRenamed ) )     //  Normally already renamed
+            {
+                _unlink ( szRenamed );
+            }
+
+            if ( PathFileExists ( pFilename ) )
+            {
+                rename ( pFilename, szRenamed );
+            }
         }
 
         //

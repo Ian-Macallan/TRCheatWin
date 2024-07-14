@@ -369,18 +369,7 @@ BOOL CTRXPosition::OnInitDialog()
 
             m_Room.SetPointMode ( TRUE );
             CTRXRoomPicture::CreateInstanceInside ( this, &m_Room, roomRect, "", SS_NOTIFY );
-#if 0
-            DWORD dwStyle = SS_OWNERDRAW;
-            dwStyle |= SS_NOTIFY;
 
-            BOOL bCreated = m_Room.Create (
-                "",                             //  LPCTSTR lpszCaption,
-                dwStyle,                        //  DWORD dwStyle,
-                roomRect,                       //  const RECT& rect,
-                this,                           //  CWnd* pParentWnd,
-                -1                              //  UINT nID
-            );
-#endif
             //
             m_Room.SetRoomPoint ( ComputeRoomPoint (), &dfOrientation );
             BOOL bShow = m_Room.ShowWindow ( SW_NORMAL );

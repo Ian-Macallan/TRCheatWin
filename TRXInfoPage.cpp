@@ -389,6 +389,7 @@ void CTRXInfoPage::DoDataExchange(CDataExchange* pDX)
     DDX_Control(pDX, IDC_SQUARE, m_Square);
     DDX_Control(pDX, IDC_COPYPOS, m_CopyPosition);
     DDX_Control(pDX, IDC_PASTEPOS, m_PastePosition);
+    DDX_Control(pDX, IDC_SHELL, m_Shell);
     //}}AFX_DATA_MAP
 }
 
@@ -429,6 +430,7 @@ BEGIN_MESSAGE_MAP(CTRXInfoPage, CTRXPropertyPage)
     ON_BN_CLICKED(IDC_SORT, &CTRXInfoPage::OnBnClickedSort)
     ON_BN_CLICKED(IDC_COPYPOS, &CTRXInfoPage::OnBnClickedCopypos)
     ON_BN_CLICKED(IDC_PASTEPOS, &CTRXInfoPage::OnBnClickedPastepos)
+    ON_BN_CLICKED(IDC_SHELL, &CTRXInfoPage::OnBnClickedShell)
 END_MESSAGE_MAP()
 //}}AFX_MSG_MAP
 
@@ -1482,50 +1484,6 @@ void CTRXInfoPage::FillListCtrl(const char *pDirectory)
     iStream = _findfirsti64 ( szFiles, &tagFile );
     if ( iStream != -1 )
     {
-#if 0
-        strcpy_s ( szFiles, sizeof(szFiles), szDirectory );
-        strcat_s ( szFiles, sizeof(szFiles), "\\" );
-        strcat_s ( szFiles, sizeof(szFiles), tagFile.name );
-
-        // 
-        int iLevel  = 0;
-        int iSub    = 0;
-
-        //  Treat First
-        if ( (  tagFile.attrib & _A_SUBDIR ) == 0 && StrStrI ( tagFile.name, ".bak" ) == NULL )
-        {
-            iVersion = CTRSaveGame::InstanciateVersion ( szFiles );
-
-            if ( iVersion != -1 && CTRSaveGame::I() != NULL  )
-            {
-                iVersion = CTRSaveGame::I()->GetInfo ( szGame, sizeof(szGame), &iGame, &iLevel, szTitle, sizeof(szTitle) );
-            }
-
-            if ( iVersion > 0 )
-            {
-                m_ListCtrl.InsertItem ( iLine, tagFile.name, 0 );
-                m_ListCtrl.SetItemText ( iLine, COL_GAME, szGame);
-
-                sprintf_s ( szGame, sizeof(szGame), "%03d", iGame );
-                m_ListCtrl.SetItemText ( iLine, COL_GAME_NO, szGame);
-
-                sprintf_s ( szGame, sizeof(szGame), "%02d", iLevel );
-                m_ListCtrl.SetItemText ( iLine, COL_LEVEL_NO, szGame);
-
-                m_ListCtrl.SetItemText ( iLine, COL_TITLE, szTitle);
-
-                m_ListCtrl.SetItemText ( iLine, COL_PATHNAME, szFiles);
-                char szDate [ 64 ];
-                struct tm tmDate;
-                _localtime64_s ( &tmDate, &tagFile.time_write );
-                sprintf_s ( szDate, sizeof(szDate), "%04d/%02d/%02d %02d:%02d:%02d",
-                        tmDate.tm_year + 1900, tmDate.tm_mon + 1, tmDate.tm_mday,
-                        tmDate.tm_hour, tmDate.tm_min, tmDate.tm_sec );
-                m_ListCtrl.SetItemText ( iLine, COL_DATE, szDate);
-                iLine++;
-            }
-        }
-#endif
         //  Treat Next
         do
         {
@@ -1536,7 +1494,7 @@ void CTRXInfoPage::FillListCtrl(const char *pDirectory)
             int iLevel  = 0;
             int iSub    = 0;
 
-            if (  ( tagFile.attrib & _A_SUBDIR ) == 0  && StrStrI ( tagFile.name, ".bak" ) == NULL )
+            if (  ( tagFile.attrib & _A_SUBDIR ) == 0  && theApp.AcceptedPattern ( tagFile.name ) )
             {
                 iVersion    = CTRSaveGame::InstanciateVersion ( szFiles );
 
@@ -3366,4 +3324,16 @@ void CTRXInfoPage::OnBnClickedPastepos()
         sprintf_s ( szString, sizeof(szString), "%d", g_wRoomCopy );
         m_Area.SetWindowText ( szString );
     }
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
+void CTRXInfoPage::OnBnClickedShell()
+{
+    static char     szDirectory [ MAX_PATH ];
+    m_Filename.GetWindowText ( szDirectory, sizeof ( szDirectory ) - 1 );
+    theApp.RemoveFilename ( szDirectory );
+    HINSTANCE hInst = ShellExecute ( NULL, "open", szDirectory, "", "", SW_SHOWDEFAULT );
 }

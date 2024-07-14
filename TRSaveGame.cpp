@@ -697,7 +697,7 @@ void CTRSaveGame::Backup_Savegame()
     static char szRenamed [ MAX_PATH ];
 
     //  Four Backup Files
-    for ( int i = 4; i >= 1; i-- )
+    for ( int i = CTRXGlobal::m_iTRBackup - 1; i >= 1; i-- )
     {
         sprintf_s ( szOriginal, sizeof(szOriginal), "%s.bak.%d", m_Filename, i - 1 );
         sprintf_s ( szRenamed, sizeof(szRenamed), "%s.bak.%d", m_Filename, i );
@@ -713,10 +713,18 @@ void CTRSaveGame::Backup_Savegame()
     }
 
     //
-    sprintf_s ( szRenamed, sizeof(szRenamed), "%s.bak.%d", m_Filename, 0 );
-    if ( PathFileExists ( m_Filename ) )
+    if ( CTRXGlobal::m_iTRBackup >= 1 )
     {
-        rename ( m_Filename, szRenamed );
+        sprintf_s ( szRenamed, sizeof(szRenamed), "%s.bak.%d", m_Filename, 0 );
+        if ( PathFileExists ( szRenamed ) )     //  Normally already renamed
+        {
+            _unlink ( szRenamed );
+        }
+
+        if ( PathFileExists ( m_Filename ) )
+        {
+            rename ( m_Filename, szRenamed );
+        }
     }
 }
 

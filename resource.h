@@ -334,6 +334,8 @@
 #define IDC_JOURNAL                     1070
 #define IDC_LISTCTRL                    1072
 #define IDC_DEF_ADDRESS                 1073
+#define IDC_JOURNAL2                    1073
+#define IDC_SHELL                       1073
 #define IDC_CRIOTGUN                    1079
 #define IDC_CGRENADELAUNCHER            1080
 #define IDC_CHARPOON                    1081
@@ -657,13 +659,15 @@
 #define ID_SYSTEMMENU_SIZE              32824
 #define ID_SYSTEMMENU_MAXIMIZE          32826
 #define ID_DIALOGMENU_VERTICALVIEW      32828
+#define ID_ITEMS_ID                     32830
+#define ID_ITEMS_ALL                    32831
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        298
-#define _APS_NEXT_COMMAND_VALUE         32830
+#define _APS_NEXT_COMMAND_VALUE         32832
 #define _APS_NEXT_CONTROL_VALUE         1276
 #define _APS_NEXT_SYMED_VALUE           125
 #endif

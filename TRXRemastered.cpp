@@ -186,26 +186,6 @@ CTRXRemastered::CTRXRemastered() : CTRXPropertyPage123(CTRXRemastered::IDD)
     LoadLocation ( LocationPathname, "TRX Last Location Count", "TRX Last Location %02d" );
 
     //
-#if 0
-    //
-    char szKeyname [ 64 ];
-    sprintf_s ( szKeyname, sizeof(szKeyname), "TRX Last Location Count" );
-    int iCount = theApp.GetProfileInt( PROFILE_SETTING, szKeyname, 0 );
-
-    for ( int i = 0; i < LEN_LOCATION && i < iCount; i++ )
-    {
-        char szTemp [ MAX_PATH ];
-        sprintf_s ( szKeyname, sizeof(szKeyname), "TRX Last Location %02d", i );
-        CString location  = theApp.GetProfileString( PROFILE_SETTING, szKeyname, "" );
-        strcpy_s  ( szTemp, sizeof(szTemp), location );
-        if ( strlen(szTemp) > 0 )
-        {
-            AddLocation ( LocationPathname, szTemp );
-
-        }
-    }
-#endif
-
     m_bRoomCreated  = false;
 
     SetGUIModified ( FALSE );
@@ -340,6 +320,7 @@ void CTRXRemastered::DoDataExchange(CDataExchange* pDX)
     DDX_Control(pDX, IDC_POSITION, m_Position);
     DDX_Control(pDX, IDC_SHOW_MAP, m_Show_Map);
     DDX_Control(pDX, IDC_FRAME_POSITION, m_Frame_Position);
+    DDX_Control(pDX, IDC_SHELL, m_Shell);
 }
 
 //
@@ -438,6 +419,7 @@ BEGIN_MESSAGE_MAP(CTRXRemastered, CTRXPropertyPage123)
     ON_BN_CLICKED(IDC_POSITION, &CTRXRemastered::OnBnClickedPosition)
     ON_BN_CLICKED(IDC_SHOW_MAP, &CTRXRemastered::OnBnClickedShowMap)
     ON_BN_CLICKED(IDC_RECURSE, &CTRXRemastered::OnBnClickedRecurse)
+    ON_BN_CLICKED(IDC_SHELL, &CTRXRemastered::OnBnClickedShell)
 END_MESSAGE_MAP()
 
 
@@ -5380,4 +5362,16 @@ void CTRXRemastered::OnBnClickedRecurse()
     {
         theApp.WriteProfileInt ( PROFILE_SETTING, PROFILE_RECURSE_WRITE, 0 );
     }
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
+void CTRXRemastered::OnBnClickedShell()
+{
+    static char     szDirectory [ MAX_PATH ];
+    m_Filename.GetWindowText ( szDirectory, sizeof ( szDirectory ) - 1 );
+    theApp.RemoveFilename ( szDirectory );
+    HINSTANCE hInst = ShellExecute ( NULL, "open", szDirectory, "", "", SW_SHOWDEFAULT );
 }
