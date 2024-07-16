@@ -10,6 +10,19 @@
 #define TR5_MAX_HEALTH      1000
 #define TR5_ALT_HEALTH      0x7fff
 
+//  Indicator Structure for TR 4 and 5
+#pragma pack(push, pack1, 1)
+typedef struct indicatorTR45Struct
+{
+    BOOL    bEnd;
+    BYTE    b1;
+    BYTE    b2;
+    BYTE    b3;
+    BYTE    b4;
+    BOOL    useB3;
+} TR45_INDICATORS;
+#pragma pack(pop, pack1)
+
 //
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -21,16 +34,8 @@ class CTR45SaveGame : public CTRSaveGame
     public:
         CTR45SaveGame(void);
         virtual ~CTR45SaveGame(void);
-};
 
-//  Indicator Structure for TR 4 and 5
-typedef struct indicatorTR45Struct
-{
-    BOOL    bEnd;
-    BYTE    b1;
-    BYTE    b2;
-    BYTE    b3;
-    BYTE    b4;
-    BOOL    useB3;
-} TR45_INDICATORS;
+        static BOOL ReadIndicators( TR45_INDICATORS *IndicatorsTRTable, const int maxTable, const char *pFilename );
+        static BOOL WriteIndicators( TR45_INDICATORS *IndicatorsTRTable, const int maxTable, const char *pFilename );
+};
 

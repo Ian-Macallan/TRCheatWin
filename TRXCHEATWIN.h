@@ -95,13 +95,16 @@ class CTRXCHEATWINApp : public CWinApp
 
         static BOOL AcceptedPattern ( const char *pName );
 
+        static char *RemoveFileType ( char *pText );
+        static const char *__strstri ( const char *pString, const char *pSearched );
+        static BOOL EndsWithI ( const char *pText, const char *pEnd );
+        static void ResetCustomLabels ();
+
         afx_msg void OnHelp();
 
 };
 
 //
-extern void ResetCustomLabels ();
-
 #define PROFILE_SETTING             "Settings"
 #define PROFILE_MENU                "Menu"
 #define PROFILE_REMASTERED          "Remastered"
@@ -125,6 +128,4 @@ extern void ResetCustomLabels ();
 
 /////////////////////////////////////////////////////////////////////////////
 
-//{{AFX_INSERT_LOCATION}}
-// Microsoft Visual C++ will insert additional declarations immediately before the previous line.
 

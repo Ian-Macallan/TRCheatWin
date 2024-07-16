@@ -128,6 +128,7 @@ BEGIN
     CONTROL         "All Secrets",IDC_SECRET_ALL,"Button",BS_OWNERDRAW | WS_TABSTOP,237,193,50,14
     CONTROL         "Lara is Burning",IDC_LARABURNING,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,126,212,68,8
     EDITTEXT        IDC_LARA,205,210,30,12,ES_AUTOHSCROLL
+    CONTROL         "Levels",IDC_LEVELS,"Button",BS_OWNERDRAW | WS_TABSTOP,241,209,39,14
     GROUPBOX        "Position",IDC_STATIC,123,229,167,49
     LTEXT           "Room",IDC_STATIC,131,242,20,8
     EDITTEXT        IDC_ROOM,157,239,40,14,ES_AUTOHSCROLL
@@ -294,13 +295,6 @@ BEGIN
     CONTROL         181,IDC_BM_UZIS,"Static",SS_BITMAP | SS_REALSIZEIMAGE | SS_SUNKEN | WS_BORDER,7,228,69,50,WS_EX_CLIENTEDGE
     CONTROL         183,IDC_BM_ROCKET,"Static",SS_BITMAP | SS_REALSIZEIMAGE | SS_SUNKEN | WS_BORDER,154,228,89,30,WS_EX_CLIENTEDGE
     EDITTEXT        IDC_STATUS,7,307,505,12,ES_AUTOHSCROLL | ES_READONLY | NOT WS_TABSTOP
-END
-
-IDD_CONTAINER DIALOGEX 0, 0, 309, 176
-STYLE DS_SETFONT | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME
-CAPTION "Dialog"
-FONT 8, "MS Shell Dlg", 400, 0, 0x1
-BEGIN
 END
 
 IDD_REMASTERED DIALOGEX 0, 0, 520, 330
@@ -698,6 +692,16 @@ BEGIN
     CONTROL         "Cancel",IDCANCEL,"Button",BS_OWNERDRAW | WS_TABSTOP,348,239,50,14
 END
 
+IDD_TRXLEVELS DIALOGEX 0, 0, 437, 198
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Level List"
+FONT 8, "MS Shell Dlg", 0, 0, 0x0
+BEGIN
+    CONTROL         "OK",IDOK,"Button",BS_OWNERDRAW | WS_TABSTOP,323,177,50,14
+    CONTROL         "Cancel",IDCANCEL,"Button",BS_OWNERDRAW | WS_TABSTOP,380,177,50,14
+    CONTROL         "",IDC_LEVEL_LIST,"SysListView32",LVS_REPORT | LVS_ALIGNLEFT | WS_BORDER | WS_TABSTOP,7,7,423,165
+END
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -705,8 +709,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 4,2,09,003
- PRODUCTVERSION 4,2,09,003
+ FILEVERSION 4,2,09,008
+ PRODUCTVERSION 4,2,09,008
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x29L
@@ -724,15 +728,15 @@ BEGIN
             VALUE "Comments", "mailto:ian.macallan@gmail.com\0"
             VALUE "CompanyName", "Macallan (c)\0"
             VALUE "FileDescription", "TRCheatWin - (MSVC)\0"
-            VALUE "FileVersion", "4.2.09.003\0"
+            VALUE "FileVersion", "4.2.09.008\0"
             VALUE "InternalName", "https://www.macallan.org/\0"
-            VALUE "LegalCopyright", "Copyright (C) Sun Jul 14 17:24, 2024\0"
+            VALUE "LegalCopyright", "Copyright (C) Tue Jul 16 09:56, 2024\0"
             VALUE "LegalTrademarks", "Author: Ian Macallan\0"
             VALUE "OriginalFilename", ORIGINAL_FILENAME
-            VALUE "PrivateBuild", "923\0"
+            VALUE "PrivateBuild", "928\0"
             VALUE "ProductName", PRODUCT_NAME
-            VALUE "ProductVersion", "4.2.09.003\0"
-            VALUE "SpecialBuild", "923\0"
+            VALUE "ProductVersion", "4.2.09.008\0"
+            VALUE "SpecialBuild", "928\0"
         END
     END
     BLOCK "VarFileInfo"
@@ -796,14 +800,6 @@ BEGIN
         RIGHTMARGIN, 512
         TOPMARGIN, 7
         BOTTOMMARGIN, 319
-    END
-
-    IDD_CONTAINER, DIALOG
-    BEGIN
-        LEFTMARGIN, 7
-        RIGHTMARGIN, 302
-        TOPMARGIN, 7
-        BOTTOMMARGIN, 169
     END
 
     IDD_REMASTERED, DIALOG
@@ -892,6 +888,14 @@ BEGIN
         RIGHTMARGIN, 398
         TOPMARGIN, 7
         BOTTOMMARGIN, 253
+    END
+
+    IDD_TRXLEVELS, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 430
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 191
     END
 END
 #endif    // APSTUDIO_INVOKED

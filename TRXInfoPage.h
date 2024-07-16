@@ -10,6 +10,7 @@
 #include "TRXRoomPicture.h"
 #include "afxwin.h"
 #include "READTR2/READTRX.h"
+#include "GunGrids.h"
 
 #define COL_FILENAME    0
 #define COL_GAME        1
@@ -118,6 +119,7 @@ class CTRXInfoPage : public CTRXPropertyPage
         CTRXButtonBase      m_CopyPosition;
         CTRXButtonBase      m_PastePosition;
         CTRXButtonBase      m_Shell;
+        CTRXButtonBase      m_Levels;
 
         //}}AFX_DATA
 
@@ -177,5 +179,15 @@ class CTRXInfoPage : public CTRXPropertyPage
         afx_msg void OnBnClickedCopypos();
         afx_msg void OnBnClickedPastepos();
         afx_msg void OnBnClickedShell();
+        afx_msg void OnBnClickedLevels();
 };
 
+//
+typedef struct CustomDataFilesStruct
+{
+    char datafile [ 64 ];
+    char title [ 128 ];
+} CustomDataFilesType;
+
+//
+extern CustomDataFilesType CustomDataFiles [ TR4NGMAXLEVEL ];

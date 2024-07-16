@@ -118,11 +118,11 @@ void CTRXDifferences::DoDataExchange(CDataExchange* pDX)
 //
 /////////////////////////////////////////////////////////////////////////////
 BEGIN_MESSAGE_MAP(CTRXDifferences, CTRXDialogBase)
-    ON_BN_CLICKED(IDOK, &CTRXDifferences::OnBnClickedOk)
-    ON_BN_CLICKED(IDCANCEL, &CTRXDifferences::OnBnClickedCancel)
-    ON_BN_CLICKED(IDYES, &CTRXDifferences::OnBnClickedYes)
-    ON_BN_CLICKED(IDNO, &CTRXDifferences::OnBnClickedNo)
-    ON_NOTIFY(LVN_ITEMCHANGED, IDC_DIFFERENCES, &CTRXDifferences::OnItemchangedDifferences)
+    ON_BN_CLICKED(IDOK, &OnBnClickedOk)
+    ON_BN_CLICKED(IDCANCEL, &OnBnClickedCancel)
+    ON_BN_CLICKED(IDYES, &OnBnClickedYes)
+    ON_BN_CLICKED(IDNO, &OnBnClickedNo)
+    ON_NOTIFY(LVN_ITEMCHANGED, IDC_DIFFERENCES, &OnItemchangedDifferences)
 END_MESSAGE_MAP()
 
 

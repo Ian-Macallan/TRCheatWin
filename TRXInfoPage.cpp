@@ -6,6 +6,7 @@
 #include "TRXCHEATWINDlg.h"
 #include "TRXInfoPage.h"
 #include "TRXDifferences.h"
+#include "TRXLevels.h"
 #include "TRXMapAreas.h"
 #include "TRXMessageBox.h"
 #include "ReadTR2\ReadTRX.h"
@@ -83,13 +84,7 @@ static  STRUCTLOCATION  CustomPathnames4 [ LEN_LOCATION ];
 static  STRUCTLOCATION  CustomPathnames5 [ LEN_LOCATION ];
 
 //
-typedef struct CustomDataFilesStruct
-{
-    char datafile [ 64 ];
-    char title [ 128 ];
-} CustomDataFilesType;
-
-static CustomDataFilesType CustomDataFiles [ TR4NGMAXLEVEL ];
+CustomDataFilesType CustomDataFiles [ TR4NGMAXLEVEL ];
 
 //
 /////////////////////////////////////////////////////////////////////////////
@@ -390,6 +385,7 @@ void CTRXInfoPage::DoDataExchange(CDataExchange* pDX)
     DDX_Control(pDX, IDC_COPYPOS, m_CopyPosition);
     DDX_Control(pDX, IDC_PASTEPOS, m_PastePosition);
     DDX_Control(pDX, IDC_SHELL, m_Shell);
+    DDX_Control(pDX, IDC_LEVELS, m_Levels);
     //}}AFX_DATA_MAP
 }
 
@@ -431,6 +427,7 @@ BEGIN_MESSAGE_MAP(CTRXInfoPage, CTRXPropertyPage)
     ON_BN_CLICKED(IDC_COPYPOS, &CTRXInfoPage::OnBnClickedCopypos)
     ON_BN_CLICKED(IDC_PASTEPOS, &CTRXInfoPage::OnBnClickedPastepos)
     ON_BN_CLICKED(IDC_SHELL, &CTRXInfoPage::OnBnClickedShell)
+    ON_BN_CLICKED(IDC_LEVELS, &CTRXInfoPage::OnBnClickedLevels)
 END_MESSAGE_MAP()
 //}}AFX_MSG_MAP
 
@@ -526,7 +523,7 @@ void CTRXInfoPage::LoadDirectory()
 
             //  Reset Custom Combo
             ZeroMemory ( CustomDataFiles, sizeof(CustomDataFiles) );
-            ResetCustomLabels ();
+            theApp.ResetCustomLabels ();
 
             //  Select Default
             m_Custom_Combo.SetCurSel ( 0 );
@@ -570,14 +567,13 @@ void CTRXInfoPage::OnLoad()
 
         //  Reset Custom Combo
         ZeroMemory ( CustomDataFiles, sizeof(CustomDataFiles) );
-        ResetCustomLabels ();
+        theApp.ResetCustomLabels ();
 
         //  Select Default
         m_Custom_Combo.SetCurSel ( 0 );
 
         //  Change to Normal
         ChangeCustomCombo( true );
-
     }
 
     //
@@ -676,7 +672,7 @@ void CTRXInfoPage::DisplayValues()
 
         //
         int tombraider  = CTRSaveGame::GetFullVersion ();
-        int levelIndex  =  CTRSaveGame::GetLevelIndex ();
+        int levelIndex  = CTRSaveGame::GetLevelIndex ();
 
         //
         STRUCTLOCATION  *pTable = NULL;
@@ -2087,7 +2083,7 @@ void CTRXInfoPage::OnSelchangeCombo()
 
         //  Reset Custom Combo
         ZeroMemory ( CustomDataFiles, sizeof(CustomDataFiles) );
-        ResetCustomLabels ();
+        theApp.ResetCustomLabels ();
         m_Custom_Combo.SetCurSel ( 0 );
         ChangeCustomCombo( true );
     }
@@ -2751,7 +2747,7 @@ void CTRXInfoPage::OnBnClickedAddCustom()
         //
         //  Reset
         ZeroMemory ( CustomDataFiles, sizeof(CustomDataFiles) );
-        ResetCustomLabels ();
+        theApp.ResetCustomLabels ();
 
         //
         BOOL bRead = ReadTRXScript ( szScript, szScriptDirectory, tombraider / 10, false, AddToItemsLabels );
@@ -2916,7 +2912,7 @@ void CTRXInfoPage::ChangeCustomCombo(bool bManualChange)
                 //
                 //  Reset
                 ZeroMemory ( CustomDataFiles, sizeof(CustomDataFiles) );
-                ResetCustomLabels ();
+                theApp.ResetCustomLabels ();
 
                 //
                 BOOL bRead = ReadTRXScript ( szScript, szScriptDirectory, tombraider / 10, false, AddToItemsLabels );
@@ -3011,7 +3007,7 @@ void CTRXInfoPage::OnSelchangeCustomCombo()
 {
     //
     ZeroMemory ( CustomDataFiles, sizeof(CustomDataFiles) );
-    ResetCustomLabels ();
+    theApp.ResetCustomLabels ();
 
     //
     ChangeCustomCombo( true );
@@ -3258,7 +3254,7 @@ void CTRXInfoPage::DoDropFiles(const char *pFilemame)
 
         //  Reset Custom Combo
         ZeroMemory ( CustomDataFiles, sizeof(CustomDataFiles) );
-        ResetCustomLabels ();
+        theApp.ResetCustomLabels ();
 
         //  Select Default
         m_Custom_Combo.SetCurSel ( 0 );
@@ -3336,4 +3332,19 @@ void CTRXInfoPage::OnBnClickedShell()
     m_Filename.GetWindowText ( szDirectory, sizeof ( szDirectory ) - 1 );
     theApp.RemoveFilename ( szDirectory );
     HINSTANCE hInst = ShellExecute ( NULL, "open", szDirectory, "", "", SW_SHOWDEFAULT );
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
+void CTRXInfoPage::OnBnClickedLevels()
+{
+    if ( CTRSaveGame::IsValid() )
+    {
+        CTRXLevels dlg;
+        dlg.m_bRemastered   = FALSE;
+        dlg.m_iVersion      = CTRSaveGame::GetFullVersion();
+        dlg.DoModal();
+    }
 }

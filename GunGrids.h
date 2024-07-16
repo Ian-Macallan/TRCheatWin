@@ -9,7 +9,9 @@
 #define TR2G_START          19
 #define TR3G_START          21
 
-#define TR4_LEVELS          38
+#define TR4_LEVELS          40  // With Time Exclusive
+#define TR4G_START          39
+
 #define TR5_LEVELS          14
 
 #define TR4NGMAXLEVEL       64

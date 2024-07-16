@@ -53,7 +53,7 @@ static char THIS_FILE[] = __FILE__;
 /////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////
-static BOOL EndsWithI ( const char *pText, const char *pEnd )
+BOOL CTRXCHEATWINApp::EndsWithI ( const char *pText, const char *pEnd )
 {
     if ( strlen(pText) >= strlen(pEnd) )
     {
@@ -69,7 +69,7 @@ static BOOL EndsWithI ( const char *pText, const char *pEnd )
 //====================================================================================
 //
 //====================================================================================
-static const char *__strstri ( const char *pString, const char *pSearched )
+const char *CTRXCHEATWINApp::__strstri ( const char *pString, const char *pSearched )
 {
     if ( ( pString == NULL ) || ( pSearched == NULL ) )
     {
@@ -105,7 +105,7 @@ static const char *__strstri ( const char *pString, const char *pSearched )
 /////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////
-void ResetCustomLabels ()
+void CTRXCHEATWINApp::ResetCustomLabels ()
 {
     //
     //  Reset
@@ -303,7 +303,7 @@ const char *CTRXCHEATWINApp::FindFileName ( const char *pText )
 /////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////
-static char *RemoveFileType ( char *pText )
+char *CTRXCHEATWINApp::RemoveFileType ( char *pText )
 {
     for ( int i = (int) strlen(pText) - 1; i >= 0 ; i-- )
     {
@@ -526,8 +526,31 @@ BOOL CTRXCHEATWINApp::InitInstance()
     int iSizeTR2 = sizeof(TABLE_TR2);
     int iSizeTR3 = sizeof(TABLE_TR3);
 
-	//	Get OS Version
     //
+    //  Module Filename has been read
+    //  And Ini file name too
+    static char szIndicatorsFilename [ MAX_PATH ];
+
+    //
+    strcpy_s ( szIndicatorsFilename, sizeof(szIndicatorsFilename), InitFileName );
+    RemoveFileType ( szIndicatorsFilename );
+    strcat_s ( szIndicatorsFilename, sizeof(szIndicatorsFilename), ".tr4.txt" );
+    CTR4SaveGame::ReadIndicators ( IndicatorsTR4Table, IndicatorsTR4TableCount, szIndicatorsFilename );
+
+    //
+    strcpy_s ( szIndicatorsFilename, sizeof(szIndicatorsFilename), InitFileName );
+    RemoveFileType ( szIndicatorsFilename );
+    strcat_s ( szIndicatorsFilename, sizeof(szIndicatorsFilename), ".tr4ng.txt" );
+    CTR4NGSaveGame::ReadIndicators ( IndicatorsTR4NGTable, IndicatorsTR4NGTableCount, szIndicatorsFilename );
+
+    //
+    strcpy_s ( szIndicatorsFilename, sizeof(szIndicatorsFilename), InitFileName );
+    RemoveFileType ( szIndicatorsFilename );
+    strcat_s ( szIndicatorsFilename, sizeof(szIndicatorsFilename), ".tr5.txt" );
+    CTR5SaveGame::ReadIndicators ( IndicatorsTR5Table, IndicatorsTR5TableCount, szIndicatorsFilename );
+
+    //
+	//	Get OS Version
     OSHVersion  = 0;
     OSLVersion  = 0;
     ZeroMemory ( OSVersion, sizeof(OSVersion) );
@@ -572,6 +595,27 @@ BOOL CTRXCHEATWINApp::InitInstance()
         {
             CTRXHelpDialog dlg;
             nResponse = dlg.DoModal();
+        }
+        else if (   _stricmp ( pCommandLine, "-indicator" ) == 0 ||
+                    _stricmp ( pCommandLine, "-indicators" ) == 0 )
+        {
+            //
+            strcpy_s ( szIndicatorsFilename, sizeof(szIndicatorsFilename), InitFileName );
+            RemoveFileType ( szIndicatorsFilename );
+            strcat_s ( szIndicatorsFilename, sizeof(szIndicatorsFilename), ".tr4.txt" );
+            CTR4SaveGame::WriteIndicators ( IndicatorsTR4Table, IndicatorsTR4TableCount, szIndicatorsFilename );
+
+            //
+            strcpy_s ( szIndicatorsFilename, sizeof(szIndicatorsFilename), InitFileName );
+            RemoveFileType ( szIndicatorsFilename );
+            strcat_s ( szIndicatorsFilename, sizeof(szIndicatorsFilename), ".tr4ng.txt" );
+            CTR4NGSaveGame::WriteIndicators ( IndicatorsTR4NGTable, IndicatorsTR4NGTableCount, szIndicatorsFilename );
+
+            //
+            strcpy_s ( szIndicatorsFilename, sizeof(szIndicatorsFilename), InitFileName );
+            RemoveFileType ( szIndicatorsFilename );
+            strcat_s ( szIndicatorsFilename, sizeof(szIndicatorsFilename), ".tr5.txt" );
+            CTR5SaveGame::WriteIndicators ( IndicatorsTR5Table, IndicatorsTR5TableCount, szIndicatorsFilename );
         }
         //
         else if (   _stricmp ( pCommandLine, "-123" ) == 0              ||

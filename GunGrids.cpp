@@ -157,6 +157,8 @@ BOOL GunGrid4 [ TR4_LEVELS ] [ NB_GUNS ] =
     {   TRUE,   TRUE,   TRUE,   TRUE,   FALSE,  TRUE,   FALSE,  TRUE,   TRUE    },  //  1
     {   TRUE,   TRUE,   TRUE,   TRUE,   FALSE,  TRUE,   FALSE,  TRUE,   TRUE    },  //  1
     {   TRUE,   TRUE,   TRUE,   TRUE,   FALSE,  TRUE,   FALSE,  TRUE,   TRUE    },  //  1
+    {   TRUE,   TRUE,   TRUE,   TRUE,   FALSE,  TRUE,   FALSE,  TRUE,   TRUE    },  //  Time Exclusive
+    {   TRUE,   TRUE,   TRUE,   TRUE,   FALSE,  TRUE,   FALSE,  TRUE,   TRUE    },  //  Time Exclusive
 };
 
 //  Grappling is in column HAR

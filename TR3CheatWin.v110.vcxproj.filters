@@ -250,6 +250,9 @@
     <ClCompile Include="TR123SaveGame.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="TRXLevels.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="res\Aire 51.bmp">
@@ -826,6 +829,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="TR123SaveGame.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TRXLevels.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

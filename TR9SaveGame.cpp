@@ -3469,6 +3469,7 @@ const char *CTR9SaveGame::GetLevelName ( int tombraider, int level )
             case 1:
             case 10:
             case 15:
+            case 19:
             {
                 if ( level >= 1 && level <= sizeof(TR1LevelNames)/sizeof(const char*) )
                 {
@@ -3479,6 +3480,7 @@ const char *CTR9SaveGame::GetLevelName ( int tombraider, int level )
             case 2:
             case 20:
             case 25:
+            case 29:
             {
                 if ( level >= 1 && level <= sizeof(TR2LevelNames)/sizeof(const char*) )
                 {
@@ -3489,6 +3491,7 @@ const char *CTR9SaveGame::GetLevelName ( int tombraider, int level )
             case 3:
             case 30:
             case 35:
+            case 39:
             {
                 if ( level >= 1 && level <= sizeof(TR3LevelNames)/sizeof(const char*) )
                 {
@@ -3509,6 +3512,8 @@ const char *CTR9SaveGame::GetLevelName ( int tombraider, int level )
             }
             case 5:
             case 50:
+            case 55:
+            case 59:
             {
                 if ( level >= 1 && level <= sizeof(TR5LevelNames)/sizeof(const char*) )
                 {

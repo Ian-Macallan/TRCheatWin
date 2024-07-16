@@ -32,6 +32,7 @@
 #define IDD_TRXVERTICALMAP              118
 #define IDD_TRXMESSAGEBOX               120
 #define IDD_TRXHELPDIALOG               121
+#define IDD_TRXLEVELS                   125
 #define IDM_DARK_THEME                  0x0080
 #define IDR_MAINFRAME                   128
 #define IDB_BITMAP1                     132
@@ -159,7 +160,6 @@
 #define IDB_LAST_REV_0                  269
 #define IDB_BITMAP4                     270
 #define IDB_LAST_REV_1                  270
-#define IDD_CONTAINER                   271
 #define IDD_ITEMS1                      272
 #define IDD_REMASTERED                  272
 #define IDD_ITEMS_TR4                   273
@@ -625,7 +625,10 @@
 #define IDC_SQUARE                      1274
 #define IDC_COPYPOS                     1275
 #define IDC_PASTEPOS                    1276
+#define IDC_LEVEL_LIST                  1276
 #define IDC_COPYPOS2                    1277
+#define IDC_BUTTON5                     1277
+#define IDC_LEVELS                      1277
 #define ID_MENULIST_EXPORT              32771
 #define ID_MENULIST_IMPORT              32772
 #define ID_MENULIST_DELETE              32773
@@ -668,7 +671,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        298
 #define _APS_NEXT_COMMAND_VALUE         32832
-#define _APS_NEXT_CONTROL_VALUE         1276
-#define _APS_NEXT_SYMED_VALUE           125
+#define _APS_NEXT_CONTROL_VALUE         1278
+#define _APS_NEXT_SYMED_VALUE           126
 #endif
 #endif

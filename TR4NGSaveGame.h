@@ -598,3 +598,6 @@ class CTR4NGSaveGame : public CTR45SaveGame
     // Generated message map functions
 };
 
+//
+extern TR45_INDICATORS IndicatorsTR4NGTable [ MAX_INDICATORS ];
+extern int IndicatorsTR4NGTableCount;

@@ -73,7 +73,7 @@ static char    TR4NBSecrets [ ] =
 /////////////////////////////////////////////////////////////////////////////
 //  Indicator Table
 /////////////////////////////////////////////////////////////////////////////
-static TR45_INDICATORS IndicatorsTR4NGTable [ MAX_INDICATORS ] =
+TR45_INDICATORS IndicatorsTR4NGTable [ MAX_INDICATORS ] =
 {
     {   FALSE,  0x02,   0x02,   0x00,   0x67,   TRUE },
     {   FALSE,  0x02,   0x02,   0x47,   0x67,   TRUE },
@@ -101,7 +101,7 @@ static TR45_INDICATORS IndicatorsTR4NGTable [ MAX_INDICATORS ] =
     //
     {   TRUE,   0xff,   0xff,   0xff,   0xff,   TRUE },         // End
 };
-static int IndicatorsTR4NGTableCount = sizeof(IndicatorsTR4NGTable)/sizeof(TR45_INDICATORS);
+int IndicatorsTR4NGTableCount = sizeof(IndicatorsTR4NGTable)/sizeof(TR45_INDICATORS);
 
 //
 static int positionCount = 0;
