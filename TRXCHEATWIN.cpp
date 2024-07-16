@@ -105,6 +105,25 @@ const char *CTRXCHEATWINApp::__strstri ( const char *pString, const char *pSearc
 /////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////
+int CTRXCHEATWINApp::__strnicmp ( const char *pString, const char *pBegining )
+{
+    if ( pBegining == NULL )
+    {
+        return 1;
+    }
+
+    if ( strlen(pBegining) == 0 )
+    {
+        return 1;
+    }
+
+    return _strnicmp ( pString, pBegining, strlen(pBegining) );
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
 void CTRXCHEATWINApp::ResetCustomLabels ()
 {
     //
@@ -374,6 +393,61 @@ bool CTRXCHEATWINApp::OSVersionGreaterThan ( WORD major, WORD minor )
 
 //
 /////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
+void CTRXCHEATWINApp::ReadIndicators()
+{
+    static char szIndicatorsFilename [ MAX_PATH ];
+
+    strcpy_s ( szIndicatorsFilename, sizeof(szIndicatorsFilename), InitFileName );
+    RemoveFileType ( szIndicatorsFilename );
+    strcat_s ( szIndicatorsFilename, sizeof(szIndicatorsFilename), ".tr4.txt" );
+    CTR4SaveGame::ReadIndicators ( IndicatorsTR4Table, IndicatorsTR4TableCount, szIndicatorsFilename );
+
+    //
+    strcpy_s ( szIndicatorsFilename, sizeof(szIndicatorsFilename), InitFileName );
+    RemoveFileType ( szIndicatorsFilename );
+    strcat_s ( szIndicatorsFilename, sizeof(szIndicatorsFilename), ".tr4ng.txt" );
+    CTR4NGSaveGame::ReadIndicators ( IndicatorsTR4NGTable, IndicatorsTR4NGTableCount, szIndicatorsFilename );
+
+    //
+    strcpy_s ( szIndicatorsFilename, sizeof(szIndicatorsFilename), InitFileName );
+    RemoveFileType ( szIndicatorsFilename );
+    strcat_s ( szIndicatorsFilename, sizeof(szIndicatorsFilename), ".tr5.txt" );
+    CTR5SaveGame::ReadIndicators ( IndicatorsTR5Table, IndicatorsTR5TableCount, szIndicatorsFilename );
+
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
+void CTRXCHEATWINApp::WriteIndicators()
+{
+    static char szIndicatorsFilename [ MAX_PATH ];
+
+    //
+    strcpy_s ( szIndicatorsFilename, sizeof(szIndicatorsFilename), InitFileName );
+    RemoveFileType ( szIndicatorsFilename );
+    strcat_s ( szIndicatorsFilename, sizeof(szIndicatorsFilename), ".tr4.txt" );
+    CTR4SaveGame::WriteIndicators ( IndicatorsTR4Table, IndicatorsTR4TableCount, szIndicatorsFilename );
+
+    //
+    strcpy_s ( szIndicatorsFilename, sizeof(szIndicatorsFilename), InitFileName );
+    RemoveFileType ( szIndicatorsFilename );
+    strcat_s ( szIndicatorsFilename, sizeof(szIndicatorsFilename), ".tr4ng.txt" );
+    CTR4NGSaveGame::WriteIndicators ( IndicatorsTR4NGTable, IndicatorsTR4NGTableCount, szIndicatorsFilename );
+
+    //
+    strcpy_s ( szIndicatorsFilename, sizeof(szIndicatorsFilename), InitFileName );
+    RemoveFileType ( szIndicatorsFilename );
+    strcat_s ( szIndicatorsFilename, sizeof(szIndicatorsFilename), ".tr5.txt" );
+    CTR5SaveGame::WriteIndicators ( IndicatorsTR5Table, IndicatorsTR5TableCount, szIndicatorsFilename );
+
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
 // CTRXCHEATWINApp initialization
 //
 /////////////////////////////////////////////////////////////////////////////
@@ -529,25 +603,8 @@ BOOL CTRXCHEATWINApp::InitInstance()
     //
     //  Module Filename has been read
     //  And Ini file name too
-    static char szIndicatorsFilename [ MAX_PATH ];
-
     //
-    strcpy_s ( szIndicatorsFilename, sizeof(szIndicatorsFilename), InitFileName );
-    RemoveFileType ( szIndicatorsFilename );
-    strcat_s ( szIndicatorsFilename, sizeof(szIndicatorsFilename), ".tr4.txt" );
-    CTR4SaveGame::ReadIndicators ( IndicatorsTR4Table, IndicatorsTR4TableCount, szIndicatorsFilename );
-
-    //
-    strcpy_s ( szIndicatorsFilename, sizeof(szIndicatorsFilename), InitFileName );
-    RemoveFileType ( szIndicatorsFilename );
-    strcat_s ( szIndicatorsFilename, sizeof(szIndicatorsFilename), ".tr4ng.txt" );
-    CTR4NGSaveGame::ReadIndicators ( IndicatorsTR4NGTable, IndicatorsTR4NGTableCount, szIndicatorsFilename );
-
-    //
-    strcpy_s ( szIndicatorsFilename, sizeof(szIndicatorsFilename), InitFileName );
-    RemoveFileType ( szIndicatorsFilename );
-    strcat_s ( szIndicatorsFilename, sizeof(szIndicatorsFilename), ".tr5.txt" );
-    CTR5SaveGame::ReadIndicators ( IndicatorsTR5Table, IndicatorsTR5TableCount, szIndicatorsFilename );
+    ReadIndicators();
 
     //
 	//	Get OS Version
@@ -599,23 +656,7 @@ BOOL CTRXCHEATWINApp::InitInstance()
         else if (   _stricmp ( pCommandLine, "-indicator" ) == 0 ||
                     _stricmp ( pCommandLine, "-indicators" ) == 0 )
         {
-            //
-            strcpy_s ( szIndicatorsFilename, sizeof(szIndicatorsFilename), InitFileName );
-            RemoveFileType ( szIndicatorsFilename );
-            strcat_s ( szIndicatorsFilename, sizeof(szIndicatorsFilename), ".tr4.txt" );
-            CTR4SaveGame::WriteIndicators ( IndicatorsTR4Table, IndicatorsTR4TableCount, szIndicatorsFilename );
-
-            //
-            strcpy_s ( szIndicatorsFilename, sizeof(szIndicatorsFilename), InitFileName );
-            RemoveFileType ( szIndicatorsFilename );
-            strcat_s ( szIndicatorsFilename, sizeof(szIndicatorsFilename), ".tr4ng.txt" );
-            CTR4NGSaveGame::WriteIndicators ( IndicatorsTR4NGTable, IndicatorsTR4NGTableCount, szIndicatorsFilename );
-
-            //
-            strcpy_s ( szIndicatorsFilename, sizeof(szIndicatorsFilename), InitFileName );
-            RemoveFileType ( szIndicatorsFilename );
-            strcat_s ( szIndicatorsFilename, sizeof(szIndicatorsFilename), ".tr5.txt" );
-            CTR5SaveGame::WriteIndicators ( IndicatorsTR5Table, IndicatorsTR5TableCount, szIndicatorsFilename );
+            WriteIndicators();
         }
         //
         else if (   _stricmp ( pCommandLine, "-123" ) == 0              ||
@@ -628,9 +669,9 @@ BOOL CTRXCHEATWINApp::InitInstance()
             nResponse = dlg.DoModal();
         }
         //
-        else if (   _strnicmp ( pCommandLine, "-123 ", strlen("-123 ") ) == 0               ||
-                    _strnicmp ( pCommandLine, "-r ", strlen("-r ") ) == 0                   ||
-                    _strnicmp ( pCommandLine, "-remastered ", strlen("-remastered ") ) == 0     )
+        else if (   __strnicmp ( pCommandLine, "-123 " ) == 0               ||
+                    __strnicmp ( pCommandLine, "-r " ) == 0                   ||
+                    __strnicmp ( pCommandLine, "-remastered " ) == 0     )
         {
             CTRXPropertySheetRemastered dlg ( TRR_PROGRAM );
             dlg.SetApply ( TRUE );
@@ -664,13 +705,13 @@ BOOL CTRXCHEATWINApp::InitInstance()
             m_pMainWnd = &dlg;
             nResponse = dlg.DoModal();
         }
-        else if (   _strnicmp ( pCommandLine, "-1 ", strlen("-1 ") ) == 0                   ||
-                    _strnicmp ( pCommandLine, "-2 ", strlen("-2 ") ) == 0                   ||
-                    _strnicmp ( pCommandLine, "-3 ", strlen("-3 ") ) == 0                   ||
-                    _strnicmp ( pCommandLine, "-4 ", strlen("-4 ") ) == 0                   ||
-                    _strnicmp ( pCommandLine, "-5 ", strlen("-5 ") ) == 0                   ||
-                    _strnicmp ( pCommandLine, "-s ", strlen("-s ") ) == 0                   ||
-                    _strnicmp ( pCommandLine, "-standard ", strlen("-standard ") ) == 0     )
+        else if (   __strnicmp ( pCommandLine, "-1 " ) == 0                   ||
+                    __strnicmp ( pCommandLine, "-2 " ) == 0                   ||
+                    __strnicmp ( pCommandLine, "-3 " ) == 0                   ||
+                    __strnicmp ( pCommandLine, "-4 " ) == 0                   ||
+                    __strnicmp ( pCommandLine, "-5 " ) == 0                   ||
+                    __strnicmp ( pCommandLine, "-s " ) == 0                   ||
+                    __strnicmp ( pCommandLine, "-standard " ) == 0     )
         {
             CTRXPropertySheetStandard   dlg ( TR_PROGRAM );
             dlg.SetApply ( TRUE );
@@ -694,7 +735,7 @@ BOOL CTRXCHEATWINApp::InitInstance()
         }
         //
 #ifdef _DEBUG
-        else if ( _strnicmp ( pCommandLine, "-analyze", strlen("-analyze") ) == 0L )
+        else if ( __strnicmp ( pCommandLine, "-analyze" ) == 0 )
         {
             //
             SetStdOutToNewConsole();
@@ -724,7 +765,7 @@ BOOL CTRXCHEATWINApp::InitInstance()
 #endif
         //
         //  Read Script
-        else if ( _strnicmp ( pCommandLine, "-rs4", strlen("-rs4") ) == 0L )
+        else if ( __strnicmp ( pCommandLine, "-rs4" ) == 0 )
         {
             //
             char *pFilename = strchr ( pCommandLine, ' ' );
@@ -745,7 +786,7 @@ BOOL CTRXCHEATWINApp::InitInstance()
         }
         //
         //  Read Script
-        else if ( _strnicmp ( pCommandLine, "-ws4", strlen("-ws4") ) == 0L )
+        else if ( __strnicmp ( pCommandLine, "-ws4" ) == 0 )
         {
             //
             char *pFilename = strchr ( pCommandLine, ' ' );
@@ -766,7 +807,7 @@ BOOL CTRXCHEATWINApp::InitInstance()
         }
         //
         //  Read Script
-        else if ( _strnicmp ( pCommandLine, "-rs5", strlen("-rs5") ) == 0L )
+        else if ( __strnicmp ( pCommandLine, "-rs5" ) == 0 )
         {
             //
             char *pFilename = strchr ( pCommandLine, ' ' );
@@ -787,7 +828,7 @@ BOOL CTRXCHEATWINApp::InitInstance()
         }
         //
         //  Read Script
-        else if ( _strnicmp ( pCommandLine, "-ws5", strlen("-ws5") ) == 0L )
+        else if ( __strnicmp ( pCommandLine, "-ws5" ) == 0 )
         {
             //
             char *pFilename = strchr ( pCommandLine, ' ' );
@@ -815,11 +856,11 @@ BOOL CTRXCHEATWINApp::InitInstance()
         }
         //
         //  Custom
-        else if (   strncmp ( pCommandLine, "-tr1", strlen("-tr1") ) == 0L ||
-                    strncmp ( pCommandLine, "-tr2", strlen("-tr2") ) == 0L ||
-                    strncmp ( pCommandLine, "-tr3", strlen("-tr3") ) == 0L ||
-                    strncmp ( pCommandLine, "-tr4", strlen("-tr4") ) == 0L ||
-                    strncmp ( pCommandLine, "-tr5", strlen("-tr5") ) == 0L  )
+        else if (   __strnicmp ( pCommandLine, "-tr1" ) == 0L ||
+                    __strnicmp ( pCommandLine, "-tr2" ) == 0L ||
+                    __strnicmp ( pCommandLine, "-tr3" ) == 0L ||
+                    __strnicmp ( pCommandLine, "-tr4" ) == 0L ||
+                    __strnicmp ( pCommandLine, "-tr5" ) == 0L  )
         {
             //
             char *pFilename = strchr ( pCommandLine, ' ' );
@@ -834,23 +875,23 @@ BOOL CTRXCHEATWINApp::InitInstance()
 
                 //
                 TR_MODE trMode;
-                if ( strncmp ( pCommandLine, "-tr1", strlen("-tr1") ) == 0L )
+                if ( __strnicmp ( pCommandLine, "-tr1" ) == 0 )
                 {
                     trMode  = TRR1_MODE;
                 }
-                else if ( strncmp ( pCommandLine, "-tr2", strlen("-tr2") ) == 0L )
+                else if ( __strnicmp ( pCommandLine, "-tr2" ) == 0 )
                 {
                     trMode  = TRR2_MODE;
                 }
-                else if ( strncmp ( pCommandLine, "-tr3", strlen("-tr3") ) == 0L )
+                else if ( __strnicmp ( pCommandLine, "-tr3" ) == 0 )
                 {
                     trMode  = TRR3_MODE;
                 }
-                else if ( strncmp ( pCommandLine, "-tr4", strlen("-tr4") ) == 0L )
+                else if ( __strnicmp ( pCommandLine, "-tr4" ) == 0 )
                 {
                     trMode  = TR4_MODE;
                 }
-                else if ( strncmp ( pCommandLine, "-tr5", strlen("-tr5") ) == 0L )
+                else if ( __strnicmp ( pCommandLine, "-tr5" ) == 0 )
                 {
                     trMode  = TR5_MODE;
                 }

@@ -203,10 +203,10 @@ BOOL CTR45SaveGame::WriteIndicators(TR45_INDICATORS *IndicatorsTRTable, const in
             fprintf_s ( hFile, "FALSE, " );
         }
 
-        fprintf_s ( hFile, "0x%02x, ", indicator.b1 );
-        fprintf_s ( hFile, "0x%02x, ", indicator.b2 );
-        fprintf_s ( hFile, "0x%02x, ", indicator.b3 );
-        fprintf_s ( hFile, "0x%02x, ", indicator.b4 );
+        fprintf_s ( hFile, "0x%02x, ", indicator.b1 & 0xff );
+        fprintf_s ( hFile, "0x%02x, ", indicator.b2 & 0xff );
+        fprintf_s ( hFile, "0x%02x, ", indicator.b3 & 0xff );
+        fprintf_s ( hFile, "0x%02x, ", indicator.b4 & 0xff );
 
         if ( indicator.useB3 )
         {

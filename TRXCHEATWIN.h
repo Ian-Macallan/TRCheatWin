@@ -71,6 +71,9 @@ class CTRXCHEATWINApp : public CWinApp
         static char *SkipSpaces ( char *pText );
         static void RemoveEnclosingQuotes ( char *pText, size_t iLength );
 
+        void ReadIndicators();
+        void WriteIndicators();
+
         //  Strictly Lower
         bool OSVersionLowerThan ( WORD major, WORD minor );
 
@@ -97,6 +100,7 @@ class CTRXCHEATWINApp : public CWinApp
 
         static char *RemoveFileType ( char *pText );
         static const char *__strstri ( const char *pString, const char *pSearched );
+        static int __strnicmp ( const char *pString, const char *pBegining );
         static BOOL EndsWithI ( const char *pText, const char *pEnd );
         static void ResetCustomLabels ();
 
