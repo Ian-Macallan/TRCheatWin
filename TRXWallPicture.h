@@ -50,10 +50,13 @@ class CTRXWallPicture : public CTRXRoomWall
         // BOOL GetXZ(CPoint point, double &dfX, double &dfZ);
         // BOOL GetXZ(CPoint point, DWORD &dwX, DWORD &dwZ);
         void SetAreaAndPosition ( const TR_AREA *pArea, const TR_CUR_POSITION *position );
-        void SetWall ( WallDirectionEnum eWall );
+        void SetWall ( int iTombraider, WallDirectionEnum eWall );
         const TR_AREA *GetArea();
 
     protected  :
+        int                 m_iTombraider;
+        BOOL                m_bTombraider123;
+
         TR_AREA             m_Area;
         TR_CUR_POSITION     m_CurrentPosition;
 

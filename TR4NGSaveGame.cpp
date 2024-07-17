@@ -77,16 +77,15 @@ TR45_INDICATORS IndicatorsTR4NGTable [ MAX_INDICATORS ] =
 {
     {   FALSE,  0x02,   0x02,   0x00,   0x67,   TRUE },
     {   FALSE,  0x02,   0x02,   0x47,   0x67,   TRUE },
-    {   FALSE,  0x02,   0x02,   0x00,   0x28,   FALSE },
-    {   FALSE,  0x02,   0x02,   0x00,   0x0b,   FALSE },
-    {   FALSE,  0x02,   0x02,   0x00,   0x0c,   FALSE },
-    {   FALSE,  0x02,   0x02,   0x00,   0x1f,   FALSE },
-    {   FALSE,  0x02,   0x02,   0x00,   0xbd,   FALSE },
-    {   FALSE,  0x02,   0x02,   0x00,   0xdd,   FALSE },
-    {   FALSE,  0x0d,   0x0d,   0x00,   0x6c,   FALSE },
+    {   FALSE,  0x02,   0x02,   0x00,   0x28,   TRUE },
+    {   FALSE,  0x02,   0x02,   0x00,   0x0b,   TRUE },
+    {   FALSE,  0x02,   0x02,   0x00,   0x0c,   TRUE },
+    {   FALSE,  0x02,   0x02,   0x00,   0x1f,   TRUE },
+    {   FALSE,  0x02,   0x02,   0x00,   0xbd,   TRUE },
+    {   FALSE,  0x02,   0x02,   0x00,   0xdd,   TRUE },
+    {   FALSE,  0x0d,   0x0d,   0x00,   0x6c,   TRUE },
     {   FALSE,  0x0f,   0x0f,   0x00,   0x1f,   TRUE },         // Quad
-    {   FALSE,  0x12,   0x00,   0x00,   0x02,   FALSE },        // Flare
-    {   FALSE,  0xfd,   0xff,   0x00,   0x00,   FALSE },        // Jeep
+    {   FALSE,  0x12,   0x00,   0x00,   0x02,   TRUE },         // Flare
 
     {   FALSE,  0x47,   0x47,   0x47,   0xde,   TRUE },         // Kneeling
     {   FALSE,  0x10,   0x00,   0x51,   0x51,   TRUE },         // Crawling
@@ -1709,6 +1708,13 @@ int CTR4NGSaveGame::GetLife ()
         {
             life = TR4_MAX_HEALTH;
         }
+#ifdef _DEBUG
+        static char szDebugString [ MAX_PATH ];
+        DWORD dwRelativeAddress = CTRXTools::RelativeAddress ( pBuffer, m_pBuffer );
+        sprintf_s ( szDebugString, sizeof(szDebugString), "Life Indicators 0x%08x : 0x%02x 0x%02x 0x%02x 0x%02x %4d\n", 
+                            dwRelativeAddress, pBuffer [ 0 ] & 0xff, pBuffer [ 1 ] & 0xff, pBuffer [ 2 ] & 0xff, pBuffer [ 3 ] & 0xff, life );
+        OutputDebugString ( szDebugString );
+#endif
         return life;
     }
 

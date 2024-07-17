@@ -287,24 +287,52 @@ void CTRXWallPicture::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct )
                 //  Wiew from South
                 if ( m_Wall == WallSouth )
                 {
-                    DrawArrowLeft ( pDC, xCenter, yCenter, lenCross );
+                    if ( m_bTombraider123 )
+                    {
+                        DrawArrowLeft ( pDC, xCenter, yCenter, lenCross );
+                    }
+                    else
+                    {
+                        DrawArrowRight ( pDC, xCenter, yCenter, lenCross );
+                    }
                 }
                 //  Wiew from North
                 else if ( m_Wall == WallNorth )
                 {
-                    DrawArrowRight ( pDC, xCenter, yCenter, lenCross );
+                    if ( m_bTombraider123 )
+                    {
+                        DrawArrowRight ( pDC, xCenter, yCenter, lenCross );
+                    }
+                    else
+                    {
+                        DrawArrowLeft ( pDC, xCenter, yCenter, lenCross );
+                    }
                 }
                 //  View From Front
                 else if ( m_Wall == WallWest )
                 {
                     //  From Left Middle
-                    DrawArrowDown ( pDC, xCenter, yCenter, lenCross );
+                    if ( m_bTombraider123 )
+                    {
+                        DrawArrowDown ( pDC, xCenter, yCenter, lenCross );
+                    }
+                    else
+                    {
+                        DrawArrowUp ( pDC, xCenter, yCenter, lenCross );
+                    }
                 }
                 //  View From Back
                 else if ( m_Wall == WallEast )
                 {
                     //  From Left Middle
-                    DrawArrowUp ( pDC, xCenter, yCenter, lenCross );
+                    if ( m_bTombraider123 )
+                    {
+                        DrawArrowUp ( pDC, xCenter, yCenter, lenCross );
+                    }
+                    else
+                    {
+                        DrawArrowDown ( pDC, xCenter, yCenter, lenCross );
+                    }
                 }
             }
             //  Facing North : 180
@@ -313,24 +341,52 @@ void CTRXWallPicture::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct )
                 //  View from East
                 if ( m_Wall == WallEast )
                 {
-                    DrawArrowRight ( pDC, xCenter, yCenter, lenCross );
+                    if ( m_bTombraider123 )
+                    {
+                        DrawArrowRight ( pDC, xCenter, yCenter, lenCross );
+                    }
+                    else
+                    {
+                        DrawArrowLeft ( pDC, xCenter, yCenter, lenCross );
+                    }
                 }
                 //  View from West
                 else if ( m_Wall == WallWest )
                 {
-                    DrawArrowLeft ( pDC, xCenter, yCenter, lenCross );
+                    if ( m_bTombraider123 )
+                    {
+                        DrawArrowLeft ( pDC, xCenter, yCenter, lenCross );
+                    }
+                    else
+                    {
+                        DrawArrowRight ( pDC, xCenter, yCenter, lenCross );
+                    }
                 }
                 //  View From Back
                 else if ( m_Wall == WallSouth )
                 {
                     //  From Left Middle
-                    DrawArrowUp ( pDC, xCenter, yCenter, lenCross );
+                    if ( m_bTombraider123 )
+                    {
+                        DrawArrowUp ( pDC, xCenter, yCenter, lenCross );
+                    }
+                    else
+                    {
+                        DrawArrowDown ( pDC, xCenter, yCenter, lenCross );
+                    }
                 }
                 //  View From Front
                 else if ( m_Wall == WallNorth )
                 {
                     //  From Left Middle
-                    DrawArrowDown ( pDC, xCenter, yCenter, lenCross );
+                    if ( m_bTombraider123 )
+                    {
+                        DrawArrowDown ( pDC, xCenter, yCenter, lenCross );
+                    }
+                    else
+                    {
+                        DrawArrowUp ( pDC, xCenter, yCenter, lenCross );
+                    }
                 }
             }
             //  Looking East : 270
@@ -339,24 +395,52 @@ void CTRXWallPicture::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct )
                 //  Wiew from South
                 if ( m_Wall == WallSouth )
                 {
-                    DrawArrowRight ( pDC, xCenter, yCenter, lenCross );
+                    if ( m_bTombraider123 )
+                    {
+                        DrawArrowRight ( pDC, xCenter, yCenter, lenCross );
+                    }
+                    else
+                    {
+                        DrawArrowLeft ( pDC, xCenter, yCenter, lenCross );
+                    }
                 }
                 //  Wiew from North
                 else if ( m_Wall == WallNorth )
                 {
-                    DrawArrowLeft ( pDC, xCenter, yCenter, lenCross );
+                    if ( m_bTombraider123 )
+                    {
+                        DrawArrowLeft ( pDC, xCenter, yCenter, lenCross );
+                    }
+                    else
+                    {
+                        DrawArrowRight ( pDC, xCenter, yCenter, lenCross );
+                    }
                 }
                 //  View From Front
                 else if ( m_Wall == WallEast)
                 {
                     //  From Left Middle
-                    DrawArrowDown ( pDC, xCenter, yCenter, lenCross );
+                    if ( m_bTombraider123 )
+                    {
+                        DrawArrowDown ( pDC, xCenter, yCenter, lenCross );
+                    }
+                    else
+                    {
+                        DrawArrowUp ( pDC, xCenter, yCenter, lenCross );
+                    }
                 }
                 //  View From Back
                 else if ( m_Wall == WallWest )
                 {
                     //  From Left Middle
-                    DrawArrowUp ( pDC, xCenter, yCenter, lenCross );
+                    if ( m_bTombraider123 )
+                    {
+                        DrawArrowUp ( pDC, xCenter, yCenter, lenCross );
+                    }
+                    else
+                    {
+                        DrawArrowDown ( pDC, xCenter, yCenter, lenCross );
+                    }
                 }
             }
             //  Facing South : 0
@@ -365,24 +449,52 @@ void CTRXWallPicture::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct )
                 //  View from East
                 if ( m_Wall == WallEast )
                 {
-                    DrawArrowLeft ( pDC, xCenter, yCenter, lenCross );
+                    if ( m_bTombraider123 )
+                    {
+                        DrawArrowLeft ( pDC, xCenter, yCenter, lenCross );
+                    }
+                    else
+                    {
+                        DrawArrowRight ( pDC, xCenter, yCenter, lenCross );
+                    }
                 }
                 //  View from West
                 else if ( m_Wall == WallWest )
                 {
-                    DrawArrowRight ( pDC, xCenter, yCenter, lenCross );
+                    if ( m_bTombraider123 )
+                    {
+                        DrawArrowRight ( pDC, xCenter, yCenter, lenCross );
+                    }
+                    else
+                    {
+                        DrawArrowLeft ( pDC, xCenter, yCenter, lenCross );
+                    }
                 }
                 //  View From Back
                 else if ( m_Wall == WallNorth )
                 {
                     //  From Left Middle
-                    DrawArrowUp ( pDC, xCenter, yCenter, lenCross );
+                    if ( m_bTombraider123 )
+                    {
+                        DrawArrowUp ( pDC, xCenter, yCenter, lenCross );
+                    }
+                    else
+                    {
+                        DrawArrowDown ( pDC, xCenter, yCenter, lenCross );
+                    }
                 }
                 //  View From Front
                 else if ( m_Wall == WallSouth )
                 {
                     //  From Left Middle
-                    DrawArrowDown ( pDC, xCenter, yCenter, lenCross );
+                    if ( m_bTombraider123 )
+                    {
+                        DrawArrowDown ( pDC, xCenter, yCenter, lenCross );
+                    }
+                    else
+                    {
+                        DrawArrowUp ( pDC, xCenter, yCenter, lenCross );
+                    }
                 }
             }
         }
@@ -422,9 +534,34 @@ void CTRXWallPicture::SetAreaAndPosition ( const TR_AREA *pArea, const TR_CUR_PO
 /////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////
-void CTRXWallPicture::SetWall ( WallDirectionEnum eWall )
+void CTRXWallPicture::SetWall ( int iTombraider, WallDirectionEnum eWall )
 {
-    m_Wall  = eWall;
+    m_iTombraider   = iTombraider;
+    m_Wall          = eWall;
+    switch ( m_iTombraider )
+    {
+        //
+        case 1 :
+        case 10 :
+        case 15 :
+        case 2 :
+        case 20 :
+        case 25 :
+        case 3 :
+        case 30 :
+        case 35 :
+        {
+            m_bTombraider123    = TRUE;
+            break;
+        }
+
+        //
+        default :
+        {
+            m_bTombraider123    = FALSE;
+            break;
+        }
+    }
 }
 
 //

@@ -26,18 +26,18 @@ TR45_INDICATORS IndicatorsTR5Table [ MAX_INDICATORS ] =
 {
     {   FALSE,  0x02,   0x02,   0x00,   0x67,   TRUE },
     {   FALSE,  0x02,   0x02,   0x47,   0x67,   TRUE },
-    {   FALSE,  0x02,   0x02,   0x00,   0x0b,   FALSE },
-    {   FALSE,  0x02,   0x02,   0x00,   0x1f,   FALSE },
-    {   FALSE,  0x0d,   0x0d,   0x00,   0x6c,   FALSE },
-    {   FALSE,  0x0d,   0x12,   0x00,   0x6c,   FALSE },
-    {   FALSE,  0x12,   0x12,   0x00,   0x57,   FALSE },
+    {   FALSE,  0x02,   0x02,   0x00,   0x0b,   TRUE },
+    {   FALSE,  0x02,   0x02,   0x00,   0x1f,   TRUE },
+    {   FALSE,  0x0d,   0x0d,   0x00,   0x6c,   TRUE },
+    {   FALSE,  0x0d,   0x12,   0x00,   0x6c,   TRUE },
+    {   FALSE,  0x12,   0x12,   0x00,   0x57,   TRUE },
     {   FALSE,  0x13,   0x13,   0x47,   0xae,   TRUE },
-    {   FALSE,  0x47,   0x47,   0x00,   0xde,   FALSE },        // Crawling
-    {   FALSE,  0x50,   0x50,   0x00,   0x07,   FALSE }, 
-    {   FALSE,  0x47,   0x47,   0x00,   0xde,   FALSE },        // Crawling
-    {   FALSE,  0x47,   0x57,   0x00,   0xde,   FALSE },        // Crawling
-    {   FALSE,  0x02,   0x02,   0x00,   0x0b,   FALSE },        // Jumping
-    {   FALSE,  0x09,   0x09,   0x00,   0x17,   FALSE },        // Falling
+    {   FALSE,  0x47,   0x47,   0x00,   0xde,   TRUE },         // Crawling
+    {   FALSE,  0x50,   0x50,   0x00,   0x07,   TRUE }, 
+    {   FALSE,  0x47,   0x47,   0x00,   0xde,   TRUE },         // Crawling
+    {   FALSE,  0x47,   0x57,   0x00,   0xde,   TRUE },         // Crawling
+    {   FALSE,  0x02,   0x02,   0x00,   0x0b,   TRUE },         // Jumping
+    {   FALSE,  0x09,   0x09,   0x00,   0x17,   TRUE },         // Falling
     {   FALSE,  0x01,   0x02,   0x00,   0x0a,   TRUE },         // Running
     //
     {   FALSE,  0x27,   0x10,   0x47,   0x87,   TRUE },
@@ -1619,6 +1619,14 @@ WORD *CTR5SaveGame::GetTR5LifeAddress ()
     if ( pBuffer )
     {
         WORD *pLife = ( WORD * ) ( pBuffer + TR5_LIFE_OFFSET );
+#ifdef _DEBUG
+        static char szDebugString [ MAX_PATH ];
+        DWORD dwRelativeAddress = CTRXTools::RelativeAddress ( pBuffer, m_pBuffer );
+        sprintf_s ( szDebugString, sizeof(szDebugString), "Life Indicators 0x%08x : 0x%02x 0x%02x 0x%02x 0x%02x %4d\n", 
+                            dwRelativeAddress, pBuffer [ 0 ] & 0xff, pBuffer [ 1 ] & 0xff, pBuffer [ 2 ] & 0xff, pBuffer [ 3 ] & 0xff, *pLife );
+        OutputDebugString ( szDebugString );
+#endif
+
         return pLife;
     }
 

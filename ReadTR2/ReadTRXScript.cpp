@@ -1794,14 +1794,14 @@ static BOOL WriteHeader ( int version, int level, FCT_AddToItemsLabels function 
             b = 1;
             if ( strlen(GlobalItemsTable [ b ].text) == 0 )
             {
-                strcpy_s ( GlobalItemsTable [ b ].text, sizeof(GlobalItemsTable [ b ].text), "Small Waterskin" );
+                strcpy_s ( GlobalItemsTable [ b ].text, sizeof(GlobalItemsTable [ b ].text), "Small Waterskin (1)\r\n3 Liters (4)\r\n" );
             }
 
             //
             b = 2;
             if ( strlen(GlobalItemsTable [ b ].text) == 0 )
             {
-                strcpy_s ( GlobalItemsTable [ b ].text, sizeof(GlobalItemsTable [ b ].text), "Large Waterskin" );
+                strcpy_s ( GlobalItemsTable [ b ].text, sizeof(GlobalItemsTable [ b ].text), "Large Waterskin (1)\r\n2 Liters (2)\r\n3 Liters (4)\r\n" );
             }
 
             //
@@ -1830,14 +1830,14 @@ static BOOL WriteHeader ( int version, int level, FCT_AddToItemsLabels function 
             b = 1;
             if ( strlen(GlobalItemsTable [ b ].text) == 0 )
             {
-                strcpy_s ( GlobalItemsTable [ b ].text, sizeof(GlobalItemsTable [ b ].text), "\"Small Waterskin\"" );
+                strcpy_s ( GlobalItemsTable [ b ].text, sizeof(GlobalItemsTable [ b ].text), "\"Small Waterskin (1)\r\n3 Liters (4)\r\n\"" );
             }
 
             //
             b = 2;
             if ( strlen(GlobalItemsTable [ b ].text) == 0 )
             {
-                strcpy_s ( GlobalItemsTable [ b ].text, sizeof(GlobalItemsTable [ b ].text), "\"Large Waterskin\"" );
+                strcpy_s ( GlobalItemsTable [ b ].text, sizeof(GlobalItemsTable [ b ].text), "\"Large Waterskin (1)\r\n2 Liters (2)\r\n3 Liters (4)\r\n\"" );
             }
 
             //

@@ -447,7 +447,7 @@ void CTRXVerticalMap::SetWallOrientation()
         {
             if ( LevelAreas [ i ].pWnd != NULL )
             {
-                LevelAreas [ i ].pWnd->SetWall ( WallDirection );
+                LevelAreas [ i ].pWnd->SetWall ( m_iTombraider, WallDirection );
             }
         }
     }
@@ -514,12 +514,12 @@ void CTRXVerticalMap::ShowWindows()
             if ( m_bCurrentArea && m_CurrentArea.index == LevelAreas [ i ].info.index )
             {
                 LevelAreas [ i ].pWnd->SetAreaAndPosition ( &LevelAreas [ i ].info, &m_CurrentPosition );
-                LevelAreas [ i ].pWnd->SetWall ( WallDirection );
+                LevelAreas [ i ].pWnd->SetWall ( m_iTombraider, WallDirection );
             }
             else
             {
                 LevelAreas [ i ].pWnd->SetAreaAndPosition ( &LevelAreas [ i ].info, NULL);
-                LevelAreas [ i ].pWnd->SetWall ( Wall_None );
+                LevelAreas [ i ].pWnd->SetWall ( m_iTombraider, Wall_None );
                 sprintf_s ( szText, sizeof(szText), "%d", LevelAreas [ i ].info.index );
             }
             
@@ -1003,6 +1003,7 @@ void CTRXVerticalMap::SetTombraiderLevelIndex ( int iTombraider, int iLevelIndex
         case 99 :
         {
             m_iTombraiderFull   = iTombraider;
+            m_iTombraider       = 99;
             break;
         }
     }

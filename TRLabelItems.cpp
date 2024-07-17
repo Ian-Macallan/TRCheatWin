@@ -367,8 +367,8 @@ FourLabels TR3_Treasure_Label [TR3_LEVELS] =
 char *TR4ItemsName [NB_BUTTONS] =
 {
     "Winding Key (2)... \r\nMechanical Scarab (4) \r\nBoth (6)\r\nCombined (1) \r\n",       // 1
-    "Small Waterskin",      // 2
-    "Large Waterskin \r\n5 Liters (6)\r\n",     // 3
+    "Small Waterskin (1)\r\n3 Liters (4)\r\n",      // 2
+    "Large Waterskin (1)\r\n2 Liters (2)\r\n3 Liters (4)\r\n",     // 3
     "Scrap Of Paper (1) \r\n",  // 4
     "The Rules of Senet (1) \r\n",  // 5
     "Fire Circle Scroll (1) \r\n",  // 6
@@ -1506,8 +1506,8 @@ char *TR4ItemsName32 [NB_BUTTONS] =
 char *TR4ItemsName33 [NB_BUTTONS] =
 {
     "",     // 1
-    "Small Waterskin \r\n",     // 2
-    "Large Waterskin \r\n",     // 3
+    "Small Waterskin (1)\r\n3 Liters (4)\r\n",     // 2
+    "Large Waterskin (1)\r\n2 Liters (2)\r\n3 Liters (4)\r\n",     // 3
     "",     // 4
     "",     // 5
     "",     // 6
@@ -1642,8 +1642,8 @@ char *TR4ItemsName36 [NB_BUTTONS] =
 char *TR4ItemsName37 [NB_BUTTONS] =
 {
     "",     // 1
-    "Small Waterskin \r\n",     // 2
-    "Large Waterskin \r\n",     // 3
+    "Small Waterskin (1)\r\n3 Liters (4)\r\n",     // 2
+    "Large Waterskin (1)\r\n2 Liters (2)\r\n3 Liters (4)\r\n",     // 3
     "",     // 4
     "",     // 5
     "",     // 6
