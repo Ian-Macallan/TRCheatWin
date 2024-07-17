@@ -359,6 +359,7 @@ class CTR4SaveGame : public CTR45SaveGame
         int GetLaraState ( );
         void SetLaraState ( int state );
 
+        WORD *GetTR4LifeAddress();
         int GetLife ();
         void SetLife ( const char *szLife );
         void *GetIndicatorAddress ( int index = 0 );

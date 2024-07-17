@@ -1671,6 +1671,45 @@ void *CTR4NGSaveGame::GetIndicatorAddress (int index)
 
 //
 /////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
+WORD *CTR4NGSaveGame::GetTR4NGLifeAddress()
+{
+    char *pBuffer   = ( char * ) GetIndicatorAddress();
+    if ( pBuffer != NULL )
+    {
+        WORD *pLife = ( WORD * ) ( pBuffer + TR4NG_LIFE_OFFSET );
+#ifdef _DEBUG
+        static char szDebugString [ MAX_PATH ];
+        DWORD dwRelativeAddress = CTRXTools::RelativeAddress ( pBuffer, m_pBuffer );
+        sprintf_s ( szDebugString, sizeof(szDebugString), "Life Indicators 0x%08x : 0x%02x 0x%02x 0x%02x 0x%02x %4d\n", 
+                            dwRelativeAddress, pBuffer [ 0 ] & 0xff, pBuffer [ 1 ] & 0xff, pBuffer [ 2 ] & 0xff, pBuffer [ 3 ] & 0xff, *pLife );
+        OutputDebugString ( szDebugString );
+#endif
+
+        //
+        //  Verify Position
+        TR4NG_POSITION *pTR4Position = (TR4NG_POSITION *) ( ( ( BYTE * ) pBuffer - TR4NG_POSITION_OFFSET ) );
+            
+        DWORD dwSouthToNorth    = ( DWORD) pTR4Position->wSouthToNorth * TR4NG_FACTOR;
+        DWORD dwVertical        = ( DWORD ) pTR4Position->wVertical * TR4NG_FACTOR;
+        DWORD dwWestToEast      = ( DWORD ) pTR4Position->wWestToEast * TR4NG_FACTOR;
+        WORD wRoom              = pTR4Position->cRoom;
+
+        BOOL bCheck = CheckAreaForCoordinates ( GetFullVersion(), GetLevelIndex(),  wRoom, dwWestToEast, dwVertical, dwSouthToNorth );
+        if ( bCheck )
+        {
+            //
+            return pLife;
+        }
+    }
+
+    return NULL;
+}
+
+
+//
+/////////////////////////////////////////////////////////////////////////////
 //  0000004B: 7F 80
 //  00000055: 1A 2D
 //  00000092: 08 04
@@ -1700,21 +1739,14 @@ void *CTR4NGSaveGame::GetIndicatorAddress (int index)
 int CTR4NGSaveGame::GetLife ()
 {
     //
-    char *pBuffer   = ( char * ) GetIndicatorAddress();
-    if ( pBuffer != NULL )
+    WORD *pLife = GetTR4NGLifeAddress();
+    if ( pLife != NULL )
     {
-        short life = * ( short * ) ( &pBuffer [ TR4NG_LIFE_OFFSET ] );
+        WORD life = *pLife;
         if ( life == TR4_MIN_HEALTH )
         {
             life = TR4_MAX_HEALTH;
         }
-#ifdef _DEBUG
-        static char szDebugString [ MAX_PATH ];
-        DWORD dwRelativeAddress = CTRXTools::RelativeAddress ( pBuffer, m_pBuffer );
-        sprintf_s ( szDebugString, sizeof(szDebugString), "Life Indicators 0x%08x : 0x%02x 0x%02x 0x%02x 0x%02x %4d\n", 
-                            dwRelativeAddress, pBuffer [ 0 ] & 0xff, pBuffer [ 1 ] & 0xff, pBuffer [ 2 ] & 0xff, pBuffer [ 3 ] & 0xff, life );
-        OutputDebugString ( szDebugString );
-#endif
         return life;
     }
 
@@ -1728,11 +1760,10 @@ int CTR4NGSaveGame::GetLife ()
 void CTR4NGSaveGame::SetLife ( const char *szLife )
 {
     //
-    char *pBuffer   = ( char * ) GetIndicatorAddress();
-    if ( pBuffer != NULL )
+    WORD *pLife = GetTR4NGLifeAddress();
+    if ( pLife != NULL )
     {
-        WORD *pLife = ( WORD * ) ( & pBuffer [ TR4NG_LIFE_OFFSET ] );
-        short life = atoi(szLife);
+        WORD life = (WORD) atoi(szLife);
         if ( life == TR4_MAX_HEALTH )
         {
             life = TR4_MIN_HEALTH;

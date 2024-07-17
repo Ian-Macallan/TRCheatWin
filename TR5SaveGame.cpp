@@ -1626,8 +1626,21 @@ WORD *CTR5SaveGame::GetTR5LifeAddress ()
                             dwRelativeAddress, pBuffer [ 0 ] & 0xff, pBuffer [ 1 ] & 0xff, pBuffer [ 2 ] & 0xff, pBuffer [ 3 ] & 0xff, *pLife );
         OutputDebugString ( szDebugString );
 #endif
+        //
+        //  Verify Position
+        TR5_POSITION *pTR5Position = (TR5_POSITION *) ( ( ( BYTE * ) pBuffer - TR5_POSITION_OFFSET ) );
+            
+        DWORD dwSouthToNorth    = ( DWORD) pTR5Position->wSouthToNorth * TR5_FACTOR;
+        DWORD dwVertical        = ( DWORD ) pTR5Position->wVertical * TR5_FACTOR;
+        DWORD dwWestToEast      = ( DWORD ) pTR5Position->wWestToEast * TR5_FACTOR;
+        WORD wRoom              = pTR5Position->cRoom;
 
-        return pLife;
+        BOOL bCheck = CheckAreaForCoordinates ( GetFullVersion(), GetLevelIndex(),  wRoom, dwWestToEast, dwVertical, dwSouthToNorth );
+        if ( bCheck )
+        {
+            //
+            return pLife;
+        }
     }
 
     return NULL;
