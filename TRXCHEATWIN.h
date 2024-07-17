@@ -128,7 +128,7 @@ class CTRXCHEATWINApp : public CWinApp
 #define PROFILE_EXTEND_VERTICAL     "Extend Vertical"
 #define PROFILE_TRR_BACKUP          "TRR Backup"
 #define PROFILE_TR_BACKUP           "TR Backup"
-
+#define PROFILE_EXT_SEA_POS         "Extra Search Position"
 
 /////////////////////////////////////////////////////////////////////////////
 

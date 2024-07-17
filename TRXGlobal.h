@@ -20,7 +20,7 @@ class CTRXGlobal
         static int          m_iExtendVertical;
         static int          m_iTRRBackup;
         static int          m_iTRBackup;
-
+        static int          m_iExtSearchPos;
         static unsigned     m_iMinNGSize;
         static unsigned     m_iMaxNGSize;
 

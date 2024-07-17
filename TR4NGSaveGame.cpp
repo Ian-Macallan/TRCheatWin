@@ -1679,6 +1679,7 @@ WORD *CTR4NGSaveGame::GetTR4NGLifeAddress()
     if ( pBuffer != NULL )
     {
         WORD *pLife = ( WORD * ) ( pBuffer + TR4NG_LIFE_OFFSET );
+
 #ifdef _DEBUG
         static char szDebugString [ MAX_PATH ];
         DWORD dwRelativeAddress = CTRXTools::RelativeAddress ( pBuffer, m_pBuffer );
@@ -1689,18 +1690,21 @@ WORD *CTR4NGSaveGame::GetTR4NGLifeAddress()
 
         //
         //  Verify Position
-        TR4NG_POSITION *pTR4Position = (TR4NG_POSITION *) ( ( ( BYTE * ) pBuffer - TR4NG_POSITION_OFFSET ) );
-            
-        DWORD dwSouthToNorth    = ( DWORD) pTR4Position->wSouthToNorth * TR4NG_FACTOR;
-        DWORD dwVertical        = ( DWORD ) pTR4Position->wVertical * TR4NG_FACTOR;
-        DWORD dwWestToEast      = ( DWORD ) pTR4Position->wWestToEast * TR4NG_FACTOR;
-        WORD wRoom              = pTR4Position->cRoom;
-
-        BOOL bCheck = CheckAreaForCoordinates ( GetFullVersion(), GetLevelIndex(),  wRoom, dwWestToEast, dwVertical, dwSouthToNorth );
-        if ( bCheck )
+        for ( int i = 0; i <= CTRXGlobal::m_iExtSearchPos; i++ )
         {
-            //
-            return pLife;
+            TR4NG_POSITION *pTR4Position = (TR4NG_POSITION *) ( ( ( BYTE * ) pBuffer - i - TR4NG_POSITION_OFFSET ) );
+            
+            DWORD dwSouthToNorth    = ( DWORD) pTR4Position->wSouthToNorth * TR4NG_FACTOR;
+            DWORD dwVertical        = ( DWORD ) pTR4Position->wVertical * TR4NG_FACTOR;
+            DWORD dwWestToEast      = ( DWORD ) pTR4Position->wWestToEast * TR4NG_FACTOR;
+            WORD wRoom              = pTR4Position->cRoom;
+
+            BOOL bCheck = CheckAreaForCoordinates ( GetFullVersion(), GetLevelIndex(),  wRoom, dwWestToEast, dwVertical, dwSouthToNorth );
+            if ( bCheck )
+            {
+                //
+                return pLife;
+            }
         }
     }
 
@@ -1900,8 +1904,6 @@ void CTR4NGSaveGame::discard ()
 /////////////////////////////////////////////////////////////////////////////
 TR4NG_POSITION *CTR4NGSaveGame::GetTR4Position ( )
 {
-    const int extraSearch = 0;
-
     ZeroMemory ( positionTable, sizeof(positionTable) );
     positionCount   = 0;
 
@@ -1923,7 +1925,9 @@ TR4NG_POSITION *CTR4NGSaveGame::GetTR4Position ( )
         char *pBuffer = (char * ) GetIndicatorAddress(index);
         if ( pBuffer )
         {
-            for ( int i = 0; i <= extraSearch; i++ )
+            TR4NG_POSITION *pTR4Position0 = (TR4NG_POSITION *) ( ( ( BYTE * ) pBuffer - TR4NG_POSITION_OFFSET ) );
+
+            for ( int i = 0; i <= CTRXGlobal::m_iExtSearchPos; i++ )
             {
                 //  We Consider pBuffer - i pointing to indicator1
                 TR4NG_POSITION *pTR4Position = (TR4NG_POSITION *) ( ( ( BYTE * ) pBuffer - i - TR4NG_POSITION_OFFSET ) );
@@ -1976,7 +1980,8 @@ TR4NG_POSITION *CTR4NGSaveGame::GetTR4Position ( )
                     DWORD dwRelativeAddress = CTRXTools::RelativeAddress ( pBuffer - i, m_pBuffer );
                     static char szDebugString [ MAX_PATH ];
                     sprintf_s ( szDebugString, sizeof(szDebugString), "Indicators 0x%08x : 0x%02x 0x%02x 0x%02x 0x%02x %3u %5d %5d %5d %3u %4d\n", 
-                        dwRelativeAddress, pTR4Position->indicator1, pTR4Position->indicator2, pTR4Position->indicator3, pTR4Position->indicator4, 
+                        dwRelativeAddress, 
+                        pTR4Position0->indicator1, pTR4Position0->indicator2, pTR4Position0->indicator3, pTR4Position0->indicator4, 
                         pTR4Position->cRoom, pTR4Position->wVertical, pTR4Position->wSouthToNorth, pTR4Position->wWestToEast, pTR4Position->cOrientation,
                         life ); 
                     OutputDebugString ( szDebugString );

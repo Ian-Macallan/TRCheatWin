@@ -1619,6 +1619,7 @@ WORD *CTR5SaveGame::GetTR5LifeAddress ()
     if ( pBuffer )
     {
         WORD *pLife = ( WORD * ) ( pBuffer + TR5_LIFE_OFFSET );
+
 #ifdef _DEBUG
         static char szDebugString [ MAX_PATH ];
         DWORD dwRelativeAddress = CTRXTools::RelativeAddress ( pBuffer, m_pBuffer );
@@ -1626,20 +1627,24 @@ WORD *CTR5SaveGame::GetTR5LifeAddress ()
                             dwRelativeAddress, pBuffer [ 0 ] & 0xff, pBuffer [ 1 ] & 0xff, pBuffer [ 2 ] & 0xff, pBuffer [ 3 ] & 0xff, *pLife );
         OutputDebugString ( szDebugString );
 #endif
+
         //
         //  Verify Position
-        TR5_POSITION *pTR5Position = (TR5_POSITION *) ( ( ( BYTE * ) pBuffer - TR5_POSITION_OFFSET ) );
-            
-        DWORD dwSouthToNorth    = ( DWORD) pTR5Position->wSouthToNorth * TR5_FACTOR;
-        DWORD dwVertical        = ( DWORD ) pTR5Position->wVertical * TR5_FACTOR;
-        DWORD dwWestToEast      = ( DWORD ) pTR5Position->wWestToEast * TR5_FACTOR;
-        WORD wRoom              = pTR5Position->cRoom;
-
-        BOOL bCheck = CheckAreaForCoordinates ( GetFullVersion(), GetLevelIndex(),  wRoom, dwWestToEast, dwVertical, dwSouthToNorth );
-        if ( bCheck )
+        for ( int i = 0; i <= CTRXGlobal::m_iExtSearchPos; i++ )
         {
-            //
-            return pLife;
+            TR5_POSITION *pTR5Position = (TR5_POSITION *) ( ( ( BYTE * ) pBuffer - i - TR5_POSITION_OFFSET ) );
+            
+            DWORD dwSouthToNorth    = ( DWORD) pTR5Position->wSouthToNorth * TR5_FACTOR;
+            DWORD dwVertical        = ( DWORD ) pTR5Position->wVertical * TR5_FACTOR;
+            DWORD dwWestToEast      = ( DWORD ) pTR5Position->wWestToEast * TR5_FACTOR;
+            WORD wRoom              = pTR5Position->cRoom;
+
+            BOOL bCheck = CheckAreaForCoordinates ( GetFullVersion(), GetLevelIndex(),  wRoom, dwWestToEast, dwVertical, dwSouthToNorth );
+            if ( bCheck )
+            {
+                //
+                return pLife;
+            }
         }
     }
 
@@ -1792,7 +1797,7 @@ void CTR5SaveGame::discard ()
 /////////////////////////////////////////////////////////////////////////////
 TR5_POSITION *CTR5SaveGame::GetTR5Position ( )
 {
-    const int extraSearch = 0;
+    
 
     ZeroMemory ( positionTable, sizeof(positionTable) );
     positionCount   = 0;
@@ -1815,8 +1820,10 @@ TR5_POSITION *CTR5SaveGame::GetTR5Position ( )
         char *pBuffer = (char * ) GetIndicatorAddress(index);
         if ( pBuffer )
         {
+            TR5_POSITION *pTR5Position0 = (TR5_POSITION *) ( ( ( BYTE * ) pBuffer - TR5_POSITION_OFFSET ) );
+
             //
-            for ( int i = 0; i <= extraSearch; i++ )
+            for ( int i = 0; i <= CTRXGlobal::m_iExtSearchPos; i++ )
             {
                 //  We Consider pBuffer - i pointing to indicator1
                 TR5_POSITION *pTR5Position = (TR5_POSITION *) ( ( ( BYTE * ) pBuffer - i - TR5_POSITION_OFFSET ) );
@@ -1860,7 +1867,7 @@ TR5_POSITION *CTR5SaveGame::GetTR5Position ( )
                     static char szDebugString [ MAX_PATH ];
                     sprintf_s ( szDebugString, sizeof(szDebugString), "Indicators 0x%08x : 0x%02x 0x%02x 0x%02x 0x%02x %3u %5d %5d %5d %3u %4d\n", 
                         dwRelativeAddress, 
-                        pTR5Position->indicator1, pTR5Position->indicator2, pTR5Position->indicator3, pTR5Position->indicator4,
+                        pTR5Position0->indicator1, pTR5Position0->indicator2, pTR5Position0->indicator3, pTR5Position0->indicator4,
                         pTR5Position->cRoom, pTR5Position->wVertical, pTR5Position->wSouthToNorth, pTR5Position->wWestToEast, pTR5Position->cOrientation,
                         life ); 
                     OutputDebugString ( szDebugString );

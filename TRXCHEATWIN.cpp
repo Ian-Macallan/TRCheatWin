@@ -586,6 +586,14 @@ BOOL CTRXCHEATWINApp::InitInstance()
     {
         theApp.WriteProfileInt( PROFILE_SETTING, PROFILE_TR_BACKUP, 4 );
     }
+
+    //
+    iTmp        = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_EXT_SEA_POS, -1 );
+    if ( iTmp == -1 )
+    {
+        theApp.WriteProfileInt( PROFILE_SETTING, PROFILE_EXT_SEA_POS, 3 );
+    }
+    
     //
     CTRXColors::m_iDarkTheme        = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_DARKTHEME, 0 );
     CTRXColors::m_iSquareCorner     = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_SQUARECORNERS, 0 );
@@ -594,11 +602,7 @@ BOOL CTRXCHEATWINApp::InitInstance()
     CTRXGlobal::m_iExtendVertical   = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_EXTEND_VERTICAL, 0 );
     CTRXGlobal::m_iTRRBackup        = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_TRR_BACKUP, 32 );
     CTRXGlobal::m_iTRBackup         = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_TR_BACKUP, 4 );
-
-    //
-    int iSizeTR1 = sizeof(TABLE_TR1);
-    int iSizeTR2 = sizeof(TABLE_TR2);
-    int iSizeTR3 = sizeof(TABLE_TR3);
+    CTRXGlobal::m_iExtSearchPos     = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_EXT_SEA_POS, 3 );
 
     //
     //  Module Filename has been read
