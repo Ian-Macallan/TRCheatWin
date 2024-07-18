@@ -591,7 +591,7 @@ BOOL CTRXCHEATWINApp::InitInstance()
     iTmp        = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_EXT_SEA_POS, -1 );
     if ( iTmp == -1 )
     {
-        theApp.WriteProfileInt( PROFILE_SETTING, PROFILE_EXT_SEA_POS, 3 );
+        theApp.WriteProfileInt( PROFILE_SETTING, PROFILE_EXT_SEA_POS, 4 );
     }
     
     //
@@ -602,7 +602,7 @@ BOOL CTRXCHEATWINApp::InitInstance()
     CTRXGlobal::m_iExtendVertical   = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_EXTEND_VERTICAL, 0 );
     CTRXGlobal::m_iTRRBackup        = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_TRR_BACKUP, 32 );
     CTRXGlobal::m_iTRBackup         = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_TR_BACKUP, 4 );
-    CTRXGlobal::m_iExtSearchPos     = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_EXT_SEA_POS, 3 );
+    CTRXGlobal::m_iExtSearchPos     = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_EXT_SEA_POS, 4 );
 
     //
     //  Module Filename has been read

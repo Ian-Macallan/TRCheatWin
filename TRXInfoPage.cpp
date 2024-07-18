@@ -386,6 +386,7 @@ void CTRXInfoPage::DoDataExchange(CDataExchange* pDX)
     DDX_Control(pDX, IDC_PASTEPOS, m_PastePosition);
     DDX_Control(pDX, IDC_SHELL, m_Shell);
     DDX_Control(pDX, IDC_LEVELS, m_Levels);
+    DDX_Control(pDX, IDC_AREA_INFOS, m_AreaInfos);
     //}}AFX_DATA_MAP
 }
 
@@ -606,7 +607,7 @@ void CTRXInfoPage::DisplayValues()
     BOOL bModified = IsGUIModified();
 
     int             iLevelIndex;
-    static char     szString [ 64 ];
+    static char     szString [ MAX_PATH ];
 
     m_Write.EnableWindow ( FALSE );
     m_Max.EnableWindow ( FALSE );
@@ -1024,6 +1025,20 @@ void CTRXInfoPage::DisplayValues()
             }
             ShowRoom ( pArea, dwWestToEast, dwSouthToNorth, wDirection );
 
+            //
+            if ( pArea != NULL )
+            {
+                sprintf_s ( szString, sizeof(szString), "x=[%ld,%ld] z=[%ld,%ld] z=[top:%ld,bottom:%ld]",
+                    pArea->x, pArea->x + pArea->xSectors * TR_SECTOR_SIZE,
+                    pArea->z, pArea->z + pArea->zSectors * TR_SECTOR_SIZE, 
+                    pArea->yTop, pArea->yBottom );
+            }
+            else
+            {
+                ZeroMemory ( szString, sizeof(szString) );
+            }
+            m_AreaInfos.SetWindowText ( szString );
+
             m_Room.EnableWindow ( TRUE );
         }
         else
@@ -1039,6 +1054,8 @@ void CTRXInfoPage::DisplayValues()
             m_South_North.SetWindowText ( "" );
             m_Direction.SetWindowText ( "" );
             m_Area.SetWindowText ( "" );
+
+            m_AreaInfos.SetWindowText ( "" );
 
             if ( m_bRoomCreated )
             {

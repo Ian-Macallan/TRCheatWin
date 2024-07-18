@@ -614,6 +614,7 @@
 #define IDC_CURRENT                     1266
 #define IDC_POSITION2                   1266
 #define IDC_SHOW_MAP                    1266
+#define IDC_AREA_INFOS                  1266
 #define IDC_VERSIONS                    1267
 #define IDC_FRAME_POSITION              1268
 #define IDC_ADD_CUSTOM                  1269

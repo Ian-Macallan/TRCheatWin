@@ -24,8 +24,9 @@ extern CTRXCHEATWINApp theApp;
 /////////////////////////////////////////////////////////////////////////////
 TR45_INDICATORS IndicatorsTR5Table [ MAX_INDICATORS ] =
 {
-    {   FALSE,  0x02,   0x02,   0x00,   0x67,   TRUE },
-    {   FALSE,  0x02,   0x02,   0x47,   0x67,   TRUE },
+    {   FALSE,  0x02,   0x02,   0x00,   0x67,   TRUE },         //  Reliable
+    {   FALSE,  0x02,   0x02,   0x47,   0x67,   TRUE },         //  Reliable
+
     {   FALSE,  0x02,   0x02,   0x00,   0x0b,   TRUE },
     {   FALSE,  0x02,   0x02,   0x00,   0x1f,   TRUE },
     {   FALSE,  0x0d,   0x0d,   0x00,   0x6c,   TRUE },
@@ -1569,26 +1570,33 @@ void *CTR5SaveGame::GetIndicatorAddress (int index)
     //
     BYTE *pBuffer   = ( BYTE * ) m_pBuffer;
     int count = 0;
-    for ( int i = 0x400; i < 0xD00; i++ )
+    for ( int iBuffer = 0x400; iBuffer < 0xD00; iBuffer++ )
     {
         //  Compare with Indicators
-        for ( int j = 0; j < IndicatorsTR5TableCount;  j++ )
+        for ( int indice = 0; indice < IndicatorsTR5TableCount;  indice++ )
         {
-            if ( IndicatorsTR5Table [ j ].bEnd )
+            if ( IndicatorsTR5Table [ indice ].bEnd )
             {
                 break;
             }
 
-            if (    pBuffer [ i ] == IndicatorsTR5Table [ j ].b1 &&
-                    pBuffer [ i + 1 ] == IndicatorsTR5Table [ j ].b2 &&
-                    pBuffer [ i + 3 ] == IndicatorsTR5Table [ j ].b4 )
+            //
+            //  If not search extended only reliable si if index > 2 break
+            if ( ! CTRXGlobal::m_iSearchPosExt && indice >= 2 )
             {
-                if ( IndicatorsTR5Table [ j ].useB3 && pBuffer [ i + 2 ] != IndicatorsTR5Table [ j ].b3 )
+                break;
+            }
+
+            if (    pBuffer [ iBuffer ] == IndicatorsTR5Table [ indice ].b1 &&
+                    pBuffer [ iBuffer + 1 ] == IndicatorsTR5Table [ indice ].b2 &&
+                    pBuffer [ iBuffer + 3 ] == IndicatorsTR5Table [ indice ].b4 )
+            {
+                if ( IndicatorsTR5Table [ indice ].useB3 && pBuffer [ iBuffer + 2 ] != IndicatorsTR5Table [ indice ].b3 )
                 {
                     continue;
                 }
 
-                short life = * ( short * ) ( pBuffer + i + TR5_LIFE_OFFSET );
+                short life = * ( short * ) ( pBuffer + iBuffer + TR5_LIFE_OFFSET );
                 if ( life != TR5_ALT_HEALTH && ( life < TR5_MIN_HEALTH || life > TR5_MAX_HEALTH ) )
                 {
                     continue;
@@ -1597,7 +1605,7 @@ void *CTR5SaveGame::GetIndicatorAddress (int index)
                 count++;
                 if ( count > index )
                 {
-                    return pBuffer + i;
+                    return pBuffer + iBuffer;
                 }
             }
         }

@@ -75,8 +75,9 @@ static char    TR4NBSecrets [ ] =
 /////////////////////////////////////////////////////////////////////////////
 TR45_INDICATORS IndicatorsTR4Table [ MAX_INDICATORS ] =
 {
-    {   FALSE,  0x02,   0x02,   0x00,   0x67,   TRUE },
-    {   FALSE,  0x02,   0x02,   0x47,   0x67,   TRUE },
+    {   FALSE,  0x02,   0x02,   0x00,   0x67,   TRUE },         //  Reliable
+    {   FALSE,  0x02,   0x02,   0x47,   0x67,   TRUE },         //  Reliable
+
     {   FALSE,  0x02,   0x02,   0x00,   0x0b,   TRUE },
     {   FALSE,  0x02,   0x02,   0x00,   0x0c,   TRUE },
     {   FALSE,  0x02,   0x02,   0x00,   0x1f,   TRUE },
@@ -98,7 +99,7 @@ TR45_INDICATORS IndicatorsTR4Table [ MAX_INDICATORS ] =
     {   FALSE,  0x50,   0x50,   0x00,   0x07,   TRUE },
     {   FALSE,  0x24,   0x24,   0x00,   0x7b,   TRUE },
     {   FALSE,  0x24,   0x24,   0x47,   0x7b,   TRUE },
-    {   FALSE,  0x43,   0x10,   0x47,   0xcc,   TRUE },
+
     {   FALSE,  0x27,   0x10,   0x00,   0xa3,   TRUE },
     {   FALSE,  0x27,   0x15,   0x00,   0xa3,   TRUE },
     {   FALSE,  0x0f,   0x0f,   0x47,   0x1d,   TRUE },         // Bike
@@ -106,6 +107,8 @@ TR45_INDICATORS IndicatorsTR4Table [ MAX_INDICATORS ] =
     
     {   FALSE,  0x02,   0x02,   0x47,   0xdd,   TRUE }, 
     {   FALSE,  0x02,   0x02,   0x47,   0x0b,   TRUE }, 
+    {   FALSE,  0x02,   0x02,   0x47,   0x1f,   TRUE },         // Mounting
+    {   FALSE,  0x13,   0x13,   0x47,   0x61,   TRUE }, 
 
     //
     {   TRUE,   0xff,   0xff,   0xff,   0xff,   TRUE },         // End
@@ -1636,27 +1639,34 @@ void *CTR4SaveGame::GetIndicatorAddress (int index)
     //
     BYTE *pBuffer   = ( BYTE * ) m_pBuffer;
     int count       = 0;
-    for ( int i = 0x0280; i < 0x3000; i++ )
+    for ( int iBuffer = 0x0280; iBuffer < 0x3000; iBuffer++ )
     {
         //  Compare with Indicators
-        for ( int j = 0; j < IndicatorsTR4TableCount;  j++ )
+        for ( int indice = 0; indice < IndicatorsTR4TableCount;  indice++ )
         {
-            if ( IndicatorsTR4Table [ j ].bEnd )
+            if ( IndicatorsTR4Table [ indice ].bEnd )
             {
                 break;
             }
 
-            if (    pBuffer [ i ] == IndicatorsTR4Table [ j ].b1 &&
-                    pBuffer [ i + 1 ] == IndicatorsTR4Table [ j ].b2 &&
-                    pBuffer [ i + 3 ] == IndicatorsTR4Table [ j ].b4 )
+            //
+            //  If not search extended only reliable si if index > 2 break
+            if ( ! CTRXGlobal::m_iSearchPosExt && indice >= 2 )
             {
-                if ( IndicatorsTR4Table [ j ].useB3 && pBuffer [ i + 2 ] != IndicatorsTR4Table [ j ].b3 )
+                break;
+            }
+
+            if (    pBuffer [ iBuffer ] == IndicatorsTR4Table [ indice ].b1 &&
+                    pBuffer [ iBuffer + 1 ] == IndicatorsTR4Table [ indice ].b2 &&
+                    pBuffer [ iBuffer + 3 ] == IndicatorsTR4Table [ indice ].b4 )
+            {
+                if ( IndicatorsTR4Table [ indice ].useB3 && pBuffer [ iBuffer + 2 ] != IndicatorsTR4Table [ indice ].b3 )
                 {
                     continue;
                 }
 
                 // In TR4 Life is between 0 and 999 (0 means 1000)
-                short life = * (short * ) ( pBuffer + i + TR4_LIFE_OFFSET );
+                short life = * (short * ) ( pBuffer + iBuffer + TR4_LIFE_OFFSET );
                 //  Life Is valid between 0 and 1000
                 if ( life != TR4_ALT_HEALTH && ( life < TR4_MIN_HEALTH || life > TR4_MAX_HEALTH ) )
                 {
@@ -1666,7 +1676,7 @@ void *CTR4SaveGame::GetIndicatorAddress (int index)
                 count++;
                 if ( count > index )
                 {
-                    return pBuffer + i;
+                    return pBuffer + iBuffer;
                 }
             }
         }

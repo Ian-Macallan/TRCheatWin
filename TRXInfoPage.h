@@ -120,6 +120,7 @@ class CTRXInfoPage : public CTRXPropertyPage
         CTRXButtonBase      m_PastePosition;
         CTRXButtonBase      m_Shell;
         CTRXButtonBase      m_Levels;
+        CTRXStaticBase      m_AreaInfos;
 
         //}}AFX_DATA
 

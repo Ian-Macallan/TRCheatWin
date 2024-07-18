@@ -75,8 +75,9 @@ static char    TR4NBSecrets [ ] =
 /////////////////////////////////////////////////////////////////////////////
 TR45_INDICATORS IndicatorsTR4NGTable [ MAX_INDICATORS ] =
 {
-    {   FALSE,  0x02,   0x02,   0x00,   0x67,   TRUE },
-    {   FALSE,  0x02,   0x02,   0x47,   0x67,   TRUE },
+    {   FALSE,  0x02,   0x02,   0x00,   0x67,   TRUE },         //  Reliable
+    {   FALSE,  0x02,   0x02,   0x47,   0x67,   TRUE },         //  Reliable
+
     {   FALSE,  0x02,   0x02,   0x00,   0x28,   TRUE },
     {   FALSE,  0x02,   0x02,   0x00,   0x0b,   TRUE },
     {   FALSE,  0x02,   0x02,   0x00,   0x0c,   TRUE },
@@ -1630,27 +1631,34 @@ void *CTR4NGSaveGame::GetIndicatorAddress (int index)
     BYTE *pBuffer   = ( BYTE * ) m_pBuffer;
     int count       = 0;
 
-    for ( int i = 0x0280; i < 0x3000; i++ )
+    for ( int iBuffer = 0x0280; iBuffer < 0x3000; iBuffer++ )
     {
         //  Compare with Indicators
-        for ( int j = 0; j < IndicatorsTR4NGTableCount;  j++ )
+        for ( int indice = 0; indice < IndicatorsTR4NGTableCount;  indice++ )
         {
-            if ( IndicatorsTR4NGTable [ j ].bEnd )
+            if ( IndicatorsTR4NGTable [ indice ].bEnd )
             {
                 break;
             }
 
-            if (    pBuffer [ i ] == IndicatorsTR4NGTable [ j ].b1 &&
-                    pBuffer [ i + 1 ] == IndicatorsTR4NGTable [ j ].b2 &&
-                    pBuffer [ i + 3 ] == IndicatorsTR4NGTable [ j ].b4 )
+            //
+            //  If not search extended only reliable si if index > 2 break
+            if ( ! CTRXGlobal::m_iSearchPosExt && indice >= 2 )
             {
-                if ( IndicatorsTR4NGTable [ j ].useB3 && pBuffer [ i + 2 ] != IndicatorsTR4NGTable [ j ].b3 )
+                break;
+            }
+
+            if (    pBuffer [ iBuffer ] == IndicatorsTR4NGTable [ indice ].b1 &&
+                    pBuffer [ iBuffer + 1 ] == IndicatorsTR4NGTable [ indice ].b2 &&
+                    pBuffer [ iBuffer + 3 ] == IndicatorsTR4NGTable [ indice ].b4 )
+            {
+                if ( IndicatorsTR4NGTable [ indice ].useB3 && pBuffer [ iBuffer + 2 ] != IndicatorsTR4NGTable [ indice ].b3 )
                 {
                     continue;
                 }
 
                 // In TR4 Life is between 0 and 999 (0 means 1000)
-                short life = * (short * ) ( pBuffer + i + TR4NG_LIFE_OFFSET );
+                short life = * (short * ) ( pBuffer + iBuffer + TR4NG_LIFE_OFFSET );
 
                 //  Life Is valid between 0 and 1000
                 if ( life != TR4_ALT_HEALTH && ( life < TR4_MIN_HEALTH || life > TR4_MAX_HEALTH ) )
@@ -1662,7 +1670,7 @@ void *CTR4NGSaveGame::GetIndicatorAddress (int index)
                 count++;
                 if ( count > index )
                 {
-                    return pBuffer + i;
+                    return pBuffer + iBuffer;
                 }
             }
         }
