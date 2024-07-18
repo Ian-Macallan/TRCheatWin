@@ -97,6 +97,9 @@ TR45_INDICATORS IndicatorsTR4NGTable [ MAX_INDICATORS ] =
     {   FALSE,  0x13,   0x13,   0x47,   0x61,   TRUE },
     {   FALSE,  0x54,   0x50,   0x47,   0x0d,   TRUE },
 
+    {   FALSE,  0x02,   0x02,   0x00,   0x52,   TRUE },
+    {   FALSE,  0x02,   0x02,   0x47,   0x0b,   TRUE }, 
+
     //
     {   TRUE,   0xff,   0xff,   0xff,   0xff,   TRUE },         // End
 };
@@ -1979,7 +1982,7 @@ TR4NG_POSITION *CTR4NGSaveGame::GetTR4Position ( )
 
                     DWORD dwRelativeAddress = CTRXTools::RelativeAddress ( pBuffer - i, m_pBuffer );
                     static char szDebugString [ MAX_PATH ];
-                    sprintf_s ( szDebugString, sizeof(szDebugString), "Indicators 0x%08x : 0x%02x 0x%02x 0x%02x 0x%02x %3u %5d %5d %5d %3u %4d\n", 
+                    sprintf_s ( szDebugString, sizeof(szDebugString), "Indicators 0x%08x : 0x%02x 0x%02x 0x%02x 0x%02x R:%-3u V:%-5d SN:%-5d WE:%-5d D:%-3u %4d\n", 
                         dwRelativeAddress, 
                         pTR4Position0->indicator1, pTR4Position0->indicator2, pTR4Position0->indicator3, pTR4Position0->indicator4, 
                         pTR4Position->cRoom, pTR4Position->wVertical, pTR4Position->wSouthToNorth, pTR4Position->wWestToEast, pTR4Position->cOrientation,
@@ -2004,10 +2007,10 @@ TR4NG_POSITION *CTR4NGSaveGame::GetTR4Position ( )
         TR4NG_POSITION *pCurrent        = NULL;
         TR4NG_POSITION *pTR4Position    = NULL;
 
-        for ( int i = 0x280; i < 0x3000; i++ )
+        for ( int iBuffer = 0x280; iBuffer < 0x3000; iBuffer++ )
         {
             //  We Consider pBuffer + i pointing to indicator1
-            pCurrent                = (TR4NG_POSITION *) ( ( BYTE * ) pBuffer + i - TR4NG_POSITION_OFFSET );
+            pCurrent                = (TR4NG_POSITION *) ( ( BYTE * ) pBuffer + iBuffer );
 
             DWORD dwSouthToNorth    = ( DWORD) pCurrent->wSouthToNorth * TR4NG_FACTOR;
             DWORD dwVertical        = ( DWORD ) pCurrent->wVertical * TR4NG_FACTOR;
@@ -2047,45 +2050,59 @@ TR4NG_POSITION *CTR4NGSaveGame::GetTR4Position ( )
             BOOL bCheck = CheckAreaForCoordinates ( GetFullVersion(), GetLevelIndex(),  wRoom, dwWestToEast, dwVertical, dwSouthToNorth, true, dwExtraVertical );
             if ( bCheck )
             {
-                //  Life between 0 and 1000
-                short life = * (short * ) ( pBuffer + i + TR4NG_LIFE_OFFSET );
+#ifdef _DEBUG
+                DWORD dwRelativeAddress = CTRXTools::RelativeAddress ( pCurrent, m_pBuffer );
+                static char szDebugString [ MAX_PATH ];
+                sprintf_s ( szDebugString, sizeof(szDebugString), "position 0x%08x : R:%-3u V:%-5d SN:%-5d WE:%-5d D:%-3u\n", 
+                    dwRelativeAddress,
+                    pCurrent->cRoom, pCurrent->wVertical, pCurrent->wSouthToNorth, pCurrent->wWestToEast, pCurrent->cOrientation ); 
+                OutputDebugString ( szDebugString );
+#endif
 
-                positionTable [ positionCount ] = pCurrent;
-
-                if ( life >= TR4_MIN_HEALTH && life <= TR4_MAX_HEALTH )
+                //
+                for ( int i = 0; i <= CTRXGlobal::m_iExtSearchPos; i++ )
                 {
-                    if ( pTR4Position == NULL )
+                    TR4NG_POSITION *pTR4Position0    = (TR4NG_POSITION *) ( (char * ) pCurrent + i );
+
+                    //  Life between 0 and 1000
+                    short life = pTR4Position0->heath;
+
+                    //
+                    if ( life >= TR4_MIN_HEALTH && life <= TR4_MAX_HEALTH )
                     {
-                        pTR4Position    = pCurrent;
+                        positionTable [ positionCount ] = pCurrent;
+                        if ( pTR4Position == NULL )
+                        {
+                            pTR4Position    = pCurrent;
+                        }
+                        positionCount++;
                     }
-                }
-                positionCount++;
 
 #ifdef _DEBUG
-                DWORD dwRelativeAddress = CTRXTools::RelativeAddress ( pBuffer + i, m_pBuffer );
-                static char szDebugString [ MAX_PATH ];
-                sprintf_s ( szDebugString, sizeof(szDebugString), "indicators 0x%08x : 0x%02x 0x%02x 0x%02x 0x%02x %3u %5d %5d %5d %3u %4d\n", 
-                    dwRelativeAddress, pCurrent->indicator1, pCurrent->indicator2, pCurrent->indicator3, pCurrent->indicator4,
-                    pCurrent->cRoom, pCurrent->wVertical, pCurrent->wSouthToNorth, pCurrent->wWestToEast, pCurrent->cOrientation,
-                    life ); 
-                OutputDebugString ( szDebugString );
+                    dwRelativeAddress = CTRXTools::RelativeAddress ( & pTR4Position0->indicator1, m_pBuffer );
+                    sprintf_s ( szDebugString, sizeof(szDebugString), "- indicators 0x%08x : 0x%02x 0x%02x 0x%02x 0x%02x %4d\n", 
+                        dwRelativeAddress,
+                        pTR4Position0->indicator1, pTR4Position0->indicator2, pTR4Position0->indicator3, pTR4Position0->indicator4,
+                        life ); 
+                    OutputDebugString ( szDebugString );
 
-                if ( CTRXGlobal::m_iUnchecked == FALSE )
-                {
-                    if ( positionCount > MAX_POSITION )
+                    if ( CTRXGlobal::m_iUnchecked == FALSE )
                     {
-                        return NULL;
+                        if ( positionCount > MAX_POSITION )
+                        {
+                            return NULL;
+                        }
                     }
-                }
 #else
-                if ( CTRXGlobal::m_iUnchecked == FALSE )
-                {
-                    if ( positionCount > 2 )
+                    if ( CTRXGlobal::m_iUnchecked == FALSE )
                     {
-                        return NULL;
+                        if ( positionCount > 2 )
+                        {
+                            return NULL;
+                        }
                     }
-                }
 #endif
+                }
             }
         }
 
