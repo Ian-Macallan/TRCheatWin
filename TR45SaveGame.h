@@ -24,6 +24,16 @@ typedef struct indicatorTR45Struct
 #pragma pack(pop, pack1)
 
 //
+static const int MaxReliableIndicator   = 2;
+
+//
+static const int MinTR4PositionOffset   = 0x280;
+static const int MaxTR4PositionOffset   = 0x3000;
+
+static const int MinTR5PositionOffset   = 0x280;
+static const int MaxTR5PositionOffset   = 0xD00;
+
+//
 /////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////

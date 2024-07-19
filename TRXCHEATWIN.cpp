@@ -594,15 +594,29 @@ BOOL CTRXCHEATWINApp::InitInstance()
         theApp.WriteProfileInt( PROFILE_SETTING, PROFILE_EXT_SEA_POS, 4 );
     }
     
+    iTmp        = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_USE_TR4_RANGE, -1 );
+    if ( iTmp == -1 )
+    {
+        theApp.WriteProfileInt( PROFILE_SETTING, PROFILE_USE_TR4_RANGE, TRUE );
+    }
+
+    iTmp        = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_USE_TR5_RANGE, -1 );
+    if ( iTmp == -1 )
+    {
+        theApp.WriteProfileInt( PROFILE_SETTING, PROFILE_USE_TR5_RANGE, TRUE );
+    }
+    
     //
-    CTRXColors::m_iDarkTheme        = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_DARKTHEME, 0 );
-    CTRXColors::m_iSquareCorner     = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_SQUARECORNERS, 0 );
-    CTRXColors::m_iSquareForce      = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_SQUAREFORCE, 1 );
-    CTRXColors::m_iThemeRestart     = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_THEME_RESTART, 1 );
-    CTRXGlobal::m_iExtendVertical   = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_EXTEND_VERTICAL, 0 );
-    CTRXGlobal::m_iTRRBackup        = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_TRR_BACKUP, 32 );
-    CTRXGlobal::m_iTRBackup         = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_TR_BACKUP, 4 );
-    CTRXGlobal::m_iExtSearchPos     = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_EXT_SEA_POS, 4 );
+    CTRXColors::m_iDarkTheme            = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_DARKTHEME, 0 );
+    CTRXColors::m_iSquareCorner         = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_SQUARECORNERS, 0 );
+    CTRXColors::m_iSquareForce          = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_SQUAREFORCE, 1 );
+    CTRXColors::m_iThemeRestart         = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_THEME_RESTART, 1 );
+    CTRXGlobal::m_iExtendVertical       = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_EXTEND_VERTICAL, 0 );
+    CTRXGlobal::m_iTRRBackup            = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_TRR_BACKUP, 32 );
+    CTRXGlobal::m_iTRBackup             = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_TR_BACKUP, 4 );
+    CTRXGlobal::m_iExtSearchPos         = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_EXT_SEA_POS, 4 );
+    CTRXGlobal::m_UseTR4PositionRange   = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_USE_TR4_RANGE, TRUE );
+    CTRXGlobal::m_UseTR5PositionRange   = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_USE_TR5_RANGE, TRUE );
 
     //
     //  Module Filename has been read

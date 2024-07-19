@@ -104,12 +104,13 @@ TR45_INDICATORS IndicatorsTR4Table [ MAX_INDICATORS ] =
     {   FALSE,  0x27,   0x15,   0x00,   0xa3,   TRUE },
     {   FALSE,  0x0f,   0x0f,   0x47,   0x1d,   TRUE },         // Bike
     {   FALSE,  0x0f,   0x0f,   0x00,   0x1d,   TRUE },         // Bike
-    
+    {   FALSE,  0x00,   0x00,   0x47,   0x23,   TRUE },         // Jeep
     {   FALSE,  0x02,   0x02,   0x47,   0xdd,   TRUE }, 
     {   FALSE,  0x02,   0x02,   0x47,   0x0b,   TRUE }, 
     {   FALSE,  0x02,   0x02,   0x47,   0x1f,   TRUE },         // Mounting
     {   FALSE,  0x13,   0x13,   0x47,   0x61,   TRUE }, 
-
+    {   FALSE,  0x13,   0x13,   0x00,   0x61,   TRUE }, 
+    {   FALSE,  0x19,   0x19,   0x00,   0x4b,   TRUE }, 
     //
     {   TRUE,   0xff,   0xff,   0xff,   0xff,   TRUE },         // End
 };
@@ -118,6 +119,51 @@ int IndicatorsTR4TableCount = sizeof(IndicatorsTR4Table)/sizeof(TR45_INDICATORS)
 //
 static int positionCount = 0;
 static TR4_POSITION *positionTable [ MAX_POSITION ];
+
+//
+static TR_POSITION_RANGE TR4IndicatorRange [ TR4_LEVELS ] =
+{
+    {   0x340,      0x360   },      /* 1 Angkor Wat */ 
+    {   0x280,      0x3000  },      /* 2 Race for the Iris */
+    {   0x3e0,      0x440   },      /* 3 Tomb of Seth */
+    {   0x3b0,      0x600   },      /* 4 Burial Chambers */
+    {   0x2f0,      0x340   },      /* 5 Valley of the Kings */
+    {   0x4b0,      0x630   },      /* 6 KV5 */
+    {   0x310,      0x720   },      /* 7 Temple of Karnak */
+    {   0x620,      0x950   },      /* 8 Great Hypostyle Hall */
+    {   0x7e0,      0x980   },      /* 9 Sacred Lake */
+    {   0x280,      0x3000  },      /* 10 Nothing */ 
+    {   0xd00,      0xfff   },      /* 11 Tomb of Semerkhet */
+    {   0x380,      0x4ff   },      /* 12 Guardian of Semerkhet */
+    {   0x340,      0x39f   },      /* 13 Desert Railroad */
+    {   0x2e0,      0x2ff   },      /* 14 Alexandria */
+    {   0x4f0,      0x1400  },      /* 15 Coastal Ruins */
+    {   0x1500,     0x18ff  },      /* 16 Pharos, Temple of Isis */
+    {   0x1900,     0x19ff  },      /* 17 Cleopatra's Palaces */
+    {   0x780,      0x7ff   },      /* 18 Catacombs */
+    {   0xc60,      0xdff   },      /* 19 Temple of Poseidon */
+    {   0x280,      0x3000  },      /* 20 The Lost Library */
+    {   0x1400,     0x14ff  },      /* 21 Hall of Demetrius */
+    {   0x310,      0x3000  },      /* 22 City of the Dead */
+    {   0xc00,      0xfff   },      /* 23 Trenches */
+    {   0x650,      0xdff   },      /* 24 Chambers of Tulun */
+    {   0x280,      0x3000  },      /* 25 Street Bazaar */ 
+    {   0x900,      0xfff   },      /* 26 Citadel Gate */
+    {   0x400,      0x6ff   },      /* 27 Citadel */
+    {   0x300,      0x1200  },      /* 28 Sphinx Complex */
+    {   0x280,      0x3000  },      /* 29 Nothing */
+    {   0x500,      0x5ff   },      /* 30 Underneath the Sphinx */
+    {   0xb00,      0xcff   },      /* 31 Menkaure's Pyramid */
+    {   0xe00,      0xeff   },      /* 32 Inside Menkaure's Pyramid */
+    {   0x1400,     0x16ff  },      /* 33 The Mastabas */
+    {   0x280,      0x3000  },      /* 34 The Great Pyramid */ 
+    {   0x1b00,     0x1bff  },      /* 35 Khufu's Queen's Pyramids */
+    {   0x1e00,     0x1eff  },      /* 36 Inside the Great Pyramid */
+    {   0x2200,     0x28ff  },      /* 37 Temple of Horus */
+    {   0x2200,     0x28ff  },      /* 38 Temple of Horus */ 
+    {   0x280,      0x3000  },      /* 39 Office */
+    {   0x500,      0x5ff   },      /* 40 Times Exclusive */
+};
 
 //
 /////////////////////////////////////////////////////////////////////////////
@@ -1637,9 +1683,20 @@ void CTR4SaveGame::SetGunAmmos ( const char *szGunAmmos )
 void *CTR4SaveGame::GetIndicatorAddress (int index)
 {
     //
+    int levelIndex  = GetLevelIndex() % ( sizeof(TR4IndicatorRange) / sizeof(TR_POSITION_RANGE) );;
+    int minOffset   = TR4IndicatorRange [ levelIndex ].minOffset;
+    int maxOffset   = TR4IndicatorRange [ levelIndex ].maxOffset;
+
+    if ( IsCustomArea ( ) || ! CTRXGlobal::m_UseTR4PositionRange )
+    {
+        minOffset   = MinTR4PositionOffset;
+        maxOffset   = MaxTR4PositionOffset;
+    }
+
+    //
     BYTE *pBuffer   = ( BYTE * ) m_pBuffer;
     int count       = 0;
-    for ( int iBuffer = 0x0280; iBuffer < 0x3000; iBuffer++ )
+    for ( int iBuffer = minOffset; iBuffer <= maxOffset; iBuffer++ )
     {
         //  Compare with Indicators
         for ( int indice = 0; indice < IndicatorsTR4TableCount;  indice++ )
@@ -1651,7 +1708,7 @@ void *CTR4SaveGame::GetIndicatorAddress (int index)
 
             //
             //  If not search extended only reliable si if index > 2 break
-            if ( ! CTRXGlobal::m_iSearchPosExt && indice >= 2 )
+            if ( ! CTRXGlobal::m_iSearchPosExt && indice >= MaxReliableIndicator )
             {
                 break;
             }
@@ -1700,8 +1757,9 @@ WORD *CTR4SaveGame::GetTR4LifeAddress()
 #ifdef _DEBUG
         static char szDebugString [ MAX_PATH ];
         DWORD dwRelativeAddress = CTRXTools::RelativeAddress ( pBuffer, m_pBuffer );
-        sprintf_s ( szDebugString, sizeof(szDebugString), "Life Indicators 0x%08x : 0x%02x 0x%02x 0x%02x 0x%02x %4d\n", 
-                            dwRelativeAddress, pBuffer [ 0 ] & 0xff, pBuffer [ 1 ] & 0xff, pBuffer [ 2 ] & 0xff, pBuffer [ 3 ] & 0xff, *pLife );
+        sprintf_s ( szDebugString, sizeof(szDebugString), 
+            "Life Indicators 0x%08x : 0x%02x 0x%02x 0x%02x 0x%02x H:%-6d\n", 
+            dwRelativeAddress, pBuffer [ 0 ] & 0xff, pBuffer [ 1 ] & 0xff, pBuffer [ 2 ] & 0xff, pBuffer [ 3 ] & 0xff, *pLife );
         OutputDebugString ( szDebugString );
 #endif
 
@@ -1986,7 +2044,8 @@ TR4_POSITION *CTR4SaveGame::GetTR4Position ( )
 
                     DWORD dwRelativeAddress = CTRXTools::RelativeAddress ( pBuffer - i, m_pBuffer );
                     static char szDebugString [ MAX_PATH ];
-                    sprintf_s ( szDebugString, sizeof(szDebugString), "Indicators 0x%08x : 0x%02x 0x%02x 0x%02x 0x%02x R:%-3u V:%-5d SN:%-5d WE:%-5d D:%-3u %4d\n", 
+                    sprintf_s ( szDebugString, sizeof(szDebugString), 
+                        "Indicators 0x%08x : 0x%02x 0x%02x 0x%02x 0x%02x R:%-3u V:%-5d SN:%-5d WE:%-5d D:%-3u H:%-6d\n", 
                         dwRelativeAddress,
                         pTR4Position0->indicator1, pTR4Position0->indicator2, pTR4Position0->indicator3, pTR4Position0->indicator4, 
                         pTR4Position->cRoom, pTR4Position->wVertical, pTR4Position->wSouthToNorth, pTR4Position->wWestToEast, pTR4Position->cOrientation,
@@ -2010,7 +2069,19 @@ TR4_POSITION *CTR4SaveGame::GetTR4Position ( )
         TR4_POSITION *pCurrent      = NULL;
         TR4_POSITION *pTR4Position  = NULL;
 
-        for ( int iBuffer = 0x280; iBuffer < 0x3000; iBuffer++ )
+        //
+        int levelIndex  = GetLevelIndex() % ( sizeof(TR4IndicatorRange) / sizeof(TR_POSITION_RANGE) );;
+        int minOffset   = TR4IndicatorRange [ levelIndex ].minOffset;
+        int maxOffset   = TR4IndicatorRange [ levelIndex ].maxOffset;
+
+        if ( IsCustomArea ( ) || ! CTRXGlobal::m_UseTR4PositionRange )
+        {
+            minOffset   = MinTR4PositionOffset;
+            maxOffset   = MaxTR4PositionOffset;
+        }
+
+        //
+        for ( int iBuffer = minOffset; iBuffer <= maxOffset; iBuffer++ )
         {
             //  We Consider pBuffer + i pointing to indicator1
             pCurrent                = (TR4_POSITION *) ( ( BYTE * ) pBuffer + iBuffer );
@@ -2083,7 +2154,8 @@ TR4_POSITION *CTR4SaveGame::GetTR4Position ( )
 
 #ifdef _DEBUG
                     dwRelativeAddress = CTRXTools::RelativeAddress ( & pTR4Position0->indicator1, m_pBuffer );
-                    sprintf_s ( szDebugString, sizeof(szDebugString), "- indicators 0x%08x : 0x%02x 0x%02x 0x%02x 0x%02x %4d\n", 
+                    sprintf_s ( szDebugString, sizeof(szDebugString), 
+                        "- indicators 0x%08x : 0x%02x 0x%02x 0x%02x 0x%02x H:%-6d\n", 
                         dwRelativeAddress,
                         pTR4Position0->indicator1, pTR4Position0->indicator2, pTR4Position0->indicator3, pTR4Position0->indicator4,
                         life ); 

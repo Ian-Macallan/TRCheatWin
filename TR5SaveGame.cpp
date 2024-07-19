@@ -48,6 +48,11 @@ TR45_INDICATORS IndicatorsTR5Table [ MAX_INDICATORS ] =
     {   FALSE,  0x02,   0x36,   0x00,   0x0b,   TRUE },
     {   FALSE,  0x59,   0x16,   0x00,   0xd2,   TRUE },
     {   FALSE,  0x47,   0x57,   0x47,   0xde,   TRUE },
+
+    {   FALSE,  0x18,   0x18,   0x00,   0x46,   TRUE },
+    {   FALSE,  0x27,   0x10,   0x47,   0xa9,   TRUE },
+    {   FALSE,  0x59,   0x10,   0x47,   0xd8,   TRUE },
+
     //
     {   TRUE,   0xff,   0xff,   0xff,   0xff,   TRUE },         // End
 
@@ -103,6 +108,25 @@ static WORD HealthPosition [ TR5_LEVELS ] =
     0x6f6,  //      for Level 12 Escape with iris
     0x52e,  //      for Level 13 Security Breach
     0x52e,  //      for Level 14 Red Alert
+};
+
+//
+static TR_POSITION_RANGE TR5IndicatorRange [ TR5_LEVELS ] =
+{
+    { 0x4e0, 0x4f0 },       //      For Level 1 Street
+    { 0x530, 0x5f0 },       //      for Level 2 trajan
+    { 0x4c0, 0x4ef },       //      for Level 3 colise
+    { 0x540, 0x6bf },       //      for Level 4 the base
+    { 0x510, 0x6AF },       //      for Level 5 the submarine
+    { 0x630, 0x6ef },       //      for Level 6 deep sea
+    { 0x580, 0x6FF },       //      for Level 7 Sinking
+    { 0x4e0, 0x530 },       //      for Level 8 Gallow
+    { 0x530, 0x620 },       //      for Level 9 Labyrith
+    { 0x500, 0x620 },       //      for Level 10 Old Mill
+    { 0x520, 0x530 },       //      for Level 11 13th floor
+    { 0x6d0, 0xc30 },       //      for Level 12 Escape with iris
+    { 0x280, 0xD00 },       //      for Level 13 Security Breach
+    { 0x520, 0x590 },       //      for Level 14 Red Alert
 };
 
 //
@@ -1565,12 +1589,22 @@ void CTR5SaveGame::SetGunAmmos ( const char *szGunAmmos )
 /////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////
-void *CTR5SaveGame::GetIndicatorAddress (int index)
+void *CTR5SaveGame::GetIndicatorAddress ( int index )
 {
+    int levelIndex  = GetLevelIndex() % ( sizeof(TR5IndicatorRange) / sizeof(TR_POSITION_RANGE) );
+    int minOffset   = TR5IndicatorRange [ levelIndex ].minOffset;
+    int maxOffset   = TR5IndicatorRange [ levelIndex ].maxOffset;
+
+    if ( ! CTRXGlobal::m_UseTR5PositionRange )
+    {
+        minOffset   = MinTR5PositionOffset;
+        maxOffset   = MaxTR5PositionOffset;
+    }
+
     //
     BYTE *pBuffer   = ( BYTE * ) m_pBuffer;
     int count = 0;
-    for ( int iBuffer = 0x400; iBuffer < 0xD00; iBuffer++ )
+    for ( int iBuffer = minOffset; iBuffer <= maxOffset; iBuffer++ )
     {
         //  Compare with Indicators
         for ( int indice = 0; indice < IndicatorsTR5TableCount;  indice++ )
@@ -1582,7 +1616,7 @@ void *CTR5SaveGame::GetIndicatorAddress (int index)
 
             //
             //  If not search extended only reliable si if index > 2 break
-            if ( ! CTRXGlobal::m_iSearchPosExt && indice >= 2 )
+            if ( ! CTRXGlobal::m_iSearchPosExt && indice >= MaxReliableIndicator )
             {
                 break;
             }
@@ -1631,8 +1665,9 @@ WORD *CTR5SaveGame::GetTR5LifeAddress ()
 #ifdef _DEBUG
         static char szDebugString [ MAX_PATH ];
         DWORD dwRelativeAddress = CTRXTools::RelativeAddress ( pBuffer, m_pBuffer );
-        sprintf_s ( szDebugString, sizeof(szDebugString), "Life Indicators 0x%08x : 0x%02x 0x%02x 0x%02x 0x%02x %4d\n", 
-                            dwRelativeAddress, pBuffer [ 0 ] & 0xff, pBuffer [ 1 ] & 0xff, pBuffer [ 2 ] & 0xff, pBuffer [ 3 ] & 0xff, *pLife );
+        sprintf_s ( szDebugString, sizeof(szDebugString), 
+            "Life Indicators 0x%08x : 0x%02x 0x%02x 0x%02x 0x%02x H:%-6d\n", 
+            dwRelativeAddress, pBuffer [ 0 ] & 0xff, pBuffer [ 1 ] & 0xff, pBuffer [ 2 ] & 0xff, pBuffer [ 3 ] & 0xff, *pLife );
         OutputDebugString ( szDebugString );
 #endif
 
@@ -1873,7 +1908,8 @@ TR5_POSITION *CTR5SaveGame::GetTR5Position ( )
 
                     DWORD dwRelativeAddress = CTRXTools::RelativeAddress ( pBuffer - i, m_pBuffer );
                     static char szDebugString [ MAX_PATH ];
-                    sprintf_s ( szDebugString, sizeof(szDebugString), "Indicators 0x%08x : 0x%02x 0x%02x 0x%02x 0x%02x R:%-3u V:%-5d SN:%-5d WE:%-5d D:%-3u %4d\n", 
+                    sprintf_s ( szDebugString, sizeof(szDebugString),
+                        "Indicators 0x%08x : 0x%02x 0x%02x 0x%02x 0x%02x R:%-3u V:%-5d SN:%-5d WE:%-5d D:%-3u H:%-6d\n", 
                         dwRelativeAddress, 
                         pTR5Position0->indicator1, pTR5Position0->indicator2, pTR5Position0->indicator3, pTR5Position0->indicator4,
                         pTR5Position->cRoom, pTR5Position->wVertical, pTR5Position->wSouthToNorth, pTR5Position->wWestToEast, pTR5Position->cOrientation,
@@ -1897,7 +1933,19 @@ TR5_POSITION *CTR5SaveGame::GetTR5Position ( )
         TR5_POSITION *pCurrent          = NULL;
         TR5_POSITION *pTR5Position      = NULL;
 
-        for ( int iBuffer = 0x380; iBuffer < 0xD00; iBuffer++ )
+        //
+        int levelIndex  = GetLevelIndex() % ( sizeof(TR5IndicatorRange) / sizeof(TR_POSITION_RANGE) );;
+        int minOffset   = TR5IndicatorRange [ levelIndex ].minOffset;
+        int maxOffset   = TR5IndicatorRange [ levelIndex ].maxOffset;
+
+        if ( ! CTRXGlobal::m_UseTR5PositionRange )
+        {
+            minOffset   = MinTR5PositionOffset;
+            maxOffset   = MaxTR5PositionOffset;
+        }
+
+        //
+        for ( int iBuffer = minOffset; iBuffer <= maxOffset; iBuffer++ )
         {
             //  We Consider pBuffer + i pointing to indicator1
             pCurrent                = (TR5_POSITION *) ( ( BYTE * ) pBuffer + iBuffer );
@@ -1963,7 +2011,8 @@ TR5_POSITION *CTR5SaveGame::GetTR5Position ( )
 
 #ifdef _DEBUG
                     dwRelativeAddress = CTRXTools::RelativeAddress ( & pTR5Position0->indicator1, m_pBuffer );
-                    sprintf_s ( szDebugString, sizeof(szDebugString), "- indicators 0x%08x : 0x%02x 0x%02x 0x%02x 0x%02x %4d\n", 
+                    sprintf_s ( szDebugString, sizeof(szDebugString),
+                        "- indicators 0x%08x : 0x%02x 0x%02x 0x%02x 0x%02x H:%-6d\n", 
                         dwRelativeAddress,
                         pTR5Position0->indicator1, pTR5Position0->indicator2, pTR5Position0->indicator3, pTR5Position0->indicator4,
                         life ); 

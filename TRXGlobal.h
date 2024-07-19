@@ -24,6 +24,9 @@ class CTRXGlobal
         static unsigned     m_iMinNGSize;
         static unsigned     m_iMaxNGSize;
 
+        static BOOL         m_UseTR4PositionRange;
+        static BOOL         m_UseTR5PositionRange;
+
 };
 
 extern BOOL     g_bPasteEnabled;

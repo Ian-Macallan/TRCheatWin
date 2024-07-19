@@ -16,7 +16,7 @@
 
 #define TR4NGMAXLEVEL       64
 
-#define MAX_POSITION        32
+#define MAX_POSITION        64
 #define MAX_INDICATORS      128
 
 #define TR1G_LEVELS (TR1_LEVELS - TR1G_START + 1)

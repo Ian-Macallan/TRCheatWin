@@ -111,6 +111,12 @@ static int positionCount = 0;
 static TR4NG_POSITION *positionTable [ MAX_POSITION ];
 
 //
+static TR_POSITION_RANGE TR4NGIndicatorRange [ 1 ] =
+{
+    {   0x280,  0x3000  },
+};
+
+//
 /////////////////////////////////////////////////////////////////////////////
 // CTR4NGSaveGame
 //
@@ -1628,10 +1634,15 @@ void CTR4NGSaveGame::SetGunAmmos ( const char *szGunAmmos )
 void *CTR4NGSaveGame::GetIndicatorAddress (int index)
 {
     //
+    int levelIndex  = GetLevelIndex() % ( sizeof(TR4NGIndicatorRange) / sizeof(TR_POSITION_RANGE) );;
+    int minOffset   = TR4NGIndicatorRange [ levelIndex ].minOffset;
+    int maxOffset   = TR4NGIndicatorRange [ levelIndex ].maxOffset;
+
+    //
     BYTE *pBuffer   = ( BYTE * ) m_pBuffer;
     int count       = 0;
 
-    for ( int iBuffer = 0x0280; iBuffer < 0x3000; iBuffer++ )
+    for ( int iBuffer = minOffset; iBuffer <= maxOffset; iBuffer++ )
     {
         //  Compare with Indicators
         for ( int indice = 0; indice < IndicatorsTR4NGTableCount;  indice++ )
@@ -1643,7 +1654,7 @@ void *CTR4NGSaveGame::GetIndicatorAddress (int index)
 
             //
             //  If not search extended only reliable si if index > 2 break
-            if ( ! CTRXGlobal::m_iSearchPosExt && indice >= 2 )
+            if ( ! CTRXGlobal::m_iSearchPosExt && indice >= MaxReliableIndicator )
             {
                 break;
             }
@@ -1694,8 +1705,11 @@ WORD *CTR4NGSaveGame::GetTR4NGLifeAddress()
 #ifdef _DEBUG
         static char szDebugString [ MAX_PATH ];
         DWORD dwRelativeAddress = CTRXTools::RelativeAddress ( pBuffer, m_pBuffer );
-        sprintf_s ( szDebugString, sizeof(szDebugString), "Life Indicators 0x%08x : 0x%02x 0x%02x 0x%02x 0x%02x %4d\n", 
-                            dwRelativeAddress, pBuffer [ 0 ] & 0xff, pBuffer [ 1 ] & 0xff, pBuffer [ 2 ] & 0xff, pBuffer [ 3 ] & 0xff, *pLife );
+        sprintf_s ( szDebugString, sizeof(szDebugString),
+            "Life Indicators 0x%08x : 0x%02x 0x%02x 0x%02x 0x%02x H:%-6d\n", 
+            dwRelativeAddress, 
+            pBuffer [ 0 ] & 0xff, pBuffer [ 1 ] & 0xff, pBuffer [ 2 ] & 0xff, pBuffer [ 3 ] & 0xff,
+            *pLife );
         OutputDebugString ( szDebugString );
 #endif
 
@@ -1919,7 +1933,7 @@ TR4NG_POSITION *CTR4NGSaveGame::GetTR4Position ( )
     positionCount   = 0;
 
 #ifdef _DEBUG
-    OutputDebugString ( "GetTR4Position\n" );
+    OutputDebugString ( "GetTR4NGPosition\n" );
 #endif
 
     //  We Search n times
@@ -1990,7 +2004,8 @@ TR4NG_POSITION *CTR4NGSaveGame::GetTR4Position ( )
 
                     DWORD dwRelativeAddress = CTRXTools::RelativeAddress ( pBuffer - i, m_pBuffer );
                     static char szDebugString [ MAX_PATH ];
-                    sprintf_s ( szDebugString, sizeof(szDebugString), "Indicators 0x%08x : 0x%02x 0x%02x 0x%02x 0x%02x R:%-3u V:%-5d SN:%-5d WE:%-5d D:%-3u %4d\n", 
+                    sprintf_s ( szDebugString, sizeof(szDebugString), 
+                        "Indicators 0x%08x : 0x%02x 0x%02x 0x%02x 0x%02x R:%-3u V:%-5d SN:%-5d WE:%-5d D:%-3u H:%-6d\n", 
                         dwRelativeAddress, 
                         pTR4Position0->indicator1, pTR4Position0->indicator2, pTR4Position0->indicator3, pTR4Position0->indicator4, 
                         pTR4Position->cRoom, pTR4Position->wVertical, pTR4Position->wSouthToNorth, pTR4Position->wWestToEast, pTR4Position->cOrientation,
@@ -2015,7 +2030,13 @@ TR4NG_POSITION *CTR4NGSaveGame::GetTR4Position ( )
         TR4NG_POSITION *pCurrent        = NULL;
         TR4NG_POSITION *pTR4Position    = NULL;
 
-        for ( int iBuffer = 0x280; iBuffer < 0x3000; iBuffer++ )
+        //
+        int levelIndex  = GetLevelIndex() % ( sizeof(TR4NGIndicatorRange) / sizeof(TR_POSITION_RANGE) );;
+        int minOffset   = TR4NGIndicatorRange [ levelIndex ].minOffset;
+        int maxOffset   = TR4NGIndicatorRange [ levelIndex ].maxOffset;
+
+        //
+        for ( int iBuffer = minOffset; iBuffer <= maxOffset; iBuffer++ )
         {
             //  We Consider pBuffer + i pointing to indicator1
             pCurrent                = (TR4NG_POSITION *) ( ( BYTE * ) pBuffer + iBuffer );
@@ -2088,7 +2109,8 @@ TR4NG_POSITION *CTR4NGSaveGame::GetTR4Position ( )
 
 #ifdef _DEBUG
                     dwRelativeAddress = CTRXTools::RelativeAddress ( & pTR4Position0->indicator1, m_pBuffer );
-                    sprintf_s ( szDebugString, sizeof(szDebugString), "- indicators 0x%08x : 0x%02x 0x%02x 0x%02x 0x%02x %4d\n", 
+                    sprintf_s ( szDebugString, sizeof(szDebugString),
+                        "- indicators 0x%08x : 0x%02x 0x%02x 0x%02x 0x%02x H:%-6d\n", 
                         dwRelativeAddress,
                         pTR4Position0->indicator1, pTR4Position0->indicator2, pTR4Position0->indicator3, pTR4Position0->indicator4,
                         life ); 
