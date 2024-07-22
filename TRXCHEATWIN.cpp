@@ -399,6 +399,19 @@ void CTRXCHEATWINApp::ReadIndicators()
 {
     static char szIndicatorsFilename [ MAX_PATH ];
 
+    //
+    strcpy_s ( szIndicatorsFilename, sizeof(szIndicatorsFilename), InitFileName );
+    RemoveFileType ( szIndicatorsFilename );
+    strcat_s ( szIndicatorsFilename, sizeof(szIndicatorsFilename), ".tr123-1.txt" );
+    CTRSaveGame::ReadIndicators ( IndicatorsTR123Table1, IndicatorsTR123Table1Count, szIndicatorsFilename );
+
+    //
+    strcpy_s ( szIndicatorsFilename, sizeof(szIndicatorsFilename), InitFileName );
+    RemoveFileType ( szIndicatorsFilename );
+    strcat_s ( szIndicatorsFilename, sizeof(szIndicatorsFilename), ".tr123-2.txt" );
+    CTRSaveGame::ReadIndicators ( IndicatorsTR123Table2, IndicatorsTR123Table2Count, szIndicatorsFilename );
+
+    //
     strcpy_s ( szIndicatorsFilename, sizeof(szIndicatorsFilename), InitFileName );
     RemoveFileType ( szIndicatorsFilename );
     strcat_s ( szIndicatorsFilename, sizeof(szIndicatorsFilename), ".tr4.txt" );
@@ -416,6 +429,12 @@ void CTRXCHEATWINApp::ReadIndicators()
     strcat_s ( szIndicatorsFilename, sizeof(szIndicatorsFilename), ".tr5.txt" );
     CTR5SaveGame::ReadIndicators ( IndicatorsTR5Table, IndicatorsTR5TableCount, szIndicatorsFilename );
 
+    //
+    strcpy_s ( szIndicatorsFilename, sizeof(szIndicatorsFilename), InitFileName );
+    RemoveFileType ( szIndicatorsFilename );
+    strcat_s ( szIndicatorsFilename, sizeof(szIndicatorsFilename), ".trr.txt" );
+    CTR9SaveGame::ReadIndicators ( IndicatorsTRRTable, IndicatorsTRRTableCount, szIndicatorsFilename );
+
 }
 
 //
@@ -425,6 +444,18 @@ void CTRXCHEATWINApp::ReadIndicators()
 void CTRXCHEATWINApp::WriteIndicators()
 {
     static char szIndicatorsFilename [ MAX_PATH ];
+
+    //
+    strcpy_s ( szIndicatorsFilename, sizeof(szIndicatorsFilename), InitFileName );
+    RemoveFileType ( szIndicatorsFilename );
+    strcat_s ( szIndicatorsFilename, sizeof(szIndicatorsFilename), ".tr123-1.txt" );
+    CTRSaveGame::WriteIndicators ( IndicatorsTR123Table1, IndicatorsTR123Table1Count, szIndicatorsFilename );
+
+    //
+    strcpy_s ( szIndicatorsFilename, sizeof(szIndicatorsFilename), InitFileName );
+    RemoveFileType ( szIndicatorsFilename );
+    strcat_s ( szIndicatorsFilename, sizeof(szIndicatorsFilename), ".tr123-2.txt" );
+    CTRSaveGame::WriteIndicators ( IndicatorsTR123Table2, IndicatorsTR123Table2Count, szIndicatorsFilename );
 
     //
     strcpy_s ( szIndicatorsFilename, sizeof(szIndicatorsFilename), InitFileName );
@@ -443,6 +474,13 @@ void CTRXCHEATWINApp::WriteIndicators()
     RemoveFileType ( szIndicatorsFilename );
     strcat_s ( szIndicatorsFilename, sizeof(szIndicatorsFilename), ".tr5.txt" );
     CTR5SaveGame::WriteIndicators ( IndicatorsTR5Table, IndicatorsTR5TableCount, szIndicatorsFilename );
+
+    //
+    strcpy_s ( szIndicatorsFilename, sizeof(szIndicatorsFilename), InitFileName );
+    RemoveFileType ( szIndicatorsFilename );
+    strcat_s ( szIndicatorsFilename, sizeof(szIndicatorsFilename), ".trr.txt" );
+    CTR9SaveGame::WriteIndicators ( IndicatorsTRRTable,IndicatorsTRRTableCount, szIndicatorsFilename );
+
 
 }
 
@@ -1058,10 +1096,35 @@ BOOL CTRXCHEATWINApp::WriteProfileIniFile ( const char *section,  const char *ke
 ////////////////////////////////////////////////////////////////////////
 //
 ////////////////////////////////////////////////////////////////////////
-BOOL CTRXCHEATWINApp::WriteProfileInt ( const char *section,  const char *keyName, int value )
+BOOL CTRXCHEATWINApp::WriteProfileInt ( const char *section,  const char *keyName, int value, bool bHexa )
 {
     char szText [ 64 ];
-    sprintf_s ( szText, sizeof(szText), "%d", value );
+    if ( bHexa )
+    {
+        sprintf_s ( szText, sizeof(szText), "0x%x", value );
+    }
+    else
+    {
+        sprintf_s ( szText, sizeof(szText), "%d", value );
+    }
+    return WriteProfileIniFile ( section, keyName, szText );
+}
+
+//
+////////////////////////////////////////////////////////////////////////
+//
+////////////////////////////////////////////////////////////////////////
+BOOL CTRXCHEATWINApp::WriteProfileLong ( const char *section,  const char *keyName, long value, bool bHexa )
+{
+    char szText [ 64 ];
+    if ( bHexa )
+    {
+        sprintf_s ( szText, sizeof(szText), "0x%lx", value );
+    }
+    else
+    {
+        sprintf_s ( szText, sizeof(szText), "%ld", value );
+    }
     return WriteProfileIniFile ( section, keyName, szText );
 }
 
@@ -1126,7 +1189,57 @@ UINT CTRXCHEATWINApp::GetProfileInt ( const char *section,  const char *keyName,
     {
         return defaultValue;
     }
-    result = atoi ( szText );
+    if ( __strnicmp ( szText, "0x" ) == 0 )
+    {
+        int iResult    = 0;
+        sscanf_s ( szText + 2, "%x", &iResult );
+        result      = (UINT) iResult;
+    }
+    else if ( __strnicmp ( szText, "x" ) == 0 )
+    {
+        int iResult    = 0;
+        sscanf_s ( szText + 1, "%x", &iResult );
+        result      = (UINT) iResult;
+    }
+    else
+    {
+        result = (UINT) atoi ( szText );
+    }
+    return result;
+}
+
+//
+////////////////////////////////////////////////////////////////////////
+//
+////////////////////////////////////////////////////////////////////////
+ULONG CTRXCHEATWINApp::GetProfileLong ( const char *section,  const char *keyName, int defaultValue )
+{
+    ULONG result = 0;
+    char szText [ 64 ];
+    char szDefault [ 64 ];
+    sprintf_s ( szText, sizeof(szText), "%d", defaultValue );
+    strcpy_s ( szDefault, szText );
+    BOOL bRead = ReadProfileIniFile ( section, keyName, szText, sizeof(szText), szDefault );
+    if ( ! bRead )
+    {
+        return defaultValue;
+    }
+    if ( __strnicmp ( szText, "0x" ) == 0 )
+    {
+        long lResult    = 0;
+        sscanf_s ( szText + 2, "%lx", &lResult );
+        result      = (UINT) lResult;
+    }
+    else if ( __strnicmp ( szText, "x" ) == 0 )
+    {
+        long lResult    = 0;
+        sscanf_s ( szText + 1, "%lx", &lResult );
+        result      = (UINT) lResult;
+    }
+    else
+    {
+        result = (ULONG) atol ( szText );
+    }
     return result;
 }
 

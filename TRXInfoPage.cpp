@@ -1028,10 +1028,11 @@ void CTRXInfoPage::DisplayValues()
             //
             if ( pArea != NULL )
             {
-                sprintf_s ( szString, sizeof(szString), "x=[%ld,%ld] z=[%ld,%ld] z=[top:%ld,bottom:%ld]",
+                sprintf_s ( szString, sizeof(szString), "x=[%ld,%ld] z=[%ld,%ld] z=[top:%ld,bottom:%ld] %s",
                     pArea->x, pArea->x + pArea->xSectors * TR_SECTOR_SIZE,
                     pArea->z, pArea->z + pArea->zSectors * TR_SECTOR_SIZE, 
-                    pArea->yTop, pArea->yBottom );
+                    pArea->yTop, pArea->yBottom,
+                    CTRSaveGame::I()->GetIndicatorLabel() );
             }
             else
             {

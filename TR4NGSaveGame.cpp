@@ -75,34 +75,41 @@ static char    TR4NBSecrets [ ] =
 /////////////////////////////////////////////////////////////////////////////
 TR45_INDICATORS IndicatorsTR4NGTable [ MAX_INDICATORS ] =
 {
-    {   FALSE,  0x02,   0x02,   0x00,   0x67,   TRUE },         //  Reliable
-    {   FALSE,  0x02,   0x02,   0x47,   0x67,   TRUE },         //  Reliable
+    {   FALSE,  0x02,   0x02,   0x00,   0x67,   TRUE,   0,  "Standing", },
+    {   FALSE,  0x02,   0x02,   0x47,   0x67,   TRUE,   0,  "Standing", },
 
-    {   FALSE,  0x02,   0x02,   0x00,   0x28,   TRUE },
-    {   FALSE,  0x02,   0x02,   0x00,   0x0b,   TRUE },
-    {   FALSE,  0x02,   0x02,   0x00,   0x0c,   TRUE },
-    {   FALSE,  0x02,   0x02,   0x00,   0x1f,   TRUE },
-    {   FALSE,  0x02,   0x02,   0x00,   0xbd,   TRUE },
-    {   FALSE,  0x02,   0x02,   0x00,   0xdd,   TRUE },
-    {   FALSE,  0x0d,   0x0d,   0x00,   0x6c,   TRUE },
-    {   FALSE,  0x0f,   0x0f,   0x00,   0x1f,   TRUE },         // Quad
-    {   FALSE,  0x12,   0x00,   0x00,   0x02,   TRUE },         // Flare
+    {   FALSE,  0x02,   0x02,   0x00,   0x28,   TRUE,   0,  "", },
+    {   FALSE,  0x02,   0x02,   0x00,   0x0b,   TRUE,   0,  "", },
+    {   FALSE,  0x02,   0x02,   0x00,   0x0c,   TRUE,   0,  "", },
+    {   FALSE,  0x02,   0x02,   0x00,   0x1f,   TRUE,   0,  "", },
+    {   FALSE,  0x02,   0x02,   0x00,   0xbd,   TRUE,   0,  "", },
+    {   FALSE,  0x02,   0x02,   0x00,   0xdd,   TRUE,   0,  "", },
 
-    {   FALSE,  0x47,   0x47,   0x47,   0xde,   TRUE },         // Kneeling
-    {   FALSE,  0x10,   0x00,   0x51,   0x51,   TRUE },         // Crawling
-    {   FALSE,  0x00,   0x02,   0x00,   0x02,   TRUE },
-    {   FALSE,  0x00,   0x02,   0x00,   0x03,   TRUE },
-    {   FALSE,  0x0c,   0x00,   0x00,   0x02,   TRUE },
-    {   FALSE,  0x21,   0x21,   0x00,   0x6e,   TRUE },         // In Water
+    {   FALSE,  0x0d,   0x0d,   0x00,   0x6c,   TRUE,   0,  "Swimming", },
+    {   FALSE,  0x0d,   0x0d,   0x47,   0x6c,   TRUE,   0,  "Swimming", },
 
-    {   FALSE,  0x13,   0x13,   0x47,   0x61,   TRUE },
-    {   FALSE,  0x54,   0x50,   0x47,   0x0d,   TRUE },
+    {   FALSE,  0x0f,   0x0f,   0x00,   0x1f,   TRUE,   0,  "Quad", },
+    {   FALSE,  0x12,   0x00,   0x00,   0x02,   TRUE,   0,  "Flare", },
 
-    {   FALSE,  0x02,   0x02,   0x00,   0x52,   TRUE },
-    {   FALSE,  0x02,   0x02,   0x47,   0x0b,   TRUE }, 
+    {   FALSE,  0x47,   0x47,   0x47,   0xde,   TRUE,   0,  "Kneeling", },
+    {   FALSE,  0x10,   0x00,   0x51,   0x51,   TRUE,   0,  "Crawling", },
+    {   FALSE,  0x00,   0x02,   0x00,   0x02,   TRUE,   0,  "", },
+    {   FALSE,  0x00,   0x02,   0x00,   0x03,   TRUE,   0,  "", },
+    {   FALSE,  0x0c,   0x00,   0x00,   0x02,   TRUE,   0,  "", },
+    {   FALSE,  0x21,   0x21,   0x00,   0x6e,   TRUE,   0,  "In Water", },
 
+    {   FALSE,  0x13,   0x13,   0x47,   0x61,   TRUE,   0,  "", },
+    {   FALSE,  0x54,   0x50,   0x47,   0x0d,   TRUE,   0,  "", },
+
+    {   FALSE,  0x02,   0x02,   0x00,   0x52,   TRUE,   0,  "", },
+    {   FALSE,  0x02,   0x02,   0x47,   0x0b,   TRUE,   0,  "", }, 
+
+    {   FALSE,  0x02,   0x02,   0x47,   0xbd,   TRUE,   0,  "Dropping Flare", }, 
+    {   FALSE,  0x01,   0x02,   0x47,   0x08,   TRUE,   0,  "Standing", }, 
+
+    {   FALSE,  0x21,   0x21,   0x47,   0x6e,   TRUE,   0,  "In Water", }, 
     //
-    {   TRUE,   0xff,   0xff,   0xff,   0xff,   TRUE },         // End
+    {   TRUE,   0xff,   0xff,   0xff,   0xff,   TRUE,   0,  "End", },         // End
 };
 int IndicatorsTR4NGTableCount = sizeof(IndicatorsTR4NGTable)/sizeof(TR45_INDICATORS);
 
@@ -1642,6 +1649,10 @@ void *CTR4NGSaveGame::GetIndicatorAddress (int index)
     BYTE *pBuffer   = ( BYTE * ) m_pBuffer;
     int count       = 0;
 
+    //
+    ZeroMemory ( m_szIndicatorLabel, sizeof(m_szIndicatorLabel) );
+
+    //
     for ( int iBuffer = minOffset; iBuffer <= maxOffset; iBuffer++ )
     {
         //  Compare with Indicators
@@ -1681,6 +1692,8 @@ void *CTR4NGSaveGame::GetIndicatorAddress (int index)
                 count++;
                 if ( count > index )
                 {
+                    strcpy_s (  m_szIndicatorLabel, sizeof(m_szIndicatorLabel), IndicatorsTR4NGTable [ indice ].szLabel );
+
                     return pBuffer + iBuffer;
                 }
             }
@@ -1936,6 +1949,8 @@ TR4NG_POSITION *CTR4NGSaveGame::GetTR4Position ( )
     OutputDebugString ( "GetTR4NGPosition\n" );
 #endif
 
+    ZeroMemory ( m_szIndicatorLabel, sizeof(m_szIndicatorLabel) );
+
     //  We Search n times
     //  The Goal is to see if there is a =atch with position for an index
     //  For example we could have an indicator but no position
@@ -1992,6 +2007,10 @@ TR4NG_POSITION *CTR4NGSaveGame::GetTR4Position ( )
                 DWORD dwExtraVertical   = 0;
                 if ( CTRXGlobal::m_iExtendVertical )
                 {
+                    //  Low part is subracted from top
+                    //  High part is added to bottom
+                    //  Extending vertical range
+                    //  So y >= yTop - low && y <= yBottom + high
                     dwExtraVertical         = ( 0x0100 << 16 ) | 0x0100;
                     dwExtraVertical         = ( 0x0100 << 16 );
                 }
@@ -2022,6 +2041,9 @@ TR4NG_POSITION *CTR4NGSaveGame::GetTR4Position ( )
     
     //
     //  Search Extended
+    ZeroMemory ( m_szIndicatorLabel, sizeof(m_szIndicatorLabel) );
+
+    //
     if ( CTRXGlobal::m_iSearchPosExt )
     {
         char *pBuffer = ( char * ) m_pBuffer;
@@ -2073,6 +2095,10 @@ TR4NG_POSITION *CTR4NGSaveGame::GetTR4Position ( )
             DWORD dwExtraVertical   = 0;
             if ( CTRXGlobal::m_iExtendVertical )
             {
+                //  Low part is subracted from top
+                //  High part is added to bottom
+                //  Extending vertical range
+                //  So y >= yTop - low && y <= yBottom + high
                 dwExtraVertical         = ( 0x0100 << 16 ) | 0x0100;
                 dwExtraVertical         = ( 0x0100 << 16 );
             }

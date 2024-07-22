@@ -24,37 +24,36 @@ extern CTRXCHEATWINApp theApp;
 /////////////////////////////////////////////////////////////////////////////
 TR45_INDICATORS IndicatorsTR5Table [ MAX_INDICATORS ] =
 {
-    {   FALSE,  0x02,   0x02,   0x00,   0x67,   TRUE },         //  Reliable
-    {   FALSE,  0x02,   0x02,   0x47,   0x67,   TRUE },         //  Reliable
+    {   FALSE,  0x02,   0x02,   0x00,   0x67,   TRUE,   0,  "Standing", },
+    {   FALSE,  0x02,   0x02,   0x47,   0x67,   TRUE,   0,  "Standing", },
 
-    {   FALSE,  0x02,   0x02,   0x00,   0x0b,   TRUE },
-    {   FALSE,  0x02,   0x02,   0x00,   0x1f,   TRUE },
-    {   FALSE,  0x0d,   0x0d,   0x00,   0x6c,   TRUE },
-    {   FALSE,  0x0d,   0x12,   0x00,   0x6c,   TRUE },
-    {   FALSE,  0x12,   0x12,   0x00,   0x57,   TRUE },
-    {   FALSE,  0x13,   0x13,   0x47,   0xae,   TRUE },
-    {   FALSE,  0x47,   0x47,   0x00,   0xde,   TRUE },         // Crawling
-    {   FALSE,  0x50,   0x50,   0x00,   0x07,   TRUE }, 
-    {   FALSE,  0x47,   0x47,   0x00,   0xde,   TRUE },         // Crawling
-    {   FALSE,  0x47,   0x57,   0x00,   0xde,   TRUE },         // Crawling
-    {   FALSE,  0x02,   0x02,   0x00,   0x0b,   TRUE },         // Jumping
-    {   FALSE,  0x09,   0x09,   0x00,   0x17,   TRUE },         // Falling
-    {   FALSE,  0x01,   0x02,   0x00,   0x0a,   TRUE },         // Running
+    {   FALSE,  0x02,   0x02,   0x00,   0x0b,   TRUE,   0,  "", },
+    {   FALSE,  0x02,   0x02,   0x00,   0x1f,   TRUE,   0,  "", },
+    {   FALSE,  0x0d,   0x0d,   0x00,   0x6c,   TRUE,   0,  "", },
+    {   FALSE,  0x0d,   0x12,   0x00,   0x6c,   TRUE,   0,  "", },
+    {   FALSE,  0x12,   0x12,   0x00,   0x57,   TRUE,   0,  "", },
+    {   FALSE,  0x13,   0x13,   0x47,   0xae,   TRUE,   0,  "", },
+    {   FALSE,  0x47,   0x47,   0x00,   0xde,   TRUE,   0,  "Crawling", },
+    {   FALSE,  0x50,   0x50,   0x00,   0x07,   TRUE,   0,  "", }, 
+    {   FALSE,  0x47,   0x57,   0x00,   0xde,   TRUE,   0,  "Crawling", },
+    {   FALSE,  0x02,   0x02,   0x00,   0x0b,   TRUE,   0,  "Jumping", },
+    {   FALSE,  0x09,   0x09,   0x00,   0x17,   TRUE,   0,  "Falling", },
+    {   FALSE,  0x01,   0x02,   0x00,   0x0a,   TRUE,   0,  "Running", },
     //
-    {   FALSE,  0x27,   0x10,   0x47,   0x87,   TRUE },
-    {   FALSE,  0x59,   0x10,   0x47,   0xd2,   TRUE },
-    {   FALSE,  0x59,   0x15,   0x47,   0xd1,   TRUE },
-    {   FALSE,  0x28,   0x0b,   0x47,   0x9e,   TRUE },
-    {   FALSE,  0x02,   0x36,   0x00,   0x0b,   TRUE },
-    {   FALSE,  0x59,   0x16,   0x00,   0xd2,   TRUE },
-    {   FALSE,  0x47,   0x57,   0x47,   0xde,   TRUE },
+    {   FALSE,  0x27,   0x10,   0x47,   0x87,   TRUE,   0,  "", },
+    {   FALSE,  0x59,   0x10,   0x47,   0xd2,   TRUE,   0,  "", },
+    {   FALSE,  0x59,   0x15,   0x47,   0xd1,   TRUE,   0,  "", },
+    {   FALSE,  0x28,   0x0b,   0x47,   0x9e,   TRUE,   0,  "", },
+    {   FALSE,  0x02,   0x36,   0x00,   0x0b,   TRUE,   0,  "", },
+    {   FALSE,  0x59,   0x16,   0x00,   0xd2,   TRUE,   0,  "", },
+    {   FALSE,  0x47,   0x57,   0x47,   0xde,   TRUE,   0,  "", },
 
-    {   FALSE,  0x18,   0x18,   0x00,   0x46,   TRUE },
-    {   FALSE,  0x27,   0x10,   0x47,   0xa9,   TRUE },
-    {   FALSE,  0x59,   0x10,   0x47,   0xd8,   TRUE },
+    {   FALSE,  0x18,   0x18,   0x00,   0x46,   TRUE,   0,  "", },
+    {   FALSE,  0x27,   0x10,   0x47,   0xa9,   TRUE,   0,  "", },
+    {   FALSE,  0x59,   0x10,   0x47,   0xd8,   TRUE,   0,  "", },
 
     //
-    {   TRUE,   0xff,   0xff,   0xff,   0xff,   TRUE },         // End
+    {   TRUE,   0xff,   0xff,   0xff,   0xff,   TRUE,   0,  "End", },
 
 };
 int IndicatorsTR5TableCount = sizeof(IndicatorsTR5Table)/sizeof(TR45_INDICATORS);
@@ -1602,6 +1601,9 @@ void *CTR5SaveGame::GetIndicatorAddress ( int index )
     }
 
     //
+    ZeroMemory ( m_szIndicatorLabel, sizeof(m_szIndicatorLabel) );
+
+    //
     BYTE *pBuffer   = ( BYTE * ) m_pBuffer;
     int count = 0;
     for ( int iBuffer = minOffset; iBuffer <= maxOffset; iBuffer++ )
@@ -1639,6 +1641,7 @@ void *CTR5SaveGame::GetIndicatorAddress ( int index )
                 count++;
                 if ( count > index )
                 {
+                    strcpy_s ( m_szIndicatorLabel, sizeof(m_szIndicatorLabel), IndicatorsTR5Table [ indice ].szLabel );
                     return pBuffer + iBuffer;
                 }
             }
@@ -1853,6 +1856,9 @@ TR5_POSITION *CTR5SaveGame::GetTR5Position ( )
     //  The Goal is to see if there is a =atch with position for an index
     //  For example we could have an indicator but no position
     //  So we will look the next indicator
+    ZeroMemory ( m_szIndicatorLabel, sizeof(m_szIndicatorLabel) );
+
+    //
     for ( int index = 0; index < IndicatorsTR5TableCount; index++ )
     {
         if ( IndicatorsTR5Table [ index ].bEnd )
@@ -1926,6 +1932,9 @@ TR5_POSITION *CTR5SaveGame::GetTR5Position ( )
 
     //
     //  Search Extended
+    ZeroMemory ( m_szIndicatorLabel, sizeof(m_szIndicatorLabel) );
+
+    //
     if ( CTRXGlobal::m_iSearchPosExt )
     {
         char *pBuffer = ( char * ) m_pBuffer;

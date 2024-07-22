@@ -58,6 +58,24 @@ BOOL CTR45SaveGame::ReadIndicators(TR45_INDICATORS *IndicatorsTRTable, const int
             ZeroMemory ( &indicators, sizeof(indicators) );
 
             //
+            //  Get Label
+            char *pLabel = strchr ( szLine, '"' );
+            if ( pLabel )
+            {
+                //  Skip quote
+                pLabel++;
+                for ( int i = 0; i < sizeof(indicators.szLabel) - 1; i++ )
+                {
+                    if ( *pLabel == '"' )
+                    {
+                        break;
+                    }
+                    indicators.szLabel [ i ] = *pLabel;
+                    pLabel++;
+                }
+            }
+
+            //
             char    strDelimit[]    = " \t,{}";
             char    *strToken       = NULL;
             char    *context        = NULL;
@@ -73,7 +91,7 @@ BOOL CTR45SaveGame::ReadIndicators(TR45_INDICATORS *IndicatorsTRTable, const int
             //      Treat Tokens
             int index = 0;
             strToken = strtok_s ( pLine, strDelimit, &context);
-            while ( strToken != NULL && index < 6 )
+            while ( strToken != NULL && index <= 6 )
             {
                 //
                 bool bSkip = true;
@@ -132,6 +150,7 @@ BOOL CTR45SaveGame::ReadIndicators(TR45_INDICATORS *IndicatorsTRTable, const int
                     case 3 : indicators.b3      = (BYTE) value; break;
                     case 4 : indicators.b4      = (BYTE) value; break;
                     case 5 : indicators.useB3   = (BOOL) value; break;
+                    case 6 : indicators.step    = value; break;
                 }
 
                 //      Get next token:
@@ -165,6 +184,8 @@ BOOL CTR45SaveGame::ReadIndicators(TR45_INDICATORS *IndicatorsTRTable, const int
         indicators.b3       = 0xff;
         indicators.b4       = 0xff;
         indicators.useB3    = TRUE;
+        indicators.step     = 0;
+        strcpy_s ( indicators.szLabel, sizeof(indicators.szLabel), "End" );
         IndicatorsTRTable [ line ] = indicators;
     }
 
@@ -216,6 +237,9 @@ BOOL CTR45SaveGame::WriteIndicators(TR45_INDICATORS *IndicatorsTRTable, const in
         {
             fprintf_s ( hFile, "FALSE, " );
         }
+
+        fprintf_s ( hFile, "%d, ", indicator.step );
+        fprintf_s ( hFile, "\"%s\", ", indicator.szLabel );
 
         fprintf_s ( hFile, "}\n" );
 

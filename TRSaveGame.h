@@ -49,10 +49,10 @@ struct TR_POSITION
 //  Struct Size 12 in decimal
 struct          TRLife
 {
-    WORD  iOne;     /* Must Be 0x0002 */
-    WORD  iTwo;     /* Must Be 0x0002 */
-    WORD  cFiller1;  
-    WORD  iThree;   /* Must Be 0x0067 */
+    WORD  w1;       /* Must Be 0x0002 */
+    WORD  w2;       /* Must Be 0x0002 */
+    WORD  w3;  
+    WORD  w4;       /* Must Be 0x0067 */
     WORD  cFiller2;
     WORD  iLife;    /* This is the Life */
 };
@@ -60,6 +60,23 @@ typedef struct TRLife   TRLIFE;
 
 #define MAX_SAVELENGTH  (2*1024*1024)
 
+#pragma pack(pop, pack1)
+
+//  Indicator Structure for TR 4 and 5
+#pragma pack(push, pack1, 1)
+#define INDICATOR_LABEL_SIZE    32
+
+typedef struct indicatorTR123Struct
+{
+    BOOL    bEnd;
+    WORD    w1;
+    WORD    w2;
+    WORD    w3;
+    WORD    w4;
+    BOOL    useW3;
+    int     step;
+    char    szLabel [ INDICATOR_LABEL_SIZE ];
+} TR123_INDICATORS;
 #pragma pack(pop, pack1)
 
 //
@@ -93,6 +110,8 @@ class CTRSaveGame  : public CObject
         char                m_Filename [ MAX_PATH ];
         char                m_FilenameBak [ MAX_PATH ];
         char                m_Status [ 256 ];
+
+        char                m_szIndicatorLabel [ INDICATOR_LABEL_SIZE ];
 
         static char         m_szBuffer [ MAX_SAVELENGTH ];
         static char         m_szBufferBackup [ MAX_SAVELENGTH ];
@@ -161,6 +180,11 @@ class CTRSaveGame  : public CObject
         static DWORD RelativeAddress( const void *pAddress );
 
         virtual const char *GetStatus() { return m_Status; };
+
+        virtual const char *GetIndicatorLabel()
+        {
+            return m_szIndicatorLabel;
+        }
 
         virtual int getFullVersion ()
         {
@@ -681,7 +705,14 @@ class CTRSaveGame  : public CObject
 
         static int InstanciateVersion ( const char *szFilename );
 
+        static BOOL ReadIndicators( TR123_INDICATORS *IndicatorsTRTable, const int maxTable, const char *pFilename );
+        static BOOL WriteIndicators( TR123_INDICATORS *IndicatorsTRTable, const int maxTable, const char *pFilename );
 
         // Generated message map functions
 };
 
+//
+extern TR123_INDICATORS IndicatorsTR123Table1 [ MAX_INDICATORS ];
+extern TR123_INDICATORS IndicatorsTR123Table2 [ MAX_INDICATORS ];
+extern int              IndicatorsTR123Table1Count;
+extern int              IndicatorsTR123Table2Count;

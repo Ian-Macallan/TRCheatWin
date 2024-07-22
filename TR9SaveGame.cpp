@@ -11,6 +11,32 @@ extern CTRXCHEATWINApp theApp;
 
 //
 /////////////////////////////////////////////////////////////////////////////
+//  Indicator Table
+/////////////////////////////////////////////////////////////////////////////
+TRR_INDICATORS IndicatorsTRRTable [ MAX_INDICATORS ] =
+{
+    {   FALSE,  0x02,   0x00,   0x02,   0,  "Standing", },
+    {   FALSE,  0x03,   0x00,   0x03,   0,  "Sliding forward", },  
+    {   FALSE,  0x0D,   0x00,   0x0D,   0,  "Underwater", },  
+    {   FALSE,  0x0D,   0x00,   0x12,   0,  "", },
+    {   FALSE,  0x12,   0x00,   0x12,   0,  "...", },
+    {   FALSE,  0x13,   0x00,   0x13,   0,  "Climbing", },
+    {   FALSE,  0x17,   0x00,   0x02,   0,  "Rolling", },
+    {   FALSE,  0x20,   0x00,   0x20,   0,  "Sliding backward", },
+    {   FALSE,  0x21,   0x00,   0x21,   0,  "On water", },
+    {   FALSE,  0x41,   0x00,   0x02,   0,  "Walking in water", },
+    {   FALSE,  0x41,   0x00,   0x41,   0,  "Walking in water", },
+    {   FALSE,  0x47,   0x00,   0x47,   0,  "Duck", },
+    {   FALSE,  0x57,   0x00,   0x57,   0,  "Climbing", },
+    {   FALSE,  0x5b,   0x00,   0x5b,   0,  "Climbing", },
+
+    {   TRUE,   0xff,   0xff,   0xff,   0,  "End", },
+
+};
+int IndicatorsTRRTableCount = sizeof(IndicatorsTRRTable)/sizeof(TRR_INDICATORS);
+
+//
+/////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////
 static const char *TR1LevelNames [] =
@@ -2163,26 +2189,24 @@ const char *CTR9SaveGame::GetBlockDistance ( int tombraider, int block )
 /////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////
-static bool IsKnown(char *position)
+bool CTR9SaveGame::IsKnown(char *position)
 {
     BYTE byte1 = *( position - 10 );
     BYTE byte2 = *( position - 9 );
     BYTE byte3 = *( position - 8 );
 
-    if (byte1 == 0x02 && byte2 == 0x00 && byte3 == 0x02) return true;       // Standing
-    if (byte1 == 0x03 && byte2 == 0x00 && byte3 == 0x03) return true;       // Sliding forward
-    if (byte1 == 0x0D && byte2 == 0x00 && byte3 == 0x0D) return true;       // Underwater
-    if (byte1 == 0x0D && byte2 == 0x00 && byte3 == 0x12) return true;       // ...
-    if (byte1 == 0x12 && byte2 == 0x00 && byte3 == 0x12) return true;       // ...
-    if (byte1 == 0x13 && byte2 == 0x00 && byte3 == 0x13) return true;       // Climbing
-    if (byte1 == 0x17 && byte2 == 0x00 && byte3 == 0x02) return true;       // Rolling
-    if (byte1 == 0x20 && byte2 == 0x00 && byte3 == 0x20) return true;       // Sliding backward
-    if (byte1 == 0x21 && byte2 == 0x00 && byte3 == 0x21) return true;       // On water
-    if (byte1 == 0x41 && byte2 == 0x00 && byte3 == 0x02) return true;       // Walking on top of water
-    if (byte1 == 0x41 && byte2 == 0x00 && byte3 == 0x41) return true;       // Walking on top of water 2
-    if (byte1 == 0x47 && byte2 == 0x00 && byte3 == 0x47) return true;       // Duck
-    if (byte1 == 0x57 && byte2 == 0x00 && byte3 == 0x57) return true;       // Climbing
-    if (byte1 == 0x5b && byte2 == 0x00 && byte3 == 0x5b) return true;       // Climbing
+    for ( int i = 0; i < IndicatorsTRRTableCount; i++ )
+    {
+        if ( IndicatorsTRRTable [ i ].bEnd )
+        {
+            return false;
+        }
+
+        if ( byte1 == IndicatorsTRRTable [ i ].b1 && byte2 == IndicatorsTRRTable [ i ].b2 && byte3 == IndicatorsTRRTable [ i ].b3 )
+        {
+            return true; 
+        }
+    }
 
     return false;
 }
@@ -2193,6 +2217,10 @@ static bool IsKnown(char *position)
 /////////////////////////////////////////////////////////////////////////////
 WORD *CTR9SaveGame::GetRealHealthAddress ( int tombraider, int block )
 {
+#ifdef _DEBUG
+    OutputDebugString ( "GetRealHealthAddress TR Remastered\n" );
+#endif
+
     TR_HEALTH_RANGE *pRanges = NULL;
     char *pStart        = NULL;
     int iSubtract       = NULL;
@@ -2293,6 +2321,10 @@ WORD *CTR9SaveGame::GetRealHealthAddress ( int tombraider, int block )
 /////////////////////////////////////////////////////////////////////////////
 TR9_POSITION *CTR9SaveGame::GetPositionAddress ( int tombraider, int block )
 {
+#ifdef _DEBUG
+    OutputDebugString ( "GetPositionAddress TR Remastered\n" );
+#endif
+
     BYTE *pAddress = (BYTE *) GetRealHealthAddress ( tombraider, block );
     if ( pAddress )
     {
@@ -9327,4 +9359,224 @@ void CTR9SaveGame::SetRocket ( int tombraider, int block, int slot, BOOL bEnable
             break;
         }
     }
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//  { FALSE,  0x02,   0x02,   0x00,   0x67,   TRUE }
+/////////////////////////////////////////////////////////////////////////////
+BOOL CTR9SaveGame::ReadIndicators(TRR_INDICATORS *IndicatorsTRTable, const int maxTable, const char *pFilename)
+{
+    if ( ! PathFileExists(pFilename) )
+    {
+        return FALSE;
+    }
+
+    FILE *hFile = NULL;
+    fopen_s ( &hFile, pFilename, "r" );
+    if ( hFile == NULL )
+    {
+        return FALSE;
+    }
+
+    //
+    int line    = 0;
+    static char szLine [ MAX_PATH ];
+
+    //
+    do
+    {
+        ZeroMemory ( szLine, sizeof(szLine) );
+        char *pLine = fgets ( szLine, sizeof(szLine), hFile );
+        if ( pLine != NULL )
+        {
+            //
+            TRR_INDICATORS indicators;
+            ZeroMemory ( &indicators, sizeof(indicators) );
+
+            //
+            //  Get Label
+            char *pLabel = strchr ( szLine, '"' );
+            if ( pLabel )
+            {
+                //  Skip quote
+                pLabel++;
+                for ( int i = 0; i < sizeof(indicators.szLabel) - 1; i++ )
+                {
+                    if ( *pLabel == '"' )
+                    {
+                        break;
+                    }
+                    indicators.szLabel [ i ] = *pLabel;
+                    pLabel++;
+                }
+            }
+
+            //
+            char    strDelimit[]    = " \t,{}";
+            char    *strToken       = NULL;
+            char    *context        = NULL;
+            int     value           = 0;
+
+            char *pAccolade         = strchr ( pLine, '{' );
+            if ( pAccolade != NULL )
+            {
+                pLine   = pAccolade + 1;
+            }
+
+            //
+            //      Treat Tokens
+            int index = 0;
+            strToken = strtok_s ( pLine, strDelimit, &context);
+            while ( strToken != NULL && index <= 4 )
+            {
+                //
+                bool bSkip = true;
+                while ( bSkip )
+                {
+                    if ( *strToken == ' ' )
+                    {
+                        strToken++;
+                    }
+                    else if ( *strToken == '\t' )
+                    {
+                        strToken++;
+                    }
+                    else if ( *strToken == ';' )
+                    {
+                        strToken++;
+                    }
+                    else if ( *strToken == '{' )
+                    {
+                        strToken++;
+                    }
+                    else if ( *strToken == '}' )
+                    {
+                        strToken++;
+                    }
+                    else
+                    {
+                        bSkip   = false;
+                    }
+                }
+
+                //
+                if ( _strnicmp ( strToken, "0x", 2 ) == 0 )
+                {
+                    sscanf_s ( strToken + 2, "%x", &value );
+                }
+                else if ( _strnicmp ( strToken, "true", strlen("true") ) == 0 )
+                {
+                    value   = TRUE;
+                }
+                else if ( _strnicmp ( strToken, "false", strlen("false") ) == 0 )
+                {
+                    value   = FALSE;
+                }
+                else
+                {
+                    value   = atoi(strToken);
+                }
+
+                //
+                switch ( index )
+                {
+                    case 0 : indicators.bEnd    = (BOOL) value; break;
+                    case 1 : indicators.b1      = (BYTE) value; break;
+                    case 2 : indicators.b2      = (BYTE) value; break;
+                    case 3 : indicators.b3      = (BYTE) value; break;
+                    case 4 : indicators.step    = value; break;
+                }
+
+                //      Get next token:
+                strToken = strtok_s( NULL, strDelimit, &context);
+                index++;
+            }
+
+            //
+            //  Add Entry
+            if ( line < maxTable )
+            {
+                IndicatorsTRTable [ line ] = indicators;
+
+                //
+                line++;
+            }
+        }
+    }
+    while ( ! feof ( hFile ) && ! ferror ( hFile ) );
+
+    //
+    //  Add End of entries
+    //
+    if ( line < maxTable )
+    {
+        TRR_INDICATORS indicators;
+        ZeroMemory ( &indicators, sizeof(indicators) );
+        indicators.bEnd     = TRUE;
+        indicators.b1       = 0xff;
+        indicators.b2       = 0xff;
+        indicators.b3       = 0xff;
+        indicators.step     = 0;
+        strcpy_s ( indicators.szLabel, sizeof(indicators.szLabel), "End" );
+        IndicatorsTRTable [ line ] = indicators;
+    }
+
+    //
+    fclose ( hFile );
+
+    return FALSE;
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
+BOOL CTR9SaveGame::WriteIndicators(TRR_INDICATORS *IndicatorsTRTable, const int maxTable, const char *pFilename)
+{
+    //
+    FILE *hFile = NULL;
+    fopen_s ( &hFile, pFilename, "w" );
+    if ( hFile == NULL )
+    {
+        return FALSE;
+    }
+
+    //
+    int index = 0;
+    do
+    {
+        fprintf_s ( hFile, "{ " );
+        TRR_INDICATORS indicator = IndicatorsTRTable [ index ];
+        if ( indicator.bEnd )
+        {
+            fprintf_s ( hFile, "TRUE, " );
+        }
+        else
+        {
+            fprintf_s ( hFile, "FALSE, " );
+        }
+
+        fprintf_s ( hFile, "0x%02x, ", indicator.b1 & 0xff );
+        fprintf_s ( hFile, "0x%02x, ", indicator.b2 & 0xff );
+        fprintf_s ( hFile, "0x%02x, ", indicator.b3 & 0xff );
+
+        fprintf_s ( hFile, "%d, ", indicator.step );
+
+        fprintf_s ( hFile, "\"%s\", ", indicator.szLabel );
+
+        fprintf_s ( hFile, "}\n" );
+
+        if ( indicator.bEnd )
+        {
+            break;
+        }
+
+        index++;
+    }
+    while ( index < maxTable );
+
+    fclose ( hFile );
+
+    return TRUE;
 }

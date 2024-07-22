@@ -87,10 +87,12 @@ class CTRXCHEATWINApp : public CWinApp
         BOOL ReadProfileIniFile ( const char *section,  const char *keyName, char *pValue, size_t iValue, const char *pDefault );
 
         UINT GetProfileInt ( const char *section,  const char *keyName, int defaultValue );
+        ULONG GetProfileLong ( const char *section,  const char *keyName, int defaultValue );
         double GetProfileDouble ( const char *section,  const char *keyName, double defaultValue );
         CString GetProfileString( const char *section,  const char *keyName, const char *pDefaultValue = "" );
 
-        BOOL WriteProfileInt ( const char *section,  const char *keyName, int value );
+        BOOL WriteProfileLong ( const char *section,  const char *keyName, long value, bool bHexa = false );
+        BOOL WriteProfileInt ( const char *section,  const char *keyName, int value, bool bHexa = false );
         BOOL WriteProfileDouble ( const char *section,  const char *keyName, double value );
         BOOL WriteProfileString ( const char *section,  const char *keyName, const char *pValue );
 

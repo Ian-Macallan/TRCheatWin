@@ -562,6 +562,20 @@ struct  TR_START_CONDITIONS
 
 #pragma pack(pop, pack1)
 
+//  Indicator Structure for TR 4 and 5
+#pragma pack(push, pack1, 1)
+typedef struct indicatorTRRStruct
+{
+    BOOL    bEnd;
+    BYTE    b1;
+    BYTE    b2;
+    BYTE    b3;
+    int     step;
+    char    szLabel [ 32 ];
+} TRR_INDICATORS;
+#pragma pack(pop, pack1)
+
+
 //
 /////////////////////////////////////////////////////////////////////////////
 class CTR9SaveGame : public CObject
@@ -681,6 +695,7 @@ class CTR9SaveGame : public CObject
         WORD *GetSaveAddress ( int tombraider, int block );
 
         //
+        bool IsKnown(char *position);
         WORD *GetRealHealthAddress ( int tombraider, int block );
 
         //
@@ -891,8 +906,13 @@ class CTR9SaveGame : public CObject
         static const char *GetLevelName ( int tombraider, int level );
         static int GetLevelCount ( int tombraider );
 
+        static BOOL ReadIndicators( TRR_INDICATORS *IndicatorsTRTable, const int maxTable, const char *pFilename );
+        static BOOL WriteIndicators( TRR_INDICATORS *IndicatorsTRTable, const int maxTable, const char *pFilename );
 
 };
 
 //
 extern  BOOL TraceMode;
+
+extern TRR_INDICATORS IndicatorsTRRTable [ MAX_INDICATORS ];
+extern int IndicatorsTRRTableCount;

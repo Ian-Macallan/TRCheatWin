@@ -20,6 +20,8 @@ typedef struct indicatorTR45Struct
     BYTE    b3;
     BYTE    b4;
     BOOL    useB3;
+    int     step;
+    char    szLabel [ INDICATOR_LABEL_SIZE ];
 } TR45_INDICATORS;
 #pragma pack(pop, pack1)
 

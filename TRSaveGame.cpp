@@ -28,6 +28,27 @@ static char THIS_FILE[] = __FILE__;
 extern CTRXCHEATWINApp theApp;
 
 //
+TR123_INDICATORS IndicatorsTR123Table1 [ MAX_INDICATORS ] =
+{
+    {   FALSE,  0x0002, 0x0002, 0x0000, 0x0067, FALSE,  0,  "Standing" },
+    {   FALSE,  0x0008, 0x0008, 0x0000, 0x0112, FALSE,  0,  "Quad" },
+    {   FALSE,  0x000d, 0x000d, 0x0000, 0x006c, FALSE,  0,  "" },
+    {   FALSE,  0x0012, 0x0012, 0x0000, 0x0057, FALSE,  0,  "" },
+    {   TRUE,   0xffff, 0xffff, 0xffff, 0xffff, TRUE,   0,  "End" },
+};
+int IndicatorsTR123Table1Count = sizeof(IndicatorsTR123Table1)/sizeof(TR123_INDICATORS);
+
+//
+TR123_INDICATORS IndicatorsTR123Table2 [ MAX_INDICATORS ] =
+{
+    {   FALSE,  0x0001, 0x0002, 0x0000, 0x000a, FALSE,  0,  "" },
+    {   FALSE,  0x0001, 0x0002, 0x0000, 0x0008, FALSE,  0,  "" },
+    {   TRUE,   0xffff, 0xffff, 0xffff, 0xffff, TRUE,   0,  "End" },
+};
+int IndicatorsTR123Table2Count = sizeof(IndicatorsTR123Table2)/sizeof(TR123_INDICATORS);
+
+
+//
 /////////////////////////////////////////////////////////////////////////////
 // CTRSaveGame
 //
@@ -61,6 +82,8 @@ CTRSaveGame::CTRSaveGame()
 
     m_iSaveLength       = 0;
     m_iMaxLevel         = 0;
+
+    ZeroMemory ( m_szIndicatorLabel, sizeof(m_szIndicatorLabel) );
 
     Reset();
 }
@@ -739,6 +762,10 @@ TRLIFE *CTRSaveGame::GetLifeAddress ()
         return m_pLife;
     }
 
+#ifdef _DEBUG
+    OutputDebugString ( "GetLifeAddress TR Standard\n" );
+#endif
+
     //
     char        *pBuffer;
     TRLIFE      *pLife;
@@ -760,24 +787,37 @@ TRLIFE *CTRSaveGame::GetLifeAddress ()
     /*
      *      Search Life.
      */
+    ZeroMemory ( m_szIndicatorLabel, sizeof(m_szIndicatorLabel) );
+
+    //
     while ( iX > sizeof ( TRLIFE ) )
     {
         pLife = ( TRLIFE * ) pBuffer;
 
-        if (    ( pLife->iOne == 0x0002 && pLife->iTwo == 0x0002 /* && pLife->cFiller1 == 0 */ && pLife->iThree == 0x0067 ) ||
-                ( pLife->iOne == 0x0008 && pLife->iTwo == 0x0008 /* && pLife->cFiller1 == 0 */ && pLife->iThree == 0x0112 ) ||      // Quad
-                ( pLife->iOne == 0x000d && pLife->iTwo == 0x000d /* && pLife->cFiller1 == 0 */ && pLife->iThree == 0x006c ) ||
-                ( pLife->iOne == 0x0012 && pLife->iTwo == 0x0012 /* && pLife->cFiller1 == 0 */ && pLife->iThree == 0x0057 ) )
+        for ( int i = 0; i < IndicatorsTR123Table1Count; i++ )
         {
-            m_pLife = pLife;
-            m_iLife = pLife->iLife;
-            return m_pLife;
+            if ( IndicatorsTR123Table1 [ i ].bEnd )
+            {
+                break;
+            }
+
+            if (    pLife->w1 == IndicatorsTR123Table1 [ i ].w1 &&
+                    pLife->w2 == IndicatorsTR123Table1 [ i ].w2 &&
+                    pLife->w4 == IndicatorsTR123Table1 [ i ].w4 )
+            {
+                if ( IndicatorsTR123Table1 [ i ].useW3 && pLife->w3 != IndicatorsTR123Table1 [ i ].w3 )
+                {
+                    continue;
+                }
+                m_pLife = pLife;
+                m_iLife = pLife->iLife;
+                strcpy_s ( m_szIndicatorLabel, sizeof(m_szIndicatorLabel), IndicatorsTR123Table1 [ i ].szLabel );
+                return m_pLife;
+            }
         }
-        else
-        {
-            iX--;
-            pBuffer++;
-        }
+        
+        iX--;
+        pBuffer++;
     }
 
     /*
@@ -790,18 +830,31 @@ TRLIFE *CTRSaveGame::GetLifeAddress ()
     {
         pLife = ( TRLIFE * ) pBuffer;
 
-        if (    ( pLife->iOne == 0x0001 && pLife->iTwo == 0x0002 /* && pLife->cFiller1 == 0 */ && pLife->iThree == 0x000a ) ||
-                ( pLife->iOne == 0x0001 && pLife->iTwo == 0x0002 /* && pLife->cFiller1 == 0 */ && pLife->iThree == 0x0008 )   )
+        for ( int i = 0; i < IndicatorsTR123Table2Count; i++ )
         {
-            m_pLife = pLife;
-            m_iLife = pLife->iLife;
-            return m_pLife;
+            if ( IndicatorsTR123Table2 [ i ].bEnd )
+            {
+                break;
+            }
+
+            if (    pLife->w1 == IndicatorsTR123Table2 [ i ].w1 &&
+                    pLife->w2 == IndicatorsTR123Table2 [ i ].w2 &&
+                    pLife->w4 == IndicatorsTR123Table2 [ i ].w4 )
+            {
+                if ( IndicatorsTR123Table2 [ i ].useW3 && pLife->w3 != IndicatorsTR123Table2 [ i ].w3 )
+                {
+                    continue;
+                }
+
+                m_pLife = pLife;
+                m_iLife = pLife->iLife;
+                strcpy_s ( m_szIndicatorLabel, sizeof(m_szIndicatorLabel), IndicatorsTR123Table1 [ i ].szLabel );
+                return m_pLife;
+            }
         }
-        else
-        {
-            iX--;
-            pBuffer++;
-        }
+
+        iX--;
+        pBuffer++;
     }
 
     //
@@ -837,3 +890,235 @@ void CTRSaveGame::SetLife ( const char *szLife )
     return;
 }
 
+//
+/////////////////////////////////////////////////////////////////////////////
+//  { FALSE,  0x02,   0x02,   0x00,   0x67,   TRUE }
+/////////////////////////////////////////////////////////////////////////////
+BOOL CTRSaveGame::ReadIndicators(TR123_INDICATORS *IndicatorsTRTable, const int maxTable, const char *pFilename)
+{
+    if ( ! PathFileExists(pFilename) )
+    {
+        return FALSE;
+    }
+
+    FILE *hFile = NULL;
+    fopen_s ( &hFile, pFilename, "r" );
+    if ( hFile == NULL )
+    {
+        return FALSE;
+    }
+
+    //
+    int line    = 0;
+    static char szLine [ MAX_PATH ];
+
+    //
+    do
+    {
+        ZeroMemory ( szLine, sizeof(szLine) );
+        char *pLine = fgets ( szLine, sizeof(szLine), hFile );
+        if ( pLine != NULL )
+        {
+            //
+            TR123_INDICATORS indicators;
+            ZeroMemory ( &indicators, sizeof(indicators) );
+
+            //
+            //  Get Label
+            char *pLabel = strchr ( szLine, '"' );
+            if ( pLabel )
+            {
+                //  Skip quote
+                pLabel++;
+                for ( int i = 0; i < sizeof(indicators.szLabel) - 1; i++ )
+                {
+                    if ( *pLabel == '"' )
+                    {
+                        break;
+                    }
+                    indicators.szLabel [ i ] = *pLabel;
+                    pLabel++;
+                }
+            }
+
+            //
+            char    strDelimit[]    = " \t,{}";
+            char    *strToken       = NULL;
+            char    *context        = NULL;
+            int     value           = 0;
+
+            char *pAccolade         = strchr ( pLine, '{' );
+            if ( pAccolade != NULL )
+            {
+                pLine   = pAccolade + 1;
+            }
+
+            //
+            //      Treat Tokens
+            int index = 0;
+            strToken = strtok_s ( pLine, strDelimit, &context);
+            while ( strToken != NULL && index <= 6 )
+            {
+                //
+                bool bSkip = true;
+                while ( bSkip )
+                {
+                    if ( *strToken == ' ' )
+                    {
+                        strToken++;
+                    }
+                    else if ( *strToken == '\t' )
+                    {
+                        strToken++;
+                    }
+                    else if ( *strToken == ';' )
+                    {
+                        strToken++;
+                    }
+                    else if ( *strToken == '{' )
+                    {
+                        strToken++;
+                    }
+                    else if ( *strToken == '}' )
+                    {
+                        strToken++;
+                    }
+                    else
+                    {
+                        bSkip   = false;
+                    }
+                }
+
+                //
+                if ( _strnicmp ( strToken, "0x", 2 ) == 0 )
+                {
+                    sscanf_s ( strToken + 2, "%x", &value );
+                }
+                else if ( _strnicmp ( strToken, "true", strlen("true") ) == 0 )
+                {
+                    value   = TRUE;
+                }
+                else if ( _strnicmp ( strToken, "false", strlen("false") ) == 0 )
+                {
+                    value   = FALSE;
+                }
+                else
+                {
+                    value   = atoi(strToken);
+                }
+
+                //
+                switch ( index )
+                {
+                    case 0 : indicators.bEnd    = (BOOL) value; break;
+                    case 1 : indicators.w1      = (WORD) value; break;
+                    case 2 : indicators.w2      = (WORD) value; break;
+                    case 3 : indicators.w3      = (WORD) value; break;
+                    case 4 : indicators.w4      = (WORD) value; break;
+                    case 5 : indicators.useW3   = (BOOL) value; break;
+                    case 6 : indicators.step    = value; break;
+                }
+
+                //      Get next token:
+                strToken = strtok_s( NULL, strDelimit, &context);
+                index++;
+            }
+
+            //
+            //  Add Entry
+            if ( line < maxTable )
+            {
+                IndicatorsTRTable [ line ] = indicators;
+
+                //
+                line++;
+            }
+        }
+    }
+    while ( ! feof ( hFile ) && ! ferror ( hFile ) );
+
+    //
+    //  Add End of entries
+    //
+    if ( line < maxTable )
+    {
+        TR123_INDICATORS indicators;
+        ZeroMemory ( &indicators, sizeof(indicators) );
+        indicators.bEnd     = TRUE;
+        indicators.w1       = 0xffff;
+        indicators.w2       = 0xffff;
+        indicators.w3       = 0xffff;
+        indicators.w4       = 0xffff;
+        indicators.step     = 0;
+        indicators.useW3    = TRUE;
+        strcpy_s ( indicators.szLabel, sizeof(indicators.szLabel), "End" );
+        IndicatorsTRTable [ line ] = indicators;
+    }
+
+    //
+    fclose ( hFile );
+
+    return FALSE;
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
+BOOL CTRSaveGame::WriteIndicators(TR123_INDICATORS *IndicatorsTRTable, const int maxTable, const char *pFilename)
+{
+    //
+    FILE *hFile = NULL;
+    fopen_s ( &hFile, pFilename, "w" );
+    if ( hFile == NULL )
+    {
+        return FALSE;
+    }
+
+    //
+    int index = 0;
+    do
+    {
+        fprintf_s ( hFile, "{ " );
+        TR123_INDICATORS indicator = IndicatorsTRTable [ index ];
+        if ( indicator.bEnd )
+        {
+            fprintf_s ( hFile, "TRUE, " );
+        }
+        else
+        {
+            fprintf_s ( hFile, "FALSE, " );
+        }
+
+        fprintf_s ( hFile, "0x%04x, ", indicator.w1 & 0xffff );
+        fprintf_s ( hFile, "0x%04x, ", indicator.w2 & 0xffff );
+        fprintf_s ( hFile, "0x%04x, ", indicator.w3 & 0xffff );
+        fprintf_s ( hFile, "0x%04x, ", indicator.w4 & 0xffff );
+
+        if ( indicator.useW3 )
+        {
+            fprintf_s ( hFile, "TRUE, " );
+        }
+        else
+        {
+            fprintf_s ( hFile, "FALSE, " );
+        }
+
+        fprintf_s ( hFile, "%d, ", indicator.step );
+        fprintf_s ( hFile, "\"%s\", ", indicator.szLabel );
+
+        fprintf_s ( hFile, "}\n" );
+
+        if ( indicator.bEnd )
+        {
+            break;
+        }
+
+        index++;
+    }
+    while ( index < maxTable );
+
+    fclose ( hFile );
+
+    return TRUE;
+}

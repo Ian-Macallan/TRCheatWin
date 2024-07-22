@@ -75,44 +75,52 @@ static char    TR4NBSecrets [ ] =
 /////////////////////////////////////////////////////////////////////////////
 TR45_INDICATORS IndicatorsTR4Table [ MAX_INDICATORS ] =
 {
-    {   FALSE,  0x02,   0x02,   0x00,   0x67,   TRUE },         //  Reliable
-    {   FALSE,  0x02,   0x02,   0x47,   0x67,   TRUE },         //  Reliable
+    {   FALSE,  0x02,   0x02,   0x00,   0x67,   TRUE,   0,  "Standing", },
+    {   FALSE,  0x02,   0x02,   0x47,   0x67,   TRUE,   0,  "Standing", },
 
-    {   FALSE,  0x02,   0x02,   0x00,   0x0b,   TRUE },
-    {   FALSE,  0x02,   0x02,   0x00,   0x0c,   TRUE },
-    {   FALSE,  0x02,   0x02,   0x00,   0x1f,   TRUE },
-    {   FALSE,  0x02,   0x02,   0x00,   0xbd,   TRUE },
-    {   FALSE,  0x02,   0x02,   0x00,   0xdd,   TRUE },
-    {   FALSE,  0x0d,   0x0d,   0x00,   0x6c,   TRUE },
-    {   FALSE,  0x0f,   0x0f,   0x00,   0x1f,   TRUE },         // Quad
-    {   FALSE,  0x12,   0x00,   0x00,   0x02,   TRUE },         // Flare
+    {   FALSE,  0x02,   0x02,   0x00,   0x0b,   TRUE,   0,  "", },
+    {   FALSE,  0x02,   0x02,   0x00,   0x0c,   TRUE,   0,  "", },
+    {   FALSE,  0x02,   0x02,   0x00,   0x1f,   TRUE,   0,  "", },
+    {   FALSE,  0x02,   0x02,   0x00,   0xbd,   TRUE,   0,  "", },
+    {   FALSE,  0x02,   0x02,   0x00,   0xdd,   TRUE,   0,  "", },
 
-    {   FALSE,  0x10,   0x00,   0x51,   0x51,   TRUE },         // Crawling
-    {   FALSE,  0x21,   0x21,   0x00,   0x6e,   TRUE },         // In Water
-    {   FALSE,  0x47,   0x47,   0x47,   0xde,   TRUE },         // Kneeling
-    {   FALSE,  0x57,   0x57,   0x47,   0x1f,   TRUE },
+    {   FALSE,  0x0d,   0x0d,   0x00,   0x6c,   TRUE,   0,  "Swimming", },
+    {   FALSE,  0x0d,   0x0d,   0x47,   0x6c,   TRUE,   0,  "Swimming", },
+
+    {   FALSE,  0x0f,   0x0f,   0x00,   0x1f,   TRUE,   0,  "Quad", },
+    {   FALSE,  0x12,   0x00,   0x00,   0x02,   TRUE,   0,  "Flare", },
+
+    {   FALSE,  0x10,   0x00,   0x51,   0x51,   TRUE,   0,  "Crawling", },
+    {   FALSE,  0x21,   0x21,   0x00,   0x6e,   TRUE,   0,  "In Water", },
+    {   FALSE,  0x47,   0x47,   0x47,   0xde,   TRUE,   0,  "Kneeling", },
+    {   FALSE,  0x57,   0x57,   0x47,   0x1f,   TRUE,   0,  "", },
 
     //
-    {   FALSE,  0x61,   0x61,   0x00,   0x44,   TRUE },
-    {   FALSE,  0x75,   0x10,   0x47,   0x9c,   TRUE },
-    {   FALSE,  0x21,   0x21,   0x47,   0x6e,   TRUE },
-    {   FALSE,  0x50,   0x50,   0x00,   0x07,   TRUE },
-    {   FALSE,  0x24,   0x24,   0x00,   0x7b,   TRUE },
-    {   FALSE,  0x24,   0x24,   0x47,   0x7b,   TRUE },
+    {   FALSE,  0x61,   0x61,   0x00,   0x44,   TRUE,   0,  "", },
+    {   FALSE,  0x75,   0x10,   0x47,   0x9c,   TRUE,   0,  "", },
+    {   FALSE,  0x21,   0x21,   0x47,   0x6e,   TRUE,   0,  "", },
+    {   FALSE,  0x50,   0x50,   0x00,   0x07,   TRUE,   0,  "", },
+    {   FALSE,  0x24,   0x24,   0x00,   0x7b,   TRUE,   0,  "", },
+    {   FALSE,  0x24,   0x24,   0x47,   0x7b,   TRUE,   0,  "", },
 
-    {   FALSE,  0x27,   0x10,   0x00,   0xa3,   TRUE },
-    {   FALSE,  0x27,   0x15,   0x00,   0xa3,   TRUE },
-    {   FALSE,  0x0f,   0x0f,   0x47,   0x1d,   TRUE },         // Bike
-    {   FALSE,  0x0f,   0x0f,   0x00,   0x1d,   TRUE },         // Bike
-    {   FALSE,  0x00,   0x00,   0x47,   0x23,   TRUE },         // Jeep
-    {   FALSE,  0x02,   0x02,   0x47,   0xdd,   TRUE }, 
-    {   FALSE,  0x02,   0x02,   0x47,   0x0b,   TRUE }, 
-    {   FALSE,  0x02,   0x02,   0x47,   0x1f,   TRUE },         // Mounting
-    {   FALSE,  0x13,   0x13,   0x47,   0x61,   TRUE }, 
-    {   FALSE,  0x13,   0x13,   0x00,   0x61,   TRUE }, 
-    {   FALSE,  0x19,   0x19,   0x00,   0x4b,   TRUE }, 
+    {   FALSE,  0x27,   0x10,   0x00,   0xa3,   TRUE,   0,  "", },
+    {   FALSE,  0x27,   0x15,   0x00,   0xa3,   TRUE,   0,  "", },
+    {   FALSE,  0x0f,   0x0f,   0x47,   0x1d,   TRUE,   0,  "Bike", },
+    {   FALSE,  0x0f,   0x0f,   0x00,   0x1d,   TRUE,   0,  "Bike", },
+    {   FALSE,  0x00,   0x00,   0x47,   0x23,   TRUE,   0,  "Jeep", },
+    {   FALSE,  0x02,   0x02,   0x47,   0xdd,   TRUE,   0,  "", }, 
+    {   FALSE,  0x02,   0x02,   0x47,   0x0b,   TRUE,   0,  "", }, 
+    {   FALSE,  0x02,   0x02,   0x47,   0x1f,   TRUE,   0,  "Climbing", },
+
+    {   FALSE,  0x13,   0x13,   0x47,   0x61,   TRUE,   0,  "", }, 
+    {   FALSE,  0x13,   0x13,   0x00,   0x61,   TRUE,   0,  "", }, 
+
+    {   FALSE,  0x19,   0x19,   0x00,   0x4b,   TRUE,   0,  "", }, 
+
+    {   FALSE,  0x01,   0x02,   0x47,   0x08,   TRUE,   0,  "", }, 
+
     //
-    {   TRUE,   0xff,   0xff,   0xff,   0xff,   TRUE },         // End
+    {   TRUE,   0xff,   0xff,   0xff,   0xff,   TRUE,   0,  "End", },
 };
 int IndicatorsTR4TableCount = sizeof(IndicatorsTR4Table)/sizeof(TR45_INDICATORS);
 
@@ -1694,6 +1702,9 @@ void *CTR4SaveGame::GetIndicatorAddress (int index)
     }
 
     //
+    ZeroMemory ( m_szIndicatorLabel, sizeof(m_szIndicatorLabel) );
+
+    //
     BYTE *pBuffer   = ( BYTE * ) m_pBuffer;
     int count       = 0;
     for ( int iBuffer = minOffset; iBuffer <= maxOffset; iBuffer++ )
@@ -1733,6 +1744,8 @@ void *CTR4SaveGame::GetIndicatorAddress (int index)
                 count++;
                 if ( count > index )
                 {
+                    strcpy_s ( m_szIndicatorLabel, sizeof(m_szIndicatorLabel), IndicatorsTR4Table [ indice ].szLabel );
+
                     return pBuffer + iBuffer;
                 }
             }
@@ -1980,6 +1993,9 @@ TR4_POSITION *CTR4SaveGame::GetTR4Position ( )
     //  The Goal is to see if there is a =atch with position for an index
     //  For example we could have an indicator but no position
     //  So we will look the next indicator
+    ZeroMemory ( m_szIndicatorLabel, sizeof(m_szIndicatorLabel) );
+
+    //
     for ( int index = 0; index < IndicatorsTR4TableCount; index++ )
     {
         if ( IndicatorsTR4Table [ index ].bEnd )
@@ -2032,6 +2048,10 @@ TR4_POSITION *CTR4SaveGame::GetTR4Position ( )
                 DWORD dwExtraVertical   = 0;
                 if ( CTRXGlobal::m_iExtendVertical )
                 {
+                    //  Low part is subracted from top
+                    //  High part is added to bottom
+                    //  Extending vertical range
+                    //  So y >= yTop - low && y <= yBottom + high
                     dwExtraVertical         = ( 0x0100 << 16 ) | 0x0100;
                     dwExtraVertical         = ( 0x0100 << 16 );
                 }
@@ -2062,6 +2082,9 @@ TR4_POSITION *CTR4SaveGame::GetTR4Position ( )
 
     //
     //  Search Extended
+    ZeroMemory ( m_szIndicatorLabel, sizeof(m_szIndicatorLabel) );
+
+    //
     if ( CTRXGlobal::m_iSearchPosExt )
     {
         char *pBuffer = ( char * ) m_pBuffer;
@@ -2118,6 +2141,10 @@ TR4_POSITION *CTR4SaveGame::GetTR4Position ( )
             DWORD dwExtraVertical   = 0;
             if ( CTRXGlobal::m_iExtendVertical )
             {
+                //  Low part is subracted from top
+                //  High part is added to bottom
+                //  Extending vertical range
+                //  So y >= yTop - low && y <= yBottom + high
                 dwExtraVertical         = ( 0x0100 << 16 ) | 0x0100;
                 dwExtraVertical         = ( 0x0100 << 16 );
             }
