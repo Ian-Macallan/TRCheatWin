@@ -321,6 +321,7 @@ void CTRXRemastered::DoDataExchange(CDataExchange* pDX)
     DDX_Control(pDX, IDC_SHOW_MAP, m_Show_Map);
     DDX_Control(pDX, IDC_FRAME_POSITION, m_Frame_Position);
     DDX_Control(pDX, IDC_SHELL, m_Shell);
+    DDX_Control(pDX, IDC_POS_LABEL, m_Position_Label);
 }
 
 //
@@ -4675,6 +4676,7 @@ void CTRXRemastered::ShowRoom()
         int block               = pInfoData->block;
         int slot                = pInfoData->slot;
         int slotFound           = -1;
+
         //
         TR9_POSITION *position = CTR9SaveGame::I(FALSE)->GetPositionAddress(tombraider, block);
         if ( position != NULL )
@@ -4689,6 +4691,9 @@ void CTRXRemastered::ShowRoom()
                 currentPosition.z               = position->dwSouthToNorth;
                 currentPosition.orientation     = position->wOrientation;
                 m_Room.SetAreaAndPosition ( pArea, &currentPosition );
+
+                m_Position_Label.SetWindowText( CTR9SaveGame::I()->getIndicatorLabel() );
+
                 //
                 RECT frameRect;
                 m_Frame_Position.GetClientRect ( &frameRect );
@@ -4736,6 +4741,9 @@ void CTRXRemastered::ShowRoom()
     }
 
     m_Room.ShowWindow ( SW_HIDE );
+
+    m_Position_Label.SetWindowText( "" );
+
 }
 
 //

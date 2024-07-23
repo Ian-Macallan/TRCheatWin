@@ -78,36 +78,39 @@ TR45_INDICATORS IndicatorsTR4NGTable [ MAX_INDICATORS ] =
     {   FALSE,  0x02,   0x02,   0x00,   0x67,   TRUE,   0,  "Standing", },
     {   FALSE,  0x02,   0x02,   0x47,   0x67,   TRUE,   0,  "Standing", },
 
-    {   FALSE,  0x02,   0x02,   0x00,   0x28,   TRUE,   0,  "", },
-    {   FALSE,  0x02,   0x02,   0x00,   0x0b,   TRUE,   0,  "", },
-    {   FALSE,  0x02,   0x02,   0x00,   0x0c,   TRUE,   0,  "", },
-    {   FALSE,  0x02,   0x02,   0x00,   0x1f,   TRUE,   0,  "", },
-    {   FALSE,  0x02,   0x02,   0x00,   0xbd,   TRUE,   0,  "", },
-    {   FALSE,  0x02,   0x02,   0x00,   0xdd,   TRUE,   0,  "", },
+    {   FALSE,  0x02,   0x02,   0x00,   0x28,   TRUE,   1,  "", },
+    {   FALSE,  0x02,   0x02,   0x00,   0x0b,   TRUE,   1,  "", },
+    {   FALSE,  0x02,   0x02,   0x00,   0x0c,   TRUE,   1,  "", },
+    {   FALSE,  0x02,   0x02,   0x00,   0x1f,   TRUE,   1,  "", },
+    {   FALSE,  0x02,   0x02,   0x00,   0xbd,   TRUE,   1,  "", },
+    {   FALSE,  0x02,   0x02,   0x00,   0xdd,   TRUE,   1,  "", },
 
-    {   FALSE,  0x0d,   0x0d,   0x00,   0x6c,   TRUE,   0,  "Swimming", },
-    {   FALSE,  0x0d,   0x0d,   0x47,   0x6c,   TRUE,   0,  "Swimming", },
+    {   FALSE,  0x0d,   0x0d,   0x00,   0x6c,   TRUE,   1,  "Swimming", },
+    {   FALSE,  0x0d,   0x0d,   0x47,   0x6c,   TRUE,   1,  "Swimming", },
 
-    {   FALSE,  0x0f,   0x0f,   0x00,   0x1f,   TRUE,   0,  "Quad", },
-    {   FALSE,  0x12,   0x00,   0x00,   0x02,   TRUE,   0,  "Flare", },
+    {   FALSE,  0x0f,   0x0f,   0x00,   0x1f,   TRUE,   1,  "Quad", },
+    {   FALSE,  0x12,   0x00,   0x00,   0x02,   TRUE,   1,  "Flare", },
 
-    {   FALSE,  0x47,   0x47,   0x47,   0xde,   TRUE,   0,  "Kneeling", },
-    {   FALSE,  0x10,   0x00,   0x51,   0x51,   TRUE,   0,  "Crawling", },
-    {   FALSE,  0x00,   0x02,   0x00,   0x02,   TRUE,   0,  "", },
-    {   FALSE,  0x00,   0x02,   0x00,   0x03,   TRUE,   0,  "", },
-    {   FALSE,  0x0c,   0x00,   0x00,   0x02,   TRUE,   0,  "", },
-    {   FALSE,  0x21,   0x21,   0x00,   0x6e,   TRUE,   0,  "In Water", },
+    {   FALSE,  0x47,   0x47,   0x47,   0xde,   TRUE,   1,  "Kneeling", },
+    {   FALSE,  0x10,   0x00,   0x51,   0x51,   TRUE,   1,  "Crawling", },
+    {   FALSE,  0x00,   0x02,   0x00,   0x02,   TRUE,   1,  "", },
+    {   FALSE,  0x00,   0x02,   0x00,   0x03,   TRUE,   1,  "", },
+    {   FALSE,  0x0c,   0x00,   0x00,   0x02,   TRUE,   1,  "", },
+    {   FALSE,  0x21,   0x21,   0x00,   0x6e,   TRUE,   1,  "In Water", },
 
-    {   FALSE,  0x13,   0x13,   0x47,   0x61,   TRUE,   0,  "", },
-    {   FALSE,  0x54,   0x50,   0x47,   0x0d,   TRUE,   0,  "", },
+    {   FALSE,  0x13,   0x13,   0x47,   0x61,   TRUE,   1,  "", },
+    {   FALSE,  0x54,   0x50,   0x47,   0x0d,   TRUE,   1,  "", },
 
-    {   FALSE,  0x02,   0x02,   0x00,   0x52,   TRUE,   0,  "", },
-    {   FALSE,  0x02,   0x02,   0x47,   0x0b,   TRUE,   0,  "", }, 
+    {   FALSE,  0x02,   0x02,   0x00,   0x52,   TRUE,   1,  "", },
+    {   FALSE,  0x02,   0x02,   0x47,   0x0b,   TRUE,   1,  "", }, 
 
-    {   FALSE,  0x02,   0x02,   0x47,   0xbd,   TRUE,   0,  "Dropping Flare", }, 
-    {   FALSE,  0x01,   0x02,   0x47,   0x08,   TRUE,   0,  "Standing", }, 
+    {   FALSE,  0x02,   0x02,   0x47,   0xbd,   TRUE,   1,  "Dropping Flare", }, 
+    {   FALSE,  0x01,   0x02,   0x47,   0x08,   TRUE,   1,  "Standing", }, 
 
-    {   FALSE,  0x21,   0x21,   0x47,   0x6e,   TRUE,   0,  "In Water", }, 
+    {   FALSE,  0x21,   0x21,   0x47,   0x6e,   TRUE,   1,  "In Water", }, 
+    {   FALSE,  0x0d,   0x12,   0x00,   0x6c,   TRUE,   1,  "Swiminng", }, 
+    {   FALSE,  0x12,   0x12,   0x00,   0x57,   TRUE,   1,  "Swiminng", }, 
+
     //
     {   TRUE,   0xff,   0xff,   0xff,   0xff,   TRUE,   0,  "End", },         // End
 };
@@ -2027,7 +2030,7 @@ TR4NG_POSITION *CTR4NGSaveGame::GetTR4Position ( )
                         "Indicators 0x%08x : 0x%02x 0x%02x 0x%02x 0x%02x R:%-3u V:%-5d SN:%-5d WE:%-5d D:%-3u H:%-6d\n", 
                         dwRelativeAddress, 
                         pTR4Position0->indicator1, pTR4Position0->indicator2, pTR4Position0->indicator3, pTR4Position0->indicator4, 
-                        pTR4Position->cRoom, pTR4Position->wVertical, pTR4Position->wSouthToNorth, pTR4Position->wWestToEast, pTR4Position->cOrientation,
+                        wRoom, dwVertical, dwSouthToNorth, dwWestToEast, pTR4Position->cOrientation,
                         life ); 
                     OutputDebugString ( szDebugString );
 #endif
@@ -2110,7 +2113,7 @@ TR4NG_POSITION *CTR4NGSaveGame::GetTR4Position ( )
                 static char szDebugString [ MAX_PATH ];
                 sprintf_s ( szDebugString, sizeof(szDebugString), "position 0x%08x : R:%-3u V:%-5d SN:%-5d WE:%-5d D:%-3u\n", 
                     dwRelativeAddress,
-                    pCurrent->cRoom, pCurrent->wVertical, pCurrent->wSouthToNorth, pCurrent->wWestToEast, pCurrent->cOrientation ); 
+                    wRoom, dwVertical, dwSouthToNorth, dwWestToEast, pCurrent->cOrientation ); 
                 OutputDebugString ( szDebugString );
 #endif
 

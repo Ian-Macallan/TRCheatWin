@@ -78,46 +78,46 @@ TR45_INDICATORS IndicatorsTR4Table [ MAX_INDICATORS ] =
     {   FALSE,  0x02,   0x02,   0x00,   0x67,   TRUE,   0,  "Standing", },
     {   FALSE,  0x02,   0x02,   0x47,   0x67,   TRUE,   0,  "Standing", },
 
-    {   FALSE,  0x02,   0x02,   0x00,   0x0b,   TRUE,   0,  "", },
-    {   FALSE,  0x02,   0x02,   0x00,   0x0c,   TRUE,   0,  "", },
-    {   FALSE,  0x02,   0x02,   0x00,   0x1f,   TRUE,   0,  "", },
-    {   FALSE,  0x02,   0x02,   0x00,   0xbd,   TRUE,   0,  "", },
-    {   FALSE,  0x02,   0x02,   0x00,   0xdd,   TRUE,   0,  "", },
+    {   FALSE,  0x02,   0x02,   0x00,   0x0b,   TRUE,   1,  "", },
+    {   FALSE,  0x02,   0x02,   0x00,   0x0c,   TRUE,   1,  "", },
+    {   FALSE,  0x02,   0x02,   0x00,   0x1f,   TRUE,   1,  "", },
+    {   FALSE,  0x02,   0x02,   0x00,   0xbd,   TRUE,   1,  "", },
+    {   FALSE,  0x02,   0x02,   0x00,   0xdd,   TRUE,   1,  "", },
 
-    {   FALSE,  0x0d,   0x0d,   0x00,   0x6c,   TRUE,   0,  "Swimming", },
-    {   FALSE,  0x0d,   0x0d,   0x47,   0x6c,   TRUE,   0,  "Swimming", },
+    {   FALSE,  0x0d,   0x0d,   0x00,   0x6c,   TRUE,   1,  "Swimming", },
+    {   FALSE,  0x0d,   0x0d,   0x47,   0x6c,   TRUE,   1,  "Swimming", },
 
-    {   FALSE,  0x0f,   0x0f,   0x00,   0x1f,   TRUE,   0,  "Quad", },
-    {   FALSE,  0x12,   0x00,   0x00,   0x02,   TRUE,   0,  "Flare", },
+    {   FALSE,  0x0f,   0x0f,   0x00,   0x1f,   TRUE,   1,  "Quad", },
+    {   FALSE,  0x12,   0x00,   0x00,   0x02,   TRUE,   1,  "Flare", },
 
-    {   FALSE,  0x10,   0x00,   0x51,   0x51,   TRUE,   0,  "Crawling", },
-    {   FALSE,  0x21,   0x21,   0x00,   0x6e,   TRUE,   0,  "In Water", },
-    {   FALSE,  0x47,   0x47,   0x47,   0xde,   TRUE,   0,  "Kneeling", },
-    {   FALSE,  0x57,   0x57,   0x47,   0x1f,   TRUE,   0,  "", },
+    {   FALSE,  0x10,   0x00,   0x51,   0x51,   TRUE,   1,  "Crawling", },
+    {   FALSE,  0x21,   0x21,   0x00,   0x6e,   TRUE,   1,  "In Water", },
+    {   FALSE,  0x47,   0x47,   0x47,   0xde,   TRUE,   1,  "Kneeling", },
+    {   FALSE,  0x57,   0x57,   0x47,   0x1f,   TRUE,   1,  "", },
 
     //
-    {   FALSE,  0x61,   0x61,   0x00,   0x44,   TRUE,   0,  "", },
-    {   FALSE,  0x75,   0x10,   0x47,   0x9c,   TRUE,   0,  "", },
-    {   FALSE,  0x21,   0x21,   0x47,   0x6e,   TRUE,   0,  "", },
-    {   FALSE,  0x50,   0x50,   0x00,   0x07,   TRUE,   0,  "", },
-    {   FALSE,  0x24,   0x24,   0x00,   0x7b,   TRUE,   0,  "", },
-    {   FALSE,  0x24,   0x24,   0x47,   0x7b,   TRUE,   0,  "", },
+    {   FALSE,  0x61,   0x61,   0x00,   0x44,   TRUE,   1,  "", },
+    {   FALSE,  0x75,   0x10,   0x47,   0x9c,   TRUE,   1,  "", },
+    {   FALSE,  0x21,   0x21,   0x47,   0x6e,   TRUE,   1,  "", },
+    {   FALSE,  0x50,   0x50,   0x00,   0x07,   TRUE,   1,  "", },
+    {   FALSE,  0x24,   0x24,   0x00,   0x7b,   TRUE,   1,  "", },
+    {   FALSE,  0x24,   0x24,   0x47,   0x7b,   TRUE,   1,  "", },
 
-    {   FALSE,  0x27,   0x10,   0x00,   0xa3,   TRUE,   0,  "", },
-    {   FALSE,  0x27,   0x15,   0x00,   0xa3,   TRUE,   0,  "", },
-    {   FALSE,  0x0f,   0x0f,   0x47,   0x1d,   TRUE,   0,  "Bike", },
-    {   FALSE,  0x0f,   0x0f,   0x00,   0x1d,   TRUE,   0,  "Bike", },
-    {   FALSE,  0x00,   0x00,   0x47,   0x23,   TRUE,   0,  "Jeep", },
-    {   FALSE,  0x02,   0x02,   0x47,   0xdd,   TRUE,   0,  "", }, 
-    {   FALSE,  0x02,   0x02,   0x47,   0x0b,   TRUE,   0,  "", }, 
-    {   FALSE,  0x02,   0x02,   0x47,   0x1f,   TRUE,   0,  "Climbing", },
+    {   FALSE,  0x27,   0x10,   0x00,   0xa3,   TRUE,   1,  "", },
+    {   FALSE,  0x27,   0x15,   0x00,   0xa3,   TRUE,   1,  "", },
+    {   FALSE,  0x0f,   0x0f,   0x47,   0x1d,   TRUE,   1,  "Bike", },
+    {   FALSE,  0x0f,   0x0f,   0x00,   0x1d,   TRUE,   1,  "Bike", },
+    {   FALSE,  0x00,   0x00,   0x47,   0x23,   TRUE,   1,  "Jeep", },
+    {   FALSE,  0x02,   0x02,   0x47,   0xdd,   TRUE,   1,  "", }, 
+    {   FALSE,  0x02,   0x02,   0x47,   0x0b,   TRUE,   1,  "", }, 
+    {   FALSE,  0x02,   0x02,   0x47,   0x1f,   TRUE,   1,  "Climbing", },
 
-    {   FALSE,  0x13,   0x13,   0x47,   0x61,   TRUE,   0,  "", }, 
-    {   FALSE,  0x13,   0x13,   0x00,   0x61,   TRUE,   0,  "", }, 
+    {   FALSE,  0x13,   0x13,   0x47,   0x61,   TRUE,   1,  "", }, 
+    {   FALSE,  0x13,   0x13,   0x00,   0x61,   TRUE,   1,  "", }, 
 
-    {   FALSE,  0x19,   0x19,   0x00,   0x4b,   TRUE,   0,  "", }, 
+    {   FALSE,  0x19,   0x19,   0x00,   0x4b,   TRUE,   1,  "", }, 
 
-    {   FALSE,  0x01,   0x02,   0x47,   0x08,   TRUE,   0,  "", }, 
+    {   FALSE,  0x01,   0x02,   0x47,   0x08,   TRUE,   1,  "", }, 
 
     //
     {   TRUE,   0xff,   0xff,   0xff,   0xff,   TRUE,   0,  "End", },
@@ -2068,7 +2068,7 @@ TR4_POSITION *CTR4SaveGame::GetTR4Position ( )
                         "Indicators 0x%08x : 0x%02x 0x%02x 0x%02x 0x%02x R:%-3u V:%-5d SN:%-5d WE:%-5d D:%-3u H:%-6d\n", 
                         dwRelativeAddress,
                         pTR4Position0->indicator1, pTR4Position0->indicator2, pTR4Position0->indicator3, pTR4Position0->indicator4, 
-                        pTR4Position->cRoom, pTR4Position->wVertical, pTR4Position->wSouthToNorth, pTR4Position->wWestToEast, pTR4Position->cOrientation,
+                        wRoom, dwVertical, dwSouthToNorth, dwWestToEast, pTR4Position->cOrientation,
                         life ); 
                     OutputDebugString ( szDebugString );
 #endif
@@ -2157,7 +2157,7 @@ TR4_POSITION *CTR4SaveGame::GetTR4Position ( )
                 static char szDebugString [ MAX_PATH ];
                 sprintf_s ( szDebugString, sizeof(szDebugString), "position 0x%08x : R:%-3u V:%-5d SN:%-5d WE:%-5d D:%-3u\n", 
                     dwRelativeAddress,
-                    pCurrent->cRoom, pCurrent->wVertical, pCurrent->wSouthToNorth, pCurrent->wWestToEast, pCurrent->cOrientation ); 
+                    wRoom, dwVertical, dwSouthToNorth, dwWestToEast, pCurrent->cOrientation ); 
                 OutputDebugString ( szDebugString );
 #endif
                 //

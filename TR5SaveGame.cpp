@@ -27,30 +27,30 @@ TR45_INDICATORS IndicatorsTR5Table [ MAX_INDICATORS ] =
     {   FALSE,  0x02,   0x02,   0x00,   0x67,   TRUE,   0,  "Standing", },
     {   FALSE,  0x02,   0x02,   0x47,   0x67,   TRUE,   0,  "Standing", },
 
-    {   FALSE,  0x02,   0x02,   0x00,   0x0b,   TRUE,   0,  "", },
-    {   FALSE,  0x02,   0x02,   0x00,   0x1f,   TRUE,   0,  "", },
-    {   FALSE,  0x0d,   0x0d,   0x00,   0x6c,   TRUE,   0,  "", },
-    {   FALSE,  0x0d,   0x12,   0x00,   0x6c,   TRUE,   0,  "", },
-    {   FALSE,  0x12,   0x12,   0x00,   0x57,   TRUE,   0,  "", },
-    {   FALSE,  0x13,   0x13,   0x47,   0xae,   TRUE,   0,  "", },
-    {   FALSE,  0x47,   0x47,   0x00,   0xde,   TRUE,   0,  "Crawling", },
-    {   FALSE,  0x50,   0x50,   0x00,   0x07,   TRUE,   0,  "", }, 
-    {   FALSE,  0x47,   0x57,   0x00,   0xde,   TRUE,   0,  "Crawling", },
-    {   FALSE,  0x02,   0x02,   0x00,   0x0b,   TRUE,   0,  "Jumping", },
-    {   FALSE,  0x09,   0x09,   0x00,   0x17,   TRUE,   0,  "Falling", },
-    {   FALSE,  0x01,   0x02,   0x00,   0x0a,   TRUE,   0,  "Running", },
+    {   FALSE,  0x02,   0x02,   0x00,   0x0b,   TRUE,   1,  "", },
+    {   FALSE,  0x02,   0x02,   0x00,   0x1f,   TRUE,   1,  "", },
+    {   FALSE,  0x0d,   0x0d,   0x00,   0x6c,   TRUE,   1,  "", },
+    {   FALSE,  0x0d,   0x12,   0x00,   0x6c,   TRUE,   1,  "", },
+    {   FALSE,  0x12,   0x12,   0x00,   0x57,   TRUE,   1,  "", },
+    {   FALSE,  0x13,   0x13,   0x47,   0xae,   TRUE,   1,  "", },
+    {   FALSE,  0x47,   0x47,   0x00,   0xde,   TRUE,   1,  "Crawling", },
+    {   FALSE,  0x50,   0x50,   0x00,   0x07,   TRUE,   1,  "", }, 
+    {   FALSE,  0x47,   0x57,   0x00,   0xde,   TRUE,   1,  "Crawling", },
+    {   FALSE,  0x02,   0x02,   0x00,   0x0b,   TRUE,   1,  "Jumping", },
+    {   FALSE,  0x09,   0x09,   0x00,   0x17,   TRUE,   1,  "Falling", },
+    {   FALSE,  0x01,   0x02,   0x00,   0x0a,   TRUE,   1,  "Running", },
     //
-    {   FALSE,  0x27,   0x10,   0x47,   0x87,   TRUE,   0,  "", },
-    {   FALSE,  0x59,   0x10,   0x47,   0xd2,   TRUE,   0,  "", },
-    {   FALSE,  0x59,   0x15,   0x47,   0xd1,   TRUE,   0,  "", },
-    {   FALSE,  0x28,   0x0b,   0x47,   0x9e,   TRUE,   0,  "", },
-    {   FALSE,  0x02,   0x36,   0x00,   0x0b,   TRUE,   0,  "", },
-    {   FALSE,  0x59,   0x16,   0x00,   0xd2,   TRUE,   0,  "", },
-    {   FALSE,  0x47,   0x57,   0x47,   0xde,   TRUE,   0,  "", },
+    {   FALSE,  0x27,   0x10,   0x47,   0x87,   TRUE,   1,  "", },
+    {   FALSE,  0x59,   0x10,   0x47,   0xd2,   TRUE,   1,  "", },
+    {   FALSE,  0x59,   0x15,   0x47,   0xd1,   TRUE,   1,  "", },
+    {   FALSE,  0x28,   0x0b,   0x47,   0x9e,   TRUE,   1,  "", },
+    {   FALSE,  0x02,   0x36,   0x00,   0x0b,   TRUE,   1,  "", },
+    {   FALSE,  0x59,   0x16,   0x00,   0xd2,   TRUE,   1,  "", },
+    {   FALSE,  0x47,   0x57,   0x47,   0xde,   TRUE,   1,  "", },
 
-    {   FALSE,  0x18,   0x18,   0x00,   0x46,   TRUE,   0,  "", },
-    {   FALSE,  0x27,   0x10,   0x47,   0xa9,   TRUE,   0,  "", },
-    {   FALSE,  0x59,   0x10,   0x47,   0xd8,   TRUE,   0,  "", },
+    {   FALSE,  0x18,   0x18,   0x00,   0x46,   TRUE,   1,  "", },
+    {   FALSE,  0x27,   0x10,   0x47,   0xa9,   TRUE,   1,  "", },
+    {   FALSE,  0x59,   0x10,   0x47,   0xd8,   TRUE,   1,  "", },
 
     //
     {   TRUE,   0xff,   0xff,   0xff,   0xff,   TRUE,   0,  "End", },
@@ -1918,7 +1918,7 @@ TR5_POSITION *CTR5SaveGame::GetTR5Position ( )
                         "Indicators 0x%08x : 0x%02x 0x%02x 0x%02x 0x%02x R:%-3u V:%-5d SN:%-5d WE:%-5d D:%-3u H:%-6d\n", 
                         dwRelativeAddress, 
                         pTR5Position0->indicator1, pTR5Position0->indicator2, pTR5Position0->indicator3, pTR5Position0->indicator4,
-                        pTR5Position->cRoom, pTR5Position->wVertical, pTR5Position->wSouthToNorth, pTR5Position->wWestToEast, pTR5Position->cOrientation,
+                        wRoom, dwVertical, dwSouthToNorth, dwWestToEast, pTR5Position->cOrientation,
                         life ); 
                     OutputDebugString ( szDebugString );
 #endif
@@ -1996,7 +1996,7 @@ TR5_POSITION *CTR5SaveGame::GetTR5Position ( )
                 static char szDebugString [ MAX_PATH ];
                 sprintf_s ( szDebugString, sizeof(szDebugString), "position 0x%08x : R:%-3u V:%-5d SN:%-5d WE:%-5d D:%-3u\n", 
                     dwRelativeAddress,
-                    pCurrent->cRoom, pCurrent->wVertical, pCurrent->wSouthToNorth, pCurrent->wWestToEast, pCurrent->cOrientation ); 
+                    wRoom, dwVertical, dwSouthToNorth, dwWestToEast, pCurrent->cOrientation ); 
                 OutputDebugString ( szDebugString );
 #endif
 

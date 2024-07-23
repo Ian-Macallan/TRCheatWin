@@ -630,6 +630,7 @@
 #define IDC_COPYPOS2                    1277
 #define IDC_BUTTON5                     1277
 #define IDC_LEVELS                      1277
+#define IDC_POS_LABEL                   1278
 #define ID_MENULIST_EXPORT              32771
 #define ID_MENULIST_IMPORT              32772
 #define ID_MENULIST_DELETE              32773
@@ -672,7 +673,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        298
 #define _APS_NEXT_COMMAND_VALUE         32832
-#define _APS_NEXT_CONTROL_VALUE         1278
+#define _APS_NEXT_CONTROL_VALUE         1279
 #define _APS_NEXT_SYMED_VALUE           126
 #endif
 #endif

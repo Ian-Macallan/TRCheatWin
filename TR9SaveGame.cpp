@@ -16,19 +16,20 @@ extern CTRXCHEATWINApp theApp;
 TRR_INDICATORS IndicatorsTRRTable [ MAX_INDICATORS ] =
 {
     {   FALSE,  0x02,   0x00,   0x02,   0,  "Standing", },
-    {   FALSE,  0x03,   0x00,   0x03,   0,  "Sliding forward", },  
-    {   FALSE,  0x0D,   0x00,   0x0D,   0,  "Underwater", },  
-    {   FALSE,  0x0D,   0x00,   0x12,   0,  "", },
-    {   FALSE,  0x12,   0x00,   0x12,   0,  "...", },
-    {   FALSE,  0x13,   0x00,   0x13,   0,  "Climbing", },
-    {   FALSE,  0x17,   0x00,   0x02,   0,  "Rolling", },
-    {   FALSE,  0x20,   0x00,   0x20,   0,  "Sliding backward", },
-    {   FALSE,  0x21,   0x00,   0x21,   0,  "On water", },
-    {   FALSE,  0x41,   0x00,   0x02,   0,  "Walking in water", },
-    {   FALSE,  0x41,   0x00,   0x41,   0,  "Walking in water", },
-    {   FALSE,  0x47,   0x00,   0x47,   0,  "Duck", },
-    {   FALSE,  0x57,   0x00,   0x57,   0,  "Climbing", },
-    {   FALSE,  0x5b,   0x00,   0x5b,   0,  "Climbing", },
+
+    {   FALSE,  0x03,   0x00,   0x03,   1,  "Sliding forward", },  
+    {   FALSE,  0x0D,   0x00,   0x0D,   1,  "Underwater", },  
+    {   FALSE,  0x0D,   0x00,   0x12,   1,  "Underwater", },
+    {   FALSE,  0x12,   0x00,   0x12,   1,  "Other", },
+    {   FALSE,  0x13,   0x00,   0x13,   1,  "Climbing", },
+    {   FALSE,  0x17,   0x00,   0x02,   1,  "Rolling", },
+    {   FALSE,  0x20,   0x00,   0x20,   1,  "Sliding backward", },
+    {   FALSE,  0x21,   0x00,   0x21,   1,  "On water", },
+    {   FALSE,  0x41,   0x00,   0x02,   1,  "Walking in water", },
+    {   FALSE,  0x41,   0x00,   0x41,   1,  "Walking in water", },
+    {   FALSE,  0x47,   0x00,   0x47,   1,  "Duck", },
+    {   FALSE,  0x57,   0x00,   0x57,   1,  "Climbing", },
+    {   FALSE,  0x5b,   0x00,   0x5b,   1,  "Climbing", },
 
     {   TRUE,   0xff,   0xff,   0xff,   0,  "End", },
 
@@ -910,7 +911,9 @@ void CTR9SaveGame::Init(bool bFromContructor)
 {
     m_hFile     = NULL;
     ZeroMemory ( m_szFilename, sizeof(m_szFilename) );
+    ZeroMemory ( m_szIndicatorLabel, sizeof(m_szIndicatorLabel) );
 
+    //
     for ( int b = 0; b < NB_TR1_BLOCKS; b++ )
     {
         m_TR1_Start [ b ]   = NULL;
@@ -2189,26 +2192,85 @@ const char *CTR9SaveGame::GetBlockDistance ( int tombraider, int block )
 /////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////
-bool CTR9SaveGame::IsKnown(char *position)
+bool CTR9SaveGame::isKnown(const char *position)
 {
     BYTE byte1 = *( position - 10 );
     BYTE byte2 = *( position - 9 );
     BYTE byte3 = *( position - 8 );
 
+#ifdef _DEBUG
+    static char szDebugString [ MAX_PATH ];
+    DWORD dwRelativeAddress = CTRXTools::RelativeAddress ( position, m_pBuffer );
+    sprintf_s ( szDebugString, sizeof(szDebugString), 
+        "Looking 0x%08x : 0x%02x 0x%02x 0x%02x\n", 
+        dwRelativeAddress, byte1 & 0xff, byte2 & 0xff, byte3 & 0xff );
+    OutputDebugString ( szDebugString );
+#endif
+
+    ZeroMemory ( m_szIndicatorLabel, sizeof(m_szIndicatorLabel) );
     for ( int i = 0; i < IndicatorsTRRTableCount; i++ )
     {
         if ( IndicatorsTRRTable [ i ].bEnd )
         {
-            return false;
+            break;
         }
 
         if ( byte1 == IndicatorsTRRTable [ i ].b1 && byte2 == IndicatorsTRRTable [ i ].b2 && byte3 == IndicatorsTRRTable [ i ].b3 )
         {
+            strcpy_s ( m_szIndicatorLabel, sizeof(m_szIndicatorLabel), IndicatorsTRRTable [ i ].szLabel );
+
             return true; 
         }
     }
 
     return false;
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
+const char *CTR9SaveGame::getPositionLabel(const char *position)
+{
+    BYTE byte1 = *( position - 10 );
+    BYTE byte2 = *( position - 9 );
+    BYTE byte3 = *( position - 8 );
+
+    ZeroMemory ( m_szIndicatorLabel, sizeof(m_szIndicatorLabel) );
+
+    for ( int i = 0; i < IndicatorsTRRTableCount; i++ )
+    {
+        if ( IndicatorsTRRTable [ i ].bEnd )
+        {
+            break;
+        }
+
+        if ( byte1 == IndicatorsTRRTable [ i ].b1 && byte2 == IndicatorsTRRTable [ i ].b2 && byte3 == IndicatorsTRRTable [ i ].b3 )
+        {
+            strcpy_s ( m_szIndicatorLabel, sizeof(m_szIndicatorLabel), IndicatorsTRRTable [ i ].szLabel );
+#ifdef _DEBUG
+            static char szDebugString [ MAX_PATH ];
+            DWORD dwRelativeAddress = CTRXTools::RelativeAddress ( position, m_pBuffer );
+            sprintf_s ( szDebugString, sizeof(szDebugString), 
+                "Indicators 0x%08x : 0x%02x 0x%02x 0x%02x Found\n", 
+                dwRelativeAddress, byte1 & 0xff, byte2 & 0xff, byte3 & 0xff );
+            OutputDebugString ( szDebugString );
+#endif
+            return m_szIndicatorLabel; 
+        }
+    }
+
+//
+#ifdef _DEBUG
+    static char szDebugString [ MAX_PATH ];
+    DWORD dwRelativeAddress = CTRXTools::RelativeAddress ( position, m_pBuffer );
+    sprintf_s ( szDebugString, sizeof(szDebugString), 
+        "Indicators 0x%08x : 0x%02x 0x%02x 0x%02x Not Found\n", 
+        dwRelativeAddress, byte1 & 0xff, byte2 & 0xff, byte3 & 0xff );
+    OutputDebugString ( szDebugString );
+#endif
+
+    return m_szIndicatorLabel;
 }
 
 //
@@ -2285,6 +2347,7 @@ WORD *CTR9SaveGame::GetRealHealthAddress ( int tombraider, int block )
         char *position  = pStart - iSubtract + pRanges [ level ].minOffset;
         if ( *position != 0 )
         {
+            getPositionLabel ( position );
             return ( WORD * ) position;
         }
     }
@@ -2298,11 +2361,16 @@ WORD *CTR9SaveGame::GetRealHealthAddress ( int tombraider, int block )
         WORD *pHealth = (WORD *)position;
         if ( *pHealth == 1000 )
         {
+            getPositionLabel ( position );
+            if ( strlen(m_szIndicatorLabel) == 0 )
+            {
+                strcpy_s ( m_szIndicatorLabel, sizeof(m_szIndicatorLabel), "Full Health" );
+            }
             return pHealth;
         }
 
         // printf ( "%lx ", relative );
-        if ( IsKnown ( position ) )
+        if ( isKnown ( position ) )
         {
             pHealth = ( WORD * ) position;
             if ( *pHealth > 0 )

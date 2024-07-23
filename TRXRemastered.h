@@ -170,6 +170,8 @@ class CTRXRemastered : public CTRXPropertyPage123
         CTRXStaticBase m_Frame_Position;
         CTRXButtonBase m_Shell;
 
+        CTRXStaticBase m_Position_Label;
+
         //
         afx_msg void OnBnClickedLoad();
         afx_msg void OnBnClickedWrite();

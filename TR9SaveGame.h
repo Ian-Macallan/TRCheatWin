@@ -623,8 +623,9 @@ class CTR9SaveGame : public CObject
         //  Guns is the reference for gun and ammos
         static GUN_TR3 *m_TR3_Guns [ NB_TR3_BLOCKS ] [ NB_OF_SLOTS ];
 
-        FILE *m_hFile;
-        char m_szFilename [ MAX_PATH ];
+        FILE    *m_hFile;
+        char    m_szFilename [ MAX_PATH ];
+        char    m_szIndicatorLabel [ 32 ];
 
     protected :
         static  char    *m_pBuffer;
@@ -695,7 +696,13 @@ class CTR9SaveGame : public CObject
         WORD *GetSaveAddress ( int tombraider, int block );
 
         //
-        bool IsKnown(char *position);
+        bool isKnown(const char *position);
+        const char *getPositionLabel(const char *position);
+        const char *getIndicatorLabel()
+        {
+            return m_szIndicatorLabel;
+        };
+
         WORD *GetRealHealthAddress ( int tombraider, int block );
 
         //
