@@ -191,6 +191,9 @@
 #define IDI_COPY_BLACK                  296
 #define IDR_MENU1                       297
 #define IDR_DLGMENU1                    298
+#define IDI_ICON4                       298
+#define IDI_SEARCH_BLACK                298
+#define IDI_SEARCH_WHITE                299
 #define IDC_DESERTEAGLE                 1001
 #define IDC_ITEM_02                     1002
 #define IDC_CROWBAR                     1002
@@ -671,7 +674,7 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        298
+#define _APS_NEXT_RESOURCE_VALUE        300
 #define _APS_NEXT_COMMAND_VALUE         32832
 #define _APS_NEXT_CONTROL_VALUE         1279
 #define _APS_NEXT_SYMED_VALUE           126

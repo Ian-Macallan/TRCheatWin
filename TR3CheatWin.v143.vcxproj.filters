@@ -916,6 +916,12 @@
     <Image Include="res\CopyBlack.ico">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="res\SearchBlack.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\SearchWhite.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <Text Include="res\HelpText.txt" />

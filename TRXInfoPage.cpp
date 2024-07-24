@@ -2171,11 +2171,13 @@ BOOL CTRXInfoPage::OnInitDialog()
     {
         m_CopyPosition.SetIconResource ( IDI_COPY );
         m_PastePosition.SetIconResource ( IDI_PASTE );
+        m_See_Custom.SetIconResource ( IDI_SEARCH_BLACK );
     }
     else
     {
         m_CopyPosition.SetIconResource ( IDI_COPY_BLACK );
         m_PastePosition.SetIconResource ( IDI_PASTE_BLACK );
+        m_See_Custom.SetIconResource ( IDI_SEARCH_WHITE );
     }
 
     //
@@ -3201,11 +3203,13 @@ void CTRXInfoPage::SetThemeChanged ( bool bDarkTheme )
         {
             m_CopyPosition.SetIconResource ( IDI_COPY );
             m_PastePosition.SetIconResource ( IDI_PASTE );
+            m_See_Custom.SetIconResource ( IDI_SEARCH_BLACK );
         }
         else
         {
             m_CopyPosition.SetIconResource ( IDI_COPY_BLACK );
             m_PastePosition.SetIconResource ( IDI_PASTE_BLACK );
+            m_See_Custom.SetIconResource ( IDI_SEARCH_WHITE );
         }
     }
 

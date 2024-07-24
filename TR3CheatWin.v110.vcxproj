@@ -615,6 +615,8 @@
     <Image Include="res\Paste.ico" />
     <Image Include="res\PasteBlack.ico" />
     <Image Include="res\revolver.bmp" />
+    <Image Include="res\SearchBlack.ico" />
+    <Image Include="res\SearchWhite.ico" />
     <Image Include="res\Windowed.ico" />
   </ItemGroup>
   <ItemGroup>

@@ -711,8 +711,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 4,2,12,007
- PRODUCTVERSION 4,2,12,007
+ FILEVERSION 4,2,12,008
+ PRODUCTVERSION 4,2,12,008
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x29L
@@ -730,15 +730,15 @@ BEGIN
             VALUE "Comments", "mailto:ian.macallan@gmail.com\0"
             VALUE "CompanyName", "Macallan (c)\0"
             VALUE "FileDescription", "TRCheatWin - (MSVC)\0"
-            VALUE "FileVersion", "4.2.12.007\0"
+            VALUE "FileVersion", "4.2.12.008\0"
             VALUE "InternalName", "https://www.macallan.org/\0"
-            VALUE "LegalCopyright", "Copyright (C) Tue Jul 23 15:02, 2024\0"
+            VALUE "LegalCopyright", "Copyright (C) Wed Jul 24 09:29, 2024\0"
             VALUE "LegalTrademarks", "Author: Ian Macallan\0"
             VALUE "OriginalFilename", ORIGINAL_FILENAME
-            VALUE "PrivateBuild", "960\0"
+            VALUE "PrivateBuild", "961\0"
             VALUE "ProductName", PRODUCT_NAME
-            VALUE "ProductVersion", "4.2.12.007\0"
-            VALUE "SpecialBuild", "960\0"
+            VALUE "ProductVersion", "4.2.12.008\0"
+            VALUE "SpecialBuild", "961\0"
         END
     END
     BLOCK "VarFileInfo"
@@ -1031,6 +1031,8 @@ IDI_COPY                ICON                    "res\\Copy.ico"
 IDI_PASTE               ICON                    "res\\Paste.ico"
 IDI_PASTE_BLACK         ICON                    "res\\PasteBlack.ico"
 IDI_COPY_BLACK          ICON                    "res\\CopyBlack.ico"
+IDI_SEARCH_BLACK        ICON                    "res\\SearchBlack.ico"
+IDI_SEARCH_WHITE        ICON                    "res\\SearchWhite.ico"
 
 /////////////////////////////////////////////////////////////////////////////
 //
