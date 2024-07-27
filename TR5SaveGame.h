@@ -193,19 +193,19 @@ struct          TR5Save
 
         struct
         {
+            char                    cFiller1B [ 0x70 ];
+
+            WORD                    iAir;
+        };
+
+        struct
+        {
             char                    cFiller1A [ 0x9E ];
 
             //      0x9e
             //      0x04    = normal
             //      0x0c    = burning
             BYTE                    laraState;
-        };
-
-        struct
-        {
-            char                    cFiller1B [ 0x70 ];
-
-            WORD                    iAir;
         };
 
         struct
@@ -231,15 +231,6 @@ struct          TR5Save
             //      0x1ec
             BYTE                    m_cLevel;
             BYTE                    m_cSub;
-        };
-
-        //  Health is variable even inside a level
-        struct
-        {
-
-            char                    cFiller3b [ 0x4f4 ];
-            //      
-            WORD                    m_iHealth;
         };
 
         // No checksum for TR V
@@ -600,6 +591,11 @@ class CTR5SaveGame : public CTR45SaveGame
         TR5_POSITION *GetTR5Position ( );
         const TR_POSITION *GetPosition ( );
         BOOL SetPosition ( DWORD dwWestToEast, DWORD dwVertical, DWORD dwSouthToNorth, WORD wDirection, WORD wRoom );
+
+        static const char *GetIndicatorFileType()
+        {
+            return ".tr5.txt";
+        }
 
     // Generated message map functions
 };

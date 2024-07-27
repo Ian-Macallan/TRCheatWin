@@ -211,11 +211,18 @@ struct          TR4NGSave
     {
         struct
         {
-            char                    szSavename [ 24 ];
-            char                    cFiller1 [ 51 ];
+            char                    szSavename [ 24 ];  //  0x18
+            char                    cFiller1 [ 51 ];    //  0x33
 
             //  0x4b / 0x4c
-            WORD                    iSaveNumber;
+            WORD                    iSaveNumber;        //  0x48
+        };
+
+        struct
+        {
+            char                    cFiller1B [ 0x6d ];
+
+            WORD                    iAir;
         };
 
         struct
@@ -230,17 +237,10 @@ struct          TR4NGSave
 
         struct
         {
-            char                    cFiller1B [ 0x6d ];
-
-            WORD                    iAir;
-        };
-
-        struct
-        {
             char                    cFiller2 [ 0x169 ];
 
             //      0x169
-            TR4NGGUN                    tagGuns;
+            TR4NGGUN                tagGuns;
         };
 
         struct
@@ -248,7 +248,7 @@ struct          TR4NGSave
             char                    cFiller3 [ 0x190 ];
 
             //      0x194
-            TR4NGAMMO                   tagAmmo;
+            TR4NGAMMO               tagAmmo;
         };
 
         struct
@@ -262,29 +262,6 @@ struct          TR4NGSave
         //   0x1e8  : statistics timing ...
         //  000001ED distance
 
-
-        //
-        struct
-        {
-            char                    cFiller3c [ 0x1ea];
-
-            //      0x1e9
-            WORD                    m_iNotTheHealth;
-        };
-
-        struct
-        {
-            char                    cFiller3d [ 0x1e8 ];
-            DWORD                   dwWestToEast;
-            DWORD                   dwVertical;
-            DWORD                   dwSouthToNorth;
-        };
-
-        struct
-        {
-            char                    cFiller4a [ 0xfb];
-            WORD                    m_iOrientation;
-        };
 
         // 0x3e51 une sorte de checksum
         struct
@@ -595,6 +572,11 @@ class CTR4NGSaveGame : public CTR45SaveGame
         const TR_POSITION *GetPosition ( );
         TR4NG_POSITION *GetTR4Position ( );
         BOOL SetPosition ( DWORD dwWestToEast, DWORD dwVertical, DWORD dwSouthToNorth, WORD wDirection, WORD wRoom );
+
+        static const char *GetIndicatorFileType()
+        {
+            return ".tr4ng.txt";
+        }
 
     // Generated message map functions
 };

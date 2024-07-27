@@ -194,6 +194,15 @@
 #define IDI_ICON4                       298
 #define IDI_SEARCH_BLACK                298
 #define IDI_SEARCH_WHITE                299
+#define IDI_SORT_WHITE                  300
+#define IDI_SORT_BLACK                  301
+#define IDI_LOAD_BLACK                  302
+#define IDI_LOAD_WHITE                  303
+#define IDI_SAVE_BLACK                  304
+#define IDI_SAVE_WHITE                  305
+#define IDI_REFRESH_BLACK               306
+#define IDI_ICON6                       307
+#define IDI_REFRESH_WHITE               307
 #define IDC_DESERTEAGLE                 1001
 #define IDC_ITEM_02                     1002
 #define IDC_CROWBAR                     1002
@@ -674,7 +683,7 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        300
+#define _APS_NEXT_RESOURCE_VALUE        308
 #define _APS_NEXT_COMMAND_VALUE         32832
 #define _APS_NEXT_CONTROL_VALUE         1279
 #define _APS_NEXT_SYMED_VALUE           126

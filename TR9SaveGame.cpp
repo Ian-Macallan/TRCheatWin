@@ -9433,18 +9433,18 @@ void CTR9SaveGame::SetRocket ( int tombraider, int block, int slot, BOOL bEnable
 /////////////////////////////////////////////////////////////////////////////
 //  { FALSE,  0x02,   0x02,   0x00,   0x67,   TRUE }
 /////////////////////////////////////////////////////////////////////////////
-BOOL CTR9SaveGame::ReadIndicators(TRR_INDICATORS *IndicatorsTRTable, const int maxTable, const char *pFilename)
+int CTR9SaveGame::ReadIndicators(TRR_INDICATORS *IndicatorsTRTable, const int maxTable, const char *pFilename)
 {
     if ( ! PathFileExists(pFilename) )
     {
-        return FALSE;
+        return 0;
     }
 
     FILE *hFile = NULL;
     fopen_s ( &hFile, pFilename, "r" );
     if ( hFile == NULL )
     {
-        return FALSE;
+        return 0;
     }
 
     //
@@ -9452,6 +9452,7 @@ BOOL CTR9SaveGame::ReadIndicators(TRR_INDICATORS *IndicatorsTRTable, const int m
     static char szLine [ MAX_PATH ];
 
     //
+    int count = 0;
     do
     {
         ZeroMemory ( szLine, sizeof(szLine) );
@@ -9569,6 +9570,8 @@ BOOL CTR9SaveGame::ReadIndicators(TRR_INDICATORS *IndicatorsTRTable, const int m
 
                 //
                 line++;
+
+                count++;
             }
         }
     }
@@ -9593,7 +9596,7 @@ BOOL CTR9SaveGame::ReadIndicators(TRR_INDICATORS *IndicatorsTRTable, const int m
     //
     fclose ( hFile );
 
-    return FALSE;
+    return count;
 }
 
 //

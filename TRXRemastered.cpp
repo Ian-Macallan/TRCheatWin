@@ -28,6 +28,8 @@
 #include "TRXEquipmentPage.h"   // Added by ClassView
 #include "TRXPropertySheet.h"
 
+#include "TRXColors.h"
+
 //
 /////////////////////////////////////////////////////////////////////////////
 // Boîte de dialogue CTRXRemastered
@@ -630,6 +632,19 @@ BOOL CTRXRemastered::OnInitDialog()
     m_Recurse.SetCheck ( RecurseWrite );
 
     m_Update.SetCheck ( TRUE );
+
+    if ( CTRXColors::m_iDarkTheme != 0 )
+    {
+        m_Load.SetIconResource ( IDI_LOAD_BLACK );
+        m_Write.SetIconResource ( IDI_SAVE_BLACK );
+        m_Refresh.SetIconResource ( IDI_REFRESH_BLACK );
+    }
+    else
+    {
+        m_Load.SetIconResource ( IDI_LOAD_WHITE );
+        m_Write.SetIconResource ( IDI_SAVE_WHITE );
+        m_Refresh.SetIconResource ( IDI_REFRESH_WHITE );
+    }
 
     m_bInitDone = true;
 
@@ -5335,6 +5350,18 @@ void CTRXRemastered::SetThemeChanged ( bool bDarkTheme )
     if ( m_bInitDone )
     {
         //
+        if ( CTRXColors::m_iDarkTheme != 0 )
+        {
+            m_Load.SetIconResource ( IDI_LOAD_BLACK );
+            m_Write.SetIconResource ( IDI_SAVE_BLACK );
+            m_Refresh.SetIconResource ( IDI_REFRESH_BLACK );
+        }
+        else
+        {
+            m_Load.SetIconResource ( IDI_LOAD_WHITE );
+            m_Write.SetIconResource ( IDI_SAVE_WHITE );
+            m_Refresh.SetIconResource ( IDI_REFRESH_WHITE );
+        }
     }
 
     CTRXPropertyPage123::SetThemeChanged ( bDarkTheme );

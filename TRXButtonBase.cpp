@@ -122,11 +122,11 @@ void CTRXButtonBase::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct )
 
         // Draw the button text using the text color white.
         COLORREF crOldColor;
-        if ( lpDrawItemStruct->itemState & ODS_DISABLED )
+        if ( ( lpDrawItemStruct->itemState & ODS_DISABLED ) != 0 )
         {
             crOldColor = pDC->SetTextColor ( CTRXColors::GetFGDisabledCR( CTRXColors::m_iDarkTheme != 0 ) );
         }
-        else if ( lpDrawItemStruct->itemState & ODS_FOCUS )
+        else if ( ( lpDrawItemStruct->itemState & ODS_FOCUS ) != 0 )
         {
             crOldColor = pDC->SetTextColor ( CTRXColors::GetFGSelectedCR( CTRXColors::m_iDarkTheme != 0 ) );
         }
@@ -135,7 +135,7 @@ void CTRXButtonBase::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct )
             crOldColor = pDC->SetTextColor ( CTRXColors::GetFGNormalCR( CTRXColors::m_iDarkTheme != 0 ) );
         }
 
-        if ( m_IconResource != 0 )
+        if ( m_IconResource != 0 && ( lpDrawItemStruct->itemState & ODS_DISABLED ) == 0 )
         {
             int xIconSmall  = GetSystemMetrics(SM_CXSMICON);
             int yIconSmall  = GetSystemMetrics(SM_CYSMICON);

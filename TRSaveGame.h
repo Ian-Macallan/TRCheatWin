@@ -705,7 +705,16 @@ class CTRSaveGame  : public CObject
 
         static int InstanciateVersion ( const char *szFilename );
 
-        static BOOL ReadIndicators( TR123_INDICATORS *IndicatorsTRTable, const int maxTable, const char *pFilename );
+        static const char *GetIndicatorFileType1()
+        {
+            return ".tr123-1.txt";
+        }
+        static const char *GetIndicatorFileType2()
+        {
+            return ".tr123-2.txt";
+        }
+
+        static int ReadIndicators( TR123_INDICATORS *IndicatorsTRTable, const int maxTable, const char *pFilename );
         static BOOL WriteIndicators( TR123_INDICATORS *IndicatorsTRTable, const int maxTable, const char *pFilename );
 
         // Generated message map functions

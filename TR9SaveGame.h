@@ -913,8 +913,13 @@ class CTR9SaveGame : public CObject
         static const char *GetLevelName ( int tombraider, int level );
         static int GetLevelCount ( int tombraider );
 
-        static BOOL ReadIndicators( TRR_INDICATORS *IndicatorsTRTable, const int maxTable, const char *pFilename );
+        static const char *GetIndicatorFileType()
+        {
+            return ".trr.txt";
+        }
+        static int ReadIndicators( TRR_INDICATORS *IndicatorsTRTable, const int maxTable, const char *pFilename );
         static BOOL WriteIndicators( TRR_INDICATORS *IndicatorsTRTable, const int maxTable, const char *pFilename );
+
 
 };
 

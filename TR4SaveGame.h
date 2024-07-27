@@ -264,29 +264,6 @@ struct          TR4Save
         //  000001ED distance
 
 
-        //
-        struct
-        {
-            char                    cFiller3c [ 0x1ea];
-
-            //      0x1e9
-            WORD                    m_iNotTheHealth;
-        };
-
-        struct
-        {
-            char                    cFiller3d [ 0x1e8 ];
-            DWORD                   dwWestToEast;
-            DWORD                   dwVertical;
-            DWORD                   dwSouthToNorth;
-        };
-
-        struct
-        {
-            char                    cFiller4a [ 0xfb];
-            WORD                    m_iOrientation;
-        };
-
         // 0x3e51 une sorte de checksum
         struct
         {
@@ -594,6 +571,11 @@ class CTR4SaveGame : public CTR45SaveGame
         const TR_POSITION *GetPosition ( );
         TR4_POSITION *GetTR4Position ( );
         BOOL SetPosition ( DWORD dwWestToEast, DWORD dwVertical, DWORD dwSouthToNorth, WORD wDirection, WORD wRoom );
+
+        static const char *GetIndicatorFileType()
+        {
+            return ".tr4.txt";
+        }
 
     // Generated message map functions
 };

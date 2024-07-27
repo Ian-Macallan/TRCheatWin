@@ -2172,12 +2172,20 @@ BOOL CTRXInfoPage::OnInitDialog()
         m_CopyPosition.SetIconResource ( IDI_COPY );
         m_PastePosition.SetIconResource ( IDI_PASTE );
         m_See_Custom.SetIconResource ( IDI_SEARCH_BLACK );
+        m_Sort.SetIconResource ( IDI_SORT_BLACK );
+        m_LoadDirectory.SetIconResource ( IDI_LOAD_BLACK );
+        m_Write.SetIconResource ( IDI_SAVE_BLACK );
+        m_Refresh.SetIconResource ( IDI_REFRESH_BLACK );
     }
     else
     {
         m_CopyPosition.SetIconResource ( IDI_COPY_BLACK );
         m_PastePosition.SetIconResource ( IDI_PASTE_BLACK );
         m_See_Custom.SetIconResource ( IDI_SEARCH_WHITE );
+        m_Sort.SetIconResource ( IDI_SORT_WHITE );
+        m_LoadDirectory.SetIconResource ( IDI_LOAD_WHITE );
+        m_Write.SetIconResource ( IDI_SAVE_WHITE );
+        m_Refresh.SetIconResource ( IDI_REFRESH_WHITE );
     }
 
     //
@@ -3204,12 +3212,20 @@ void CTRXInfoPage::SetThemeChanged ( bool bDarkTheme )
             m_CopyPosition.SetIconResource ( IDI_COPY );
             m_PastePosition.SetIconResource ( IDI_PASTE );
             m_See_Custom.SetIconResource ( IDI_SEARCH_BLACK );
+            m_Sort.SetIconResource ( IDI_SORT_BLACK );
+            m_LoadDirectory.SetIconResource ( IDI_LOAD_BLACK );
+            m_Write.SetIconResource ( IDI_SAVE_BLACK );
+            m_Refresh.SetIconResource ( IDI_REFRESH_BLACK );
         }
         else
         {
             m_CopyPosition.SetIconResource ( IDI_COPY_BLACK );
             m_PastePosition.SetIconResource ( IDI_PASTE_BLACK );
             m_See_Custom.SetIconResource ( IDI_SEARCH_WHITE );
+            m_Sort.SetIconResource ( IDI_SORT_WHITE );
+            m_LoadDirectory.SetIconResource ( IDI_LOAD_WHITE );
+            m_Write.SetIconResource ( IDI_SAVE_WHITE );
+            m_Refresh.SetIconResource ( IDI_REFRESH_WHITE );
         }
     }
 

@@ -610,13 +610,21 @@
     <Image Include="res\HK.bmp" />
     <Image Include="res\Last.Revelation.0.bmp" />
     <Image Include="res\Last.Revelation.1.bmp" />
+    <Image Include="res\LoadBlack.ico" />
+    <Image Include="res\LoadWhite.ico" />
     <Image Include="res\Maximize.ico" />
     <Image Include="res\Mininize.ico" />
     <Image Include="res\Paste.ico" />
     <Image Include="res\PasteBlack.ico" />
+    <Image Include="res\RefreshBlack.ico" />
+    <Image Include="res\RefreshWhite.ico" />
     <Image Include="res\revolver.bmp" />
+    <Image Include="res\SaveBlack.ico" />
+    <Image Include="res\SaveWhite.ico" />
     <Image Include="res\SearchBlack.ico" />
     <Image Include="res\SearchWhite.ico" />
+    <Image Include="res\SortBlack.ico" />
+    <Image Include="res\SortWhite.ico" />
     <Image Include="res\Windowed.ico" />
   </ItemGroup>
   <ItemGroup>

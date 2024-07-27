@@ -922,6 +922,30 @@
     <Image Include="res\SearchWhite.ico">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="res\SortWhite.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\SortBlack.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\LoadBlack.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\LoadWhite.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\SaveBlack.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\SaveWhite.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\RefreshBlack.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\RefreshWhite.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <Text Include="res\HelpText.txt" />

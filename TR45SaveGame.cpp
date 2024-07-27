@@ -28,18 +28,18 @@ CTR45SaveGame::~CTR45SaveGame(void)
 /////////////////////////////////////////////////////////////////////////////
 //  { FALSE,  0x02,   0x02,   0x00,   0x67,   TRUE }
 /////////////////////////////////////////////////////////////////////////////
-BOOL CTR45SaveGame::ReadIndicators(TR45_INDICATORS *IndicatorsTRTable, const int maxTable, const char *pFilename)
+int CTR45SaveGame::ReadIndicators(TR45_INDICATORS *IndicatorsTRTable, const int maxTable, const char *pFilename)
 {
     if ( ! PathFileExists(pFilename) )
     {
-        return FALSE;
+        return 0;
     }
 
     FILE *hFile = NULL;
     fopen_s ( &hFile, pFilename, "r" );
     if ( hFile == NULL )
     {
-        return FALSE;
+        return 0;
     }
 
     //
@@ -47,6 +47,7 @@ BOOL CTR45SaveGame::ReadIndicators(TR45_INDICATORS *IndicatorsTRTable, const int
     static char szLine [ MAX_PATH ];
 
     //
+    int count = 0;
     do
     {
         ZeroMemory ( szLine, sizeof(szLine) );
@@ -166,6 +167,8 @@ BOOL CTR45SaveGame::ReadIndicators(TR45_INDICATORS *IndicatorsTRTable, const int
 
                 //
                 line++;
+
+                count++;
             }
         }
     }
@@ -192,7 +195,7 @@ BOOL CTR45SaveGame::ReadIndicators(TR45_INDICATORS *IndicatorsTRTable, const int
     //
     fclose ( hFile );
 
-    return FALSE;
+    return count;
 }
 
 //

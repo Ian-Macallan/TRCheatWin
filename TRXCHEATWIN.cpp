@@ -402,37 +402,37 @@ void CTRXCHEATWINApp::ReadIndicators()
     //
     strcpy_s ( szIndicatorsFilename, sizeof(szIndicatorsFilename), InitFileName );
     RemoveFileType ( szIndicatorsFilename );
-    strcat_s ( szIndicatorsFilename, sizeof(szIndicatorsFilename), ".tr123-1.txt" );
+    strcat_s ( szIndicatorsFilename, sizeof(szIndicatorsFilename), CTRSaveGame::GetIndicatorFileType1() );
     CTRSaveGame::ReadIndicators ( IndicatorsTR123Table1, IndicatorsTR123Table1Count, szIndicatorsFilename );
 
     //
     strcpy_s ( szIndicatorsFilename, sizeof(szIndicatorsFilename), InitFileName );
     RemoveFileType ( szIndicatorsFilename );
-    strcat_s ( szIndicatorsFilename, sizeof(szIndicatorsFilename), ".tr123-2.txt" );
+    strcat_s ( szIndicatorsFilename, sizeof(szIndicatorsFilename), CTRSaveGame::GetIndicatorFileType2() );
     CTRSaveGame::ReadIndicators ( IndicatorsTR123Table2, IndicatorsTR123Table2Count, szIndicatorsFilename );
 
     //
     strcpy_s ( szIndicatorsFilename, sizeof(szIndicatorsFilename), InitFileName );
     RemoveFileType ( szIndicatorsFilename );
-    strcat_s ( szIndicatorsFilename, sizeof(szIndicatorsFilename), ".tr4.txt" );
+    strcat_s ( szIndicatorsFilename, sizeof(szIndicatorsFilename), CTR4SaveGame::GetIndicatorFileType() );
     CTR4SaveGame::ReadIndicators ( IndicatorsTR4Table, IndicatorsTR4TableCount, szIndicatorsFilename );
 
     //
     strcpy_s ( szIndicatorsFilename, sizeof(szIndicatorsFilename), InitFileName );
     RemoveFileType ( szIndicatorsFilename );
-    strcat_s ( szIndicatorsFilename, sizeof(szIndicatorsFilename), ".tr4ng.txt" );
+    strcat_s ( szIndicatorsFilename, sizeof(szIndicatorsFilename), CTR4NGSaveGame::GetIndicatorFileType() );
     CTR4NGSaveGame::ReadIndicators ( IndicatorsTR4NGTable, IndicatorsTR4NGTableCount, szIndicatorsFilename );
 
     //
     strcpy_s ( szIndicatorsFilename, sizeof(szIndicatorsFilename), InitFileName );
     RemoveFileType ( szIndicatorsFilename );
-    strcat_s ( szIndicatorsFilename, sizeof(szIndicatorsFilename), ".tr5.txt" );
+    strcat_s ( szIndicatorsFilename, sizeof(szIndicatorsFilename), CTR5SaveGame::GetIndicatorFileType() );
     CTR5SaveGame::ReadIndicators ( IndicatorsTR5Table, IndicatorsTR5TableCount, szIndicatorsFilename );
 
     //
     strcpy_s ( szIndicatorsFilename, sizeof(szIndicatorsFilename), InitFileName );
     RemoveFileType ( szIndicatorsFilename );
-    strcat_s ( szIndicatorsFilename, sizeof(szIndicatorsFilename), ".trr.txt" );
+    strcat_s ( szIndicatorsFilename, sizeof(szIndicatorsFilename), CTR9SaveGame::GetIndicatorFileType() );
     CTR9SaveGame::ReadIndicators ( IndicatorsTRRTable, IndicatorsTRRTableCount, szIndicatorsFilename );
 
 }
@@ -448,37 +448,37 @@ void CTRXCHEATWINApp::WriteIndicators()
     //
     strcpy_s ( szIndicatorsFilename, sizeof(szIndicatorsFilename), InitFileName );
     RemoveFileType ( szIndicatorsFilename );
-    strcat_s ( szIndicatorsFilename, sizeof(szIndicatorsFilename), ".tr123-1.txt" );
+    strcat_s ( szIndicatorsFilename, sizeof(szIndicatorsFilename), CTRSaveGame::GetIndicatorFileType1() );
     CTRSaveGame::WriteIndicators ( IndicatorsTR123Table1, IndicatorsTR123Table1Count, szIndicatorsFilename );
 
     //
     strcpy_s ( szIndicatorsFilename, sizeof(szIndicatorsFilename), InitFileName );
     RemoveFileType ( szIndicatorsFilename );
-    strcat_s ( szIndicatorsFilename, sizeof(szIndicatorsFilename), ".tr123-2.txt" );
+    strcat_s ( szIndicatorsFilename, sizeof(szIndicatorsFilename), CTRSaveGame::GetIndicatorFileType2() );
     CTRSaveGame::WriteIndicators ( IndicatorsTR123Table2, IndicatorsTR123Table2Count, szIndicatorsFilename );
 
     //
     strcpy_s ( szIndicatorsFilename, sizeof(szIndicatorsFilename), InitFileName );
     RemoveFileType ( szIndicatorsFilename );
-    strcat_s ( szIndicatorsFilename, sizeof(szIndicatorsFilename), ".tr4.txt" );
+    strcat_s ( szIndicatorsFilename, sizeof(szIndicatorsFilename), CTR4SaveGame::GetIndicatorFileType() );
     CTR4SaveGame::WriteIndicators ( IndicatorsTR4Table, IndicatorsTR4TableCount, szIndicatorsFilename );
 
     //
     strcpy_s ( szIndicatorsFilename, sizeof(szIndicatorsFilename), InitFileName );
     RemoveFileType ( szIndicatorsFilename );
-    strcat_s ( szIndicatorsFilename, sizeof(szIndicatorsFilename), ".tr4ng.txt" );
+    strcat_s ( szIndicatorsFilename, sizeof(szIndicatorsFilename), CTR4NGSaveGame::GetIndicatorFileType() );
     CTR4NGSaveGame::WriteIndicators ( IndicatorsTR4NGTable, IndicatorsTR4NGTableCount, szIndicatorsFilename );
 
     //
     strcpy_s ( szIndicatorsFilename, sizeof(szIndicatorsFilename), InitFileName );
     RemoveFileType ( szIndicatorsFilename );
-    strcat_s ( szIndicatorsFilename, sizeof(szIndicatorsFilename), ".tr5.txt" );
+    strcat_s ( szIndicatorsFilename, sizeof(szIndicatorsFilename), CTR5SaveGame::GetIndicatorFileType() );
     CTR5SaveGame::WriteIndicators ( IndicatorsTR5Table, IndicatorsTR5TableCount, szIndicatorsFilename );
 
     //
     strcpy_s ( szIndicatorsFilename, sizeof(szIndicatorsFilename), InitFileName );
     RemoveFileType ( szIndicatorsFilename );
-    strcat_s ( szIndicatorsFilename, sizeof(szIndicatorsFilename), ".trr.txt" );
+    strcat_s ( szIndicatorsFilename, sizeof(szIndicatorsFilename), CTR9SaveGame::GetIndicatorFileType() );
     CTR9SaveGame::WriteIndicators ( IndicatorsTRRTable,IndicatorsTRRTableCount, szIndicatorsFilename );
 
 

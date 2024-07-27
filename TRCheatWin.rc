@@ -711,8 +711,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 4,2,12,008
- PRODUCTVERSION 4,2,12,008
+ FILEVERSION 4,2,12,012
+ PRODUCTVERSION 4,2,12,012
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x29L
@@ -730,15 +730,15 @@ BEGIN
             VALUE "Comments", "mailto:ian.macallan@gmail.com\0"
             VALUE "CompanyName", "Macallan (c)\0"
             VALUE "FileDescription", "TRCheatWin - (MSVC)\0"
-            VALUE "FileVersion", "4.2.12.008\0"
+            VALUE "FileVersion", "4.2.12.012\0"
             VALUE "InternalName", "https://www.macallan.org/\0"
-            VALUE "LegalCopyright", "Copyright (C) Wed Jul 24 09:29, 2024\0"
+            VALUE "LegalCopyright", "Copyright (C) Sat Jul 27 11:45, 2024\0"
             VALUE "LegalTrademarks", "Author: Ian Macallan\0"
             VALUE "OriginalFilename", ORIGINAL_FILENAME
-            VALUE "PrivateBuild", "961\0"
+            VALUE "PrivateBuild", "965\0"
             VALUE "ProductName", PRODUCT_NAME
-            VALUE "ProductVersion", "4.2.12.008\0"
-            VALUE "SpecialBuild", "961\0"
+            VALUE "ProductVersion", "4.2.12.012\0"
+            VALUE "SpecialBuild", "965\0"
         END
     END
     BLOCK "VarFileInfo"
@@ -1033,6 +1033,14 @@ IDI_PASTE_BLACK         ICON                    "res\\PasteBlack.ico"
 IDI_COPY_BLACK          ICON                    "res\\CopyBlack.ico"
 IDI_SEARCH_BLACK        ICON                    "res\\SearchBlack.ico"
 IDI_SEARCH_WHITE        ICON                    "res\\SearchWhite.ico"
+IDI_SORT_WHITE          ICON                    "res\\SortWhite.ico"
+IDI_SORT_BLACK          ICON                    "res\\SortBlack.ico"
+IDI_LOAD_BLACK          ICON                    "res\\LoadBlack.ico"
+IDI_LOAD_WHITE          ICON                    "res\\LoadWhite.ico"
+IDI_SAVE_BLACK          ICON                    "res\\SaveBlack.ico"
+IDI_SAVE_WHITE          ICON                    "res\\SaveWhite.ico"
+IDI_REFRESH_BLACK       ICON                    "res\\RefreshBlack.ico"
+IDI_REFRESH_WHITE       ICON                    "res\\RefreshWhite.ico"
 
 /////////////////////////////////////////////////////////////////////////////
 //
