@@ -352,7 +352,7 @@ void CTR4NGSaveGame::TraceTRNG()
 
         //
         sprintf_s ( szDebugString, sizeof(szDebugString), "TRNG : 0x%04x (%s) (%ld words %ld bytes)\n", 
-            *pCodeOp, GetTRNGLabel(*pCodeOp), length, sizeof(WORD) * ( length - ExtraWords ) );
+            *pCodeOp, GetTRNGLabel(*pCodeOp), length, (long) sizeof(WORD) * ( length - ExtraWords ) );
         OutputDebugString ( szDebugString );
 
         switch ( *pCodeOp )
@@ -362,7 +362,7 @@ void CTR4NGSaveGame::TraceTRNG()
             {
                 TRNGSAVEGAMEINFOS *pSave = (TRNGSAVEGAMEINFOS *) pValues;
                 sprintf_s ( szDebugString, sizeof(szDebugString), "%d\tHealth : %d Level : %s\n", 
-                    sizeof(TRNGSAVEGAMEINFOS),
+                    (int) sizeof(TRNGSAVEGAMEINFOS),
                     pSave->LaraVitality, pSave->Tr4Name );
                 OutputDebugString ( szDebugString );
                 break;
@@ -379,7 +379,7 @@ void CTR4NGSaveGame::TraceTRNG()
                 for ( int i = 0; i < count; i++ )
                 {
                     sprintf_s ( szDebugString, sizeof(szDebugString), "%d\t Count: %d Indice: %d - Room : %d - x: %ld - y: %d - z: %ld\n", 
-                        sizeof(TRNGBASESAVECOORD),
+                        (int) sizeof(TRNGBASESAVECOORD),
                         count,
                         pIndices [ i ],
                         pCoord [ i ].Room,
@@ -397,7 +397,7 @@ void CTR4NGSaveGame::TraceTRNG()
                 for ( int i = 0; i < count; i++ )
                 {
                     sprintf_s ( szDebugString, sizeof(szDebugString), "%d\tCount: %d Indice: %d - Room : %d - x: %d - y: %d - z: %d - fl: 0x%x\n", 
-                        sizeof(TRNGSALVASTATIC),
+                        (int) sizeof(TRNGSALVASTATIC),
                         count,
                         pSave->Indici.IndiceStatic,
                         pSave->Indici.IndiceRoom,
@@ -414,7 +414,7 @@ void CTR4NGSaveGame::TraceTRNG()
             {
                 TRNGGLOBALVARIABLES *pSave = (TRNGGLOBALVARIABLES *) &pValues;
                 sprintf_s ( szDebugString, sizeof(szDebugString), "%d\tSomething\n", 
-                    sizeof(TRNGGLOBALVARIABLES) );
+                    (int) sizeof(TRNGGLOBALVARIABLES) );
                 OutputDebugString ( szDebugString );
 
                 break;
@@ -424,7 +424,7 @@ void CTR4NGSaveGame::TraceTRNG()
             {
                 TRNGBLOCKNUM *pSave = (TRNGBLOCKNUM *) &pValues;
                 sprintf_s ( szDebugString, sizeof(szDebugString), "%d\tSomething\n", 
-                    sizeof(TRNGBLOCKNUM) );
+                    (int) sizeof(TRNGBLOCKNUM) );
                 OutputDebugString ( szDebugString );
 
                 break;
@@ -434,7 +434,7 @@ void CTR4NGSaveGame::TraceTRNG()
             {
                 TRNGVERSIONHEADER *pSave = (TRNGVERSIONHEADER *) &pValues;
                 sprintf_s ( szDebugString, sizeof(szDebugString), "%d\tVersion : %u.%u.%u.%u - Flag : 0x%04x \n", 
-                    sizeof(TRNGVERSIONHEADER),
+                    (int) sizeof(TRNGVERSIONHEADER),
                     pSave->VetVersione [ 0 ], pSave->VetVersione [ 1 ], pSave->VetVersione [ 2 ], pSave->VetVersione [ 3 ],
                     pSave->Flags );
                 OutputDebugString ( szDebugString );
