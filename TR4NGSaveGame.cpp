@@ -9,6 +9,7 @@
 #include "TR_Areas.h"
 #include "TRXGlobal.h"
 #include "GunGrids.h"
+#include "TRXMessageBox.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -78,12 +79,12 @@ TR45_INDICATORS IndicatorsTR4NGTable [ MAX_INDICATORS ] =
     {   FALSE,  0x02,   0x02,   0x00,   0x67,   TRUE,   0,  "Standing", },
     {   FALSE,  0x02,   0x02,   0x47,   0x67,   TRUE,   0,  "Standing", },
 
-    {   FALSE,  0x02,   0x02,   0x00,   0x28,   TRUE,   1,  "", },
-    {   FALSE,  0x02,   0x02,   0x00,   0x0b,   TRUE,   1,  "", },
-    {   FALSE,  0x02,   0x02,   0x00,   0x0c,   TRUE,   1,  "", },
-    {   FALSE,  0x02,   0x02,   0x00,   0x1f,   TRUE,   1,  "", },
-    {   FALSE,  0x02,   0x02,   0x00,   0xbd,   TRUE,   1,  "", },
-    {   FALSE,  0x02,   0x02,   0x00,   0xdd,   TRUE,   1,  "", },
+    {   FALSE,  0x02,   0x02,   0x00,   0x28,   TRUE,   1,  "Indicator 1", },
+    {   FALSE,  0x02,   0x02,   0x00,   0x0b,   TRUE,   1,  "Indicator 2", },
+    {   FALSE,  0x02,   0x02,   0x00,   0x0c,   TRUE,   1,  "Indicator 3", },
+    {   FALSE,  0x02,   0x02,   0x00,   0x1f,   TRUE,   1,  "Indicator 4", },
+    {   FALSE,  0x02,   0x02,   0x00,   0xbd,   TRUE,   1,  "Indicator 5", },
+    {   FALSE,  0x02,   0x02,   0x00,   0xdd,   TRUE,   1,  "Indicator 6", },
 
     {   FALSE,  0x0d,   0x0d,   0x00,   0x6c,   TRUE,   1,  "Swimming", },
     {   FALSE,  0x0d,   0x0d,   0x47,   0x6c,   TRUE,   1,  "Swimming", },
@@ -93,16 +94,16 @@ TR45_INDICATORS IndicatorsTR4NGTable [ MAX_INDICATORS ] =
 
     {   FALSE,  0x47,   0x47,   0x47,   0xde,   TRUE,   1,  "Kneeling", },
     {   FALSE,  0x10,   0x00,   0x51,   0x51,   TRUE,   1,  "Crawling", },
-    {   FALSE,  0x00,   0x02,   0x00,   0x02,   TRUE,   1,  "", },
-    {   FALSE,  0x00,   0x02,   0x00,   0x03,   TRUE,   1,  "", },
-    {   FALSE,  0x0c,   0x00,   0x00,   0x02,   TRUE,   1,  "", },
+    {   FALSE,  0x00,   0x02,   0x00,   0x02,   TRUE,   1,  "Indicator 7", },
+    {   FALSE,  0x00,   0x02,   0x00,   0x03,   TRUE,   1,  "Indicator 8", },
+    {   FALSE,  0x0c,   0x00,   0x00,   0x02,   TRUE,   1,  "Indicator 9", },
     {   FALSE,  0x21,   0x21,   0x00,   0x6e,   TRUE,   1,  "In Water", },
 
-    {   FALSE,  0x13,   0x13,   0x47,   0x61,   TRUE,   1,  "", },
-    {   FALSE,  0x54,   0x50,   0x47,   0x0d,   TRUE,   1,  "", },
+    {   FALSE,  0x13,   0x13,   0x47,   0x61,   TRUE,   1,  "Indicator 10", },
+    {   FALSE,  0x54,   0x50,   0x47,   0x0d,   TRUE,   1,  "Indicator 11", },
 
-    {   FALSE,  0x02,   0x02,   0x00,   0x52,   TRUE,   1,  "", },
-    {   FALSE,  0x02,   0x02,   0x47,   0x0b,   TRUE,   1,  "", }, 
+    {   FALSE,  0x02,   0x02,   0x00,   0x52,   TRUE,   1,  "Indicator 12", },
+    {   FALSE,  0x02,   0x02,   0x47,   0x0b,   TRUE,   1,  "Indicator 13", }, 
 
     {   FALSE,  0x02,   0x02,   0x47,   0xbd,   TRUE,   1,  "Dropping Flare", }, 
     {   FALSE,  0x01,   0x02,   0x47,   0x08,   TRUE,   1,  "Standing", }, 
@@ -111,6 +112,12 @@ TR45_INDICATORS IndicatorsTR4NGTable [ MAX_INDICATORS ] =
     {   FALSE,  0x0d,   0x12,   0x00,   0x6c,   TRUE,   1,  "Swiminng", }, 
     {   FALSE,  0x12,   0x12,   0x00,   0x57,   TRUE,   1,  "Swiminng", }, 
 
+    {   FALSE,  0x01,   0x02,   0x00,   0x0a,   TRUE,   1,  "Indicator 14", }, 
+
+    {   FALSE,  0x09,   0x09,   0x00,   0x66,   TRUE,   1,  "Small Car", },
+    {   FALSE,  0x50,   0x50,   0x00,   0x07,   TRUE,   1,  "Crawling", },
+
+    {   FALSE,  0x47,   0x47,   0x00,   0xde,   TRUE,   1,  "Kneeling", },
     //
     {   TRUE,   0xff,   0xff,   0xff,   0xff,   TRUE,   0,  "End", },         // End
 };
@@ -158,6 +165,8 @@ CTR4NGSaveGame::CTR4NGSaveGame()
 
     iRiotGunUnits       = 6;
 
+    m_bPureTRNG         = FALSE;
+
     m_pLife             = NULL;
 
     m_pBuffer           = new ( TR4NGSAVE );
@@ -189,9 +198,257 @@ CTR4NGSaveGame::~CTR4NGSaveGame()
 
 //
 /////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
+const char *GetTRNGLabel(WORD byte)
+{
+#define _casetostring(value) case value : return #value;
+
+    switch ( byte )
+    {
+        _casetostring(NGTAG_NON_USATO)
+        _casetostring(NGTAG_ANIMATED_TEXTURES)
+        _casetostring(NGTAG_OLD_EFFECTS)
+        _casetostring(NGTAG_OLD_FMV)
+        _casetostring(NGTAG_REMAP_OBJ)
+        _casetostring(NGTAG_SALVA_COORDINATE)
+        _casetostring(NGTAG_PROGR_ACTIONS)
+        _casetostring(NGTAG_OLD_ACTIONS)
+        _casetostring(NGTAG_EXTRA_INFO_ROOMS)
+        _casetostring(NGTAG_LANGUAGE_STRINGS)
+        _casetostring(NGTAG_SCRIPT_OPTIONS)
+        _casetostring(NGTAG_SCRIPT_LEVEL)
+        _casetostring(NGTAG_FLAG_LEVEL_TR4)
+        _casetostring(NGTAG_OLD_CONDITION)
+        _casetostring(NGTAG_VARIABLE_DATA)
+        _casetostring(NGTAG_PUSH_CLIMB)
+        _casetostring(NGTAG_PRINT_STRING)
+        _casetostring(NGTAG_ELEVATORS)
+        _casetostring(NGTAG_MIRRORS)
+        _casetostring(NGTAG_BLIND_SAVE)
+        _casetostring(NGTAG_CASUALE)
+        _casetostring(NGTAG_CONTROLLO_OPTIONS)
+        _casetostring(NGTAG_TEX_PARZIALE)
+        _casetostring(NGTAG_REMAP_TAILS)
+        _casetostring(NGTAG_SWAP_MESH)
+        _casetostring(NGTAG_STATUS_GTRIGGERS)
+        _casetostring(NGTAG_ROOM_FLAGS)
+        _casetostring(NGTAG_WEATHER_INTENSITY)
+        _casetostring(NGTAG_STATUS_ORGANIZER)
+        _casetostring(NGTAG_IMPORT_FILE)
+        _casetostring(NGTAG_INDICI_PFRAME)
+        _casetostring(NGTAG_REMAP_STATICS)
+        _casetostring(NGTAG_SALVA_STATICS)
+        _casetostring(NGTAG_SALVA_TIMER_OGGETTI)
+        _casetostring(NGTAG_VERSION_HEADER)
+        _casetostring(NGTAG_TOM_VERSION)
+        _casetostring(NGTAG_STATUS_ANIM_RANGES)
+        _casetostring(NGTAG_SAVEGAME_INFOS)
+        _casetostring(NGTAG_MINI_SHOT)
+        _casetostring(NGTAG_LEVEL_NAMES)
+        _casetostring(NGTAG_NG_HUB_HEADERS)
+        _casetostring(NGTAG_VAR_DATA_LARA)
+        _casetostring(NGTAG_VET_REMAP_ROOMS)
+        _casetostring(NGTAG_VAR_GLOBAL_TRNG)
+        _casetostring(NGTAG_VAR_LOCAL_TRNG)
+        _casetostring(NGTAG_FROZEN_ITEMS)
+        _casetostring(NGTAG_SAVE_LOCUST)
+        _casetostring(NGTAG_NO_COLL_ITEMS)
+        _casetostring(NGTAG_SLOT_NAMES)
+        _casetostring(NGTAG_FISH)
+        _casetostring(NGTAG_STATUS_TRIGGER_GROUP)
+        _casetostring(NGTAG_ADAPTIVE_FARVIEW)
+        _casetostring(NGTAG_KAYAK_EXTRA_DATA)
+        _casetostring(NGTAG_ASSIGNED_SLOT)
+        _casetostring(NGTAG_DIARY_DATA)
+        _casetostring(NGTAG_ANIM_SWAPPING)
+        _casetostring(NGTAG_FLIP_MESH)
+        _casetostring(NGTAG_PLUGIN_DATA)
+        _casetostring(NGTAG_PLUGIN_NAMES_NGLE)
+        _casetostring(NGTAG_PLUGIN_ID_FLOOR_TABLE)
+        _casetostring(NGTAG_EXTRA_AI_RECORDS)
+        _casetostring(NGTAG_CUTSCENE_CAMERA)
+        _casetostring(NGTAG_ACTORS_INDICES)
+        _casetostring(NGTAG_SLOT_FLAGS_ARRAY)
+        _casetostring(NGTAG_OCB_ITEMS)
+        _casetostring(NGTAG_REMAP_PLUGIN_IDS)
+        _casetostring(NGTAG_SWAP_SINGLE_MESH)
+        _casetostring(NGTAG_NEW_CAMERAS)
+        _casetostring(NGTAG_SLOT_INFO)
+    }
+    return "";
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
 // CTR4NGSaveGame serialization
 //
 /////////////////////////////////////////////////////////////////////////////
+void CTR4NGSaveGame::TraceTRNG()
+{
+    BYTE *pBuffer = ( ( BYTE * ) m_pBuffer + 0x8000 );
+    static char szDebugString [ MAX_PATH ];
+
+    //
+    TRNGSPECIFIC *pTRNG = (TRNGSPECIFIC *) pBuffer;
+    if ( memcmp ( pTRNG->signature, "NG", sizeof(pTRNG->signature) ) != 0 )
+    {
+        return;
+    }
+
+    //
+    TRNGITERATION *pIteration = & pTRNG->iteration;
+
+    //
+    BOOL bContinue      = TRUE;
+    DWORD length        = 0;
+    WORD *pCodeOp       = NULL;
+    DWORD ExtraWords    = 0;
+    WORD *pValues       = NULL;
+    //
+    while ( bContinue )
+    {
+        length  = pIteration->length;
+        pCodeOp = &pIteration->codeOp;
+        pValues = pIteration->values;
+
+        //
+        if ( pIteration->length & 0x8000)
+        {
+            // size e' DWORD
+            WORD Word1  = pIteration->length & 0x7fff;
+            length      = Word1 * 65536 + pIteration->codeOp;
+            ExtraWords  = 3;
+            pCodeOp     = pIteration->values;
+            pValues++;
+        }
+        else
+        {
+            // size e' WORD
+            length      = pIteration->length;
+            ExtraWords  = 2;
+        }
+
+        //
+        if ( length == 0 )
+        {
+            DWORD relativeAddress = CTRXTools::RelativeAddress ( pCodeOp, m_pBuffer );
+            sprintf_s ( szDebugString, sizeof(szDebugString), "0x%08x Length zero - Code is 0x%04x\n",
+                relativeAddress, *pCodeOp );
+            OutputDebugString ( szDebugString );
+            bContinue = FALSE;
+            break;
+        }
+
+        if ( *pCodeOp < 0x8000 || *pCodeOp > 0x80ff )
+        {
+            DWORD relativeAddress = CTRXTools::RelativeAddress ( pCodeOp, m_pBuffer );
+            sprintf_s ( szDebugString, sizeof(szDebugString), "0x%08x Code is 0x%04x - Length : %ld\n",  
+                relativeAddress, *pCodeOp, length );
+            OutputDebugString ( szDebugString );
+            bContinue = FALSE;
+            break;
+        }
+
+        //
+        sprintf_s ( szDebugString, sizeof(szDebugString), "TRNG : 0x%04x (%s) (%ld words %ld bytes)\n", 
+            *pCodeOp, GetTRNGLabel(*pCodeOp), length, sizeof(WORD) * ( length - ExtraWords ) );
+        OutputDebugString ( szDebugString );
+
+        switch ( *pCodeOp )
+        {
+            //
+            case NGTAG_SAVEGAME_INFOS :
+            {
+                TRNGSAVEGAMEINFOS *pSave = (TRNGSAVEGAMEINFOS *) pValues;
+                sprintf_s ( szDebugString, sizeof(szDebugString), "%d\tHealth : %d Level : %s\n", 
+                    sizeof(TRNGSAVEGAMEINFOS),
+                    pSave->LaraVitality, pSave->Tr4Name );
+                OutputDebugString ( szDebugString );
+                break;
+            }
+
+            //  Original Position
+            case NGTAG_SALVA_COORDINATE :
+            {
+                //  Normally the first two words must be 
+                TRNGBASESAVECOORD *pSave    = (TRNGBASESAVECOORD *) pValues;
+                WORD count                  = pSave->TotSalvati;
+                WORD *pIndices              = ( WORD *) &pValues [ 1 ];
+                TRNGSaveCoord *pCoord       = ( TRNGSaveCoord * ) &pValues [ count + 1 ];
+                for ( int i = 0; i < count; i++ )
+                {
+                    sprintf_s ( szDebugString, sizeof(szDebugString), "%d\t Count: %d Indice: %d - Room : %d - x: %ld - y: %d - z: %ld\n", 
+                        sizeof(TRNGBASESAVECOORD),
+                        count,
+                        pIndices [ i ],
+                        pCoord [ i ].Room,
+                        pCoord [ i ].CordX, pCoord [ i ].CordY, pCoord [ i ].CordZ );
+                    OutputDebugString ( szDebugString );
+                }
+                break;
+            }
+
+            //  Some Position
+            case NGTAG_SALVA_STATICS : 
+            {
+                WORD count              = * pValues;
+                TRNGSALVASTATIC *pSave  = (TRNGSALVASTATIC *) &pValues [ 1 ];
+                for ( int i = 0; i < count; i++ )
+                {
+                    sprintf_s ( szDebugString, sizeof(szDebugString), "%d\tCount: %d Indice: %d - Room : %d - x: %d - y: %d - z: %d - fl: 0x%x\n", 
+                        sizeof(TRNGSALVASTATIC),
+                        count,
+                        pSave->Indici.IndiceStatic,
+                        pSave->Indici.IndiceRoom,
+                        pSave->OrgX, pSave->OrgY, pSave->OrgZ,
+                        pSave->Flags );
+                    OutputDebugString ( szDebugString );
+                    pSave++;
+                }
+                break;
+            }
+
+            //
+            case NGTAG_VAR_GLOBAL_TRNG :
+            {
+                TRNGGLOBALVARIABLES *pSave = (TRNGGLOBALVARIABLES *) &pValues;
+                sprintf_s ( szDebugString, sizeof(szDebugString), "%d\tSomething\n", 
+                    sizeof(TRNGGLOBALVARIABLES) );
+                OutputDebugString ( szDebugString );
+
+                break;
+            }
+
+            case NGTAG_VAR_LOCAL_TRNG :
+            {
+                TRNGBLOCKNUM *pSave = (TRNGBLOCKNUM *) &pValues;
+                sprintf_s ( szDebugString, sizeof(szDebugString), "%d\tSomething\n", 
+                    sizeof(TRNGBLOCKNUM) );
+                OutputDebugString ( szDebugString );
+
+                break;
+            }
+
+            case NGTAG_VERSION_HEADER :
+            {
+                TRNGVERSIONHEADER *pSave = (TRNGVERSIONHEADER *) &pValues;
+                sprintf_s ( szDebugString, sizeof(szDebugString), "%d\tVersion : %u.%u.%u.%u - Flag : 0x%04x \n", 
+                    sizeof(TRNGVERSIONHEADER),
+                    pSave->VetVersione [ 0 ], pSave->VetVersione [ 1 ], pSave->VetVersione [ 2 ], pSave->VetVersione [ 3 ],
+                    pSave->Flags );
+                OutputDebugString ( szDebugString );
+
+                break;
+            }
+            
+        };
+
+        //
+        pIteration = ( TRNGITERATION * ) ( ( WORD * ) pIteration + length );
+    };
+
+}
 
 //
 /////////////////////////////////////////////////////////////////////////////
@@ -272,6 +529,20 @@ int CTR4NGSaveGame::ReadSavegame ( const char *pFilename )
          *      Close file.
          */
         fclose ( hFile );
+
+        //
+        //  Test Flag 
+        if ( m_pBuffer->flagsffff != 0xffff )
+        {
+#ifdef _DEBUG
+            CTRXMessageBox::ShowMessage( "Load Savegame Warning", "Warning this file will not be correctly treated");
+#endif
+            m_bPureTRNG = TRUE;
+        }
+
+#ifdef _DEBUG
+        TraceTRNG();
+#endif
 
         return 1;
 }

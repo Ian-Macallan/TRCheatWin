@@ -307,7 +307,7 @@ BOOL CTRXItemsTR4::GetTables ( char ***pTableGen, char ***pTableInd )
     //
     int iLevelIndex = CTRSaveGame::GetLevelIndex();
 
-    if ( iVersion == 4 || ( iVersion >= 40 && iVersion <= 45 ) )
+    if ( CTRSaveGame::IsTR4 ( iVersion ) )
     {
         //
         if ( bStandardLevel )
@@ -363,14 +363,14 @@ BOOL CTRXItemsTR4::GetTables ( char ***pTableGen, char ***pTableInd )
             *pTableInd = TR49ItemsNameInd [ iLevelIndex + 1 ];
         }
     }
-    else if ( iVersion == 49 )
+    else if ( CTRSaveGame::IsTR4Custom ( iVersion ) )
     {
         *pTableGen = TR49ItemsNameGen;
 
         //  Skip Title
         *pTableInd = TR49ItemsNameInd [ iLevelIndex + 1 ];
     }
-    else if ( iVersion == 5 || iVersion == 50 )
+    else if ( CTRSaveGame::IsTR5 ( iVersion ) )
     {
         *pTableGen = TR5ItemsName;
         switch ( iLevelIndex )

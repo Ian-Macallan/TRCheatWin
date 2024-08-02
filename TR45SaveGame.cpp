@@ -259,3 +259,82 @@ BOOL CTR45SaveGame::WriteIndicators(TR45_INDICATORS *IndicatorsTRTable, const in
 
     return TRUE;
 }
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
+int CTR45SaveGame::CountIndicators( TR45_INDICATORS *IndicatorsTRTable, const int maxTable )
+{
+    //
+    int count = 0;
+    do
+    {
+        TR45_INDICATORS indicator = IndicatorsTRTable [ count ];
+        if ( indicator.bEnd )
+        {
+            return count;
+        }
+        count++;
+    }
+    while ( count < maxTable );
+
+    return count;
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
+int CTR45SaveGame::MinIndicators( TR45_INDICATORS *IndicatorsTRTable, const int maxTable )
+{
+    //
+    int count       = 0;
+    int minimum     = -1;
+    do
+    {
+        TR45_INDICATORS indicator = IndicatorsTRTable [ count ];
+        if ( indicator.bEnd )
+        {
+            return minimum;
+        }
+
+        if ( minimum == -1  || indicator.step < minimum )
+        {
+            minimum = indicator.step;
+        }
+        count++;
+    }
+    while ( count < maxTable );
+
+    return minimum;
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
+int CTR45SaveGame::MaxIndicators( TR45_INDICATORS *IndicatorsTRTable, const int maxTable )
+{
+    //
+    int count       = 0;
+    int maximum     = -1;
+    do
+    {
+        TR45_INDICATORS indicator = IndicatorsTRTable [ count ];
+        if ( indicator.bEnd )
+        {
+            return maximum;
+        }
+
+        if ( maximum == -1  || indicator.step > maximum )
+        {
+            maximum = indicator.step;
+        }
+        count++;
+    }
+    while ( count < maxTable );
+
+    return maximum;
+}
+

@@ -3,6 +3,7 @@
 #include "TRXTools.h"
 #include "GunGrids.h"
 #include "TR45SaveGame.h"
+#include "TR4NG.h"
 
 //
 /////////////////////////////////////////////////////////////////////////////
@@ -218,6 +219,16 @@ struct          TR4NGSave
             WORD                    iSaveNumber;        //  0x48
         };
 
+        //  Some Flags
+        struct
+        {
+            char                    cFiller1A [ 0x6b ];
+
+            //  Must be 0xffff
+            WORD                    flagsffff;
+        };
+
+        //
         struct
         {
             char                    cFiller1B [ 0x6d ];
@@ -227,7 +238,7 @@ struct          TR4NGSave
 
         struct
         {
-            char                    cFiller1A [ 0x9B ];
+            char                    cFiller1C [ 0x9B ];
 
             //      0x9b
             //      0x04    = normal
@@ -280,8 +291,13 @@ struct          TR4NGSave
 
 typedef struct TR4NGSave TR4NGSAVE;
 
+//
 #pragma pack(pop, pack1)
 
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
 class CTR4NGSaveGame : public CTR45SaveGame
 {
     DECLARE_DYNAMIC(CTR4NGSaveGame)
@@ -314,6 +330,10 @@ class CTR4NGSaveGame : public CTR45SaveGame
         BYTE                iMaskLaser;
         BYTE                iMaskBinocular;
         BYTE                iRiotGunUnits;
+
+        //  When savegame are PURE TRNG
+        BOOL                m_bPureTRNG;
+
     // Operations
     public:
 
@@ -561,6 +581,8 @@ class CTR4NGSaveGame : public CTR45SaveGame
                                 char *szTitle, size_t iSizeTile );
         void writeSaveGame();
         int ReadSavegame( const char *pFilename );
+        void TraceTRNG();
+
         void RetrieveInformation( const char *pFilename );
         TR4NGGUN *SearchGunStructure ( WORD m_iHealth, int *iPos );
         int CheckIfAmmosMatch ( TR4NGGUN *pGun, WORD gunBitmap );

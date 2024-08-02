@@ -8,6 +8,7 @@
 #include "TR9SaveGame.h"
 #include "TRXRoomPicture.h"
 #include "TRXWallPicture.h"
+#include "TRSaveGame.h"
 
 //
 /////////////////////////////////////////////////////////////////////////////
@@ -17,7 +18,11 @@ static int LevelAreasCount              = -1;
 static const int maxArray               = 512;
 static TR_AREA_WALL LevelAreas [ maxArray ];
 
+//
 static WallDirectionEnum WallDirection  = WallNorth;
+
+//  For TR 123 : 1 - For TR45 : -1
+static int SortTombraider               = 1;
 
 //
 //====================================================================================
@@ -51,27 +56,27 @@ static int compareAreas ( const void *pVoid1, const void *pVoid2 )
     bool useXmax    = false;
     bool useZmin    = false;
     bool useZmax    = false;
-    int SortOrder   = -1;
+    int SortOrder   = -1 * SortTombraider;
 
     if ( WallDirection == WallSouth )
     {
         useZmax     = true;
-        SortOrder   = 1;
+        SortOrder   = 1 * SortTombraider;
     }
     else if ( WallDirection == WallNorth )
     {
         useZmin     = true;
-        SortOrder   = -1;
+        SortOrder   = -1 * SortTombraider;
     }
     else if ( WallDirection == WallEast )
     {
         useXmin     = true;
-        SortOrder   = -1;
+        SortOrder   = -1 * SortTombraider;
     }
     else if ( WallDirection == WallWest )
     {
         useXmax     = true;
-        SortOrder   = 1;
+        SortOrder   = 1 * SortTombraider;
     }
 
     //
@@ -687,33 +692,77 @@ void CTRXVerticalMap::ShowWindows()
             yRelBottom      = (long) ( (double) yRelBottom / yDivider );
 
             //
-            if ( WallDirection == WallNorth )
+            //  TR 123
+            if ( CTRSaveGame::IsTR123 ( m_iTombraiderFull ) )
             {
-                LevelAreas [ i ].rect.left      = xRelLow + margin;
-                LevelAreas [ i ].rect.right     = xRelHigh + margin;
-                LevelAreas [ i ].rect.top       = yRelTop + usabletRect.top;
-                LevelAreas [ i ].rect.bottom    = yRelBottom + usabletRect.top;
+                if ( WallDirection == WallNorth )
+                {
+                    //  From Left
+                    LevelAreas [ i ].rect.left      = xRelLow + margin;
+                    LevelAreas [ i ].rect.right     = xRelHigh + margin;
+                    LevelAreas [ i ].rect.top       = yRelTop + usabletRect.top;
+                    LevelAreas [ i ].rect.bottom    = yRelBottom + usabletRect.top;
+                }
+                else if ( WallDirection == WallSouth )
+                {
+                    //  From Right
+                    LevelAreas [ i ].rect.left      = computedWidth - margin - xRelHigh;
+                    LevelAreas [ i ].rect.right     = computedWidth - margin - xRelLow;
+                    LevelAreas [ i ].rect.top       = yRelTop + usabletRect.top;
+                    LevelAreas [ i ].rect.bottom    = yRelBottom + usabletRect.top;
+                }
+                else if ( WallDirection == WallWest )
+                {
+                    //  From Left
+                    LevelAreas [ i ].rect.left      = zRelLow + margin;
+                    LevelAreas [ i ].rect.right     = zRelHigh + margin;
+                    LevelAreas [ i ].rect.top       = yRelTop + usabletRect.top;
+                    LevelAreas [ i ].rect.bottom    = yRelBottom + usabletRect.top;
+                }
+                else // East
+                {
+                    //  From Right
+                    LevelAreas [ i ].rect.left      = computedWidth - margin - zRelHigh;
+                    LevelAreas [ i ].rect.right     = computedWidth - margin - zRelLow;
+                    LevelAreas [ i ].rect.top       = yRelTop + usabletRect.top;
+                    LevelAreas [ i ].rect.bottom    = yRelBottom + usabletRect.top;
+                }
             }
-            else if ( WallDirection == WallSouth )
+            //  TR 45
+            else
             {
-                LevelAreas [ i ].rect.left      = computedWidth - margin - xRelHigh;
-                LevelAreas [ i ].rect.right     = computedWidth - margin - xRelLow;
-                LevelAreas [ i ].rect.top       = yRelTop + usabletRect.top;
-                LevelAreas [ i ].rect.bottom    = yRelBottom + usabletRect.top;
-            }
-            else if ( WallDirection == WallWest )
-            {
-                LevelAreas [ i ].rect.left      = zRelLow + margin;
-                LevelAreas [ i ].rect.right     = zRelHigh + margin;
-                LevelAreas [ i ].rect.top       = yRelTop + usabletRect.top;
-                LevelAreas [ i ].rect.bottom    = yRelBottom + usabletRect.top;
-            }
-            else // East
-            {
-                LevelAreas [ i ].rect.left      = computedWidth - margin - zRelHigh;
-                LevelAreas [ i ].rect.right     = computedWidth - margin - zRelLow;
-                LevelAreas [ i ].rect.top       = yRelTop + usabletRect.top;
-                LevelAreas [ i ].rect.bottom    = yRelBottom + usabletRect.top;
+                if ( WallDirection == WallNorth )
+                {
+                    //  From Right
+                    LevelAreas [ i ].rect.left      = computedWidth - margin - xRelHigh;
+                    LevelAreas [ i ].rect.right     = computedWidth - margin - xRelLow;
+                    LevelAreas [ i ].rect.top       = yRelTop + usabletRect.top;
+                    LevelAreas [ i ].rect.bottom    = yRelBottom + usabletRect.top;
+                }
+                else if ( WallDirection == WallSouth )
+                {
+                    //  From Left
+                    LevelAreas [ i ].rect.left      = xRelLow + margin;
+                    LevelAreas [ i ].rect.right     = xRelHigh + margin;
+                    LevelAreas [ i ].rect.top       = yRelTop + usabletRect.top;
+                    LevelAreas [ i ].rect.bottom    = yRelBottom + usabletRect.top;
+                }
+                else if ( WallDirection == WallWest )
+                {
+                    //  From Right
+                    LevelAreas [ i ].rect.left      = computedWidth - margin - zRelHigh;
+                    LevelAreas [ i ].rect.right     = computedWidth - margin - zRelLow;
+                    LevelAreas [ i ].rect.top       = yRelTop + usabletRect.top;
+                    LevelAreas [ i ].rect.bottom    = yRelBottom + usabletRect.top;
+                }
+                else // East
+                {
+                    //  From Left
+                    LevelAreas [ i ].rect.left      = zRelLow + margin;
+                    LevelAreas [ i ].rect.right     = zRelHigh + margin;
+                    LevelAreas [ i ].rect.top       = yRelTop + usabletRect.top;
+                    LevelAreas [ i ].rect.bottom    = yRelBottom + usabletRect.top;
+                }
             }
 
             //
@@ -826,8 +875,18 @@ BOOL CTRXVerticalMap::OnInitDialog()
         area = GetTRArea ( m_iTombraiderFull, m_iLevelIndex, LevelAreasCount );
     }
 
-    ShowWindows();
+    //
+    //  Invert Sort For TR43
+    if ( CTRSaveGame::IsTR123 ( m_iTombraiderFull ) )
+    {
+        SortTombraider = 1;
+    }
+    else
+    {
+        SortTombraider = -1;
+    }
 
+    ShowWindows();
 
     //
     SetIcon(m_hIcon, TRUE);         // Set big icon

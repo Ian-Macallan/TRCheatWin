@@ -714,8 +714,193 @@ class CTRSaveGame  : public CObject
             return ".tr123-2.txt";
         }
 
+        //  Testing Versions
+        //  TR 1 Only
+        static BOOL IsTR1O( int version )
+        {
+            if ( version == 10 || version == 1 )
+            {
+                return TRUE;
+            }
+            return FALSE;
+        }
+
+        //  TR 1 Gold
+        static BOOL IsTR1G( int version )
+        {
+            if ( version == 15 )
+            {
+                return TRUE;
+            }
+            return FALSE;
+        }
+
+        //  TR 1 or Gold
+        static BOOL IsTR1( int version )
+        {
+            if ( IsTR1O(version) || IsTR1G(version) )
+            {
+                return TRUE;
+            }
+            return FALSE;
+        }
+
+        //  TR 2 Only
+        static BOOL IsTR2O( int version )
+        {
+            if ( version == 20 || version == 2 )
+            {
+                return TRUE;
+            }
+            return FALSE;
+        }
+
+        //  TR 2 Gold
+        static BOOL IsTR2G( int version )
+        {
+            if ( version == 25 )
+            {
+                return TRUE;
+            }
+            return FALSE;
+        }
+
+        //  TR 2 or Gold
+        static BOOL IsTR2( int version )
+        {
+            if ( IsTR2O(version) || IsTR2G(version) )
+            {
+                return TRUE;
+            }
+            return FALSE;
+        }
+
+        //  TR 3 Only
+        static BOOL IsTR3O( int version )
+        {
+            if ( version == 30 || version == 3 )
+            {
+                return TRUE;
+            }
+            return FALSE;
+        }
+
+        //  TR 3 Gold
+        static BOOL IsTR3G( int version )
+        {
+            if ( version == 35 )
+            {
+                return TRUE;
+            }
+            return FALSE;
+        }
+
+        //  TR 3 or Gold
+        static BOOL IsTR3( int version )
+        {
+            if ( IsTR3O(version) || IsTR3G(version) )
+            {
+                return TRUE;
+            }
+            return FALSE;
+        }
+
+        //  TR 1 2 3 including gold versions
+        static BOOL IsTR123( int version )
+        {
+            if ( IsTR1 ( version ) || IsTR2 ( version ) || IsTR3 ( version ) )
+            {
+                return TRUE;
+            }
+            return FALSE;
+        }
+
+        //  TR 4 Only
+        static BOOL IsTR4O( int version )
+        {
+            if ( version == 40 || version == 4 )
+            {
+                return TRUE;
+            }
+            return FALSE;
+        }
+
+        //  TR 4 Gold
+        static BOOL IsTR4G( int version )
+        {
+            if ( version == 45 )
+            {
+                return TRUE;
+            }
+            return FALSE;
+        }
+
+        //  TR 4 or Gold
+        static BOOL IsTR4( int version )
+        {
+            if ( IsTR4O(version) || IsTR4G(version) )
+            {
+                return TRUE;
+            }
+            return FALSE;
+        }
+
+        //  TR 5
+        static BOOL IsTR5( int version )
+        {
+            if ( version == 50 || version == 5 )
+            {
+                return TRUE;
+            }
+            return FALSE;
+        }
+
+        //  TR 4 5 including gold version
+        static BOOL IsTR45( int version )
+        {
+            if ( IsTR4 ( version ) || IsTR5 ( version ) )
+            {
+                return TRUE;
+            }
+            return FALSE;
+        }
+
+        //  TR 4 Custom
+        static BOOL IsTR4Custom( int version )
+        {
+            if ( version == 49 )
+            {
+                return TRUE;
+            }
+            return FALSE;
+        }
+
+        //  TR Custom
+        static BOOL IsTRCustom( int version )
+        {
+            if ( version == 19 || version == 29 || version == 39 || version == 49 || version == 59 || version == 99 )
+            {
+                return TRUE;
+            }
+            return FALSE;
+        }
+
+        //  TR 4 5 or custom
+        static BOOL IsTR45C( int version )
+        {
+            if ( IsTR45 ( version ) || IsTRCustom ( version ) )
+            {
+                return TRUE;
+            }
+            return FALSE;
+        }
+
+        //
         static int ReadIndicators( TR123_INDICATORS *IndicatorsTRTable, const int maxTable, const char *pFilename );
         static BOOL WriteIndicators( TR123_INDICATORS *IndicatorsTRTable, const int maxTable, const char *pFilename );
+        static int CountIndicators( TR123_INDICATORS *IndicatorsTRTable, const int maxTable );
+        static int MinIndicators( TR123_INDICATORS *IndicatorsTRTable, const int maxTable );
+        static int MaxIndicators( TR123_INDICATORS *IndicatorsTRTable, const int maxTable );
 
         // Generated message map functions
 };

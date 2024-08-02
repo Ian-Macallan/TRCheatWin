@@ -919,6 +919,9 @@ class CTR9SaveGame : public CObject
         }
         static int ReadIndicators( TRR_INDICATORS *IndicatorsTRTable, const int maxTable, const char *pFilename );
         static BOOL WriteIndicators( TRR_INDICATORS *IndicatorsTRTable, const int maxTable, const char *pFilename );
+        static int CountIndicators( TRR_INDICATORS *IndicatorsTRTable, const int maxTable );
+        static int MinIndicators( TRR_INDICATORS *IndicatorsTRTable, const int maxTable );
+        static int MaxIndicators( TRR_INDICATORS *IndicatorsTRTable, const int maxTable );
 
 
 };

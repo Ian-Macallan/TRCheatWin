@@ -9651,3 +9651,83 @@ BOOL CTR9SaveGame::WriteIndicators(TRR_INDICATORS *IndicatorsTRTable, const int 
 
     return TRUE;
 }
+
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
+int CTR9SaveGame::CountIndicators( TRR_INDICATORS *IndicatorsTRTable, const int maxTable )
+{
+    //
+    int count = 0;
+    do
+    {
+        TRR_INDICATORS indicator = IndicatorsTRTable [ count ];
+        if ( indicator.bEnd )
+        {
+            return count;
+        }
+        count++;
+    }
+    while ( count < maxTable );
+
+    return count;
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
+int CTR9SaveGame::MinIndicators( TRR_INDICATORS *IndicatorsTRTable, const int maxTable )
+{
+    //
+    int count       = 0;
+    int minimum     = -1;
+    do
+    {
+        TRR_INDICATORS indicator = IndicatorsTRTable [ count ];
+        if ( indicator.bEnd )
+        {
+            return minimum;
+        }
+
+        if ( minimum == -1  || indicator.step < minimum )
+        {
+            minimum = indicator.step;
+        }
+        count++;
+    }
+    while ( count < maxTable );
+
+    return minimum;
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
+int CTR9SaveGame::MaxIndicators( TRR_INDICATORS *IndicatorsTRTable, const int maxTable )
+{
+    //
+    int count       = 0;
+    int maximum     = -1;
+    do
+    {
+        TRR_INDICATORS indicator = IndicatorsTRTable [ count ];
+        if ( indicator.bEnd )
+        {
+            return maximum;
+        }
+
+        if ( maximum == -1  || indicator.step > maximum )
+        {
+            maximum = indicator.step;
+        }
+        count++;
+    }
+    while ( count < maxTable );
+
+    return maximum;
+}
+

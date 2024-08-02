@@ -49,5 +49,8 @@ class CTR45SaveGame : public CTRSaveGame
 
         static int ReadIndicators( TR45_INDICATORS *IndicatorsTRTable, const int maxTable, const char *pFilename );
         static BOOL WriteIndicators( TR45_INDICATORS *IndicatorsTRTable, const int maxTable, const char *pFilename );
+        static int CountIndicators( TR45_INDICATORS *IndicatorsTRTable, const int maxTable );
+        static int MinIndicators( TR45_INDICATORS *IndicatorsTRTable, const int maxTable );
+        static int MaxIndicators( TR45_INDICATORS *IndicatorsTRTable, const int maxTable );
 };
 

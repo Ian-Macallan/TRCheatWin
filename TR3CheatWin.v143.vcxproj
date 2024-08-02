@@ -522,6 +522,7 @@
     <ClInclude Include="TR3_Areas_inc.h" />
     <ClInclude Include="TR45SaveGame.h" />
     <ClInclude Include="TR4G_Areas_inc.h" />
+    <ClInclude Include="TR4NG.h" />
     <ClInclude Include="TR4NGSaveGame.h" />
     <ClInclude Include="TR4_Areas_inc.h" />
     <ClInclude Include="TR5_Areas_inc.h" />
