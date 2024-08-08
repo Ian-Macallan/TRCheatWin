@@ -650,6 +650,8 @@ int CTR4NGSaveGame::ReadSavegame ( const char *pFilename )
 
         char                    szEmpty [ 1 ];
 
+        m_bPureTRNG = FALSE;
+
         strcpy_s ( m_Filename, sizeof(m_Filename), pFilename );
         strcpy_s ( m_Status, sizeof(m_Status), "" );
 
