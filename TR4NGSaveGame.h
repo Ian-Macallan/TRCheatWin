@@ -334,6 +334,13 @@ class CTR4NGSaveGame : public CTR45SaveGame
         //  When savegame are PURE TRNG
         BOOL                m_bPureTRNG;
 
+        //
+        //  Specific TRNG
+        short               *m_pTRNGHealth;
+        WORD                *m_pTRNGAir;
+        TR4NGGUN            *m_pTRNGGuns;
+        TR4NGAMMO           *m_pTRNGAmmos;
+
     // Operations
     public:
 
@@ -582,6 +589,7 @@ class CTR4NGSaveGame : public CTR45SaveGame
         void writeSaveGame();
         int ReadSavegame( const char *pFilename );
         void TraceTRNG();
+        void GetTRNGPointers();
 
         void RetrieveInformation( const char *pFilename );
         TR4NGGUN *SearchGunStructure ( WORD m_iHealth, int *iPos );

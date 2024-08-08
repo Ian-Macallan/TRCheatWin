@@ -89,7 +89,6 @@ TR45_INDICATORS IndicatorsTR4NGTable [ MAX_INDICATORS ] =
     {   FALSE,  0x0d,   0x0d,   0x00,   0x6c,   TRUE,   1,  "Swimming", },
     {   FALSE,  0x0d,   0x0d,   0x47,   0x6c,   TRUE,   1,  "Swimming", },
 
-    {   FALSE,  0x0f,   0x0f,   0x00,   0x1f,   TRUE,   1,  "Quad", },
     {   FALSE,  0x12,   0x00,   0x00,   0x02,   TRUE,   1,  "Flare", },
 
     {   FALSE,  0x47,   0x47,   0x47,   0xde,   TRUE,   1,  "Kneeling", },
@@ -114,10 +113,24 @@ TR45_INDICATORS IndicatorsTR4NGTable [ MAX_INDICATORS ] =
 
     {   FALSE,  0x01,   0x02,   0x00,   0x0a,   TRUE,   1,  "Indicator 14", }, 
 
-    {   FALSE,  0x09,   0x09,   0x00,   0x66,   TRUE,   1,  "Small Car", },
     {   FALSE,  0x50,   0x50,   0x00,   0x07,   TRUE,   1,  "Crawling", },
+    {   FALSE,  0x50,   0x50,   0x47,   0x07,   TRUE,   1,  "Crawling", },
 
     {   FALSE,  0x47,   0x47,   0x00,   0xde,   TRUE,   1,  "Kneeling", },
+
+    {  FALSE,   0x02,   0x02,   0x00,   0x18,   TRUE,   1,  "Stand", },
+
+    {   FALSE,  0x02,   0x02,   0x47,   0x87,   TRUE,   1,  "Standing", },
+
+    //
+    {   FALSE,  0x0f,   0x0f,   0x00,   0x1f,   TRUE,   9,  "Quad", },
+    {   FALSE,  0x0f,   0x0f,   0x00,   0x46,   TRUE,   9,  "Quad", },
+
+
+    {   FALSE,  0x09,   0x09,   0x00,   0x66,   TRUE,   9,  "Small Car", },      // Cannot move so unusable
+    {   FALSE,  0x0f,   0x0f,   0x00,   0x1d,   TRUE,   9,  "Motocycle", },      // Cannot move so unusable
+    {   FALSE,  0x0f,   0x0f,   0x00,   0x40,   TRUE,   9,  "Motocycle", },      // Cannot move so unusable
+
     //
     {   TRUE,   0xff,   0xff,   0xff,   0xff,   TRUE,   0,  "End", },         // End
 };
@@ -165,8 +178,6 @@ CTR4NGSaveGame::CTR4NGSaveGame()
 
     iRiotGunUnits       = 6;
 
-    m_bPureTRNG         = FALSE;
-
     m_pLife             = NULL;
 
     m_pBuffer           = new ( TR4NGSAVE );
@@ -174,6 +185,14 @@ CTR4NGSaveGame::CTR4NGSaveGame()
 
     m_pBufferBackup     = new ( TR4NGSAVE );
     ZeroMemory ( m_pBufferBackup, sizeof(TR4NGSAVE) );
+
+    //  TRNG Specific
+    m_bPureTRNG         = FALSE;
+
+    m_pTRNGHealth       = NULL;
+    m_pTRNGAir          = NULL;
+    m_pTRNGGuns         = NULL;
+    m_pTRNGAmmos        = NULL;
 
 }
 
@@ -281,7 +300,164 @@ const char *GetTRNGLabel(WORD byte)
 
 //
 /////////////////////////////////////////////////////////////////////////////
-// CTR4NGSaveGame serialization
+//
+/////////////////////////////////////////////////////////////////////////////
+void CTR4NGSaveGame::GetTRNGPointers()
+{
+    //  TRNG Specific
+    m_pTRNGHealth       = NULL;
+    m_pTRNGAir          = NULL;
+    m_pTRNGGuns         = NULL;
+    m_pTRNGAmmos        = NULL;
+
+    BYTE *pBuffer = ( ( BYTE * ) m_pBuffer + 0x8000 );
+
+    //
+    TRNGSPECIFIC *pTRNG = (TRNGSPECIFIC *) pBuffer;
+    if ( memcmp ( pTRNG->signature, "NG", sizeof(pTRNG->signature) ) != 0 )
+    {
+        return;
+    }
+
+    //
+    TRNGITERATION *pIteration = & pTRNG->iteration;
+
+    //
+    BOOL bContinue      = TRUE;
+    DWORD length        = 0;
+    WORD *pCodeOp       = NULL;
+    DWORD ExtraWords    = 0;
+    WORD *pValues       = NULL;
+
+    //
+    while ( bContinue )
+    {
+        length  = pIteration->length;
+        pCodeOp = &pIteration->codeOp;
+        pValues = pIteration->values;
+
+        //
+        if ( pIteration->length & 0x8000)
+        {
+            // size e' DWORD
+            WORD Word1  = pIteration->length & 0x7fff;
+            length      = Word1 * 65536 + pIteration->codeOp;
+            ExtraWords  = 3;
+            pCodeOp     = pIteration->values;
+            pValues++;
+        }
+        else
+        {
+            // size e' WORD
+            length      = pIteration->length;
+            ExtraWords  = 2;
+        }
+
+        //
+        if ( length == 0 )
+        {
+            bContinue = FALSE;
+            break;
+        }
+
+        if ( *pCodeOp < 0x8000 || *pCodeOp > 0x80ff )
+        {
+            bContinue = FALSE;
+            break;
+        }
+
+        //
+        switch ( *pCodeOp )
+        {
+            //
+            case NGTAG_SAVEGAME_INFOS :
+            {
+                TRNGSAVEGAMEINFOS *pSave    = (TRNGSAVEGAMEINFOS *) pValues;
+                m_pTRNGHealth               = &pSave->LaraVitality;
+
+                DWORD offsetAir     = offsetof(TR4NGSAVE,iAir) - 0x57;
+                if ( offsetAir >= 0 && offsetAir < sizeof(pSave->Copy_057_0F3) )
+                {
+                    m_pTRNGAir      = ( WORD * ) ( ( BYTE * ) pSave->Copy_057_0F3 + offsetAir );
+                }
+
+                DWORD offsetGuns    =  offsetof(TR4NGSAVE,tagGuns) - 0x169;
+                if ( offsetGuns >= 0 && offsetGuns < sizeof(pSave->Copy_169_1AC) )
+                {
+                    m_pTRNGGuns     = (TR4NGGUN *) ( (BYTE*) pSave->Copy_169_1AC + offsetGuns );
+                }
+
+                DWORD offsetAmmos   =  offsetof(TR4NGSAVE,tagAmmo) - 0x169;
+                if ( offsetAmmos >= 0 && offsetAmmos < sizeof(pSave->Copy_169_1AC) )
+                {
+                    m_pTRNGAmmos    = (TR4NGAMMO *) ( (BYTE*) pSave->Copy_169_1AC + offsetAmmos );
+                }
+
+                break;
+            }
+
+            //  Original Position
+            case NGTAG_SALVA_COORDINATE :
+            {
+                //  Normally the first two words must be 
+                TRNGBASESAVECOORD *pSave    = (TRNGBASESAVECOORD *) pValues;
+                WORD count                  = pSave->TotSalvati;
+                WORD *pIndices              = ( WORD *) &pValues [ 1 ];
+                TRNGSaveCoord *pCoord       = ( TRNGSaveCoord * ) &pValues [ count + 1 ];
+                for ( int i = 0; i < count; i++ )
+                {
+                    //
+                }
+                break;
+            }
+
+            //  Some Position
+            case NGTAG_SALVA_STATICS : 
+            {
+                WORD count              = * pValues;
+                TRNGSALVASTATIC *pSave  = (TRNGSALVASTATIC *) &pValues [ 1 ];
+                for ( int i = 0; i < count; i++ )
+                {
+                    pSave++;
+                }
+                break;
+            }
+
+            //
+            case NGTAG_VAR_GLOBAL_TRNG :
+            {
+                TRNGGLOBALVARIABLES *pSave = (TRNGGLOBALVARIABLES *) pValues;
+
+                break;
+            }
+
+            //
+            case NGTAG_VAR_LOCAL_TRNG :
+            {
+                TRNGBLOCKNUM *pSave = (TRNGBLOCKNUM *) pValues;
+
+                break;
+            }
+
+            //
+            case NGTAG_VERSION_HEADER :
+            {
+                TRNGVERSIONHEADER *pSave = (TRNGVERSIONHEADER *) pValues;
+
+                break;
+            }
+            
+        };
+
+        //
+        pIteration = ( TRNGITERATION * ) ( ( WORD * ) pIteration + length );
+    };
+
+}
+
+
+//
+/////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////
 void CTR4NGSaveGame::TraceTRNG()
@@ -365,6 +541,7 @@ void CTR4NGSaveGame::TraceTRNG()
                     (int) sizeof(TRNGSAVEGAMEINFOS),
                     pSave->LaraVitality, pSave->Tr4Name );
                 OutputDebugString ( szDebugString );
+
                 break;
             }
 
@@ -392,7 +569,7 @@ void CTR4NGSaveGame::TraceTRNG()
             //  Some Position
             case NGTAG_SALVA_STATICS : 
             {
-                WORD count              = * pValues;
+                WORD count              = *pValues;
                 TRNGSALVASTATIC *pSave  = (TRNGSALVASTATIC *) &pValues [ 1 ];
                 for ( int i = 0; i < count; i++ )
                 {
@@ -412,17 +589,19 @@ void CTR4NGSaveGame::TraceTRNG()
             //
             case NGTAG_VAR_GLOBAL_TRNG :
             {
-                TRNGGLOBALVARIABLES *pSave = (TRNGGLOBALVARIABLES *) &pValues;
-                sprintf_s ( szDebugString, sizeof(szDebugString), "%d\tSomething\n", 
-                    (int) sizeof(TRNGGLOBALVARIABLES) );
+                TRNGGLOBALVARIABLES *pSave = (TRNGGLOBALVARIABLES *) pValues;
+                sprintf_s ( szDebugString, sizeof(szDebugString), "%d\tCurrent Value : 0x%x\n", 
+                    (int) sizeof(TRNGGLOBALVARIABLES),
+                    pSave->CurrentValue );
                 OutputDebugString ( szDebugString );
 
                 break;
             }
 
+            //
             case NGTAG_VAR_LOCAL_TRNG :
             {
-                TRNGBLOCKNUM *pSave = (TRNGBLOCKNUM *) &pValues;
+                TRNGBLOCKNUM *pSave = (TRNGBLOCKNUM *) pValues;
                 sprintf_s ( szDebugString, sizeof(szDebugString), "%d\tSomething\n", 
                     (int) sizeof(TRNGBLOCKNUM) );
                 OutputDebugString ( szDebugString );
@@ -430,12 +609,20 @@ void CTR4NGSaveGame::TraceTRNG()
                 break;
             }
 
+            //
             case NGTAG_VERSION_HEADER :
             {
-                TRNGVERSIONHEADER *pSave = (TRNGVERSIONHEADER *) &pValues;
-                sprintf_s ( szDebugString, sizeof(szDebugString), "%d\tVersion : %u.%u.%u.%u - Flag : 0x%04x \n", 
+                TRNGVERSIONHEADER *pSave = (TRNGVERSIONHEADER *) pValues;
+                sprintf_s ( szDebugString, sizeof(szDebugString), "%d\tVersion : %u.%u.%u.%u - Flag : 0x%04x\n", 
                     (int) sizeof(TRNGVERSIONHEADER),
-                    pSave->VetVersione [ 0 ], pSave->VetVersione [ 1 ], pSave->VetVersione [ 2 ], pSave->VetVersione [ 3 ],
+                    pSave->VetVersione [ 0 ], pSave->VetVersione [ 1 ],
+                    pSave->VetVersione [ 2 ], pSave->VetVersione [ 3 ],
+                    pSave->Flags );
+                OutputDebugString ( szDebugString );
+                sprintf_s ( szDebugString, sizeof(szDebugString), "%d\tVersion : 0x%04x.%04x.%04x.%04x - Flag : 0x%04x\n", 
+                    (int) sizeof(TRNGVERSIONHEADER),
+                    pSave->VetVersione [ 0 ], pSave->VetVersione [ 1 ],
+                    pSave->VetVersione [ 2 ], pSave->VetVersione [ 3 ],
                     pSave->Flags );
                 OutputDebugString ( szDebugString );
 
@@ -459,7 +646,7 @@ int CTR4NGSaveGame::ReadSavegame ( const char *pFilename )
 {
 
         FILE                    *hFile;
-        size_t                uLenBuffer;
+        size_t                  uLenBuffer;
 
         char                    szEmpty [ 1 ];
 
@@ -540,6 +727,10 @@ int CTR4NGSaveGame::ReadSavegame ( const char *pFilename )
             m_bPureTRNG = TRUE;
         }
 
+        //
+        //  Get Pointers
+        GetTRNGPointers();
+
 #ifdef _DEBUG
         TraceTRNG();
 #endif
@@ -556,6 +747,28 @@ void CTR4NGSaveGame::writeSaveGame()
     FILE                    *hFile;
     size_t                  uLenBuffer;
 
+    TR4NGGUN    *pGun       = &m_pBuffer->tagGuns;
+    TR4NGAMMO   *pAmmo      = &m_pBuffer->tagAmmo;
+
+    //  Even if we write in m_pTRNGGuns and m_pTRNGAmmos
+    //  The result does not show the difference
+    //  So it is probably written elsewhere in the savegame
+    if ( m_bPureTRNG )
+    {
+        CTRXMessageBox::ShowMessage( "Write Savegame Warning", "Warning this file will not be saved");
+        return;
+    }
+
+    if ( m_bPureTRNG && m_pTRNGGuns != NULL )
+    {
+        pGun    = m_pTRNGGuns;
+    }
+
+    if ( m_bPureTRNG && m_pTRNGAmmos != NULL )
+    {
+        pAmmo    = m_pTRNGAmmos;
+    }
+
     strcpy_s ( m_Status, sizeof(m_Status), "" );
 
     /*
@@ -563,29 +776,29 @@ void CTR4NGSaveGame::writeSaveGame()
      */
     int     iX      = getLevelIndex ();
 
-    if ( ! ( m_pBuffer->tagGuns.m_gunRevolver & iMaskRevolver ) )
+    if ( ! ( pGun->m_gunRevolver & iMaskRevolver ) )
     {
-        m_pBuffer->tagGuns.m_gunRevolver  = 0 ;
+        pGun->m_gunRevolver  = 0 ;
     }
 
-    if ( ! ( m_pBuffer->tagGuns.m_gunUzis & iMaskUzi ) )
+    if ( ! ( pGun->m_gunUzis & iMaskUzi ) )
     {
-        m_pBuffer->tagGuns.m_gunUzis = 0;
+        pGun->m_gunUzis = 0;
     }
 
-    if ( ! ( m_pBuffer->tagGuns.m_gunRiotGun & iMaskRiotGun ) )
+    if ( ! ( pGun->m_gunRiotGun & iMaskRiotGun ) )
     {
-        m_pBuffer->tagGuns.m_gunRiotGun = 0;
+        pGun->m_gunRiotGun = 0;
     }
 
-    if ( ! ( m_pBuffer->tagGuns.m_gunGrenadesLauncher & iMaskGrenade ) )
+    if ( ! ( pGun->m_gunGrenadesLauncher & iMaskGrenade ) )
     {
-        m_pBuffer->tagGuns.m_gunGrenadesLauncher = 0;
+        pGun->m_gunGrenadesLauncher = 0;
     }
 
-    if ( ! ( m_pBuffer->tagGuns.m_gunCrossBow & iMaskCrossBow ) )
+    if ( ! ( pGun->m_gunCrossBow & iMaskCrossBow ) )
     {
-        m_pBuffer->tagGuns.m_gunCrossBow = 0;
+        pGun->m_gunCrossBow = 0;
     }
 
 
@@ -593,8 +806,9 @@ void CTR4NGSaveGame::writeSaveGame()
     unsigned char *pBackup = (unsigned char *)m_pBufferBackup;
     unsigned char *pBuffer = (unsigned char *)m_pBuffer;
 
+    //  Compute checksum without TR4NG Extension
     unsigned checkSum = m_pBufferBackup->checkSum;
-    for ( int i = 0; i < sizeof(TR4NGSAVE) - 1; i++ )
+    for ( int i = 0; i < 0x8000 /* sizeof(TR4NGSAVE) - 1 */; i++ )
     {
         if ( pBackup [ i ] != pBuffer [ i ] )
         {
@@ -675,7 +889,14 @@ void CTR4NGSaveGame::RetrieveInformation( const char *pFilename )
 /////////////////////////////////////////////////////////////////////////////
 TR4NGGUN *CTR4NGSaveGame::SearchGunStructure ( unsigned short m_iHealth, int *iPos )
 {
-    return ( &m_pBuffer->tagGuns );
+    TR4NGGUN    *pGun       = &m_pBuffer->tagGuns;
+
+    if ( m_bPureTRNG && m_pTRNGGuns != NULL )
+    {
+        pGun    = m_pTRNGGuns;
+    }
+
+    return pGun;
 }
 
 //
@@ -725,11 +946,17 @@ void CTR4NGSaveGame::GetAmmosValues()
     /*
      *      Get current values for Guns.
      */
-    m_iDesertEagle      = m_pBuffer->tagGuns.m_gunRevolver;
-    m_iRiotGun          = m_pBuffer->tagGuns.m_gunRiotGun;
-    m_iUzis             = m_pBuffer->tagGuns.m_gunUzis;
-    m_iGrenades         = m_pBuffer->tagGuns.m_gunGrenadesLauncher;
-    m_iHarpoon          = m_pBuffer->tagGuns.m_gunCrossBow;
+    TR4NGGUN *pGun      = &m_pBuffer->tagGuns;
+    if ( m_bPureTRNG && m_pTRNGGuns != NULL )
+    {
+        pGun    = m_pTRNGGuns;
+    }
+
+    m_iDesertEagle      = pGun->m_gunRevolver;
+    m_iRiotGun          = pGun->m_gunRiotGun;
+    m_iUzis             = pGun->m_gunUzis;
+    m_iGrenades         = pGun->m_gunGrenadesLauncher;
+    m_iHarpoon          = pGun->m_gunCrossBow;
 }
 
 //
@@ -825,6 +1052,11 @@ const char * CTR4NGSaveGame::GetStatus()
 /////////////////////////////////////////////////////////////////////////////
 int CTR4NGSaveGame::getLevelIndex()
 {
+    if ( m_bPureTRNG )
+    {
+        return -1;
+    }
+
     return getLevel() - 1;
 }
 
@@ -834,7 +1066,14 @@ int CTR4NGSaveGame::getLevelIndex()
 /////////////////////////////////////////////////////////////////////////////
 int CTR4NGSaveGame::GetAmmos1(int iX )
 {
-    return ( m_pBuffer->tagAmmo.m_iGunAmmos );
+    TR4NGAMMO *pAmmo      = &m_pBuffer->tagAmmo;
+    if ( m_bPureTRNG && m_pTRNGAmmos != NULL )
+    {
+        pAmmo    = m_pTRNGAmmos;
+    }
+
+    //
+    return ( pAmmo->m_iGunAmmos );
 
 }
 
@@ -844,7 +1083,14 @@ int CTR4NGSaveGame::GetAmmos1(int iX )
 /////////////////////////////////////////////////////////////////////////////
 int CTR4NGSaveGame::GetAmmos2(int iX )
 {
-    return ( m_pBuffer->tagAmmo.m_iRevolverAmmos );
+    TR4NGAMMO *pAmmo      = &m_pBuffer->tagAmmo;
+    if ( m_bPureTRNG && m_pTRNGAmmos != NULL )
+    {
+        pAmmo    = m_pTRNGAmmos;
+    }
+
+    //
+    return ( pAmmo->m_iRevolverAmmos );
 
 }
 
@@ -854,7 +1100,14 @@ int CTR4NGSaveGame::GetAmmos2(int iX )
 /////////////////////////////////////////////////////////////////////////////
 int CTR4NGSaveGame::GetAmmos3( int iX )
 {
-    return ( m_pBuffer->tagAmmo.m_iUziAmmos );
+    TR4NGAMMO *pAmmo      = &m_pBuffer->tagAmmo;
+    if ( m_bPureTRNG && m_pTRNGAmmos != NULL )
+    {
+        pAmmo    = m_pTRNGAmmos;
+    }
+
+    //
+    return ( pAmmo->m_iUziAmmos );
 
 }
 
@@ -864,7 +1117,14 @@ int CTR4NGSaveGame::GetAmmos3( int iX )
 /////////////////////////////////////////////////////////////////////////////
 int CTR4NGSaveGame::GetAmmos4a( int iX )
 {
-    return ( m_pBuffer->tagAmmo.m_iShotGunAmmo1 / iRiotGunUnits );
+    TR4NGAMMO *pAmmo      = &m_pBuffer->tagAmmo;
+    if ( m_bPureTRNG && m_pTRNGAmmos != NULL )
+    {
+        pAmmo    = m_pTRNGAmmos;
+    }
+
+    //
+    return ( pAmmo->m_iShotGunAmmo1 / iRiotGunUnits );
 }
 
 //
@@ -873,7 +1133,14 @@ int CTR4NGSaveGame::GetAmmos4a( int iX )
 /////////////////////////////////////////////////////////////////////////////
 int CTR4NGSaveGame::GetAmmos4b( int iX )
 {
-    return ( m_pBuffer->tagAmmo.m_iShotGunAmmo2 / iRiotGunUnits );
+    TR4NGAMMO *pAmmo      = &m_pBuffer->tagAmmo;
+    if ( m_bPureTRNG && m_pTRNGAmmos != NULL )
+    {
+        pAmmo    = m_pTRNGAmmos;
+    }
+
+    //
+    return ( pAmmo->m_iShotGunAmmo2 / iRiotGunUnits );
 }
 
 //
@@ -891,9 +1158,16 @@ int CTR4NGSaveGame::GetAmmos5 ( int iX )
 /////////////////////////////////////////////////////////////////////////////
 int CTR4NGSaveGame::GetAmmos6( int iX )
 {
+    TR4NGAMMO *pAmmo      = &m_pBuffer->tagAmmo;
+    if ( m_bPureTRNG && m_pTRNGAmmos != NULL )
+    {
+        pAmmo    = m_pTRNGAmmos;
+    }
+
+    //
     if ( iX >= 0 && iX < m_iMaxLevel )
     {
-//      return ( m_pBuffer->tagGuns.m_iRockets );
+//      return ( pGun->m_iRockets );
     }
 
 //  return ( m_pGun->m_iRockets );
@@ -908,7 +1182,14 @@ int CTR4NGSaveGame::GetAmmos6( int iX )
 /////////////////////////////////////////////////////////////////////////////
 int CTR4NGSaveGame::GetAmmos7a( int iX )
 {
-    return ( m_pBuffer->tagAmmo.m_iGrenade1 );
+    TR4NGAMMO *pAmmo      = &m_pBuffer->tagAmmo;
+    if ( m_bPureTRNG && m_pTRNGAmmos != NULL )
+    {
+        pAmmo    = m_pTRNGAmmos;
+    }
+
+    //
+    return ( pAmmo->m_iGrenade1 );
 
 }
 
@@ -918,7 +1199,14 @@ int CTR4NGSaveGame::GetAmmos7a( int iX )
 /////////////////////////////////////////////////////////////////////////////
 int CTR4NGSaveGame::GetAmmos7b( int iX )
 {
-    return ( m_pBuffer->tagAmmo.m_iGrenade2 );
+    TR4NGAMMO *pAmmo      = &m_pBuffer->tagAmmo;
+    if ( m_bPureTRNG && m_pTRNGAmmos != NULL )
+    {
+        pAmmo    = m_pTRNGAmmos;
+    }
+
+    //
+    return ( pAmmo->m_iGrenade2 );
 
 }
 
@@ -928,7 +1216,14 @@ int CTR4NGSaveGame::GetAmmos7b( int iX )
 /////////////////////////////////////////////////////////////////////////////
 int CTR4NGSaveGame::GetAmmos7c( int iX )
 {
-    return ( m_pBuffer->tagAmmo.m_iGrenade3 );
+    TR4NGAMMO *pAmmo      = &m_pBuffer->tagAmmo;
+    if ( m_bPureTRNG && m_pTRNGAmmos != NULL )
+    {
+        pAmmo    = m_pTRNGAmmos;
+    }
+
+    //
+    return ( pAmmo->m_iGrenade3 );
 
 }
 
@@ -938,7 +1233,14 @@ int CTR4NGSaveGame::GetAmmos7c( int iX )
 /////////////////////////////////////////////////////////////////////////////
 int CTR4NGSaveGame::GetAmmos8a( int iX )
 {
-    return ( m_pBuffer->tagAmmo.m_iCrossbow1 );
+    TR4NGAMMO *pAmmo      = &m_pBuffer->tagAmmo;
+    if ( m_bPureTRNG && m_pTRNGAmmos != NULL )
+    {
+        pAmmo    = m_pTRNGAmmos;
+    }
+
+    //
+    return ( pAmmo->m_iCrossbow1 );
 }
 
 //
@@ -947,7 +1249,14 @@ int CTR4NGSaveGame::GetAmmos8a( int iX )
 /////////////////////////////////////////////////////////////////////////////
 int CTR4NGSaveGame::GetAmmos8b( int iX )
 {
-    return ( m_pBuffer->tagAmmo.m_iCrossbow2 );
+    TR4NGAMMO *pAmmo      = &m_pBuffer->tagAmmo;
+    if ( m_bPureTRNG && m_pTRNGAmmos != NULL )
+    {
+        pAmmo    = m_pTRNGAmmos;
+    }
+
+    //
+    return ( pAmmo->m_iCrossbow2 );
 }
 
 //
@@ -956,7 +1265,14 @@ int CTR4NGSaveGame::GetAmmos8b( int iX )
 /////////////////////////////////////////////////////////////////////////////
 int CTR4NGSaveGame::GetAmmos8c( int iX )
 {
-    return ( m_pBuffer->tagAmmo.m_iCrossbow3 );
+    TR4NGAMMO *pAmmo      = &m_pBuffer->tagAmmo;
+    if ( m_bPureTRNG && m_pTRNGAmmos != NULL )
+    {
+        pAmmo    = m_pTRNGAmmos;
+    }
+
+    //
+    return ( pAmmo->m_iCrossbow3 );
 }
 
 //
@@ -965,7 +1281,14 @@ int CTR4NGSaveGame::GetAmmos8c( int iX )
 /////////////////////////////////////////////////////////////////////////////
 void CTR4NGSaveGame::SetAmmos1 ( const char *szString, int iX )
 {
-    m_pBuffer->tagAmmo.m_iGunAmmos = atoi ( szString );
+    TR4NGAMMO *pAmmo      = &m_pBuffer->tagAmmo;
+    if ( m_bPureTRNG && m_pTRNGAmmos != NULL )
+    {
+        pAmmo    = m_pTRNGAmmos;
+    }
+
+    //
+    pAmmo->m_iGunAmmos = atoi ( szString );
 }
 
 //
@@ -974,7 +1297,14 @@ void CTR4NGSaveGame::SetAmmos1 ( const char *szString, int iX )
 /////////////////////////////////////////////////////////////////////////////
 void CTR4NGSaveGame::SetAmmos2 ( const char *szString, int iX )
 {
-    m_pBuffer->tagAmmo.m_iRevolverAmmos = atoi ( szString );
+    TR4NGAMMO *pAmmo      = &m_pBuffer->tagAmmo;
+    if ( m_bPureTRNG && m_pTRNGAmmos != NULL )
+    {
+        pAmmo    = m_pTRNGAmmos;
+    }
+
+    //
+    pAmmo->m_iRevolverAmmos = atoi ( szString );
 }
 
 //
@@ -983,7 +1313,14 @@ void CTR4NGSaveGame::SetAmmos2 ( const char *szString, int iX )
 /////////////////////////////////////////////////////////////////////////////
 void CTR4NGSaveGame::SetAmmos3 ( const char *szString, int iX )
 {
-    m_pBuffer->tagAmmo.m_iUziAmmos = atoi ( szString );
+    TR4NGAMMO *pAmmo      = &m_pBuffer->tagAmmo;
+    if ( m_bPureTRNG && m_pTRNGAmmos != NULL )
+    {
+        pAmmo    = m_pTRNGAmmos;
+    }
+
+    //
+    pAmmo->m_iUziAmmos = atoi ( szString );
 
 }
 
@@ -993,13 +1330,20 @@ void CTR4NGSaveGame::SetAmmos3 ( const char *szString, int iX )
 /////////////////////////////////////////////////////////////////////////////
 void CTR4NGSaveGame::SetAmmos4a ( const char *szString, int iX )
 {
+    TR4NGAMMO *pAmmo      = &m_pBuffer->tagAmmo;
+    if ( m_bPureTRNG && m_pTRNGAmmos != NULL )
+    {
+        pAmmo    = m_pTRNGAmmos;
+    }
+
+    //
     if ( atoi ( szString ) < 0 )
     {
-        m_pBuffer->tagAmmo.m_iShotGunAmmo1 = -1;
+        pAmmo->m_iShotGunAmmo1 = -1;
     }
     else
     {
-        m_pBuffer->tagAmmo.m_iShotGunAmmo1 = atoi ( szString ) * iRiotGunUnits;
+        pAmmo->m_iShotGunAmmo1 = atoi ( szString ) * iRiotGunUnits;
     }
 }
 
@@ -1009,13 +1353,20 @@ void CTR4NGSaveGame::SetAmmos4a ( const char *szString, int iX )
 /////////////////////////////////////////////////////////////////////////////
 void CTR4NGSaveGame::SetAmmos4b ( const char *szString, int iX )
 {
+    TR4NGAMMO *pAmmo      = &m_pBuffer->tagAmmo;
+    if ( m_bPureTRNG && m_pTRNGAmmos != NULL )
+    {
+        pAmmo    = m_pTRNGAmmos;
+    }
+
+    //
     if ( atoi ( szString ) < 0 )
     {
-        m_pBuffer->tagAmmo.m_iShotGunAmmo2 = -1;
+        pAmmo->m_iShotGunAmmo2 = -1;
     }
     else
     {
-        m_pBuffer->tagAmmo.m_iShotGunAmmo2 = atoi ( szString ) * iRiotGunUnits;
+        pAmmo->m_iShotGunAmmo2 = atoi ( szString ) * iRiotGunUnits;
     }
 }
 
@@ -1025,7 +1376,14 @@ void CTR4NGSaveGame::SetAmmos4b ( const char *szString, int iX )
 /////////////////////////////////////////////////////////////////////////////
 void CTR4NGSaveGame::SetAmmos5 ( const char *szString, int iX )
 {
-    // m_pBuffer->tagAmmo.m_iUnknown = atoi ( szString );
+    TR4NGAMMO *pAmmo      = &m_pBuffer->tagAmmo;
+    if ( m_bPureTRNG && m_pTRNGAmmos != NULL )
+    {
+        pAmmo    = m_pTRNGAmmos;
+    }
+
+    //
+    // pAmmo->m_iUnknown = atoi ( szString );
 }
 
 //
@@ -1034,6 +1392,13 @@ void CTR4NGSaveGame::SetAmmos5 ( const char *szString, int iX )
 /////////////////////////////////////////////////////////////////////////////
 void CTR4NGSaveGame::SetAmmos6 ( const char *szString, int iX )
 {
+    TR4NGAMMO *pAmmo      = &m_pBuffer->tagAmmo;
+    if ( m_bPureTRNG && m_pTRNGAmmos != NULL )
+    {
+        pAmmo    = m_pTRNGAmmos;
+    }
+
+    //
 }
 
 //
@@ -1042,7 +1407,14 @@ void CTR4NGSaveGame::SetAmmos6 ( const char *szString, int iX )
 /////////////////////////////////////////////////////////////////////////////
 void CTR4NGSaveGame::SetAmmos7a ( const char *szString, int iX )
 {
-    m_pBuffer->tagAmmo.m_iGrenade1 = atoi ( szString );
+    TR4NGAMMO *pAmmo      = &m_pBuffer->tagAmmo;
+    if ( m_bPureTRNG && m_pTRNGAmmos != NULL )
+    {
+        pAmmo    = m_pTRNGAmmos;
+    }
+
+    //
+    pAmmo->m_iGrenade1 = atoi ( szString );
 }
 
 //
@@ -1051,7 +1423,14 @@ void CTR4NGSaveGame::SetAmmos7a ( const char *szString, int iX )
 /////////////////////////////////////////////////////////////////////////////
 void CTR4NGSaveGame::SetAmmos7b ( const char *szString, int iX )
 {
-    m_pBuffer->tagAmmo.m_iGrenade2 = atoi ( szString );
+    TR4NGAMMO *pAmmo      = &m_pBuffer->tagAmmo;
+    if ( m_bPureTRNG && m_pTRNGAmmos != NULL )
+    {
+        pAmmo    = m_pTRNGAmmos;
+    }
+
+    //
+    pAmmo->m_iGrenade2 = atoi ( szString );
 }
 
 //
@@ -1060,7 +1439,14 @@ void CTR4NGSaveGame::SetAmmos7b ( const char *szString, int iX )
 /////////////////////////////////////////////////////////////////////////////
 void CTR4NGSaveGame::SetAmmos7c ( const char *szString, int iX )
 {
-    m_pBuffer->tagAmmo.m_iGrenade3 = atoi ( szString );
+    TR4NGAMMO *pAmmo      = &m_pBuffer->tagAmmo;
+    if ( m_bPureTRNG && m_pTRNGAmmos != NULL )
+    {
+        pAmmo    = m_pTRNGAmmos;
+    }
+
+    //
+    pAmmo->m_iGrenade3 = atoi ( szString );
 }
 
 //
@@ -1069,7 +1455,14 @@ void CTR4NGSaveGame::SetAmmos7c ( const char *szString, int iX )
 /////////////////////////////////////////////////////////////////////////////
 void CTR4NGSaveGame::SetAmmos8a ( const char *szString, int iX )
 {
-    m_pBuffer->tagAmmo.m_iCrossbow1 = atoi ( szString );
+    TR4NGAMMO *pAmmo      = &m_pBuffer->tagAmmo;
+    if ( m_bPureTRNG && m_pTRNGAmmos != NULL )
+    {
+        pAmmo    = m_pTRNGAmmos;
+    }
+
+    //
+    pAmmo->m_iCrossbow1 = atoi ( szString );
 }
 
 //
@@ -1078,7 +1471,14 @@ void CTR4NGSaveGame::SetAmmos8a ( const char *szString, int iX )
 /////////////////////////////////////////////////////////////////////////////
 void CTR4NGSaveGame::SetAmmos8b ( const char *szString, int iX )
 {
-    m_pBuffer->tagAmmo.m_iCrossbow2 = atoi ( szString );
+    TR4NGAMMO *pAmmo      = &m_pBuffer->tagAmmo;
+    if ( m_bPureTRNG && m_pTRNGAmmos != NULL )
+    {
+        pAmmo    = m_pTRNGAmmos;
+    }
+
+    //
+    pAmmo->m_iCrossbow2 = atoi ( szString );
 }
 
 //
@@ -1087,7 +1487,14 @@ void CTR4NGSaveGame::SetAmmos8b ( const char *szString, int iX )
 /////////////////////////////////////////////////////////////////////////////
 void CTR4NGSaveGame::SetAmmos8c ( const char *szString, int iX )
 {
-    m_pBuffer->tagAmmo.m_iCrossbow3 = atoi ( szString );
+    TR4NGAMMO *pAmmo      = &m_pBuffer->tagAmmo;
+    if ( m_bPureTRNG && m_pTRNGAmmos != NULL )
+    {
+        pAmmo    = m_pTRNGAmmos;
+    }
+
+    //
+    pAmmo->m_iCrossbow3 = atoi ( szString );
 }
 
 //
@@ -1115,38 +1522,45 @@ int CTR4NGSaveGame::GetUnlimitedAmmos()
 /////////////////////////////////////////////////////////////////////////////
 int CTR4NGSaveGame::Valid()
 {
-    if ( m_pBuffer->tagGuns.m_gunRevolver != 0 && ( m_pBuffer->tagGuns.m_gunRevolver & TR40NG_GUN_MASK ) == 0 &&
-        ( m_pBuffer->tagGuns.m_gunRevolver & TR40NG_GUN_SET4 ) == 0 )
+    TR4NGGUN    *pGun       = &m_pBuffer->tagGuns;
+    if ( m_bPureTRNG && m_pTRNGGuns != NULL )
+    {
+        pGun    = m_pTRNGGuns;
+    }
+
+    //
+    if ( pGun->m_gunRevolver != 0 && ( pGun->m_gunRevolver & TR40NG_GUN_MASK ) == 0 &&
+        ( pGun->m_gunRevolver & TR40NG_GUN_SET4 ) == 0 )
     {
         return 0;
     }
 
-    if ( m_pBuffer->tagGuns.m_gunRiotGun != 0 && ( m_pBuffer->tagGuns.m_gunRiotGun & TR40NG_GUN_MASK ) == 0 &&
-        ( m_pBuffer->tagGuns.m_gunRiotGun & TR40NG_GUN_SET4 ) == 0 )
+    if ( pGun->m_gunRiotGun != 0 && ( pGun->m_gunRiotGun & TR40NG_GUN_MASK ) == 0 &&
+        ( pGun->m_gunRiotGun & TR40NG_GUN_SET4 ) == 0 )
     {
         return 0;
     }
 
-    if ( m_pBuffer->tagGuns.m_gunUzis != 0 && ( m_pBuffer->tagGuns.m_gunUzis & TR40NG_GUN_MASK ) == 0 &&
-        ( m_pBuffer->tagGuns.m_gunUzis & TR40NG_GUN_SET4 ) == 0 )
+    if ( pGun->m_gunUzis != 0 && ( pGun->m_gunUzis & TR40NG_GUN_MASK ) == 0 &&
+        ( pGun->m_gunUzis & TR40NG_GUN_SET4 ) == 0 )
     {
         return 0;
     }
 
-    if ( m_pBuffer->tagGuns.m_gunGrenadesLauncher != 0 && ( m_pBuffer->tagGuns.m_gunGrenadesLauncher & TR40NG_GUN_MASK ) == 0  &&
-        ( m_pBuffer->tagGuns.m_gunGrenadesLauncher & TR40NG_GUN_SET4 ) == 0 )
+    if ( pGun->m_gunGrenadesLauncher != 0 && ( pGun->m_gunGrenadesLauncher & TR40NG_GUN_MASK ) == 0  &&
+        ( pGun->m_gunGrenadesLauncher & TR40NG_GUN_SET4 ) == 0 )
     {
         return 0;
     }
 
-    if ( m_pBuffer->tagGuns.m_gunCrossBow != 0 && ( m_pBuffer->tagGuns.m_gunCrossBow & TR40NG_GUN_MASK ) == 0 &&
-        ( m_pBuffer->tagGuns.m_gunCrossBow & TR40NG_GUN_SET4 ) == 0 )
+    if ( pGun->m_gunCrossBow != 0 && ( pGun->m_gunCrossBow & TR40NG_GUN_MASK ) == 0 &&
+        ( pGun->m_gunCrossBow & TR40NG_GUN_SET4 ) == 0 )
     {
         return 0;
     }
 
-    if ( m_pBuffer->tagGuns.m_gunCrowBar != 0 && ( m_pBuffer->tagGuns.m_gunCrowBar & TR40NG_GUN_MASK ) == 0  &&
-        ( m_pBuffer->tagGuns.m_gunCrowBar & TR40NG_GUN_SET4 ) == 0 )
+    if ( pGun->m_gunCrowBar != 0 && ( pGun->m_gunCrowBar & TR40NG_GUN_MASK ) == 0  &&
+        ( pGun->m_gunCrowBar & TR40NG_GUN_SET4 ) == 0 )
     {
         return 0;
     }
@@ -1167,7 +1581,14 @@ void CTR4NGSaveGame::SetInvalid()
 /////////////////////////////////////////////////////////////////////////////
 int CTR4NGSaveGame::CheckWeapon1 ( int iX )
 {
-    if ( m_pBuffer->tagGuns.m_gunPistol & iMaskGun )
+    TR4NGGUN    *pGun       = &m_pBuffer->tagGuns;
+    if ( m_bPureTRNG && m_pTRNGGuns != NULL )
+    {
+        pGun    = m_pTRNGGuns;
+    }
+
+    //
+    if ( pGun->m_gunPistol & iMaskGun )
     {
         return 1;
     }
@@ -1181,7 +1602,14 @@ int CTR4NGSaveGame::CheckWeapon1 ( int iX )
 /////////////////////////////////////////////////////////////////////////////
 int CTR4NGSaveGame::CheckWeapon4 ( int iX )
 {
-    if ( m_pBuffer->tagGuns.m_gunRiotGun & iMaskRiotGun )
+    TR4NGGUN    *pGun       = &m_pBuffer->tagGuns;
+    if ( m_bPureTRNG && m_pTRNGGuns != NULL )
+    {
+        pGun    = m_pTRNGGuns;
+    }
+
+    //
+    if ( pGun->m_gunRiotGun & iMaskRiotGun )
     {
         return 1;
     }
@@ -1195,7 +1623,14 @@ int CTR4NGSaveGame::CheckWeapon4 ( int iX )
 /////////////////////////////////////////////////////////////////////////////
 int CTR4NGSaveGame::CheckWeapon2 ( int iX )
 {
-    if ( m_pBuffer->tagGuns.m_gunRevolver & iMaskRevolver )
+    TR4NGGUN    *pGun       = &m_pBuffer->tagGuns;
+    if ( m_bPureTRNG && m_pTRNGGuns != NULL )
+    {
+        pGun    = m_pTRNGGuns;
+    }
+
+    //
+    if ( pGun->m_gunRevolver & iMaskRevolver )
     {
         return 1;
     }
@@ -1209,7 +1644,14 @@ int CTR4NGSaveGame::CheckWeapon2 ( int iX )
 /////////////////////////////////////////////////////////////////////////////
 int CTR4NGSaveGame::CheckWeapon3 ( int iX )
 {
-    if ( m_pBuffer->tagGuns.m_gunUzis & iMaskUzi )
+    TR4NGGUN    *pGun       = &m_pBuffer->tagGuns;
+    if ( m_bPureTRNG && m_pTRNGGuns != NULL )
+    {
+        pGun    = m_pTRNGGuns;
+    }
+
+    //
+    if ( pGun->m_gunUzis & iMaskUzi )
     {
         return 1;
     }
@@ -1223,6 +1665,13 @@ int CTR4NGSaveGame::CheckWeapon3 ( int iX )
 /////////////////////////////////////////////////////////////////////////////
 int CTR4NGSaveGame::CheckWeapon5 ( int iX )
 {
+    TR4NGGUN    *pGun       = &m_pBuffer->tagGuns;
+    if ( m_bPureTRNG && m_pTRNGGuns != NULL )
+    {
+        pGun    = m_pTRNGGuns;
+    }
+
+    //
     return 0;
 }
 
@@ -1232,7 +1681,14 @@ int CTR4NGSaveGame::CheckWeapon5 ( int iX )
 /////////////////////////////////////////////////////////////////////////////
 int CTR4NGSaveGame::CheckWeapon8 ( int iX )
 {
-    if ( m_pBuffer->tagGuns.m_gunCrossBow & iMaskCrossBow )
+    TR4NGGUN    *pGun       = &m_pBuffer->tagGuns;
+    if ( m_bPureTRNG && m_pTRNGGuns != NULL )
+    {
+        pGun    = m_pTRNGGuns;
+    }
+
+    //
+    if ( pGun->m_gunCrossBow & iMaskCrossBow )
     {
         return 1;
     }
@@ -1246,7 +1702,14 @@ int CTR4NGSaveGame::CheckWeapon8 ( int iX )
 /////////////////////////////////////////////////////////////////////////////
 int CTR4NGSaveGame::CheckWeapon7 ( int iX )
 {
-    if ( m_pBuffer->tagGuns.m_gunGrenadesLauncher & iMaskGrenade )
+    TR4NGGUN    *pGun       = &m_pBuffer->tagGuns;
+    if ( m_bPureTRNG && m_pTRNGGuns != NULL )
+    {
+        pGun    = m_pTRNGGuns;
+    }
+
+    //
+    if ( pGun->m_gunGrenadesLauncher & iMaskGrenade )
     {
         return 1;
     }
@@ -1260,6 +1723,13 @@ int CTR4NGSaveGame::CheckWeapon7 ( int iX )
 /////////////////////////////////////////////////////////////////////////////
 int CTR4NGSaveGame::CheckWeapon6 ( int iX )
 {
+    TR4NGGUN    *pGun       = &m_pBuffer->tagGuns;
+    if ( m_bPureTRNG && m_pTRNGGuns != NULL )
+    {
+        pGun    = m_pTRNGGuns;
+    }
+
+    //
     return 0;
 }
 
@@ -1270,7 +1740,14 @@ int CTR4NGSaveGame::CheckWeapon6 ( int iX )
 /////////////////////////////////////////////////////////////////////////////
 int CTR4NGSaveGame::CheckWeapon9 ( int iX )
 {
-    if ( m_pBuffer->tagGuns.m_gunCrowBar & iMaskCrowBar )
+    TR4NGGUN    *pGun       = &m_pBuffer->tagGuns;
+    if ( m_bPureTRNG && m_pTRNGGuns != NULL )
+    {
+        pGun    = m_pTRNGGuns;
+    }
+
+    //
+    if ( pGun->m_gunCrowBar & iMaskCrowBar )
     {
         return 1;
     }
@@ -1284,7 +1761,14 @@ int CTR4NGSaveGame::CheckWeapon9 ( int iX )
 /////////////////////////////////////////////////////////////////////////////
 unsigned char CTR4NGSaveGame::GrabWeapon0 ( int iX, bool bAdd, bool bChange )
 {
-    // m_pBuffer->tagGuns.cObjects = iMaskCompass;
+    TR4NGGUN    *pGun       = &m_pBuffer->tagGuns;
+    if ( m_bPureTRNG && m_pTRNGGuns != NULL )
+    {
+        pGun    = m_pTRNGGuns;
+    }
+
+    //
+    // pGun->cObjects = iMaskCompass;
     return 0;
 }
 
@@ -1294,12 +1778,19 @@ unsigned char CTR4NGSaveGame::GrabWeapon0 ( int iX, bool bAdd, bool bChange )
 /////////////////////////////////////////////////////////////////////////////
 unsigned char CTR4NGSaveGame::GrabWeapon1 ( int iX, bool bAdd, bool bChange )
 {
-    unsigned char old = m_pBuffer->tagGuns.m_gunPistol;
+    TR4NGGUN    *pGun       = &m_pBuffer->tagGuns;
+    if ( m_bPureTRNG && m_pTRNGGuns != NULL )
+    {
+        pGun    = m_pTRNGGuns;
+    }
+
+    //
+    unsigned char old = pGun->m_gunPistol;
     if ( ! bChange ) return old;
 
-    m_pBuffer->tagGuns.m_gunPistol &= ( TR40NG_GUN_SET4 ^ 0xffff );
-    if ( bAdd ) m_pBuffer->tagGuns.m_gunPistol |= iMaskGun;
-    if ( ! bAdd ) m_pBuffer->tagGuns.m_gunPistol &= ( iMaskGun ^ 0xff );
+    pGun->m_gunPistol &= ( TR40NG_GUN_SET4 ^ 0xffff );
+    if ( bAdd ) pGun->m_gunPistol |= iMaskGun;
+    if ( ! bAdd ) pGun->m_gunPistol &= ( iMaskGun ^ 0xff );
 
     return old;
 }
@@ -1310,12 +1801,19 @@ unsigned char CTR4NGSaveGame::GrabWeapon1 ( int iX, bool bAdd, bool bChange )
 /////////////////////////////////////////////////////////////////////////////
 unsigned char CTR4NGSaveGame::GrabWeapon4 ( int iX, bool bAdd, bool bChange )
 {
-    unsigned char old = m_pBuffer->tagGuns.m_gunRiotGun;
+    TR4NGGUN    *pGun       = &m_pBuffer->tagGuns;
+    if ( m_bPureTRNG && m_pTRNGGuns != NULL )
+    {
+        pGun    = m_pTRNGGuns;
+    }
+
+    //
+    unsigned char old = pGun->m_gunRiotGun;
     if ( ! bChange ) return old;
 
-    m_pBuffer->tagGuns.m_gunRiotGun &= ( TR40NG_GUN_SET4 ^ 0xffff );
-    if ( bAdd ) m_pBuffer->tagGuns.m_gunRiotGun |= iMaskRiotGun;
-    if ( ! bAdd ) m_pBuffer->tagGuns.m_gunRiotGun &= ( iMaskRiotGun ^ 0xff );
+    pGun->m_gunRiotGun &= ( TR40NG_GUN_SET4 ^ 0xffff );
+    if ( bAdd ) pGun->m_gunRiotGun |= iMaskRiotGun;
+    if ( ! bAdd ) pGun->m_gunRiotGun &= ( iMaskRiotGun ^ 0xff );
 
     return old;
 }
@@ -1326,12 +1824,19 @@ unsigned char CTR4NGSaveGame::GrabWeapon4 ( int iX, bool bAdd, bool bChange )
 /////////////////////////////////////////////////////////////////////////////
 unsigned char CTR4NGSaveGame::GrabWeapon2 ( int iX, bool bAdd, bool bChange )
 {
-    unsigned char old = m_pBuffer->tagGuns.m_gunRevolver;
+    TR4NGGUN    *pGun       = &m_pBuffer->tagGuns;
+    if ( m_bPureTRNG && m_pTRNGGuns != NULL )
+    {
+        pGun    = m_pTRNGGuns;
+    }
+
+    //
+    unsigned char old = pGun->m_gunRevolver;
     if ( ! bChange ) return old;
 
-    m_pBuffer->tagGuns.m_gunRevolver &= ( TR40NG_GUN_SET1 ^ 0xffff );
-    if ( bAdd ) m_pBuffer->tagGuns.m_gunRevolver |= iMaskRevolver;
-    if ( ! bAdd ) m_pBuffer->tagGuns.m_gunRevolver &= ( iMaskRevolver ^ 0xff );
+    pGun->m_gunRevolver &= ( TR40NG_GUN_SET1 ^ 0xffff );
+    if ( bAdd ) pGun->m_gunRevolver |= iMaskRevolver;
+    if ( ! bAdd ) pGun->m_gunRevolver &= ( iMaskRevolver ^ 0xff );
 
     return old;
 }
@@ -1342,12 +1847,19 @@ unsigned char CTR4NGSaveGame::GrabWeapon2 ( int iX, bool bAdd, bool bChange )
 /////////////////////////////////////////////////////////////////////////////
 unsigned char CTR4NGSaveGame::GrabWeapon3 ( int iX, bool bAdd, bool bChange )
 {
-    unsigned char old = m_pBuffer->tagGuns.m_gunUzis;
+    TR4NGGUN    *pGun       = &m_pBuffer->tagGuns;
+    if ( m_bPureTRNG && m_pTRNGGuns != NULL )
+    {
+        pGun    = m_pTRNGGuns;
+    }
+
+    //
+    unsigned char old = pGun->m_gunUzis;
     if ( ! bChange ) return old;
 
-    m_pBuffer->tagGuns.m_gunUzis &= ( TR40NG_GUN_SET4 ^ 0xffff );
-    if ( bAdd ) m_pBuffer->tagGuns.m_gunUzis |= iMaskUzi;
-    if ( ! bAdd ) m_pBuffer->tagGuns.m_gunUzis &= ( iMaskUzi ^ 0xff );
+    pGun->m_gunUzis &= ( TR40NG_GUN_SET4 ^ 0xffff );
+    if ( bAdd ) pGun->m_gunUzis |= iMaskUzi;
+    if ( ! bAdd ) pGun->m_gunUzis &= ( iMaskUzi ^ 0xff );
 
     return old;
 }
@@ -1358,8 +1870,14 @@ unsigned char CTR4NGSaveGame::GrabWeapon3 ( int iX, bool bAdd, bool bChange )
 /////////////////////////////////////////////////////////////////////////////
 unsigned char CTR4NGSaveGame::GrabWeapon5 ( int iX, bool bAdd, bool bChange )
 {
+    TR4NGGUN    *pGun       = &m_pBuffer->tagGuns;
+    if ( m_bPureTRNG && m_pTRNGGuns != NULL )
+    {
+        pGun    = m_pTRNGGuns;
+    }
 
-    // m_pBuffer->tagGuns.cObjects |= iMaskMP5;
+    //
+    // pGun->cObjects |= iMaskMP5;
     return 0;
 }
 
@@ -1369,7 +1887,14 @@ unsigned char CTR4NGSaveGame::GrabWeapon5 ( int iX, bool bAdd, bool bChange )
 /////////////////////////////////////////////////////////////////////////////
 unsigned char CTR4NGSaveGame::GrabWeapon6 ( int iX, bool bAdd, bool bChange )
 {
-    // m_pBuffer->tagGuns.cObjects |= iMaskRocket;
+    TR4NGGUN    *pGun       = &m_pBuffer->tagGuns;
+    if ( m_bPureTRNG && m_pTRNGGuns != NULL )
+    {
+        pGun    = m_pTRNGGuns;
+    }
+
+    //
+    // pGun->cObjects |= iMaskRocket;
     return 0;
 }
 
@@ -1380,12 +1905,19 @@ unsigned char CTR4NGSaveGame::GrabWeapon6 ( int iX, bool bAdd, bool bChange )
 /////////////////////////////////////////////////////////////////////////////
 unsigned char CTR4NGSaveGame::GrabWeapon7 ( int iX, bool bAdd, bool bChange )
 {
-    unsigned char old = m_pBuffer->tagGuns.m_gunGrenadesLauncher;
+    TR4NGGUN    *pGun       = &m_pBuffer->tagGuns;
+    if ( m_bPureTRNG && m_pTRNGGuns != NULL )
+    {
+        pGun    = m_pTRNGGuns;
+    }
+
+    //
+    unsigned char old = pGun->m_gunGrenadesLauncher;
     if ( ! bChange ) return old;
 
-    m_pBuffer->tagGuns.m_gunGrenadesLauncher &= ( TR40NG_GUN_SET4 ^ 0xffff );
-    if ( bAdd ) m_pBuffer->tagGuns.m_gunGrenadesLauncher |= iMaskGrenade;
-    if ( ! bAdd ) m_pBuffer->tagGuns.m_gunGrenadesLauncher &= ( iMaskGrenade ^ 0xff );
+    pGun->m_gunGrenadesLauncher &= ( TR40NG_GUN_SET4 ^ 0xffff );
+    if ( bAdd ) pGun->m_gunGrenadesLauncher |= iMaskGrenade;
+    if ( ! bAdd ) pGun->m_gunGrenadesLauncher &= ( iMaskGrenade ^ 0xff );
 
     return old;
 }
@@ -1396,12 +1928,19 @@ unsigned char CTR4NGSaveGame::GrabWeapon7 ( int iX, bool bAdd, bool bChange )
 /////////////////////////////////////////////////////////////////////////////
 unsigned char CTR4NGSaveGame::GrabWeapon8 ( int iX, bool bAdd, bool bChange )
 {
-    unsigned char old = m_pBuffer->tagGuns.m_gunCrossBow;
+    TR4NGGUN    *pGun       = &m_pBuffer->tagGuns;
+    if ( m_bPureTRNG && m_pTRNGGuns != NULL )
+    {
+        pGun    = m_pTRNGGuns;
+    }
+
+    //
+    unsigned char old = pGun->m_gunCrossBow;
     if ( ! bChange ) return old;
 
-    m_pBuffer->tagGuns.m_gunCrossBow &= ( TR40NG_GUN_SET4 ^ 0xffff );
-    if ( bAdd ) m_pBuffer->tagGuns.m_gunCrossBow |= iMaskCrossBow;
-    if ( ! bAdd ) m_pBuffer->tagGuns.m_gunCrossBow &= ( iMaskCrossBow ^ 0xff );
+    pGun->m_gunCrossBow &= ( TR40NG_GUN_SET4 ^ 0xffff );
+    if ( bAdd ) pGun->m_gunCrossBow |= iMaskCrossBow;
+    if ( ! bAdd ) pGun->m_gunCrossBow &= ( iMaskCrossBow ^ 0xff );
 
     return old;
 }
@@ -1413,12 +1952,19 @@ unsigned char CTR4NGSaveGame::GrabWeapon8 ( int iX, bool bAdd, bool bChange )
 /////////////////////////////////////////////////////////////////////////////
 unsigned char CTR4NGSaveGame::GrabWeapon9 ( int iX, bool bAdd, bool bChange )
 {
-    unsigned char old = m_pBuffer->tagGuns.m_gunCrowBar;
+    TR4NGGUN    *pGun       = &m_pBuffer->tagGuns;
+    if ( m_bPureTRNG && m_pTRNGGuns != NULL )
+    {
+        pGun    = m_pTRNGGuns;
+    }
+
+    //
+    unsigned char old = pGun->m_gunCrowBar;
     if ( ! bChange ) return old;
 
-    m_pBuffer->tagGuns.m_gunCrowBar &= ( TR40NG_GUN_SET4 ^ 0xffff );
-    if ( bAdd ) m_pBuffer->tagGuns.m_gunCrowBar |= iMaskCrowBar;
-    if ( ! bAdd ) m_pBuffer->tagGuns.m_gunCrowBar &= ( iMaskCrowBar ^ 0xff );
+    pGun->m_gunCrowBar &= ( TR40NG_GUN_SET4 ^ 0xffff );
+    if ( bAdd ) pGun->m_gunCrowBar |= iMaskCrowBar;
+    if ( ! bAdd ) pGun->m_gunCrowBar &= ( iMaskCrowBar ^ 0xff );
 
     return old;
 }
@@ -1429,7 +1975,14 @@ unsigned char CTR4NGSaveGame::GrabWeapon9 ( int iX, bool bAdd, bool bChange )
 /////////////////////////////////////////////////////////////////////////////
 int CTR4NGSaveGame::GetSmallMedipak ( int iX )
 {
-    return ( m_pBuffer->tagAmmo.m_iSmallMedipak  );
+    TR4NGAMMO *pAmmo      = &m_pBuffer->tagAmmo;
+    if ( m_bPureTRNG && m_pTRNGAmmos != NULL )
+    {
+        pAmmo    = m_pTRNGAmmos;
+    }
+
+    //
+    return ( pAmmo->m_iSmallMedipak  );
 }
 
 //
@@ -1438,7 +1991,14 @@ int CTR4NGSaveGame::GetSmallMedipak ( int iX )
 /////////////////////////////////////////////////////////////////////////////
 int CTR4NGSaveGame::GetLargeMedipak ( int iX )
 {
-    return ( m_pBuffer->tagAmmo.m_iLargeMedipak  );
+    TR4NGAMMO *pAmmo      = &m_pBuffer->tagAmmo;
+    if ( m_bPureTRNG && m_pTRNGAmmos != NULL )
+    {
+        pAmmo    = m_pTRNGAmmos;
+    }
+
+    //
+    return ( pAmmo->m_iLargeMedipak  );
 }
 
 //
@@ -1447,7 +2007,14 @@ int CTR4NGSaveGame::GetLargeMedipak ( int iX )
 /////////////////////////////////////////////////////////////////////////////
 int CTR4NGSaveGame::GetFlares ( int iX )
 {
-    return ( m_pBuffer->tagAmmo.m_iFlares );
+    TR4NGAMMO *pAmmo      = &m_pBuffer->tagAmmo;
+    if ( m_bPureTRNG && m_pTRNGAmmos != NULL )
+    {
+        pAmmo    = m_pTRNGAmmos;
+    }
+
+    //
+    return ( pAmmo->m_iFlares );
 }
 
 //
@@ -1456,7 +2023,14 @@ int CTR4NGSaveGame::GetFlares ( int iX )
 /////////////////////////////////////////////////////////////////////////////
 int CTR4NGSaveGame::GetLaser ( int iX )
 {
-    return ( m_pBuffer->tagGuns.m_gunLaserLight );
+    TR4NGGUN    *pGun       = &m_pBuffer->tagGuns;
+    if ( m_bPureTRNG && m_pTRNGGuns != NULL )
+    {
+        pGun    = m_pTRNGGuns;
+    }
+
+    //
+    return ( pGun->m_gunLaserLight );
 }
 
 //
@@ -1465,7 +2039,14 @@ int CTR4NGSaveGame::GetLaser ( int iX )
 /////////////////////////////////////////////////////////////////////////////
 int CTR4NGSaveGame::GetBinocular ( int iX )
 {
-    return ( m_pBuffer->tagGuns.m_gunBinocular );
+    TR4NGGUN    *pGun       = &m_pBuffer->tagGuns;
+    if ( m_bPureTRNG && m_pTRNGGuns != NULL )
+    {
+        pGun    = m_pTRNGGuns;
+    }
+
+    //
+    return ( pGun->m_gunBinocular );
 }
 
 //
@@ -1474,6 +2055,11 @@ int CTR4NGSaveGame::GetBinocular ( int iX )
 /////////////////////////////////////////////////////////////////////////////
 int CTR4NGSaveGame::GetAir ( )
 {
+    if ( m_bPureTRNG && m_pTRNGAir != NULL )
+    {
+        return (int) *m_pTRNGAir;
+    }
+
     return ( m_pBuffer->iAir );
 }
 
@@ -1483,7 +2069,14 @@ int CTR4NGSaveGame::GetAir ( )
 /////////////////////////////////////////////////////////////////////////////
 void CTR4NGSaveGame::SetSmallMedipak ( const char *szString, int iX )
 {
-     m_pBuffer->tagAmmo.m_iSmallMedipak  = atoi ( szString );
+    TR4NGAMMO *pAmmo      = &m_pBuffer->tagAmmo;
+    if ( m_bPureTRNG && m_pTRNGAmmos != NULL )
+    {
+        pAmmo    = m_pTRNGAmmos;
+    }
+
+    //
+     pAmmo->m_iSmallMedipak  = atoi ( szString );
 }
 
 //
@@ -1492,7 +2085,14 @@ void CTR4NGSaveGame::SetSmallMedipak ( const char *szString, int iX )
 /////////////////////////////////////////////////////////////////////////////
 void CTR4NGSaveGame::SetLargeMedipak ( const char *szString, int iX )
 {
-     m_pBuffer->tagAmmo.m_iLargeMedipak  = atoi ( szString );
+    TR4NGAMMO *pAmmo      = &m_pBuffer->tagAmmo;
+    if ( m_bPureTRNG && m_pTRNGAmmos != NULL )
+    {
+        pAmmo    = m_pTRNGAmmos;
+    }
+
+    //
+     pAmmo->m_iLargeMedipak  = atoi ( szString );
 }
 
 //
@@ -1501,7 +2101,14 @@ void CTR4NGSaveGame::SetLargeMedipak ( const char *szString, int iX )
 /////////////////////////////////////////////////////////////////////////////
 void CTR4NGSaveGame::SetFlares ( const char *szString, int iX )
 {
-    m_pBuffer->tagAmmo.m_iFlares = atoi (  szString );
+    TR4NGAMMO *pAmmo      = &m_pBuffer->tagAmmo;
+    if ( m_bPureTRNG && m_pTRNGAmmos != NULL )
+    {
+        pAmmo    = m_pTRNGAmmos;
+    }
+
+    //
+    pAmmo->m_iFlares = atoi (  szString );
 }
 
 //
@@ -1510,10 +2117,17 @@ void CTR4NGSaveGame::SetFlares ( const char *szString, int iX )
 /////////////////////////////////////////////////////////////////////////////
 void CTR4NGSaveGame::SetLaser ( char *szString, int iX )
 {
-    m_pBuffer->tagGuns.m_gunLaserLight = atoi (  szString );
-    if ( m_pBuffer->tagGuns.m_gunLaserLight != 0 )
+    TR4NGGUN    *pGun       = &m_pBuffer->tagGuns;
+    if ( m_bPureTRNG && m_pTRNGGuns != NULL )
     {
-        m_pBuffer->tagGuns.m_gunLaserLight = iMaskLaser;
+        pGun    = m_pTRNGGuns;
+    }
+
+    //
+    pGun->m_gunLaserLight = atoi (  szString );
+    if ( pGun->m_gunLaserLight != 0 )
+    {
+        pGun->m_gunLaserLight = iMaskLaser;
     }
 }
 
@@ -1523,10 +2137,17 @@ void CTR4NGSaveGame::SetLaser ( char *szString, int iX )
 /////////////////////////////////////////////////////////////////////////////
 void CTR4NGSaveGame::SetBinocular ( char *szString, int iX )
 {
-    m_pBuffer->tagGuns.m_gunBinocular = atoi (  szString );
-    if ( m_pBuffer->tagGuns.m_gunBinocular != 0 )
+    TR4NGGUN    *pGun       = &m_pBuffer->tagGuns;
+    if ( m_bPureTRNG && m_pTRNGGuns != NULL )
     {
-        m_pBuffer->tagGuns.m_gunBinocular = iMaskBinocular;
+        pGun    = m_pTRNGGuns;
+    }
+
+    //
+    pGun->m_gunBinocular = atoi (  szString );
+    if ( pGun->m_gunBinocular != 0 )
+    {
+        pGun->m_gunBinocular = iMaskBinocular;
     }
 }
 
@@ -1536,6 +2157,12 @@ void CTR4NGSaveGame::SetBinocular ( char *szString, int iX )
 /////////////////////////////////////////////////////////////////////////////
 void CTR4NGSaveGame::SetAir ( const char *szString )
 {
+    if ( m_bPureTRNG && m_pTRNGAir != NULL )
+    {
+        // *m_pTRNGAir = atoi ( szString );
+        return;
+    }
+
     m_pBuffer->iAir = atoi ( szString );
 }
 
@@ -1572,10 +2199,17 @@ void CTR4NGSaveGame::SetCurrentSecrets ( char *szString, int iX )
 /////////////////////////////////////////////////////////////////////////////
 void CTR4NGSaveGame::SetAllSecrets ( )
 {
+    TR4NGGUN    *pGun       = &m_pBuffer->tagGuns;
+    if ( m_bPureTRNG && m_pTRNGGuns != NULL )
+    {
+        pGun    = m_pTRNGGuns;
+    }
+
+    //
     int     iX;
     for ( iX = 0; iX < m_iMaxLevel; iX++ )
     {
-        // m_pBuffer->tagGuns.cSecrets = 7; /* Always 3 secrets */
+        // pGun->cSecrets = 7; /* Always 3 secrets */
     }
 }
 
@@ -1938,8 +2572,8 @@ void *CTR4NGSaveGame::GetIndicatorAddress (int index)
             }
 
             //
-            //  If not search extended only reliable si if index > 2 break
-            if ( ! CTRXGlobal::m_iSearchPosExt && indice >= MaxReliableIndicator )
+            //  Reliable index are step = 0
+            if ( ! CTRXGlobal::m_iSearchPosExt && IndicatorsTR4NGTable [ indice ].step != 0 )
             {
                 break;
             }
@@ -2135,7 +2769,14 @@ void CTR4NGSaveGame::SetBufferLength(size_t len)
 /////////////////////////////////////////////////////////////////////////////
 int CTR4NGSaveGame::GetCurrentSecrets ()
 {
-    return ( m_pBuffer->tagAmmo.m_iSecretCount );
+    TR4NGAMMO *pAmmo      = &m_pBuffer->tagAmmo;
+    if ( m_bPureTRNG && m_pTRNGAmmos != NULL )
+    {
+        pAmmo    = m_pTRNGAmmos;
+    }
+
+    //
+    return ( pAmmo->m_iSecretCount );
 }
 
 //
@@ -2162,9 +2803,16 @@ void CTR4NGSaveGame::SetLaraState ( int state )
 /////////////////////////////////////////////////////////////////////////////
 void CTR4NGSaveGame::SetItems ( int item, BYTE value )
 {
-    if ( item >= 0 && item < sizeof(m_pBuffer->tagGuns.m_Object) )
+    TR4NGGUN    *pGun       = &m_pBuffer->tagGuns;
+    if ( m_bPureTRNG && m_pTRNGGuns != NULL )
     {
-        m_pBuffer->tagGuns.m_Object [ item ] = value;
+        pGun    = m_pTRNGGuns;
+    }
+
+    //
+    if ( item >= 0 && item < sizeof(pGun->m_Object) )
+    {
+        pGun->m_Object [ item ] = value;
     }
 }
 
@@ -2174,9 +2822,16 @@ void CTR4NGSaveGame::SetItems ( int item, BYTE value )
 /////////////////////////////////////////////////////////////////////////////
 BYTE CTR4NGSaveGame::GetItems ( int item )
 {
-    if ( item >= 0 && item < sizeof(m_pBuffer->tagGuns.m_Object) )
+    TR4NGGUN    *pGun       = &m_pBuffer->tagGuns;
+    if ( m_bPureTRNG && m_pTRNGGuns != NULL )
     {
-        return m_pBuffer->tagGuns.m_Object [ item ];
+        pGun    = m_pTRNGGuns;
+    }
+
+    //
+    if ( item >= 0 && item < sizeof(pGun->m_Object) )
+    {
+        return pGun->m_Object [ item ];
     }
     return 0;
 }

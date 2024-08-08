@@ -28,7 +28,11 @@ class CTRXDialogBase : public CDialog
         virtual ~CTRXDialogBase();
 
         CToolTipCtrl    *GetToolTipCtrl();
-
+        BOOL IsValid()
+        {
+            return m_bValid;
+        }
+        
         //
         void SetContextMenu ( CTRXMenuBase *pMenu );
 
@@ -54,6 +58,8 @@ class CTRXDialogBase : public CDialog
 
         //  Handle Npn Client
         CTRXNCColor             m_NC;
+
+        BOOL                    m_bValid;
 
     protected:
         virtual void DoDataExchange(CDataExchange* pDX);    // Prise en charge de DDX/DDV

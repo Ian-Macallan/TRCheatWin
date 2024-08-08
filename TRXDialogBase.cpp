@@ -36,6 +36,8 @@ CTRXDialogBase::CTRXDialogBase(UINT nIDTemplate, CWnd* pParent /*=NULL*/) : CDia
     m_hIcon             = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
     
     m_pMenu             = NULL;
+
+    m_bValid            = FALSE;
 }
 
 //
@@ -52,6 +54,8 @@ CTRXDialogBase::~CTRXDialogBase()
     DELETE_OBJECT(m_pBoldFont)
     DELETE_OBJECT(m_pFixedFont)
     DELETE_OBJECT(m_pFixedBoldFont)
+
+    m_bValid = FALSE;
 }
 
 //
@@ -183,6 +187,7 @@ BOOL CTRXDialogBase::OnInitDialog()
     //
     m_NC.HandleSquareCorners ( this );
 
+    m_bValid    = TRUE;
     //
     return TRUE;  // return TRUE unless you set the focus to a control
     // EXCEPTION : les pages de propriétés OCX devraient retourner FALSE
@@ -241,7 +246,11 @@ INT_PTR CTRXDialogBase::DoModal()
 {
     //
 
-    return CDialog::DoModal();
+    INT_PTR ptr = CDialog::DoModal();
+
+    m_bValid = FALSE;
+
+    return ptr;
 }
 
 //

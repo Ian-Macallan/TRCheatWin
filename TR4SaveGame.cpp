@@ -1718,8 +1718,8 @@ void *CTR4SaveGame::GetIndicatorAddress (int index)
             }
 
             //
-            //  If not search extended only reliable si if index > 2 break
-            if ( ! CTRXGlobal::m_iSearchPosExt && indice >= MaxReliableIndicator )
+            //  Reliable index are step = 0
+            if ( ! CTRXGlobal::m_iSearchPosExt && IndicatorsTR4Table [ indice ].step != 0 )
             {
                 break;
             }

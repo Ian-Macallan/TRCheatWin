@@ -1429,11 +1429,16 @@ void CTRXMapAreas::OnSysCommand(UINT nID, LPARAM lParam)
 /////////////////////////////////////////////////////////////////////////////
 void CTRXMapAreas::OnClose()
 {
+    m_bValid    = FALSE;
+
     //
     if ( m_pVerticalMap != NULL )
     {
-        m_pVerticalMap->SetParent ( NULL );
-        m_pVerticalMap->DestroyWindow();
+        if ( m_pVerticalMap->IsValid () )
+        {
+            m_pVerticalMap->SetParent ( NULL );
+            m_pVerticalMap->DestroyWindow();
+        }
 
         //
         delete m_pVerticalMap;

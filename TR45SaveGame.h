@@ -5,6 +5,8 @@
 #define TR4_MIN_HEALTH      0
 #define TR4_MAX_HEALTH      1000
 #define TR4_ALT_HEALTH      0x7fff
+//  If bit 9 is Set in Health this means invisible
+#define TR4_INVISIBLE       0x100
 
 #define TR5_MIN_HEALTH      0
 #define TR5_MAX_HEALTH      1000
@@ -20,14 +22,15 @@ typedef struct indicatorTR45Struct
     BYTE    b3;
     BYTE    b4;
     BOOL    useB3;
+    //  0 for reliable
+    //  1-8 for usable
+    //  9 for unusable
     int     step;
     char    szLabel [ INDICATOR_LABEL_SIZE ];
 } TR45_INDICATORS;
 #pragma pack(pop, pack1)
 
 //
-static const int MaxReliableIndicator   = 2;
-
 //
 static const int MinTR4PositionOffset   = 0x280;
 static const int MaxTR4PositionOffset   = 0x3000;

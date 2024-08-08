@@ -97,22 +97,22 @@ typedef struct TRNGSpecific
 
 //  NGTAG_SAVEGAME_INFOS 0x8031 // savegame
 typedef struct TRNGSaveInfos {
-	WORD    Flags; // FSAV_ ... flag per savegame
-	WORD    ShatterInizio; // primo slot statico per shatter
-	WORD    ShatterFine;  // ultimo slot statico per shatter
-	WORD    LaraStateId; // state id di lara
-	short   LaraVitality; // vitalita' di lara
-	char    Tr4Name[32]; // solonome di file .tr4 a cui si lega questo savegame
-	short   Veicolo; // VEC_ ... oppure -1 se non e' su un veicolo
-	BYTE    Copy_057_0F3[0x9d]; // copia prima parte savegame
-	BYTE    Copy_169_1AC[0x44]; // copia secondo blocco savegame
-	WORD    FlagsRoom; // flag di stanza dove si trova lara
-	DWORD   OffsetLara; // offset in inizio savegae di dove parte strutturalara
-	BYTE    SegretiTrovati_1FB; // bytre di segreti 
+	WORD    Flags;                  // FSAV_ ... flag per savegame
+	WORD    ShatterInizio;          // primo slot statico per shatter
+	WORD    ShatterFine;            // ultimo slot statico per shatter
+	WORD    LaraStateId;            // state id di lara
+	short   LaraVitality;           // vitalita' di lara
+	char    Tr4Name[32];            // solonome di file .tr4 a cui si lega questo savegame
+	short   Veicolo;                // VEC_ ... oppure -1 se non e' su un veicolo
+	BYTE    Copy_057_0F3[0x9d];     // copia prima parte savegame
+	BYTE    Copy_169_1AC[0x44];     // copia secondo blocco savegame
+	WORD    FlagsRoom;              // flag di stanza dove si trova lara
+	DWORD   OffsetLara;             // offset in inizio savegae di dove parte strutturalara
+	BYTE    SegretiTrovati_1FB;     // bytre di segreti 
 	BYTE    NonUsato;
 	DWORD   Distanza;
 	BYTE    ByteAlign;
-	WORD    Reserved[114]; // ulteriori sviluppi futuri
+	WORD    Reserved[114];          // ulteriori sviluppi futuri
 } TRNGSAVEGAMEINFOS;
 
 
@@ -134,109 +134,110 @@ typedef struct TRNGBaseSalvaCords {
 } TRNGBASESAVECOORD;
 
 typedef struct TRNGInventoryItems {
-	BYTE WeaponPistols;		//  FWEAP_ values to test with & operator (bit flags)
-	BYTE WeaponUZI;		//  FWEAP_ values to test with & operator (bit flags)
-	BYTE WeaponShotGun;		//  FWEAP_ values to test with & operator (bit flags)
-	BYTE WeaponCrossBow;		//  FWEAP_ values to test with & operator (bit flags)
-	BYTE WeaponGrenadeGun;		//  FWEAP_ values to test with & operator (bit flags)
-	BYTE WeaponRevolver;		//  FWEAP_ values to test with & operator (bit flags)
-	BYTE LaserSight;		//  0 / 1
-	BYTE Binoculars;		//  0 / 1
-	BYTE Crowbar;		//  0 / 1
-	BYTE ClockWorkBeetle;		//  CBEET_ values to test with & operator (bit flags)
-	BYTE WaterSkinSmall;		//  WSKIN_ values to test in mixed way, sometimes with == and other flag with &
-	BYTE WaterSkinLarge;		//  WSKIN_ values to test in mixed way, sometimes with == and other flag with &
-	BYTE ExamineItem1;		//  0 / 1
-	BYTE ExamineItem2;		//  0 / 1
-	BYTE ExamineItem3;		//  0 / 1
-	BYTE PuzzleItem1;		//  quantity
-	BYTE PuzzleItem2;		//  quantity
-	BYTE PuzzleItem3;		//  quantity
-	BYTE PuzzleItem4;		//  quantity
-	BYTE PuzzleItem5;		//  quantity
-	BYTE PuzzleItem6;		//  quantity
-	BYTE PuzzleItem7;		//  quantity
-	BYTE PuzzleItem8;		//  quantity
-	BYTE PuzzleItem9;		//  quantity
-	BYTE PuzzleItem10;		//  quantity
-	BYTE PuzzleItem11;		//  quantity
-	BYTE PuzzleItem12;		//  quantity
-	WORD ComboItems;		//  COMBO_ values to test with "&" operator (bit flags)
-	WORD Keys;				//  EX16_ values to test with "&" operator (bit flags) 
-	WORD KeyCombo;			//  KCOMBO_ values to test with "&" operator (bit flags)
-	short PickupItems;		//  EX16_ values to test with "&" operator (bit flags) 
-	short PickupCombo;		//  PCOMBO_ values to test with "&" operator (bit flags) 
-	short QuestItems;		//  EX16_ values to test with "&" operator (bit flags) 
-	short MediPackSmall;		//  quantity (-1 = unlimited)
-	short MediPackLarge;		// quantity (-1 = unlimited)
-	short Flares;		// quantity (-1 = unlimited)
-	short AmmoPistols;		// quantity (-1 = unlimited)
-	short AmmoUZI;		//  quantity (-1 = unlimited)
-	short AmmoRevolver;		// quantity (-1 = unlimited)
+	BYTE WeaponPistols;		        //  FWEAP_ values to test with & operator (bit flags)
+	BYTE WeaponUZI;		            //  FWEAP_ values to test with & operator (bit flags)
+	BYTE WeaponShotGun;		        //  FWEAP_ values to test with & operator (bit flags)
+	BYTE WeaponCrossBow;		    //  FWEAP_ values to test with & operator (bit flags)
+	BYTE WeaponGrenadeGun;		    //  FWEAP_ values to test with & operator (bit flags)
+	BYTE WeaponRevolver;		    //  FWEAP_ values to test with & operator (bit flags)
+	BYTE LaserSight;		        //  0 / 1
+	BYTE Binoculars;		        //  0 / 1
+	BYTE Crowbar;		            //  0 / 1
+	BYTE ClockWorkBeetle;		    //  CBEET_ values to test with & operator (bit flags)
+	BYTE WaterSkinSmall;		    //  WSKIN_ values to test in mixed way, sometimes with == and other flag with &
+	BYTE WaterSkinLarge;		    //  WSKIN_ values to test in mixed way, sometimes with == and other flag with &
+	BYTE ExamineItem1;		        //  0 / 1
+	BYTE ExamineItem2;		        //  0 / 1
+	BYTE ExamineItem3;		        //  0 / 1
+	BYTE PuzzleItem1;		        //  quantity
+	BYTE PuzzleItem2;		        //  quantity
+	BYTE PuzzleItem3;		        //  quantity
+	BYTE PuzzleItem4;		        //  quantity
+	BYTE PuzzleItem5;		        //  quantity
+	BYTE PuzzleItem6;		        //  quantity
+	BYTE PuzzleItem7;		        //  quantity
+	BYTE PuzzleItem8;		        //  quantity
+	BYTE PuzzleItem9;		        //  quantity
+	BYTE PuzzleItem10;		        //  quantity
+	BYTE PuzzleItem11;		        //  quantity
+	BYTE PuzzleItem12;		        //  quantity
+	WORD ComboItems;		        //  COMBO_ values to test with "&" operator (bit flags)
+	WORD Keys;				        //  EX16_ values to test with "&" operator (bit flags) 
+	WORD KeyCombo;			        //  KCOMBO_ values to test with "&" operator (bit flags)
+	short PickupItems;		        //  EX16_ values to test with "&" operator (bit flags) 
+	short PickupCombo;		        //  PCOMBO_ values to test with "&" operator (bit flags) 
+	short QuestItems;		        //  EX16_ values to test with "&" operator (bit flags) 
+	short MediPackSmall;		    //  quantity (-1 = unlimited)
+	short MediPackLarge;		    // quantity (-1 = unlimited)
+	short Flares;		            // quantity (-1 = unlimited)
+	short AmmoPistols;		        // quantity (-1 = unlimited)
+	short AmmoUZI;		            //  quantity (-1 = unlimited)
+	short AmmoRevolver;		        // quantity (-1 = unlimited)
 	short AmmoShotgunNormals;		//  quantity multiple by 6 (-1 = unlimited)
 	short AmmoShotgunWideShot;		//  quantity multiple by 6 (-1 = unlimited)
 	short AmmoGrenadeNormals;		// quantity (-1 = unlimited)
-	short AmmoGrenadeSuper;		//  quantity (-1 = unlimited)
-	short AmmoGrenadeFlash;		// quantity (-1 = unlimited)
+	short AmmoGrenadeSuper;		    //  quantity (-1 = unlimited)
+	short AmmoGrenadeFlash;		    // quantity (-1 = unlimited)
 	short AmmoCrossBowNormals;		// quantity (-1 = unlimited)
 	short AmmoCrossBowPoison;		// quantity (-1 = unlimited)
-	short AmmoCrossBowExplosive;		// quantity (-1 = unlimited)
-	BYTE ClockWorkBeetleAvailUsage;		// available times to use it. When it becomes 0 it will explode but it is 0 also when beetle has not yet been picked up
+	short AmmoCrossBowExplosive;	// quantity (-1 = unlimited)
+    // available times to use it. When it becomes 0 it will explode but it is 0 also when beetle has not yet been picked up
+	BYTE ClockWorkBeetleAvailUsage;		
 
 } TRNGINVENTORYITEMS;
 
 //
 typedef struct TRNGItemTr4 {
-	int HeightFloor;		// 00
-	int ContactFlags;		// 04  (oggetto toccato lara (darts))
-	DWORD MeshVisibilityMask; // 08
-	WORD SlotID;			// 0C
-	WORD StateIdCurrent;	    // 0E
-	WORD StateIdNext;			// 10
-	WORD StateIdAI;				// 12
-	WORD AnimationNow;		    // 14
-	WORD FrameNow;			    // 16
-	short Room;					// 18
-	short ItemIndexNext;	    // 1A
-	short ItemIndexPrevious;     // 1C
-	short SpeedH;			// 1E
-	short SpeedV;			// 20
-	short Health;				// 22
-	WORD BoxZoneIndex;			// 24
-	short ObjectTimer;			// 26
-	WORD Objectbuttons;	// 28
-	WORD Intensity1;			// 2a
-	WORD OcbCode;				// 2c
-	BYTE IdSprite1;				// 2e
-	BYTE IdSprite2;				// 2f
-	WORD Trasparency;			// 30   trasparenza
-	WORD Mistery1;				// 32
-	short Reserved_34;		    // 34
+	int HeightFloor;		        // 00
+	int ContactFlags;		        // 04  (oggetto toccato lara (darts))
+	DWORD MeshVisibilityMask;       // 08
+	WORD SlotID;			        // 0C
+	WORD StateIdCurrent;	        // 0E
+	WORD StateIdNext;			    // 10
+	WORD StateIdAI;				    // 12
+	WORD AnimationNow;		        // 14
+	WORD FrameNow;			        // 16
+	short Room;					    // 18
+	short ItemIndexNext;	        // 1A
+	short ItemIndexPrevious;        // 1C
+	short SpeedH;			        // 1E
+	short SpeedV;			        // 20
+	short Health;				    // 22
+	WORD BoxZoneIndex;			    // 24
+	short ObjectTimer;			    // 26
+	WORD Objectbuttons;	            // 28
+	WORD Intensity1;			    // 2a
+	WORD OcbCode;				    // 2c
+	BYTE IdSprite1;				    // 2e
+	BYTE IdSprite2;				    // 2f
+	WORD Trasparency;			    // 30   trasparenza
+	WORD Mistery1;				    // 32
+	short Reserved_34;		        // 34
 	short Reserved_36;				// 36
 	short Reserved_38;				// 38
 	short Reserved_3A;				// 3A
-	void *pZonaSavegame;		// 3C	or pCreatureInfo structure for enemies				
+	void *pZonaSavegame;		    // 3C	or pCreatureInfo structure for enemies				
 	DWORD  CordX;					// 40
-	int  CordY;					// 44
+	int  CordY;					    // 44
 	DWORD  CordZ;					// 48
-	short OrientationV;  // 4c
-	short OrientationH;  // 4e
-	short OrientationT;		// 50
-	DWORD LightRed;		//52
-	DWORD LightGreen;		// 56
-	DWORD LightBlue;		// 5A
-	DWORD LightRGB;		// 5E
+	short OrientationV;             // 4c
+	short OrientationH;             // 4e
+	short OrientationT;		        // 50
+	DWORD LightRed;		            //52
+	DWORD LightGreen;		        // 56
+	DWORD LightBlue;		        // 5A
+	DWORD LightRGB;		            // 5E
 	DWORD LightDifferenceRed;		// 62
 	DWORD LightDifferenceGreen;		// 66
 	DWORD LightDifferenceBlue;		// 6A
 	DWORD LightChangeDegrees;		// 6E
-	BYTE Zone1[2730];		// 72
-	BYTE Zone2[2758];		// B1C
-	BYTE *pZone1;		// 15e2
-	BYTE *pZone2;		// 15e6
-	DWORD FlagsMain;		// 15ea (FITEM_.. flags)
-	DWORD FlagsSwapMesh;	// 15ee
-	DWORD Mistery5;		// 15f2
+	BYTE Zone1[2730];		        // 72
+	BYTE Zone2[2758];		        // B1C
+	BYTE *pZone1;		            // 15e2
+	BYTE *pZone2;		            // 15e6
+	DWORD FlagsMain;		        // 15ea (FITEM_.. flags)
+	DWORD FlagsSwapMesh;	        // 15ee
+	DWORD Mistery5;		            // 15f2
 } TRNGITEMS4;   // size 0x15f6
 
 typedef struct TRNGCercaStatic {
@@ -272,66 +273,66 @@ typedef struct TRNGFourBytes {
 
 typedef struct TRNGGroupLongVar {
 	union {
-		int Long;
+		int         Long;
 		union {
-			short Short1;
-			short Short2;
+			short   Short1;
+			short   Short2;
 		};
 		union {
-			BYTE Byte1;
-			BYTE Byte2;
-			BYTE Byte3;
-			BYTE Byte4;
+			BYTE    Byte1;
+			BYTE    Byte2;
+			BYTE    Byte3;
+			BYTE    Byte4;
 		};
 	};
 } TRNGGROUPLONGVAR;
 
 typedef struct TRNGVariablesNames {
-	TRNGGroupLongVar Alfa;
-	TRNGGroupLongVar Beta;
-	TRNGGroupLongVar Delta;
-	int Timer;
+	TRNGGroupLongVar    Alfa;
+	TRNGGroupLongVar    Beta;
+	TRNGGroupLongVar    Delta;
+	int                 Timer;
 
 } TRNGVARIABLESNAMES;
 
 typedef struct TRNGBlockNum {
 	union {
-		int VetNumeriLong[4];
-		short VetNumeriShort[8];
-		BYTE VetNumeriByte[16];
-		TRNGVariablesNames Name;
+		int                 VetNumeriLong[4];
+		short               VetNumeriShort[8];
+		BYTE                VetNumeriByte[16];
+		TRNGVariablesNames  Name;
 	};
 } TRNGBLOCKNUM;
 
 typedef struct TRNGVariabiliGlob {
 	// variabili numeriche
 
-	TRNGBlockNum NumWar;
+	TRNGBlockNum    NumWar;
 	// variabili di testo
-	TRNGText80 VetTextVar[4];
+	TRNGText80      VetTextVar[4];
 
 
 	// variabili store per savegame
 	union {
-		int VetStoreLong[16];
-		short VetStoreShort[32];
-		BYTE VetStoreByte[64];
+		int         VetStoreLong[16];
+		short       VetStoreShort[32];
+		BYTE        VetStoreByte[64];
 	};
 
 	// variabili speciali
-	char LastInputText[80];
-	int LastInputNumber;
-	int CurrentValue;
-	char TextBig[320];
+	char            LastInputText[80];
+	int             LastInputNumber;
+	int             CurrentValue;
+	char            TextBig[320];
 	// valori per usi futuri
-	DWORD VetExtra[20];
+	DWORD           VetExtra[20];
 
 } TRNGGLOBALVARIABLES;
 
 //
 typedef struct TRNGVersionHeader {
-	WORD VetVersione[4];
-	WORD Flags;	// VER_... flags
+	WORD    VetVersione[4];
+	WORD    Flags;	// VER_... flags
 
 } TRNGVERSIONHEADER;
 

@@ -1344,6 +1344,7 @@ void CTRXVerticalMap::OnRButtonUp(UINT nFlags, CPoint point)
 void CTRXVerticalMap::OnClose()
 {
     //
+    m_bValid    = FALSE;
 
     //  Clean Rooms
     Free();
@@ -1352,7 +1353,7 @@ void CTRXVerticalMap::OnClose()
     if ( m_Parent != NULL )
     {
         CTRXMapAreas *pWnd = dynamic_cast<CTRXMapAreas *>(m_Parent );
-        if ( pWnd != NULL )
+        if ( pWnd != NULL && pWnd->IsValid () )
         {
             pWnd->SetVerticalMap ( NULL );
         }
@@ -1374,6 +1375,8 @@ void CTRXVerticalMap::OnClose()
 /////////////////////////////////////////////////////////////////////////////
 void CTRXVerticalMap::OnDestroy()
 {
+    m_bValid    = FALSE;
+
     CTRXDialogBase::OnDestroy();
 
     //
