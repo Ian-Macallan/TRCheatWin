@@ -249,7 +249,7 @@ char *CTRXCHEATWINApp::FindFileName ( char *pText )
 {
     for ( int i = (int) strlen(pText) - 1; i >= 0 ; i-- )
     {
-        if ( pText [ i ] == '\\' )
+        if ( pText [ i ] == '\\' || pText [ i ] == '/' )
         {
             return pText + i + 1;
         }
@@ -274,7 +274,7 @@ char *CTRXCHEATWINApp::RemoveFilename ( char *pText )
     //
     for ( int i = (int) strlen(pText) - 1; i > 0; i-- )
     {
-        if ( pText [ i ] == '\\' )
+        if ( pText [ i ] == '\\' || pText [ i ] == '/' )
         {
             pText [ i ] = '\0';
             bFound = true;
@@ -305,7 +305,7 @@ const char *CTRXCHEATWINApp::FindFileName ( const char *pText )
 {
     for ( int i = (int) strlen(pText) - 1; i >= 0 ; i-- )
     {
-        if ( pText [ i ] == '\\' )
+        if ( pText [ i ] == '\\' || pText [ i ] == '/' )
         {
             return pText + i + 1;
         }
@@ -332,7 +332,7 @@ char *CTRXCHEATWINApp::RemoveFileType ( char *pText )
             return pText;
         }
 
-        if ( pText [ i ] == '\\' || pText [ i ] == ':' )
+        if ( pText [ i ] == '\\' || pText [ i ] == '/' || pText [ i ] == ':' )
         {
             return pText;
         }

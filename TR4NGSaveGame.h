@@ -589,7 +589,7 @@ class CTR4NGSaveGame : public CTR45SaveGame
         void writeSaveGame();
         int ReadSavegame( const char *pFilename );
         void TraceTRNG();
-        void GetTRNGPointers();
+        BOOL GetTRNGPointers();
 
         void RetrieveInformation( const char *pFilename );
         TR4NGGUN *SearchGunStructure ( WORD m_iHealth, int *iPos );

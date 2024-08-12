@@ -203,6 +203,12 @@ static void AddToItemsLabels ( int what, int level, int button, const char *pTex
         {
             strcpy_s ( CustomDataFiles [ level ].datafile, sizeof(CustomDataFiles [ level ].datafile), pText );
             strcpy_s ( CustomDataFiles [ level ].title, sizeof(CustomDataFiles [ level ].title), pTitle );
+
+            char *pSlash = strchr ( CustomDataFiles [ level ].datafile, '/' );
+            if ( pSlash != NULL )
+            {
+                *pSlash = '\\';
+            }
         }
     }
 }

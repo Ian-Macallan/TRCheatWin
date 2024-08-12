@@ -44,6 +44,7 @@ class CTRXMapAreas : public CTRXDialogBase
         void SetClickable ( BOOL bClickable );
 
         void SetVerticalMap ( CTRXVerticalMap *pVerticalMap );
+        void CloseVertical();
 
         // Données de boîte de dialogue
         enum { IDD = IDD_TRXMAPAREAS };

@@ -577,6 +577,11 @@ void CTRXMapAreas::ComputeRoomRect ( const RECT *pBase, RECT *pRect, TR_AREA *pA
 void CTRXMapAreas::SelectAreaAndExit ( int area )
 {
     m_iSelectedArea = area;
+
+    //
+    CloseVertical();
+
+    //
     CTRXDialogBase::OnOK();
 }
 
@@ -606,6 +611,10 @@ void CTRXMapAreas::SelectAreaAndExit ( const char *pText )
         }
     }
 
+    //
+    CloseVertical();
+
+    //
     CTRXDialogBase::OnOK();
 }
 
@@ -1427,11 +1436,8 @@ void CTRXMapAreas::OnSysCommand(UINT nID, LPARAM lParam)
 /////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////
-void CTRXMapAreas::OnClose()
+void CTRXMapAreas::CloseVertical()
 {
-    m_bValid    = FALSE;
-
-    //
     if ( m_pVerticalMap != NULL )
     {
         if ( m_pVerticalMap->IsValid () )
@@ -1444,6 +1450,18 @@ void CTRXMapAreas::OnClose()
         delete m_pVerticalMap;
         m_pVerticalMap  = NULL;
     }
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
+void CTRXMapAreas::OnClose()
+{
+    m_bValid    = FALSE;
+
+    //
+    CloseVertical();
 
     //
     CTRXDialogBase::OnClose();

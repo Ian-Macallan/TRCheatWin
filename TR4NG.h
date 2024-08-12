@@ -336,4 +336,32 @@ typedef struct TRNGVersionHeader {
 
 } TRNGVERSIONHEADER;
 
+//
+typedef struct TRNGExtractNG {
+	WORD   NWords;
+	// WORD    NGArray[1];
+} TRNGEXTRACTNG;
+
+typedef struct TRNGLastScriptDat {
+	FILETIME    DataLastWrite;
+	DWORD       SizeFile;
+} TRNGLASTSCRIPTDAT;
+
+typedef struct TRNGMiniNGHeader {
+	WORD    NumeroLivello;
+	WORD    TotWords;
+	// WORD    VetWords [ 1 ];
+} TRNGMININGNGHEADER;
+
+typedef struct TRNGBaseNGHub {
+	WORD                TotHub;
+	WORD                LastIndex; // indice dove era stato salvato l'ultimo livello
+	// TRNGEXTRACTNG       LaraHUB; // StrExtractNG per lara
+	// TRNGMININGNGHEADER  VetNG[10];
+} TRNGBASENGHUB;
+
+
 #pragma pack(pop, pack1)
+
+//
+extern const char *GetTRNGTagLabel(WORD byte);

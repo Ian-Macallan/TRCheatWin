@@ -3,7 +3,8 @@
 
 #include "ReadTRXScript.h"
 #include "MCMemA.h"
-
+#include "TR4NG.h"
+#include "TRXTools.h"
 
 #ifndef     NB_BUTTONS
 #define     NB_BUTTONS      29
@@ -589,7 +590,7 @@ static char *RemoveFileType ( char *pText )
             return pText;
         }
 
-        if ( pText [ i ] == '\\' || pText [ i ] == ':' )
+        if ( pText [ i ] == '\\' || pText [ i ] == '/' || pText [ i ] == ':' )
         {
             return pText;
         }
@@ -1909,6 +1910,121 @@ static BOOL WriteHeader ( int version, int level, FCT_AddToItemsLabels function 
 
 //
 /////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
+static BOOL TraceNGScript(char *pBYtes, long offset )
+{
+    static char szDebugString [ MAX_PATH ];
+
+    //
+    TRNGSPECIFIC *pTRNG = (TRNGSPECIFIC *) pBYtes;
+    if ( memcmp ( pTRNG->signature, "NG", sizeof(pTRNG->signature) ) != 0 )
+    {
+        return FALSE;
+    }
+
+    //
+    TRNGITERATION *pIteration = & pTRNG->iteration;
+
+    //
+    BOOL bContinue      = TRUE;
+    DWORD length        = 0;
+    WORD *pCodeOp       = NULL;
+    DWORD ExtraWords    = 0;
+    WORD *pValues       = NULL;
+    //
+    while ( bContinue )
+    {
+        length  = pIteration->length;
+        pCodeOp = &pIteration->codeOp;
+        pValues = pIteration->values;
+
+        //
+        if ( pIteration->length & 0x8000)
+        {
+            // size e' DWORD
+            WORD Word1  = pIteration->length & 0x7fff;
+            length      = Word1 * 65536 + pIteration->codeOp;
+            ExtraWords  = 3;
+            pCodeOp     = pIteration->values;
+            pValues++;
+        }
+        else
+        {
+            // size e' WORD
+            length      = pIteration->length;
+            ExtraWords  = 2;
+        }
+
+        //
+        if ( length == 0 )
+        {
+            DWORD relativeAddress = CTRXTools::RelativeAddress ( pCodeOp, pBYtes ) + (DWORD) offset;
+            sprintf_s ( szDebugString, sizeof(szDebugString), "TRNGSCRIPT : 0x%08x Length zero - Code is 0x%04x\n",
+                relativeAddress, *pCodeOp );
+            OutputDebugString ( szDebugString );
+            bContinue = FALSE;
+            break;
+        }
+
+        if ( *pCodeOp < 0x8000 || *pCodeOp > 0x80ff )
+        {
+            DWORD relativeAddress = CTRXTools::RelativeAddress ( pCodeOp, pBYtes ) + (DWORD) offset;
+            sprintf_s ( szDebugString, sizeof(szDebugString), "TRNGSCRIPT : 0x%08x Code is 0x%04x - Length : %ld\n",  
+                relativeAddress, *pCodeOp, length );
+            OutputDebugString ( szDebugString );
+            bContinue = FALSE;
+            break;
+        }
+
+        //
+        sprintf_s ( szDebugString, sizeof(szDebugString), "TRNGSCRIPT : 0x%04x (%s) (%ld words %ld bytes)\n", 
+            *pCodeOp, GetTRNGTagLabel(*pCodeOp), length, (long) sizeof(WORD) * ( length - ExtraWords ) );
+        OutputDebugString ( szDebugString );
+
+        //
+        //  Trace items
+		switch (*pCodeOp)
+        {
+            //
+		    case NGTAG_SCRIPT_OPTIONS:
+            {
+                int indice = 0;
+                while ( ( pIteration->values[indice] & 0xff ) != 0 )
+                {
+                    WORD TotWords   = pIteration->values[indice] & 0xff;
+                    WORD TagScript  = pIteration->values[indice]  >> 8;
+                    indice++;
+                    sprintf_s ( szDebugString, sizeof(szDebugString), "TRNGSCRIPT : TotWords : %3u - TagScript : %3u (0x%02x) = 0x%04x\n", 
+                        TotWords, TagScript, TagScript, pIteration->values[indice] );
+                    OutputDebugString ( szDebugString );
+                    indice  += TotWords;
+                }
+                break;
+            }
+
+            //
+		    case NGTAG_CONTROLLO_OPTIONS:
+            {
+                break;
+            }
+
+            //
+		    case NGTAG_SCRIPT_LEVEL:
+            {
+                break;
+            }
+        }
+
+        //
+        pIteration = ( TRNGITERATION * ) ( ( WORD * ) pIteration + length );
+    };
+
+    return TRUE;
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
 //  Full Pathname
 //
 /////////////////////////////////////////////////////////////////////////////
@@ -2315,6 +2431,7 @@ BOOL ReadTRXScript (    const char *pathname, const char *pDirectory, int versio
     Print ( hOutFile, "[Language]\n" );
 
     ZeroMemory ( LanguageBlockData, sizeof(LanguageBlockData) );
+    long lPos = ftell ( hInpFile );
     LanguageBlockLen = (xuint16_t) fread ( LanguageBlockData, 1, sizeof(LanguageBlockData), hInpFile );
     Print ( hLogFile, "Reading LanguageBlockData %d\n", LanguageBlockLen );
     char *pLang = (char*) LanguageBlockData;
@@ -2324,7 +2441,15 @@ BOOL ReadTRXScript (    const char *pathname, const char *pDirectory, int versio
         //  Next Generation
         if ( memcmp ( pLang, "NG", 2 ) == 0 )
         {
+            //  Offset of pLang from LanguageBlockData
+            long offset = (long) ( (BYTE*) pLang - (BYTE*)LanguageBlockData );
+
+            //  Offset of pLang from start of file
+            offset += lPos;
             Print ( hOutFile, "; Next Generation File.\n" );
+#ifdef _DEBUG
+            TraceNGScript(pLang, offset);
+#endif
             break;
         }
         Print ( hOutFile, "File=\t%d,%s\n", iLang, pLang );
