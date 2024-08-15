@@ -942,7 +942,6 @@ void CTRXVerticalMap::SelectAreaAndExit ( const char *pText )
         }
     }
 
-    CTRXDialogBase::OnOK();
 }
 
 //

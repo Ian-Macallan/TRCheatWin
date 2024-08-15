@@ -302,6 +302,66 @@ const char *GetTRNGTagLabel(WORD byte)
 /////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////
+const char *GetTRNGCntLabel(WORD byte)
+{
+    switch ( byte )
+    {
+        _casetostring(cnt_AssignSlot)	
+        _casetostring(cnt_Snow)		
+        _casetostring(cnt_LevelFarView)
+        _casetostring(cnt_FogRange)	
+        _casetostring(cnt_WorldFarView)
+        _casetostring(cnt_TextFormat)
+        _casetostring(cnt_Rain)		
+        _casetostring(cnt_Damage)
+        _casetostring(cnt_Enemy)
+        _casetostring(cnt_Animation)
+        _casetostring(ctn_MirrorEffect)
+        _casetostring(ctn_Elevator)
+        _casetostring(ctn_KeyPad)
+        _casetostring(ctn_AddEffect)
+        _casetostring(ctn_Detector)
+        _casetostring(ctn_Settings)
+        _casetostring(ctn_TextureSequence)
+        _casetostring(ctn_Equipment)
+        _casetostring(ctn_MultEnvCondition)
+        _casetostring(ctn_Customize)
+        _casetostring(ctn_TriggerGroup)
+        _casetostring(ctn_GlobalTrigger)
+        _casetostring(ctn_Organizer)
+        _casetostring(ctn_SoundSettings)
+        _casetostring(ctn_ItemGroup)
+        _casetostring(ctn_ColorRGB)
+        _casetostring(ctn_Parameters)
+        _casetostring(ctn_Turbo)
+        _casetostring(ctn_WindowTitle)
+        _casetostring(ctn_TestPosition)
+        _casetostring(ctn_LogItem)
+        _casetostring(ctn_WindowsFont)
+        _casetostring(ctn_Diary)
+        _casetostring(ctn_Image)
+        _casetostring(ctn_SavegamePanel)
+        _casetostring(cnt_DiagnosticType)
+        _casetostring(cnt_Switch)
+        _casetostring(cnt_CombineItems)
+        _casetostring(cnt_StandBy)
+        _casetostring(cnt_AnimationObj)
+        _casetostring(cnt_DefaultWindowsFont)
+        _casetostring(cnt_Demo)
+        _casetostring(cnt_Plugin)
+        _casetostring(cnt_LaraStartPos)
+        _casetostring(cnt_StaticMIP)
+        _casetostring(cnt_TriggerGroupWord)
+        _casetostring(cnt_FlagsOption)
+        _casetostring(cnt_FlagsLevel)
+    }
+    return "";
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
 BOOL CTR4NGSaveGame::GetTRNGPointers()
 {
     //  TRNG Specific

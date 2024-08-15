@@ -80,6 +80,57 @@
 #define NGTAG_NEW_CAMERAS               0x8050
 #define NGTAG_SLOT_INFO                 0x8051
 
+#define    cnt_AssignSlot               1	
+#define    cnt_Snow                     2		
+#define    cnt_LevelFarView             3 
+#define    cnt_FogRange                 4	
+#define	   cnt_WorldFarView             5
+#define	   cnt_TextFormat               6
+#define    cnt_Rain                     7		
+#define	   cnt_Damage                   8
+#define	   cnt_Enemy                    9
+#define    cnt_Animation                10
+#define	   ctn_MirrorEffect             11
+#define    ctn_Elevator                 12
+#define	   ctn_KeyPad                   13
+#define	   ctn_AddEffect                14
+#define    ctn_Detector                 15
+#define    ctn_Settings                 16
+#define	   ctn_TextureSequence 17
+#define	   ctn_Equipment 18
+#define    ctn_MultEnvCondition 19
+#define    ctn_Customize 20
+#define    ctn_TriggerGroup 21
+#define	   ctn_GlobalTrigger 22
+#define	   ctn_Organizer 23
+#define	   ctn_SoundSettings 24
+#define    ctn_ItemGroup 25
+#define	   ctn_ColorRGB 26
+#define	   ctn_Parameters 27
+#define	   ctn_Turbo 28
+#define	   ctn_WindowTitle 29
+#define    ctn_TestPosition 30
+#define    ctn_LogItem 31
+#define	   ctn_WindowsFont 32
+#define    ctn_Diary 33
+#define    ctn_Image 34
+#define    ctn_SavegamePanel 35
+#define    cnt_DiagnosticType 36
+#define    cnt_Switch 37
+#define	   cnt_CombineItems 38
+#define    cnt_StandBy 39
+#define	   cnt_AnimationObj 40
+#define    cnt_DefaultWindowsFont 41
+#define    cnt_Demo 42
+#define	   cnt_Plugin 43
+#define    cnt_LaraStartPos 44
+#define	   cnt_StaticMIP 45
+#define    cnt_TriggerGroupWord 46
+
+// hidden commands
+#define    cnt_FlagsOption  200 
+#define    cnt_FlagsLevel  201
+
 //  We Will ignore large structure
 //  That are DWORD length
 typedef struct  TRNGIteration
@@ -365,3 +416,5 @@ typedef struct TRNGBaseNGHub {
 
 //
 extern const char *GetTRNGTagLabel(WORD byte);
+extern const char *GetTRNGCntLabel(WORD byte);
+

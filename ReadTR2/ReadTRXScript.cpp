@@ -1956,10 +1956,11 @@ static BOOL TraceNGScript(char *pBYtes, long offset )
             ExtraWords  = 2;
         }
 
+        DWORD relativeAddress = NULL;
         //
         if ( length == 0 )
         {
-            DWORD relativeAddress = CTRXTools::RelativeAddress ( pCodeOp, pBYtes ) + (DWORD) offset;
+            relativeAddress = CTRXTools::RelativeAddress ( pCodeOp, pBYtes ) + (DWORD) offset;
             sprintf_s ( szDebugString, sizeof(szDebugString), "TRNGSCRIPT : 0x%08x Length zero - Code is 0x%04x\n",
                 relativeAddress, *pCodeOp );
             OutputDebugString ( szDebugString );
@@ -1969,7 +1970,7 @@ static BOOL TraceNGScript(char *pBYtes, long offset )
 
         if ( *pCodeOp < 0x8000 || *pCodeOp > 0x80ff )
         {
-            DWORD relativeAddress = CTRXTools::RelativeAddress ( pCodeOp, pBYtes ) + (DWORD) offset;
+            relativeAddress = CTRXTools::RelativeAddress ( pCodeOp, pBYtes ) + (DWORD) offset;
             sprintf_s ( szDebugString, sizeof(szDebugString), "TRNGSCRIPT : 0x%08x Code is 0x%04x - Length : %ld\n",  
                 relativeAddress, *pCodeOp, length );
             OutputDebugString ( szDebugString );
@@ -1992,11 +1993,12 @@ static BOOL TraceNGScript(char *pBYtes, long offset )
                 int indice = 0;
                 while ( ( pIteration->values[indice] & 0xff ) != 0 )
                 {
+                    relativeAddress = CTRXTools::RelativeAddress ( &pIteration->values[indice], pBYtes ) + (DWORD) offset;
                     WORD TotWords   = pIteration->values[indice] & 0xff;
                     WORD TagScript  = pIteration->values[indice]  >> 8;
                     indice++;
-                    sprintf_s ( szDebugString, sizeof(szDebugString), "TRNGSCRIPT : TotWords : %3u - TagScript : %3u (0x%02x) = 0x%04x\n", 
-                        TotWords, TagScript, TagScript, pIteration->values[indice] );
+                    sprintf_s ( szDebugString, sizeof(szDebugString), "TRNGSCRIPT : 0x%08lx : TotWords : %3u - TagScript : %3u (0x%02x) %s = 0x%04x\n", 
+                        relativeAddress, TotWords, TagScript, TagScript, GetTRNGCntLabel(TagScript), pIteration->values[indice] );
                     OutputDebugString ( szDebugString );
                     indice  += TotWords;
                 }
