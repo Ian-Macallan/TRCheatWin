@@ -1957,11 +1957,12 @@ static BOOL TraceNGScript(char *pBYtes, long offset )
         }
 
         DWORD relativeAddress = NULL;
+
         //
         if ( length == 0 )
         {
             relativeAddress = CTRXTools::RelativeAddress ( pCodeOp, pBYtes ) + (DWORD) offset;
-            sprintf_s ( szDebugString, sizeof(szDebugString), "TRNGSCRIPT : 0x%08x Length zero - Code is 0x%04x\n",
+            sprintf_s ( szDebugString, sizeof(szDebugString), "TRNGSCRIPT : 0x%08lx Length zero - Code is 0x%04x\n",
                 relativeAddress, *pCodeOp );
             OutputDebugString ( szDebugString );
             bContinue = FALSE;
@@ -1971,7 +1972,7 @@ static BOOL TraceNGScript(char *pBYtes, long offset )
         if ( *pCodeOp < 0x8000 || *pCodeOp > 0x80ff )
         {
             relativeAddress = CTRXTools::RelativeAddress ( pCodeOp, pBYtes ) + (DWORD) offset;
-            sprintf_s ( szDebugString, sizeof(szDebugString), "TRNGSCRIPT : 0x%08x Code is 0x%04x - Length : %ld\n",  
+            sprintf_s ( szDebugString, sizeof(szDebugString), "TRNGSCRIPT : 0x%08lx Code is 0x%04x - Length : %ld\n",  
                 relativeAddress, *pCodeOp, length );
             OutputDebugString ( szDebugString );
             bContinue = FALSE;
@@ -1979,8 +1980,9 @@ static BOOL TraceNGScript(char *pBYtes, long offset )
         }
 
         //
-        sprintf_s ( szDebugString, sizeof(szDebugString), "TRNGSCRIPT : 0x%04x (%s) (%ld words %ld bytes)\n", 
-            *pCodeOp, GetTRNGTagLabel(*pCodeOp), length, (long) sizeof(WORD) * ( length - ExtraWords ) );
+        relativeAddress = CTRXTools::RelativeAddress ( pCodeOp, pBYtes ) + (DWORD) offset;
+        sprintf_s ( szDebugString, sizeof(szDebugString), "TRNGSCRIPT : 0x%08lx Code is 0x%04x (%s) (%ld words %ld bytes)\n", 
+            relativeAddress, *pCodeOp, GetTRNGTagLabel(*pCodeOp), length, (long) sizeof(WORD) * ( length - ExtraWords ) );
         OutputDebugString ( szDebugString );
 
         //
