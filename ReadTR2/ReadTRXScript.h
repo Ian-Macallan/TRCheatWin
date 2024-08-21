@@ -235,6 +235,8 @@ extern BOOL ReadTRXLanguage (   const char *pFilename, const char *pDirectory, i
 extern BOOL ReadTRXScript (     const char *pathname, const char *pDirectory, int version = 4, bool bWrite = true,
                                 FCT_AddToItemsLabels function = NULL );
 
+extern BOOL UnblindTRXScript ( const char *pathname, const char *pDirectory );
+
 //
 extern BOOL WriteTRXLanguage ( const char *pFilename, const char *pDirectory, int iLang, int version );
 extern BOOL WriteTRXScript ( const char *pathname, const char *pDirectory, int version = 4 );

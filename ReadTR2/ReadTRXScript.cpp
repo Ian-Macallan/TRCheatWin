@@ -110,6 +110,13 @@ static CorrespondanceType Correspondance [ 0xD9 - 0x93 + 1 ] =
 
 };
 
+//  WORD Settings 
+//  BYTE Checksum
+//  BYTE Settings
+static WORD BlindValues [ 3 ];
+static DWORD BlindOffset [ 3 ];
+static BYTE BlindBuffer [ 0x8000 ];
+
 //
 /////////////////////////////////////////////////////////////////////////////
 //  -script "G:\Program Files (x86)\Core Design\trle\Script\SCRIPT.DAT"
@@ -1910,11 +1917,66 @@ static BOOL WriteHeader ( int version, int level, FCT_AddToItemsLabels function 
 
 //
 /////////////////////////////////////////////////////////////////////////////
+// decripta controllo script dat e salva i dati in altro vettore
 //
 /////////////////////////////////////////////////////////////////////////////
-static BOOL TraceNGScript(char *pBYtes, long offset )
+void DecriptaControlloScriptDat(const BYTE *pSource, int size, BYTE *pTarget )
+{
+	int i;
+	int Indice;
+
+    //  13 Bytes
+	BYTE VetCrypt[] = {27, 48, 38, 153, 58, 77, 42, 58, 66, 45, 55, 22, 55};
+	int TotCrypt;
+
+	TotCrypt= 10;
+	TotCrypt +=3;
+	Indice=0;
+
+	for (i=1; i<size; i++)
+    {
+		if (Indice == TotCrypt) Indice=0;
+		pTarget[i] = pSource[i] ^ VetCrypt[Indice++];
+	}
+
+    //  Check Sum
+	pTarget[0] = pSource[0];
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
+static void DumpControl ( BYTE *pAddress, int size )
 {
     static char szDebugString [ MAX_PATH ];
+
+    sprintf_s ( szDebugString, sizeof(szDebugString), "TRNGSCRIPT : " );
+    OutputDebugString ( szDebugString );
+    for ( int index = 0; index < size; index++ )
+    {
+        if ( ( index + 1 ) % 64 == 0 )
+        {
+            OutputDebugString ( "\n" );
+        }
+        sprintf_s ( szDebugString, sizeof(szDebugString), "%02x ", *pAddress & 0xff );
+        OutputDebugString ( szDebugString );
+        pAddress++;
+    }
+    sprintf_s ( szDebugString, sizeof(szDebugString), "\n" );
+    OutputDebugString ( szDebugString );
+
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
+static BOOL AnalyzeNGScript(char *pBYtes, long offset )
+{
+    static char szDebugString [ MAX_PATH ];
+
+    //
+    ZeroMemory ( BlindValues, sizeof(BlindValues) );
+    ZeroMemory ( BlindOffset, sizeof(BlindOffset) );
 
     //
     TRNGSPECIFIC *pTRNG = (TRNGSPECIFIC *) pBYtes;
@@ -1927,11 +1989,15 @@ static BOOL TraceNGScript(char *pBYtes, long offset )
     TRNGITERATION *pIteration = & pTRNG->iteration;
 
     //
-    BOOL bContinue      = TRUE;
-    DWORD length        = 0;
-    WORD *pCodeOp       = NULL;
-    DWORD ExtraWords    = 0;
-    WORD *pValues       = NULL;
+    BOOL bContinue              = TRUE;
+    DWORD length                = 0;
+    WORD *pCodeOp               = NULL;
+    DWORD ExtraWords            = 0;
+    WORD *pValues               = NULL;
+
+    WORD ctnSettings            = 0;
+    DWORD ctnSettingsAddress    = 0;
+
     //
     while ( bContinue )
     {
@@ -2002,6 +2068,11 @@ static BOOL TraceNGScript(char *pBYtes, long offset )
                     sprintf_s ( szDebugString, sizeof(szDebugString), "TRNGSCRIPT : 0x%08lx : TotWords : %3u - TagScript : %3u (0x%02x) %s = 0x%04x\n", 
                         relativeAddress, TotWords, TagScript, TagScript, GetTRNGCntLabel(TagScript), pIteration->values[indice] );
                     OutputDebugString ( szDebugString );
+                    if ( TagScript == ctn_Settings )
+                    {
+                        ctnSettings         = pIteration->values[indice];
+                        ctnSettingsAddress  = CTRXTools::RelativeAddress ( &pIteration->values[indice], pBYtes ) + (DWORD) offset;
+                    }
                     indice  += TotWords;
                 }
                 break;
@@ -2010,12 +2081,101 @@ static BOOL TraceNGScript(char *pBYtes, long offset )
             //
 		    case NGTAG_CONTROLLO_OPTIONS:
             {
+                int nb = (int) sizeof(WORD) * ( length - ExtraWords );
+                DumpControl ( (BYTE *) pIteration->values, nb );
+
+                //
+                MCMemA memUncrypted ( nb );
+
+                //
+                DecriptaControlloScriptDat ( (BYTE * ) pIteration->values, nb, (BYTE * ) memUncrypted.ptr );
+
+                //
+                DumpControl ( (BYTE *) memUncrypted.ptr, nb );
+
+                //
+                sprintf_s ( szDebugString, sizeof(szDebugString), "TRNGSCRIPT : ctn_Settings=%04x versus [19]=%02x\n", ctnSettings, memUncrypted.ptr [ 19 ] );
+                OutputDebugString ( szDebugString );
+
+                //  Blind Save
+                if ( ( ctnSettings & 0x02 ) != 0 && ( memUncrypted.ptr [ 19 ] & 0x02 ) != 0 )
+                {
+                    ctnSettings             ^= 0x02;
+                    memUncrypted.ptr [ 19 ] ^= 0x02;
+
+                    //  Compute Checksum
+                    int checkSum = 0;
+                    BYTE *pAddress = (BYTE * ) memUncrypted.ptr;
+                    for ( int i = 1; i < nb; i++ )
+                    {
+                        checkSum += pAddress [ i ];
+                    }
+                    checkSum &= 0xff;
+
+                    memUncrypted.ptr [ 0 ] = checkSum & 0xff;
+
+                    //
+                    pAddress = (BYTE * ) pIteration->values;
+                    DWORD checkSumAddress = CTRXTools::RelativeAddress ( pAddress, pBYtes ) + (DWORD) offset;
+                    DWORD settingAddress = CTRXTools::RelativeAddress ( pAddress + 19, pBYtes ) + (DWORD) offset;
+
+                    //
+                    MCMemA memCrypted ( nb );
+                    DecriptaControlloScriptDat ( (BYTE * ) memUncrypted.ptr, nb, (BYTE * ) memCrypted.ptr );
+
+                    sprintf_s ( szDebugString, sizeof(szDebugString), "TRNGSCRIPT : To Remove BLIND Savegame\n" );
+                    OutputDebugString ( szDebugString );
+
+                    //  Save Blind Values and Offset
+                    BlindValues [ 0 ] = ctnSettings;
+                    BlindValues [ 1 ] = checkSum;
+                    BlindValues [ 2 ] = memCrypted.ptr [ 19 ];
+
+                    BlindOffset [ 0 ] = ctnSettingsAddress;
+                    BlindOffset [ 1 ] = checkSumAddress;
+                    BlindOffset [ 2 ] = settingAddress;
+
+                    //
+                    sprintf_s ( szDebugString, sizeof(szDebugString), 
+                        "TRNGSCRIPT : ctn_Settings %08lx New=%04x versus [19] %08lx Old=%02x New=%02x CheckSum %08lx Old=%02x New=%02x\n", 
+                        BlindOffset [ 0 ], BlindValues [ 0 ],
+                        BlindOffset [ 2 ], pAddress [ 19 ], BlindValues [ 2 ] & 0xff,
+                        BlindOffset [ 1 ], pAddress [ 0 ], BlindValues [ 1 ] & 0xff );
+                    OutputDebugString ( szDebugString );
+
+                    //
+                    DumpControl ( (BYTE *) memCrypted.ptr, nb );
+                }
+                else
+                {
+                    OutputDebugString ( "TRNGSCRIPT : Script file is not SET_BLIND_SAVEGAME\n" );
+                }
+
+                break;
+            }
+
+            //
+		    case NGTAG_LEVEL_NAMES:
+            {
+                int indice = 0;
                 break;
             }
 
             //
 		    case NGTAG_SCRIPT_LEVEL:
             {
+                int indice = 0;
+                while ( ( pIteration->values[indice] & 0xff ) != 0 )
+                {
+                    relativeAddress = CTRXTools::RelativeAddress ( &pIteration->values[indice], pBYtes ) + (DWORD) offset;
+                    WORD TotWords   = pIteration->values[indice] & 0xff;
+                    WORD TagScript  = pIteration->values[indice]  >> 8;
+                    indice++;
+                    sprintf_s ( szDebugString, sizeof(szDebugString), "TRNGSCRIPT : 0x%08lx : TotWords : %3u - TagScript : %3u (0x%02x) %s = 0x%04x\n", 
+                        relativeAddress, TotWords, TagScript, TagScript, GetTRNGCntLabel(TagScript), pIteration->values[indice] );
+                    OutputDebugString ( szDebugString );
+                    indice  += TotWords;
+                }
                 break;
             }
         }
@@ -2039,6 +2199,10 @@ BOOL ReadTRXScript (    const char *pathname, const char *pDirectory, int versio
     ZeroMemory ( StringTable, sizeof(StringTable) );
 
     ZeroMemory ( GlobalItemsTable, sizeof(GlobalItemsTable) );
+
+    //
+    ZeroMemory ( BlindValues, sizeof(BlindValues) );
+    ZeroMemory ( BlindOffset, sizeof(BlindOffset) );
 
     //
     BOOL bResult = FALSE;
@@ -2451,9 +2615,10 @@ BOOL ReadTRXScript (    const char *pathname, const char *pDirectory, int versio
             //  Offset of pLang from start of file
             offset += lPos;
             Print ( hOutFile, "; Next Generation File.\n" );
-#ifdef _DEBUG
-            TraceNGScript(pLang, offset);
-#endif
+
+            //
+            AnalyzeNGScript(pLang, offset);
+
             break;
         }
         Print ( hOutFile, "File=\t%d,%s\n", iLang, pLang );
@@ -2503,6 +2668,83 @@ BOOL ReadTRXScript (    const char *pathname, const char *pDirectory, int versio
 
     //
     return bResult;
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//  Unblind Savegame
+/////////////////////////////////////////////////////////////////////////////
+BOOL UnblindTRXScript ( const char *pathname, const char *pDirectory )
+{
+    //
+    static char szUnblindedScript [ MAX_PATH ];
+
+    BOOL bRead = ReadTRXScript ( pathname, pDirectory, 4, false, NULL );
+    if ( ! bRead )
+    {
+        return FALSE;
+    }
+
+    if ( BlindOffset [ 0 ] == 0 || BlindOffset [ 1 ] == 0 || BlindOffset [ 2 ] == 0 )
+    {
+        return FALSE;
+    }
+
+    //
+    FILE *hInpFile = NULL;
+    FILE *hOutFile = NULL;
+
+    //
+    fopen_s ( &hInpFile, pathname, "rb" );
+    if ( hInpFile == NULL )
+    {
+        return FALSE;
+    }
+
+    //
+    strcpy_s ( szUnblindedScript, sizeof(szUnblindedScript), pathname );
+    RemoveFileType ( szUnblindedScript );
+    strcat_s ( szUnblindedScript, sizeof(szUnblindedScript), ".unblinded.dat" );
+
+    //
+    fopen_s ( &hOutFile, szUnblindedScript, "wb" );
+    if ( hOutFile == NULL )
+    {
+        CloseOne ( &hInpFile );
+        return FALSE;
+    }
+
+    //  First Copy All
+    BOOL bContinue = TRUE;
+    do
+    {
+        size_t iRead = fread ( BlindBuffer, 1, sizeof(BlindBuffer), hInpFile );
+        if ( iRead > 0 )
+        {
+            fwrite ( BlindBuffer, 1, iRead, hOutFile );
+        }
+        else
+        {
+            bContinue = FALSE;
+        }
+
+    } while ( bContinue );
+
+    //  Then Write Altered Bytes
+    fseek ( hOutFile, (long) BlindOffset [ 0 ], SEEK_SET );
+    fwrite ( &BlindValues [ 0 ], 1, sizeof(BYTE), hOutFile );
+
+    fseek ( hOutFile, (long) BlindOffset [ 1 ], SEEK_SET );
+    fwrite ( &BlindValues [ 1 ], 1, sizeof(BYTE), hOutFile );
+
+    fseek ( hOutFile, (long) BlindOffset [ 2 ], SEEK_SET );
+    fwrite ( &BlindValues [ 2 ], 1, sizeof(BYTE), hOutFile );
+
+    //
+    CloseOne ( &hInpFile );
+    CloseOne ( &hOutFile );
+
+    return TRUE;
 }
 
 //

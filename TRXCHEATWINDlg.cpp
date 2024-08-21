@@ -93,8 +93,9 @@ void CAboutDlg::SetVersionFrom()
 {
     DWORD           dwLength;
     DWORD           dwHandle;
-    char            szFilename [ 512 ];
-    char            szText [ 512 ];
+    static char     szFilename [ MAX_PATH ];
+    static char     szLabel [ 128 ];
+    static char     szText [ 512 ];
     char            *pData;
     BOOL            bResult;
     DWORD           dwResult;
@@ -113,9 +114,52 @@ void CAboutDlg::SetVersionFrom()
         bResult = GetFileVersionInfo(szFilename, dwHandle, dwLength, pData );
         if ( bResult )
         {
+            //  Could be used to retrieve version
             bResult = VerQueryValue ( pData, "\\", &pBufferInfo, &iBufferLen );
+            if (bResult)
+            {
+                if (iBufferLen)
+                {             
+                    VS_FIXEDFILEINFO *verInfo = (VS_FIXEDFILEINFO *)pBufferInfo;
+                    if (verInfo->dwSignature == 0xfeef04bd)
+                    {
+                        // Doesn't matter if you are on 32 bit or 64 bit,
+                        // DWORD is always 32 bits, so first two revision numbers
+                        // come from dwFileVersionMS, last two come from dwFileVersionLS
+                        WORD w1 = ( verInfo->dwFileVersionMS >> 16 ) & 0xffff;
+                        WORD w2 = ( verInfo->dwFileVersionMS >>  0 ) & 0xffff;
+                        WORD w3 = ( verInfo->dwFileVersionLS >> 16 ) & 0xffff;
+                        WORD w4 = ( verInfo->dwFileVersionLS >>  0 ) & 0xffff;
+                    }   
+                }
+            }
 
-            bResult = VerQueryValue ( pData, "\\StringFileInfo\\040904b0\\ProductName", &pBufferInfo, &iBufferLen );
+            //
+            struct LANGANDCODEPAGE
+            {
+                WORD wLanguage;
+                WORD wCodePage;
+            } *lpTranslate;
+
+            struct LANGANDCODEPAGE Translate;
+
+            // Read the list of languages and code pages.
+            UINT cbTranslate;
+
+            bResult = VerQueryValue(pData, "\\VarFileInfo\\Translation", (LPVOID*)&lpTranslate, &cbTranslate);
+            if ( bResult )
+            {
+                Translate   = *lpTranslate;
+            }
+            else
+            {
+                Translate.wLanguage = 0x0409;
+                Translate.wCodePage = 0x04b0;
+            }
+
+            //
+            sprintf_s ( szLabel, sizeof(szLabel),  "\\StringFileInfo\\%04x%04x\\ProductName", Translate.wLanguage, Translate.wCodePage );
+            bResult = VerQueryValue ( pData, szLabel, &pBufferInfo, &iBufferLen );
             if ( bResult )
             {
                 memset ( szText, 0, sizeof ( szText ) );
@@ -124,7 +168,8 @@ void CAboutDlg::SetVersionFrom()
                 m_Version.SetWindowText ( szText );
             }
 
-            bResult = VerQueryValue ( pData, "\\StringFileInfo\\040904b0\\LegalCopyright", &pBufferInfo, &iBufferLen );
+            sprintf_s ( szLabel, sizeof(szLabel),  "\\StringFileInfo\\%04x%04x\\LegalCopyright", Translate.wLanguage, Translate.wCodePage );
+            bResult = VerQueryValue ( pData, szLabel, &pBufferInfo, &iBufferLen );
             if ( bResult )
             {
                 memset ( szText, 0, sizeof ( szText ) );
@@ -132,7 +177,8 @@ void CAboutDlg::SetVersionFrom()
                 m_Copyright.SetWindowText ( szText );
             }
 
-            bResult = VerQueryValue ( pData, "\\StringFileInfo\\040904b0\\InternalName", &pBufferInfo, &iBufferLen );
+            sprintf_s ( szLabel, sizeof(szLabel),  "\\StringFileInfo\\%04x%04x\\InternalName", Translate.wLanguage, Translate.wCodePage );
+            bResult = VerQueryValue ( pData, szLabel, &pBufferInfo, &iBufferLen );
             if ( bResult )
             {
                 memset ( szText, 0, sizeof ( szText ) );
@@ -140,7 +186,8 @@ void CAboutDlg::SetVersionFrom()
                 m_Web.SetWindowText ( szText );
             }
 
-            bResult = VerQueryValue ( pData, "\\StringFileInfo\\040904b0\\Comments", &pBufferInfo, &iBufferLen );
+            sprintf_s ( szLabel, sizeof(szLabel),  "\\StringFileInfo\\%04x%04x\\Comments", Translate.wLanguage, Translate.wCodePage );
+            bResult = VerQueryValue ( pData, szLabel, &pBufferInfo, &iBufferLen );
             if ( bResult )
             {
                 memset ( szText, 0, sizeof ( szText ) );

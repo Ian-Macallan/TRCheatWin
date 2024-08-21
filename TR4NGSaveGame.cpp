@@ -295,7 +295,8 @@ const char *GetTRNGTagLabel(WORD byte)
         _casetostring(NGTAG_NEW_CAMERAS)
         _casetostring(NGTAG_SLOT_INFO)
     }
-    return "";
+
+    return "MGTAB_Unknown";
 }
 
 //
@@ -355,7 +356,7 @@ const char *GetTRNGCntLabel(WORD byte)
         _casetostring(cnt_FlagsOption)
         _casetostring(cnt_FlagsLevel)
     }
-    return "";
+    return "cnt_Unknown";
 }
 
 //
@@ -576,7 +577,7 @@ void CTR4NGSaveGame::TraceTRNG()
         if ( length == 0 )
         {
             DWORD relativeAddress = CTRXTools::RelativeAddress ( pCodeOp, m_pBuffer );
-            sprintf_s ( szDebugString, sizeof(szDebugString), "TRNG : 0x%08x Length zero - Code is 0x%04x\n",
+            sprintf_s ( szDebugString, sizeof(szDebugString), "TRNGSAVE : 0x%08x Length zero - Code is 0x%04x\n",
                 relativeAddress, *pCodeOp );
             OutputDebugString ( szDebugString );
             bContinue = FALSE;
@@ -586,7 +587,7 @@ void CTR4NGSaveGame::TraceTRNG()
         if ( *pCodeOp < 0x8000 || *pCodeOp > 0x80ff )
         {
             DWORD relativeAddress = CTRXTools::RelativeAddress ( pCodeOp, m_pBuffer );
-            sprintf_s ( szDebugString, sizeof(szDebugString), "TRNG : 0x%08x Code is 0x%04x - Length : %ld\n",  
+            sprintf_s ( szDebugString, sizeof(szDebugString), "TRNGSAVE : 0x%08x Code is 0x%04x - Length : %ld\n",  
                 relativeAddress, *pCodeOp, length );
             OutputDebugString ( szDebugString );
             bContinue = FALSE;
@@ -594,7 +595,7 @@ void CTR4NGSaveGame::TraceTRNG()
         }
 
         //
-        sprintf_s ( szDebugString, sizeof(szDebugString), "TRNG : 0x%04x (%s) (%ld words %ld bytes)\n", 
+        sprintf_s ( szDebugString, sizeof(szDebugString), "TRNGSAVE : 0x%04x (%s) (%ld words %ld bytes)\n", 
             *pCodeOp, GetTRNGTagLabel(*pCodeOp), length, (long) sizeof(WORD) * ( length - ExtraWords ) );
         OutputDebugString ( szDebugString );
 
@@ -604,7 +605,7 @@ void CTR4NGSaveGame::TraceTRNG()
             case NGTAG_SAVEGAME_INFOS :
             {
                 TRNGSAVEGAMEINFOS *pSave = (TRNGSAVEGAMEINFOS *) pValues;
-                sprintf_s ( szDebugString, sizeof(szDebugString), "TRNG : %d\tHealth : %d Level : %s\n", 
+                sprintf_s ( szDebugString, sizeof(szDebugString), "TRNGSAVE : %d\tHealth : %d Level : %s\n", 
                     (int) sizeof(TRNGSAVEGAMEINFOS),
                     pSave->LaraVitality, pSave->Tr4Name );
                 OutputDebugString ( szDebugString );
@@ -622,7 +623,7 @@ void CTR4NGSaveGame::TraceTRNG()
                 TRNGSaveCoord *pCoord       = ( TRNGSaveCoord * ) &pValues [ 1 + count ];   // Skip Count and Indices
                 for ( int i = 0; i < count; i++ )
                 {
-                    sprintf_s ( szDebugString, sizeof(szDebugString), "TRNG : %d\t Count: %2d Indice: %3d - Room : %3d - x: %6ld - y: %6d - z: %6ld\n", 
+                    sprintf_s ( szDebugString, sizeof(szDebugString), "TRNGSAVE : %d\t Count: %2d Indice: %3d - Room : %3d - x: %6ld - y: %6d - z: %6ld\n", 
                         (int) sizeof(TRNGBASESAVECOORD),
                         count,
                         pIndices [ i ],
@@ -640,7 +641,7 @@ void CTR4NGSaveGame::TraceTRNG()
                 TRNGSALVASTATIC *pSave  = (TRNGSALVASTATIC *) &pValues [ 1 ];   // Sklp count
                 for ( int i = 0; i < count; i++ )
                 {
-                    sprintf_s ( szDebugString, sizeof(szDebugString), "TRNG : %d\tCount: %2d Indice: %3d - Room : %3d - x: %6d - y: %6d - z: %6d - fl: 0x%x\n", 
+                    sprintf_s ( szDebugString, sizeof(szDebugString), "TRNGSAVE : %d\tCount: %2d Indice: %3d - Room : %3d - x: %6d - y: %6d - z: %6d - fl: 0x%x\n", 
                         (int) sizeof(TRNGSALVASTATIC),
                         count,
                         pSave->Indici.IndiceStatic,
@@ -657,7 +658,7 @@ void CTR4NGSaveGame::TraceTRNG()
             case NGTAG_VAR_GLOBAL_TRNG :
             {
                 TRNGGLOBALVARIABLES *pSave = (TRNGGLOBALVARIABLES *) pValues;
-                sprintf_s ( szDebugString, sizeof(szDebugString), "TRNG : %d\tCurrent Value : 0x%x\n", 
+                sprintf_s ( szDebugString, sizeof(szDebugString), "TRNGSAVE : %d\tCurrent Value : 0x%x\n", 
                     (int) sizeof(TRNGGLOBALVARIABLES),
                     pSave->CurrentValue );
                 OutputDebugString ( szDebugString );
@@ -669,7 +670,7 @@ void CTR4NGSaveGame::TraceTRNG()
             case NGTAG_VAR_LOCAL_TRNG :
             {
                 TRNGBLOCKNUM *pSave = (TRNGBLOCKNUM *) pValues;
-                sprintf_s ( szDebugString, sizeof(szDebugString), "TRNG : %d\tSomething\n", 
+                sprintf_s ( szDebugString, sizeof(szDebugString), "TRNGSAVE : %d\tSomething\n", 
                     (int) sizeof(TRNGBLOCKNUM) );
                 OutputDebugString ( szDebugString );
 
@@ -684,26 +685,26 @@ void CTR4NGSaveGame::TraceTRNG()
                 TRNGMININGNGHEADER  *pHeader    = (TRNGMININGNGHEADER *) ( ( (BYTE * ) pHub ) + sizeof(TRNGEXTRACTNG) + pHub->NWords * sizeof(WORD) );
 
                 DWORD relativeAddress = CTRXTools::RelativeAddress ( pSave, m_pBuffer );
-                sprintf_s ( szDebugString, sizeof(szDebugString), "TRNG : %d\tTRNGBASENGHUB : 0x%x\n", 
+                sprintf_s ( szDebugString, sizeof(szDebugString), "TRNGSAVE : %d\tTRNGBASENGHUB : 0x%x\n", 
                     (int) sizeof(TRNGBASENGHUB), relativeAddress );
                 OutputDebugString ( szDebugString );
 
                 relativeAddress = CTRXTools::RelativeAddress ( pHub, m_pBuffer );
-                sprintf_s ( szDebugString, sizeof(szDebugString), "TRNG : %d\tTRNGEXTRACTNG : 0x%x\n", 
+                sprintf_s ( szDebugString, sizeof(szDebugString), "TRNGSAVE : %d\tTRNGEXTRACTNG : 0x%x\n", 
                     (int) sizeof(TRNGEXTRACTNG), relativeAddress );
                 OutputDebugString ( szDebugString );
 
                 relativeAddress = CTRXTools::RelativeAddress ( pHeader, m_pBuffer );
-                sprintf_s ( szDebugString, sizeof(szDebugString), "TRNG : %d\tTRNGMININGNGHEADER : 0x%x\n", 
+                sprintf_s ( szDebugString, sizeof(szDebugString), "TRNGSAVE : %d\tTRNGMININGNGHEADER : 0x%x\n", 
                     (int) sizeof(TRNGMININGNGHEADER), relativeAddress );
                 OutputDebugString ( szDebugString );
-                sprintf_s ( szDebugString, sizeof(szDebugString), "TRNG : \tTotHub : %d - LastIndex : %d - LaraHUB.NWords : %d\n", 
+                sprintf_s ( szDebugString, sizeof(szDebugString), "TRNGSAVE : \tTotHub : %d - LastIndex : %d - LaraHUB.NWords : %d\n", 
                     pSave->TotHub, pSave->LastIndex, pHub->NWords );
                 OutputDebugString ( szDebugString );
                 for ( int i = 0; i < 10; i++ )
                 {
                     relativeAddress = CTRXTools::RelativeAddress ( pHeader, m_pBuffer );
-                    sprintf_s ( szDebugString, sizeof(szDebugString), "TRNG : 0x%x\tNumeroLivello : %d - TotWords : %d\n", 
+                    sprintf_s ( szDebugString, sizeof(szDebugString), "TRNGSAVE : 0x%x\tNumeroLivello : %d - TotWords : %d\n", 
                         relativeAddress,
                         pHeader->NumeroLivello, pHeader->TotWords );
                     pHeader = (TRNGMININGNGHEADER *) ( ( ( BYTE * ) pHeader ) + sizeof(TRNGMININGNGHEADER) + pHeader->TotWords * sizeof(WORD) );
@@ -717,7 +718,7 @@ void CTR4NGSaveGame::TraceTRNG()
             case NGTAG_VERSION_HEADER :
             {
                 TRNGVERSIONHEADER *pSave = (TRNGVERSIONHEADER *) pValues;
-                sprintf_s ( szDebugString, sizeof(szDebugString), "TRNG : %d\tVersion : %u.%u.%u.%u - Flag : 0x%04x\n", 
+                sprintf_s ( szDebugString, sizeof(szDebugString), "TRNGSAVE : %d\tVersion : %u.%u.%u.%u - Flag : 0x%04x\n", 
                     (int) sizeof(TRNGVERSIONHEADER),
                     pSave->VetVersione [ 0 ], pSave->VetVersione [ 1 ],
                     pSave->VetVersione [ 2 ], pSave->VetVersione [ 3 ],
@@ -824,6 +825,7 @@ int CTR4NGSaveGame::ReadSavegame ( const char *pFilename )
             CTRXMessageBox::ShowMessage( "Load Savegame Warning", "Warning this file will not be correctly treated");
 #endif
             m_bPureTRNG = TRUE;
+            strcpy_s ( m_Status, sizeof(m_Status), "Load Savegame Warning : Warning this file will not be correctly treated" );
         }
 
         //

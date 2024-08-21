@@ -841,6 +841,27 @@ BOOL CTRXCHEATWINApp::InitInstance()
             }
         }
         //
+        //  Unblind Script
+        else if ( __strnicmp ( pCommandLine, "-unblind" ) == 0 )
+        {
+            //
+            char *pFilename = strchr ( pCommandLine, ' ' );
+            if ( pFilename != NULL )
+            {
+                pFilename = SkipSpaces ( pFilename );
+                strcpy_s ( szPathname, sizeof(szPathname), pFilename );
+                RemoveEnclosingQuotes ( szPathname, sizeof(szPathname) );
+
+                LPSTR lpFilepart = NULL;
+                GetFullPathName ( szPathname, sizeof(szFullPathname), szFullPathname, &lpFilepart );
+
+                //
+                strcpy_s ( szDirectory, sizeof(szDirectory), szFullPathname );
+                RemoveFilename ( szDirectory );
+                BOOL bRead = UnblindTRXScript ( szFullPathname, szDirectory );
+            }
+        }
+        //
         //  Read Script
         else if ( __strnicmp ( pCommandLine, "-ws4" ) == 0 )
         {
