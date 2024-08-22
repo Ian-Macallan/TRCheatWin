@@ -131,6 +131,16 @@
 #define    cnt_FlagsOption  200 
 #define    cnt_FlagsLevel  201
 
+
+// flag per comando script Settings=
+#define SET_DISABLE_CHEATS              0x0001
+#define SET_BLIND_SAVEGAMES             0x0002
+#define SET_PERFORM_FROM_CD             0x0004
+#define SET_CRYPT_SCRIPT                0x0008
+#define SET_FORCE_SOFT_FULL_SCREEN      0x0010
+#define SET_ACCEPT_EXTRA_TAILINFOS      0x0020
+#define SET_FORCE_NO_WAITING_REFRESH    0x0040
+
 //  We Will ignore large structure
 //  That are DWORD length
 typedef struct  TRNGIteration

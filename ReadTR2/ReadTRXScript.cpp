@@ -2098,10 +2098,11 @@ static BOOL AnalyzeNGScript(char *pBYtes, long offset )
                 OutputDebugString ( szDebugString );
 
                 //  Blind Save
-                if ( ( ctnSettings & 0x02 ) != 0 && ( memUncrypted.ptr [ 19 ] & 0x02 ) != 0 )
+                if ( ( ctnSettings & SET_BLIND_SAVEGAMES ) != 0 && ( memUncrypted.ptr [ 19 ] & SET_BLIND_SAVEGAMES ) != 0 )
                 {
-                    ctnSettings             ^= 0x02;
-                    memUncrypted.ptr [ 19 ] ^= 0x02;
+                    WORD mask               = 0xffff ^ SET_BLIND_SAVEGAMES;
+                    ctnSettings             &= mask;
+                    memUncrypted.ptr [ 19 ] &= mask;
 
                     //  Compute Checksum
                     int checkSum = 0;
@@ -2148,7 +2149,7 @@ static BOOL AnalyzeNGScript(char *pBYtes, long offset )
                 }
                 else
                 {
-                    OutputDebugString ( "TRNGSCRIPT : Script file is not SET_BLIND_SAVEGAME\n" );
+                    OutputDebugString ( "TRNGSCRIPT : Script file is not SET_BLIND_SAVEGAMES\n" );
                 }
 
                 break;

@@ -825,7 +825,7 @@ int CTR4NGSaveGame::ReadSavegame ( const char *pFilename )
             CTRXMessageBox::ShowMessage( "Load Savegame Warning", "Warning this file will not be correctly treated");
 #endif
             m_bPureTRNG = TRUE;
-            strcpy_s ( m_Status, sizeof(m_Status), "Load Savegame Warning : Warning this file will not be correctly treated" );
+            strcpy_s ( m_Status, sizeof(m_Status), "Load Savegame Warning : Warning this file will not be correctly treated - Use -unblind" );
         }
 
         //
@@ -856,7 +856,7 @@ void CTR4NGSaveGame::writeSaveGame()
     //  So it is probably written elsewhere in the savegame
     if ( m_bPureTRNG )
     {
-        CTRXMessageBox::ShowMessage( "Write Savegame Warning", "Warning this file will not be saved");
+        CTRXMessageBox::ShowMessage( "Write Savegame Warning", "Warning this file will not be saved\nUse -unblind");
         return;
     }
 
