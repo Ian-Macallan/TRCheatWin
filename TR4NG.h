@@ -96,40 +96,40 @@
 #define	   ctn_AddEffect                14
 #define    ctn_Detector                 15
 #define    ctn_Settings                 16
-#define	   ctn_TextureSequence 17
-#define	   ctn_Equipment 18
-#define    ctn_MultEnvCondition 19
-#define    ctn_Customize 20
-#define    ctn_TriggerGroup 21
-#define	   ctn_GlobalTrigger 22
-#define	   ctn_Organizer 23
-#define	   ctn_SoundSettings 24
-#define    ctn_ItemGroup 25
-#define	   ctn_ColorRGB 26
-#define	   ctn_Parameters 27
-#define	   ctn_Turbo 28
-#define	   ctn_WindowTitle 29
-#define    ctn_TestPosition 30
-#define    ctn_LogItem 31
-#define	   ctn_WindowsFont 32
-#define    ctn_Diary 33
-#define    ctn_Image 34
-#define    ctn_SavegamePanel 35
-#define    cnt_DiagnosticType 36
-#define    cnt_Switch 37
-#define	   cnt_CombineItems 38
-#define    cnt_StandBy 39
-#define	   cnt_AnimationObj 40
-#define    cnt_DefaultWindowsFont 41
-#define    cnt_Demo 42
-#define	   cnt_Plugin 43
-#define    cnt_LaraStartPos 44
-#define	   cnt_StaticMIP 45
-#define    cnt_TriggerGroupWord 46
+#define	   ctn_TextureSequence          17
+#define	   ctn_Equipment                18
+#define    ctn_MultEnvCondition         19
+#define    ctn_Customize                20
+#define    ctn_TriggerGroup             21
+#define	   ctn_GlobalTrigger            22
+#define	   ctn_Organizer                23
+#define	   ctn_SoundSettings            24
+#define    ctn_ItemGroup                25
+#define	   ctn_ColorRGB                 26
+#define	   ctn_Parameters               27
+#define	   ctn_Turbo                    28
+#define	   ctn_WindowTitle              29
+#define    ctn_TestPosition             30
+#define    ctn_LogItem                  31
+#define	   ctn_WindowsFont              32
+#define    ctn_Diary                    33
+#define    ctn_Image                    34
+#define    ctn_SavegamePanel            35
+#define    cnt_DiagnosticType           36
+#define    cnt_Switch                   37
+#define	   cnt_CombineItems             38
+#define    cnt_StandBy                  39
+#define	   cnt_AnimationObj             40
+#define    cnt_DefaultWindowsFont       41
+#define    cnt_Demo                     42
+#define	   cnt_Plugin                   43
+#define    cnt_LaraStartPos             44
+#define	   cnt_StaticMIP                45
+#define    cnt_TriggerGroupWord         46
 
 // hidden commands
-#define    cnt_FlagsOption  200 
-#define    cnt_FlagsLevel  201
+#define    cnt_FlagsOption              200 
+#define    cnt_FlagsLevel               201
 
 
 // flag per comando script Settings=
@@ -157,7 +157,8 @@ typedef struct TRNGSpecific
 } TRNGSPECIFIC;
 
 //  NGTAG_SAVEGAME_INFOS 0x8031 // savegame
-typedef struct TRNGSaveInfos {
+typedef struct TRNGSaveInfos
+{
 	WORD    Flags;                  // FSAV_ ... flag per savegame
 	WORD    ShatterInizio;          // primo slot statico per shatter
 	WORD    ShatterFine;            // ultimo slot statico per shatter
@@ -178,7 +179,8 @@ typedef struct TRNGSaveInfos {
 
 
 // struttura Item per tomb4 and for lara
-typedef struct TRNGSaveCoord {
+typedef struct TRNGSaveCoord
+{
 	WORD    OrientingH;
 	WORD    OrientingV;
 	WORD    FlagInvisibile;
@@ -188,13 +190,15 @@ typedef struct TRNGSaveCoord {
 	WORD    Room;
 } TRNGSAVECOORD;
 
-typedef struct TRNGBaseSalvaCords {
+typedef struct TRNGBaseSalvaCords
+{
 	WORD            TotSalvati;
 	WORD            VetIndici[1];
 	TRNGSaveCoord   VetSalvati[1];
 } TRNGBASESAVECOORD;
 
-typedef struct TRNGInventoryItems {
+typedef struct TRNGInventoryItems
+{
 	BYTE WeaponPistols;		        //  FWEAP_ values to test with & operator (bit flags)
 	BYTE WeaponUZI;		            //  FWEAP_ values to test with & operator (bit flags)
 	BYTE WeaponShotGun;		        //  FWEAP_ values to test with & operator (bit flags)
@@ -248,7 +252,8 @@ typedef struct TRNGInventoryItems {
 } TRNGINVENTORYITEMS;
 
 //
-typedef struct TRNGItemTr4 {
+typedef struct TRNGItemTr4
+{
 	int HeightFloor;		        // 00
 	int ContactFlags;		        // 04  (oggetto toccato lara (darts))
 	DWORD MeshVisibilityMask;       // 08
@@ -301,12 +306,14 @@ typedef struct TRNGItemTr4 {
 	DWORD Mistery5;		            // 15f2
 } TRNGITEMS4;   // size 0x15f6
 
-typedef struct TRNGCercaStatic {
+typedef struct TRNGCercaStatic
+{
 	WORD    IndiceRoom;
 	short   IndiceStatic; // interno a stanza
 } TRNGCERCASTATIC;
 
-typedef struct TRNGSalvaStatic {
+typedef struct TRNGSalvaStatic
+{
 	TRNGCercaStatic Indici;
 	WORD            Flags;
 	int             OrgX;
@@ -316,23 +323,27 @@ typedef struct TRNGSalvaStatic {
 	WORD            Colore;
 } TRNGSALVASTATIC;
 
-typedef struct TRNGText80 {
+typedef struct TRNGText80
+{
 	char Text[80];
 } TRNGTEXT80;
 
-typedef struct TRNGTwoShort {
+typedef struct TRNGTwoShort
+{
 	short s1;
 	short s2;
 } TRNGTWOSHORT;
 
-typedef struct TRNGFourBytes {
+typedef struct TRNGFourBytes
+{
 	BYTE b1;
 	BYTE b2;
 	BYTE b3;
 	BYTE b4;
 } TRNGFOURBYTES;
 
-typedef struct TRNGGroupLongVar {
+typedef struct TRNGGroupLongVar
+{
 	union {
 		int         Long;
 		union {
@@ -348,7 +359,8 @@ typedef struct TRNGGroupLongVar {
 	};
 } TRNGGROUPLONGVAR;
 
-typedef struct TRNGVariablesNames {
+typedef struct TRNGVariablesNames
+{
 	TRNGGroupLongVar    Alfa;
 	TRNGGroupLongVar    Beta;
 	TRNGGroupLongVar    Delta;
@@ -356,7 +368,8 @@ typedef struct TRNGVariablesNames {
 
 } TRNGVARIABLESNAMES;
 
-typedef struct TRNGBlockNum {
+typedef struct TRNGBlockNum
+{
 	union {
 		int                 VetNumeriLong[4];
 		short               VetNumeriShort[8];
@@ -365,7 +378,8 @@ typedef struct TRNGBlockNum {
 	};
 } TRNGBLOCKNUM;
 
-typedef struct TRNGVariabiliGlob {
+typedef struct TRNGVariabiliGlob
+{
 	// variabili numeriche
 
 	TRNGBlockNum    NumWar;
@@ -391,30 +405,35 @@ typedef struct TRNGVariabiliGlob {
 } TRNGGLOBALVARIABLES;
 
 //
-typedef struct TRNGVersionHeader {
+typedef struct TRNGVersionHeader
+{
 	WORD    VetVersione[4];
 	WORD    Flags;	// VER_... flags
 
 } TRNGVERSIONHEADER;
 
 //
-typedef struct TRNGExtractNG {
+typedef struct TRNGExtractNG
+{
 	WORD   NWords;
 	// WORD    NGArray[1];
 } TRNGEXTRACTNG;
 
-typedef struct TRNGLastScriptDat {
+typedef struct TRNGLastScriptDat
+{
 	FILETIME    DataLastWrite;
 	DWORD       SizeFile;
 } TRNGLASTSCRIPTDAT;
 
-typedef struct TRNGMiniNGHeader {
+typedef struct TRNGMiniNGHeader
+{
 	WORD    NumeroLivello;
 	WORD    TotWords;
 	// WORD    VetWords [ 1 ];
 } TRNGMININGNGHEADER;
 
-typedef struct TRNGBaseNGHub {
+typedef struct TRNGBaseNGHub
+{
 	WORD                TotHub;
 	WORD                LastIndex; // indice dove era stato salvato l'ultimo livello
 	// TRNGEXTRACTNG       LaraHUB; // StrExtractNG per lara

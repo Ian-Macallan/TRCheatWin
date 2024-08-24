@@ -851,7 +851,7 @@ void CTRXRemastered::SetValue ( CButton &button, int check, BOOL enable, BOOL bS
     }
     else
     {
-        button.SetCheck ( 0 );
+        button.SetCheck ( FALSE );
     }
 }
 

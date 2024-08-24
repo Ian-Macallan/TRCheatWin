@@ -71,6 +71,7 @@ void CTRXGunPage::DoDataExchange(CDataExchange* pDX)
     DDX_Control(pDX, IDC_BM_MP5, m_BM_MP5);
     DDX_Control(pDX, IDC_BM_ROCKET, m_BM_Rocket);
     DDX_Control(pDX, IDC_BM_RIOTGUN, m_BM_RiotGun);
+    DDX_Control(pDX, IDC_ALL_GUNS, m_All_Guns);
     //}}AFX_DATA_MAP
 }
 
@@ -92,6 +93,7 @@ BEGIN_MESSAGE_MAP(CTRXGunPage, CTRXPropertyPage)
     ON_BN_CLICKED(ID_HELP, OnHelp)
     //}}AFX_MSG_MAP
     ON_WM_CTLCOLOR()
+    ON_BN_CLICKED(IDC_ALL_GUNS, &CTRXGunPage::OnBnClickedAllGuns)
 END_MESSAGE_MAP()
 
 //
@@ -173,58 +175,58 @@ void CTRXGunPage::DisplayValues()
         iX = CTRSaveGame::GetLevelIndex ();
 
 
-        m_Guns.SetCheck ( 0 );
+        m_Guns.SetCheck ( FALSE );
         if ( CTRSaveGame::I()->CheckWeapon1 ( iX ) )
         {
-            m_Guns.SetCheck ( 1 );
+            m_Guns.SetCheck ( TRUE );
         }
 
-        m_Desert_Eagle.SetCheck ( 0 );
+        m_Desert_Eagle.SetCheck ( FALSE );
         if ( CTRSaveGame::I()->CheckWeapon2 ( iX ) )
         {
-            m_Desert_Eagle.SetCheck ( 1 );
+            m_Desert_Eagle.SetCheck ( TRUE );
         }
 
-        m_Uzis.SetCheck ( 0 );
+        m_Uzis.SetCheck ( FALSE );
         if ( CTRSaveGame::I()->CheckWeapon3 ( iX ) )
         {
-            m_Uzis.SetCheck ( 1 );
+            m_Uzis.SetCheck ( TRUE );
         }
 
-        m_Riot_Gun.SetCheck ( 0 );
+        m_Riot_Gun.SetCheck ( FALSE );
         if ( CTRSaveGame::I()->CheckWeapon4 ( iX ) )
         {
-            m_Riot_Gun.SetCheck ( 1 );
+            m_Riot_Gun.SetCheck ( TRUE );
         }
 
-        m_MP5.SetCheck ( 0 );
+        m_MP5.SetCheck ( FALSE );
         if ( CTRSaveGame::I()->CheckWeapon5 ( iX ) )
         {
-                m_MP5.SetCheck ( 1 );
+                m_MP5.SetCheck ( TRUE );
         }
 
-        m_Grenade_Launcher.SetCheck ( 0 );
+        m_Grenade_Launcher.SetCheck ( FALSE );
         if ( CTRSaveGame::I()->CheckWeapon7 ( iX ) )
         {
-                m_Grenade_Launcher.SetCheck ( 1 );
+                m_Grenade_Launcher.SetCheck ( TRUE );
         }
 
-        m_Rocket_Launcher.SetCheck ( 0 );
+        m_Rocket_Launcher.SetCheck ( FALSE );
         if ( CTRSaveGame::I()->CheckWeapon6 ( iX ) )
         {
-                m_Rocket_Launcher.SetCheck ( 1 );
+                m_Rocket_Launcher.SetCheck ( TRUE );
         }
 
-        m_Harpoon.SetCheck ( 0 );
+        m_Harpoon.SetCheck ( FALSE );
         if ( CTRSaveGame::I()->CheckWeapon8 ( iX ) )
         {
-                m_Harpoon.SetCheck ( 1 );
+                m_Harpoon.SetCheck ( TRUE );
         }
 
-        m_Crowbar.SetCheck ( 0 );
+        m_Crowbar.SetCheck ( FALSE );
         if ( CTRSaveGame::I()->CheckWeapon9 ( iX ) )
         {
-            m_Crowbar.SetCheck ( 1 );
+            m_Crowbar.SetCheck ( TRUE );
         }
     }
 
@@ -550,3 +552,50 @@ BOOL CTRXGunPage::OnApply()
     return CTRXPropertyPage::OnApply();
 }
 
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
+void CTRXGunPage::OnBnClickedAllGuns()
+{
+    //
+    int iVersion = CTRXPropertyPage::EnableForVersion();
+
+    if ( CTRSaveGame::I() != NULL && iVersion != 0 )
+    {   
+        if ( m_Guns.IsWindowEnabled() )
+        {
+            m_Guns.SetCheck ( TRUE );
+        }
+
+        if ( m_Desert_Eagle.IsWindowEnabled() )
+        {
+            m_Desert_Eagle.SetCheck ( TRUE );
+        }
+        
+        if ( m_Uzis.IsWindowEnabled() )
+        {
+            m_Uzis.SetCheck ( TRUE );
+        }
+
+        if ( m_Riot_Gun.IsWindowEnabled() )
+        {
+            m_Riot_Gun.SetCheck ( TRUE );
+        }
+
+        if ( m_MP5.IsWindowEnabled() )
+        {
+            m_MP5.SetCheck ( TRUE );
+        }
+
+        if ( m_Grenade_Launcher.IsWindowEnabled() )
+        {
+            m_Grenade_Launcher.SetCheck ( TRUE );
+        }
+
+        if ( m_Harpoon.IsWindowEnabled() )
+        {
+            m_Harpoon.SetCheck ( TRUE );
+        }
+    }
+}

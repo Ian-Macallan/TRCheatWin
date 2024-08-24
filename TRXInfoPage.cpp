@@ -393,6 +393,7 @@ void CTRXInfoPage::DoDataExchange(CDataExchange* pDX)
     DDX_Control(pDX, IDC_SHELL, m_Shell);
     DDX_Control(pDX, IDC_LEVELS, m_Levels);
     DDX_Control(pDX, IDC_AREA_INFOS, m_AreaInfos);
+    DDX_Control(pDX, IDC_ROOM_SEARCH, m_Room_Search);
     //}}AFX_DATA_MAP
 }
 
@@ -435,6 +436,7 @@ BEGIN_MESSAGE_MAP(CTRXInfoPage, CTRXPropertyPage)
     ON_BN_CLICKED(IDC_PASTEPOS, &CTRXInfoPage::OnBnClickedPastepos)
     ON_BN_CLICKED(IDC_SHELL, &CTRXInfoPage::OnBnClickedShell)
     ON_BN_CLICKED(IDC_LEVELS, &CTRXInfoPage::OnBnClickedLevels)
+    ON_BN_CLICKED(IDC_ROOM_SEARCH, &CTRXInfoPage::OnBnClickedRoomSearch)
 END_MESSAGE_MAP()
 //}}AFX_MSG_MAP
 
@@ -981,10 +983,10 @@ void CTRXInfoPage::DisplayValues()
          *      Display if we are burning.
          *      0x10 means that you are burning.
          */
-        m_Lara_Burning.SetCheck ( 0 );
+        m_Lara_Burning.SetCheck ( FALSE );
         if ( CTRSaveGame::I()->IsLaraBurning ( ) )
         {
-            m_Lara_Burning.SetCheck ( 1 );
+            m_Lara_Burning.SetCheck ( TRUE );
         }
 
         sprintf_s ( szString, sizeof(szString), "%d", CTRSaveGame::I()->GetLaraState() );
@@ -2166,6 +2168,7 @@ BOOL CTRXInfoPage::OnInitDialog()
         m_ToolTip.AddTool( &m_Sort, "Sort List" );
         m_ToolTip.AddTool( &m_CopyPosition, "Copy Position" );
         m_ToolTip.AddTool( &m_PastePosition, "Paste Position" );
+        m_ToolTip.AddTool( &m_Room_Search, "Search Best Room for Position" );
         m_ToolTip.AddTool( &m_ListCtrl, LPSTR_TEXTCALLBACK );
         m_ToolTip.Activate(TRUE);
     }
@@ -3390,5 +3393,35 @@ void CTRXInfoPage::OnBnClickedLevels()
         dlg.m_bRemastered   = FALSE;
         dlg.m_iVersion      = CTRSaveGame::GetFullVersion();
         dlg.DoModal();
+    }
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
+void CTRXInfoPage::OnBnClickedRoomSearch()
+{
+    static char     szString [ 64 ];
+
+    //
+    if ( CTRSaveGame::IsValid() )
+    {
+        int tombraider  = CTRSaveGame::GetFullVersion ();
+        int levelIndex  = CTRSaveGame::GetLevelIndex ();
+
+        m_West_East.GetWindowText ( szString, sizeof(szString) );
+        DWORD dwWestToEast          = atol(szString);
+        m_Vertical.GetWindowText ( szString, sizeof(szString) );
+        DWORD dwVertical            = atol(szString);
+        m_South_North.GetWindowText ( szString, sizeof(szString) );
+        DWORD dwSouthToNorth        = atol(szString);
+        
+        WORD area = FindAreaForCoordinates ( tombraider, levelIndex, dwWestToEast, dwVertical, dwSouthToNorth );
+        if ( area != 0XFFFF )
+        {
+            sprintf_s ( szString, sizeof(szString), "%d", area );
+            m_Area.SetWindowText ( szString );
+        }
     }
 }

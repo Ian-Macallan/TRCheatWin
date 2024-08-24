@@ -121,6 +121,7 @@ class CTRXInfoPage : public CTRXPropertyPage
         CTRXButtonBase      m_Shell;
         CTRXButtonBase      m_Levels;
         CTRXStaticBase      m_AreaInfos;
+        CTRXButtonBase      m_Room_Search;
 
         //}}AFX_DATA
 
@@ -181,6 +182,7 @@ class CTRXInfoPage : public CTRXPropertyPage
         afx_msg void OnBnClickedPastepos();
         afx_msg void OnBnClickedShell();
         afx_msg void OnBnClickedLevels();
+        afx_msg void OnBnClickedRoomSearch();
 };
 
 //

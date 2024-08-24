@@ -50,6 +50,8 @@ class CTRXGunPage : public CTRXPropertyPage
         CTRXStaticBase m_BM_MP5;
         CTRXStaticBase m_BM_Rocket;
         CTRXStaticBase m_BM_RiotGun;
+        CTRXButtonBase m_All_Guns;
+
         //}}AFX_DATA
 
 
@@ -86,6 +88,7 @@ class CTRXGunPage : public CTRXPropertyPage
         afx_msg void OnBnClickedRocketlauncher();
         afx_msg void OnBnClickedCrowbar();
 
+        afx_msg void OnBnClickedAllGuns();
 };
 
 //{{AFX_INSERT_LOCATION}}

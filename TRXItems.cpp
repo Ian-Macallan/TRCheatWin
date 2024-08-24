@@ -445,23 +445,23 @@ void CTRXItems::DisplayValues()
     /*
      *      Reset buttons.
      */
-    m_Key1.SetCheck ( 0 );
-    m_Key2.SetCheck ( 0 );
-    m_Key3.SetCheck ( 0 );
-    m_Key4.SetCheck ( 0 );
+    m_Key1.SetCheck ( FALSE );
+    m_Key2.SetCheck ( FALSE );
+    m_Key3.SetCheck ( FALSE );
+    m_Key4.SetCheck ( FALSE );
 
-    m_Item1.SetCheck ( 0 );
-    m_Item2.SetCheck ( 0 );
-    m_Item3.SetCheck ( 0 );
-    m_Item4.SetCheck ( 0 );
+    m_Item1.SetCheck ( FALSE );
+    m_Item2.SetCheck ( FALSE );
+    m_Item3.SetCheck ( FALSE );
+    m_Item4.SetCheck ( FALSE );
 
-    m_Map1.SetCheck ( 0 );
-    m_Map2.SetCheck ( 0 );
+    m_Map1.SetCheck ( FALSE );
+    m_Map2.SetCheck ( FALSE );
 
-    m_Treasure1.SetCheck ( 0 );
-    m_Treasure2.SetCheck ( 0 );
-    m_Treasure3.SetCheck ( 0 );
-    m_Treasure4.SetCheck ( 0 );
+    m_Treasure1.SetCheck ( FALSE );
+    m_Treasure2.SetCheck ( FALSE );
+    m_Treasure3.SetCheck ( FALSE );
+    m_Treasure4.SetCheck ( FALSE );
 
     if ( CTRSaveGame::IsValid() )
     {
@@ -475,18 +475,18 @@ void CTRXItems::DisplayValues()
          */
         sprintf_s ( szString, sizeof(szString), "%d", CTRSaveGame::I()->GetMap1 () );
         m_N_Map1.SetWindowText ( szString );
-        m_Map1.SetCheck ( 0 );
+        m_Map1.SetCheck ( FALSE );
         if ( *szString != '0' )
         {
-            m_Map1.SetCheck ( 1 );
+            m_Map1.SetCheck ( TRUE );
         }
 
         sprintf_s ( szString, sizeof(szString), "%d", CTRSaveGame::I()->GetMap2 () );
         m_N_Map2.SetWindowText ( szString );
-        m_Map2.SetCheck ( 0 );
+        m_Map2.SetCheck ( FALSE );
         if ( *szString != '0' )
         {
-            m_Map2.SetCheck ( 1 );
+            m_Map2.SetCheck ( TRUE );
         }
 
         /*
@@ -494,34 +494,34 @@ void CTRXItems::DisplayValues()
          */
         sprintf_s ( szString, sizeof(szString), "%d", CTRSaveGame::I()->GetItem1 () );
         m_N_Item1.SetWindowText ( szString );
-        m_Item1.SetCheck ( 0);
+        m_Item1.SetCheck ( FALSE );
         if ( *szString != '0' )
         {
-            m_Item1.SetCheck ( 1 );
+            m_Item1.SetCheck ( TRUE );
         }
 
         sprintf_s ( szString, sizeof(szString), "%d", CTRSaveGame::I()->GetItem2 () );
         m_N_Item2.SetWindowText ( szString );
-        m_Item2.SetCheck ( 0 );
+        m_Item2.SetCheck ( FALSE );
         if ( *szString != '0' )
         {
-            m_Item2.SetCheck ( 1 );
+            m_Item2.SetCheck ( TRUE );
         }
 
         sprintf_s ( szString, sizeof(szString), "%d", CTRSaveGame::I()->GetItem3 () );
         m_N_Item3.SetWindowText ( szString );
-        m_Item3.SetCheck ( 0 );
+        m_Item3.SetCheck ( FALSE );
         if ( *szString != '0' )
         {
-            m_Item3.SetCheck ( 1 );
+            m_Item3.SetCheck ( TRUE );
         }
 
         sprintf_s ( szString, sizeof(szString), "%d", CTRSaveGame::I()->GetItem4 () );
         m_N_Item4.SetWindowText ( szString );
-        m_Item4.SetCheck ( 0 );
+        m_Item4.SetCheck ( FALSE );
         if ( *szString != '0' )
         {
-            m_Item4.SetCheck ( 1 );
+            m_Item4.SetCheck ( TRUE );
         }
 
         /*
@@ -529,34 +529,34 @@ void CTRXItems::DisplayValues()
          */
         sprintf_s ( szString, sizeof(szString), "%d", CTRSaveGame::I()->GetKey1 () );
         m_N_Key1.SetWindowText ( szString );
-        m_Key1.SetCheck ( 0 );
+        m_Key1.SetCheck ( FALSE );
         if ( *szString != '0' )
         {
-            m_Key1.SetCheck ( 1 );
+            m_Key1.SetCheck ( TRUE );
         }
 
         sprintf_s ( szString, sizeof(szString), "%d", CTRSaveGame::I()->GetKey2 () );
         m_N_Key2.SetWindowText ( szString );
-        m_Key2.SetCheck ( 0 );
+        m_Key2.SetCheck ( FALSE );
         if ( *szString != '0' )
         {
-            m_Key2.SetCheck ( 1 );
+            m_Key2.SetCheck ( TRUE );
         }
 
         sprintf_s ( szString, sizeof(szString), "%d", CTRSaveGame::I()->GetKey3 () );
         m_N_Key3.SetWindowText ( szString );
-        m_Key3.SetCheck ( 0 );
+        m_Key3.SetCheck ( FALSE );
         if ( *szString != '0' )
         {
-            m_Key3.SetCheck ( 1 );
+            m_Key3.SetCheck ( TRUE );
         }
 
         sprintf_s ( szString, sizeof(szString), "%d", CTRSaveGame::I()->GetKey4 () );
         m_N_Key4.SetWindowText ( szString );
-        m_Key4.SetCheck ( 0 );
+        m_Key4.SetCheck ( FALSE );
         if ( *szString != '0' )
         {
-            m_Key4.SetCheck ( 1 );
+            m_Key4.SetCheck ( TRUE );
         }
 
         /*
@@ -564,34 +564,34 @@ void CTRXItems::DisplayValues()
          */
         sprintf_s ( szString, sizeof(szString), "%d", CTRSaveGame::I()->GetTreasure1 ( iX ) );
         m_N_Treasure1.SetWindowText ( szString );
-        m_Treasure1.SetCheck ( 0 );
+        m_Treasure1.SetCheck ( FALSE );
         if ( *szString != '0' )
         {
-            m_Treasure1.SetCheck ( 1 );
+            m_Treasure1.SetCheck ( TRUE );
         }
 
         sprintf_s ( szString, sizeof(szString), "%d", CTRSaveGame::I()->GetTreasure2 ( iX ) );
         m_N_Treasure2.SetWindowText ( szString );
-        m_Treasure2.SetCheck ( 0 );
+        m_Treasure2.SetCheck ( FALSE );
         if ( *szString != '0' )
         {
-            m_Treasure2.SetCheck ( 1 );
+            m_Treasure2.SetCheck ( TRUE );
         }
 
         sprintf_s ( szString, sizeof(szString), "%d", CTRSaveGame::I()->GetTreasure3 ( iX ) );
         m_N_Treasure3.SetWindowText ( szString );
-        m_Treasure3.SetCheck ( 0 );
+        m_Treasure3.SetCheck ( FALSE );
         if ( *szString != '0' )
         {
-            m_Treasure3.SetCheck ( 1 );
+            m_Treasure3.SetCheck ( TRUE );
         }
 
         sprintf_s ( szString, sizeof(szString), "%d", CTRSaveGame::I()->GetTreasure4 ( iX ) );
         m_N_Treasure4.SetWindowText ( szString );
-        m_Treasure4.SetCheck ( 0 );
+        m_Treasure4.SetCheck ( FALSE );
         if ( *szString != '0' )
         {
-            m_Treasure4.SetCheck ( 1 );
+            m_Treasure4.SetCheck ( TRUE );
         }
     }
 

@@ -78,6 +78,7 @@ class CTRXAmmosPage : public CTRXPropertyPage
         CTRXButtonBase m_ZeroUzi;
         CTRXButtonBase m_ZeroRocket;
         CTRXButtonBase m_ZeroGuns;
+        CTRXButtonBase m_Full_Ammos;
 
         //}}AFX_DATA
 
@@ -106,16 +107,7 @@ class CTRXAmmosPage : public CTRXPropertyPage
         afx_msg void OnCharpoon();
         afx_msg void OnCguns();
         afx_msg void OnChangeEdit();
-
         afx_msg void OnBnClickedUnlimited();
-        //}}AFX_MSG
-        DECLARE_MESSAGE_MAP()
-
-    public:
-        virtual void OnCancel();
-        virtual void OnOK();
-        virtual BOOL OnInitDialog();
-        virtual BOOL OnApply();
         afx_msg void OnBnClickedZriotgun();
         afx_msg void OnBnClickedZmp5();
         afx_msg void OnBnClickedZharpoon();
@@ -124,6 +116,15 @@ class CTRXAmmosPage : public CTRXPropertyPage
         afx_msg void OnBnClickedZuzi();
         afx_msg void OnBnClickedZrocket();
         afx_msg void OnBnClickedZguns();
+        afx_msg void OnBnClickedAllAmmos();
+        //}}AFX_MSG
+        DECLARE_MESSAGE_MAP()
+
+    public:
+        virtual void OnCancel();
+        virtual void OnOK();
+        virtual BOOL OnInitDialog();
+        virtual BOOL OnApply();
 };
 
 //{{AFX_INSERT_LOCATION}}

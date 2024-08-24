@@ -80,6 +80,7 @@ void CTRXEquipmentPage::DoDataExchange(CDataExchange* pDX)
     DDX_Control(pDX, IDC_AIR, m_Air);
     DDX_Control(pDX, IDC_LASER, m_Laser);
     DDX_Control(pDX, IDC_BINOCULAR, m_Binocular);
+    DDX_Control(pDX, IDC_FULL, m_Full_Kits);
     //}}AFX_DATA_MAP
 }
 
@@ -100,6 +101,7 @@ BEGIN_MESSAGE_MAP(CTRXEquipmentPage, CTRXPropertyPage)
     ON_EN_CHANGE(IDC_LIFE, &CTRXEquipmentPage::OnChangeEdit)
     ON_WM_CTLCOLOR()
     //}}AFX_MSG_MAP
+    ON_BN_CLICKED(IDC_FULL, &CTRXEquipmentPage::OnBnClickedFull)
 END_MESSAGE_MAP()
 
 //
@@ -162,11 +164,11 @@ void CTRXEquipmentPage::DisplayValues()
             // m_God.EnableWindow ( 1 );
             if ( iVal == Many32K )
             {
-                m_God.SetCheck ( 1 );
+                m_God.SetCheck ( TRUE );
             }
             else
             {
-                m_God.SetCheck ( 0 );
+                m_God.SetCheck ( FALSE );
             }
         }
 
@@ -185,24 +187,24 @@ void CTRXEquipmentPage::DisplayValues()
         sprintf_s ( szString, sizeof(szString), "%d", CTRSaveGame::I()->GetAir () );
         m_Air.SetWindowText ( szString );
 
-        m_Unfinite_Air.SetCheck ( 0 );
+        m_Unfinite_Air.SetCheck ( FALSE );
         if ( CTRSaveGame::I()->GetAir () == Many32K )
         {
-            m_Unfinite_Air.SetCheck ( 1 );
+            m_Unfinite_Air.SetCheck ( TRUE );
         }
 
         //
-        m_Laser.SetCheck ( 0 );
+        m_Laser.SetCheck ( FALSE );
         if ( CTRSaveGame::I()->GetLaser ( 0 ) != 0 )
         {
-            m_Laser.SetCheck ( 1 );
+            m_Laser.SetCheck ( TRUE );
         }
 
         //
-        m_Binocular.SetCheck ( 0 );
+        m_Binocular.SetCheck ( FALSE );
         if ( CTRSaveGame::I()->GetBinocular ( 0 ) != 0 )
         {
-            m_Binocular.SetCheck ( 1 );
+            m_Binocular.SetCheck ( TRUE );
         }
     }
 
@@ -379,7 +381,7 @@ void CTRXEquipmentPage::OnButSmedi()
 {
     //
     SetGUIModified ( TRUE, "Equipment Smedi" );
-    m_But_Small_MediPak.SetCheck ( 0 );
+    // m_But_Small_MediPak.SetCheck ( FALSE );
     if ( CTRSaveGame::I() != NULL && CTRSaveGame::GetVersion () >= 40 )
     {
         m_Small_Medipak.SetWindowText ( pValue10K );
@@ -399,7 +401,7 @@ void CTRXEquipmentPage::OnButLmedi()
     //
     SetGUIModified ( TRUE, "Equipment Lmedi" );
 
-    m_But_Large_MediPak.SetCheck ( 0 );
+    // m_But_Large_MediPak.SetCheck ( FALSE );
     if ( CTRSaveGame::I() != NULL && CTRSaveGame::GetVersion () >= 40 )
     {
         m_Large_Medipak.SetWindowText ( pValue10K );
@@ -438,7 +440,7 @@ void CTRXEquipmentPage::OnButFlares()
         }
 
     }
-    m_But_Flares.SetCheck ( 0 );
+    // m_But_Flares.SetCheck ( FALSE );
     
 }
 
@@ -551,3 +553,24 @@ void CTRXEquipmentPage::OnChangeEdit()
     SetGUIModified ( TRUE );
 }
 
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
+void CTRXEquipmentPage::OnBnClickedFull()
+{
+    SetGUIModified ( TRUE );
+
+    if ( CTRSaveGame::I() != NULL && CTRSaveGame::GetVersion () >= 40 )
+    {
+        m_Large_Medipak.SetWindowText ( pValue10K );
+        m_Small_Medipak.SetWindowText ( pValue10K );
+        m_Flares.SetWindowText ( pValue10K );
+    }
+    else
+    {
+        m_Large_Medipak.SetWindowText ( pValue255 );
+        m_Small_Medipak.SetWindowText ( pValue255 );
+        m_Flares.SetWindowText ( pValue255 );
+    }
+}

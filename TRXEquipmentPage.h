@@ -45,8 +45,9 @@ class CTRXEquipmentPage : public CTRXPropertyPage
         CTRXEditBase    m_GunAmmos;
         CTRXEditBase    m_Flares;
         CTRXEditBase    m_Air;
-        CTRXButtonBase m_Laser;
-        CTRXButtonBase m_Binocular;
+        CTRXButtonBase  m_Laser;
+        CTRXButtonBase  m_Binocular;
+        CTRXButtonBase  m_Full_Kits;
         //}}AFX_DATA
 
 
@@ -81,6 +82,7 @@ class CTRXEquipmentPage : public CTRXPropertyPage
         virtual BOOL OnInitDialog();
         virtual BOOL OnApply();
         afx_msg void OnChangeEdit();
+        afx_msg void OnBnClickedFull();
 
 };
 
