@@ -13,15 +13,24 @@
 //
 
 //  00000001
-#define TR40NG_GUN_SET1     0x01
+#define TR40NG_GUN_SET1         0x01
+//  00000010
+#define TR40NG_GUN_SET2         0x02
 //  00000100
-#define TR40NG_GUN_SET4     0x04
+#define TR40NG_GUN_SET4         0x04
+//  00000110
+#define TR40NG_GUN_SET6         0x06
 //  00001000
-#define TR40NG_GUN_SET8     0x08
+#define TR40NG_GUN_SET8         0x08
 //  00001001
-#define TR40NG_GUN_SET      (TR40NG_GUN_SET1|TR40NG_GUN_SET8)
+#define TR40NG_GUN_SET          (TR40NG_GUN_SET1|TR40NG_GUN_SET8)
+
+//  For Some Reason CROWBAR may differ
+//  00001111
+#define TR40NG_CROWBAR_MASK     (TR40NG_GUN_SET1|TR40NG_GUN_SET2|TR40NG_GUN_SET4|TR40NG_GUN_SET8)
+
 //  00001101
-#define TR40NG_GUN_MASK     (TR40NG_GUN_SET1|TR40NG_GUN_SET8|TR40NG_GUN_SET4)
+#define TR40NG_GUN_MASK         (TR40NG_GUN_SET1|TR40NG_GUN_SET4|TR40NG_GUN_SET8)
 
 //
 /////////////////////////////////////////////////////////////////////////////

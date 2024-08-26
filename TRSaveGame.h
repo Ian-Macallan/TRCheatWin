@@ -179,8 +179,78 @@ class CTRSaveGame  : public CObject
         static char *GetBufferBackupAddress();
         static DWORD RelativeAddress( const void *pAddress );
 
+        //  Status
         virtual const char *GetStatus() { return m_Status; };
+        virtual void InitStatus (  )
+        {
+            ZeroMemory ( m_Status, sizeof(m_Status) );
+        }
 
+        //  Add To Status if space is enough else copy
+        virtual char *AddToStatus ( const char *pText, bool bReset = false )
+        {
+            if ( bReset )
+            {
+                InitStatus();
+            }
+
+            if ( pText != NULL )
+            {
+                //
+                char *pDelimiter = " - ";
+
+                //  Delimiter and NULL
+                if ( strlen(m_Status) + strlen(pText) + strlen(pDelimiter) + 1 < sizeof(m_Status) )
+                {
+                    if ( strlen(m_Status) > 0 )
+                    {
+                        strcat_s ( m_Status, sizeof(m_Status), pDelimiter );
+                    }
+                    strcat_s ( m_Status, sizeof(m_Status), pText );
+                }
+                else
+                {
+                    InitStatus();
+                    strcpy_s ( m_Status, sizeof(m_Status), pText );
+                }
+            }
+            return m_Status;
+        }
+
+        //  Add formatted To Status if space is enough else copy
+        virtual char *AddFormatToStatus ( const char *pFormat, ... )
+        {
+            if ( pFormat != NULL )
+            {
+                //  Format String
+                static char szText [ 256 ];
+                va_list argptr;
+                va_start(argptr, pFormat);
+                int result = vsprintf_s ( szText, sizeof(szText), pFormat, argptr );
+                va_end(argptr);
+
+                //
+                char *pDelimiter = " - ";
+
+                //  Delimiter and NULL
+                if ( strlen(m_Status) + strlen(szText) + strlen(pDelimiter) + 1 < sizeof(m_Status) )
+                {
+                    if ( strlen(m_Status) > 0 )
+                    {
+                        strcat_s ( m_Status, sizeof(m_Status), pDelimiter );
+                    }
+                    strcat_s ( m_Status, sizeof(m_Status), szText );
+                }
+                else
+                {
+                    InitStatus();
+                    strcpy_s ( m_Status, sizeof(m_Status), szText );
+                }
+            }
+            return m_Status;
+        }
+
+        //
         virtual const char *GetIndicatorLabel()
         {
             return m_szIndicatorLabel;

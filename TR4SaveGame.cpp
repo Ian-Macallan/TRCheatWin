@@ -87,7 +87,7 @@ TR45_INDICATORS IndicatorsTR4Table [ MAX_INDICATORS ] =
     {   FALSE,  0x0d,   0x0d,   0x00,   0x6c,   TRUE,   1,  "Swimming", },
     {   FALSE,  0x0d,   0x0d,   0x47,   0x6c,   TRUE,   1,  "Swimming", },
 
-    {   FALSE,  0x0f,   0x0f,   0x00,   0x1f,   TRUE,   1,  "Quad", },
+    {   FALSE,  0x0f,   0x0f,   0x00,   0x1f,   TRUE,   1,  "Quad Bike", },
     {   FALSE,  0x12,   0x00,   0x00,   0x02,   TRUE,   1,  "Flare", },
 
     {   FALSE,  0x10,   0x00,   0x51,   0x51,   TRUE,   1,  "Crawling", },
@@ -248,66 +248,66 @@ CTR4SaveGame::~CTR4SaveGame()
 int CTR4SaveGame::ReadSavegame ( const char *pFilename )
 {
 
-        FILE                    *hFile;
-        size_t                uLenBuffer;
+    FILE                    *hFile;
+    size_t                uLenBuffer;
 
-        char                    szEmpty [ 1 ];
+    char                    szEmpty [ 1 ];
 
-        strcpy_s ( m_Filename, sizeof(m_Filename), pFilename );
-        strcpy_s ( m_Status, sizeof(m_Status), "" );
+    strcpy_s ( m_Filename, sizeof(m_Filename), pFilename );
+    InitStatus ();
 
-        memset ( ( char * ) m_pBuffer, 0, sizeof ( TR4SAVE ) );
+    memset ( ( char * ) m_pBuffer, 0, sizeof ( TR4SAVE ) );
 
-        /*
-         *      Read file.
-         */
-        hFile = NULL;
-        fopen_s ( &hFile,  m_Filename, "rb" );
-        if ( hFile == NULL )
-        {
-            strcpy_s ( m_Status, sizeof(m_Status), "Unable to read file." );
-            return 0;
-        }
+    /*
+     *      Read file.
+     */
+    hFile = NULL;
+    fopen_s ( &hFile,  m_Filename, "rb" );
+    if ( hFile == NULL )
+    {
+        AddToStatus ( "Unable to read file." );
+        return 0;
+    }
 
-        /*
-         *      Get Buffer.
-         */
-        if ( m_iSaveLength < TR4LEVELMINSIZE || m_iSaveLength > TR4LEVELMAXSIZE )
-        {
-            sprintf_s ( m_Status, sizeof(m_Status), "Internal error in length %d versus %d = %d.",
-                (int) sizeof ( TR4SAVE ), m_iSaveLength,
-                m_iSaveLength - (int) sizeof ( TR4SAVE ) );
-            fclose ( hFile );
-            return 0;
-        }
-
-        memset ( ( char * ) m_pBuffer, 0, sizeof ( TR4SAVE ) );
-        uLenBuffer = fread ( ( char * ) m_pBuffer, 1, m_iSaveLength, hFile );
-        if ( uLenBuffer != m_iSaveLength )
-        {
-            strcpy_s ( m_Status, sizeof(m_Status), "File size is not correct." );
-            fclose ( hFile );
-            return 0;
-        }
-
-        long lPos = ftell ( hFile );
-        if ( fread ( &szEmpty, 1, 1, hFile ) != 0  )
-        {
-            fseek ( hFile, 0, SEEK_END );
-            long lEnd = ftell ( hFile );
-            sprintf_s ( m_Status, sizeof(m_Status), "File size is too large %ld til %ld = %ld.", lPos, lEnd, lEnd - lPos );
-            fclose ( hFile );
-            return 0;
-        }
-
-        memcpy ( m_pBufferBackup, m_pBuffer, sizeof(TR4SAVE) );
-
-        /*
-         *      Close file.
-         */
+    /*
+     *      Get Buffer.
+     */
+    if ( m_iSaveLength < TR4LEVELMINSIZE || m_iSaveLength > TR4LEVELMAXSIZE )
+    {
+        AddFormatToStatus ( "Internal error in length %d versus %d = %d.",
+            (int) sizeof ( TR4SAVE ), m_iSaveLength,
+            m_iSaveLength - (int) sizeof ( TR4SAVE ) );
         fclose ( hFile );
+        return 0;
+    }
 
-        return 1;
+    memset ( ( char * ) m_pBuffer, 0, sizeof ( TR4SAVE ) );
+    uLenBuffer = fread ( ( char * ) m_pBuffer, 1, m_iSaveLength, hFile );
+    if ( uLenBuffer != m_iSaveLength )
+    {
+        AddToStatus ( "File size is not correct." );
+        fclose ( hFile );
+        return 0;
+    }
+
+    long lPos = ftell ( hFile );
+    if ( fread ( &szEmpty, 1, 1, hFile ) != 0  )
+    {
+        fseek ( hFile, 0, SEEK_END );
+        long lEnd = ftell ( hFile );
+        AddFormatToStatus ( "File size is too large %ld til %ld = %ld.", lPos, lEnd, lEnd - lPos );
+        fclose ( hFile );
+        return 0;
+    }
+
+    memcpy ( m_pBufferBackup, m_pBuffer, sizeof(TR4SAVE) );
+
+    /*
+     *      Close file.
+     */
+    fclose ( hFile );
+
+    return 1;
 }
 
 //
@@ -319,7 +319,7 @@ void CTR4SaveGame::writeSaveGame()
     FILE                    *hFile;
     size_t                  uLenBuffer;
 
-    strcpy_s ( m_Status, sizeof(m_Status), "" );
+    AddToStatus ( "" );
 
     /*
      *  Correct guns.
@@ -380,7 +380,7 @@ void CTR4SaveGame::writeSaveGame()
     fopen_s ( &hFile,  m_Filename, "wb" );
     if ( hFile == NULL )
     {
-        strcpy_s ( m_Status, sizeof(m_Status), "Unable to write the file." );
+        AddToStatus ( "Unable to write the file." );
         return;
     }
 
@@ -389,7 +389,7 @@ void CTR4SaveGame::writeSaveGame()
      */
     if ( m_iSaveLength < TR4LEVELMINSIZE || m_iSaveLength > TR4LEVELMAXSIZE )
     {
-        sprintf_s ( m_Status, sizeof(m_Status), "Internal error in length %d versus %d = %d.",
+        AddFormatToStatus ( "Internal error in length %d versus %d = %d.",
             (int) sizeof ( TR4SAVE ), m_iSaveLength,
             m_iSaveLength - (int) sizeof ( TR4SAVE ) );
         fclose ( hFile );
@@ -399,7 +399,7 @@ void CTR4SaveGame::writeSaveGame()
     uLenBuffer = fwrite ( ( char * ) m_pBuffer, 1, m_iSaveLength, hFile );
     if ( uLenBuffer != m_iSaveLength )
     {
-        strcpy_s ( m_Status, sizeof(m_Status), "File size is not correct." );
+        AddToStatus ( "File size is not correct." );
         fclose ( hFile );
         return;
     }
@@ -412,7 +412,7 @@ void CTR4SaveGame::writeSaveGame()
     //
     memcpy ( m_pBufferBackup,  m_pBuffer, m_iSaveLength );
 
-    strcpy_s ( m_Status, sizeof(m_Status), "File successfully updated." );
+    AddToStatus ( "File successfully updated." );
 
 }
 
@@ -894,36 +894,42 @@ int CTR4SaveGame::Valid()
     if ( m_pBuffer->tagGuns.m_gunRevolver != 0 && ( m_pBuffer->tagGuns.m_gunRevolver & TR40_GUN_MASK ) == 0 &&
         ( m_pBuffer->tagGuns.m_gunRevolver & TR40_GUN_SET4 ) == 0 )
     {
+        AddToStatus ( "Revolver Invalid" );
         return 0;
     }
 
     if ( m_pBuffer->tagGuns.m_gunRiotGun != 0 && ( m_pBuffer->tagGuns.m_gunRiotGun & TR40_GUN_MASK ) == 0 &&
         ( m_pBuffer->tagGuns.m_gunRiotGun & TR40_GUN_SET4 ) == 0 )
     {
+        AddToStatus ( "RiotGun Invalid" );
         return 0;
     }
 
     if ( m_pBuffer->tagGuns.m_gunUzis != 0 && ( m_pBuffer->tagGuns.m_gunUzis & TR40_GUN_MASK ) == 0 &&
         ( m_pBuffer->tagGuns.m_gunUzis & TR40_GUN_SET4 ) == 0 )
     {
+        AddToStatus ( "Uzis Invalid" );
         return 0;
     }
 
     if ( m_pBuffer->tagGuns.m_gunGrenadesLauncher != 0 && ( m_pBuffer->tagGuns.m_gunGrenadesLauncher & TR40_GUN_MASK ) == 0  &&
         ( m_pBuffer->tagGuns.m_gunGrenadesLauncher & TR40_GUN_SET4 ) == 0 )
     {
+        AddToStatus ( "Grenades Launcher Invalid" );
         return 0;
     }
 
     if ( m_pBuffer->tagGuns.m_gunCrossBow != 0 && ( m_pBuffer->tagGuns.m_gunCrossBow & TR40_GUN_MASK ) == 0 &&
         ( m_pBuffer->tagGuns.m_gunCrossBow & TR40_GUN_SET4 ) == 0 )
     {
+        AddToStatus ( "CrossBow Invalid" );
         return 0;
     }
 
     if ( m_pBuffer->tagGuns.m_gunCrowBar != 0 && ( m_pBuffer->tagGuns.m_gunCrowBar & TR40_GUN_MASK ) == 0  &&
         ( m_pBuffer->tagGuns.m_gunCrowBar & TR40_GUN_SET4 ) == 0 )
     {
+        AddToStatus ( "CrowBar Invalid" );
         return 0;
     }
     return ( 1 );

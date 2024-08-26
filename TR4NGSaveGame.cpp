@@ -123,13 +123,15 @@ TR45_INDICATORS IndicatorsTR4NGTable [ MAX_INDICATORS ] =
     {   FALSE,  0x02,   0x02,   0x47,   0x87,   TRUE,   1,  "Standing", },
 
     //
-    {   FALSE,  0x0f,   0x0f,   0x00,   0x1f,   TRUE,   9,  "Quad", },
-    {   FALSE,  0x0f,   0x0f,   0x00,   0x46,   TRUE,   9,  "Quad", },
+    {   FALSE,  0x0f,   0x0f,   0x00,   0x1f,   TRUE,   9,  "Quad Bike", },
+    {   FALSE,  0x0f,   0x0f,   0x00,   0x46,   TRUE,   9,  "Quad Bike", },
 
 
-    {   FALSE,  0x09,   0x09,   0x00,   0x66,   TRUE,   9,  "Small Car", },      // Cannot move so unusable
-    {   FALSE,  0x0f,   0x0f,   0x00,   0x1d,   TRUE,   9,  "Motocycle", },      // Cannot move so unusable
-    {   FALSE,  0x0f,   0x0f,   0x00,   0x40,   TRUE,   9,  "Motocycle", },      // Cannot move so unusable
+    {   FALSE,  0x09,   0x09,   0x00,   0x66,   TRUE,   9,  "Small Car", },     // Cannot move so unusable
+    {   FALSE,  0x0f,   0x0f,   0x00,   0x1d,   TRUE,   9,  "Motocycle", },     // Cannot move so unusable
+    {   FALSE,  0x0f,   0x0f,   0x00,   0x40,   TRUE,   9,  "Motocycle", },     // Cannot move so unusable
+    {   FALSE,  0x0f,   0x0f,   0x00,   0x25,   TRUE,   9,  "Skydoo", },        // Cannot move so unusable
+    {   FALSE,  0x01,   0x01,   0x00,   0x15,   TRUE,   9,  "Skydoo", },        // Cannot move so unusable
 
     //
     {   TRUE,   0xff,   0xff,   0xff,   0xff,   TRUE,   0,  "End", },         // End
@@ -743,100 +745,100 @@ void CTR4NGSaveGame::TraceTRNG()
 int CTR4NGSaveGame::ReadSavegame ( const char *pFilename )
 {
 
-        FILE                    *hFile;
-        size_t                  uLenBuffer;
+    FILE                    *hFile;
+    size_t                  uLenBuffer;
 
-        char                    szEmpty [ 1 ];
+    char                    szEmpty [ 1 ];
 
-        m_bPureTRNG             = FALSE;
+    m_bPureTRNG             = FALSE;
 
-        strcpy_s ( m_Filename, sizeof(m_Filename), pFilename );
-        strcpy_s ( m_Status, sizeof(m_Status), "" );
+    strcpy_s ( m_Filename, sizeof(m_Filename), pFilename );
+    InitStatus ();
 
-        memset ( ( char * ) m_pBuffer, 0, sizeof ( TR4NGSAVE ) );
+    memset ( ( char * ) m_pBuffer, 0, sizeof ( TR4NGSAVE ) );
 
-        /*
-         *      Read file.
-         */
-        hFile = NULL;
-        fopen_s ( &hFile,  m_Filename, "rb" );
-        if ( hFile == NULL )
-        {
-            strcpy_s ( m_Status, sizeof(m_Status), "Unable to read file." );
-            return 0;
-        }
+    /*
+        *      Read file.
+        */
+    hFile = NULL;
+    fopen_s ( &hFile,  m_Filename, "rb" );
+    if ( hFile == NULL )
+    {
+        AddToStatus ( "Unable to read file." );
+        return 0;
+    }
 
-        /*
-         *      Get Buffer.
-         */
-        if ( m_iSaveLength < CTRXGlobal::m_iMinNGSize || m_iSaveLength > CTRXGlobal::m_iMaxNGSize )
-        {
-            sprintf_s ( m_Status, sizeof(m_Status), "Internal error in length %d versus %d = %d.",
-                (int) sizeof ( TR4NGSAVE ), m_iSaveLength,
-                m_iSaveLength - (int) sizeof ( TR4NGSAVE ) );
-            fclose ( hFile );
-            return 0;
-        }
-
-        //
-        memset ( ( char * ) m_pBuffer, 0, sizeof ( TR4NGSAVE ) );
-        uLenBuffer = fread ( ( char * ) m_pBuffer, 1, m_iSaveLength, hFile );
-        if ( uLenBuffer != m_iSaveLength )
-        {
-            strcpy_s ( m_Status, sizeof(m_Status), "File size is not correct." );
-            fclose ( hFile );
-            return 0;
-        }
-
-        //
-        //  The last eight byte if the file is
-        //  4E474C4526120000    NGLE&...
-        char *pSignature = (char* ) m_pBuffer + uLenBuffer - 8;
-        if ( memcmp ( pSignature, "NGLE", 4 ) != 0  )
-        {
-            strcpy_s ( m_Status, sizeof(m_Status), "File Signature is not correct." );
-            fclose ( hFile );
-            return 0;
-        }
-
-        //
-        long lPos = ftell ( hFile );
-        if ( fread ( &szEmpty, 1, 1, hFile ) != 0  )
-        {
-            fseek ( hFile, 0, SEEK_END );
-            long lEnd = ftell ( hFile );
-            sprintf_s ( m_Status, sizeof(m_Status), "File size is too large %ld til %ld = %ld.", lPos, lEnd, lEnd - lPos );
-            fclose ( hFile );
-            return 0;
-        }
-
-        memcpy ( m_pBufferBackup, m_pBuffer, sizeof(TR4NGSAVE) );
-
-        /*
-         *      Close file.
-         */
+    /*
+     *      Get Buffer.
+     */
+    if ( m_iSaveLength < CTRXGlobal::m_iMinNGSize || m_iSaveLength > CTRXGlobal::m_iMaxNGSize )
+    {
+        AddFormatToStatus ( "Internal error in length %d versus %d = %d.",
+            (int) sizeof ( TR4NGSAVE ), m_iSaveLength,
+            m_iSaveLength - (int) sizeof ( TR4NGSAVE ) );
         fclose ( hFile );
+        return 0;
+    }
 
-        //
-        //  Test Flag 
-        if ( m_pBuffer->flagsffff != 0xffff )
-        {
+    //
+    memset ( ( char * ) m_pBuffer, 0, sizeof ( TR4NGSAVE ) );
+    uLenBuffer = fread ( ( char * ) m_pBuffer, 1, m_iSaveLength, hFile );
+    if ( uLenBuffer != m_iSaveLength )
+    {
+        AddToStatus ( "File size is not correct." );
+        fclose ( hFile );
+        return 0;
+    }
+
+    //
+    //  The last eight byte if the file is
+    //  4E474C4526120000    NGLE&...
+    char *pSignature = (char* ) m_pBuffer + uLenBuffer - 8;
+    if ( memcmp ( pSignature, "NGLE", 4 ) != 0  )
+    {
+        AddToStatus ( "File Signature is not correct." );
+        fclose ( hFile );
+        return 0;
+    }
+
+    //
+    long lPos = ftell ( hFile );
+    if ( fread ( &szEmpty, 1, 1, hFile ) != 0  )
+    {
+        fseek ( hFile, 0, SEEK_END );
+        long lEnd = ftell ( hFile );
+        AddFormatToStatus ( "File size is too large %ld til %ld = %ld.", lPos, lEnd, lEnd - lPos );
+        fclose ( hFile );
+        return 0;
+    }
+
+    memcpy ( m_pBufferBackup, m_pBuffer, sizeof(TR4NGSAVE) );
+
+    /*
+     *      Close file.
+     */
+    fclose ( hFile );
+
+    //
+    //  Test Flag 
+    if ( m_pBuffer->flagsffff != 0xffff )
+    {
 #ifdef _DEBUG
-            CTRXMessageBox::ShowMessage( "Load Savegame Warning", "Warning this file will not be correctly treated");
+        CTRXMessageBox::ShowMessage( "Load Savegame Warning", "Warning this file will not be correctly treated");
 #endif
-            m_bPureTRNG = TRUE;
-            strcpy_s ( m_Status, sizeof(m_Status), "Load Savegame Warning : Warning this file will not be correctly treated - Use -unblind" );
-        }
+        m_bPureTRNG = TRUE;
+        AddToStatus ( "Load Savegame Warning : Warning this file will not be correctly treated - Use -unblind" );
+    }
 
-        //
-        //  Get Pointers
-        GetTRNGPointers();
+    //
+    //  Get Pointers
+    GetTRNGPointers();
 
 #ifdef _DEBUG
-        TraceTRNG();
+    TraceTRNG();
 #endif
 
-        return 1;
+    return 1;
 }
 
 //
@@ -850,6 +852,8 @@ void CTR4NGSaveGame::writeSaveGame()
 
     TR4NGGUN    *pGun       = &m_pBuffer->tagGuns;
     TR4NGAMMO   *pAmmo      = &m_pBuffer->tagAmmo;
+
+    InitStatus ();
 
     //  Even if we write in m_pTRNGGuns and m_pTRNGAmmos
     //  The result does not show the difference
@@ -869,8 +873,6 @@ void CTR4NGSaveGame::writeSaveGame()
     {
         pAmmo    = m_pTRNGAmmos;
     }
-
-    strcpy_s ( m_Status, sizeof(m_Status), "" );
 
     /*
      *  Correct guns.
@@ -932,7 +934,7 @@ void CTR4NGSaveGame::writeSaveGame()
     fopen_s ( &hFile,  m_Filename, "wb" );
     if ( hFile == NULL )
     {
-        strcpy_s ( m_Status, sizeof(m_Status), "Unable to write the file." );
+        AddToStatus ( "Unable to write the file." );
         return;
     }
 
@@ -941,7 +943,7 @@ void CTR4NGSaveGame::writeSaveGame()
      */
     if ( m_iSaveLength < CTRXGlobal::m_iMinNGSize || m_iSaveLength > CTRXGlobal::m_iMaxNGSize )
     {
-        sprintf_s ( m_Status, sizeof(m_Status), "Internal error in length %d versus %d = %d.",
+        AddFormatToStatus ( "Internal error in length %d versus %d = %d.",
             (int) sizeof ( TR4NGSAVE ), m_iSaveLength,
             m_iSaveLength - (int) sizeof ( TR4NGSAVE ) );
         fclose ( hFile );
@@ -951,7 +953,7 @@ void CTR4NGSaveGame::writeSaveGame()
     uLenBuffer = fwrite ( ( char * ) m_pBuffer, 1, m_iSaveLength, hFile );
     if ( uLenBuffer != m_iSaveLength )
     {
-        strcpy_s ( m_Status, sizeof(m_Status), "File size is not correct." );
+        AddToStatus ( "File size is not correct." );
         fclose ( hFile );
         return;
     }
@@ -964,7 +966,7 @@ void CTR4NGSaveGame::writeSaveGame()
     //
     memcpy ( m_pBufferBackup,  m_pBuffer, m_iSaveLength );
 
-    strcpy_s ( m_Status, sizeof(m_Status), "File successfully updated." );
+    AddToStatus ( "File successfully updated." );
 
 }
 
@@ -1633,36 +1635,42 @@ int CTR4NGSaveGame::Valid()
     if ( pGun->m_gunRevolver != 0 && ( pGun->m_gunRevolver & TR40NG_GUN_MASK ) == 0 &&
         ( pGun->m_gunRevolver & TR40NG_GUN_SET4 ) == 0 )
     {
+        AddToStatus ( "Revolver Invalid" );
         return 0;
     }
 
     if ( pGun->m_gunRiotGun != 0 && ( pGun->m_gunRiotGun & TR40NG_GUN_MASK ) == 0 &&
         ( pGun->m_gunRiotGun & TR40NG_GUN_SET4 ) == 0 )
     {
+        AddToStatus ( "Riot Gun Invalid" );
         return 0;
     }
 
     if ( pGun->m_gunUzis != 0 && ( pGun->m_gunUzis & TR40NG_GUN_MASK ) == 0 &&
         ( pGun->m_gunUzis & TR40NG_GUN_SET4 ) == 0 )
     {
+        AddToStatus ( "Uzi Invalid" );
         return 0;
     }
 
     if ( pGun->m_gunGrenadesLauncher != 0 && ( pGun->m_gunGrenadesLauncher & TR40NG_GUN_MASK ) == 0  &&
         ( pGun->m_gunGrenadesLauncher & TR40NG_GUN_SET4 ) == 0 )
     {
+        AddToStatus ( "Grenade Launcher Invalid" );
         return 0;
     }
 
     if ( pGun->m_gunCrossBow != 0 && ( pGun->m_gunCrossBow & TR40NG_GUN_MASK ) == 0 &&
         ( pGun->m_gunCrossBow & TR40NG_GUN_SET4 ) == 0 )
     {
+        AddToStatus ( "CrossBow Invalid" );
         return 0;
     }
 
-    if ( pGun->m_gunCrowBar != 0 && ( pGun->m_gunCrowBar & TR40NG_GUN_MASK ) == 0  &&
-        ( pGun->m_gunCrowBar & TR40NG_GUN_SET4 ) == 0 )
+    if ( pGun->m_gunCrowBar != 0 && ( pGun->m_gunCrowBar & TR40NG_CROWBAR_MASK ) == 0  &&
+        ( pGun->m_gunCrowBar & TR40NG_GUN_SET6 ) == 0 )
     {
+        AddToStatus ( "Crowbar Invalid" );
         return 0;
     }
     return ( 1 );

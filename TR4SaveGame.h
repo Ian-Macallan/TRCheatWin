@@ -19,7 +19,7 @@
 //  00001001
 #define TR40_GUN_SET        (TR40_GUN_SET1|TR40_GUN_SET8)
 //  00001101
-#define TR40_GUN_MASK       (TR40_GUN_SET1|TR40_GUN_SET8|TR40_GUN_SET4)
+#define TR40_GUN_MASK       (TR40_GUN_SET1|TR40_GUN_SET4|TR40_GUN_SET8)
 
 //
 /////////////////////////////////////////////////////////////////////////////

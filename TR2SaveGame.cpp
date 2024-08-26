@@ -162,7 +162,7 @@ int CTR2SaveGame::ReadSavegame( const char *pFilename )
     char                    szEmpty [ 1 ];
 
     strcpy_s ( m_Filename, sizeof(m_Filename), pFilename );
-    strcpy_s ( m_Status, sizeof(m_Status), "" );
+    InitStatus ();
 
     memset ( ( char * ) m_pBuffer, 0, sizeof ( TR2SAVE ) );
 
@@ -173,7 +173,7 @@ int CTR2SaveGame::ReadSavegame( const char *pFilename )
     fopen_s ( &hFile,  m_Filename, "rb" );
     if ( hFile == NULL )
     {
-        strcpy_s ( m_Status, sizeof(m_Status), "Unable to read file." );
+        AddToStatus ( "Unable to read file." );
         return 0;
     }
 
@@ -182,7 +182,7 @@ int CTR2SaveGame::ReadSavegame( const char *pFilename )
      */
     if ( m_iSaveLength <  TR2LEVELMINSIZE || m_iSaveLength > TR2LEVELMAXSIZE )
     {
-        strcpy_s ( m_Status, sizeof(m_Status), "Internal error in length." );
+        AddToStatus ( "Internal error in length." );
         fclose ( hFile );
         return 0;
     }
@@ -191,14 +191,14 @@ int CTR2SaveGame::ReadSavegame( const char *pFilename )
     uLenBuffer = fread ( ( char * ) m_pBuffer, 1, m_iSaveLength, hFile );
     if ( uLenBuffer != m_iSaveLength )
     {
-        strcpy_s ( m_Status, sizeof(m_Status), "File size is not correct." );
+        AddToStatus ( "File size is not correct." );
         fclose ( hFile );
         return 0;
     }
 
     if ( fread ( &szEmpty, 1, 1, hFile ) != 0  )
     {
-        strcpy_s ( m_Status, sizeof(m_Status), "File size is too large." );
+        AddToStatus ( "File size is too large." );
         fclose ( hFile );
         return 0;
     }
@@ -222,7 +222,7 @@ void CTR2SaveGame::writeSaveGame()
     FILE                    *hFile;
     size_t                  uLenBuffer;
 
-    strcpy_s ( m_Status, sizeof(m_Status), "" );
+    InitStatus ();
 
     /*
      *      Correct guns.
@@ -269,7 +269,7 @@ void CTR2SaveGame::writeSaveGame()
     fopen_s ( &hFile,  m_Filename, "wb" );
     if ( hFile == NULL )
     {
-        strcpy_s ( m_Status, sizeof(m_Status), "Unable to write the file." );
+        AddToStatus ( "Unable to write the file." );
         return;
     }
 
@@ -278,7 +278,7 @@ void CTR2SaveGame::writeSaveGame()
      */
     if (  m_iSaveLength < TR2LEVELMINSIZE || m_iSaveLength > TR2LEVELMAXSIZE )
     {
-        strcpy_s ( m_Status, sizeof(m_Status), "Internal error in length." );
+        AddToStatus ( "Internal error in length." );
         fclose ( hFile );
         return;
     }
@@ -286,7 +286,7 @@ void CTR2SaveGame::writeSaveGame()
     uLenBuffer = fwrite ( ( char * ) m_pBuffer, 1, m_iSaveLength, hFile );
     if ( uLenBuffer != m_iSaveLength )
     {
-        strcpy_s ( m_Status, sizeof(m_Status), "File size is not correct." );
+        AddToStatus ( "File size is not correct." );
         fclose ( hFile );
         return;
     }
@@ -299,7 +299,7 @@ void CTR2SaveGame::writeSaveGame()
     //
     memcpy ( m_pBufferBackup,  m_pBuffer, m_iSaveLength );
 
-    strcpy_s ( m_Status, sizeof(m_Status), "File successfully updated." );
+    AddToStatus ( "File successfully updated." );
 
 }
 
@@ -368,7 +368,7 @@ void CTR2SaveGame::RetrieveInformation( const char *pFilename )
                 iCount++;
 
                 m_pGun = pGun;
-                strcpy_s ( m_Status, sizeof(m_Status), "Data loaded from the saved game.");
+                AddToStatus ( "Data loaded from the saved game.");
 
                 /*
                  *      Test if it it the same as in the table.
@@ -421,8 +421,7 @@ void CTR2SaveGame::RetrieveInformation( const char *pFilename )
             pGunAddress   = pStartAddress + TR2Positions [ iX ];
             m_pGun = (TR2AMMOS * ) pGunAddress;
 
-            sprintf_s ( m_Status, sizeof(m_Status), "Unable to find something in the file: Setting the address %x.",
-                TR2Positions [ iX ] );
+            AddFormatToStatus ("Unable to find something in the file: Setting the address %x.", TR2Positions [ iX ] );
 
             m_pGun->m_iGunAmmos = m_iGunAmmos;
             m_pGun = NULL;
@@ -431,15 +430,15 @@ void CTR2SaveGame::RetrieveInformation( const char *pFilename )
         }
         else
         {
-            sprintf_s( m_Status, sizeof(m_Status), "%d good position(s) found.", iCount );
+            AddFormatToStatus ("%d good position(s) found.", iCount );
             if ( bExactFound )
             {
-                strcat_s ( m_Status, sizeof(m_Status), " Exact position found too." );
+                AddToStatus ( "Exact position found too." );
             }
 
             if ( bExactGold )
             {
-                strcat_s ( m_Status, sizeof(m_Status), " Exact position found too for gold." );
+                AddToStatus ( "Exact position found too for gold." );
             }
         }
 
@@ -459,12 +458,12 @@ void CTR2SaveGame::RetrieveInformation( const char *pFilename )
         {
             pAddress = ( char * ) m_pGun;
             iPosition = (unsigned) ( pAddress - pStartAddress );
-            sprintf_s( m_Status, sizeof(m_Status),
+            AddFormatToStatus ( 
                 "The %d address(es) differ(s): Reference is at the address %lx or %lx instead of %lx.",
                 iCount, TR2Positions [ iX ], TR2GPositions [ iX ], iPosition );
             if ( false )
             {
-                sprintf_s( m_Status, sizeof(m_Status),
+                AddFormatToStatus ( 
                     "The %d address(es) differ(s): Setting the address %lx instead of %lx.",
                     iCount, TR2Positions [ iX ], iPosition );
                 m_pGun = ( TR2AMMOS * ) pGunAddress;

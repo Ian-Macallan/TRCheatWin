@@ -31,7 +31,7 @@ extern CTRXCHEATWINApp theApp;
 TR123_INDICATORS IndicatorsTR123Table1 [ MAX_INDICATORS ] =
 {
     {   FALSE,  0x0002, 0x0002, 0x0000, 0x0067, FALSE,  0,  "Standing" },
-    {   FALSE,  0x0008, 0x0008, 0x0000, 0x0112, FALSE,  1,  "Quad" },
+    {   FALSE,  0x0008, 0x0008, 0x0000, 0x0112, FALSE,  1,  "Quad Bike" },
     {   FALSE,  0x000d, 0x000d, 0x0000, 0x006c, FALSE,  1,  "Indicator 1" },
     {   FALSE,  0x0012, 0x0012, 0x0000, 0x0057, FALSE,  1,  "Indicator 2" },
     {   TRUE,   0xffff, 0xffff, 0xffff, 0xffff, TRUE,   0,  "End" },

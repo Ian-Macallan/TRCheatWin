@@ -1036,7 +1036,8 @@ void CTRXInfoPage::DisplayValues()
             //
             if ( pArea != NULL )
             {
-                sprintf_s ( szString, sizeof(szString), "x=[%ld,%ld] z=[%ld,%ld] z=[top:%ld,bottom:%ld] %s",
+                sprintf_s ( szString, sizeof(szString), "r=%d x=[%ld,%ld] z=[%ld,%ld] z=[top:%ld,bottom:%ld] %s",
+                    pArea->index,
                     pArea->x, pArea->x + pArea->xSectors * TR_SECTOR_SIZE,
                     pArea->z, pArea->z + pArea->zSectors * TR_SECTOR_SIZE, 
                     pArea->yTop, pArea->yBottom,
@@ -1271,7 +1272,7 @@ BOOL CTRXInfoPage::OnSetActive()
     }
 
     //
-    m_Status.SetWindowText ( "Tombraider 1, Unfinished Business, 2, Golden Mask, 3, Lost Artifact, 4 and 5 " );
+    m_Status.SetWindowText ( "Tombraider 1, Unfinished Business, 2, Golden Mask, 3, Lost Artifact, 4 (Next Gen) and 5 " );
 
     //  Not Necessary
     // SetCurrent ( );

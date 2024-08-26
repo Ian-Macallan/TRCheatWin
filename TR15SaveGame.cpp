@@ -132,7 +132,7 @@ int CTUBSaveGame::ReadSavegame( const char *pFilename )
     char                    szEmpty [ 1 ];
 
     strcpy_s ( m_Filename, sizeof(m_Filename), pFilename );
-    strcpy_s ( m_Status, sizeof(m_Status), "" );
+    InitStatus ();
 
     memset ( ( char * ) m_pBuffer, 0, sizeof ( TUBSAVE ) );
 
@@ -143,7 +143,7 @@ int CTUBSaveGame::ReadSavegame( const char *pFilename )
     fopen_s ( &hFile, m_Filename, "rb" );
     if ( hFile == NULL )
     {
-        strcpy_s ( m_Status, sizeof(m_Status), "Unable to read file." );
+        AddToStatus ( "Unable to read file." );
         return 0;
     }
 
@@ -152,7 +152,7 @@ int CTUBSaveGame::ReadSavegame( const char *pFilename )
      */
     if ( m_iSaveLength < TUBLEVELMINSIZE  || m_iSaveLength > TUBLEVELMAXSIZE )
     {
-        strcpy_s ( m_Status, sizeof(m_Status), "Internal error in length." );
+        AddToStatus ( "Internal error in length." );
         fclose ( hFile );
         return 0;
     }
@@ -161,14 +161,14 @@ int CTUBSaveGame::ReadSavegame( const char *pFilename )
     uLenBuffer = fread ( ( char * ) m_pBuffer, 1, m_iSaveLength, hFile );
     if ( uLenBuffer != m_iSaveLength )
     {
-        strcpy_s ( m_Status, sizeof(m_Status), "File size is not correct." );
+        AddToStatus ( "File size is not correct." );
         fclose ( hFile );
         return 0;
     }
 
     if ( fread ( &szEmpty, 1, 1, hFile ) != 0  )
     {
-        strcpy_s ( m_Status, sizeof(m_Status), "File size is too large." );
+        AddToStatus ( "File size is too large." );
         fclose ( hFile );
         return 0;
     }
@@ -189,72 +189,73 @@ int CTUBSaveGame::ReadSavegame( const char *pFilename )
 /////////////////////////////////////////////////////////////////////////////
 void CTUBSaveGame::writeSaveGame()
 {
-        FILE                    *hFile;
-        size_t                  uLenBuffer;
+    FILE                    *hFile;
+    size_t                  uLenBuffer;
 
-        strcpy_s ( m_Status, sizeof(m_Status), "" );
+    //
+    InitStatus ();
 
-        /*
-         *      Correct guns.
-         */
-        int     iX      = getLevelIndex ();
+    /*
+     *      Correct guns.
+     */
+    int     iX      = getLevelIndex ();
 
-        if ( ! ( m_pBuffer->trSingle.cGunBitmap & iMaskMagnum) )
-        {
-            m_pGun->m_iDesertEagle = 0 ;
-        }
+    if ( ! ( m_pBuffer->trSingle.cGunBitmap & iMaskMagnum) )
+    {
+        m_pGun->m_iDesertEagle = 0 ;
+    }
 
-        if ( ! ( m_pBuffer->trSingle.cGunBitmap & iMaskUzi ) )
-        {
-            m_pGun->m_iUzis = 0;
-        }
+    if ( ! ( m_pBuffer->trSingle.cGunBitmap & iMaskUzi ) )
+    {
+        m_pGun->m_iUzis = 0;
+    }
 
-        if ( ! ( m_pBuffer->trSingle.cGunBitmap & iMaskShotGun ) )
-        {
-            m_pGun->m_iRiotGun = 0;
-        }
+    if ( ! ( m_pBuffer->trSingle.cGunBitmap & iMaskShotGun ) )
+    {
+        m_pGun->m_iRiotGun = 0;
+    }
 
-        //
-        Backup_Savegame();
+    //
+    Backup_Savegame();
 
-        /*
-         *      Write file.
-         */
-        hFile = NULL;
-        fopen_s ( &hFile, m_Filename, "wb" );
-        if ( hFile == NULL )
-        {
-            strcpy_s ( m_Status, sizeof(m_Status), "Unable to write the file." );
-            return;
-        }
+    /*
+     *      Write file.
+     */
+    hFile = NULL;
+    fopen_s ( &hFile, m_Filename, "wb" );
+    if ( hFile == NULL )
+    {
+        AddToStatus ( "Unable to write the file." );
+        return;
+    }
 
-        /*
-         *      Get Buffer.
-         */
-        if (  m_iSaveLength < TUBLEVELMINSIZE  || m_iSaveLength > TUBLEVELMAXSIZE )
-        {
-            strcpy_s ( m_Status, sizeof(m_Status), "Internal error in length." );
-            fclose ( hFile );
-            return;
-        }
-
-        uLenBuffer = fwrite ( ( char * ) m_pBuffer, 1, m_iSaveLength, hFile );
-        if ( uLenBuffer != m_iSaveLength )
-        {
-            strcpy_s ( m_Status, sizeof(m_Status), "File size is not correct." );
-            fclose ( hFile );
-            return;
-        }
-
-        /*
-         *      Close file.
-         */
+    /*
+     *      Get Buffer.
+     */
+    if (  m_iSaveLength < TUBLEVELMINSIZE  || m_iSaveLength > TUBLEVELMAXSIZE )
+    {
+        AddToStatus ( "Internal error in length." );
         fclose ( hFile );
+        return;
+    }
 
-        //
-        memcpy ( m_pBufferBackup,  m_pBuffer, m_iSaveLength );
+    uLenBuffer = fwrite ( ( char * ) m_pBuffer, 1, m_iSaveLength, hFile );
+    if ( uLenBuffer != m_iSaveLength )
+    {
+        AddToStatus ( "File size is not correct." );
+        fclose ( hFile );
+        return;
+    }
 
-        strcpy_s ( m_Status, sizeof(m_Status), "File successfully updated." );
+    /*
+     *      Close file.
+     */
+    fclose ( hFile );
+
+    //
+    memcpy ( m_pBufferBackup,  m_pBuffer, m_iSaveLength );
+
+    AddToStatus ( "File successfully updated." );
 
 }
 
@@ -306,7 +307,7 @@ void CTUBSaveGame::RetrieveInformation( const char *pFilename )
                 iCount++;
 
                 m_pGun = pGun;
-                strcpy_s ( m_Status, sizeof(m_Status), "Data loaded from the saved game.");
+                AddToStatus ( "Data loaded from the saved game.");
 
                 /*
                  *      Get Level.
@@ -351,7 +352,7 @@ void CTUBSaveGame::RetrieveInformation( const char *pFilename )
             pGunAddress   = pStartAddress + TUBPositions [ iX ];
             m_pGun = (TUBAMMOS * ) pGunAddress;
 
-            sprintf_s ( m_Status, sizeof(m_Status), "Unable to find something in the file: Setting the address %x.",
+            AddFormatToStatus ( "Unable to find something in the file: Setting the address %x.",
                 TUBPositions [ iX ] );
 
             m_pGun->m_iGunAmmos = m_iGunAmmos;
@@ -361,10 +362,10 @@ void CTUBSaveGame::RetrieveInformation( const char *pFilename )
         }
         else
         {
-            sprintf_s( m_Status, sizeof(m_Status), "%d good position(s) found.", iCount );
+            AddFormatToStatus ("%d good position(s) found.", iCount );
             if ( bExactFound )
             {
-                strcat_s ( m_Status, sizeof(m_Status), " Exact position found too." );
+                AddToStatus ( "Exact position found too." );
             }
         }
 
@@ -383,12 +384,12 @@ void CTUBSaveGame::RetrieveInformation( const char *pFilename )
         {
             pAddress = ( char * ) m_pGun;
             iPosition = (unsigned) ( pAddress - pStartAddress );
-            sprintf_s( m_Status, sizeof(m_Status),
+            AddFormatToStatus ( 
                 "The %d address(es) differ(s): Reference is at the address %lx instead of %lx.",
                 iCount, TUBPositions [ iX ], iPosition );
             if ( false )
             {
-                sprintf_s( m_Status, sizeof(m_Status),
+                AddFormatToStatus ( 
                     "The %d address(es) differ(s): Setting the address %lx instead of %lx.",
                     iCount, TUBPositions [ iX ], iPosition );
                 m_pGun = ( TUBAMMOS * ) pGunAddress;
