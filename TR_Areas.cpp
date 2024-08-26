@@ -831,7 +831,7 @@ short FindAreaForCoordinates ( int tombraider, int levelIndex, long x, long y, l
 
     if ( levelIndex < 0 || levelIndex >= count )
     {
-        return NULL;
+        return -1;
     }
 
     //

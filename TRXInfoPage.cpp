@@ -3418,6 +3418,12 @@ void CTRXInfoPage::OnBnClickedRoomSearch()
         m_South_North.GetWindowText ( szString, sizeof(szString) );
         DWORD dwSouthToNorth        = atol(szString);
         
+        if ( IsCustomArea() || tombraider == 49 || tombraider == 99 )
+        {
+            levelIndex = 0;
+        }
+
+        //
         WORD area = FindAreaForCoordinates ( tombraider, levelIndex, dwWestToEast, dwVertical, dwSouthToNorth );
         if ( area != 0XFFFF )
         {
