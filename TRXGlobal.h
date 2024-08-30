@@ -27,6 +27,11 @@ class CTRXGlobal
         static BOOL         m_UseTR4PositionRange;
         static BOOL         m_UseTR5PositionRange;
 
+        //  Index for search
+        static int          m_TR123IndexMaximum;
+        static int          m_TR4IndexMaximum;
+        static int          m_TR4NGIndexMaximum;
+        static int          m_TR5IndexMaximum;
 };
 
 extern BOOL     g_bPasteEnabled;

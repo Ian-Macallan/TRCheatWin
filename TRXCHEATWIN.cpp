@@ -546,21 +546,11 @@ BOOL CTRXCHEATWINApp::InitInstance()
     CTRXGlobal::m_iUnchecked        = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_UNCHECKED, 0 );
 
     //
-    int iTmp    = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_MIN_NG_SIZE, 0 );
-    if ( iTmp == 0 )
-    {
-        theApp.WriteProfileInt( PROFILE_SETTING, PROFILE_MIN_NG_SIZE, TR_NG_MIN_SIZE );
-    }
-    iTmp        = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_MAX_NG_SIZE, 0 );
-    if ( iTmp == 0 )
-    {
-        theApp.WriteProfileInt( PROFILE_SETTING, PROFILE_MAX_NG_SIZE, TR_NG_MAX_SIZE );
-    }
 
     //  Savegame of TRNG are generally aound 40 Kb.
     //  But there are some of 900Kb.
-    CTRXGlobal::m_iMinNGSize    = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_MIN_NG_SIZE, TR_NG_MIN_SIZE );
-    CTRXGlobal::m_iMaxNGSize    = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_MAX_NG_SIZE, TR_NG_MAX_SIZE );
+    CTRXGlobal::m_iMinNGSize    = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_MIN_NG_SIZE, 0, TR_NG_MIN_SIZE );
+    CTRXGlobal::m_iMaxNGSize    = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_MAX_NG_SIZE, 0, TR_NG_MAX_SIZE );
     if ( CTRXGlobal::m_iMaxNGSize > MAX_SAVELENGTH )
     {
         CTRXGlobal::m_iMaxNGSize    = MAX_SAVELENGTH;
@@ -569,92 +559,28 @@ BOOL CTRXCHEATWINApp::InitInstance()
 
     //  Search Position Extended helps when Lara is ont in standing Position
     //  Note that modifying position for savegame of TRNG > 900 KB will not work
-    iTmp    = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_SEARCH_POS_EXT, -1 );
-    if ( iTmp == -1 )
-    {
-        theApp.WriteProfileInt( PROFILE_SETTING, PROFILE_SEARCH_POS_EXT, 1 );
-    }
-    CTRXGlobal::m_iSearchPosExt     = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_SEARCH_POS_EXT, 0 );
-
-    //
-    iTmp        = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_DARKTHEME, -1 );
-    if ( iTmp == -1 )
-    {
-        theApp.WriteProfileInt( PROFILE_SETTING, PROFILE_DARKTHEME, 0 );
-    }
-
-    //
-    iTmp        = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_SQUARECORNERS, -1 );
-    if ( iTmp == -1 )
-    {
-        theApp.WriteProfileInt( PROFILE_SETTING, PROFILE_SQUARECORNERS, 0 );
-    }
-
-    //
-    iTmp        = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_SQUAREFORCE, -1 );
-    if ( iTmp == -1 )
-    {
-        theApp.WriteProfileInt( PROFILE_SETTING, PROFILE_SQUAREFORCE, 1 );
-    }
-
-    //
-    iTmp        = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_THEME_RESTART, -1 );
-    if ( iTmp == -1 )
-    {
-        theApp.WriteProfileInt( PROFILE_SETTING, PROFILE_THEME_RESTART, 1 );
-    }
     
     //
-    iTmp        = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_EXTEND_VERTICAL, -1 );
-    if ( iTmp == -1 )
-    {
-        theApp.WriteProfileInt( PROFILE_SETTING, PROFILE_EXTEND_VERTICAL, 0 );
-    }
+    CTRXColors::m_iDarkTheme            = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_DARKTHEME, -1, 0 );
+    CTRXColors::m_iSquareCorner         = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_SQUARECORNERS, -1, 0 );
+    CTRXColors::m_iSquareForce          = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_SQUAREFORCE, -1, 1 );
+    CTRXColors::m_iThemeRestart         = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_THEME_RESTART, -1, 1 );
+
+    CTRXGlobal::m_iSearchPosExt         = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_SEARCH_POS_EXT, -1, 1 );
+    CTRXGlobal::m_iExtendVertical       = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_EXTEND_VERTICAL, -1, 0 );
+    CTRXGlobal::m_iTRRBackup            = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_TRR_BACKUP, -1, 32 );
+    CTRXGlobal::m_iTRBackup             = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_TR_BACKUP, -1, 4 );
+    CTRXGlobal::m_iExtSearchPos         = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_EXT_SEA_POS, -1, 4 );
+    CTRXGlobal::m_UseTR4PositionRange   = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_USE_TR4_RANGE, -1, TRUE );
+    CTRXGlobal::m_UseTR5PositionRange   = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_USE_TR5_RANGE, -1, TRUE );
 
     //
-    iTmp        = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_TRR_BACKUP, -1 );
-    if ( iTmp == -1 )
-    {
-        theApp.WriteProfileInt( PROFILE_SETTING, PROFILE_TRR_BACKUP, 32 );
-    }
-    
-    //
-    iTmp        = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_TR_BACKUP, -1 );
-    if ( iTmp == -1 )
-    {
-        theApp.WriteProfileInt( PROFILE_SETTING, PROFILE_TR_BACKUP, 4 );
-    }
+    CTRXGlobal::m_TR123IndexMaximum     = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_TR123_INDEX, -1, 8 );
 
-    //
-    iTmp        = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_EXT_SEA_POS, -1 );
-    if ( iTmp == -1 )
-    {
-        theApp.WriteProfileInt( PROFILE_SETTING, PROFILE_EXT_SEA_POS, 4 );
-    }
-    
-    iTmp        = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_USE_TR4_RANGE, -1 );
-    if ( iTmp == -1 )
-    {
-        theApp.WriteProfileInt( PROFILE_SETTING, PROFILE_USE_TR4_RANGE, TRUE );
-    }
+    CTRXGlobal::m_TR4IndexMaximum       = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_TR4_INDEX, -1, 8 );
+    CTRXGlobal::m_TR4NGIndexMaximum     = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_TR4NG_INDEX, -1, 8 );
 
-    iTmp        = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_USE_TR5_RANGE, -1 );
-    if ( iTmp == -1 )
-    {
-        theApp.WriteProfileInt( PROFILE_SETTING, PROFILE_USE_TR5_RANGE, TRUE );
-    }
-    
-    //
-    CTRXColors::m_iDarkTheme            = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_DARKTHEME, 0 );
-    CTRXColors::m_iSquareCorner         = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_SQUARECORNERS, 0 );
-    CTRXColors::m_iSquareForce          = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_SQUAREFORCE, 1 );
-    CTRXColors::m_iThemeRestart         = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_THEME_RESTART, 1 );
-    CTRXGlobal::m_iExtendVertical       = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_EXTEND_VERTICAL, 0 );
-    CTRXGlobal::m_iTRRBackup            = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_TRR_BACKUP, 32 );
-    CTRXGlobal::m_iTRBackup             = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_TR_BACKUP, 4 );
-    CTRXGlobal::m_iExtSearchPos         = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_EXT_SEA_POS, 4 );
-    CTRXGlobal::m_UseTR4PositionRange   = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_USE_TR4_RANGE, TRUE );
-    CTRXGlobal::m_UseTR5PositionRange   = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_USE_TR5_RANGE, TRUE );
+    CTRXGlobal::m_TR5IndexMaximum       = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_TR5_INDEX, -1, 8 );
 
     //
     //  Module Filename has been read
@@ -1227,6 +1153,21 @@ UINT CTRXCHEATWINApp::GetProfileInt ( const char *section,  const char *keyName,
         result = (UINT) atoi ( szText );
     }
     return result;
+}
+
+//
+////////////////////////////////////////////////////////////////////////
+//
+////////////////////////////////////////////////////////////////////////
+UINT CTRXCHEATWINApp::GetProfileInt ( const char *section,  const char *keyName, int novalue, int defaultValue )
+{
+    int value = (int) theApp.GetProfileInt ( section, keyName, novalue );
+    if ( value == novalue )
+    {
+        theApp.WriteProfileInt ( section, keyName, defaultValue );
+        value = defaultValue;
+    }
+    return (UINT) value;
 }
 
 //

@@ -87,6 +87,7 @@ class CTRXCHEATWINApp : public CWinApp
         BOOL ReadProfileIniFile ( const char *section,  const char *keyName, char *pValue, size_t iValue, const char *pDefault );
 
         UINT GetProfileInt ( const char *section,  const char *keyName, int defaultValue );
+        UINT GetProfileInt ( const char *section,  const char *keyName, int novalue, int defaultValue );
         ULONG GetProfileLong ( const char *section,  const char *keyName, int defaultValue );
         double GetProfileDouble ( const char *section,  const char *keyName, double defaultValue );
         CString GetProfileString( const char *section,  const char *keyName, const char *pDefaultValue = "" );
@@ -134,6 +135,11 @@ class CTRXCHEATWINApp : public CWinApp
 
 #define PROFILE_USE_TR4_RANGE       "Use TR4 Position Range"
 #define PROFILE_USE_TR5_RANGE       "Use TR5 Position Range"
+
+#define PROFILE_TR123_INDEX         "TR123 Index Maximum"
+#define PROFILE_TR4_INDEX           "TR4 Index Maximum"
+#define PROFILE_TR4NG_INDEX         "TR4 NG Index Maximum"
+#define PROFILE_TR5_INDEX           "TR5 Index Maximum"
 
 /////////////////////////////////////////////////////////////////////////////
 

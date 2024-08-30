@@ -1730,6 +1730,11 @@ void *CTR4SaveGame::GetIndicatorAddress (int index)
                 break;
             }
 
+            if ( IndicatorsTR4Table [ indice ].step > CTRXGlobal::m_TR4IndexMaximum )
+            {
+                continue;
+            }
+
             if (    pBuffer [ iBuffer ] == IndicatorsTR4Table [ indice ].b1 &&
                     pBuffer [ iBuffer + 1 ] == IndicatorsTR4Table [ indice ].b2 &&
                     pBuffer [ iBuffer + 3 ] == IndicatorsTR4Table [ indice ].b4 )
@@ -2007,6 +2012,11 @@ TR4_POSITION *CTR4SaveGame::GetTR4Position ( )
         if ( IndicatorsTR4Table [ index ].bEnd )
         {
             break;
+        }
+
+        if ( IndicatorsTR4Table [ index ].step > CTRXGlobal::m_TR4IndexMaximum )
+        {
+            continue;
         }
 
         //

@@ -18,6 +18,13 @@ unsigned        CTRXGlobal::m_iMaxNGSize            = 37500;
 BOOL            CTRXGlobal::m_UseTR4PositionRange   = TRUE;
 BOOL            CTRXGlobal::m_UseTR5PositionRange   = TRUE;
 
+int             CTRXGlobal::m_TR123IndexMaximum     = 8;
+
+int             CTRXGlobal::m_TR4IndexMaximum       = 8;
+int             CTRXGlobal::m_TR4NGIndexMaximum     = 8;
+
+int             CTRXGlobal::m_TR5IndexMaximum       = 8;
+
 //
 /////////////////////////////////////////////////////////////////////////////
 //

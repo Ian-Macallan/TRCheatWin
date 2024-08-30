@@ -122,6 +122,8 @@ TR45_INDICATORS IndicatorsTR4NGTable [ MAX_INDICATORS ] =
 
     {   FALSE,  0x02,   0x02,   0x47,   0x87,   TRUE,   1,  "Standing", },
 
+    {   FALSE,  0x18,   0x18,   0x00,   0x46,   TRUE,   8,  "Sliding", },
+
     //
     {   FALSE,  0x0f,   0x0f,   0x00,   0x1f,   TRUE,   9,  "Quad Bike", },
     {   FALSE,  0x0f,   0x0f,   0x00,   0x46,   TRUE,   9,  "Quad Bike", },
@@ -581,7 +583,7 @@ void CTR4NGSaveGame::TraceTRNG()
             DWORD relativeAddress = CTRXTools::RelativeAddress ( pCodeOp, m_pBuffer );
             sprintf_s ( szDebugString, sizeof(szDebugString), "TRNGSAVE : 0x%08x Length zero - Code is 0x%04x\n",
                 relativeAddress, *pCodeOp );
-            OutputDebugString ( szDebugString );
+            OutputTRNGString( szDebugString );
             bContinue = FALSE;
             break;
         }
@@ -591,7 +593,7 @@ void CTR4NGSaveGame::TraceTRNG()
             DWORD relativeAddress = CTRXTools::RelativeAddress ( pCodeOp, m_pBuffer );
             sprintf_s ( szDebugString, sizeof(szDebugString), "TRNGSAVE : 0x%08x Code is 0x%04x - Length : %ld\n",  
                 relativeAddress, *pCodeOp, length );
-            OutputDebugString ( szDebugString );
+            OutputTRNGString( szDebugString );
             bContinue = FALSE;
             break;
         }
@@ -599,7 +601,7 @@ void CTR4NGSaveGame::TraceTRNG()
         //
         sprintf_s ( szDebugString, sizeof(szDebugString), "TRNGSAVE : 0x%04x (%s) (%ld words %ld bytes)\n", 
             *pCodeOp, GetTRNGTagLabel(*pCodeOp), length, (long) sizeof(WORD) * ( length - ExtraWords ) );
-        OutputDebugString ( szDebugString );
+        OutputTRNGString( szDebugString );
 
         switch ( *pCodeOp )
         {
@@ -610,8 +612,7 @@ void CTR4NGSaveGame::TraceTRNG()
                 sprintf_s ( szDebugString, sizeof(szDebugString), "TRNGSAVE : %d\tHealth : %d Level : %s\n", 
                     (int) sizeof(TRNGSAVEGAMEINFOS),
                     pSave->LaraVitality, pSave->Tr4Name );
-                OutputDebugString ( szDebugString );
-
+                OutputTRNGString( szDebugString );
                 break;
             }
 
@@ -631,7 +632,7 @@ void CTR4NGSaveGame::TraceTRNG()
                         pIndices [ i ],
                         pCoord [ i ].Room,
                         pCoord [ i ].CordX, pCoord [ i ].CordY, pCoord [ i ].CordZ );
-                    OutputDebugString ( szDebugString );
+                    OutputTRNGString( szDebugString );
                 }
                 break;
             }
@@ -650,7 +651,7 @@ void CTR4NGSaveGame::TraceTRNG()
                         pSave->Indici.IndiceRoom,
                         pSave->OrgX, pSave->OrgY, pSave->OrgZ,
                         pSave->Flags );
-                    OutputDebugString ( szDebugString );
+                    OutputTRNGString( szDebugString );
                     pSave++;
                 }
                 break;
@@ -663,8 +664,7 @@ void CTR4NGSaveGame::TraceTRNG()
                 sprintf_s ( szDebugString, sizeof(szDebugString), "TRNGSAVE : %d\tCurrent Value : 0x%x\n", 
                     (int) sizeof(TRNGGLOBALVARIABLES),
                     pSave->CurrentValue );
-                OutputDebugString ( szDebugString );
-
+                OutputTRNGString( szDebugString );
                 break;
             }
 
@@ -674,8 +674,7 @@ void CTR4NGSaveGame::TraceTRNG()
                 TRNGBLOCKNUM *pSave = (TRNGBLOCKNUM *) pValues;
                 sprintf_s ( szDebugString, sizeof(szDebugString), "TRNGSAVE : %d\tSomething\n", 
                     (int) sizeof(TRNGBLOCKNUM) );
-                OutputDebugString ( szDebugString );
-
+                OutputTRNGString( szDebugString );
                 break;
             }
 
@@ -689,20 +688,20 @@ void CTR4NGSaveGame::TraceTRNG()
                 DWORD relativeAddress = CTRXTools::RelativeAddress ( pSave, m_pBuffer );
                 sprintf_s ( szDebugString, sizeof(szDebugString), "TRNGSAVE : %d\tTRNGBASENGHUB : 0x%x\n", 
                     (int) sizeof(TRNGBASENGHUB), relativeAddress );
-                OutputDebugString ( szDebugString );
+                OutputTRNGString( szDebugString );
 
                 relativeAddress = CTRXTools::RelativeAddress ( pHub, m_pBuffer );
                 sprintf_s ( szDebugString, sizeof(szDebugString), "TRNGSAVE : %d\tTRNGEXTRACTNG : 0x%x\n", 
                     (int) sizeof(TRNGEXTRACTNG), relativeAddress );
-                OutputDebugString ( szDebugString );
+                OutputTRNGString( szDebugString );
 
                 relativeAddress = CTRXTools::RelativeAddress ( pHeader, m_pBuffer );
                 sprintf_s ( szDebugString, sizeof(szDebugString), "TRNGSAVE : %d\tTRNGMININGNGHEADER : 0x%x\n", 
                     (int) sizeof(TRNGMININGNGHEADER), relativeAddress );
-                OutputDebugString ( szDebugString );
+                OutputTRNGString( szDebugString );
                 sprintf_s ( szDebugString, sizeof(szDebugString), "TRNGSAVE : \tTotHub : %d - LastIndex : %d - LaraHUB.NWords : %d\n", 
                     pSave->TotHub, pSave->LastIndex, pHub->NWords );
-                OutputDebugString ( szDebugString );
+                OutputTRNGString( szDebugString );
                 for ( int i = 0; i < 10; i++ )
                 {
                     relativeAddress = CTRXTools::RelativeAddress ( pHeader, m_pBuffer );
@@ -710,7 +709,7 @@ void CTR4NGSaveGame::TraceTRNG()
                         relativeAddress,
                         pHeader->NumeroLivello, pHeader->TotWords );
                     pHeader = (TRNGMININGNGHEADER *) ( ( ( BYTE * ) pHeader ) + sizeof(TRNGMININGNGHEADER) + pHeader->TotWords * sizeof(WORD) );
-                    OutputDebugString ( szDebugString );
+                    OutputTRNGString( szDebugString );
                 }
 
                 break;
@@ -725,7 +724,7 @@ void CTR4NGSaveGame::TraceTRNG()
                     pSave->VetVersione [ 0 ], pSave->VetVersione [ 1 ],
                     pSave->VetVersione [ 2 ], pSave->VetVersione [ 3 ],
                     pSave->Flags );
-                OutputDebugString ( szDebugString );
+                OutputTRNGString( szDebugString );
                 break;
             }
             
@@ -834,9 +833,8 @@ int CTR4NGSaveGame::ReadSavegame ( const char *pFilename )
     //  Get Pointers
     GetTRNGPointers();
 
-#ifdef _DEBUG
+    //
     TraceTRNG();
-#endif
 
     return 1;
 }
@@ -2687,6 +2685,11 @@ void *CTR4NGSaveGame::GetIndicatorAddress (int index)
                 break;
             }
 
+            if ( IndicatorsTR4NGTable [ indice ].step > CTRXGlobal::m_TR4NGIndexMaximum )
+            {
+                continue;
+            }
+
             if (    pBuffer [ iBuffer ] == IndicatorsTR4NGTable [ indice ].b1 &&
                     pBuffer [ iBuffer + 1 ] == IndicatorsTR4NGTable [ indice ].b2 &&
                     pBuffer [ iBuffer + 3 ] == IndicatorsTR4NGTable [ indice ].b4 )
@@ -2998,6 +3001,11 @@ TR4NG_POSITION *CTR4NGSaveGame::GetTR4Position ( )
         if ( IndicatorsTR4NGTable [ index ].bEnd )
         {
             break;
+        }
+
+        if ( IndicatorsTR4NGTable [ index ].step > CTRXGlobal::m_TR4NGIndexMaximum )
+        {
+            continue;
         }
 
         char *pBuffer = (char * ) GetIndicatorAddress(index);

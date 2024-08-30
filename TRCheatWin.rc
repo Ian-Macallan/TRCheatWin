@@ -68,8 +68,8 @@ BEGIN
     CONTROL         154,IDC_BM_RIOTGUN,"Static",SS_BITMAP | SS_REALSIZEIMAGE | SS_SUNKEN | WS_BORDER,183,204,123,49,WS_EX_CLIENTEDGE
     CONTROL         156,IDC_BM_ROCKET,"Static",SS_BITMAP | SS_REALSIZEIMAGE | SS_SUNKEN | WS_BORDER,351,204,136,36,WS_EX_CLIENTEDGE
     CONTROL         "Crowbar / HeadSet",IDC_CROWBAR,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,286,77,10
-    EDITTEXT        IDC_STATUS,7,307,505,12,ES_AUTOHSCROLL | ES_READONLY | NOT WS_TABSTOP
     CONTROL         "All",IDC_ALL_GUNS,"Button",BS_OWNERDRAW | WS_TABSTOP,454,287,50,14
+    EDITTEXT        IDC_STATUS,7,307,505,12,ES_AUTOHSCROLL | ES_READONLY | NOT WS_TABSTOP
 END
 
 IDD_EQUIPMENT DIALOGEX 0, 0, 520, 330
@@ -101,8 +101,8 @@ BEGIN
     LTEXT           "Life",IDC_STATIC,22,66,12,8
     CONTROL         "Very Strong",IDC_GOD,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,21,119,122,10
     CONTROL         "Laser",IDC_LASER,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,296,131,122,10
-    CONTROL         "Binocular",IDC_BINOCULAR,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,295,150,122,10
     CONTROL         "Full",IDC_FULL,"Button",BS_OWNERDRAW | WS_TABSTOP,298,180,50,14
+    CONTROL         "Binocular",IDC_BINOCULAR,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,295,150,122,10
 END
 
 IDD_INFO DIALOGEX 0, 0, 520, 330
@@ -297,8 +297,8 @@ BEGIN
     EDITTEXT        IDC_AGUNS,319,211,38,12,ES_AUTOHSCROLL
     CONTROL         181,IDC_BM_UZIS,"Static",SS_BITMAP | SS_REALSIZEIMAGE | SS_SUNKEN | WS_BORDER,7,228,69,50,WS_EX_CLIENTEDGE
     CONTROL         183,IDC_BM_ROCKET,"Static",SS_BITMAP | SS_REALSIZEIMAGE | SS_SUNKEN | WS_BORDER,154,228,89,30,WS_EX_CLIENTEDGE
-    EDITTEXT        IDC_STATUS,7,307,505,12,ES_AUTOHSCROLL | ES_READONLY | NOT WS_TABSTOP
     CONTROL         "Full Ammos",IDC_ALL_AMMOS,"Button",BS_OWNERDRAW | WS_TABSTOP,446,286,50,14
+    EDITTEXT        IDC_STATUS,7,307,505,12,ES_AUTOHSCROLL | ES_READONLY | NOT WS_TABSTOP
 END
 
 IDD_REMASTERED DIALOGEX 0, 0, 520, 330
@@ -714,8 +714,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 4,3,08,004
- PRODUCTVERSION 4,3,08,004
+ FILEVERSION 4,4,00,001
+ PRODUCTVERSION 4,4,00,001
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x29L
@@ -733,15 +733,15 @@ BEGIN
             VALUE "Comments", "mailto:ian.macallan@gmail.com\0"
             VALUE "CompanyName", "Macallan (c)\0"
             VALUE "FileDescription", "TRCheatWin - (MSVC)\0"
-            VALUE "FileVersion", "4.3.08.004\0"
+            VALUE "FileVersion", "4.4.00.001\0"
             VALUE "InternalName", "https://www.macallan.org/\0"
-            VALUE "LegalCopyright", "Copyright (C) Mon Aug 26 16:36, 2024\0"
+            VALUE "LegalCopyright", "Copyright (C) Fri Aug 30 14:01, 2024\0"
             VALUE "LegalTrademarks", "Author: Ian Macallan\0"
             VALUE "OriginalFilename", ORIGINAL_FILENAME
-            VALUE "PrivateBuild", "1024\0"
+            VALUE "PrivateBuild", "1035\0"
             VALUE "ProductName", PRODUCT_NAME
-            VALUE "ProductVersion", "4.3.08.004\0"
-            VALUE "SpecialBuild", "1024\0"
+            VALUE "ProductVersion", "4.4.00.001\0"
+            VALUE "SpecialBuild", "1035\0"
         END
     END
     BLOCK "VarFileInfo"

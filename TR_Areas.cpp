@@ -397,7 +397,7 @@ static TRN_AREA TR5_AREAS [] =
 static BOOL TRCCustomLevel                      = FALSE;
 static int TRCCustomCount                       = 0;
 static const int TRCCustomMax                   = 512;
-static char CustomLevelName [ MAX_PATH ]        ="";
+static char CustomLevelName [ MAX_PATH ]        = "";
 static TR_AREA TRC_Custom [ TRCCustomMax ] =
 {
     { -1, 0, 0, 0, NULL, 0, 0, 0, 0, 0, 0, 0, },
@@ -823,7 +823,6 @@ short FindAreaForCoordinates ( int tombraider, int levelIndex, long x, long y, l
     //
     int count = 0;
     TRN_AREA *trLevelsAreas = GetTable ( tombraider, levelIndex, count );
-
     if ( trLevelsAreas == NULL )
     {
         return -1;

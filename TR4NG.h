@@ -447,3 +447,7 @@ typedef struct TRNGBaseNGHub
 extern const char *GetTRNGTagLabel(WORD byte);
 extern const char *GetTRNGCntLabel(WORD byte);
 
+//
+extern void OutputTRNGString ( const char *pText );
+
+#define TRACE_TRNG  0

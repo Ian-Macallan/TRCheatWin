@@ -1630,6 +1630,11 @@ void *CTR5SaveGame::GetIndicatorAddress ( int index )
                 break;
             }
 
+            if ( IndicatorsTR5Table [ indice ].step > CTRXGlobal::m_TR5IndexMaximum )
+            {
+                continue;
+            }
+
             if (    pBuffer [ iBuffer ] == IndicatorsTR5Table [ indice ].b1 &&
                     pBuffer [ iBuffer + 1 ] == IndicatorsTR5Table [ indice ].b2 &&
                     pBuffer [ iBuffer + 3 ] == IndicatorsTR5Table [ indice ].b4 )
@@ -1871,6 +1876,11 @@ TR5_POSITION *CTR5SaveGame::GetTR5Position ( )
         if ( IndicatorsTR5Table [ index ].bEnd )
         {
             break;
+        }
+
+        if ( IndicatorsTR5Table [ index ].step > CTRXGlobal::m_TR5IndexMaximum )
+        {
+            continue;
         }
 
         char *pBuffer = (char * ) GetIndicatorAddress(index);

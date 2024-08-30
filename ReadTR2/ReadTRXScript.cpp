@@ -1945,25 +1945,41 @@ void DecriptaControlloScriptDat(const BYTE *pSource, int size, BYTE *pTarget )
 
 //
 /////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
+extern void OutputTRNGString ( const char *pText )
+{
+#ifdef _DEBUG
+#if TRACE_TRNG
+    OutputDebugString ( pText );
+#endif
+#endif
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
 static void DumpControl ( BYTE *pAddress, int size )
 {
+#if TRACE_TRNG
     static char szDebugString [ MAX_PATH ];
 
     sprintf_s ( szDebugString, sizeof(szDebugString), "TRNGSCRIPT : " );
-    OutputDebugString ( szDebugString );
+    OutputTRNGString( szDebugString );
     for ( int index = 0; index < size; index++ )
     {
         if ( ( index + 1 ) % 64 == 0 )
         {
-            OutputDebugString ( "\n" );
+            OutputTRNGString( "\n" );
         }
         sprintf_s ( szDebugString, sizeof(szDebugString), "%02x ", *pAddress & 0xff );
-        OutputDebugString ( szDebugString );
+        OutputTRNGString( szDebugString );
         pAddress++;
     }
     sprintf_s ( szDebugString, sizeof(szDebugString), "\n" );
-    OutputDebugString ( szDebugString );
-
+    OutputTRNGString( szDebugString );
+#endif
 }
 
 //
@@ -2030,7 +2046,7 @@ static BOOL AnalyzeNGScript(char *pBYtes, long offset )
             relativeAddress = CTRXTools::RelativeAddress ( pCodeOp, pBYtes ) + (DWORD) offset;
             sprintf_s ( szDebugString, sizeof(szDebugString), "TRNGSCRIPT : 0x%08lx Length zero - Code is 0x%04x\n",
                 relativeAddress, *pCodeOp );
-            OutputDebugString ( szDebugString );
+            OutputTRNGString( szDebugString );
             bContinue = FALSE;
             break;
         }
@@ -2040,7 +2056,7 @@ static BOOL AnalyzeNGScript(char *pBYtes, long offset )
             relativeAddress = CTRXTools::RelativeAddress ( pCodeOp, pBYtes ) + (DWORD) offset;
             sprintf_s ( szDebugString, sizeof(szDebugString), "TRNGSCRIPT : 0x%08lx Code is 0x%04x - Length : %ld\n",  
                 relativeAddress, *pCodeOp, length );
-            OutputDebugString ( szDebugString );
+            OutputTRNGString( szDebugString );
             bContinue = FALSE;
             break;
         }
@@ -2049,7 +2065,7 @@ static BOOL AnalyzeNGScript(char *pBYtes, long offset )
         relativeAddress = CTRXTools::RelativeAddress ( pCodeOp, pBYtes ) + (DWORD) offset;
         sprintf_s ( szDebugString, sizeof(szDebugString), "TRNGSCRIPT : 0x%08lx Code is 0x%04x (%s) (%ld words %ld bytes)\n", 
             relativeAddress, *pCodeOp, GetTRNGTagLabel(*pCodeOp), length, (long) sizeof(WORD) * ( length - ExtraWords ) );
-        OutputDebugString ( szDebugString );
+        OutputTRNGString( szDebugString );
 
         //
         //  Trace items
@@ -2067,7 +2083,7 @@ static BOOL AnalyzeNGScript(char *pBYtes, long offset )
                     indice++;
                     sprintf_s ( szDebugString, sizeof(szDebugString), "TRNGSCRIPT : 0x%08lx : TotWords : %3u - TagScript : %3u (0x%02x) %s = 0x%04x\n", 
                         relativeAddress, TotWords, TagScript, TagScript, GetTRNGCntLabel(TagScript), pIteration->values[indice] );
-                    OutputDebugString ( szDebugString );
+                    OutputTRNGString( szDebugString );
                     if ( TagScript == ctn_Settings )
                     {
                         ctnSettings         = pIteration->values[indice];
@@ -2095,8 +2111,7 @@ static BOOL AnalyzeNGScript(char *pBYtes, long offset )
 
                 //
                 sprintf_s ( szDebugString, sizeof(szDebugString), "TRNGSCRIPT : ctn_Settings=%04x versus [19]=%02x\n", ctnSettings, memUncrypted.ptr [ 19 ] );
-                OutputDebugString ( szDebugString );
-
+                OutputTRNGString( szDebugString );
                 //  Blind Save
                 if ( ( ctnSettings & SET_BLIND_SAVEGAMES ) != 0 && ( memUncrypted.ptr [ 19 ] & SET_BLIND_SAVEGAMES ) != 0 )
                 {
@@ -2125,7 +2140,7 @@ static BOOL AnalyzeNGScript(char *pBYtes, long offset )
                     DecriptaControlloScriptDat ( (BYTE * ) memUncrypted.ptr, nb, (BYTE * ) memCrypted.ptr );
 
                     sprintf_s ( szDebugString, sizeof(szDebugString), "TRNGSCRIPT : To Remove BLIND Savegame\n" );
-                    OutputDebugString ( szDebugString );
+                    OutputTRNGString( szDebugString );
 
                     //  Save Blind Values and Offset
                     BlindValues [ 0 ] = ctnSettings;
@@ -2142,14 +2157,14 @@ static BOOL AnalyzeNGScript(char *pBYtes, long offset )
                         BlindOffset [ 0 ], BlindValues [ 0 ],
                         BlindOffset [ 2 ], pAddress [ 19 ], BlindValues [ 2 ] & 0xff,
                         BlindOffset [ 1 ], pAddress [ 0 ], BlindValues [ 1 ] & 0xff );
-                    OutputDebugString ( szDebugString );
+                    OutputTRNGString( szDebugString );
 
                     //
                     DumpControl ( (BYTE *) memCrypted.ptr, nb );
                 }
                 else
                 {
-                    OutputDebugString ( "TRNGSCRIPT : Script file is not SET_BLIND_SAVEGAMES\n" );
+                    OutputTRNGString( "TRNGSCRIPT : Script file is not SET_BLIND_SAVEGAMES\n" );
                 }
 
                 break;
@@ -2174,7 +2189,7 @@ static BOOL AnalyzeNGScript(char *pBYtes, long offset )
                     indice++;
                     sprintf_s ( szDebugString, sizeof(szDebugString), "TRNGSCRIPT : 0x%08lx : TotWords : %3u - TagScript : %3u (0x%02x) %s = 0x%04x\n", 
                         relativeAddress, TotWords, TagScript, TagScript, GetTRNGCntLabel(TagScript), pIteration->values[indice] );
-                    OutputDebugString ( szDebugString );
+                    OutputTRNGString( szDebugString );
                     indice  += TotWords;
                 }
                 break;

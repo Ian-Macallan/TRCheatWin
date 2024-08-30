@@ -801,6 +801,11 @@ TRLIFE *CTRSaveGame::GetLifeAddress ()
                 break;
             }
 
+            if ( IndicatorsTR123Table1 [ i ].step > CTRXGlobal::m_TR123IndexMaximum )
+            {
+                continue;
+            }
+
             if (    pLife->w1 == IndicatorsTR123Table1 [ i ].w1 &&
                     pLife->w2 == IndicatorsTR123Table1 [ i ].w2 &&
                     pLife->w4 == IndicatorsTR123Table1 [ i ].w4 )
@@ -835,6 +840,11 @@ TRLIFE *CTRSaveGame::GetLifeAddress ()
             if ( IndicatorsTR123Table2 [ i ].bEnd )
             {
                 break;
+            }
+
+            if ( IndicatorsTR123Table2 [ i ].step > CTRXGlobal::m_TR123IndexMaximum )
+            {
+                continue;
             }
 
             if (    pLife->w1 == IndicatorsTR123Table2 [ i ].w1 &&
