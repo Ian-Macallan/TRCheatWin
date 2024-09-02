@@ -3,6 +3,6 @@
 rem cd %~dp0
 rem %~d0
 
-set PRODUCT_VERSION_VERS=4.4.0.6
+set PRODUCT_VERSION_VERS=4.4.0.7
 
 @exit /b

@@ -89,13 +89,8 @@ TR45_INDICATORS IndicatorsTR4NGTable [ MAX_INDICATORS ] =
     {   FALSE,  0x0d,   0x0d,   0x00,   0x6c,   TRUE,   1,  "Swimming", },
     {   FALSE,  0x0d,   0x0d,   0x47,   0x6c,   TRUE,   1,  "Swimming", },
 
-    {   FALSE,  0x12,   0x00,   0x00,   0x02,   TRUE,   1,  "Flare", },
-
     {   FALSE,  0x47,   0x47,   0x47,   0xde,   TRUE,   1,  "Kneeling", },
     {   FALSE,  0x10,   0x00,   0x51,   0x51,   TRUE,   1,  "Crawling", },
-    {   FALSE,  0x00,   0x02,   0x00,   0x02,   TRUE,   1,  "Indicator 7", },
-    {   FALSE,  0x00,   0x02,   0x00,   0x03,   TRUE,   1,  "Indicator 8", },
-    {   FALSE,  0x0c,   0x00,   0x00,   0x02,   TRUE,   1,  "Indicator 9", },
     {   FALSE,  0x21,   0x21,   0x00,   0x6e,   TRUE,   1,  "In Water", },
 
     {   FALSE,  0x13,   0x13,   0x47,   0x61,   TRUE,   1,  "Indicator 10", },
@@ -135,6 +130,13 @@ TR45_INDICATORS IndicatorsTR4NGTable [ MAX_INDICATORS ] =
     {   FALSE,  0x0f,   0x0f,   0x00,   0x40,   TRUE,   9,  "Motocycle", },     // Cannot move so unusable
     {   FALSE,  0x0f,   0x0f,   0x00,   0x25,   TRUE,   9,  "Skydoo", },        // Cannot move so unusable
     {   FALSE,  0x01,   0x01,   0x00,   0x15,   TRUE,   9,  "Skydoo", },        // Cannot move so unusable
+
+    //  Not Good
+    {   FALSE,  0x0c,   0x00,   0x00,   0x02,   TRUE,   10,  "Indicator 9", },
+    {   FALSE,  0x00,   0x02,   0x00,   0x02,   TRUE,   10,  "Indicator 7", },
+    {   FALSE,  0x00,   0x02,   0x00,   0x03,   TRUE,   10,  "Indicator 8", },
+    {   FALSE,  0x12,   0x00,   0x00,   0x02,   TRUE,   10,  "Flare", },
+
 
     //
     {   TRUE,   0xff,   0xff,   0xff,   0xff,   TRUE,   0,  "End", },         // End
@@ -3149,7 +3151,7 @@ TR4NG_POSITION *CTR4NGSaveGame::GetTR4Position ( )
                 dwExtraVertical         = ( 0x0100 << 16 ) | 0x0100;
                 dwExtraVertical         = ( 0x0100 << 16 );
             }
-            BOOL bCheck = CheckAreaForCoordinates ( GetFullVersion(), GetLevelIndex(),  wRoom, dwWestToEast, dwVertical, dwSouthToNorth, true, dwExtraVertical );
+            BOOL bCheck = CheckAreaForCoordinates ( GetFullVersion(), GetLevelIndex(), wRoom, dwWestToEast, dwVertical, dwSouthToNorth, true, dwExtraVertical );
             if ( bCheck )
             {
 #ifdef _DEBUG
@@ -3258,7 +3260,7 @@ BOOL CTR4NGSaveGame::SetPosition ( DWORD dwWestToEast, DWORD dwVertical, DWORD d
     if ( GetPosition ( ) != NULL )
     {
         int levelIndex = GetLevel() - 1;
-        BOOL bCheck = CheckAreaForCoordinates ( GetFullVersion(), levelIndex, wRoom, dwWestToEast, dwVertical , dwSouthToNorth);
+        BOOL bCheck = CheckAreaForCoordinates ( GetFullVersion(), levelIndex, wRoom, dwWestToEast, dwVertical , dwSouthToNorth );
         if ( ! bCheck )
         {
             return FALSE;
