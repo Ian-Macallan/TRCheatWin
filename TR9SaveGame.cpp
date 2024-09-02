@@ -2215,6 +2215,11 @@ bool CTR9SaveGame::isKnown(const char *position)
             break;
         }
 
+        if ( IndicatorsTRRTable [ i ].step > CTRXGlobal::m_TRRIndexMaximum )
+        {
+            continue;
+        }
+
         if ( byte1 == IndicatorsTRRTable [ i ].b1 && byte2 == IndicatorsTRRTable [ i ].b2 && byte3 == IndicatorsTRRTable [ i ].b3 )
         {
             strcpy_s ( m_szIndicatorLabel, sizeof(m_szIndicatorLabel), IndicatorsTRRTable [ i ].szLabel );
@@ -2243,6 +2248,11 @@ const char *CTR9SaveGame::getPositionLabel(const char *position)
         if ( IndicatorsTRRTable [ i ].bEnd )
         {
             break;
+        }
+
+        if ( IndicatorsTRRTable [ i ].step > CTRXGlobal::m_TRRIndexMaximum )
+        {
+            continue;
         }
 
         if ( byte1 == IndicatorsTRRTable [ i ].b1 && byte2 == IndicatorsTRRTable [ i ].b2 && byte3 == IndicatorsTRRTable [ i ].b3 )

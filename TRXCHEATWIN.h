@@ -140,7 +140,7 @@ class CTRXCHEATWINApp : public CWinApp
 #define PROFILE_TR4_INDEX           "TR4 Index Maximum"
 #define PROFILE_TR4NG_INDEX         "TR4 NG Index Maximum"
 #define PROFILE_TR5_INDEX           "TR5 Index Maximum"
+#define PROFILE_TRR_INDEX           "TRR Index Maximum"
+
 
 /////////////////////////////////////////////////////////////////////////////
-
-

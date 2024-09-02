@@ -2,8 +2,17 @@
 
 #include <Windows.h>
 
-#define TR_NG_MIN_SIZE          33000
-#define TR_NG_MAX_SIZE          53000
+#define TR_NG_MIN_SIZE              33000
+#define TR_NG_MAX_SIZE              53000
+
+/////////////////////////////////////////////////////////////////////////////
+
+//  For Step
+//  0 is secure
+//  1-7 nearly secure
+//  8 not sure
+//  9 not effective
+#define TR_SECURE_POSITION          7
 
 //
 /////////////////////////////////////////////////////////////////////////////
@@ -32,6 +41,7 @@ class CTRXGlobal
         static int          m_TR4IndexMaximum;
         static int          m_TR4NGIndexMaximum;
         static int          m_TR5IndexMaximum;
+        static int          m_TRRIndexMaximum;
 };
 
 extern BOOL     g_bPasteEnabled;

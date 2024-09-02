@@ -108,8 +108,8 @@ TR45_INDICATORS IndicatorsTR4NGTable [ MAX_INDICATORS ] =
     {   FALSE,  0x01,   0x02,   0x47,   0x08,   TRUE,   1,  "Standing", }, 
 
     {   FALSE,  0x21,   0x21,   0x47,   0x6e,   TRUE,   1,  "In Water", }, 
-    {   FALSE,  0x0d,   0x12,   0x00,   0x6c,   TRUE,   1,  "Swiminng", }, 
-    {   FALSE,  0x12,   0x12,   0x00,   0x57,   TRUE,   1,  "Swiminng", }, 
+    {   FALSE,  0x0d,   0x12,   0x00,   0x6c,   TRUE,   1,  "Swimming", }, 
+    {   FALSE,  0x12,   0x12,   0x00,   0x57,   TRUE,   1,  "Swimming", }, 
 
     {   FALSE,  0x01,   0x02,   0x00,   0x0a,   TRUE,   1,  "Indicator 14", }, 
 
@@ -118,11 +118,12 @@ TR45_INDICATORS IndicatorsTR4NGTable [ MAX_INDICATORS ] =
 
     {   FALSE,  0x47,   0x47,   0x00,   0xde,   TRUE,   1,  "Kneeling", },
 
-    {  FALSE,   0x02,   0x02,   0x00,   0x18,   TRUE,   1,  "Stand", },
+    {   FALSE,  0x02,   0x02,   0x00,   0x18,   TRUE,   1,  "Stand", },
 
     {   FALSE,  0x02,   0x02,   0x47,   0x87,   TRUE,   1,  "Standing", },
 
     {   FALSE,  0x18,   0x18,   0x00,   0x46,   TRUE,   8,  "Sliding", },
+    {   FALSE,  0x0d,   0x12,   0x47,   0x6c,   TRUE,   8,  "Swimming", },
 
     //
     {   FALSE,  0x0f,   0x0f,   0x00,   0x1f,   TRUE,   9,  "Quad Bike", },

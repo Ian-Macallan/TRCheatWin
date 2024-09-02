@@ -575,12 +575,14 @@ BOOL CTRXCHEATWINApp::InitInstance()
     CTRXGlobal::m_UseTR5PositionRange   = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_USE_TR5_RANGE, -1, TRUE );
 
     //
-    CTRXGlobal::m_TR123IndexMaximum     = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_TR123_INDEX, -1, 8 );
+    CTRXGlobal::m_TR123IndexMaximum     = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_TR123_INDEX, -1, TR_SECURE_POSITION );
 
-    CTRXGlobal::m_TR4IndexMaximum       = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_TR4_INDEX, -1, 8 );
-    CTRXGlobal::m_TR4NGIndexMaximum     = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_TR4NG_INDEX, -1, 8 );
+    CTRXGlobal::m_TR4IndexMaximum       = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_TR4_INDEX, -1, TR_SECURE_POSITION );
+    CTRXGlobal::m_TR4NGIndexMaximum     = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_TR4NG_INDEX, -1, TR_SECURE_POSITION );
 
-    CTRXGlobal::m_TR5IndexMaximum       = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_TR5_INDEX, -1, 8 );
+    CTRXGlobal::m_TR5IndexMaximum       = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_TR5_INDEX, -1, TR_SECURE_POSITION );
+
+    CTRXGlobal::m_TRRIndexMaximum       = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_TRR_INDEX, -1, TR_SECURE_POSITION );
 
     //
     //  Module Filename has been read

@@ -18,12 +18,14 @@ unsigned        CTRXGlobal::m_iMaxNGSize            = 37500;
 BOOL            CTRXGlobal::m_UseTR4PositionRange   = TRUE;
 BOOL            CTRXGlobal::m_UseTR5PositionRange   = TRUE;
 
-int             CTRXGlobal::m_TR123IndexMaximum     = 8;
+int             CTRXGlobal::m_TR123IndexMaximum     = TR_SECURE_POSITION;
 
-int             CTRXGlobal::m_TR4IndexMaximum       = 8;
-int             CTRXGlobal::m_TR4NGIndexMaximum     = 8;
+int             CTRXGlobal::m_TR4IndexMaximum       = TR_SECURE_POSITION;
+int             CTRXGlobal::m_TR4NGIndexMaximum     = TR_SECURE_POSITION;
 
-int             CTRXGlobal::m_TR5IndexMaximum       = 8;
+int             CTRXGlobal::m_TR5IndexMaximum       = TR_SECURE_POSITION;
+
+int             CTRXGlobal::m_TRRIndexMaximum       = TR_SECURE_POSITION;
 
 //
 /////////////////////////////////////////////////////////////////////////////
