@@ -748,6 +748,12 @@ class CTRSaveGame  : public CObject
         }
 
         //
+        virtual void EnableGuns()
+        {
+            return;
+        }
+
+        //
         virtual int Valid () = 0;
         virtual void SetInvalid () = 0;
 
@@ -779,6 +785,7 @@ class CTRSaveGame  : public CObject
         {
             return ".tr123-1.txt";
         }
+
         static const char *GetIndicatorFileType2()
         {
             return ".tr123-2.txt";

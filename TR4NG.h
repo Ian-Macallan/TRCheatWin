@@ -141,6 +141,19 @@
 #define SET_ACCEPT_EXTRA_TAILINFOS      0x0020
 #define SET_FORCE_NO_WAITING_REFRESH    0x0040
 
+// flags StatusNG  (SNG_...) per salvare test di qualche tipo in savegame
+#define SNG_NONE                        0
+#define SNG_INFINITE_AIR                0x00000001  // anche patch trlm
+#define SNG_DISABLE_WEAPONS             0x00000002
+#define SNG_HIDE_HOLSTERS               0x00000004
+#define SNG_IMMORTAL_LARA	            0x00000008  // usata solo come patch trlm 2009
+#define SNG_OPEN_ALL_DOORS              0x00000010  // usata per patch trlm 2009
+#define SNG_KILL_ALL_ENEMIES            0x00000020  // usata per trlm 2009
+#define SNG_REMOVE_IMMORTAL_LARA        0x00000040  // usata da trlm 2009
+#define SNG_PATCH_LARA_STAR             0x00000080  // usata trlm 2009
+#define SNG_UPDATE_LARA_POS             0x00000100  // usata trlm 2009 dopo un move lara
+#define SNG_SUPER_BINOCULARS            0x00000200  // usata per binocolo potenziato
+
 //  We Will ignore large structure
 //  That are DWORD length
 typedef struct  TRNGIteration
@@ -440,6 +453,51 @@ typedef struct TRNGBaseNGHub
 	// TRNGMININGNGHEADER  VetNG[10];
 } TRNGBASENGHUB;
 
+typedef struct TRNGDatiVariabili {
+	WORD    ValoreCold;
+	WORD    FlagProgressoCold;
+	WORD    ValoreDamage;
+	WORD    FlagProgressoDamage;
+	int     KeysToStop;
+	DWORD   StatusNG;               // flags SNG_...
+
+	WORD    TestDisableFeatures;    // flags DF_....
+	DWORD   CounterGame;
+	WORD    FlagLivelloNow;         // valore con i valori attuali di flag livello script
+	DWORD   ColoreLayer1;
+	DWORD   ColoreLayer2;
+	BYTE    SpeedLayer1;
+	BYTE    SpeedLayer2;
+	short   CdLoopSecondario;
+	WORD    LevelNGFlags;
+	short   CdSingleSecondario;
+	DWORD   Canale2StartPos;
+	short   CdLoopMain;
+	short   CdSingleMain;
+	DWORD   Canale1StartPos;
+	float   FloatFogStart;
+	BOOL    NonUsato;
+	DWORD   Unused;
+	short   IndicePushSpinto;
+	WORD    ParBarGiri;
+	DWORD   ParBarFrames;
+	WORD    TestPopUp;              // se = 1 esiste un'immagine popup visualizzata
+	WORD    PopUpContatore;	        // numero di tick frame di visualizzazione (o 0xffff per infinito)
+	WORD    PopUpIndiceImageCmd;    // indice dell'immagine comando da visualizzare
+	BYTE    SalvaVolumetric;        // salva stato prima di sospensione all fog
+	BYTE    TestHardFog;            // usare questo solo come segnalato di esistnza di campi
+					                // successivi e usare in futuro questa tecnica
+	BYTE    TestMostraDetector; 
+	BYTE    NonUsatoByte;
+	short   FogEnd;
+	BYTE    FogColors[4];           // in realta' solo i primi 3 sono usati
+	short   FogDistanceNow;         // che sarebbe il nuovo fog start
+	short   FogBulbMaxDistance;     // poi creato con calcolo gigantesco
+		                            //fino blocco che eiste solo se c'e' testhardfog diverso da zero
+	DWORD   Reserved[100];          // to change when I add new fields
+
+} TRNGDATIVARIABILIFIELDS;
+
 
 #pragma pack(pop, pack1)
 
@@ -450,4 +508,5 @@ extern const char *GetTRNGCntLabel(WORD byte);
 //
 extern void OutputTRNGString ( const char *pText );
 
+//  Trace or not trace
 #define TRACE_TRNG  0

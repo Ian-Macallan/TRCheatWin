@@ -1645,7 +1645,7 @@ void *CTR5SaveGame::GetIndicatorAddress ( int index )
                 }
 
                 short life = * ( short * ) ( pBuffer + iBuffer + TR5_LIFE_OFFSET );
-                if ( life != TR5_ALT_HEALTH && ( life < TR5_MIN_HEALTH || life > TR5_MAX_HEALTH ) )
+                if ( ! IsTR5HealthValid ( life, false ) )
                 {
                     continue;
                 }
@@ -1676,6 +1676,11 @@ WORD *CTR5SaveGame::GetTR5LifeAddress ()
     if ( pBuffer )
     {
         WORD *pLife = ( WORD * ) ( pBuffer + TR5_LIFE_OFFSET );
+
+        if ( ! IsTR5HealthValid ( *pLife, true ) )
+        {
+            return NULL;
+        }
 
 #ifdef _DEBUG
         static char szDebugString [ MAX_PATH ];
@@ -2025,7 +2030,7 @@ TR5_POSITION *CTR5SaveGame::GetTR5Position ( )
                     short life = pTR5Position0->heath;
 
                     //
-                    if ( life >= TR5_MIN_HEALTH && life <= TR5_MAX_HEALTH )
+                    if ( IsTR5HealthValid ( life, false ) )
                     {
                         positionTable [ positionCount ] = pCurrent;
                         if ( pTR5Position == NULL )

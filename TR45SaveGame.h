@@ -5,6 +5,10 @@
 #define TR4_MIN_HEALTH      0
 #define TR4_MAX_HEALTH      1000
 #define TR4_ALT_HEALTH      0x7fff
+//
+#define TR4_SPC_HEALTH          0x3E20
+
+
 //  If bit 9 is Set in Health this means invisible
 #define TR4_INVISIBLE       0x100
 
@@ -49,6 +53,10 @@ class CTR45SaveGame : public CTRSaveGame
     public:
         CTR45SaveGame(void);
         virtual ~CTR45SaveGame(void);
+
+        BOOL IsTR4HealthValid( WORD health, bool bStrict );
+        BOOL IsTR4NGHealthValid( WORD health, bool bStrict );
+        BOOL IsTR5HealthValid( WORD health, bool bStrict );
 
         static int ReadIndicators( TR45_INDICATORS *IndicatorsTRTable, const int maxTable, const char *pFilename );
         static BOOL WriteIndicators( TR45_INDICATORS *IndicatorsTRTable, const int maxTable, const char *pFilename );

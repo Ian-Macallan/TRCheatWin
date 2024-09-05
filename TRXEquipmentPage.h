@@ -48,6 +48,8 @@ class CTRXEquipmentPage : public CTRXPropertyPage
         CTRXButtonBase  m_Laser;
         CTRXButtonBase  m_Binocular;
         CTRXButtonBase  m_Full_Kits;
+        CTRXButtonBase  m_TRNG_Guns;
+
         //}}AFX_DATA
 
 
@@ -84,6 +86,7 @@ class CTRXEquipmentPage : public CTRXPropertyPage
         afx_msg void OnChangeEdit();
         afx_msg void OnBnClickedFull();
 
+        afx_msg void OnBnClickedTrngGuns();
 };
 
 //{{AFX_INSERT_LOCATION}}

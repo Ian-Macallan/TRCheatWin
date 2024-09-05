@@ -81,6 +81,7 @@ void CTRXEquipmentPage::DoDataExchange(CDataExchange* pDX)
     DDX_Control(pDX, IDC_LASER, m_Laser);
     DDX_Control(pDX, IDC_BINOCULAR, m_Binocular);
     DDX_Control(pDX, IDC_FULL, m_Full_Kits);
+    DDX_Control(pDX, IDC_TRNG_GUNS, m_TRNG_Guns);
     //}}AFX_DATA_MAP
 }
 
@@ -102,6 +103,7 @@ BEGIN_MESSAGE_MAP(CTRXEquipmentPage, CTRXPropertyPage)
     ON_WM_CTLCOLOR()
     //}}AFX_MSG_MAP
     ON_BN_CLICKED(IDC_FULL, &CTRXEquipmentPage::OnBnClickedFull)
+    ON_BN_CLICKED(IDC_TRNG_GUNS, &CTRXEquipmentPage::OnBnClickedTrngGuns)
 END_MESSAGE_MAP()
 
 //
@@ -315,6 +317,7 @@ int CTRXEquipmentPage::EnableForVersion()
         m_Unfinite_Air.EnableWindow ( iVersion <= 30 || iVersion == 40 || iVersion == 45 || iVersion == 49 || iVersion == 50 );
         m_Air.EnableWindow ( iVersion <= 30 || iVersion == 40 || iVersion == 45 || iVersion == 49 || iVersion == 50 );
         m_God.EnableWindow ( iVersion <= 30 );
+        m_TRNG_Guns.EnableWindow ( iVersion == 49 );
     }
     else
     {
@@ -329,6 +332,7 @@ int CTRXEquipmentPage::EnableForVersion()
         m_Unfinite_Air.EnableWindow ( FALSE );
         m_Air.EnableWindow ( FALSE );
         m_God.EnableWindow ( FALSE );
+        m_TRNG_Guns.EnableWindow ( FALSE );
     }
 
     if ( CTRSaveGame::I() != NULL && CTRSaveGame::I()->Valid ( ) )
@@ -495,7 +499,8 @@ BOOL CTRXEquipmentPage::OnInitDialog()
     //
     if ( m_bToolTip )
     {
-        m_ToolTip.AddTool( &m_Status, ("Status"));
+        m_ToolTip.AddTool( &m_Status, "Status" );
+        m_ToolTip.AddTool( &m_TRNG_Guns, "Enable Guns when disabled" );
         m_ToolTip.Activate(TRUE);
     }
 
@@ -573,4 +578,13 @@ void CTRXEquipmentPage::OnBnClickedFull()
         m_Small_Medipak.SetWindowText ( pValue255 );
         m_Flares.SetWindowText ( pValue255 );
     }
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
+void CTRXEquipmentPage::OnBnClickedTrngGuns()
+{
+    CTRSaveGame::I()->EnableGuns();
 }

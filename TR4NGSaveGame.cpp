@@ -200,6 +200,7 @@ CTR4NGSaveGame::CTR4NGSaveGame()
     m_pTRNGAir          = NULL;
     m_pTRNGGuns         = NULL;
     m_pTRNGAmmos        = NULL;
+    m_pTRNGStatusNG     = NULL;
 
 }
 
@@ -377,6 +378,7 @@ BOOL CTR4NGSaveGame::GetTRNGPointers()
     m_pTRNGAir          = NULL;
     m_pTRNGGuns         = NULL;
     m_pTRNGAmmos        = NULL;
+    m_pTRNGStatusNG     = NULL;
 
     BYTE *pBuffer = ( ( BYTE * ) m_pBuffer + 0x8000 );
 
@@ -521,6 +523,13 @@ BOOL CTR4NGSaveGame::GetTRNGPointers()
                 break;
             }
             
+    		case NGTAG_VARIABLE_DATA :
+            {
+                TRNGDATIVARIABILIFIELDS *pSave = (TRNGDATIVARIABILIFIELDS *)pValues;
+                m_pTRNGStatusNG = &pSave->StatusNG;
+                break;
+            }
+
         };
 
         //
@@ -612,9 +621,9 @@ void CTR4NGSaveGame::TraceTRNG()
             case NGTAG_SAVEGAME_INFOS :
             {
                 TRNGSAVEGAMEINFOS *pSave = (TRNGSAVEGAMEINFOS *) pValues;
-                sprintf_s ( szDebugString, sizeof(szDebugString), "TRNGSAVE : %d\tHealth : %d Level : %s\n", 
+                sprintf_s ( szDebugString, sizeof(szDebugString), "TRNGSAVE : %d\tHealth : %d Level : %s\tState Id: 0x%0x\n", 
                     (int) sizeof(TRNGSAVEGAMEINFOS),
-                    pSave->LaraVitality, pSave->Tr4Name );
+                    pSave->LaraVitality, pSave->Tr4Name, pSave->LaraStateId );
                 OutputTRNGString( szDebugString );
                 break;
             }
@@ -1909,6 +1918,22 @@ unsigned char CTR4NGSaveGame::GrabWeapon1 ( int iX, bool bAdd, bool bChange )
 /////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////
+void CTR4NGSaveGame::EnableGuns()
+{
+
+    if ( m_pTRNGStatusNG != NULL )
+    {
+        if ( *m_pTRNGStatusNG & SNG_DISABLE_WEAPONS )
+        {
+            *m_pTRNGStatusNG ^= SNG_DISABLE_WEAPONS;
+        }
+    }
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
 unsigned char CTR4NGSaveGame::GrabWeapon4 ( int iX, bool bAdd, bool bChange )
 {
     TR4NGGUN    *pGun       = &m_pBuffer->tagGuns;
@@ -2706,7 +2731,7 @@ void *CTR4NGSaveGame::GetIndicatorAddress (int index)
                 short life = * (short * ) ( pBuffer + iBuffer + TR4NG_LIFE_OFFSET );
 
                 //  Life Is valid between 0 and 1000
-                if ( life != TR4_ALT_HEALTH && ( life < TR4_MIN_HEALTH || life > TR4_MAX_HEALTH ) )
+                if ( ! IsTR4NGHealthValid ( life, false ) )
                 {
                     continue;
                 }
@@ -2737,6 +2762,11 @@ WORD *CTR4NGSaveGame::GetTR4NGLifeAddress()
     if ( pBuffer != NULL )
     {
         WORD *pLife = ( WORD * ) ( pBuffer + TR4NG_LIFE_OFFSET );
+
+        if ( ! IsTR4NGHealthValid ( *pLife, true ) )
+        {
+            return NULL;
+        }
 
 #ifdef _DEBUG
         static char szDebugString [ MAX_PATH ];
@@ -2833,10 +2863,6 @@ void CTR4NGSaveGame::SetLife ( const char *szLife )
         {
             life = TR4_MIN_HEALTH;
         }
-
-#ifndef _DEBUG
-        life = life % TR4_MAX_HEALTH;
-#endif
 
         *pLife = (WORD) life;
     }
@@ -3172,7 +3198,7 @@ TR4NG_POSITION *CTR4NGSaveGame::GetTR4Position ( )
                     short life = pTR4Position0->heath;
 
                     //
-                    if ( life >= TR4_MIN_HEALTH && life <= TR4_MAX_HEALTH )
+                    if ( IsTR4NGHealthValid ( life, false )  )
                     {
                         positionTable [ positionCount ] = pCurrent;
                         if ( pTR4Position == NULL )

@@ -43,8 +43,7 @@
  *      ------------------------------------------------
  */
 
-#define TR4NGBUFFEREND      14014
-
+#define TR4NGBUFFEREND          14014
 
 //
 //  0x3ed :
@@ -255,14 +254,16 @@ struct          TR4NGSave
             BYTE                    laraState;
         };
 
+        //  Guns
         struct
         {
-            char                    cFiller2 [ 0x169 ];
+            char                    cFiller2b [ 0x169 ];
 
             //      0x169
             TR4NGGUN                tagGuns;
         };
 
+        //  Ammos
         struct
         {
             char                    cFiller3 [ 0x190 ];
@@ -349,6 +350,7 @@ class CTR4NGSaveGame : public CTR45SaveGame
         WORD                *m_pTRNGAir;
         TR4NGGUN            *m_pTRNGGuns;
         TR4NGAMMO           *m_pTRNGAmmos;
+        DWORD               *m_pTRNGStatusNG;
 
     // Operations
     public:
@@ -611,6 +613,9 @@ class CTR4NGSaveGame : public CTR45SaveGame
         const TR_POSITION *GetPosition ( );
         TR4NG_POSITION *GetTR4Position ( );
         BOOL SetPosition ( DWORD dwWestToEast, DWORD dwVertical, DWORD dwSouthToNorth, WORD wDirection, WORD wRoom );
+
+        //
+        virtual void EnableGuns();
 
         static const char *GetIndicatorFileType()
         {

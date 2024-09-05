@@ -26,6 +26,78 @@ CTR45SaveGame::~CTR45SaveGame(void)
 
 //
 /////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
+BOOL CTR45SaveGame::IsTR4HealthValid( WORD health, bool bStrict )
+{
+    if ( bStrict )
+    {
+        if ( health >= TR4_MIN_HEALTH && health <= TR4_MAX_HEALTH )
+        {
+            return TRUE;
+        }
+    }
+    else
+    {
+        if ( health == TR4_ALT_HEALTH || ( health >= TR4_MIN_HEALTH && health <= TR4_MAX_HEALTH ) )
+        {
+            return TRUE;
+        }
+    }
+
+    return FALSE;
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
+BOOL CTR45SaveGame::IsTR4NGHealthValid( WORD health, bool bStrict )
+{
+    if ( bStrict )
+    {
+        if ( health >= TR4_MIN_HEALTH && health <= TR4_MAX_HEALTH )
+        {
+            return TRUE;
+        }
+    }
+    else
+    {
+        if ( health == TR4_SPC_HEALTH || health == TR4_ALT_HEALTH || ( health >= TR4_MIN_HEALTH && health <= TR4_MAX_HEALTH ) )
+        {
+            return TRUE;
+        }
+    }
+
+    return FALSE;
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
+BOOL CTR45SaveGame::IsTR5HealthValid( WORD health, bool bStrict )
+{
+    if ( bStrict )
+    {
+        if ( health >= TR5_MIN_HEALTH && health <= TR5_MAX_HEALTH )
+        {
+            return TRUE;
+        }
+    }
+    else
+    {
+        if ( health == TR5_ALT_HEALTH || ( health >= TR5_MIN_HEALTH && health <= TR5_MAX_HEALTH ) )
+        {
+            return TRUE;
+        }
+    }
+
+    return FALSE;
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
 //  { FALSE,  0x02,   0x02,   0x00,   0x67,   TRUE }
 /////////////////////////////////////////////////////////////////////////////
 int CTR45SaveGame::ReadIndicators(TR45_INDICATORS *IndicatorsTRTable, const int maxTable, const char *pFilename)
