@@ -82,6 +82,9 @@ void CTRXEquipmentPage::DoDataExchange(CDataExchange* pDX)
     DDX_Control(pDX, IDC_BINOCULAR, m_Binocular);
     DDX_Control(pDX, IDC_FULL, m_Full_Kits);
     DDX_Control(pDX, IDC_TRNG_GUNS, m_TRNG_Guns);
+    DDX_Control(pDX, IDC_TRNG_GODMODE, m_TRNG_GodMode);
+    DDX_Control(pDX, IDC_TRNG_DOORS, m_TRNG_Doors);
+    DDX_Control(pDX, IDC_TRNG_ENEMIES, m_TRNG_Enemies);
     //}}AFX_DATA_MAP
 }
 
@@ -104,6 +107,9 @@ BEGIN_MESSAGE_MAP(CTRXEquipmentPage, CTRXPropertyPage)
     //}}AFX_MSG_MAP
     ON_BN_CLICKED(IDC_FULL, &CTRXEquipmentPage::OnBnClickedFull)
     ON_BN_CLICKED(IDC_TRNG_GUNS, &CTRXEquipmentPage::OnBnClickedTrngGuns)
+    ON_BN_CLICKED(IDC_TRNG_GODMODE, &CTRXEquipmentPage::OnBnClickedTrngGodMode)
+    ON_BN_CLICKED(IDC_TRNG_DOORS, &CTRXEquipmentPage::OnBnClickedTrngDoors)
+    ON_BN_CLICKED(IDC_TRNG_ENEMIES, &CTRXEquipmentPage::OnBnClickedTrngEnemies)
 END_MESSAGE_MAP()
 
 //
@@ -317,7 +323,52 @@ int CTRXEquipmentPage::EnableForVersion()
         m_Unfinite_Air.EnableWindow ( iVersion <= 30 || iVersion == 40 || iVersion == 45 || iVersion == 49 || iVersion == 50 );
         m_Air.EnableWindow ( iVersion <= 30 || iVersion == 40 || iVersion == 45 || iVersion == 49 || iVersion == 50 );
         m_God.EnableWindow ( iVersion <= 30 );
+
         m_TRNG_Guns.EnableWindow ( iVersion == 49 );
+        m_TRNG_GodMode.EnableWindow ( iVersion == 49 );
+        m_TRNG_Doors.EnableWindow ( iVersion == 49 );
+        m_TRNG_Enemies.EnableWindow ( iVersion == 49 );
+
+        //
+        if ( ! CTRSaveGame::I()->EnableGuns( TRUE ) )
+        {
+            m_TRNG_Guns.SetWindowText ( "Enable TRNG Guns" );
+        }
+        else
+        {
+            m_TRNG_Guns.SetWindowText ( "TRNG Guns Enabled" );
+            m_TRNG_Guns.EnableWindow ( FALSE );
+        }
+
+        //
+        if ( ! CTRSaveGame::I()->TRNGGodMode( TRUE ) )
+        {
+            m_TRNG_GodMode.SetWindowText ( "Enable TRNG God Mode" );
+        }
+        else
+        {
+            m_TRNG_GodMode.SetWindowText ( "Disable TRNG God Mode" );
+        }
+
+        //
+        if ( ! CTRSaveGame::I()->TRNGOpenDoors( TRUE ) )
+        {
+            m_TRNG_Doors.SetWindowText ( "Enable TRNG Open Doors" );
+        }
+        else
+        {
+            m_TRNG_Doors.SetWindowText ( "Disable TRNG Open Doors" );
+        }
+
+        //
+        if ( ! CTRSaveGame::I()->TRNGKillEnemies( TRUE ) )
+        {
+            m_TRNG_Enemies.SetWindowText ( "Enable TRNG Kill Enemies" );
+        }
+        else
+        {
+            m_TRNG_Enemies.SetWindowText ( "Disable TRNG Kill Enemies" );
+        }
     }
     else
     {
@@ -333,6 +384,9 @@ int CTRXEquipmentPage::EnableForVersion()
         m_Air.EnableWindow ( FALSE );
         m_God.EnableWindow ( FALSE );
         m_TRNG_Guns.EnableWindow ( FALSE );
+        m_TRNG_GodMode.EnableWindow ( FALSE );
+        m_TRNG_Doors.EnableWindow ( FALSE );
+        m_TRNG_Enemies.EnableWindow ( FALSE );
     }
 
     if ( CTRSaveGame::I() != NULL && CTRSaveGame::I()->Valid ( ) )
@@ -586,5 +640,58 @@ void CTRXEquipmentPage::OnBnClickedFull()
 /////////////////////////////////////////////////////////////////////////////
 void CTRXEquipmentPage::OnBnClickedTrngGuns()
 {
-    CTRSaveGame::I()->EnableGuns();
+    //
+    SetGUIModified ( TRUE, "Equipment TRNG Guns" );
+    CTRSaveGame::I()->EnableGuns( FALSE, TRUE );
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
+void CTRXEquipmentPage::OnBnClickedTrngGodMode()
+{
+    SetGUIModified ( TRUE, "Equipment TRNG God Mode" );
+    if ( ! CTRSaveGame::I()->TRNGGodMode( TRUE ) )
+    {
+        CTRSaveGame::I()->TRNGGodMode( FALSE, TRUE );
+    }
+    else
+    {
+        CTRSaveGame::I()->TRNGGodMode( FALSE, FALSE );
+    }
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
+void CTRXEquipmentPage::OnBnClickedTrngDoors()
+{
+    SetGUIModified ( TRUE, "Equipment TRNG Doors" );
+    if ( ! CTRSaveGame::I()->TRNGOpenDoors( TRUE ) )
+    {
+        CTRSaveGame::I()->TRNGOpenDoors( FALSE, TRUE );
+    }
+    else
+    {
+        CTRSaveGame::I()->TRNGOpenDoors( FALSE, FALSE );
+    }
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
+void CTRXEquipmentPage::OnBnClickedTrngEnemies()
+{
+    SetGUIModified ( TRUE, "Equipment TRNG Enemies" );
+    if ( ! CTRSaveGame::I()->TRNGKillEnemies( TRUE ) )
+    {
+        CTRSaveGame::I()->TRNGKillEnemies( FALSE, TRUE );
+    }
+    else
+    {
+        CTRSaveGame::I()->TRNGKillEnemies( FALSE, FALSE );
+    }
 }

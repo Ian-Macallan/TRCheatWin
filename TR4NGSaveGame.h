@@ -351,6 +351,8 @@ class CTR4NGSaveGame : public CTR45SaveGame
         TR4NGGUN            *m_pTRNGGuns;
         TR4NGAMMO           *m_pTRNGAmmos;
         DWORD               *m_pTRNGStatusNG;
+        WORD                *m_pTRNGCold;
+        WORD                *m_pTRNGDamage;
 
     // Operations
     public:
@@ -614,8 +616,14 @@ class CTR4NGSaveGame : public CTR45SaveGame
         TR4NG_POSITION *GetTR4Position ( );
         BOOL SetPosition ( DWORD dwWestToEast, DWORD dwVertical, DWORD dwSouthToNorth, WORD wDirection, WORD wRoom );
 
-        //
-        virtual void EnableGuns();
+        //  Returns TRUE if enabled
+        virtual BOOL EnableGuns ( BOOL bGetOnly = TRUE, BOOL bEnable = TRUE );
+        // Returns TRUE of we are in God Mode
+        virtual BOOL TRNGGodMode ( BOOL bGetOnly = TRUE, BOOL bSet = TRUE );
+        // Returns TRUE of we are in Doors Opened
+        virtual BOOL TRNGOpenDoors ( BOOL bGetOnly = TRUE, BOOL bSet = TRUE );
+        // Returns TRUE of we are in Kill Enemies
+        virtual BOOL TRNGKillEnemies ( BOOL bGetOnly = TRUE, BOOL bSet = TRUE );
 
         static const char *GetIndicatorFileType()
         {

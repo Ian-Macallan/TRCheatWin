@@ -565,10 +565,15 @@
 #define IDC_TRNG_GUNS                   1228
 #define IDC_LBL_OBJ_3                   1229
 #define IDC_ZHARPOON                    1229
+#define IDC_TRNG_GUNS2                  1229
+#define IDC_TRNG_GODMODE                1229
 #define IDC_LBL_KEY_1                   1230
 #define IDC_ZDESERT                     1230
+#define IDC_TRNG_DOORS                  1230
 #define IDC_LBL_KEY_3                   1231
 #define IDC_ZGRENADE                    1231
+#define IDC_TRNG_DOORS2                 1231
+#define IDC_TRNG_ENEMIES                1231
 #define IDC_LBL_MAP_1                   1232
 #define IDC_ZUZI                        1232
 #define IDC_LBL_TRE_1                   1233

@@ -748,9 +748,28 @@ class CTRSaveGame  : public CObject
         }
 
         //
-        virtual void EnableGuns()
+        //  Returns TRUE if enabled
+        virtual BOOL EnableGuns( BOOL bGetOnly = TRUE, BOOL bEnable = TRUE )
         {
-            return;
+            return TRUE;
+        }
+
+        //  Returns TRUE of we are in God Mode
+        virtual BOOL TRNGGodMode ( BOOL bGetOnly = TRUE, BOOL bSet = TRUE )
+        {
+            return FALSE;
+        }
+
+        //  Returns TRUE of we are in Doors Opened
+        virtual BOOL TRNGOpenDoors ( BOOL bGetOnly = TRUE, BOOL bSet = TRUE )
+        {
+            return FALSE;
+        }
+
+        //  Returns TRUE of we are in Kill Enemies
+        virtual BOOL TRNGKillEnemies ( BOOL bGetOnly = TRUE, BOOL bSet = TRUE )
+        {
+            return FALSE;
         }
 
         //

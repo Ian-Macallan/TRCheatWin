@@ -485,15 +485,19 @@ typedef struct TRNGDatiVariabili {
 	WORD    PopUpContatore;	        // numero di tick frame di visualizzazione (o 0xffff per infinito)
 	WORD    PopUpIndiceImageCmd;    // indice dell'immagine comando da visualizzare
 	BYTE    SalvaVolumetric;        // salva stato prima di sospensione all fog
-	BYTE    TestHardFog;            // usare questo solo come segnalato di esistnza di campi
-					                // successivi e usare in futuro questa tecnica
+    // usare questo solo come segnalato di esistnza di campi
+    // successivi e usare in futuro questa tecnica
+	BYTE    TestHardFog;            
+					                
 	BYTE    TestMostraDetector; 
 	BYTE    NonUsatoByte;
 	short   FogEnd;
 	BYTE    FogColors[4];           // in realta' solo i primi 3 sono usati
 	short   FogDistanceNow;         // che sarebbe il nuovo fog start
-	short   FogBulbMaxDistance;     // poi creato con calcolo gigantesco
-		                            //fino blocco che eiste solo se c'e' testhardfog diverso da zero
+    // poi creato con calcolo gigantesco
+    //fino blocco che eiste solo se c'e' testhardfog diverso da zero
+	short   FogBulbMaxDistance;     
+		                            
 	DWORD   Reserved[100];          // to change when I add new fields
 
 } TRNGDATIVARIABILIFIELDS;
@@ -510,3 +514,5 @@ extern void OutputTRNGString ( const char *pText );
 
 //  Trace or not trace
 #define TRACE_TRNG  0
+
+//

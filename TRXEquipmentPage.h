@@ -49,6 +49,9 @@ class CTRXEquipmentPage : public CTRXPropertyPage
         CTRXButtonBase  m_Binocular;
         CTRXButtonBase  m_Full_Kits;
         CTRXButtonBase  m_TRNG_Guns;
+        CTRXButtonBase  m_TRNG_GodMode;
+        CTRXButtonBase  m_TRNG_Doors;
+        CTRXButtonBase  m_TRNG_Enemies;
 
         //}}AFX_DATA
 
@@ -85,8 +88,10 @@ class CTRXEquipmentPage : public CTRXPropertyPage
         virtual BOOL OnApply();
         afx_msg void OnChangeEdit();
         afx_msg void OnBnClickedFull();
-
         afx_msg void OnBnClickedTrngGuns();
+        afx_msg void OnBnClickedTrngGodMode();
+        afx_msg void OnBnClickedTrngDoors();
+        afx_msg void OnBnClickedTrngEnemies();
 };
 
 //{{AFX_INSERT_LOCATION}}

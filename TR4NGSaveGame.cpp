@@ -201,6 +201,8 @@ CTR4NGSaveGame::CTR4NGSaveGame()
     m_pTRNGGuns         = NULL;
     m_pTRNGAmmos        = NULL;
     m_pTRNGStatusNG     = NULL;
+    m_pTRNGCold         = NULL;
+    m_pTRNGDamage       = NULL;
 
 }
 
@@ -379,7 +381,10 @@ BOOL CTR4NGSaveGame::GetTRNGPointers()
     m_pTRNGGuns         = NULL;
     m_pTRNGAmmos        = NULL;
     m_pTRNGStatusNG     = NULL;
+    m_pTRNGCold         = NULL;
+    m_pTRNGDamage       = NULL;
 
+    //
     BYTE *pBuffer = ( ( BYTE * ) m_pBuffer + 0x8000 );
 
     //
@@ -526,10 +531,11 @@ BOOL CTR4NGSaveGame::GetTRNGPointers()
     		case NGTAG_VARIABLE_DATA :
             {
                 TRNGDATIVARIABILIFIELDS *pSave = (TRNGDATIVARIABILIFIELDS *)pValues;
-                m_pTRNGStatusNG = &pSave->StatusNG;
+                m_pTRNGStatusNG     = &pSave->StatusNG;
+                m_pTRNGCold         = &pSave->ValoreCold;
+                m_pTRNGDamage       = &pSave->ValoreDamage;
                 break;
             }
-
         };
 
         //
@@ -611,7 +617,9 @@ void CTR4NGSaveGame::TraceTRNG()
         }
 
         //
-        sprintf_s ( szDebugString, sizeof(szDebugString), "TRNGSAVE : 0x%04x (%s) (%ld words %ld bytes)\n", 
+        DWORD relativeAddress = CTRXTools::RelativeAddress ( pCodeOp, m_pBuffer );
+        sprintf_s ( szDebugString, sizeof(szDebugString), "TRNGSAVE : 0x%08x : Code 0x%04x (%s) (%ld words %ld bytes)\n", 
+            relativeAddress,
             *pCodeOp, GetTRNGTagLabel(*pCodeOp), length, (long) sizeof(WORD) * ( length - ExtraWords ) );
         OutputTRNGString( szDebugString );
 
@@ -698,32 +706,48 @@ void CTR4NGSaveGame::TraceTRNG()
                 TRNGMININGNGHEADER  *pHeader    = (TRNGMININGNGHEADER *) ( ( (BYTE * ) pHub ) + sizeof(TRNGEXTRACTNG) + pHub->NWords * sizeof(WORD) );
 
                 DWORD relativeAddress = CTRXTools::RelativeAddress ( pSave, m_pBuffer );
-                sprintf_s ( szDebugString, sizeof(szDebugString), "TRNGSAVE : %d\tTRNGBASENGHUB : 0x%x\n", 
+                sprintf_s ( szDebugString, sizeof(szDebugString), "TRNGSAVE : %d\tTRNGBASENGHUB : 0x%08x\n", 
                     (int) sizeof(TRNGBASENGHUB), relativeAddress );
                 OutputTRNGString( szDebugString );
 
                 relativeAddress = CTRXTools::RelativeAddress ( pHub, m_pBuffer );
-                sprintf_s ( szDebugString, sizeof(szDebugString), "TRNGSAVE : %d\tTRNGEXTRACTNG : 0x%x\n", 
+                sprintf_s ( szDebugString, sizeof(szDebugString), "TRNGSAVE : %d\tTRNGEXTRACTNG : 0x%08x\n", 
                     (int) sizeof(TRNGEXTRACTNG), relativeAddress );
                 OutputTRNGString( szDebugString );
 
                 relativeAddress = CTRXTools::RelativeAddress ( pHeader, m_pBuffer );
-                sprintf_s ( szDebugString, sizeof(szDebugString), "TRNGSAVE : %d\tTRNGMININGNGHEADER : 0x%x\n", 
+                sprintf_s ( szDebugString, sizeof(szDebugString), "TRNGSAVE : %d\tTRNGMININGNGHEADER : 0x%08x\n", 
                     (int) sizeof(TRNGMININGNGHEADER), relativeAddress );
                 OutputTRNGString( szDebugString );
+
                 sprintf_s ( szDebugString, sizeof(szDebugString), "TRNGSAVE : \tTotHub : %d - LastIndex : %d - LaraHUB.NWords : %d\n", 
                     pSave->TotHub, pSave->LastIndex, pHub->NWords );
                 OutputTRNGString( szDebugString );
+
                 for ( int i = 0; i < 10; i++ )
                 {
                     relativeAddress = CTRXTools::RelativeAddress ( pHeader, m_pBuffer );
-                    sprintf_s ( szDebugString, sizeof(szDebugString), "TRNGSAVE : 0x%x\tNumeroLivello : %d - TotWords : %d\n", 
+                    sprintf_s ( szDebugString, sizeof(szDebugString), "TRNGSAVE : 0x%08x\tNumeroLivello : %d - TotWords : %d\n", 
                         relativeAddress,
                         pHeader->NumeroLivello, pHeader->TotWords );
                     pHeader = (TRNGMININGNGHEADER *) ( ( ( BYTE * ) pHeader ) + sizeof(TRNGMININGNGHEADER) + pHeader->TotWords * sizeof(WORD) );
                     OutputTRNGString( szDebugString );
                 }
 
+                break;
+            }
+
+    		case NGTAG_VARIABLE_DATA :
+            {
+                TRNGDATIVARIABILIFIELDS *pSave = (TRNGDATIVARIABILIFIELDS *)pValues;
+                DWORD relativeAddress = CTRXTools::RelativeAddress ( pSave, m_pBuffer );
+                sprintf_s ( szDebugString, sizeof(szDebugString), "TRNGSAVE : 0x%08x : %d\tStatus : 0x%lx - Cold : %u - Damage : %u\n", 
+                    relativeAddress,
+                    (int) sizeof(TRNGDATIVARIABILIFIELDS),
+                    pSave->StatusNG, 
+                    pSave->ValoreCold,
+                    pSave->ValoreDamage );
+                OutputTRNGString( szDebugString );
                 break;
             }
 
@@ -1916,18 +1940,125 @@ unsigned char CTR4NGSaveGame::GrabWeapon1 ( int iX, bool bAdd, bool bChange )
 
 //
 /////////////////////////////////////////////////////////////////////////////
-//
+//  Return TRUE if bbled
 /////////////////////////////////////////////////////////////////////////////
-void CTR4NGSaveGame::EnableGuns()
+BOOL CTR4NGSaveGame::EnableGuns ( BOOL bGetOnly, BOOL bEnable )
 {
-
     if ( m_pTRNGStatusNG != NULL )
     {
-        if ( *m_pTRNGStatusNG & SNG_DISABLE_WEAPONS )
+        if ( bGetOnly )
         {
-            *m_pTRNGStatusNG ^= SNG_DISABLE_WEAPONS;
+            return ( *m_pTRNGStatusNG & SNG_DISABLE_WEAPONS ) != SNG_DISABLE_WEAPONS;
+        }
+        else
+        {
+            if ( bEnable )
+            {
+                *m_pTRNGStatusNG &= ( 0xFFFFFFFF ^ SNG_DISABLE_WEAPONS );
+                return TRUE;
+            }
+            else
+            {
+                *m_pTRNGStatusNG |= SNG_DISABLE_WEAPONS;
+                return FALSE;
+            }
         }
     }
+
+    return TRUE;
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//  Returns TRUE of we are in God Mode
+/////////////////////////////////////////////////////////////////////////////
+BOOL CTR4NGSaveGame::TRNGGodMode ( BOOL bGetOnly, BOOL bSet )
+{
+    if ( m_pTRNGStatusNG != NULL )
+    {
+        if ( bGetOnly )
+        {
+            return ( *m_pTRNGStatusNG & SNG_IMMORTAL_LARA ) == SNG_IMMORTAL_LARA;
+        }
+        else
+        {
+            if ( bSet )
+            {
+                *m_pTRNGStatusNG |= SNG_IMMORTAL_LARA;
+                *m_pTRNGStatusNG |= SNG_INFINITE_AIR;
+                *m_pTRNGStatusNG &= ( 0xFFFFFFFF ^ SNG_REMOVE_IMMORTAL_LARA );
+                return TRUE;
+            }
+            else
+            {
+                *m_pTRNGStatusNG &= ( 0xFFFFFFFF ^ SNG_IMMORTAL_LARA );
+                *m_pTRNGStatusNG &= ( 0xFFFFFFFF ^ SNG_INFINITE_AIR );
+                return FALSE;
+            }
+        }
+    }
+
+    return FALSE;
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//  Returns TRUE of we are in God Mode
+/////////////////////////////////////////////////////////////////////////////
+BOOL CTR4NGSaveGame::TRNGOpenDoors ( BOOL bGetOnly, BOOL bSet )
+{
+    if ( m_pTRNGStatusNG != NULL )
+    {
+        if ( bGetOnly )
+        {
+            return ( *m_pTRNGStatusNG & SNG_OPEN_ALL_DOORS ) == SNG_OPEN_ALL_DOORS;
+        }
+        else
+        {
+            if ( bSet )
+            {
+                *m_pTRNGStatusNG |= SNG_OPEN_ALL_DOORS;
+                return TRUE;
+            }
+            else
+            {
+                *m_pTRNGStatusNG &= ( 0xFFFFFFFF ^ SNG_OPEN_ALL_DOORS );
+                return FALSE;
+            }
+        }
+    }
+
+    return FALSE;
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//  Returns TRUE of we are in God Mode
+/////////////////////////////////////////////////////////////////////////////
+BOOL CTR4NGSaveGame::TRNGKillEnemies ( BOOL bGetOnly, BOOL bSet )
+{
+    if ( m_pTRNGStatusNG != NULL )
+    {
+        if ( bGetOnly )
+        {
+            return ( *m_pTRNGStatusNG & SNG_KILL_ALL_ENEMIES ) == SNG_KILL_ALL_ENEMIES;
+        }
+        else
+        {
+            if ( bSet )
+            {
+                *m_pTRNGStatusNG |= SNG_KILL_ALL_ENEMIES;
+                return TRUE;
+            }
+            else
+            {
+                *m_pTRNGStatusNG &= ( 0xFFFFFFFF ^ SNG_KILL_ALL_ENEMIES );
+                return FALSE;
+            }
+        }
+    }
+
+    return FALSE;
 }
 
 //
