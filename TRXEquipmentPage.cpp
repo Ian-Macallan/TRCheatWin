@@ -554,7 +554,10 @@ BOOL CTRXEquipmentPage::OnInitDialog()
     if ( m_bToolTip )
     {
         m_ToolTip.AddTool( &m_Status, "Status" );
-        m_ToolTip.AddTool( &m_TRNG_Guns, "Enable Guns when disabled" );
+        m_ToolTip.AddTool( &m_TRNG_Guns, "Enable TRNG Guns when disabled" );
+        m_ToolTip.AddTool( &m_TRNG_GodMode, "Enable TRNG God Mode" );
+        m_ToolTip.AddTool( &m_TRNG_Doors, "Enable TRNG Open All Doors\nMay not work on all version" );
+        m_ToolTip.AddTool( &m_TRNG_Enemies, "Enable TRNG Kill All Enemies\nMay not work on all version" );
         m_ToolTip.Activate(TRUE);
     }
 
@@ -655,10 +658,12 @@ void CTRXEquipmentPage::OnBnClickedTrngGodMode()
     if ( ! CTRSaveGame::I()->TRNGGodMode( TRUE ) )
     {
         CTRSaveGame::I()->TRNGGodMode( FALSE, TRUE );
+        m_TRNG_GodMode.SetWindowText ( "Disable TRNG God Mode" );
     }
     else
     {
         CTRSaveGame::I()->TRNGGodMode( FALSE, FALSE );
+        m_TRNG_GodMode.SetWindowText ( "Enable TRNG God Mode" );
     }
 }
 
@@ -672,10 +677,12 @@ void CTRXEquipmentPage::OnBnClickedTrngDoors()
     if ( ! CTRSaveGame::I()->TRNGOpenDoors( TRUE ) )
     {
         CTRSaveGame::I()->TRNGOpenDoors( FALSE, TRUE );
+        m_TRNG_Doors.SetWindowText ( "Disable TRNG Open Doors" );
     }
     else
     {
         CTRSaveGame::I()->TRNGOpenDoors( FALSE, FALSE );
+        m_TRNG_Doors.SetWindowText ( "Enable TRNG Open Doors" );
     }
 }
 
@@ -689,9 +696,11 @@ void CTRXEquipmentPage::OnBnClickedTrngEnemies()
     if ( ! CTRSaveGame::I()->TRNGKillEnemies( TRUE ) )
     {
         CTRSaveGame::I()->TRNGKillEnemies( FALSE, TRUE );
+        m_TRNG_Enemies.SetWindowText ( "Disable TRNG Kill Enemies" );
     }
     else
     {
         CTRSaveGame::I()->TRNGKillEnemies( FALSE, FALSE );
+        m_TRNG_Enemies.SetWindowText ( "Enable TRNG Kill Enemies" );
     }
 }

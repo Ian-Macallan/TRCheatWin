@@ -10,6 +10,7 @@
 #include "TRXGlobal.h"
 #include "GunGrids.h"
 #include "TRXMessageBox.h"
+#include "ReadTR2\ReadTRXScript.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -194,7 +195,7 @@ CTR4NGSaveGame::CTR4NGSaveGame()
     ZeroMemory ( m_pBufferBackup, sizeof(TR4NGSAVE) );
 
     //  TRNG Specific
-    m_bPureTRNG         = FALSE;
+    m_bBlindedTRNG      = FALSE;
 
     m_pTRNGHealth       = NULL;
     m_pTRNGAir          = NULL;
@@ -601,7 +602,7 @@ void CTR4NGSaveGame::TraceTRNG()
             DWORD relativeAddress = CTRXTools::RelativeAddress ( pCodeOp, m_pBuffer );
             sprintf_s ( szDebugString, sizeof(szDebugString), "TRNGSAVE : 0x%08x Length zero - Code is 0x%04x\n",
                 relativeAddress, *pCodeOp );
-            OutputTRNGString( szDebugString );
+            OutputTRNGSaveString( szDebugString );
             bContinue = FALSE;
             break;
         }
@@ -611,7 +612,7 @@ void CTR4NGSaveGame::TraceTRNG()
             DWORD relativeAddress = CTRXTools::RelativeAddress ( pCodeOp, m_pBuffer );
             sprintf_s ( szDebugString, sizeof(szDebugString), "TRNGSAVE : 0x%08x Code is 0x%04x - Length : %ld\n",  
                 relativeAddress, *pCodeOp, length );
-            OutputTRNGString( szDebugString );
+            OutputTRNGSaveString( szDebugString );
             bContinue = FALSE;
             break;
         }
@@ -621,7 +622,7 @@ void CTR4NGSaveGame::TraceTRNG()
         sprintf_s ( szDebugString, sizeof(szDebugString), "TRNGSAVE : 0x%08x : Code 0x%04x (%s) (%ld words %ld bytes)\n", 
             relativeAddress,
             *pCodeOp, GetTRNGTagLabel(*pCodeOp), length, (long) sizeof(WORD) * ( length - ExtraWords ) );
-        OutputTRNGString( szDebugString );
+        OutputTRNGSaveString( szDebugString );
 
         switch ( *pCodeOp )
         {
@@ -632,7 +633,7 @@ void CTR4NGSaveGame::TraceTRNG()
                 sprintf_s ( szDebugString, sizeof(szDebugString), "TRNGSAVE : %d\tHealth : %d Level : %s\tState Id: 0x%0x\n", 
                     (int) sizeof(TRNGSAVEGAMEINFOS),
                     pSave->LaraVitality, pSave->Tr4Name, pSave->LaraStateId );
-                OutputTRNGString( szDebugString );
+                OutputTRNGSaveString( szDebugString );
                 break;
             }
 
@@ -652,7 +653,7 @@ void CTR4NGSaveGame::TraceTRNG()
                         pIndices [ i ],
                         pCoord [ i ].Room,
                         pCoord [ i ].CordX, pCoord [ i ].CordY, pCoord [ i ].CordZ );
-                    OutputTRNGString( szDebugString );
+                    OutputTRNGSaveString( szDebugString );
                 }
                 break;
             }
@@ -671,7 +672,7 @@ void CTR4NGSaveGame::TraceTRNG()
                         pSave->Indici.IndiceRoom,
                         pSave->OrgX, pSave->OrgY, pSave->OrgZ,
                         pSave->Flags );
-                    OutputTRNGString( szDebugString );
+                    OutputTRNGSaveString( szDebugString );
                     pSave++;
                 }
                 break;
@@ -684,7 +685,7 @@ void CTR4NGSaveGame::TraceTRNG()
                 sprintf_s ( szDebugString, sizeof(szDebugString), "TRNGSAVE : %d\tCurrent Value : 0x%x\n", 
                     (int) sizeof(TRNGGLOBALVARIABLES),
                     pSave->CurrentValue );
-                OutputTRNGString( szDebugString );
+                OutputTRNGSaveString( szDebugString );
                 break;
             }
 
@@ -694,7 +695,7 @@ void CTR4NGSaveGame::TraceTRNG()
                 TRNGBLOCKNUM *pSave = (TRNGBLOCKNUM *) pValues;
                 sprintf_s ( szDebugString, sizeof(szDebugString), "TRNGSAVE : %d\tSomething\n", 
                     (int) sizeof(TRNGBLOCKNUM) );
-                OutputTRNGString( szDebugString );
+                OutputTRNGSaveString( szDebugString );
                 break;
             }
 
@@ -708,21 +709,21 @@ void CTR4NGSaveGame::TraceTRNG()
                 DWORD relativeAddress = CTRXTools::RelativeAddress ( pSave, m_pBuffer );
                 sprintf_s ( szDebugString, sizeof(szDebugString), "TRNGSAVE : %d\tTRNGBASENGHUB : 0x%08x\n", 
                     (int) sizeof(TRNGBASENGHUB), relativeAddress );
-                OutputTRNGString( szDebugString );
+                OutputTRNGSaveString( szDebugString );
 
                 relativeAddress = CTRXTools::RelativeAddress ( pHub, m_pBuffer );
                 sprintf_s ( szDebugString, sizeof(szDebugString), "TRNGSAVE : %d\tTRNGEXTRACTNG : 0x%08x\n", 
                     (int) sizeof(TRNGEXTRACTNG), relativeAddress );
-                OutputTRNGString( szDebugString );
+                OutputTRNGSaveString( szDebugString );
 
                 relativeAddress = CTRXTools::RelativeAddress ( pHeader, m_pBuffer );
                 sprintf_s ( szDebugString, sizeof(szDebugString), "TRNGSAVE : %d\tTRNGMININGNGHEADER : 0x%08x\n", 
                     (int) sizeof(TRNGMININGNGHEADER), relativeAddress );
-                OutputTRNGString( szDebugString );
+                OutputTRNGSaveString( szDebugString );
 
                 sprintf_s ( szDebugString, sizeof(szDebugString), "TRNGSAVE : \tTotHub : %d - LastIndex : %d - LaraHUB.NWords : %d\n", 
                     pSave->TotHub, pSave->LastIndex, pHub->NWords );
-                OutputTRNGString( szDebugString );
+                OutputTRNGSaveString( szDebugString );
 
                 for ( int i = 0; i < 10; i++ )
                 {
@@ -731,7 +732,7 @@ void CTR4NGSaveGame::TraceTRNG()
                         relativeAddress,
                         pHeader->NumeroLivello, pHeader->TotWords );
                     pHeader = (TRNGMININGNGHEADER *) ( ( ( BYTE * ) pHeader ) + sizeof(TRNGMININGNGHEADER) + pHeader->TotWords * sizeof(WORD) );
-                    OutputTRNGString( szDebugString );
+                    OutputTRNGSaveString( szDebugString );
                 }
 
                 break;
@@ -747,7 +748,7 @@ void CTR4NGSaveGame::TraceTRNG()
                     pSave->StatusNG, 
                     pSave->ValoreCold,
                     pSave->ValoreDamage );
-                OutputTRNGString( szDebugString );
+                OutputTRNGSaveString( szDebugString );
                 break;
             }
 
@@ -760,7 +761,7 @@ void CTR4NGSaveGame::TraceTRNG()
                     pSave->VetVersione [ 0 ], pSave->VetVersione [ 1 ],
                     pSave->VetVersione [ 2 ], pSave->VetVersione [ 3 ],
                     pSave->Flags );
-                OutputTRNGString( szDebugString );
+                OutputTRNGSaveString( szDebugString );
                 break;
             }
             
@@ -785,7 +786,7 @@ int CTR4NGSaveGame::ReadSavegame ( const char *pFilename )
 
     char                    szEmpty [ 1 ];
 
-    m_bPureTRNG             = FALSE;
+    m_bBlindedTRNG          = FALSE;
 
     strcpy_s ( m_Filename, sizeof(m_Filename), pFilename );
     InitStatus ();
@@ -858,11 +859,14 @@ int CTR4NGSaveGame::ReadSavegame ( const char *pFilename )
     //  Test Flag 
     if ( m_pBuffer->flagsffff != 0xffff )
     {
+        m_bBlindedTRNG = IsScriptBlinded ( pFilename ); 
+        if ( m_bBlindedTRNG )
+        {
 #ifdef _DEBUG
-        CTRXMessageBox::ShowMessage( "Load Savegame Warning", "Warning this file will not be correctly treated");
+            CTRXMessageBox::ShowMessage( "Load Savegame Warning", "Warning this file will not be correctly treated");
 #endif
-        m_bPureTRNG = TRUE;
-        AddToStatus ( "Load Savegame Warning : Warning this file will not be correctly treated - Use -unblind" );
+            AddToStatus ( "Load Savegame Warning : Warning this file will not be correctly treated - Use -unblind" );
+        }
     }
 
     //
@@ -892,18 +896,18 @@ void CTR4NGSaveGame::writeSaveGame()
     //  Even if we write in m_pTRNGGuns and m_pTRNGAmmos
     //  The result does not show the difference
     //  So it is probably written elsewhere in the savegame
-    if ( m_bPureTRNG )
+    if ( m_bBlindedTRNG )
     {
         CTRXMessageBox::ShowMessage( "Write Savegame Warning", "Warning this file will not be saved\nUse -unblind");
         return;
     }
 
-    if ( m_bPureTRNG && m_pTRNGGuns != NULL )
+    if ( m_bBlindedTRNG && m_pTRNGGuns != NULL )
     {
         pGun    = m_pTRNGGuns;
     }
 
-    if ( m_bPureTRNG && m_pTRNGAmmos != NULL )
+    if ( m_bBlindedTRNG && m_pTRNGAmmos != NULL )
     {
         pAmmo    = m_pTRNGAmmos;
     }
@@ -1028,7 +1032,7 @@ TR4NGGUN *CTR4NGSaveGame::SearchGunStructure ( unsigned short m_iHealth, int *iP
 {
     TR4NGGUN    *pGun       = &m_pBuffer->tagGuns;
 
-    if ( m_bPureTRNG && m_pTRNGGuns != NULL )
+    if ( m_bBlindedTRNG && m_pTRNGGuns != NULL )
     {
         pGun    = m_pTRNGGuns;
     }
@@ -1084,7 +1088,7 @@ void CTR4NGSaveGame::GetAmmosValues()
      *      Get current values for Guns.
      */
     TR4NGGUN *pGun      = &m_pBuffer->tagGuns;
-    if ( m_bPureTRNG && m_pTRNGGuns != NULL )
+    if ( m_bBlindedTRNG && m_pTRNGGuns != NULL )
     {
         pGun    = m_pTRNGGuns;
     }
@@ -1189,7 +1193,7 @@ const char * CTR4NGSaveGame::GetStatus()
 /////////////////////////////////////////////////////////////////////////////
 int CTR4NGSaveGame::getLevelIndex()
 {
-    if ( m_bPureTRNG )
+    if ( m_bBlindedTRNG )
     {
         return -1;
     }
@@ -1204,7 +1208,7 @@ int CTR4NGSaveGame::getLevelIndex()
 int CTR4NGSaveGame::GetAmmos1(int iX )
 {
     TR4NGAMMO *pAmmo      = &m_pBuffer->tagAmmo;
-    if ( m_bPureTRNG && m_pTRNGAmmos != NULL )
+    if ( m_bBlindedTRNG && m_pTRNGAmmos != NULL )
     {
         pAmmo    = m_pTRNGAmmos;
     }
@@ -1221,7 +1225,7 @@ int CTR4NGSaveGame::GetAmmos1(int iX )
 int CTR4NGSaveGame::GetAmmos2(int iX )
 {
     TR4NGAMMO *pAmmo      = &m_pBuffer->tagAmmo;
-    if ( m_bPureTRNG && m_pTRNGAmmos != NULL )
+    if ( m_bBlindedTRNG && m_pTRNGAmmos != NULL )
     {
         pAmmo    = m_pTRNGAmmos;
     }
@@ -1238,7 +1242,7 @@ int CTR4NGSaveGame::GetAmmos2(int iX )
 int CTR4NGSaveGame::GetAmmos3( int iX )
 {
     TR4NGAMMO *pAmmo      = &m_pBuffer->tagAmmo;
-    if ( m_bPureTRNG && m_pTRNGAmmos != NULL )
+    if ( m_bBlindedTRNG && m_pTRNGAmmos != NULL )
     {
         pAmmo    = m_pTRNGAmmos;
     }
@@ -1255,7 +1259,7 @@ int CTR4NGSaveGame::GetAmmos3( int iX )
 int CTR4NGSaveGame::GetAmmos4a( int iX )
 {
     TR4NGAMMO *pAmmo      = &m_pBuffer->tagAmmo;
-    if ( m_bPureTRNG && m_pTRNGAmmos != NULL )
+    if ( m_bBlindedTRNG && m_pTRNGAmmos != NULL )
     {
         pAmmo    = m_pTRNGAmmos;
     }
@@ -1271,7 +1275,7 @@ int CTR4NGSaveGame::GetAmmos4a( int iX )
 int CTR4NGSaveGame::GetAmmos4b( int iX )
 {
     TR4NGAMMO *pAmmo      = &m_pBuffer->tagAmmo;
-    if ( m_bPureTRNG && m_pTRNGAmmos != NULL )
+    if ( m_bBlindedTRNG && m_pTRNGAmmos != NULL )
     {
         pAmmo    = m_pTRNGAmmos;
     }
@@ -1296,7 +1300,7 @@ int CTR4NGSaveGame::GetAmmos5 ( int iX )
 int CTR4NGSaveGame::GetAmmos6( int iX )
 {
     TR4NGAMMO *pAmmo      = &m_pBuffer->tagAmmo;
-    if ( m_bPureTRNG && m_pTRNGAmmos != NULL )
+    if ( m_bBlindedTRNG && m_pTRNGAmmos != NULL )
     {
         pAmmo    = m_pTRNGAmmos;
     }
@@ -1320,7 +1324,7 @@ int CTR4NGSaveGame::GetAmmos6( int iX )
 int CTR4NGSaveGame::GetAmmos7a( int iX )
 {
     TR4NGAMMO *pAmmo      = &m_pBuffer->tagAmmo;
-    if ( m_bPureTRNG && m_pTRNGAmmos != NULL )
+    if ( m_bBlindedTRNG && m_pTRNGAmmos != NULL )
     {
         pAmmo    = m_pTRNGAmmos;
     }
@@ -1337,7 +1341,7 @@ int CTR4NGSaveGame::GetAmmos7a( int iX )
 int CTR4NGSaveGame::GetAmmos7b( int iX )
 {
     TR4NGAMMO *pAmmo      = &m_pBuffer->tagAmmo;
-    if ( m_bPureTRNG && m_pTRNGAmmos != NULL )
+    if ( m_bBlindedTRNG && m_pTRNGAmmos != NULL )
     {
         pAmmo    = m_pTRNGAmmos;
     }
@@ -1354,7 +1358,7 @@ int CTR4NGSaveGame::GetAmmos7b( int iX )
 int CTR4NGSaveGame::GetAmmos7c( int iX )
 {
     TR4NGAMMO *pAmmo      = &m_pBuffer->tagAmmo;
-    if ( m_bPureTRNG && m_pTRNGAmmos != NULL )
+    if ( m_bBlindedTRNG && m_pTRNGAmmos != NULL )
     {
         pAmmo    = m_pTRNGAmmos;
     }
@@ -1371,7 +1375,7 @@ int CTR4NGSaveGame::GetAmmos7c( int iX )
 int CTR4NGSaveGame::GetAmmos8a( int iX )
 {
     TR4NGAMMO *pAmmo      = &m_pBuffer->tagAmmo;
-    if ( m_bPureTRNG && m_pTRNGAmmos != NULL )
+    if ( m_bBlindedTRNG && m_pTRNGAmmos != NULL )
     {
         pAmmo    = m_pTRNGAmmos;
     }
@@ -1387,7 +1391,7 @@ int CTR4NGSaveGame::GetAmmos8a( int iX )
 int CTR4NGSaveGame::GetAmmos8b( int iX )
 {
     TR4NGAMMO *pAmmo      = &m_pBuffer->tagAmmo;
-    if ( m_bPureTRNG && m_pTRNGAmmos != NULL )
+    if ( m_bBlindedTRNG && m_pTRNGAmmos != NULL )
     {
         pAmmo    = m_pTRNGAmmos;
     }
@@ -1403,7 +1407,7 @@ int CTR4NGSaveGame::GetAmmos8b( int iX )
 int CTR4NGSaveGame::GetAmmos8c( int iX )
 {
     TR4NGAMMO *pAmmo      = &m_pBuffer->tagAmmo;
-    if ( m_bPureTRNG && m_pTRNGAmmos != NULL )
+    if ( m_bBlindedTRNG && m_pTRNGAmmos != NULL )
     {
         pAmmo    = m_pTRNGAmmos;
     }
@@ -1419,7 +1423,7 @@ int CTR4NGSaveGame::GetAmmos8c( int iX )
 void CTR4NGSaveGame::SetAmmos1 ( const char *szString, int iX )
 {
     TR4NGAMMO *pAmmo      = &m_pBuffer->tagAmmo;
-    if ( m_bPureTRNG && m_pTRNGAmmos != NULL )
+    if ( m_bBlindedTRNG && m_pTRNGAmmos != NULL )
     {
         pAmmo    = m_pTRNGAmmos;
     }
@@ -1435,7 +1439,7 @@ void CTR4NGSaveGame::SetAmmos1 ( const char *szString, int iX )
 void CTR4NGSaveGame::SetAmmos2 ( const char *szString, int iX )
 {
     TR4NGAMMO *pAmmo      = &m_pBuffer->tagAmmo;
-    if ( m_bPureTRNG && m_pTRNGAmmos != NULL )
+    if ( m_bBlindedTRNG && m_pTRNGAmmos != NULL )
     {
         pAmmo    = m_pTRNGAmmos;
     }
@@ -1451,7 +1455,7 @@ void CTR4NGSaveGame::SetAmmos2 ( const char *szString, int iX )
 void CTR4NGSaveGame::SetAmmos3 ( const char *szString, int iX )
 {
     TR4NGAMMO *pAmmo      = &m_pBuffer->tagAmmo;
-    if ( m_bPureTRNG && m_pTRNGAmmos != NULL )
+    if ( m_bBlindedTRNG && m_pTRNGAmmos != NULL )
     {
         pAmmo    = m_pTRNGAmmos;
     }
@@ -1468,7 +1472,7 @@ void CTR4NGSaveGame::SetAmmos3 ( const char *szString, int iX )
 void CTR4NGSaveGame::SetAmmos4a ( const char *szString, int iX )
 {
     TR4NGAMMO *pAmmo      = &m_pBuffer->tagAmmo;
-    if ( m_bPureTRNG && m_pTRNGAmmos != NULL )
+    if ( m_bBlindedTRNG && m_pTRNGAmmos != NULL )
     {
         pAmmo    = m_pTRNGAmmos;
     }
@@ -1491,7 +1495,7 @@ void CTR4NGSaveGame::SetAmmos4a ( const char *szString, int iX )
 void CTR4NGSaveGame::SetAmmos4b ( const char *szString, int iX )
 {
     TR4NGAMMO *pAmmo      = &m_pBuffer->tagAmmo;
-    if ( m_bPureTRNG && m_pTRNGAmmos != NULL )
+    if ( m_bBlindedTRNG && m_pTRNGAmmos != NULL )
     {
         pAmmo    = m_pTRNGAmmos;
     }
@@ -1514,7 +1518,7 @@ void CTR4NGSaveGame::SetAmmos4b ( const char *szString, int iX )
 void CTR4NGSaveGame::SetAmmos5 ( const char *szString, int iX )
 {
     TR4NGAMMO *pAmmo      = &m_pBuffer->tagAmmo;
-    if ( m_bPureTRNG && m_pTRNGAmmos != NULL )
+    if ( m_bBlindedTRNG && m_pTRNGAmmos != NULL )
     {
         pAmmo    = m_pTRNGAmmos;
     }
@@ -1530,7 +1534,7 @@ void CTR4NGSaveGame::SetAmmos5 ( const char *szString, int iX )
 void CTR4NGSaveGame::SetAmmos6 ( const char *szString, int iX )
 {
     TR4NGAMMO *pAmmo      = &m_pBuffer->tagAmmo;
-    if ( m_bPureTRNG && m_pTRNGAmmos != NULL )
+    if ( m_bBlindedTRNG && m_pTRNGAmmos != NULL )
     {
         pAmmo    = m_pTRNGAmmos;
     }
@@ -1545,7 +1549,7 @@ void CTR4NGSaveGame::SetAmmos6 ( const char *szString, int iX )
 void CTR4NGSaveGame::SetAmmos7a ( const char *szString, int iX )
 {
     TR4NGAMMO *pAmmo      = &m_pBuffer->tagAmmo;
-    if ( m_bPureTRNG && m_pTRNGAmmos != NULL )
+    if ( m_bBlindedTRNG && m_pTRNGAmmos != NULL )
     {
         pAmmo    = m_pTRNGAmmos;
     }
@@ -1561,7 +1565,7 @@ void CTR4NGSaveGame::SetAmmos7a ( const char *szString, int iX )
 void CTR4NGSaveGame::SetAmmos7b ( const char *szString, int iX )
 {
     TR4NGAMMO *pAmmo      = &m_pBuffer->tagAmmo;
-    if ( m_bPureTRNG && m_pTRNGAmmos != NULL )
+    if ( m_bBlindedTRNG && m_pTRNGAmmos != NULL )
     {
         pAmmo    = m_pTRNGAmmos;
     }
@@ -1577,7 +1581,7 @@ void CTR4NGSaveGame::SetAmmos7b ( const char *szString, int iX )
 void CTR4NGSaveGame::SetAmmos7c ( const char *szString, int iX )
 {
     TR4NGAMMO *pAmmo      = &m_pBuffer->tagAmmo;
-    if ( m_bPureTRNG && m_pTRNGAmmos != NULL )
+    if ( m_bBlindedTRNG && m_pTRNGAmmos != NULL )
     {
         pAmmo    = m_pTRNGAmmos;
     }
@@ -1593,7 +1597,7 @@ void CTR4NGSaveGame::SetAmmos7c ( const char *szString, int iX )
 void CTR4NGSaveGame::SetAmmos8a ( const char *szString, int iX )
 {
     TR4NGAMMO *pAmmo      = &m_pBuffer->tagAmmo;
-    if ( m_bPureTRNG && m_pTRNGAmmos != NULL )
+    if ( m_bBlindedTRNG && m_pTRNGAmmos != NULL )
     {
         pAmmo    = m_pTRNGAmmos;
     }
@@ -1609,7 +1613,7 @@ void CTR4NGSaveGame::SetAmmos8a ( const char *szString, int iX )
 void CTR4NGSaveGame::SetAmmos8b ( const char *szString, int iX )
 {
     TR4NGAMMO *pAmmo      = &m_pBuffer->tagAmmo;
-    if ( m_bPureTRNG && m_pTRNGAmmos != NULL )
+    if ( m_bBlindedTRNG && m_pTRNGAmmos != NULL )
     {
         pAmmo    = m_pTRNGAmmos;
     }
@@ -1625,7 +1629,7 @@ void CTR4NGSaveGame::SetAmmos8b ( const char *szString, int iX )
 void CTR4NGSaveGame::SetAmmos8c ( const char *szString, int iX )
 {
     TR4NGAMMO *pAmmo      = &m_pBuffer->tagAmmo;
-    if ( m_bPureTRNG && m_pTRNGAmmos != NULL )
+    if ( m_bBlindedTRNG && m_pTRNGAmmos != NULL )
     {
         pAmmo    = m_pTRNGAmmos;
     }
@@ -1660,7 +1664,7 @@ int CTR4NGSaveGame::GetUnlimitedAmmos()
 int CTR4NGSaveGame::Valid()
 {
     TR4NGGUN    *pGun       = &m_pBuffer->tagGuns;
-    if ( m_bPureTRNG && m_pTRNGGuns != NULL )
+    if ( m_bBlindedTRNG && m_pTRNGGuns != NULL )
     {
         pGun    = m_pTRNGGuns;
     }
@@ -1725,7 +1729,7 @@ void CTR4NGSaveGame::SetInvalid()
 int CTR4NGSaveGame::CheckWeapon1 ( int iX )
 {
     TR4NGGUN    *pGun       = &m_pBuffer->tagGuns;
-    if ( m_bPureTRNG && m_pTRNGGuns != NULL )
+    if ( m_bBlindedTRNG && m_pTRNGGuns != NULL )
     {
         pGun    = m_pTRNGGuns;
     }
@@ -1746,7 +1750,7 @@ int CTR4NGSaveGame::CheckWeapon1 ( int iX )
 int CTR4NGSaveGame::CheckWeapon4 ( int iX )
 {
     TR4NGGUN    *pGun       = &m_pBuffer->tagGuns;
-    if ( m_bPureTRNG && m_pTRNGGuns != NULL )
+    if ( m_bBlindedTRNG && m_pTRNGGuns != NULL )
     {
         pGun    = m_pTRNGGuns;
     }
@@ -1767,7 +1771,7 @@ int CTR4NGSaveGame::CheckWeapon4 ( int iX )
 int CTR4NGSaveGame::CheckWeapon2 ( int iX )
 {
     TR4NGGUN    *pGun       = &m_pBuffer->tagGuns;
-    if ( m_bPureTRNG && m_pTRNGGuns != NULL )
+    if ( m_bBlindedTRNG && m_pTRNGGuns != NULL )
     {
         pGun    = m_pTRNGGuns;
     }
@@ -1788,7 +1792,7 @@ int CTR4NGSaveGame::CheckWeapon2 ( int iX )
 int CTR4NGSaveGame::CheckWeapon3 ( int iX )
 {
     TR4NGGUN    *pGun       = &m_pBuffer->tagGuns;
-    if ( m_bPureTRNG && m_pTRNGGuns != NULL )
+    if ( m_bBlindedTRNG && m_pTRNGGuns != NULL )
     {
         pGun    = m_pTRNGGuns;
     }
@@ -1809,7 +1813,7 @@ int CTR4NGSaveGame::CheckWeapon3 ( int iX )
 int CTR4NGSaveGame::CheckWeapon5 ( int iX )
 {
     TR4NGGUN    *pGun       = &m_pBuffer->tagGuns;
-    if ( m_bPureTRNG && m_pTRNGGuns != NULL )
+    if ( m_bBlindedTRNG && m_pTRNGGuns != NULL )
     {
         pGun    = m_pTRNGGuns;
     }
@@ -1825,7 +1829,7 @@ int CTR4NGSaveGame::CheckWeapon5 ( int iX )
 int CTR4NGSaveGame::CheckWeapon8 ( int iX )
 {
     TR4NGGUN    *pGun       = &m_pBuffer->tagGuns;
-    if ( m_bPureTRNG && m_pTRNGGuns != NULL )
+    if ( m_bBlindedTRNG && m_pTRNGGuns != NULL )
     {
         pGun    = m_pTRNGGuns;
     }
@@ -1846,7 +1850,7 @@ int CTR4NGSaveGame::CheckWeapon8 ( int iX )
 int CTR4NGSaveGame::CheckWeapon7 ( int iX )
 {
     TR4NGGUN    *pGun       = &m_pBuffer->tagGuns;
-    if ( m_bPureTRNG && m_pTRNGGuns != NULL )
+    if ( m_bBlindedTRNG && m_pTRNGGuns != NULL )
     {
         pGun    = m_pTRNGGuns;
     }
@@ -1867,7 +1871,7 @@ int CTR4NGSaveGame::CheckWeapon7 ( int iX )
 int CTR4NGSaveGame::CheckWeapon6 ( int iX )
 {
     TR4NGGUN    *pGun       = &m_pBuffer->tagGuns;
-    if ( m_bPureTRNG && m_pTRNGGuns != NULL )
+    if ( m_bBlindedTRNG && m_pTRNGGuns != NULL )
     {
         pGun    = m_pTRNGGuns;
     }
@@ -1884,7 +1888,7 @@ int CTR4NGSaveGame::CheckWeapon6 ( int iX )
 int CTR4NGSaveGame::CheckWeapon9 ( int iX )
 {
     TR4NGGUN    *pGun       = &m_pBuffer->tagGuns;
-    if ( m_bPureTRNG && m_pTRNGGuns != NULL )
+    if ( m_bBlindedTRNG && m_pTRNGGuns != NULL )
     {
         pGun    = m_pTRNGGuns;
     }
@@ -1905,7 +1909,7 @@ int CTR4NGSaveGame::CheckWeapon9 ( int iX )
 unsigned char CTR4NGSaveGame::GrabWeapon0 ( int iX, bool bAdd, bool bChange )
 {
     TR4NGGUN    *pGun       = &m_pBuffer->tagGuns;
-    if ( m_bPureTRNG && m_pTRNGGuns != NULL )
+    if ( m_bBlindedTRNG && m_pTRNGGuns != NULL )
     {
         pGun    = m_pTRNGGuns;
     }
@@ -1922,7 +1926,7 @@ unsigned char CTR4NGSaveGame::GrabWeapon0 ( int iX, bool bAdd, bool bChange )
 unsigned char CTR4NGSaveGame::GrabWeapon1 ( int iX, bool bAdd, bool bChange )
 {
     TR4NGGUN    *pGun       = &m_pBuffer->tagGuns;
-    if ( m_bPureTRNG && m_pTRNGGuns != NULL )
+    if ( m_bBlindedTRNG && m_pTRNGGuns != NULL )
     {
         pGun    = m_pTRNGGuns;
     }
@@ -2068,7 +2072,7 @@ BOOL CTR4NGSaveGame::TRNGKillEnemies ( BOOL bGetOnly, BOOL bSet )
 unsigned char CTR4NGSaveGame::GrabWeapon4 ( int iX, bool bAdd, bool bChange )
 {
     TR4NGGUN    *pGun       = &m_pBuffer->tagGuns;
-    if ( m_bPureTRNG && m_pTRNGGuns != NULL )
+    if ( m_bBlindedTRNG && m_pTRNGGuns != NULL )
     {
         pGun    = m_pTRNGGuns;
     }
@@ -2091,7 +2095,7 @@ unsigned char CTR4NGSaveGame::GrabWeapon4 ( int iX, bool bAdd, bool bChange )
 unsigned char CTR4NGSaveGame::GrabWeapon2 ( int iX, bool bAdd, bool bChange )
 {
     TR4NGGUN    *pGun       = &m_pBuffer->tagGuns;
-    if ( m_bPureTRNG && m_pTRNGGuns != NULL )
+    if ( m_bBlindedTRNG && m_pTRNGGuns != NULL )
     {
         pGun    = m_pTRNGGuns;
     }
@@ -2114,7 +2118,7 @@ unsigned char CTR4NGSaveGame::GrabWeapon2 ( int iX, bool bAdd, bool bChange )
 unsigned char CTR4NGSaveGame::GrabWeapon3 ( int iX, bool bAdd, bool bChange )
 {
     TR4NGGUN    *pGun       = &m_pBuffer->tagGuns;
-    if ( m_bPureTRNG && m_pTRNGGuns != NULL )
+    if ( m_bBlindedTRNG && m_pTRNGGuns != NULL )
     {
         pGun    = m_pTRNGGuns;
     }
@@ -2137,7 +2141,7 @@ unsigned char CTR4NGSaveGame::GrabWeapon3 ( int iX, bool bAdd, bool bChange )
 unsigned char CTR4NGSaveGame::GrabWeapon5 ( int iX, bool bAdd, bool bChange )
 {
     TR4NGGUN    *pGun       = &m_pBuffer->tagGuns;
-    if ( m_bPureTRNG && m_pTRNGGuns != NULL )
+    if ( m_bBlindedTRNG && m_pTRNGGuns != NULL )
     {
         pGun    = m_pTRNGGuns;
     }
@@ -2154,7 +2158,7 @@ unsigned char CTR4NGSaveGame::GrabWeapon5 ( int iX, bool bAdd, bool bChange )
 unsigned char CTR4NGSaveGame::GrabWeapon6 ( int iX, bool bAdd, bool bChange )
 {
     TR4NGGUN    *pGun       = &m_pBuffer->tagGuns;
-    if ( m_bPureTRNG && m_pTRNGGuns != NULL )
+    if ( m_bBlindedTRNG && m_pTRNGGuns != NULL )
     {
         pGun    = m_pTRNGGuns;
     }
@@ -2172,7 +2176,7 @@ unsigned char CTR4NGSaveGame::GrabWeapon6 ( int iX, bool bAdd, bool bChange )
 unsigned char CTR4NGSaveGame::GrabWeapon7 ( int iX, bool bAdd, bool bChange )
 {
     TR4NGGUN    *pGun       = &m_pBuffer->tagGuns;
-    if ( m_bPureTRNG && m_pTRNGGuns != NULL )
+    if ( m_bBlindedTRNG && m_pTRNGGuns != NULL )
     {
         pGun    = m_pTRNGGuns;
     }
@@ -2195,7 +2199,7 @@ unsigned char CTR4NGSaveGame::GrabWeapon7 ( int iX, bool bAdd, bool bChange )
 unsigned char CTR4NGSaveGame::GrabWeapon8 ( int iX, bool bAdd, bool bChange )
 {
     TR4NGGUN    *pGun       = &m_pBuffer->tagGuns;
-    if ( m_bPureTRNG && m_pTRNGGuns != NULL )
+    if ( m_bBlindedTRNG && m_pTRNGGuns != NULL )
     {
         pGun    = m_pTRNGGuns;
     }
@@ -2219,7 +2223,7 @@ unsigned char CTR4NGSaveGame::GrabWeapon8 ( int iX, bool bAdd, bool bChange )
 unsigned char CTR4NGSaveGame::GrabWeapon9 ( int iX, bool bAdd, bool bChange )
 {
     TR4NGGUN    *pGun       = &m_pBuffer->tagGuns;
-    if ( m_bPureTRNG && m_pTRNGGuns != NULL )
+    if ( m_bBlindedTRNG && m_pTRNGGuns != NULL )
     {
         pGun    = m_pTRNGGuns;
     }
@@ -2242,7 +2246,7 @@ unsigned char CTR4NGSaveGame::GrabWeapon9 ( int iX, bool bAdd, bool bChange )
 int CTR4NGSaveGame::GetSmallMedipak ( int iX )
 {
     TR4NGAMMO *pAmmo      = &m_pBuffer->tagAmmo;
-    if ( m_bPureTRNG && m_pTRNGAmmos != NULL )
+    if ( m_bBlindedTRNG && m_pTRNGAmmos != NULL )
     {
         pAmmo    = m_pTRNGAmmos;
     }
@@ -2258,7 +2262,7 @@ int CTR4NGSaveGame::GetSmallMedipak ( int iX )
 int CTR4NGSaveGame::GetLargeMedipak ( int iX )
 {
     TR4NGAMMO *pAmmo      = &m_pBuffer->tagAmmo;
-    if ( m_bPureTRNG && m_pTRNGAmmos != NULL )
+    if ( m_bBlindedTRNG && m_pTRNGAmmos != NULL )
     {
         pAmmo    = m_pTRNGAmmos;
     }
@@ -2274,7 +2278,7 @@ int CTR4NGSaveGame::GetLargeMedipak ( int iX )
 int CTR4NGSaveGame::GetFlares ( int iX )
 {
     TR4NGAMMO *pAmmo      = &m_pBuffer->tagAmmo;
-    if ( m_bPureTRNG && m_pTRNGAmmos != NULL )
+    if ( m_bBlindedTRNG && m_pTRNGAmmos != NULL )
     {
         pAmmo    = m_pTRNGAmmos;
     }
@@ -2290,7 +2294,7 @@ int CTR4NGSaveGame::GetFlares ( int iX )
 int CTR4NGSaveGame::GetLaser ( int iX )
 {
     TR4NGGUN    *pGun       = &m_pBuffer->tagGuns;
-    if ( m_bPureTRNG && m_pTRNGGuns != NULL )
+    if ( m_bBlindedTRNG && m_pTRNGGuns != NULL )
     {
         pGun    = m_pTRNGGuns;
     }
@@ -2306,7 +2310,7 @@ int CTR4NGSaveGame::GetLaser ( int iX )
 int CTR4NGSaveGame::GetBinocular ( int iX )
 {
     TR4NGGUN    *pGun       = &m_pBuffer->tagGuns;
-    if ( m_bPureTRNG && m_pTRNGGuns != NULL )
+    if ( m_bBlindedTRNG && m_pTRNGGuns != NULL )
     {
         pGun    = m_pTRNGGuns;
     }
@@ -2321,7 +2325,7 @@ int CTR4NGSaveGame::GetBinocular ( int iX )
 /////////////////////////////////////////////////////////////////////////////
 int CTR4NGSaveGame::GetAir ( )
 {
-    if ( m_bPureTRNG && m_pTRNGAir != NULL )
+    if ( m_bBlindedTRNG && m_pTRNGAir != NULL )
     {
         return (int) *m_pTRNGAir;
     }
@@ -2336,7 +2340,7 @@ int CTR4NGSaveGame::GetAir ( )
 void CTR4NGSaveGame::SetSmallMedipak ( const char *szString, int iX )
 {
     TR4NGAMMO *pAmmo      = &m_pBuffer->tagAmmo;
-    if ( m_bPureTRNG && m_pTRNGAmmos != NULL )
+    if ( m_bBlindedTRNG && m_pTRNGAmmos != NULL )
     {
         pAmmo    = m_pTRNGAmmos;
     }
@@ -2352,7 +2356,7 @@ void CTR4NGSaveGame::SetSmallMedipak ( const char *szString, int iX )
 void CTR4NGSaveGame::SetLargeMedipak ( const char *szString, int iX )
 {
     TR4NGAMMO *pAmmo      = &m_pBuffer->tagAmmo;
-    if ( m_bPureTRNG && m_pTRNGAmmos != NULL )
+    if ( m_bBlindedTRNG && m_pTRNGAmmos != NULL )
     {
         pAmmo    = m_pTRNGAmmos;
     }
@@ -2368,7 +2372,7 @@ void CTR4NGSaveGame::SetLargeMedipak ( const char *szString, int iX )
 void CTR4NGSaveGame::SetFlares ( const char *szString, int iX )
 {
     TR4NGAMMO *pAmmo      = &m_pBuffer->tagAmmo;
-    if ( m_bPureTRNG && m_pTRNGAmmos != NULL )
+    if ( m_bBlindedTRNG && m_pTRNGAmmos != NULL )
     {
         pAmmo    = m_pTRNGAmmos;
     }
@@ -2384,7 +2388,7 @@ void CTR4NGSaveGame::SetFlares ( const char *szString, int iX )
 void CTR4NGSaveGame::SetLaser ( char *szString, int iX )
 {
     TR4NGGUN    *pGun       = &m_pBuffer->tagGuns;
-    if ( m_bPureTRNG && m_pTRNGGuns != NULL )
+    if ( m_bBlindedTRNG && m_pTRNGGuns != NULL )
     {
         pGun    = m_pTRNGGuns;
     }
@@ -2404,7 +2408,7 @@ void CTR4NGSaveGame::SetLaser ( char *szString, int iX )
 void CTR4NGSaveGame::SetBinocular ( char *szString, int iX )
 {
     TR4NGGUN    *pGun       = &m_pBuffer->tagGuns;
-    if ( m_bPureTRNG && m_pTRNGGuns != NULL )
+    if ( m_bBlindedTRNG && m_pTRNGGuns != NULL )
     {
         pGun    = m_pTRNGGuns;
     }
@@ -2423,7 +2427,7 @@ void CTR4NGSaveGame::SetBinocular ( char *szString, int iX )
 /////////////////////////////////////////////////////////////////////////////
 void CTR4NGSaveGame::SetAir ( const char *szString )
 {
-    if ( m_bPureTRNG && m_pTRNGAir != NULL )
+    if ( m_bBlindedTRNG && m_pTRNGAir != NULL )
     {
         // *m_pTRNGAir = atoi ( szString );
         return;
@@ -2466,7 +2470,7 @@ void CTR4NGSaveGame::SetCurrentSecrets ( char *szString, int iX )
 void CTR4NGSaveGame::SetAllSecrets ( )
 {
     TR4NGGUN    *pGun       = &m_pBuffer->tagGuns;
-    if ( m_bPureTRNG && m_pTRNGGuns != NULL )
+    if ( m_bBlindedTRNG && m_pTRNGGuns != NULL )
     {
         pGun    = m_pTRNGGuns;
     }
@@ -3042,7 +3046,7 @@ void CTR4NGSaveGame::SetBufferLength(size_t len)
 int CTR4NGSaveGame::GetCurrentSecrets ()
 {
     TR4NGAMMO *pAmmo      = &m_pBuffer->tagAmmo;
-    if ( m_bPureTRNG && m_pTRNGAmmos != NULL )
+    if ( m_bBlindedTRNG && m_pTRNGAmmos != NULL )
     {
         pAmmo    = m_pTRNGAmmos;
     }
@@ -3076,7 +3080,7 @@ void CTR4NGSaveGame::SetLaraState ( int state )
 void CTR4NGSaveGame::SetItems ( int item, BYTE value )
 {
     TR4NGGUN    *pGun       = &m_pBuffer->tagGuns;
-    if ( m_bPureTRNG && m_pTRNGGuns != NULL )
+    if ( m_bBlindedTRNG && m_pTRNGGuns != NULL )
     {
         pGun    = m_pTRNGGuns;
     }
@@ -3095,7 +3099,7 @@ void CTR4NGSaveGame::SetItems ( int item, BYTE value )
 BYTE CTR4NGSaveGame::GetItems ( int item )
 {
     TR4NGGUN    *pGun       = &m_pBuffer->tagGuns;
-    if ( m_bPureTRNG && m_pTRNGGuns != NULL )
+    if ( m_bBlindedTRNG && m_pTRNGGuns != NULL )
     {
         pGun    = m_pTRNGGuns;
     }

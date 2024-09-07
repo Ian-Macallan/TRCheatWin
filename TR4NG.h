@@ -510,9 +510,10 @@ extern const char *GetTRNGTagLabel(WORD byte);
 extern const char *GetTRNGCntLabel(WORD byte);
 
 //
-extern void OutputTRNGString ( const char *pText );
+extern void OutputTRNGSaveString ( const char *pText );
+extern void OutputTRNGScriptString ( const char *pText );
 
 //  Trace or not trace
-#define TRACE_TRNG  0
-
+#define TRACE_TRNG_SAVE     0
+#define TRACE_TRNG_SCRIPT   0
 //

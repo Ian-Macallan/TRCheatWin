@@ -234,7 +234,8 @@ typedef void (*FCT_AddToItemsLabels)( int what, int level, int button, const cha
 extern BOOL ReadTRXLanguage (   const char *pFilename, const char *pDirectory, int iLang, int version, bool bWrite = true );
 extern BOOL ReadTRXScript (     const char *pathname, const char *pDirectory, int version = 4, bool bWrite = true,
                                 FCT_AddToItemsLabels function = NULL );
-
+//  Pathname is the savegame name
+extern BOOL IsScriptBlinded ( const char *pathname );
 extern BOOL UnblindTRXScript ( const char *pathname, const char *pDirectory );
 
 //

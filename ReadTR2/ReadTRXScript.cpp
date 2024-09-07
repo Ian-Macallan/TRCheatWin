@@ -608,6 +608,41 @@ static char *RemoveFileType ( char *pText )
 
 //
 /////////////////////////////////////////////////////////////////////////////
+//  Remove filename including trailing \ or /
+/////////////////////////////////////////////////////////////////////////////
+static char *RemoveFilename ( char *pText )
+{
+    //
+    bool    bFound = false;
+
+    //
+    for ( int i = (int) strlen(pText) - 1; i > 0; i-- )
+    {
+        if ( pText [ i ] == '\\' || pText [ i ] == '/' )
+        {
+            pText [ i ] = '\0';
+            bFound = true;
+            break;
+        }
+        if ( pText [ i ] == ':' )
+        {
+            pText [ i + 1 ] = '\0';
+            bFound = true;
+            break;
+        }
+    }
+
+    if ( ! bFound )
+    {
+        *pText = '\0';
+    }
+
+    //
+    return pText;
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////
 static BOOL IsHexa ( BYTE parm )
@@ -1947,10 +1982,23 @@ void DecriptaControlloScriptDat(const BYTE *pSource, int size, BYTE *pTarget )
 /////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////
-extern void OutputTRNGString ( const char *pText )
+extern void OutputTRNGSaveString ( const char *pText )
 {
 #ifdef _DEBUG
-#if TRACE_TRNG
+#if TRACE_TRNG_SAVE
+    OutputDebugString ( pText );
+#endif
+#endif
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
+extern void OutputTRNGScriptString ( const char *pText )
+{
+#ifdef _DEBUG
+#if TRACE_TRNG_SCRIPT
     OutputDebugString ( pText );
 #endif
 #endif
@@ -1962,23 +2010,23 @@ extern void OutputTRNGString ( const char *pText )
 /////////////////////////////////////////////////////////////////////////////
 static void DumpControl ( BYTE *pAddress, int size )
 {
-#if TRACE_TRNG
+#if TRACE_TRNG_SCRIPT
     static char szDebugString [ MAX_PATH ];
 
     sprintf_s ( szDebugString, sizeof(szDebugString), "TRNGSCRIPT : " );
-    OutputTRNGString( szDebugString );
+    OutputTRNGScriptString( szDebugString );
     for ( int index = 0; index < size; index++ )
     {
         if ( ( index + 1 ) % 64 == 0 )
         {
-            OutputTRNGString( "\n" );
+            OutputTRNGScriptString( "\n" );
         }
         sprintf_s ( szDebugString, sizeof(szDebugString), "%02x ", *pAddress & 0xff );
-        OutputTRNGString( szDebugString );
+        OutputTRNGScriptString( szDebugString );
         pAddress++;
     }
     sprintf_s ( szDebugString, sizeof(szDebugString), "\n" );
-    OutputTRNGString( szDebugString );
+    OutputTRNGScriptString( szDebugString );
 #endif
 }
 
@@ -2046,7 +2094,7 @@ static BOOL AnalyzeNGScript(char *pBYtes, long offset )
             relativeAddress = CTRXTools::RelativeAddress ( pCodeOp, pBYtes ) + (DWORD) offset;
             sprintf_s ( szDebugString, sizeof(szDebugString), "TRNGSCRIPT : 0x%08lx Length zero - Code is 0x%04x\n",
                 relativeAddress, *pCodeOp );
-            OutputTRNGString( szDebugString );
+            OutputTRNGScriptString( szDebugString );
             bContinue = FALSE;
             break;
         }
@@ -2056,7 +2104,7 @@ static BOOL AnalyzeNGScript(char *pBYtes, long offset )
             relativeAddress = CTRXTools::RelativeAddress ( pCodeOp, pBYtes ) + (DWORD) offset;
             sprintf_s ( szDebugString, sizeof(szDebugString), "TRNGSCRIPT : 0x%08lx Code is 0x%04x - Length : %ld\n",  
                 relativeAddress, *pCodeOp, length );
-            OutputTRNGString( szDebugString );
+            OutputTRNGScriptString( szDebugString );
             bContinue = FALSE;
             break;
         }
@@ -2065,7 +2113,7 @@ static BOOL AnalyzeNGScript(char *pBYtes, long offset )
         relativeAddress = CTRXTools::RelativeAddress ( pCodeOp, pBYtes ) + (DWORD) offset;
         sprintf_s ( szDebugString, sizeof(szDebugString), "TRNGSCRIPT : 0x%08lx Code is 0x%04x (%s) (%ld words %ld bytes)\n", 
             relativeAddress, *pCodeOp, GetTRNGTagLabel(*pCodeOp), length, (long) sizeof(WORD) * ( length - ExtraWords ) );
-        OutputTRNGString( szDebugString );
+        OutputTRNGScriptString( szDebugString );
 
         //
         //  Trace items
@@ -2083,7 +2131,7 @@ static BOOL AnalyzeNGScript(char *pBYtes, long offset )
                     indice++;
                     sprintf_s ( szDebugString, sizeof(szDebugString), "TRNGSCRIPT : 0x%08lx : TotWords : %3u - TagScript : %3u (0x%02x) %s = 0x%04x\n", 
                         relativeAddress, TotWords, TagScript, TagScript, GetTRNGCntLabel(TagScript), pIteration->values[indice] );
-                    OutputTRNGString( szDebugString );
+                    OutputTRNGScriptString( szDebugString );
                     if ( TagScript == ctn_Settings )
                     {
                         ctnSettings         = pIteration->values[indice];
@@ -2111,7 +2159,7 @@ static BOOL AnalyzeNGScript(char *pBYtes, long offset )
 
                 //
                 sprintf_s ( szDebugString, sizeof(szDebugString), "TRNGSCRIPT : ctn_Settings=%04x versus [19]=%02x\n", ctnSettings, memUncrypted.ptr [ 19 ] );
-                OutputTRNGString( szDebugString );
+                OutputTRNGScriptString( szDebugString );
                 //  Blind Save
                 if ( ( ctnSettings & SET_BLIND_SAVEGAMES ) != 0 && ( memUncrypted.ptr [ 19 ] & SET_BLIND_SAVEGAMES ) != 0 )
                 {
@@ -2140,7 +2188,7 @@ static BOOL AnalyzeNGScript(char *pBYtes, long offset )
                     DecriptaControlloScriptDat ( (BYTE * ) memUncrypted.ptr, nb, (BYTE * ) memCrypted.ptr );
 
                     sprintf_s ( szDebugString, sizeof(szDebugString), "TRNGSCRIPT : To Remove BLIND Savegame\n" );
-                    OutputTRNGString( szDebugString );
+                    OutputTRNGScriptString( szDebugString );
 
                     //  Save Blind Values and Offset
                     BlindValues [ 0 ] = ctnSettings;
@@ -2157,14 +2205,14 @@ static BOOL AnalyzeNGScript(char *pBYtes, long offset )
                         BlindOffset [ 0 ], BlindValues [ 0 ],
                         BlindOffset [ 2 ], pAddress [ 19 ], BlindValues [ 2 ] & 0xff,
                         BlindOffset [ 1 ], pAddress [ 0 ], BlindValues [ 1 ] & 0xff );
-                    OutputTRNGString( szDebugString );
+                    OutputTRNGScriptString( szDebugString );
 
                     //
                     DumpControl ( (BYTE *) memCrypted.ptr, nb );
                 }
                 else
                 {
-                    OutputTRNGString( "TRNGSCRIPT : Script file is not SET_BLIND_SAVEGAMES\n" );
+                    OutputTRNGScriptString( "TRNGSCRIPT : Script file is not SET_BLIND_SAVEGAMES\n" );
                 }
 
                 break;
@@ -2189,7 +2237,7 @@ static BOOL AnalyzeNGScript(char *pBYtes, long offset )
                     indice++;
                     sprintf_s ( szDebugString, sizeof(szDebugString), "TRNGSCRIPT : 0x%08lx : TotWords : %3u - TagScript : %3u (0x%02x) %s = 0x%04x\n", 
                         relativeAddress, TotWords, TagScript, TagScript, GetTRNGCntLabel(TagScript), pIteration->values[indice] );
-                    OutputTRNGString( szDebugString );
+                    OutputTRNGScriptString( szDebugString );
                     indice  += TotWords;
                 }
                 break;
@@ -2561,7 +2609,8 @@ BOOL ReadTRXScript (    const char *pathname, const char *pDirectory, int versio
     //
     for ( int i = 0; i < nbLevelPath; i++ )
     {
-        Print ( hOutFile, "; LevelpathStringOffsets %d : %d %s\n", i, LevelpathStringOffsets [ i ], LevelpathStringBlockData + LevelpathStringOffsets [ i ] );
+        Print ( hOutFile, "; LevelpathStringOffsets %d : %d %s\n", 
+                    i, LevelpathStringOffsets [ i ], LevelpathStringBlockData + LevelpathStringOffsets [ i ] );
     }
 
     //
@@ -2684,6 +2733,36 @@ BOOL ReadTRXScript (    const char *pathname, const char *pDirectory, int versio
 
     //
     return bResult;
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//  Pathname is the savegame name
+/////////////////////////////////////////////////////////////////////////////
+BOOL IsScriptBlinded ( const char *pathname )
+{
+    //
+    static char szScript [ MAX_PATH ];
+    static char szDirectory [ MAX_PATH ];
+
+    strcpy_s ( szScript, sizeof(szScript), pathname );
+    RemoveFilename ( szScript );
+    strcpy_s ( szDirectory, sizeof(szDirectory), szScript );
+    strcat_s ( szScript, sizeof(szScript), "\\SCRIPT.DAT" );
+
+    //
+    BOOL bRead = ReadTRXScript ( szScript, szDirectory, 4, false, NULL );
+    if ( ! bRead )
+    {
+        return FALSE;
+    }
+
+    if ( BlindOffset [ 0 ] == 0 || BlindOffset [ 1 ] == 0 || BlindOffset [ 2 ] == 0 )
+    {
+        return FALSE;
+    }
+
+    return TRUE;
 }
 
 //

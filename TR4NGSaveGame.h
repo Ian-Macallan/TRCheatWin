@@ -342,7 +342,7 @@ class CTR4NGSaveGame : public CTR45SaveGame
         BYTE                iRiotGunUnits;
 
         //  When savegame are PURE TRNG
-        BOOL                m_bPureTRNG;
+        BOOL                m_bBlindedTRNG;
 
         //
         //  Specific TRNG
