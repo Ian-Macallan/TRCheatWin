@@ -107,8 +107,6 @@ TR45_INDICATORS IndicatorsTR4NGTable [ MAX_INDICATORS ] =
     {   FALSE,  0x0d,   0x12,   0x00,   0x6c,   TRUE,   1,  "Swimming", }, 
     {   FALSE,  0x12,   0x12,   0x00,   0x57,   TRUE,   1,  "Swimming", }, 
 
-    {   FALSE,  0x01,   0x02,   0x00,   0x0a,   TRUE,   1,  "Indicator 14", }, 
-
     {   FALSE,  0x50,   0x50,   0x00,   0x07,   TRUE,   1,  "Crawling", },
     {   FALSE,  0x50,   0x50,   0x47,   0x07,   TRUE,   1,  "Crawling", },
 
@@ -118,7 +116,12 @@ TR45_INDICATORS IndicatorsTR4NGTable [ MAX_INDICATORS ] =
 
     {   FALSE,  0x02,   0x02,   0x47,   0x87,   TRUE,   1,  "Standing", },
 
+    {   FALSE,  0x01,   0x02,   0x00,   0x0a,   TRUE,   2,  "Advancing 1", }, 
+    {   FALSE,  0x01,   0x02,   0x00,   0x08,   TRUE,   2,  "Advancing 2", },
+
     {   FALSE,  0x18,   0x18,   0x00,   0x46,   TRUE,   8,  "Sliding", },
+    {   FALSE,  0x18,   0x18,   0x47,   0x46,   TRUE,   8,  "Sliding", },
+
     {   FALSE,  0x0d,   0x12,   0x47,   0x6c,   TRUE,   8,  "Swimming", },
 
     //
@@ -137,7 +140,6 @@ TR45_INDICATORS IndicatorsTR4NGTable [ MAX_INDICATORS ] =
     {   FALSE,  0x00,   0x02,   0x00,   0x02,   TRUE,   10,  "Indicator 7", },
     {   FALSE,  0x00,   0x02,   0x00,   0x03,   TRUE,   10,  "Indicator 8", },
     {   FALSE,  0x12,   0x00,   0x00,   0x02,   TRUE,   10,  "Flare", },
-
 
     //
     {   TRUE,   0xff,   0xff,   0xff,   0xff,   TRUE,   0,  "End", },         // End

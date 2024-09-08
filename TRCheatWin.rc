@@ -103,8 +103,8 @@ BEGIN
     CONTROL         "Laser",IDC_LASER,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,296,131,122,10
     CONTROL         "Full",IDC_FULL,"Button",BS_OWNERDRAW | WS_TABSTOP,298,180,50,14
     CONTROL         "Binocular",IDC_BINOCULAR,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,295,150,122,10
-    CONTROL         "TRNG Guns",IDC_TRNG_GUNS,"Button",BS_OWNERDRAW | WS_TABSTOP,21,219,103,14
-    CONTROL         "TRNG God Mode",IDC_TRNG_GODMODE,"Button",BS_OWNERDRAW | WS_TABSTOP,139,219,103,14
+    CONTROL         "TRNG Guns",IDC_TRNG_GUNS,"Button",BS_OWNERDRAW | WS_TABSTOP,21,226,103,14
+    CONTROL         "TRNG God Mode",IDC_TRNG_GODMODE,"Button",BS_OWNERDRAW | WS_TABSTOP,139,226,103,14
     CONTROL         "TRNG Doors",IDC_TRNG_DOORS,"Button",BS_OWNERDRAW | WS_TABSTOP,21,246,103,14
     CONTROL         "TRNG Enemies",IDC_TRNG_ENEMIES,"Button",BS_OWNERDRAW | WS_TABSTOP,139,246,103,14
     GROUPBOX        "Tombraider Next Generation",IDC_STATIC,15,207,238,62
@@ -719,8 +719,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 4,4,01,008
- PRODUCTVERSION 4,4,01,008
+ FILEVERSION 4,4,02,001
+ PRODUCTVERSION 4,4,02,001
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x29L
@@ -738,15 +738,15 @@ BEGIN
             VALUE "Comments", "mailto:ian.macallan@gmail.com\0"
             VALUE "CompanyName", "Macallan (c)\0"
             VALUE "FileDescription", "TRCheatWin - (MSVC)\0"
-            VALUE "FileVersion", "4.4.01.008\0"
+            VALUE "FileVersion", "4.4.02.001\0"
             VALUE "InternalName", "https://www.macallan.org/\0"
-            VALUE "LegalCopyright", "Copyright (C) Sat Sep 07 08:37, 2024\0"
+            VALUE "LegalCopyright", "Copyright (C) Sun Sep 08 09:21, 2024\0"
             VALUE "LegalTrademarks", "Author: Ian Macallan\0"
             VALUE "OriginalFilename", ORIGINAL_FILENAME
-            VALUE "PrivateBuild", "1054\0"
+            VALUE "PrivateBuild", "1056\0"
             VALUE "ProductName", PRODUCT_NAME
-            VALUE "ProductVersion", "4.4.01.008\0"
-            VALUE "SpecialBuild", "1054\0"
+            VALUE "ProductVersion", "4.4.02.001\0"
+            VALUE "SpecialBuild", "1056\0"
         END
     END
     BLOCK "VarFileInfo"

@@ -555,9 +555,9 @@ BOOL CTRXEquipmentPage::OnInitDialog()
     {
         m_ToolTip.AddTool( &m_Status, "Status" );
         m_ToolTip.AddTool( &m_TRNG_Guns, "Enable TRNG Guns when disabled" );
-        m_ToolTip.AddTool( &m_TRNG_GodMode, "Enable TRNG God Mode" );
-        m_ToolTip.AddTool( &m_TRNG_Doors, "Enable TRNG Open All Doors\nMay not work on all version" );
-        m_ToolTip.AddTool( &m_TRNG_Enemies, "Enable TRNG Kill All Enemies\nMay not work on all version" );
+        m_ToolTip.AddTool( &m_TRNG_GodMode, "Enable TRNG God Mode\nThis could be unreversible\nAnd you may be god forever" );
+        m_ToolTip.AddTool( &m_TRNG_Doors, "Enable TRNG Open All Doors\nMay not work on all versions" );
+        m_ToolTip.AddTool( &m_TRNG_Enemies, "Enable TRNG Kill All Enemies\nMay not work on all versions" );
         m_ToolTip.Activate(TRUE);
     }
 
