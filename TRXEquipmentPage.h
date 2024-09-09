@@ -52,6 +52,7 @@ class CTRXEquipmentPage : public CTRXPropertyPage
         CTRXButtonBase  m_TRNG_GodMode;
         CTRXButtonBase  m_TRNG_Doors;
         CTRXButtonBase  m_TRNG_Enemies;
+        CTRXButtonBase  m_TRNG_GodReset;
 
         //}}AFX_DATA
 
@@ -92,6 +93,7 @@ class CTRXEquipmentPage : public CTRXPropertyPage
         afx_msg void OnBnClickedTrngGodMode();
         afx_msg void OnBnClickedTrngDoors();
         afx_msg void OnBnClickedTrngEnemies();
+        afx_msg void OnBnClickedTrngGodreset();
 };
 
 //{{AFX_INSERT_LOCATION}}

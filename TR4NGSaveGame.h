@@ -619,7 +619,7 @@ class CTR4NGSaveGame : public CTR45SaveGame
         //  Returns TRUE if enabled
         virtual BOOL EnableGuns ( BOOL bGetOnly = TRUE, BOOL bEnable = TRUE );
         // Returns TRUE of we are in God Mode
-        virtual BOOL TRNGGodMode ( BOOL bGetOnly = TRUE, BOOL bSet = TRUE );
+        virtual BOOL TRNGGodMode ( BOOL bGetOnly = TRUE, BOOL bSet = TRUE, BOOL bReset = FALSE );
         // Returns TRUE of we are in Doors Opened
         virtual BOOL TRNGOpenDoors ( BOOL bGetOnly = TRUE, BOOL bSet = TRUE );
         // Returns TRUE of we are in Kill Enemies

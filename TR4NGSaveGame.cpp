@@ -1978,7 +1978,7 @@ BOOL CTR4NGSaveGame::EnableGuns ( BOOL bGetOnly, BOOL bEnable )
 /////////////////////////////////////////////////////////////////////////////
 //  Returns TRUE of we are in God Mode
 /////////////////////////////////////////////////////////////////////////////
-BOOL CTR4NGSaveGame::TRNGGodMode ( BOOL bGetOnly, BOOL bSet )
+BOOL CTR4NGSaveGame::TRNGGodMode ( BOOL bGetOnly, BOOL bSet, BOOL bReset )
 {
     if ( m_pTRNGStatusNG != NULL )
     {
@@ -1988,17 +1988,24 @@ BOOL CTR4NGSaveGame::TRNGGodMode ( BOOL bGetOnly, BOOL bSet )
         }
         else
         {
-            if ( bSet )
+            if ( bReset )
             {
-                *m_pTRNGStatusNG |= SNG_IMMORTAL_LARA;
-                *m_pTRNGStatusNG |= SNG_INFINITE_AIR;
-                *m_pTRNGStatusNG &= ( 0xFFFFFFFF ^ SNG_REMOVE_IMMORTAL_LARA );
+                *m_pTRNGStatusNG    &= ( 0xFFFFFFFF ^ SNG_IMMORTAL_LARA );
+                *m_pTRNGStatusNG    &= ( 0xFFFFFFFF ^ SNG_INFINITE_AIR );
+                *m_pTRNGStatusNG    &= ( 0xFFFFFFFF ^ SNG_REMOVE_IMMORTAL_LARA );
+            }
+            else if ( bSet )
+            {
+                *m_pTRNGStatusNG    |= SNG_IMMORTAL_LARA;
+                *m_pTRNGStatusNG    |= SNG_INFINITE_AIR;
+                *m_pTRNGStatusNG    &= ( 0xFFFFFFFF ^ SNG_REMOVE_IMMORTAL_LARA );
                 return TRUE;
             }
             else
             {
-                *m_pTRNGStatusNG &= ( 0xFFFFFFFF ^ SNG_IMMORTAL_LARA );
-                *m_pTRNGStatusNG &= ( 0xFFFFFFFF ^ SNG_INFINITE_AIR );
+                *m_pTRNGStatusNG    &= ( 0xFFFFFFFF ^ SNG_IMMORTAL_LARA );
+                *m_pTRNGStatusNG    &= ( 0xFFFFFFFF ^ SNG_INFINITE_AIR );
+                *m_pTRNGStatusNG    |= SNG_REMOVE_IMMORTAL_LARA;
                 return FALSE;
             }
         }

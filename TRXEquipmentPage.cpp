@@ -85,6 +85,7 @@ void CTRXEquipmentPage::DoDataExchange(CDataExchange* pDX)
     DDX_Control(pDX, IDC_TRNG_GODMODE, m_TRNG_GodMode);
     DDX_Control(pDX, IDC_TRNG_DOORS, m_TRNG_Doors);
     DDX_Control(pDX, IDC_TRNG_ENEMIES, m_TRNG_Enemies);
+    DDX_Control(pDX, IDC_TRNG_GODRESET, m_TRNG_GodReset);
     //}}AFX_DATA_MAP
 }
 
@@ -110,6 +111,7 @@ BEGIN_MESSAGE_MAP(CTRXEquipmentPage, CTRXPropertyPage)
     ON_BN_CLICKED(IDC_TRNG_GODMODE, &CTRXEquipmentPage::OnBnClickedTrngGodMode)
     ON_BN_CLICKED(IDC_TRNG_DOORS, &CTRXEquipmentPage::OnBnClickedTrngDoors)
     ON_BN_CLICKED(IDC_TRNG_ENEMIES, &CTRXEquipmentPage::OnBnClickedTrngEnemies)
+    ON_BN_CLICKED(IDC_TRNG_GODRESET, &CTRXEquipmentPage::OnBnClickedTrngGodreset)
 END_MESSAGE_MAP()
 
 //
@@ -326,6 +328,7 @@ int CTRXEquipmentPage::EnableForVersion()
 
         m_TRNG_Guns.EnableWindow ( iVersion == 49 );
         m_TRNG_GodMode.EnableWindow ( iVersion == 49 );
+        m_TRNG_GodReset.EnableWindow ( iVersion == 49 );
         m_TRNG_Doors.EnableWindow ( iVersion == 49 );
         m_TRNG_Enemies.EnableWindow ( iVersion == 49 );
 
@@ -385,6 +388,7 @@ int CTRXEquipmentPage::EnableForVersion()
         m_God.EnableWindow ( FALSE );
         m_TRNG_Guns.EnableWindow ( FALSE );
         m_TRNG_GodMode.EnableWindow ( FALSE );
+        m_TRNG_GodReset.EnableWindow ( FALSE );
         m_TRNG_Doors.EnableWindow ( FALSE );
         m_TRNG_Enemies.EnableWindow ( FALSE );
     }
@@ -556,6 +560,7 @@ BOOL CTRXEquipmentPage::OnInitDialog()
         m_ToolTip.AddTool( &m_Status, "Status" );
         m_ToolTip.AddTool( &m_TRNG_Guns, "Enable TRNG Guns when disabled" );
         m_ToolTip.AddTool( &m_TRNG_GodMode, "Enable TRNG God Mode\nThis could be unreversible\nAnd you may be god forever" );
+        m_ToolTip.AddTool( &m_TRNG_GodReset, "Remove TRNG SNG_IMMORTAL_LARA,\nSNG_REMOVE_IMMORTAL_LARA and\nSNG_INFINITE_AIR" );
         m_ToolTip.AddTool( &m_TRNG_Doors, "Enable TRNG Open All Doors\nMay not work on all versions" );
         m_ToolTip.AddTool( &m_TRNG_Enemies, "Enable TRNG Kill All Enemies\nMay not work on all versions" );
         m_ToolTip.Activate(TRUE);
@@ -703,4 +708,15 @@ void CTRXEquipmentPage::OnBnClickedTrngEnemies()
         CTRSaveGame::I()->TRNGKillEnemies( FALSE, FALSE );
         m_TRNG_Enemies.SetWindowText ( "Enable TRNG Kill Enemies" );
     }
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
+void CTRXEquipmentPage::OnBnClickedTrngGodreset()
+{
+    //
+    CTRSaveGame::I()->TRNGGodMode( FALSE, FALSE, TRUE );
+    m_TRNG_GodMode.SetWindowText ( "Enable TRNG God Mode" );
 }

@@ -755,7 +755,7 @@ class CTRSaveGame  : public CObject
         }
 
         //  Returns TRUE of we are in God Mode
-        virtual BOOL TRNGGodMode ( BOOL bGetOnly = TRUE, BOOL bSet = TRUE )
+        virtual BOOL TRNGGodMode ( BOOL bGetOnly = TRUE, BOOL bSet = TRUE, BOOL bReset = FALSE )
         {
             return FALSE;
         }

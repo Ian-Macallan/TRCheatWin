@@ -546,6 +546,7 @@
 #define IDC_RENUM                       1225
 #define IDC_REMOVE_CUSTOM               1225
 #define IDC_ALL_AMMOS                   1225
+#define IDC_TRNG_GODRESET               1225
 #define IDC_DELETE                      1226
 #define IDC_DIFFERENCES                 1226
 #define IDC_BUTTON1                     1227
