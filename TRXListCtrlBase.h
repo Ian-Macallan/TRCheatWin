@@ -19,7 +19,13 @@ class CTRXListCtrlBase : public CListCtrl
         afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
         afx_msg void OnNMCustomdraw(NMHDR *pNMHDR, LRESULT *pResult);
 
-    public :
+    public :    
+        CFont                   *m_pBoldFont;
+        CFont                   *m_pItalicFont;
+        CFont                   *m_pNormalFont;
+        CFont                   *m_pFixedFont;
+        CFont                   *m_pFixedBoldFont;
+        BOOL                    m_bFontsDone;
 
     //
     protected :
@@ -31,3 +37,6 @@ class CTRXListCtrlBase : public CListCtrl
         bool                    m_bHeaderControlSubclassed;
 };
 
+//
+#define ITEM_NORMAL             0 
+#define ITEM_ITALIC             1

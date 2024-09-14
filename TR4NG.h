@@ -516,4 +516,5 @@ extern void OutputTRNGScriptString ( const char *pText );
 //  Trace or not trace
 #define TRACE_TRNG_SAVE     0
 #define TRACE_TRNG_SCRIPT   0
+
 //

@@ -5,12 +5,15 @@
 #include "TRXLevels.h"
 #include "TRXInfoPage.h"
 #include "TR9SaveGame.h"
+#include "TRXCHEATWIN.h"
 
+extern CTRXCHEATWINApp theApp;
 
 // Boîte de dialogue CTRXLevels
 #define COL_LEVEL           0
 #define COL_NAME            1
 #define COL_DATA            2
+#define COL_EXIST           3
 
 //
 /////////////////////////////////////////////////////////////////////////////
@@ -24,7 +27,10 @@ IMPLEMENT_DYNAMIC(CTRXLevels, CTRXDialogBase)
 /////////////////////////////////////////////////////////////////////////////
 CTRXLevels::CTRXLevels(CWnd* pParent /*=NULL*/) : CTRXDialogBase(CTRXLevels::IDD, pParent)
 {
-    m_pListCtrl = NULL;
+    m_pListCtrl     = NULL;
+    m_iVersion      = -1;
+    m_bRemastered   = FALSE;
+    ZeroMemory ( m_szSaveName, sizeof(m_szSaveName) );
 }
 
 //
@@ -86,11 +92,12 @@ BOOL CTRXLevels::OnInitDialog()
             m_iVersion  = 49;
         }
 
-        m_LevelList.InsertColumn( COL_LEVEL, "Level", LVCFMT_RIGHT, 64 );
+        m_LevelList.InsertColumn( COL_LEVEL, "Level", LVCFMT_RIGHT, 48 );
         m_LevelList.InsertColumn( COL_NAME, "Name", LVCFMT_LEFT, 320 );
         if ( m_iVersion == 49 )
         {
             m_LevelList.InsertColumn( COL_DATA, "Data File", LVCFMT_LEFT, 192 );
+            m_LevelList.InsertColumn( COL_EXIST, "Exists", LVCFMT_LEFT, 48 );
         }
         else
         {
@@ -204,15 +211,34 @@ BOOL CTRXLevels::OnInitDialog()
             //
             case 49 :
             {
+                static char szDirectory [ MAX_PATH ];
+                strcpy_s ( szDirectory, sizeof(szDirectory), m_szSaveName );
+                theApp.RemoveFilename ( szDirectory );
+
                 for ( int levelIndex = 0; levelIndex < TR4NGMAXLEVEL; levelIndex++ )
                 {
                     if ( strlen(CustomDataFiles [ levelIndex ].title) > 0 )
                     {
+                        static char szFilename [ MAX_PATH ];
+                        strcpy_s ( szFilename, sizeof(szFilename), szDirectory );
+                        strcat_s ( szFilename, sizeof(szFilename), "\\" );
+                        strcat_s ( szFilename, sizeof(szFilename), CustomDataFiles [ levelIndex ].datafile );
+                        strcat_s ( szFilename, sizeof(szFilename), ".tr4" );
+
                         char szNumber [ 64 ];
                         sprintf_s ( szNumber, sizeof(szNumber), "%2d", levelIndex );
                         m_LevelList.InsertItem ( levelIndex, szNumber );
                         m_LevelList.SetItemText ( levelIndex, COL_NAME, CustomDataFiles [ levelIndex ].title );
                         m_LevelList.SetItemText ( levelIndex, COL_DATA, CustomDataFiles [ levelIndex ].datafile );
+                        if ( PathFileExists ( szFilename ) )
+                        {
+                            m_LevelList.SetItemText ( levelIndex, COL_EXIST, "Yes" );
+                        }
+                        else
+                        {
+                            m_LevelList.SetItemText ( levelIndex, COL_EXIST, "No" );
+                            m_LevelList.SetItemData ( levelIndex, (DWORD_PTR) ITEM_ITALIC );
+                        }
                     }
                 }
                 break;

@@ -40,6 +40,7 @@ class CTRXLevels : public CTRXDialogBase
 
         int                 m_iVersion;
         BOOL                m_bRemastered;
+        char                m_szSaveName [ MAX_PATH ];
 
     public :
         virtual BOOL OnInitDialog();

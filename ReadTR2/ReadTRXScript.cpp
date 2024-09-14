@@ -2351,10 +2351,11 @@ BOOL ReadTRXScript (    const char *pathname, const char *pDirectory, int versio
     //
     //  Check
     bool bGood = false;
-    if (    memcmp ( (char *) pScriptLevelHeader->PCLevelString, ".TR4", strlen(".TR4") ) == 0  &&
-            memcmp ( (char *) pScriptLevelHeader->PCCutString, ".TR4", strlen(".TR4") ) == 0    &&
-            ( memcmp ( (char *) pScriptLevelHeader->PCFMVString, ".BIK", strlen(".BIK") ) == 0  ||
-              memcmp ( (char *) pScriptLevelHeader->PCFMVString, ".WMV", strlen(".WMV") ) == 0      ) )
+    if (    _strnicmp ( (char *) pScriptLevelHeader->PCLevelString, ".TR4", strlen(".TR4") ) == 0  &&
+            _strnicmp ( (char *) pScriptLevelHeader->PCCutString, ".TR4", strlen(".TR4") ) == 0    &&
+            ( _strnicmp ( (char *) pScriptLevelHeader->PCFMVString, ".BIK", strlen(".BIK") ) == 0  ||
+              _strnicmp ( (char *) pScriptLevelHeader->PCFMVString, ".WMV", strlen(".WMV") ) == 0  ||
+              _strnicmp ( (char *) pScriptLevelHeader->PCFMVString, ".AVI", strlen(".AVI") ) == 0    ) )
     {
         fileIsCrypted   = TRUE;
         Print ( hOutFile, "; File is Crypted TRNG\n" );

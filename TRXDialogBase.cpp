@@ -130,7 +130,6 @@ BOOL CTRXDialogBase::OnInitDialog()
     CDialog::OnInitDialog();
 
     //
-    //
     TEXTMETRIC textMetrics;
     CDC *pDC = GetDC();
     GetTextMetrics ( pDC->m_hDC, &textMetrics );

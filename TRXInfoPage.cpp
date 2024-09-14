@@ -3393,6 +3393,7 @@ void CTRXInfoPage::OnBnClickedLevels()
         CTRXLevels dlg;
         dlg.m_bRemastered   = FALSE;
         dlg.m_iVersion      = CTRSaveGame::GetFullVersion();
+        m_Filename.GetWindowText ( dlg.m_szSaveName, sizeof ( dlg.m_szSaveName ) - 1 );
         dlg.DoModal();
     }
 }
