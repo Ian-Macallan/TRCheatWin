@@ -237,6 +237,7 @@ BOOL CTRXEquipmentPage::OnSetActive()
     DisplayValues ();
 
     SetGUIModified ( bModified );
+
     return CTRXPropertyPage::OnSetActive();
 }
 
@@ -628,17 +629,28 @@ void CTRXEquipmentPage::OnBnClickedFull()
 {
     SetGUIModified ( TRUE );
 
-    if ( CTRSaveGame::I() != NULL && CTRSaveGame::GetVersion () >= 40 )
+    if ( CTRSaveGame::I() != NULL )
     {
-        m_Large_Medipak.SetWindowText ( pValue10K );
-        m_Small_Medipak.SetWindowText ( pValue10K );
-        m_Flares.SetWindowText ( pValue10K );
-    }
-    else
-    {
-        m_Large_Medipak.SetWindowText ( pValue255 );
-        m_Small_Medipak.SetWindowText ( pValue255 );
-        m_Flares.SetWindowText ( pValue255 );
+        if ( CTRSaveGame::GetVersion () >= 40 )
+        {
+            m_Large_Medipak.SetWindowText ( pValue10K );
+            m_Small_Medipak.SetWindowText ( pValue10K );
+            m_Flares.SetWindowText ( pValue10K );
+        }
+        else
+        {
+            m_Large_Medipak.SetWindowText ( pValue255 );
+            m_Small_Medipak.SetWindowText ( pValue255 );
+            m_Flares.SetWindowText ( pValue255 );
+        }
+
+        if ( m_iHitCountForAll > 0 )
+        {
+            m_Laser.SetCheck ( TRUE );
+            m_Binocular.SetCheck ( TRUE );
+        }
+
+        m_iHitCountForAll++;
     }
 }
 

@@ -45,6 +45,8 @@ CTRXPropertyPage::CTRXPropertyPage( UINT code ) : CTRXPropertyPageBase(code)
     m_bInitDone         = false;
 
     m_pContextMenu      = NULL;
+
+    m_iHitCountForAll   = 0;
 }
 
 //
@@ -381,3 +383,13 @@ void CTRXPropertyPage::SetApply(BOOL bApply )
      m_bApplyActive = bApply;
  }
 
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
+BOOL CTRXPropertyPage::OnSetActive()
+{
+    m_iHitCountForAll    = 0;
+
+    return CTRXPropertyPageBase::OnSetActive();
+}

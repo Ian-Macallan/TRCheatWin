@@ -47,6 +47,8 @@ class CTRXPropertyPage : public CTRXPropertyPageBase
         static BOOL             m_bModified;
         bool                    m_bFirstTime;
 
+        int                     m_iHitCountForAll;
+
         void SetBitmap ( CStatic *wnd, int bitmapIndex, UINT resource );
 
     public:
@@ -67,6 +69,7 @@ class CTRXPropertyPage : public CTRXPropertyPageBase
         //
         virtual void UpdateBuffer() = 0;
         virtual void SetApply(BOOL bApply );
+        virtual BOOL OnSetActive();
 
         INT_PTR AskToSave(const char *pSubTitle, UINT mb = MB_YESNO );
         void WriteWhenOnApply(const char *pSubTitle);

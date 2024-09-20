@@ -353,6 +353,7 @@ class CTR4NGSaveGame : public CTR45SaveGame
         DWORD               *m_pTRNGStatusNG;
         WORD                *m_pTRNGCold;
         WORD                *m_pTRNGDamage;
+        int                 *m_pKeysToStop;
 
     // Operations
     public:

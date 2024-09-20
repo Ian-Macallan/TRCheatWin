@@ -769,6 +769,27 @@ BOOL CTRXCHEATWINApp::InitInstance()
             }
         }
         //
+        //  Read .TR4 for NG values
+        else if ( __strnicmp ( pCommandLine, "-tr4ng" ) == 0 )
+        {
+            //
+            char *pFilename = strchr ( pCommandLine, ' ' );
+            if ( pFilename != NULL )
+            {
+                pFilename = SkipSpaces ( pFilename );
+                strcpy_s ( szPathname, sizeof(szPathname), pFilename );
+                RemoveEnclosingQuotes ( szPathname, sizeof(szPathname) );
+
+                LPSTR lpFilepart = NULL;
+                GetFullPathName ( szPathname, sizeof(szFullPathname), szFullPathname, &lpFilepart );
+
+                //
+                strcpy_s ( szDirectory, sizeof(szDirectory), szFullPathname );
+                RemoveFilename ( szDirectory );
+                BOOL bRead = ReadTR4ForNG ( szFullPathname );
+            }
+        }
+        //
         //  Unblind Script
         else if ( __strnicmp ( pCommandLine, "-unblind" ) == 0 )
         {

@@ -612,30 +612,33 @@ void CTRXAmmosPage::OnCharpoon()
 void CTRXAmmosPage::OnBnClickedUnlimited()
 {
     //
-    if ( CTRSaveGame::I() != NULL && CTRSaveGame::GetVersion() >= 40 )
+    if ( CTRSaveGame::I() != NULL )
     {
-        SetGUIModified ( TRUE, "Ammos Unlimited" );
+        if ( CTRSaveGame::GetVersion() >= 40 )
+        {
+            SetGUIModified ( TRUE, "Ammos Unlimited" );
 
-        m_Ammos_Uzis.SetWindowText ( pValueMinusOne );
+            m_Ammos_Uzis.SetWindowText ( pValueMinusOne );
 
-        m_Ammos_MP5.SetWindowText ( pValueMinusOne );
+            m_Ammos_MP5.SetWindowText ( pValueMinusOne );
 
-        m_Ammos_Harpoon.SetWindowText ( pValueMinusOne );
-        m_Ammos_Harpoon2.SetWindowText ( pValueMinusOne );
-        m_Ammos_Harpoon3.SetWindowText ( pValueMinusOne );
+            m_Ammos_Harpoon.SetWindowText ( pValueMinusOne );
+            m_Ammos_Harpoon2.SetWindowText ( pValueMinusOne );
+            m_Ammos_Harpoon3.SetWindowText ( pValueMinusOne );
 
-        m_Ammos_Grenade_Launcher.SetWindowText ( pValueMinusOne );
-        m_Ammos_Grenade_Launcher2.SetWindowText ( pValueMinusOne );
-        m_Ammos_Grenade_Launcher3.SetWindowText ( pValueMinusOne );
+            m_Ammos_Grenade_Launcher.SetWindowText ( pValueMinusOne );
+            m_Ammos_Grenade_Launcher2.SetWindowText ( pValueMinusOne );
+            m_Ammos_Grenade_Launcher3.SetWindowText ( pValueMinusOne );
 
-        m_Ammos_Rocket_Launcher.SetWindowText ( pValueMinusOne );
+            m_Ammos_Rocket_Launcher.SetWindowText ( pValueMinusOne );
 
-        m_Ammos_Riot_Gun.SetWindowText ( pValueMinusOne );
-        m_Ammos_Riot_Gun2.SetWindowText ( pValueMinusOne);
+            m_Ammos_Riot_Gun.SetWindowText ( pValueMinusOne );
+            m_Ammos_Riot_Gun2.SetWindowText ( pValueMinusOne);
 
-        m_Ammos_Desert_Eagle.SetWindowText ( pValueMinusOne );
+            m_Ammos_Desert_Eagle.SetWindowText ( pValueMinusOne );
 
-        m_Ammos_Guns.SetWindowText ( pValueMinusOne );
+            m_Ammos_Guns.SetWindowText ( pValueMinusOne );
+        }
     }
 }
 
@@ -794,53 +797,63 @@ void CTRXAmmosPage::OnBnClickedZguns()
 void CTRXAmmosPage::OnBnClickedAllAmmos()
 {
     //
-    if ( CTRSaveGame::I() != NULL && CTRSaveGame::GetVersion() >= 40 )
+    if ( CTRSaveGame::I() != NULL  )
     {
-        SetGUIModified ( TRUE, "All Ammos" );
-
-        if ( m_Ammos_Uzis.IsWindowEnabled() )
+        if ( CTRSaveGame::GetVersion() != 0 )
         {
-            m_Ammos_Uzis.SetWindowText ( pValue10K );
+            SetGUIModified ( TRUE, "All Ammos" );
+
+            if ( m_Ammos_Uzis.IsWindowEnabled() )
+            {
+                m_Ammos_Uzis.SetWindowText ( pValue10K );
+            }
+
+            if ( m_Ammos_MP5.IsWindowEnabled() )
+            {
+                m_Ammos_MP5.SetWindowText ( pValue10K );
+            }
+
+            if ( m_Ammos_Harpoon.IsWindowEnabled() )
+            {
+                m_Ammos_Harpoon.SetWindowText ( pValue10K );
+                m_Ammos_Harpoon2.SetWindowText ( pValue10K );
+                m_Ammos_Harpoon3.SetWindowText ( pValue10K );
+            }
+
+            if ( m_Ammos_Grenade_Launcher.IsWindowEnabled() )
+            {
+                m_Ammos_Grenade_Launcher.SetWindowText ( pValue10K );
+                m_Ammos_Grenade_Launcher2.SetWindowText ( pValue10K );
+                m_Ammos_Grenade_Launcher3.SetWindowText ( pValue10K );
+            }
+
+            if ( m_Ammos_Rocket_Launcher.IsWindowEnabled() )
+            {
+                m_Ammos_Rocket_Launcher.SetWindowText ( pValue10K );
+            }
+
+            if ( m_Ammos_Riot_Gun.IsWindowEnabled() )
+            {
+                m_Ammos_Riot_Gun.SetWindowText ( pValue10K );
+                m_Ammos_Riot_Gun2.SetWindowText ( pValue10K);
+            }
+
+            if ( m_Ammos_Desert_Eagle.IsWindowEnabled() )
+            {
+                m_Ammos_Desert_Eagle.SetWindowText ( pValue10K );
+            }
+
+            if ( m_Ammos_Guns.IsWindowEnabled() )
+            {
+                m_Ammos_Guns.SetWindowText ( pValueMinusOne );
+            }
         }
 
-        if ( m_Ammos_MP5.IsWindowEnabled() )
+        //
+        if ( m_iHitCountForAll > 0 )
         {
-            m_Ammos_MP5.SetWindowText ( pValue10K );
         }
 
-        if ( m_Ammos_Harpoon.IsWindowEnabled() )
-        {
-            m_Ammos_Harpoon.SetWindowText ( pValue10K );
-            m_Ammos_Harpoon2.SetWindowText ( pValue10K );
-            m_Ammos_Harpoon3.SetWindowText ( pValue10K );
-        }
-
-        if ( m_Ammos_Grenade_Launcher.IsWindowEnabled() )
-        {
-            m_Ammos_Grenade_Launcher.SetWindowText ( pValue10K );
-            m_Ammos_Grenade_Launcher2.SetWindowText ( pValue10K );
-            m_Ammos_Grenade_Launcher3.SetWindowText ( pValue10K );
-        }
-
-        if ( m_Ammos_Rocket_Launcher.IsWindowEnabled() )
-        {
-            m_Ammos_Rocket_Launcher.SetWindowText ( pValue10K );
-        }
-
-        if ( m_Ammos_Riot_Gun.IsWindowEnabled() )
-        {
-            m_Ammos_Riot_Gun.SetWindowText ( pValue10K );
-            m_Ammos_Riot_Gun2.SetWindowText ( pValue10K);
-        }
-
-        if ( m_Ammos_Desert_Eagle.IsWindowEnabled() )
-        {
-            m_Ammos_Desert_Eagle.SetWindowText ( pValue10K );
-        }
-
-        if ( m_Ammos_Guns.IsWindowEnabled() )
-        {
-            m_Ammos_Guns.SetWindowText ( pValueMinusOne );
-        }
+        m_iHitCountForAll++;
     }
 }

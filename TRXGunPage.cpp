@@ -597,5 +597,13 @@ void CTRXGunPage::OnBnClickedAllGuns()
         {
             m_Harpoon.SetCheck ( TRUE );
         }
+
+        if ( m_iHitCountForAll > 0 )
+        {
+            m_Crowbar.SetCheck ( TRUE );
+        }
+
+        m_iHitCountForAll++;
+
     }
 }

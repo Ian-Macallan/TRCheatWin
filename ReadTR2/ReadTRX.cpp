@@ -7,6 +7,8 @@
 #include "../TR_Areas.h"
 
 #include "ReadTRX.h"
+#include "ReadTRXScript.h"
+
 #include "MCMemA.h"
 
 #include "zlib.h"
@@ -123,6 +125,15 @@ static xuint32_t NumVertices32;
 static xuint16_t Separator16;
 
 static  tr_room_sector *AllSectors = NULL;
+
+//  At the end of the TR4 file
+#pragma pack(push, pack1, 1)
+typedef struct StrEndNgHeader
+{
+	char EndCheck [ 4 ];    // it should be number 0x454C474E ( "NGLE")
+	DWORD SizeNgHeader;     // size of whole extra ng header
+} EndNgHeaderFields;
+#pragma pack(pop, pack1)
 
 //
 /////////////////////////////////////////////////////////////////////////////
@@ -1241,7 +1252,6 @@ BOOL ExtractData (  FILE *hOutputFile, int game,
                     (*function)( &trArea );
                 }
             }
-
         }
 
 
@@ -1603,3 +1613,67 @@ BOOL ExtractData (  FILE *hOutputFile, int game,
     return bResult;
 }
 
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
+extern BOOL ReadTR4ForNG ( const char *pathname )
+{
+    BOOL bResult = FALSE;
+
+    FILE *hFile = NULL;
+    fopen_s ( &hFile, pathname, "rb" );
+    if ( hFile == NULL )
+    {
+        return bResult;
+    }
+
+    //
+    static char outFilename [ MAX_PATH ];
+    strcpy_s ( outFilename, sizeof(outFilename), pathname );
+    strcat_s ( outFilename, sizeof(outFilename), ".log" );
+
+    FILE *hOutFile = NULL;
+    fopen_s ( &hOutFile, outFilename, "w" );
+
+    //
+    StrEndNgHeader  endNGHeader;
+
+    //
+	fseek ( hFile, 0, SEEK_END );
+	long fileSize = ftell(hFile);
+	fseek ( hFile, 0, SEEK_SET );
+
+	long indexBegin = fileSize - (long) sizeof(StrEndNgHeader);
+	fseek ( hFile,indexBegin, SEEK_SET );
+	fread(&endNGHeader, sizeof(StrEndNgHeader), 1, hFile );
+    if ( memcmp ( endNGHeader.EndCheck, "NGLE", 4 ) != 0 )
+    {
+        CloseOne ( &hFile );
+        CloseOne ( &hOutFile );
+        return bResult;
+    }
+
+    MCMemA buffer ( endNGHeader.SizeNgHeader );
+    indexBegin = fileSize - endNGHeader.SizeNgHeader;
+	fseek ( hFile,indexBegin, SEEK_SET );
+
+    //
+	// 
+    size_t toRead = endNGHeader.SizeNgHeader - sizeof(endNGHeader);
+
+    //
+	size_t iRead = fread ( buffer.ptr, 1, toRead, hFile );
+
+    //
+    //  Analyze Buffer
+    bResult = AnalyzeNGScript(buffer.ptr, indexBegin, hOutFile );
+
+    //
+    CloseOne ( &hFile );
+
+    //
+    CloseOne ( &hOutFile );
+
+    return bResult;
+}
