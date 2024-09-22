@@ -236,7 +236,10 @@ extern BOOL ReadTRXScript (     const char *pathname, const char *pDirectory, in
                                 FCT_AddToItemsLabels function = NULL );
 //  Pathname is the savegame name
 extern BOOL IsScriptBlinded ( const char *pathname );
-extern BOOL UnblindTRXScript ( const char *pathname, const char *pDirectory );
+extern BOOL UnBlindTRXScript ( const char *pathname, const char *pDirectory );
+
+//
+extern BOOL UnSoftTRXScript ( const char *pathname, const char *pDirectory );
 
 //
 extern BOOL WriteTRXLanguage ( const char *pFilename, const char *pDirectory, int iLang, int version );

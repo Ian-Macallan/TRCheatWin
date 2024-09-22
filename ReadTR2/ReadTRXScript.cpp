@@ -117,6 +117,10 @@ static WORD BlindValues [ 3 ];
 static DWORD BlindOffset [ 3 ];
 static BYTE BlindBuffer [ 0x8000 ];
 
+static WORD SoftValues [ 3 ];
+static DWORD SoftOffset [ 3 ];
+static BYTE SoftBuffer [ 0x8000 ];
+
 //
 /////////////////////////////////////////////////////////////////////////////
 //  -script "G:\Program Files (x86)\Core Design\trle\Script\SCRIPT.DAT"
@@ -2013,7 +2017,7 @@ void OutputTRNGScriptString ( const char *pText, FILE *hOutFile )
 /////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////
-static void DumpControl ( BYTE *pAddress, const char *pTitle, const char *pText, int size, FILE *hOutFile )
+static void DumpControl ( BYTE *pAddress, const char *pTitle, const char *pText, int size, FILE *hOutFile, int enclose = -1 )
 {
     static char szDebugString [ MAX_PATH ];
 
@@ -2025,7 +2029,15 @@ static void DumpControl ( BYTE *pAddress, const char *pTitle, const char *pText,
         {
             // OutputTRNGScriptString( "\n; ", hOutFile );
         }
-        sprintf_s ( szDebugString, sizeof(szDebugString), "%02x ", *pAddress & 0xff );
+
+        if ( index == enclose )
+        {
+            sprintf_s ( szDebugString, sizeof(szDebugString), "[%02x] ", *pAddress & 0xff );
+        }
+        else
+        {
+            sprintf_s ( szDebugString, sizeof(szDebugString), "%02x ", *pAddress & 0xff );
+        }
         OutputTRNGScriptString( szDebugString, hOutFile );
         pAddress++;
     }
@@ -2044,6 +2056,10 @@ BOOL AnalyzeNGScript(char *pBYtes, long offset, FILE *hOutFile )
     //
     ZeroMemory ( BlindValues, sizeof(BlindValues) );
     ZeroMemory ( BlindOffset, sizeof(BlindOffset) );
+
+    //
+    ZeroMemory ( SoftValues, sizeof(SoftValues) );
+    ZeroMemory ( SoftOffset, sizeof(SoftOffset) );
 
     //
     TRNGSPECIFIC *pTRNG = (TRNGSPECIFIC *) pBYtes;
@@ -2149,7 +2165,7 @@ BOOL AnalyzeNGScript(char *pBYtes, long offset, FILE *hOutFile )
 		    case NGTAG_CONTROLLO_OPTIONS:
             {
                 int nb = (int) sizeof(WORD) * ( length - ExtraWords );
-                DumpControl ( (BYTE *) pIteration->values, "TRNGSCRIPT", "Crypted", nb, hOutFile );
+                DumpControl ( (BYTE *) pIteration->values, "TRNGSCRIPT", "Crypted", nb, hOutFile, 19 );
 
                 //
                 MCMemA memUncrypted ( nb );
@@ -2158,11 +2174,12 @@ BOOL AnalyzeNGScript(char *pBYtes, long offset, FILE *hOutFile )
                 DecriptaControlloScriptDat ( (BYTE * ) pIteration->values, nb, (BYTE * ) memUncrypted.ptr );
 
                 //
-                DumpControl ( (BYTE *) memUncrypted.ptr, "TRNGSCRIPT", "Decrypted", nb, hOutFile );
+                DumpControl ( (BYTE *) memUncrypted.ptr, "TRNGSCRIPT", "Decrypted", nb, hOutFile, 19 );
 
                 //
                 sprintf_s ( szDebugString, sizeof(szDebugString), "; TRNGSCRIPT : ctn_Settings=%04x versus [19]=%02x\n", ctnSettings, memUncrypted.ptr [ 19 ] );
                 OutputTRNGScriptString( szDebugString, hOutFile );
+
                 //  Blind Save
                 if ( ( ctnSettings & SET_BLIND_SAVEGAMES ) != 0 && ( memUncrypted.ptr [ 19 ] & SET_BLIND_SAVEGAMES ) != 0 )
                 {
@@ -2190,7 +2207,7 @@ BOOL AnalyzeNGScript(char *pBYtes, long offset, FILE *hOutFile )
                     MCMemA memCrypted ( nb );
                     DecriptaControlloScriptDat ( (BYTE * ) memUncrypted.ptr, nb, (BYTE * ) memCrypted.ptr );
 
-                    sprintf_s ( szDebugString, sizeof(szDebugString), "; TRNGSCRIPT : To Remove BLIND Savegame\n" );
+                    sprintf_s ( szDebugString, sizeof(szDebugString), "; TRNGSCRIPT : To RemoveSET_BLIND_SAVEGAMES\n" );
                     OutputTRNGScriptString( szDebugString, hOutFile );
 
                     //  Save Blind Values and Offset
@@ -2211,11 +2228,66 @@ BOOL AnalyzeNGScript(char *pBYtes, long offset, FILE *hOutFile )
                     OutputTRNGScriptString( szDebugString, hOutFile );
 
                     //
-                    DumpControl ( (BYTE *) memCrypted.ptr, "TRNGSCRIPT", "ReCrypted", nb, hOutFile );
+                    DumpControl ( (BYTE *) memCrypted.ptr, "TRNGSCRIPT", "ReCrypted", nb, hOutFile, 19 );
                 }
                 else
                 {
                     OutputTRNGScriptString( "; TRNGSCRIPT : Script file is not SET_BLIND_SAVEGAMES\n", hOutFile );
+                }
+
+                //  Soft Settings
+                if ( ( ctnSettings & SET_FORCE_SOFT_FULL_SCREEN ) != 0 && ( memUncrypted.ptr [ 19 ] & SET_FORCE_SOFT_FULL_SCREEN ) != 0 )
+                {
+                    WORD mask               = 0xffff ^ SET_FORCE_SOFT_FULL_SCREEN;
+                    ctnSettings             &= mask;
+                    memUncrypted.ptr [ 19 ] &= mask;
+
+                    //  Compute Checksum
+                    int checkSum = 0;
+                    BYTE *pAddress = (BYTE * ) memUncrypted.ptr;
+                    for ( int i = 1; i < nb; i++ )
+                    {
+                        checkSum += pAddress [ i ];
+                    }
+                    checkSum &= 0xff;
+
+                    memUncrypted.ptr [ 0 ] = checkSum & 0xff;
+
+                    //
+                    pAddress = (BYTE * ) pIteration->values;
+                    DWORD checkSumAddress = CTRXTools::RelativeAddress ( pAddress, pBYtes ) + (DWORD) offset;
+                    DWORD settingAddress = CTRXTools::RelativeAddress ( pAddress + 19, pBYtes ) + (DWORD) offset;
+
+                    //
+                    MCMemA memCrypted ( nb );
+                    DecriptaControlloScriptDat ( (BYTE * ) memUncrypted.ptr, nb, (BYTE * ) memCrypted.ptr );
+
+                    sprintf_s ( szDebugString, sizeof(szDebugString), "; TRNGSCRIPT : To Remove SET_FORCE_SOFT_FULL_SCREEN\n" );
+                    OutputTRNGScriptString( szDebugString, hOutFile );
+
+                    //  Save Soft Values and Offset
+                    SoftValues [ 0 ] = ctnSettings;
+                    SoftValues [ 1 ] = checkSum;
+                    SoftValues [ 2 ] = memCrypted.ptr [ 19 ];
+
+                    SoftOffset [ 0 ] = ctnSettingsAddress;
+                    SoftOffset [ 1 ] = checkSumAddress;
+                    SoftOffset [ 2 ] = settingAddress;
+
+                    //
+                    sprintf_s ( szDebugString, sizeof(szDebugString), 
+                        "; TRNGSCRIPT : ctn_Settings %08lx New=%04x versus [19] %08lx Old=%02x New=%02x CheckSum %08lx Old=%02x New=%02x\n", 
+                        SoftOffset [ 0 ], SoftValues [ 0 ],
+                        SoftOffset [ 2 ], pAddress [ 19 ], SoftValues [ 2 ] & 0xff,
+                        SoftOffset [ 1 ], pAddress [ 0 ], SoftValues [ 1 ] & 0xff );
+                    OutputTRNGScriptString( szDebugString, hOutFile );
+
+                    //
+                    DumpControl ( (BYTE *) memCrypted.ptr, "TRNGSCRIPT", "ReCrypted", nb, hOutFile, 19 );
+                }
+                else
+                {
+                    OutputTRNGScriptString( "; TRNGSCRIPT : Script file is not SET_FORCE_SOFT_FULL_SCREEN\n", hOutFile );
                 }
 
                 break;
@@ -2805,10 +2877,10 @@ BOOL IsScriptBlinded ( const char *pathname )
 /////////////////////////////////////////////////////////////////////////////
 //  Unblind Savegame
 /////////////////////////////////////////////////////////////////////////////
-BOOL UnblindTRXScript ( const char *pathname, const char *pDirectory )
+BOOL UnBlindTRXScript ( const char *pathname, const char *pDirectory )
 {
     //
-    static char szUnblindedScript [ MAX_PATH ];
+    static char szUnBlindedScript [ MAX_PATH ];
 
     BOOL bRead = ReadTRXScript ( pathname, pDirectory, 4, false, NULL );
     if ( ! bRead )
@@ -2833,12 +2905,12 @@ BOOL UnblindTRXScript ( const char *pathname, const char *pDirectory )
     }
 
     //
-    strcpy_s ( szUnblindedScript, sizeof(szUnblindedScript), pathname );
-    RemoveFileType ( szUnblindedScript );
-    strcat_s ( szUnblindedScript, sizeof(szUnblindedScript), ".unblinded.dat" );
+    strcpy_s ( szUnBlindedScript, sizeof(szUnBlindedScript), pathname );
+    RemoveFileType ( szUnBlindedScript );
+    strcat_s ( szUnBlindedScript, sizeof(szUnBlindedScript), ".unblinded.dat" );
 
     //
-    fopen_s ( &hOutFile, szUnblindedScript, "wb" );
+    fopen_s ( &hOutFile, szUnBlindedScript, "wb" );
     if ( hOutFile == NULL )
     {
         CloseOne ( &hInpFile );
@@ -2870,6 +2942,83 @@ BOOL UnblindTRXScript ( const char *pathname, const char *pDirectory )
 
     fseek ( hOutFile, (long) BlindOffset [ 2 ], SEEK_SET );
     fwrite ( &BlindValues [ 2 ], 1, sizeof(BYTE), hOutFile );
+
+    //
+    CloseOne ( &hInpFile );
+    CloseOne ( &hOutFile );
+
+    return TRUE;
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//  Unblind Savegame
+/////////////////////////////////////////////////////////////////////////////
+BOOL UnSoftTRXScript ( const char *pathname, const char *pDirectory )
+{
+    //
+    static char szUnSoftScript [ MAX_PATH ];
+
+    BOOL bRead = ReadTRXScript ( pathname, pDirectory, 4, false, NULL );
+    if ( ! bRead )
+    {
+        return FALSE;
+    }
+
+    if ( SoftOffset [ 0 ] == 0 || SoftOffset [ 1 ] == 0 || SoftOffset [ 2 ] == 0 )
+    {
+        return FALSE;
+    }
+
+    //
+    FILE *hInpFile = NULL;
+    FILE *hOutFile = NULL;
+
+    //
+    fopen_s ( &hInpFile, pathname, "rb" );
+    if ( hInpFile == NULL )
+    {
+        return FALSE;
+    }
+
+    //
+    strcpy_s ( szUnSoftScript, sizeof(szUnSoftScript), pathname );
+    RemoveFileType ( szUnSoftScript );
+    strcat_s ( szUnSoftScript, sizeof(szUnSoftScript), ".unsoft.dat" );
+
+    //
+    fopen_s ( &hOutFile, szUnSoftScript, "wb" );
+    if ( hOutFile == NULL )
+    {
+        CloseOne ( &hInpFile );
+        return FALSE;
+    }
+
+    //  First Copy All
+    BOOL bContinue = TRUE;
+    do
+    {
+        size_t iRead = fread ( SoftBuffer, 1, sizeof(SoftBuffer), hInpFile );
+        if ( iRead > 0 )
+        {
+            fwrite ( SoftBuffer, 1, iRead, hOutFile );
+        }
+        else
+        {
+            bContinue = FALSE;
+        }
+
+    } while ( bContinue );
+
+    //  Then Write Altered Bytes
+    fseek ( hOutFile, (long) SoftOffset [ 0 ], SEEK_SET );
+    fwrite ( &SoftValues [ 0 ], 1, sizeof(BYTE), hOutFile );
+
+    fseek ( hOutFile, (long) SoftOffset [ 1 ], SEEK_SET );
+    fwrite ( &SoftValues [ 1 ], 1, sizeof(BYTE), hOutFile );
+
+    fseek ( hOutFile, (long) SoftOffset [ 2 ], SEEK_SET );
+    fwrite ( &SoftValues [ 2 ], 1, sizeof(BYTE), hOutFile );
 
     //
     CloseOne ( &hInpFile );

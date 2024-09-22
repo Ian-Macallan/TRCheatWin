@@ -807,7 +807,28 @@ BOOL CTRXCHEATWINApp::InitInstance()
                 //
                 strcpy_s ( szDirectory, sizeof(szDirectory), szFullPathname );
                 RemoveFilename ( szDirectory );
-                BOOL bRead = UnblindTRXScript ( szFullPathname, szDirectory );
+                BOOL bRead = UnBlindTRXScript ( szFullPathname, szDirectory );
+            }
+        }
+        //
+        //  Unblind Script
+        else if ( __strnicmp ( pCommandLine, "-unsoft" ) == 0 )
+        {
+            //
+            char *pFilename = strchr ( pCommandLine, ' ' );
+            if ( pFilename != NULL )
+            {
+                pFilename = SkipSpaces ( pFilename );
+                strcpy_s ( szPathname, sizeof(szPathname), pFilename );
+                RemoveEnclosingQuotes ( szPathname, sizeof(szPathname) );
+
+                LPSTR lpFilepart = NULL;
+                GetFullPathName ( szPathname, sizeof(szFullPathname), szFullPathname, &lpFilepart );
+
+                //
+                strcpy_s ( szDirectory, sizeof(szDirectory), szFullPathname );
+                RemoveFilename ( szDirectory );
+                BOOL bRead = UnSoftTRXScript ( szFullPathname, szDirectory );
             }
         }
         //
