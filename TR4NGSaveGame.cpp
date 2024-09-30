@@ -865,9 +865,7 @@ int CTR4NGSaveGame::ReadSavegame ( const char *pFilename )
         m_bBlindedTRNG = IsScriptBlinded ( pFilename ); 
         if ( m_bBlindedTRNG )
         {
-#ifdef _DEBUG
-            CTRXMessageBox::ShowMessage( "Load Savegame Warning", "Warning this file will not be correctly treated");
-#endif
+            CTRXMessageBox::ShowMessage( "Load Savegame Warning", "Warning this file will not be correctly treated\nUse -unblind");
             AddToStatus ( "Load Savegame Warning : Warning this file will not be correctly treated - Use -unblind" );
         }
     }

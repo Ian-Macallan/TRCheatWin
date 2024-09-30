@@ -2177,7 +2177,8 @@ BOOL AnalyzeNGScript(char *pBYtes, long offset, FILE *hOutFile )
                 DumpControl ( (BYTE *) memUncrypted.ptr, "TRNGSCRIPT", "Decrypted", nb, hOutFile, 19 );
 
                 //
-                sprintf_s ( szDebugString, sizeof(szDebugString), "; TRNGSCRIPT : ctn_Settings=%04x versus [19]=%02x\n", ctnSettings, memUncrypted.ptr [ 19 ] );
+                sprintf_s ( szDebugString, sizeof(szDebugString), "; TRNGSCRIPT : 0x%08lx : ctn_Settings=%04x versus [19]=%02x\n", 
+                    ctnSettingsAddress, ctnSettings, memUncrypted.ptr [ 19 ] );
                 OutputTRNGScriptString( szDebugString, hOutFile );
 
                 //  Blind Save
@@ -2207,7 +2208,7 @@ BOOL AnalyzeNGScript(char *pBYtes, long offset, FILE *hOutFile )
                     MCMemA memCrypted ( nb );
                     DecriptaControlloScriptDat ( (BYTE * ) memUncrypted.ptr, nb, (BYTE * ) memCrypted.ptr );
 
-                    sprintf_s ( szDebugString, sizeof(szDebugString), "; TRNGSCRIPT : To RemoveSET_BLIND_SAVEGAMES\n" );
+                    sprintf_s ( szDebugString, sizeof(szDebugString), "; TRNGSCRIPT : To Remove SET_BLIND_SAVEGAMES\n" );
                     OutputTRNGScriptString( szDebugString, hOutFile );
 
                     //  Save Blind Values and Offset
