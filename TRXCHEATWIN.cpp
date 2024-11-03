@@ -229,6 +229,51 @@ void CTRXCHEATWINApp::RemoveEnclosingQuotes ( char *pText, size_t iLength )
 
 //
 /////////////////////////////////////////////////////////////////////////////
+//  Copyt between quotes or end at space or end at NULL
+//  Return the next string pointer
+/////////////////////////////////////////////////////////////////////////////
+char *CTRXCHEATWINApp::CopyBetweenQuotes ( char *pTarget, size_t iLength, char *pSource )
+{
+    char pEnd = ' ';
+
+    if ( *pSource == '\'' )
+    {
+        pEnd = *pSource;
+        pSource++;
+    }
+    else if ( *pSource == '\"' )
+    {
+        pEnd =  *pSource;
+        pSource++;
+    }
+
+    while ( *pSource != '\0' && *pSource != pEnd && iLength > 1 )
+    {
+        *pTarget = *pSource;
+        iLength--;
+        pSource++;
+        pTarget++;
+    }
+
+    if ( *pSource != '\0' )
+    {
+        if ( *pSource == pEnd )
+        {
+            pSource++;
+        }
+    }
+
+    if ( iLength > 1 )
+    {
+        *pTarget = '\0';
+        iLength--;
+    }
+
+    return pSource;
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////
 char *CTRXCHEATWINApp::SkipSpaces ( char *pText )
@@ -495,6 +540,7 @@ BOOL CTRXCHEATWINApp::InitInstance()
     static char szFullPathname [ MAX_PATH ];
     static char szPathname [ MAX_PATH ];
     static char szDirectory [ MAX_PATH ];
+    static char szArguments [ MAX_PATH ];
 
     //
     //  No Sockets
@@ -665,8 +711,7 @@ BOOL CTRXCHEATWINApp::InitInstance()
             if ( pFilename != NULL )
             {
                 pFilename = SkipSpaces ( pFilename );
-                strcpy_s ( szPathname, sizeof(szPathname), pFilename );
-                RemoveEnclosingQuotes ( szPathname, sizeof(szPathname) );
+                CopyBetweenQuotes ( szPathname, sizeof(szPathname), pFilename );
 
                 LPSTR lpFilepart = NULL;
                 GetFullPathName ( szPathname, sizeof(szFullPathname), szFullPathname, &lpFilepart );
@@ -705,8 +750,7 @@ BOOL CTRXCHEATWINApp::InitInstance()
             if ( pFilename != NULL )
             {
                 pFilename = SkipSpaces ( pFilename );
-                strcpy_s ( szPathname, sizeof(szPathname), pFilename );
-                RemoveEnclosingQuotes ( szPathname, sizeof(szPathname) );
+                CopyBetweenQuotes ( szPathname, sizeof(szPathname), pFilename );
 
                 LPSTR lpFilepart = NULL;
                 GetFullPathName ( szPathname, sizeof(szFullPathname), szFullPathname, &lpFilepart );
@@ -729,8 +773,7 @@ BOOL CTRXCHEATWINApp::InitInstance()
             if ( pFilename != NULL )
             {
                 pFilename = SkipSpaces ( pFilename );
-                strcpy_s ( szPathname, sizeof(szPathname), pFilename );
-                RemoveEnclosingQuotes ( szPathname, sizeof(szPathname) );
+                CopyBetweenQuotes ( szPathname, sizeof(szPathname), pFilename );
 
                 LPSTR lpFilepart = NULL;
                 GetFullPathName ( szPathname, sizeof(szFullPathname), szFullPathname, &lpFilepart );
@@ -756,8 +799,7 @@ BOOL CTRXCHEATWINApp::InitInstance()
             if ( pFilename != NULL )
             {
                 pFilename = SkipSpaces ( pFilename );
-                strcpy_s ( szPathname, sizeof(szPathname), pFilename );
-                RemoveEnclosingQuotes ( szPathname, sizeof(szPathname) );
+                CopyBetweenQuotes ( szPathname, sizeof(szPathname), pFilename );
 
                 LPSTR lpFilepart = NULL;
                 GetFullPathName ( szPathname, sizeof(szFullPathname), szFullPathname, &lpFilepart );
@@ -777,8 +819,7 @@ BOOL CTRXCHEATWINApp::InitInstance()
             if ( pFilename != NULL )
             {
                 pFilename = SkipSpaces ( pFilename );
-                strcpy_s ( szPathname, sizeof(szPathname), pFilename );
-                RemoveEnclosingQuotes ( szPathname, sizeof(szPathname) );
+                CopyBetweenQuotes ( szPathname, sizeof(szPathname), pFilename );
 
                 LPSTR lpFilepart = NULL;
                 GetFullPathName ( szPathname, sizeof(szFullPathname), szFullPathname, &lpFilepart );
@@ -798,8 +839,7 @@ BOOL CTRXCHEATWINApp::InitInstance()
             if ( pFilename != NULL )
             {
                 pFilename = SkipSpaces ( pFilename );
-                strcpy_s ( szPathname, sizeof(szPathname), pFilename );
-                RemoveEnclosingQuotes ( szPathname, sizeof(szPathname) );
+                CopyBetweenQuotes ( szPathname, sizeof(szPathname), pFilename );
 
                 LPSTR lpFilepart = NULL;
                 GetFullPathName ( szPathname, sizeof(szFullPathname), szFullPathname, &lpFilepart );
@@ -819,8 +859,7 @@ BOOL CTRXCHEATWINApp::InitInstance()
             if ( pFilename != NULL )
             {
                 pFilename = SkipSpaces ( pFilename );
-                strcpy_s ( szPathname, sizeof(szPathname), pFilename );
-                RemoveEnclosingQuotes ( szPathname, sizeof(szPathname) );
+                CopyBetweenQuotes ( szPathname, sizeof(szPathname), pFilename );
 
                 LPSTR lpFilepart = NULL;
                 GetFullPathName ( szPathname, sizeof(szFullPathname), szFullPathname, &lpFilepart );
@@ -832,6 +871,38 @@ BOOL CTRXCHEATWINApp::InitInstance()
             }
         }
         //
+        //  Remove Some NG Script
+        else if ( __strnicmp ( pCommandLine, "-remove" ) == 0 )
+        {
+            //
+            char *pFilename = strchr ( pCommandLine, ' ' );
+            if ( pFilename != NULL )
+            {
+                pFilename = SkipSpaces ( pFilename );
+                char *pArguments = CopyBetweenQuotes ( szPathname, sizeof(szPathname), pFilename );
+
+                LPSTR lpFilepart = NULL;
+                GetFullPathName ( szPathname, sizeof(szFullPathname), szFullPathname, &lpFilepart );
+
+                //
+                strcpy_s ( szDirectory, sizeof(szDirectory), szFullPathname );
+                RemoveFilename ( szDirectory );
+
+                //
+                pArguments = SkipSpaces ( pArguments );
+                if ( pArguments != NULL )
+                {
+                    pArguments = SkipSpaces ( pArguments );
+
+                    //
+                    strcpy_s ( szArguments, sizeof(szArguments), pArguments );
+
+                    //
+                    BOOL bRead = RemoveTRXScript ( szFullPathname, szDirectory, szArguments );
+                }
+            }
+        }
+        //
         //  Read Script
         else if ( __strnicmp ( pCommandLine, "-ws4" ) == 0 )
         {
@@ -840,8 +911,7 @@ BOOL CTRXCHEATWINApp::InitInstance()
             if ( pFilename != NULL )
             {
                 pFilename = SkipSpaces ( pFilename );
-                strcpy_s ( szPathname, sizeof(szPathname), pFilename );
-                RemoveEnclosingQuotes ( szPathname, sizeof(szPathname) );
+                CopyBetweenQuotes ( szPathname, sizeof(szPathname), pFilename );
 
                 LPSTR lpFilepart = NULL;
                 GetFullPathName ( szPathname, sizeof(szFullPathname), szFullPathname, &lpFilepart );
@@ -861,8 +931,7 @@ BOOL CTRXCHEATWINApp::InitInstance()
             if ( pFilename != NULL )
             {
                 pFilename = SkipSpaces ( pFilename );
-                strcpy_s ( szPathname, sizeof(szPathname), pFilename );
-                RemoveEnclosingQuotes ( szPathname, sizeof(szPathname) );
+                CopyBetweenQuotes ( szPathname, sizeof(szPathname), pFilename );
 
                 LPSTR lpFilepart = NULL;
                 GetFullPathName ( szPathname, sizeof(szFullPathname), szFullPathname, &lpFilepart );
@@ -882,8 +951,7 @@ BOOL CTRXCHEATWINApp::InitInstance()
             if ( pFilename != NULL )
             {
                 pFilename = SkipSpaces ( pFilename );
-                strcpy_s ( szPathname, sizeof(szPathname), pFilename );
-                RemoveEnclosingQuotes ( szPathname, sizeof(szPathname) );
+                CopyBetweenQuotes ( szPathname, sizeof(szPathname), pFilename );
 
                 LPSTR lpFilepart = NULL;
                 GetFullPathName ( szPathname, sizeof(szFullPathname), szFullPathname, &lpFilepart );
@@ -914,8 +982,7 @@ BOOL CTRXCHEATWINApp::InitInstance()
             if ( pFilename != NULL )
             {
                 pFilename = SkipSpaces ( pFilename );
-                strcpy_s ( szPathname, sizeof(szPathname), pFilename );
-                RemoveEnclosingQuotes ( szPathname, sizeof(szPathname) );
+                CopyBetweenQuotes ( szPathname, sizeof(szPathname), pFilename );
 
                 LPSTR lpFilepart = NULL;
                 GetFullPathName ( szPathname, sizeof(szFullPathname), szFullPathname, &lpFilepart );
@@ -961,8 +1028,8 @@ BOOL CTRXCHEATWINApp::InitInstance()
         //
         else if ( __strstri ( pCommandLine, "savegame." ) != NULL )
         {
-            strcpy_s ( szPathname, sizeof(szPathname), pCommandLine );
-            RemoveEnclosingQuotes ( szPathname, sizeof(szPathname) );
+            char *pFilename = SkipSpaces ( pCommandLine );
+            CopyBetweenQuotes ( szPathname, sizeof(szPathname), pFilename );
 
             //
             LPSTR lpFilepart = NULL;

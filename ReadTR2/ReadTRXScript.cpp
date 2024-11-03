@@ -10,6 +10,10 @@
 #define     NB_BUTTONS      29
 #endif
 
+//
+#define     LEN_SCRIPT_BUFFER   (8*1024*1024)
+#define     LEN_SCRIPT_LINE     4096
+
 //  Space to store temporarly Items strings
 #define     MAX_LABEL_STRING    1024
 typedef struct LabelStringStruct
@@ -115,11 +119,28 @@ static CorrespondanceType Correspondance [ 0xD9 - 0x93 + 1 ] =
 //  BYTE Settings
 static WORD BlindValues [ 3 ];
 static DWORD BlindOffset [ 3 ];
-static BYTE BlindBuffer [ 0x8000 ];
+static BYTE BlindBuffer [ LEN_SCRIPT_BUFFER ];
 
+//
 static WORD SoftValues [ 3 ];
 static DWORD SoftOffset [ 3 ];
-static BYTE SoftBuffer [ 0x8000 ];
+static BYTE SoftBuffer [ LEN_SCRIPT_BUFFER ];
+
+//
+static BYTE AlteredBuffer [ LEN_SCRIPT_BUFFER ];
+
+//  Start Of NG Script
+//  NG
+//  The length is at END with NGLE + length
+static DWORD TR4NGOffset;
+static DWORD TR4NGSize;
+
+static char  szArguments [ MAX_PATH ];
+
+#define MAX_ARGS        256
+static int  ArgumentsCount = 0;
+static DWORD  ArgumentsBeg [ MAX_ARGS ];
+static DWORD  ArgumentsEnd [ MAX_ARGS ];
 
 //
 /////////////////////////////////////////////////////////////////////////////
@@ -140,16 +161,16 @@ static xuint16_t LevelpathStringOffsets [ maxLevels ];
 static xuint16_t LevelBlockDataOffsets [ maxLevels ];
 
 //  Length is in scriptLevelHeader.LevelpathStringLen
-static char LevelpathStringBlockData [ 0x7fff ];
+static char LevelpathStringBlockData [ LEN_SCRIPT_BUFFER ];
 
 //  Length is in scriptLevelHeader.LevelBlockLen
-static BYTE LevelBlockData [ 0x7fff ];
+static BYTE LevelBlockData [ LEN_SCRIPT_BUFFER ];
 
 //
 xuint16_t   LanguageBlockLen;
 //  The Size will be LanguageBlockLen
 //  String are zero terminated. The end will be an other zero
-static BYTE LanguageBlockData [ 0x7fff ];
+static BYTE LanguageBlockData [ LEN_SCRIPT_BUFFER ];
 
 static char LanguageFilename [ MAX_PATH ];
 
@@ -1258,8 +1279,8 @@ BOOL ReadTRXLanguage ( const char *pFilename, const char *pDirectory, int iLang,
         ZeroMemory ( StringTable, sizeof(StringTable) );
     }
 
-    MCMemA memLanguageStrings(0x1000 * 0x40);
-    MCMemA memString ( 0x7fff );
+    MCMemA memLanguageStrings(LEN_SCRIPT_BUFFER);
+    MCMemA memString ( LEN_SCRIPT_BUFFER );
 
     static char szLanguage [ MAX_PATH ];
     if ( strlen(pDirectory) > 0 )
@@ -1310,7 +1331,7 @@ BOOL ReadTRXLanguage ( const char *pFilename, const char *pDirectory, int iLang,
     }
 
     //
-    //
+    ZeroMemory ( &langHeader, sizeof(langHeader) );
     size_t uRead = fread ( (char*) &langHeader, 1, sizeof(langHeader), hInpFile );
     if ( uRead != sizeof(langHeader) )
     {
@@ -1338,6 +1359,7 @@ BOOL ReadTRXLanguage ( const char *pFilename, const char *pDirectory, int iLang,
 
     int countStrings = langHeader.NumGenericStrings + langHeader.NumPSXStrings + langHeader.NumPCStrings;
 
+    ZeroMemory ( &StringOffsetTable, sizeof(StringOffsetTable) );
     uRead = fread ( (char*) &StringOffsetTable, 1, sizeof(xuint16_t)*countStrings, hInpFile );
     if ( uRead != sizeof(xuint16_t)*countStrings )
     {
@@ -2049,7 +2071,7 @@ static void DumpControl ( BYTE *pAddress, const char *pTitle, const char *pText,
 /////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////
-BOOL AnalyzeNGScript(char *pBYtes, long offset, FILE *hOutFile )
+BOOL AnalyzeNGScript(char *pBYtes, long offset, FILE *hTxtFile )
 {
     static char szDebugString [ MAX_PATH ];
 
@@ -2061,12 +2083,20 @@ BOOL AnalyzeNGScript(char *pBYtes, long offset, FILE *hOutFile )
     ZeroMemory ( SoftValues, sizeof(SoftValues) );
     ZeroMemory ( SoftOffset, sizeof(SoftOffset) );
 
+    TR4NGOffset = NULL;
+    TR4NGSize   = NULL;
+
     //
     TRNGSPECIFIC *pTRNG = (TRNGSPECIFIC *) pBYtes;
     if ( memcmp ( pTRNG->signature, "NG", sizeof(pTRNG->signature) ) != 0 )
     {
         return FALSE;
     }
+
+    TR4NGOffset = offset;
+
+    sprintf_s ( szDebugString, sizeof(szDebugString), "; TRNGSCRIPT : Start at 0x%08lx\n", TR4NGOffset );
+    OutputTRNGScriptString( szDebugString, hTxtFile );
 
     //
     TRNGITERATION *pIteration = & pTRNG->iteration;
@@ -2084,24 +2114,23 @@ BOOL AnalyzeNGScript(char *pBYtes, long offset, FILE *hOutFile )
     //
     while ( bContinue )
     {
-        length  = pIteration->length;
-        pCodeOp = &pIteration->codeOp;
-        pValues = pIteration->values;
+        length  = pIteration->w2.length;
+        pCodeOp = &pIteration->w2.codeOp;
+        pValues = pIteration->w2.values;
 
         //
-        if ( pIteration->length & 0x8000)
+        if ( pIteration->w2.length & 0x8000)
         {
             // size e' DWORD
-            WORD Word1  = pIteration->length & 0x7fff;
-            length      = Word1 * 65536 + pIteration->codeOp;
+            length      = ( ( (DWORD) (pIteration->w3.lengthHi & 0x7fff) ) << 16 ) + (DWORD) pIteration->w3.lengthLo;
+            pCodeOp     = &pIteration->w3.codeOp;
+            pValues     = pIteration->w3.values;
             ExtraWords  = 3;
-            pCodeOp     = pIteration->values;
-            pValues++;
         }
         else
         {
             // size e' WORD
-            length      = pIteration->length;
+            length      = pIteration->w2.length;
             ExtraWords  = 2;
         }
 
@@ -2113,7 +2142,21 @@ BOOL AnalyzeNGScript(char *pBYtes, long offset, FILE *hOutFile )
             relativeAddress = CTRXTools::RelativeAddress ( pCodeOp, pBYtes ) + (DWORD) offset;
             sprintf_s ( szDebugString, sizeof(szDebugString), "; TRNGSCRIPT : 0x%08lx Length zero - Code is 0x%04x\n",
                 relativeAddress, *pCodeOp );
-            OutputTRNGScriptString( szDebugString, hOutFile );
+            OutputTRNGScriptString( szDebugString, hTxtFile );
+
+            //
+            //  Normally followed by NGLME + length (DWORD)
+            char *pEnd = ( char * ) pValues;
+            if ( memcmp ( pEnd, "NGLE", strlen("NGLE") ) == 0 )
+            {
+                relativeAddress = CTRXTools::RelativeAddress ( pCodeOp, pBYtes ) + (DWORD) offset + sizeof(WORD);
+                TR4NGSize = *( (DWORD *) ( pEnd + strlen("NGLE") ) );
+                sprintf_s ( szDebugString, sizeof(szDebugString), "; TRNGSCRIPT : 0x%08lx NGLE size is 0x%04x\n", 
+                    relativeAddress, TR4NGSize );
+                OutputTRNGScriptString( szDebugString, hTxtFile );
+            }
+
+            //
             bContinue = FALSE;
             break;
         }
@@ -2123,7 +2166,7 @@ BOOL AnalyzeNGScript(char *pBYtes, long offset, FILE *hOutFile )
             relativeAddress = CTRXTools::RelativeAddress ( pCodeOp, pBYtes ) + (DWORD) offset;
             sprintf_s ( szDebugString, sizeof(szDebugString), "; TRNGSCRIPT : 0x%08lx Code is 0x%04x - Length : %ld\n",  
                 relativeAddress, *pCodeOp, length );
-            OutputTRNGScriptString( szDebugString, hOutFile );
+            OutputTRNGScriptString( szDebugString, hTxtFile );
             bContinue = FALSE;
             break;
         }
@@ -2132,7 +2175,7 @@ BOOL AnalyzeNGScript(char *pBYtes, long offset, FILE *hOutFile )
         relativeAddress = CTRXTools::RelativeAddress ( pCodeOp, pBYtes ) + (DWORD) offset;
         sprintf_s ( szDebugString, sizeof(szDebugString), "; TRNGSCRIPT : 0x%08lx Code is 0x%04x (%s) (%ld words %ld bytes)\n", 
             relativeAddress, *pCodeOp, GetTRNGTagLabel(*pCodeOp), length, (long) sizeof(WORD) * ( length - ExtraWords ) );
-        OutputTRNGScriptString( szDebugString, hOutFile );
+        OutputTRNGScriptString( szDebugString, hTxtFile );
 
         //
         //  Trace items
@@ -2142,19 +2185,19 @@ BOOL AnalyzeNGScript(char *pBYtes, long offset, FILE *hOutFile )
 		    case NGTAG_SCRIPT_OPTIONS:
             {
                 int indice = 0;
-                while ( ( pIteration->values[indice] & 0xff ) != 0 )
+                while ( ( pValues[indice] & 0xff ) != 0 )
                 {
-                    relativeAddress = CTRXTools::RelativeAddress ( &pIteration->values[indice], pBYtes ) + (DWORD) offset;
-                    WORD TotWords   = pIteration->values[indice] & 0xff;
-                    WORD TagScript  = pIteration->values[indice]  >> 8;
+                    relativeAddress = CTRXTools::RelativeAddress ( &pValues[indice], pBYtes ) + (DWORD) offset;
+                    WORD TotWords   = pValues[indice] & 0xff;
+                    WORD TagScript  = pValues[indice]  >> 8;
                     indice++;
                     sprintf_s ( szDebugString, sizeof(szDebugString), "; TRNGSCRIPT : 0x%08lx : TotWords : %3u - TagScript : %3u (0x%02x) %s = 0x%04x\n", 
-                        relativeAddress, TotWords, TagScript, TagScript, GetTRNGCntLabel(TagScript), pIteration->values[indice] );
-                    OutputTRNGScriptString( szDebugString, hOutFile );
+                        relativeAddress, TotWords, TagScript, TagScript, GetTRNGCntLabel(TagScript), pValues[indice] );
+                    OutputTRNGScriptString( szDebugString, hTxtFile );
                     if ( TagScript == ctn_Settings )
                     {
-                        ctnSettings         = pIteration->values[indice];
-                        ctnSettingsAddress  = CTRXTools::RelativeAddress ( &pIteration->values[indice], pBYtes ) + (DWORD) offset;
+                        ctnSettings         = pValues[indice];
+                        ctnSettingsAddress  = CTRXTools::RelativeAddress ( &pValues[indice], pBYtes ) + (DWORD) offset;
                     }
                     indice  += TotWords;
                 }
@@ -2165,21 +2208,21 @@ BOOL AnalyzeNGScript(char *pBYtes, long offset, FILE *hOutFile )
 		    case NGTAG_CONTROLLO_OPTIONS:
             {
                 int nb = (int) sizeof(WORD) * ( length - ExtraWords );
-                DumpControl ( (BYTE *) pIteration->values, "TRNGSCRIPT", "Crypted", nb, hOutFile, 19 );
+                DumpControl ( (BYTE *) pValues, "TRNGSCRIPT", "Crypted", nb, hTxtFile, 19 );
 
                 //
                 MCMemA memUncrypted ( nb );
 
                 //
-                DecriptaControlloScriptDat ( (BYTE * ) pIteration->values, nb, (BYTE * ) memUncrypted.ptr );
+                DecriptaControlloScriptDat ( (BYTE * ) pValues, nb, (BYTE * ) memUncrypted.ptr );
 
                 //
-                DumpControl ( (BYTE *) memUncrypted.ptr, "TRNGSCRIPT", "Decrypted", nb, hOutFile, 19 );
+                DumpControl ( (BYTE *) memUncrypted.ptr, "TRNGSCRIPT", "Decrypted", nb, hTxtFile, 19 );
 
                 //
                 sprintf_s ( szDebugString, sizeof(szDebugString), "; TRNGSCRIPT : 0x%08lx : ctn_Settings=%04x versus [19]=%02x\n", 
                     ctnSettingsAddress, ctnSettings, memUncrypted.ptr [ 19 ] );
-                OutputTRNGScriptString( szDebugString, hOutFile );
+                OutputTRNGScriptString( szDebugString, hTxtFile );
 
                 //  Blind Save
                 if ( ( ctnSettings & SET_BLIND_SAVEGAMES ) != 0 && ( memUncrypted.ptr [ 19 ] & SET_BLIND_SAVEGAMES ) != 0 )
@@ -2200,7 +2243,7 @@ BOOL AnalyzeNGScript(char *pBYtes, long offset, FILE *hOutFile )
                     memUncrypted.ptr [ 0 ] = checkSum & 0xff;
 
                     //
-                    pAddress = (BYTE * ) pIteration->values;
+                    pAddress = (BYTE * ) pValues;
                     DWORD checkSumAddress = CTRXTools::RelativeAddress ( pAddress, pBYtes ) + (DWORD) offset;
                     DWORD settingAddress = CTRXTools::RelativeAddress ( pAddress + 19, pBYtes ) + (DWORD) offset;
 
@@ -2209,7 +2252,7 @@ BOOL AnalyzeNGScript(char *pBYtes, long offset, FILE *hOutFile )
                     DecriptaControlloScriptDat ( (BYTE * ) memUncrypted.ptr, nb, (BYTE * ) memCrypted.ptr );
 
                     sprintf_s ( szDebugString, sizeof(szDebugString), "; TRNGSCRIPT : To Remove SET_BLIND_SAVEGAMES\n" );
-                    OutputTRNGScriptString( szDebugString, hOutFile );
+                    OutputTRNGScriptString( szDebugString, hTxtFile );
 
                     //  Save Blind Values and Offset
                     BlindValues [ 0 ] = ctnSettings;
@@ -2226,14 +2269,14 @@ BOOL AnalyzeNGScript(char *pBYtes, long offset, FILE *hOutFile )
                         BlindOffset [ 0 ], BlindValues [ 0 ],
                         BlindOffset [ 2 ], pAddress [ 19 ], BlindValues [ 2 ] & 0xff,
                         BlindOffset [ 1 ], pAddress [ 0 ], BlindValues [ 1 ] & 0xff );
-                    OutputTRNGScriptString( szDebugString, hOutFile );
+                    OutputTRNGScriptString( szDebugString, hTxtFile );
 
                     //
-                    DumpControl ( (BYTE *) memCrypted.ptr, "TRNGSCRIPT", "ReCrypted", nb, hOutFile, 19 );
+                    DumpControl ( (BYTE *) memCrypted.ptr, "TRNGSCRIPT", "ReCrypted", nb, hTxtFile, 19 );
                 }
                 else
                 {
-                    OutputTRNGScriptString( "; TRNGSCRIPT : Script file is not SET_BLIND_SAVEGAMES\n", hOutFile );
+                    OutputTRNGScriptString( "; TRNGSCRIPT : Script file is not SET_BLIND_SAVEGAMES\n", hTxtFile );
                 }
 
                 //  Soft Settings
@@ -2255,7 +2298,7 @@ BOOL AnalyzeNGScript(char *pBYtes, long offset, FILE *hOutFile )
                     memUncrypted.ptr [ 0 ] = checkSum & 0xff;
 
                     //
-                    pAddress = (BYTE * ) pIteration->values;
+                    pAddress = (BYTE * ) pValues;
                     DWORD checkSumAddress = CTRXTools::RelativeAddress ( pAddress, pBYtes ) + (DWORD) offset;
                     DWORD settingAddress = CTRXTools::RelativeAddress ( pAddress + 19, pBYtes ) + (DWORD) offset;
 
@@ -2264,7 +2307,7 @@ BOOL AnalyzeNGScript(char *pBYtes, long offset, FILE *hOutFile )
                     DecriptaControlloScriptDat ( (BYTE * ) memUncrypted.ptr, nb, (BYTE * ) memCrypted.ptr );
 
                     sprintf_s ( szDebugString, sizeof(szDebugString), "; TRNGSCRIPT : To Remove SET_FORCE_SOFT_FULL_SCREEN\n" );
-                    OutputTRNGScriptString( szDebugString, hOutFile );
+                    OutputTRNGScriptString( szDebugString, hTxtFile );
 
                     //  Save Soft Values and Offset
                     SoftValues [ 0 ] = ctnSettings;
@@ -2281,14 +2324,14 @@ BOOL AnalyzeNGScript(char *pBYtes, long offset, FILE *hOutFile )
                         SoftOffset [ 0 ], SoftValues [ 0 ],
                         SoftOffset [ 2 ], pAddress [ 19 ], SoftValues [ 2 ] & 0xff,
                         SoftOffset [ 1 ], pAddress [ 0 ], SoftValues [ 1 ] & 0xff );
-                    OutputTRNGScriptString( szDebugString, hOutFile );
+                    OutputTRNGScriptString( szDebugString, hTxtFile );
 
                     //
-                    DumpControl ( (BYTE *) memCrypted.ptr, "TRNGSCRIPT", "ReCrypted", nb, hOutFile, 19 );
+                    DumpControl ( (BYTE *) memCrypted.ptr, "TRNGSCRIPT", "ReCrypted", nb, hTxtFile, 19 );
                 }
                 else
                 {
-                    OutputTRNGScriptString( "; TRNGSCRIPT : Script file is not SET_FORCE_SOFT_FULL_SCREEN\n", hOutFile );
+                    OutputTRNGScriptString( "; TRNGSCRIPT : Script file is not SET_FORCE_SOFT_FULL_SCREEN\n", hTxtFile );
                 }
 
                 break;
@@ -2305,10 +2348,10 @@ BOOL AnalyzeNGScript(char *pBYtes, long offset, FILE *hOutFile )
             case NGTAG_FLAG_LEVEL_TR4 :
             {
                 int indice = 0;
-                relativeAddress = CTRXTools::RelativeAddress ( &pIteration->values[indice], pBYtes ) + (DWORD) offset;
+                relativeAddress = CTRXTools::RelativeAddress ( &pValues[indice], pBYtes ) + (DWORD) offset;
                 sprintf_s ( szDebugString, sizeof(szDebugString), "; TRNGSCRIPT : 0x%08lx = 0x%04x 0x%04x\n", 
-                    relativeAddress, pIteration->values[indice], pIteration->values[indice + 1] );
-                OutputTRNGScriptString( szDebugString, hOutFile );
+                    relativeAddress, pValues[indice], pValues[indice + 1] );
+                OutputTRNGScriptString( szDebugString, hTxtFile );
                 break;
             }
 
@@ -2322,7 +2365,7 @@ BOOL AnalyzeNGScript(char *pBYtes, long offset, FILE *hOutFile )
                     pSave->VetVersione [ 0 ], pSave->VetVersione [ 1 ],
                     pSave->VetVersione [ 2 ], pSave->VetVersione [ 3 ],
                     pSave->Flags );
-                OutputTRNGScriptString( szDebugString, hOutFile );
+                OutputTRNGScriptString( szDebugString, hTxtFile );
                 break;
             }
 
@@ -2330,24 +2373,24 @@ BOOL AnalyzeNGScript(char *pBYtes, long offset, FILE *hOutFile )
 		    case NGTAG_SCRIPT_LEVEL:
             {
                 int indice = 0;
-                while ( ( pIteration->values[indice] & 0xff ) != 0 )
+                while ( ( pValues[indice] & 0xff ) != 0 )
                 {
-                    relativeAddress = CTRXTools::RelativeAddress ( &pIteration->values[indice], pBYtes ) + (DWORD) offset;
-                    WORD TotWords   = pIteration->values[indice] & 0xff;
-                    WORD TagScript  = pIteration->values[indice]  >> 8;
+                    relativeAddress = CTRXTools::RelativeAddress ( &pValues[indice], pBYtes ) + (DWORD) offset;
+                    WORD TotWords   = pValues[indice] & 0xff;
+                    WORD TagScript  = pValues[indice]  >> 8;
                     indice++;
                     sprintf_s ( szDebugString, sizeof(szDebugString), "; TRNGSCRIPT : 0x%08lx : TotWords : %3u - TagScript : %3u (0x%02x) %s = ", 
                         relativeAddress, TotWords, TagScript, TagScript, GetTRNGCntLabel(TagScript) );
-                    OutputTRNGScriptString( szDebugString, hOutFile );
+                    OutputTRNGScriptString( szDebugString, hTxtFile );
 
                     for ( int i = 0; i < TotWords; i++ )
                     {
                         sprintf_s ( szDebugString, sizeof(szDebugString), "0x%04x, ", 
-                            pIteration->values[indice + i] );
-                        OutputTRNGScriptString( szDebugString, hOutFile );
+                            pValues[indice + i] );
+                        OutputTRNGScriptString( szDebugString, hTxtFile );
                     }
 
-                    OutputTRNGScriptString( "\n", hOutFile );
+                    OutputTRNGScriptString( "\n", hTxtFile );
                     indice  += TotWords;
                 }
                 break;
@@ -2378,6 +2421,9 @@ BOOL ReadTRXScript (    const char *pathname, const char *pDirectory, int versio
     ZeroMemory ( BlindValues, sizeof(BlindValues) );
     ZeroMemory ( BlindOffset, sizeof(BlindOffset) );
 
+    TR4NGOffset = NULL;
+    TR4NGSize   = NULL;
+
     //
     BOOL bResult = FALSE;
 
@@ -2400,7 +2446,7 @@ BOOL ReadTRXScript (    const char *pathname, const char *pDirectory, int versio
 
     //
     FILE *hInpFile = NULL;
-    FILE *hOutFile = NULL;
+    FILE *hTxtFile = NULL;
 
     fopen_s ( &hInpFile, pathname, "rb" );
     if ( hInpFile == NULL )
@@ -2416,8 +2462,8 @@ BOOL ReadTRXScript (    const char *pathname, const char *pDirectory, int versio
     {
         strcpy_s ( szOutputFilename, sizeof(szOutputFilename), pathname );
         strcat_s ( szOutputFilename, sizeof(szOutputFilename), ".TXT" );
-        fopen_s ( &hOutFile, szOutputFilename, "w" );
-        if ( hOutFile == NULL )
+        fopen_s ( &hTxtFile, szOutputFilename, "w" );
+        if ( hTxtFile == NULL )
         {
             Print ( hLogFile, "File Open Error %s\n", szOutputFilename );
             CloseOne ( &hInpFile );
@@ -2441,7 +2487,7 @@ BOOL ReadTRXScript (    const char *pathname, const char *pDirectory, int versio
     uRead = fread ( cryptHeader, 1, sizeof(cryptHeader), hInpFile );
     if ( uRead != sizeof(cryptHeader) )
     {
-        CloseOne ( &hOutFile );
+        CloseOne ( &hTxtFile );
         CloseOne ( &hInpFile );
         CloseOne ( &hLogFile );
         CloseOne ( &hHeaFile );
@@ -2466,7 +2512,7 @@ BOOL ReadTRXScript (    const char *pathname, const char *pDirectory, int versio
             _strnicmp ( (char *) pScriptLevelHeader->PCFMVString, ".", strlen(".") ) == 0               )
     {
         fileIsCrypted   = TRUE;
-        Print ( hOutFile, "; File is Crypted TRNG\n" );
+        Print ( hTxtFile, "; File is Crypted TRNG\n" );
         bGood = true;
     }
 
@@ -2478,7 +2524,7 @@ BOOL ReadTRXScript (    const char *pathname, const char *pDirectory, int versio
         uRead = fread ( (char*) &scriptHeader, 1, sizeof(scriptHeader), hInpFile );
         if ( uRead != sizeof(scriptHeader) )
         {
-            CloseOne ( &hOutFile );
+            CloseOne ( &hTxtFile );
             CloseOne ( &hInpFile );
             CloseOne ( &hLogFile );
             CloseOne ( &hHeaFile );
@@ -2496,53 +2542,53 @@ BOOL ReadTRXScript (    const char *pathname, const char *pDirectory, int versio
     }
 
     //
-    Print ( hOutFile, "[Options]\n" );
-    Print ( hOutFile, "; Options : 0x%x\n", scriptHeader.Options );
+    Print ( hTxtFile, "[Options]\n" );
+    Print ( hTxtFile, "; Options : 0x%x\n", scriptHeader.Options );
     if ( scriptHeader.Options & 0x01 )
     {
-        Print ( hOutFile, "FlyCheat=\tENABLED\n" );
+        Print ( hTxtFile, "FlyCheat=\tENABLED\n" );
     }
     else
     {
-        Print ( hOutFile, "FlyCheat=\tDISABLED\n" );
+        Print ( hTxtFile, "FlyCheat=\tDISABLED\n" );
     }
     if ( scriptHeader.Options & 0x02 )
     {
-        Print ( hOutFile, "LoadSave=\tENABLED\n" );
+        Print ( hTxtFile, "LoadSave=\tENABLED\n" );
     }
     else
     {
-        Print ( hOutFile, "LoadSave=\tDISABLED\n" );
+        Print ( hTxtFile, "LoadSave=\tDISABLED\n" );
     }
     if ( scriptHeader.Options & 0x04 )
     {
-        Print ( hOutFile, "Title=\tENABLED\n" );
+        Print ( hTxtFile, "Title=\tENABLED\n" );
     }
     else
     {
-        Print ( hOutFile, "Title=\tDISABLED\n" );
+        Print ( hTxtFile, "Title=\tDISABLED\n" );
     }
     if ( scriptHeader.Options & 0x08 )
     {
-        Print ( hOutFile, "PlayAnyLevel=\tENABLED\n" );
+        Print ( hTxtFile, "PlayAnyLevel=\tENABLED\n" );
     }
     else
     {
-        Print ( hOutFile, "PlayAnyLevel=\tDISABLED\n" );
+        Print ( hTxtFile, "PlayAnyLevel=\tDISABLED\n" );
     }
     if ( scriptHeader.Options & 0x80 )
     {
-        Print ( hOutFile, "DemoDisc=\tENABLED\n" );
+        Print ( hTxtFile, "DemoDisc=\tENABLED\n" );
     }
     else
     {
-        Print ( hOutFile, "DemoDisc=\tDISABLED\n" );
+        Print ( hTxtFile, "DemoDisc=\tDISABLED\n" );
     }
 
     //
-    Print ( hOutFile, "InputTimeout=\t%d\n", scriptHeader.InputTimeout );
-    Print ( hOutFile, "Security=\t$%02X\n", scriptHeader.Security );
-    Print ( hOutFile, "\n" );
+    Print ( hTxtFile, "InputTimeout=\t%d\n", scriptHeader.InputTimeout );
+    Print ( hTxtFile, "Security=\t$%02X\n", scriptHeader.Security );
+    Print ( hTxtFile, "\n" );
 
     //
     if ( ! fileIsCrypted )
@@ -2551,7 +2597,7 @@ BOOL ReadTRXScript (    const char *pathname, const char *pDirectory, int versio
         uRead = fread ( (char*) &scriptLevelHeader, 1, sizeof(scriptLevelHeader), hInpFile );
         if ( uRead != sizeof(scriptLevelHeader) )
         {
-            CloseOne ( &hOutFile );
+            CloseOne ( &hTxtFile );
             CloseOne ( &hInpFile );
 
             CloseOne ( &hLogFile );
@@ -2570,22 +2616,22 @@ BOOL ReadTRXScript (    const char *pathname, const char *pDirectory, int versio
     }
 
     //
-    Print ( hOutFile, "; NumTotalLevels : %d\n", scriptLevelHeader.NumTotalLevels );
-    Print ( hOutFile, "; NumUniqueLevelPaths : %d\n", scriptLevelHeader.NumUniqueLevelPaths );
-    Print ( hOutFile, "; LevelpathStringLen : %d\n", scriptLevelHeader.LevelpathStringLen );
-    Print ( hOutFile, "; LevelBlockLen : %d\n", scriptLevelHeader.LevelBlockLen );
+    Print ( hTxtFile, "; NumTotalLevels : %d\n", scriptLevelHeader.NumTotalLevels );
+    Print ( hTxtFile, "; NumUniqueLevelPaths : %d\n", scriptLevelHeader.NumUniqueLevelPaths );
+    Print ( hTxtFile, "; LevelpathStringLen : %d\n", scriptLevelHeader.LevelpathStringLen );
+    Print ( hTxtFile, "; LevelBlockLen : %d\n", scriptLevelHeader.LevelBlockLen );
 
-    Print ( hOutFile, "[PSXExtensions]\n" );
-    Print ( hOutFile, "Level=\t%s\n", scriptLevelHeader.PSXLevelString );
-    Print ( hOutFile, "Cut=\t%s\n", scriptLevelHeader.PSXCutString );
-    Print ( hOutFile, "FMV=\t%s\n", scriptLevelHeader.PSXFMVString );
-    Print ( hOutFile, "\n" );
+    Print ( hTxtFile, "[PSXExtensions]\n" );
+    Print ( hTxtFile, "Level=\t%s\n", scriptLevelHeader.PSXLevelString );
+    Print ( hTxtFile, "Cut=\t%s\n", scriptLevelHeader.PSXCutString );
+    Print ( hTxtFile, "FMV=\t%s\n", scriptLevelHeader.PSXFMVString );
+    Print ( hTxtFile, "\n" );
 
-    Print ( hOutFile, "[PCExtensions]\n" );
-    Print ( hOutFile, "Level=\t%s\n", scriptLevelHeader.PCLevelString );
-    Print ( hOutFile, "Cut=\t%s\n", scriptLevelHeader.PCCutString );
-    Print ( hOutFile, "FMV=\t%s\n", scriptLevelHeader.PCFMVString );
-    Print ( hOutFile, "\n" );
+    Print ( hTxtFile, "[PCExtensions]\n" );
+    Print ( hTxtFile, "Level=\t%s\n", scriptLevelHeader.PCLevelString );
+    Print ( hTxtFile, "Cut=\t%s\n", scriptLevelHeader.PCCutString );
+    Print ( hTxtFile, "FMV=\t%s\n", scriptLevelHeader.PCFMVString );
+    Print ( hTxtFile, "\n" );
 
     if (    strlen ( (char *) scriptLevelHeader.PSXLevelString ) > 5    ||
             strlen ( (char *) scriptLevelHeader.PSXCutString ) > 5      ||
@@ -2594,7 +2640,7 @@ BOOL ReadTRXScript (    const char *pathname, const char *pDirectory, int versio
             strlen ( (char *) scriptLevelHeader.PCCutString ) > 5       ||
             strlen ( (char *) scriptLevelHeader.PCFMVString ) > 5           )
     {
-        CloseOne ( &hOutFile );
+        CloseOne ( &hTxtFile );
         CloseOne ( &hInpFile );
 
         CloseOne ( &hLogFile );
@@ -2620,7 +2666,7 @@ BOOL ReadTRXScript (    const char *pathname, const char *pDirectory, int versio
             uRead = fread ( (char*) &LevelpathStringOffsets, 1, sizeof(xuint16_t)*nbLevelPath, hInpFile );
             if ( uRead != sizeof(xuint16_t)*nbLevelPath )
             {
-                CloseOne ( &hOutFile );
+                CloseOne ( &hTxtFile );
                 CloseOne ( &hInpFile );
 
                 CloseOne ( &hLogFile );
@@ -2651,7 +2697,7 @@ BOOL ReadTRXScript (    const char *pathname, const char *pDirectory, int versio
             uRead = fread ( ( (char*) &LevelpathStringOffsets ) + toCopy, 1, toRead, hInpFile );
             if ( uRead != toRead )
             {
-                CloseOne ( &hOutFile );
+                CloseOne ( &hTxtFile );
                 CloseOne ( &hInpFile );
 
                 CloseOne ( &hLogFile );
@@ -2672,7 +2718,7 @@ BOOL ReadTRXScript (    const char *pathname, const char *pDirectory, int versio
         uRead = fread ( LevelpathStringBlockData, 1, scriptLevelHeader.LevelpathStringLen, hInpFile );
         if ( uRead != scriptLevelHeader.LevelpathStringLen )
         {
-            CloseOne ( &hOutFile );
+            CloseOne ( &hTxtFile );
             CloseOne ( &hInpFile );
 
             CloseOne ( &hLogFile );
@@ -2702,7 +2748,7 @@ BOOL ReadTRXScript (    const char *pathname, const char *pDirectory, int versio
             uRead = fread ( LevelpathStringBlockData + toCopy, 1, toRead, hInpFile );
             if ( uRead != toRead )
             {
-                CloseOne ( &hOutFile );
+                CloseOne ( &hTxtFile );
                 CloseOne ( &hInpFile );
 
                 CloseOne ( &hLogFile );
@@ -2718,7 +2764,7 @@ BOOL ReadTRXScript (    const char *pathname, const char *pDirectory, int versio
     //
     for ( int i = 0; i < nbLevelPath; i++ )
     {
-        Print ( hOutFile, "; LevelpathStringOffsets %d : %d %s\n", 
+        Print ( hTxtFile, "; LevelpathStringOffsets %d : %d %s\n", 
                     i, LevelpathStringOffsets [ i ], LevelpathStringBlockData + LevelpathStringOffsets [ i ] );
     }
 
@@ -2732,7 +2778,7 @@ BOOL ReadTRXScript (    const char *pathname, const char *pDirectory, int versio
         uRead = fread ( (char*) &LevelBlockDataOffsets, 1, sizeof(xuint16_t)*nbLevels, hInpFile );
         if ( uRead != sizeof(xuint16_t)*nbLevels )
         {
-            CloseOne ( &hOutFile );
+            CloseOne ( &hTxtFile );
             CloseOne ( &hInpFile );
 
             CloseOne ( &hLogFile );
@@ -2750,7 +2796,7 @@ BOOL ReadTRXScript (    const char *pathname, const char *pDirectory, int versio
     uRead = fread ( LevelBlockData, 1, scriptLevelHeader.LevelBlockLen, hInpFile );
     if ( uRead != scriptLevelHeader.LevelBlockLen )
     {
-        CloseOne ( &hOutFile );
+        CloseOne ( &hTxtFile );
         CloseOne ( &hInpFile );
 
         CloseOne ( &hLogFile );
@@ -2766,11 +2812,11 @@ BOOL ReadTRXScript (    const char *pathname, const char *pDirectory, int versio
     //  Finally Languages
 
     //
-    Print ( hOutFile, "\n" );
-    Print ( hOutFile, "; LANGUAGE.DAT will be treated as LANGUAGE.DAT.TXT by the write procedure\n" );
-    Print ( hOutFile, "; So leave this section as it is\n" );
-    Print ( hOutFile, "; The Index will not be treated : so order them correctly\n" );
-    Print ( hOutFile, "[Language]\n" );
+    Print ( hTxtFile, "\n" );
+    Print ( hTxtFile, "; LANGUAGE.DAT will be treated as LANGUAGE.DAT.TXT by the write procedure\n" );
+    Print ( hTxtFile, "; So leave this section as it is\n" );
+    Print ( hTxtFile, "; The Index will not be treated : so order them correctly\n" );
+    Print ( hTxtFile, "[Language]\n" );
 
     ZeroMemory ( LanguageBlockData, sizeof(LanguageBlockData) );
     long lPos = ftell ( hInpFile );
@@ -2788,19 +2834,23 @@ BOOL ReadTRXScript (    const char *pathname, const char *pDirectory, int versio
 
             //  Offset of pLang from start of file
             offset += lPos;
-            Print ( hOutFile, "; Next Generation File.\n" );
+            Print ( hTxtFile, "; Next Generation File.\n" );
 
             //
-            AnalyzeNGScript(pLang, offset, hOutFile);
+            //  Overrided in AnalyzeNGScript
+            TR4NGOffset = offset;
+
+            //
+            AnalyzeNGScript(pLang, offset, hTxtFile);
 
             break;
         }
-        Print ( hOutFile, "File=\t%d,%s\n", iLang, pLang );
+        Print ( hTxtFile, "File=\t%d,%s\n", iLang, pLang );
         ReadTRXLanguage ( pLang, pDirectory, iLang, version, bWrite );
         pLang += strlen ( pLang ) + 1;
         iLang ++;
     }
-    Print ( hOutFile, "\n" );
+    Print ( hTxtFile, "\n" );
 
     //  Treat After Language has been read
     for ( int i = 0; i < nbLevels; i++ )
@@ -2814,12 +2864,12 @@ BOOL ReadTRXScript (    const char *pathname, const char *pDirectory, int versio
             len = LevelBlockDataOffsets [ i + 1 ];
         }
 
-        Print ( hOutFile, "; LevelBlockDataOffsets %d : %d 0x%x (len=%d)\n", i,
+        Print ( hTxtFile, "; LevelBlockDataOffsets %d : %d 0x%x (len=%d)\n", i,
             LevelBlockDataOffsets [ i ], LevelBlockDataOffsets [ i ], len - LevelBlockDataOffsets [ i ] );
 
         //
         //  Treat Level Data
-        TreatLevelData ( hOutFile, LevelBlockDataOffsets [ i ],  len, i, version, function );
+        TreatLevelData ( hTxtFile, LevelBlockDataOffsets [ i ],  len, i, version, function );
 
         //
         WriteHeader ( version, i, function );
@@ -2829,7 +2879,7 @@ BOOL ReadTRXScript (    const char *pathname, const char *pDirectory, int versio
     WriteHeader ( version, -1, function );
 
     //
-    CloseOne ( &hOutFile );
+    CloseOne ( &hTxtFile );
     CloseOne ( &hInpFile );
 
     CloseOne ( &hLogFile );
@@ -2922,6 +2972,7 @@ BOOL UnBlindTRXScript ( const char *pathname, const char *pDirectory )
     BOOL bContinue = TRUE;
     do
     {
+        ZeroMemory ( BlindBuffer, sizeof(BlindBuffer) );
         size_t iRead = fread ( BlindBuffer, 1, sizeof(BlindBuffer), hInpFile );
         if ( iRead > 0 )
         {
@@ -2999,6 +3050,7 @@ BOOL UnSoftTRXScript ( const char *pathname, const char *pDirectory )
     BOOL bContinue = TRUE;
     do
     {
+        ZeroMemory ( SoftBuffer, sizeof(SoftBuffer) );
         size_t iRead = fread ( SoftBuffer, 1, sizeof(SoftBuffer), hInpFile );
         if ( iRead > 0 )
         {
@@ -3030,6 +3082,392 @@ BOOL UnSoftTRXScript ( const char *pathname, const char *pDirectory )
 
 //
 /////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
+BOOL WriteNGScript(char *pBYtes, long offset, FILE *hOutFile )
+{
+    //
+    TRNGSPECIFIC *pTRNG = (TRNGSPECIFIC *) pBYtes;
+    if ( memcmp ( pTRNG->signature, "NG", sizeof(pTRNG->signature) ) != 0 )
+    {
+        return FALSE;
+    }
+
+    //
+    DWORD dwTotalLength         = 0;
+
+    //
+    fwrite ( "NG", 1, strlen("NG"), hOutFile );
+    dwTotalLength   += (DWORD) strlen("NG");
+
+    //
+    TRNGITERATION *pIteration = & pTRNG->iteration;
+
+    //
+    BOOL bContinue              = TRUE;
+    DWORD length                = 0;
+    WORD *pCodeOp               = NULL;
+    DWORD ExtraWords            = 0;
+    WORD *pValues               = NULL;
+
+    WORD ctnSettings            = 0;
+    DWORD ctnSettingsAddress    = 0;
+
+    //
+    while ( bContinue )
+    {
+        length  = pIteration->w2.length;
+        pCodeOp = &pIteration->w2.codeOp;
+        pValues = pIteration->w2.values;
+
+        //
+        if ( pIteration->w2.length & 0x8000 )
+        {
+            // size e' DWORD
+            length      = ( ( (DWORD) (pIteration->w3.lengthHi & 0x7fff) ) << 16 ) + (DWORD) pIteration->w3.lengthLo;
+            pCodeOp     = &pIteration->w3.codeOp;
+            pValues     = pIteration->w3.values;
+            ExtraWords  = 3;
+        }
+        else
+        {
+            // size e' WORD
+            length      = pIteration->w2.length;
+            ExtraWords  = 2;
+        }
+
+        DWORD relativeAddress = NULL;
+
+        //
+        if ( length == 0 )
+        {
+            relativeAddress = CTRXTools::RelativeAddress ( pCodeOp, pBYtes ) + (DWORD) offset;
+
+            //
+            //  Normally followed by NGLME + length (DWORD)
+            char *pEnd = ( char * ) pValues;
+            if ( memcmp ( pEnd, "NGLE", strlen("NGLE") ) == 0 )
+            {
+                relativeAddress = CTRXTools::RelativeAddress ( pCodeOp, pBYtes ) + (DWORD) offset + sizeof(WORD);
+            }
+
+            //
+            bContinue = FALSE;
+
+            //
+            fwrite ( pIteration, 1, 2 * sizeof(WORD), hOutFile );
+            dwTotalLength   += 2 * sizeof(WORD);
+            break;
+        }
+
+        if ( *pCodeOp < 0x8000 || *pCodeOp > 0x80ff )
+        {
+            relativeAddress = CTRXTools::RelativeAddress ( pCodeOp, pBYtes ) + (DWORD) offset;
+            bContinue = FALSE;
+
+            //
+            fwrite ( pIteration, 1, 2 * sizeof(WORD), hOutFile );
+            dwTotalLength   += 2 * sizeof(WORD);
+
+            break;
+        }
+
+        //
+        //
+        relativeAddress = CTRXTools::RelativeAddress ( pCodeOp, pBYtes ) + (DWORD) offset;
+
+        //
+        //  Trace items
+		switch (*pCodeOp)
+        {
+            //
+		    case NGTAG_SCRIPT_OPTIONS:
+            {
+                fwrite ( pIteration, 1, length * sizeof(WORD), hOutFile );
+                dwTotalLength   += length * sizeof(WORD);
+                break;
+            }
+
+            //
+		    case NGTAG_CONTROLLO_OPTIONS:
+            {
+                fwrite ( pIteration, 1, length * sizeof(WORD), hOutFile );
+                dwTotalLength   += length * sizeof(WORD);
+                break;
+            }
+
+            //
+		    case NGTAG_LEVEL_NAMES:
+            {
+                fwrite ( pIteration, 1, length * sizeof(WORD), hOutFile );
+                dwTotalLength   += length * sizeof(WORD);
+                break;
+            }
+
+            //
+            case NGTAG_FLAG_LEVEL_TR4 :
+            {
+                fwrite ( pIteration, 1, length * sizeof(WORD), hOutFile );
+                dwTotalLength   += length * sizeof(WORD);
+                break;
+            }
+
+            //
+            case NGTAG_TOM_VERSION:
+            case NGTAG_VERSION_HEADER :
+            {
+                fwrite ( pIteration, 1, length * sizeof(WORD), hOutFile );
+                dwTotalLength   += length * sizeof(WORD);
+                break;
+            }
+
+            //
+		    case NGTAG_SCRIPT_LEVEL:
+            {
+                //
+                long IterationPosition = ftell ( hOutFile );
+
+                //  Write Header
+                fwrite ( pIteration, 1, ExtraWords * sizeof(WORD), hOutFile );
+                dwTotalLength   += ExtraWords * sizeof(WORD);
+
+                //
+                DWORD toSubtract = 0;
+
+                //
+                int indice      = 0;
+                while ( ( pValues[indice] & 0xff ) != 0 )
+                {
+                    relativeAddress = CTRXTools::RelativeAddress ( &pValues[indice], pBYtes ) + (DWORD) offset;
+                    BOOL bRemoved = FALSE;
+                    for ( int i = 0; i < ArgumentsCount; i++ )
+                    {
+                        if ( relativeAddress >= ArgumentsBeg [ i ] && relativeAddress <= ArgumentsEnd [ i ] )
+                        {
+                            bRemoved = TRUE;
+                            break;
+                        }
+                    }
+
+                    WORD TotWords   = pValues[indice] & 0xff;
+                    WORD TagScript  = pValues[indice]  >> 8;
+
+                    //  Write Data
+                    if ( ! bRemoved )
+                    {
+
+                        fwrite ( &pValues[indice], 1, ( TotWords + 1 ) * sizeof(WORD), hOutFile );
+                        dwTotalLength   += ( TotWords + 1 ) * sizeof(WORD);
+                    }
+                    else
+                    {
+                        toSubtract  += ( TotWords + 1 );
+                    }
+
+                    indice  += ( TotWords + 1 );
+                }
+
+                //  Write Last Word
+                fwrite ( &pValues[indice], 1, sizeof(WORD), hOutFile );
+                dwTotalLength   += sizeof(WORD);
+
+                //  Alter Tag length
+                if ( toSubtract > 0 )
+                {
+                    long CurrentPosition = ftell ( hOutFile );
+                    if ( ExtraWords == 3 )
+                    {
+                        pIteration->w3.lengthLo     = (length - toSubtract) & 0xffff;
+                        pIteration->w3.lengthHi     = ( (length - toSubtract) >> 16 ) | 0x8000;
+                    }
+                    else // ExtraWords == 2
+                    {
+                        pIteration->w2.length   -= (WORD) toSubtract;
+                    }
+
+                    //  Write Back
+                    fseek ( hOutFile, IterationPosition, SEEK_SET );
+                    fwrite ( pIteration, 1, ExtraWords * sizeof(WORD), hOutFile );
+
+                    //  Re Position
+                    fseek ( hOutFile, CurrentPosition, SEEK_SET );
+                }
+
+                //
+                break;
+            }
+
+            default :
+            {
+                fwrite ( pIteration, 1, length * sizeof(WORD), hOutFile );
+                dwTotalLength   += length * sizeof(WORD);
+            }
+        }
+
+        //
+        pIteration = ( TRNGITERATION * ) ( ( WORD * ) pIteration + length );
+    };
+
+    //
+    dwTotalLength   += (DWORD)strlen("NGLE");
+    dwTotalLength   += sizeof(DWORD);
+
+    fwrite ( "NGLE", 1, strlen("NGLE"), hOutFile );
+
+    fwrite ( &dwTotalLength, 1, sizeof(DWORD), hOutFile );
+
+    return TRUE;
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
+extern BOOL RemoveTRXScript ( const char *pathname, const char *pDirectory, const char *pArguments )
+{
+    static char szAlteredScript [ MAX_PATH ];
+
+    BOOL bRead = ReadTRXScript ( pathname, pDirectory, 4, false, NULL );
+    if ( ! bRead )
+    {
+        return FALSE;
+    }
+
+    if ( TR4NGOffset == NULL || TR4NGSize == 0 )
+    {
+        return FALSE;
+    }
+
+    //
+    char *token         =   NULL;
+    char *next_token    =   NULL;
+
+    ArgumentsCount  = 0;
+    ZeroMemory ( szArguments, sizeof(szArguments) );
+    strcpy_s ( szArguments, sizeof(szArguments), pArguments );
+    token = strtok_s( szArguments, ",", &next_token);
+    while ( token != NULL )
+    {
+        //  Treat One
+        int number;
+        if ( strncmp ( token, "0x", 2 ) == 0 )
+        {
+            sscanf_s ( token + strlen("0x"), "%x", &number );
+        }
+        else if ( strncmp ( token, "x", 1 ) == 0 )
+        {
+            sscanf_s ( token + strlen("x"), "%x", &number );
+        }
+        else
+        {
+            sscanf_s ( token, "%x", &number );
+        }
+
+        //
+        ArgumentsBeg [ ArgumentsCount ] = number;
+        ArgumentsEnd [ ArgumentsCount ] = number;
+
+        char *pSecond = strchr ( token, '-' );
+        if ( pSecond != NULL )
+        {
+            pSecond++;
+
+            if ( strncmp ( pSecond, "0x", 2 ) == 0 )
+            {
+                sscanf_s ( pSecond + strlen("0x"), "%x", &number );
+            }
+            else if ( strncmp ( pSecond, "x", 1 ) == 0 )
+            {
+                sscanf_s ( pSecond + strlen("x"), "%x", &number );
+            }
+            else
+            {
+                sscanf_s ( pSecond, "%x", &number );
+            }
+
+            ArgumentsEnd [ ArgumentsCount ] = number;
+        }
+
+        ArgumentsCount++;
+
+        //  Next
+        token = strtok_s( NULL, ",", &next_token);
+    }
+
+    //
+    FILE *hInpFile = NULL;
+    FILE *hOutFile = NULL;
+
+    //
+    fopen_s ( &hInpFile, pathname, "rb" );
+    if ( hInpFile == NULL )
+    {
+        return FALSE;
+    }
+
+    //
+    strcpy_s ( szAlteredScript, sizeof(szAlteredScript), pathname );
+    RemoveFileType ( szAlteredScript );
+    strcat_s ( szAlteredScript, sizeof(szAlteredScript), ".altered.dat" );
+
+    //
+    fopen_s ( &hOutFile, szAlteredScript, "wb" );
+    if ( hOutFile == NULL )
+    {
+        CloseOne ( &hInpFile );
+        return FALSE;
+    }
+
+    //  First Copy All until offset
+    BOOL bContinue          = TRUE;
+    size_t remainToRead     = TR4NGOffset;
+    do
+    {
+        ZeroMemory ( AlteredBuffer, sizeof(AlteredBuffer) );
+        size_t sizeToRead   = min ( sizeof(AlteredBuffer), remainToRead );
+        size_t iRead = fread ( AlteredBuffer, 1, sizeToRead, hInpFile );
+        if ( iRead > 0 )
+        {
+            fwrite ( AlteredBuffer, 1, iRead, hOutFile );
+            remainToRead -= iRead;
+        }
+        else
+        {
+            bContinue = FALSE;
+        }
+
+        if ( remainToRead == 0 )
+        {
+            bContinue = FALSE;
+        }
+    } while ( bContinue );
+
+    //
+    //  TRNG Pos is in TR4NGOffset
+
+    //
+    //  Copy TRNG Script
+
+    //  Position at 
+    fseek ( hInpFile, 0, SEEK_SET );
+    ZeroMemory ( AlteredBuffer, sizeof(AlteredBuffer) );
+    size_t iRead = fread ( AlteredBuffer, 1, sizeof(AlteredBuffer), hInpFile );
+
+    //
+    //  Currrent Pointer is at AlteredBuffer + TR4NGOffset
+    char *pBuffer = (char*) AlteredBuffer;
+    WriteNGScript( pBuffer + TR4NGOffset, TR4NGOffset, hOutFile );
+
+    //
+    CloseOne ( &hInpFile );
+    CloseOne ( &hOutFile );
+
+    //
+    return FALSE;
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
 //  File will be LANG.DAT : we will search with .TXT extension replacing or added to filename
 /////////////////////////////////////////////////////////////////////////////
 BOOL WriteTRXLanguage ( const char *pFilename, const char *pDirectory, int iLang, int version )
@@ -3037,7 +3475,7 @@ BOOL WriteTRXLanguage ( const char *pFilename, const char *pDirectory, int iLang
     //
     BOOL bResult = FALSE;
 
-    MCMemA memLine(4096);
+    MCMemA memLine(LEN_SCRIPT_LINE);
 
     //
     ZeroMemory ( StringOffsetTable, sizeof(StringOffsetTable) );
@@ -3305,7 +3743,7 @@ BOOL WriteTRXScript ( const char *pathname, const char *pDirectory, int version 
 {
     BOOL bResult = FALSE;
 
-    MCMemA memLine(4096);
+    MCMemA memLine(LEN_SCRIPT_LINE);
 
     //
     SectionEnum currentSection = Section_None;

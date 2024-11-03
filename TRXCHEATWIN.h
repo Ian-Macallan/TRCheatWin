@@ -71,6 +71,7 @@ class CTRXCHEATWINApp : public CWinApp
         static char *RemoveFilename ( char *pText );
         static char *SkipSpaces ( char *pText );
         static void RemoveEnclosingQuotes ( char *pText, size_t iLength );
+        static char *CopyBetweenQuotes ( char *pTarget, size_t iLength, char *pSource );
 
         void ReadIndicators();
         void WriteIndicators();

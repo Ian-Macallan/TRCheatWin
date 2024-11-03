@@ -240,11 +240,13 @@ extern BOOL UnBlindTRXScript ( const char *pathname, const char *pDirectory );
 
 //
 extern BOOL UnSoftTRXScript ( const char *pathname, const char *pDirectory );
+extern BOOL RemoveTRXScript ( const char *pathname, const char *pDirectory, const char *pArguments );
 
 //
 extern BOOL WriteTRXLanguage ( const char *pFilename, const char *pDirectory, int iLang, int version );
 extern BOOL WriteTRXScript ( const char *pathname, const char *pDirectory, int version = 4 );
 
 //
-extern BOOL AnalyzeNGScript(char *pBYtes, long offset, FILE *hOutFile );
+extern BOOL AnalyzeNGScript(char *pBYtes, long offset, FILE *hTxtFile );
+extern BOOL WriteNGScript(char *pBYtes, long offset, FILE *hOutFile );
 extern BOOL ReadTR4ForNG ( const char *pathname );

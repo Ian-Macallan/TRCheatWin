@@ -156,11 +156,21 @@
 
 //  We Will ignore large structure
 //  That are DWORD length
-typedef struct  TRNGIteration
+typedef union  TRNGIteration
 {
-    WORD    length;         //  Length of TR4NGRepeatable in words;
-    WORD    codeOp;         //  0x80xx
-    WORD    values[1];      //  values [ length - 2 * sizeof(WORD) ];
+    struct
+    {
+        WORD    length;         //  Length of TR4NGRepeatable in words;
+        WORD    codeOp;         //  0x80xx
+        WORD    values[1];      //  values [ length - 2 * sizeof(WORD) ];
+    } w2;
+    struct
+    {
+        WORD    lengthHi;       //  Length of TR4NGRepeatable in words;
+        WORD    lengthLo;       //  Length of TR4NGRepeatable in words;
+        WORD    codeOp;         //  0x80xx
+        WORD    values[1];      //  values [ length - 2 * sizeof(WORD) ];
+    } w3;
 } TRNGITERATION;
 
 typedef struct TRNGSpecific

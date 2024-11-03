@@ -411,24 +411,23 @@ BOOL CTR4NGSaveGame::GetTRNGPointers()
     //
     while ( bContinue )
     {
-        length  = pIteration->length;
-        pCodeOp = &pIteration->codeOp;
-        pValues = pIteration->values;
+        length  = pIteration->w2.length;
+        pCodeOp = &pIteration->w2.codeOp;
+        pValues = pIteration->w2.values;
 
         //
-        if ( pIteration->length & 0x8000)
+        if ( pIteration->w2.length & 0x8000)
         {
             // size e' DWORD
-            WORD Word1  = pIteration->length & 0x7fff;
-            length      = Word1 * 65536 + pIteration->codeOp;
+            length      = ( ( (DWORD) (pIteration->w3.lengthHi & 0x7fff) ) << 16 ) + (DWORD) pIteration->w3.lengthLo;
+            pCodeOp     = &pIteration->w3.codeOp;
+            pValues     = pIteration->w3.values;
             ExtraWords  = 3;
-            pCodeOp     = pIteration->values;
-            pValues++;
         }
         else
         {
             // size e' WORD
-            length      = pIteration->length;
+            length      = pIteration->w2.length;
             ExtraWords  = 2;
         }
 
@@ -579,24 +578,23 @@ void CTR4NGSaveGame::TraceTRNG()
     //
     while ( bContinue )
     {
-        length  = pIteration->length;
-        pCodeOp = &pIteration->codeOp;
-        pValues = pIteration->values;
+        length  = pIteration->w2.length;
+        pCodeOp = &pIteration->w2.codeOp;
+        pValues = pIteration->w2.values;
 
         //
-        if ( pIteration->length & 0x8000)
+        if ( pIteration->w2.length & 0x8000)
         {
             // size e' DWORD
-            WORD Word1  = pIteration->length & 0x7fff;
-            length      = Word1 * 65536 + pIteration->codeOp;
+            length      = ( ( (DWORD) (pIteration->w3.lengthHi & 0x7fff) ) << 16 ) + (DWORD) pIteration->w3.lengthLo;
+            pCodeOp     = &pIteration->w3.codeOp;
+            pValues     = pIteration->w3.values;
             ExtraWords  = 3;
-            pCodeOp     = pIteration->values;
-            pValues++;
         }
         else
         {
             // size e' WORD
-            length      = pIteration->length;
+            length      = pIteration->w2.length;
             ExtraWords  = 2;
         }
 

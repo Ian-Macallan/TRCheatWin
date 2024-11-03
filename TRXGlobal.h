@@ -2,7 +2,7 @@
 
 #include <Windows.h>
 
-#define TR_NG_MIN_SIZE              33000
+#define TR_NG_MIN_SIZE              16442
 #define TR_NG_MAX_SIZE              53000
 
 /////////////////////////////////////////////////////////////////////////////
