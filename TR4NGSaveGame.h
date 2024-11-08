@@ -355,6 +355,10 @@ class CTR4NGSaveGame : public CTR45SaveGame
         WORD                *m_pTRNGDamage;
         int                 *m_pKeysToStop;
 
+        //
+        TRNGSaveCoord       *m_pCoordinates;
+        int                 m_iCoordinateIndex;
+
     // Operations
     public:
 
@@ -602,7 +606,7 @@ class CTR4NGSaveGame : public CTR45SaveGame
                                 char *szTitle, size_t iSizeTile );
         void writeSaveGame();
         int ReadSavegame( const char *pFilename );
-        void TraceTRNG();
+        void TraceTRNG( FILE *hLogFile = NULL );
         BOOL GetTRNGPointers();
 
         void RetrieveInformation( const char *pFilename );

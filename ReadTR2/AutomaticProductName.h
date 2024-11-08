@@ -6,22 +6,22 @@
 #ifdef _WIN64
 #ifdef UNICODE
 #define ORIGINAL_FILENAME   L"ReadTR2 (x64 Unicode) (MSVC)\0"
-#define PRODUCT_NAME        L"ReadTR2 - Version 4.5.00.013\r\n(Build 668) - (x64 Unicode) (MSVC)\0"
+#define PRODUCT_NAME        L"ReadTR2 - Version 4.5.01.002\r\n(Build 671) - (x64 Unicode) (MSVC)\0"
 #else
 #define ORIGINAL_FILENAME   "ReadTR2 (x64 MBCS) (MSVC)\0"
-#define PRODUCT_NAME        "ReadTR2 - Version 4.5.00.013\r\n(Build 668) - (x64 MBCS) (MSVC)\0"
+#define PRODUCT_NAME        "ReadTR2 - Version 4.5.01.002\r\n(Build 671) - (x64 MBCS) (MSVC)\0"
 #endif
 #elif _WIN32
 #ifdef UNICODE
 #define ORIGINAL_FILENAME   L"ReadTR2 (x86 Unicode) (MSVC)\0"
-#define PRODUCT_NAME        L"ReadTR2 - Version 4.5.00.013\r\n(Build 668) - (x86 Unicode) (MSVC)\0"
+#define PRODUCT_NAME        L"ReadTR2 - Version 4.5.01.002\r\n(Build 671) - (x86 Unicode) (MSVC)\0"
 #else
 #define ORIGINAL_FILENAME   "ReadTR2 (x86 MBCS) (MSVC)\0"
-#define PRODUCT_NAME        "ReadTR2 - Version 4.5.00.013\r\n(Build 668) - (x86 MBCS) (MSVC)\0"
+#define PRODUCT_NAME        "ReadTR2 - Version 4.5.01.002\r\n(Build 671) - (x86 MBCS) (MSVC)\0"
 #endif
 #else
 #define ORIGINAL_FILENAME   "ReadTR2 (MSVC)\0"
-#define PRODUCT_NAME        "ReadTR2 - Version 4.5.00.013\r\n(Build 668) - (MSVC)\0"
+#define PRODUCT_NAME        "ReadTR2 - Version 4.5.01.002\r\n(Build 671) - (MSVC)\0"
 #endif
 
 #endif

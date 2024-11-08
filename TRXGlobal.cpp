@@ -27,6 +27,10 @@ int             CTRXGlobal::m_TR5IndexMaximum       = TR_SECURE_POSITION;
 
 int             CTRXGlobal::m_TRRIndexMaximum       = TR_SECURE_POSITION;
 
+BOOL            CTRXGlobal::m_bTraceTRNGSavegame    = TRUE;
+BOOL            CTRXGlobal::m_bAlterTRNGPosition    = TRUE;
+BOOL            CTRXGlobal::m_bAlterTRNGIndice      = 84;
+
 //
 /////////////////////////////////////////////////////////////////////////////
 //

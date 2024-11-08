@@ -42,6 +42,10 @@ class CTRXGlobal
         static int          m_TR4NGIndexMaximum;
         static int          m_TR5IndexMaximum;
         static int          m_TRRIndexMaximum;
+
+        static BOOL         m_bTraceTRNGSavegame;
+        static BOOL         m_bAlterTRNGPosition;
+        static BOOL         m_bAlterTRNGIndice;
 };
 
 extern BOOL     g_bPasteEnabled;

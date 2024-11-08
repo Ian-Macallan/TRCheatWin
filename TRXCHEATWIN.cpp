@@ -630,6 +630,10 @@ BOOL CTRXCHEATWINApp::InitInstance()
 
     CTRXGlobal::m_TRRIndexMaximum       = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_TRR_INDEX, -1, TR_SECURE_POSITION );
 
+    CTRXGlobal::m_bTraceTRNGSavegame    = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_TRACE_TRNG_SAVE, -1, FALSE );
+    CTRXGlobal::m_bAlterTRNGPosition    = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_ALTER_TRNG_POS, -1, TRUE );
+    CTRXGlobal::m_bAlterTRNGIndice      = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_ALTER_TRNG_IND, -1, 84 );
+
     //
     //  Module Filename has been read
     //  And Ini file name too

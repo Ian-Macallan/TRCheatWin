@@ -143,6 +143,11 @@ static DWORD  ArgumentsBeg [ MAX_ARGS ];
 static DWORD  ArgumentsEnd [ MAX_ARGS ];
 
 //
+#define MAX_ARGS_TAG        32
+static int  ArgumentsTagCount = 0;
+static WORD  ArgumentsTag [ MAX_ARGS_TAG ];
+
+//
 /////////////////////////////////////////////////////////////////////////////
 //  -script "G:\Program Files (x86)\Core Design\trle\Script\SCRIPT.DAT"
 //
@@ -3240,6 +3245,9 @@ BOOL WriteNGScript(char *pBYtes, long offset, FILE *hOutFile )
                 {
                     relativeAddress = CTRXTools::RelativeAddress ( &pValues[indice], pBYtes ) + (DWORD) offset;
                     BOOL bRemoved = FALSE;
+
+                    //
+                    //  For Address
                     for ( int i = 0; i < ArgumentsCount; i++ )
                     {
                         if ( relativeAddress >= ArgumentsBeg [ i ] && relativeAddress <= ArgumentsEnd [ i ] )
@@ -3251,6 +3259,17 @@ BOOL WriteNGScript(char *pBYtes, long offset, FILE *hOutFile )
 
                     WORD TotWords   = pValues[indice] & 0xff;
                     WORD TagScript  = pValues[indice]  >> 8;
+
+                    //
+                    //  For TAG
+                    for ( int i = 0; i < ArgumentsTagCount; i++ )
+                    {
+                        if ( TagScript == ArgumentsTag [ i ] )
+                        {
+                            bRemoved = TRUE;
+                            break;
+                        }
+                    }
 
                     //  Write Data
                     if ( ! bRemoved )
@@ -3342,53 +3361,84 @@ extern BOOL RemoveTRXScript ( const char *pathname, const char *pDirectory, cons
     char *token         =   NULL;
     char *next_token    =   NULL;
 
-    ArgumentsCount  = 0;
+    //
+    ArgumentsCount      = 0;
+    ArgumentsTagCount   = 0;
+
     ZeroMemory ( szArguments, sizeof(szArguments) );
     strcpy_s ( szArguments, sizeof(szArguments), pArguments );
     token = strtok_s( szArguments, ",", &next_token);
     while ( token != NULL )
     {
         //  Treat One
-        int number;
-        if ( strncmp ( token, "0x", 2 ) == 0 )
-        {
-            sscanf_s ( token + strlen("0x"), "%x", &number );
-        }
-        else if ( strncmp ( token, "x", 1 ) == 0 )
-        {
-            sscanf_s ( token + strlen("x"), "%x", &number );
-        }
-        else
-        {
-            sscanf_s ( token, "%x", &number );
-        }
 
-        //
-        ArgumentsBeg [ ArgumentsCount ] = number;
-        ArgumentsEnd [ ArgumentsCount ] = number;
-
-        char *pSecond = strchr ( token, '-' );
-        if ( pSecond != NULL )
+        //  Tag
+        if ( _strnicmp ( token, "t:", strlen("t:") ) == 0 )
         {
-            pSecond++;
+            token   =   token + strlen("t:");
 
-            if ( strncmp ( pSecond, "0x", 2 ) == 0 )
+            int number;
+            if ( strncmp ( token, "0x", 2 ) == 0 )
             {
-                sscanf_s ( pSecond + strlen("0x"), "%x", &number );
+                sscanf_s ( token + strlen("0x"), "%x", &number );
             }
-            else if ( strncmp ( pSecond, "x", 1 ) == 0 )
+            else if ( strncmp ( token, "x", 1 ) == 0 )
             {
-                sscanf_s ( pSecond + strlen("x"), "%x", &number );
+                sscanf_s ( token + strlen("x"), "%x", &number );
             }
             else
             {
-                sscanf_s ( pSecond, "%x", &number );
+                sscanf_s ( token, "%x", &number );
             }
 
-            ArgumentsEnd [ ArgumentsCount ] = number;
-        }
+            ArgumentsTag [ ArgumentsTagCount ] = number;
 
-        ArgumentsCount++;
+            ArgumentsTagCount++;
+        }
+        //  Or Address
+        else
+        {
+            int number;
+            if ( strncmp ( token, "0x", 2 ) == 0 )
+            {
+                sscanf_s ( token + strlen("0x"), "%x", &number );
+            }
+            else if ( strncmp ( token, "x", 1 ) == 0 )
+            {
+                sscanf_s ( token + strlen("x"), "%x", &number );
+            }
+            else
+            {
+                sscanf_s ( token, "%x", &number );
+            }
+
+            //
+            ArgumentsBeg [ ArgumentsCount ] = number;
+            ArgumentsEnd [ ArgumentsCount ] = number;
+
+            char *pSecond = strchr ( token, '-' );
+            if ( pSecond != NULL )
+            {
+                pSecond++;
+
+                if ( strncmp ( pSecond, "0x", 2 ) == 0 )
+                {
+                    sscanf_s ( pSecond + strlen("0x"), "%x", &number );
+                }
+                else if ( strncmp ( pSecond, "x", 1 ) == 0 )
+                {
+                    sscanf_s ( pSecond + strlen("x"), "%x", &number );
+                }
+                else
+                {
+                    sscanf_s ( pSecond, "%x", &number );
+                }
+
+                ArgumentsEnd [ ArgumentsCount ] = number;
+            }
+
+            ArgumentsCount++;
+        }
 
         //  Next
         token = strtok_s( NULL, ",", &next_token);

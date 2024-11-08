@@ -524,7 +524,7 @@ extern void OutputTRNGSaveString ( const char *pText, FILE *hOutFile = NULL );
 extern void OutputTRNGScriptString ( const char *pText, FILE *hOutFile );
 
 //  Trace or not trace
-#define TRACE_TRNG_SAVE     0
+#define TRACE_TRNG_SAVE     1
 #define TRACE_TRNG_SCRIPT   0
 
 //

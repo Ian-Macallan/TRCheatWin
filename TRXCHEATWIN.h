@@ -144,5 +144,8 @@ class CTRXCHEATWINApp : public CWinApp
 #define PROFILE_TR5_INDEX           "TR5 Index Maximum"
 #define PROFILE_TRR_INDEX           "TRR Index Maximum"
 
+#define PROFILE_TRACE_TRNG_SAVE     "Trace TRNG Savegame"
+#define PROFILE_ALTER_TRNG_POS      "Alter TRNG Position"
+#define PROFILE_ALTER_TRNG_IND      "Alter TRNG Indice"
 
 /////////////////////////////////////////////////////////////////////////////
