@@ -720,8 +720,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 4,5,01,002
- PRODUCTVERSION 4,5,01,002
+ FILEVERSION 4,5,01,007
+ PRODUCTVERSION 4,5,01,007
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x29L
@@ -739,15 +739,15 @@ BEGIN
             VALUE "Comments", "mailto:ian.macallan@gmail.com\0"
             VALUE "CompanyName", "Macallan (c)\0"
             VALUE "FileDescription", "TRCheatWin - (MSVC)\0"
-            VALUE "FileVersion", "4.5.01.002\0"
+            VALUE "FileVersion", "4.5.01.007\0"
             VALUE "InternalName", "https://www.macallan.org/\0"
-            VALUE "LegalCopyright", "Copyright (C) Fri Nov 08 11:32, 2024\0"
+            VALUE "LegalCopyright", "Copyright (C) Sun Nov 17 11:29, 2024\0"
             VALUE "LegalTrademarks", "Author: Ian Macallan\0"
             VALUE "OriginalFilename", ORIGINAL_FILENAME
-            VALUE "PrivateBuild", "1082\0"
+            VALUE "PrivateBuild", "1087\0"
             VALUE "ProductName", PRODUCT_NAME
-            VALUE "ProductVersion", "4.5.01.002\0"
-            VALUE "SpecialBuild", "1082\0"
+            VALUE "ProductVersion", "4.5.01.007\0"
+            VALUE "SpecialBuild", "1087\0"
         END
     END
     BLOCK "VarFileInfo"
@@ -1112,11 +1112,17 @@ BEGIN
     IDS_DARK_THEME          "Dark Theme"
     IDS_SEARCH_POS_EXT      "Search Position Extended"
     IDS_DARK_FULL           "Dark Theme Full"
+    IDS_STRING111           "IDS_"
 END
 
 STRINGTABLE
 BEGIN
     ID_SYSMENU_CLOSE        "Close Application"
+END
+
+STRINGTABLE
+BEGIN
+    IDS_LOG_TRACE           "Log or Trace"
 END
 
 #endif    // Anglais (États-Unis) resources

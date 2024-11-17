@@ -25,7 +25,9 @@
 #define IDS_SEARCH_POS_EXT              109
 #define IDM_ITEMS                       110
 #define IDS_DARK_FULL                   110
+#define IDS_STRING111                   111
 #define IDM_SEARCH_POS_EXT              0x0070
+#define IDS_LOG_TRACE                   112
 #define IDD_TRXDIABLOGBASE              114
 #define IDD_TRXMAPAREAS                 115
 #define IDD_TRXALLMAPS                  116
@@ -62,6 +64,7 @@
 #define IDB_SMALL_MEDIPAK_3             158
 #define IDB_SMALL_MEDIPAK               159
 #define IDB_UZIS_2                      160
+#define IDM_LOG_TRACE                   0x00A0
 #define IDB_UZIS                        161
 #define IDB_MP5                         162
 #define IDD_GUN_PAGE                    166
@@ -697,6 +700,6 @@
 #define _APS_NEXT_RESOURCE_VALUE        308
 #define _APS_NEXT_COMMAND_VALUE         32832
 #define _APS_NEXT_CONTROL_VALUE         1280
-#define _APS_NEXT_SYMED_VALUE           126
+#define _APS_NEXT_SYMED_VALUE           127
 #endif
 #endif

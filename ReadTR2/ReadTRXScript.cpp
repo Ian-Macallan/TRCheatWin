@@ -2020,6 +2020,12 @@ void OutputTRNGSaveString ( const char *pText, FILE *hOutFile )
     OutputDebugString ( pText );
 #endif
 #endif
+
+    //
+    if ( hOutFile != NULL )
+    {
+        fprintf ( hOutFile, "%s", pText );
+    }
 }
 
 //
@@ -2034,6 +2040,7 @@ void OutputTRNGScriptString ( const char *pText, FILE *hOutFile )
 #endif
 #endif
 
+    //
     if ( hOutFile != NULL )
     {
         fprintf_s ( hOutFile, "%s", pText );

@@ -45,7 +45,7 @@ class CTRXGlobal
 
         static BOOL         m_bTraceTRNGSavegame;
         static BOOL         m_bAlterTRNGPosition;
-        static BOOL         m_bAlterTRNGIndice;
+        static BOOL         m_iAlterTRNGIndice;
 };
 
 extern BOOL     g_bPasteEnabled;

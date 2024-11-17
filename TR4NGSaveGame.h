@@ -358,6 +358,7 @@ class CTR4NGSaveGame : public CTR45SaveGame
         //
         TRNGSaveCoord       *m_pCoordinates;
         int                 m_iCoordinateIndex;
+        int                 m_iCoordinateCount;
 
     // Operations
     public:
@@ -635,6 +636,8 @@ class CTR4NGSaveGame : public CTR45SaveGame
             return ".tr4ng.txt";
         }
 
+
+        BOOL SearchTRNGCoordinates ( WORD wRoom, DWORD dwWestToEast, DWORD dwSouthToNorth, DWORD dwVertical );
     // Generated message map functions
 };
 

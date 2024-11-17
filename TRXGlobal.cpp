@@ -29,7 +29,7 @@ int             CTRXGlobal::m_TRRIndexMaximum       = TR_SECURE_POSITION;
 
 BOOL            CTRXGlobal::m_bTraceTRNGSavegame    = TRUE;
 BOOL            CTRXGlobal::m_bAlterTRNGPosition    = TRUE;
-BOOL            CTRXGlobal::m_bAlterTRNGIndice      = 84;
+BOOL            CTRXGlobal::m_iAlterTRNGIndice      = 84;
 
 //
 /////////////////////////////////////////////////////////////////////////////

@@ -216,6 +216,19 @@ BOOL CTRXPropertySheetAll::OnInitDialog()
                     if ( iDarkTheme == 2 ) m_NC.CheckSystemMenuItem( this, FALSE, IDM_DARK_FULL, MF_CHECKED|MF_BYCOMMAND);
                 }
             }
+
+            //
+            {
+                int iLogTrace      = CTRXGlobal::m_bTraceTRNGSavegame;
+
+                CString strLogTrace;
+                strLogTrace.LoadString(IDS_LOG_TRACE);
+                if (!strLogTrace.IsEmpty())
+                {
+                    m_NC.AppendSystemMenu ( this, FALSE, MF_STRING, IDM_LOG_TRACE, strLogTrace);
+                    if ( iLogTrace ) m_NC.CheckSystemMenuItem( this, FALSE, IDM_LOG_TRACE, MF_CHECKED|MF_BYCOMMAND);
+                }
+            }
         }
     }
 
@@ -330,6 +343,21 @@ void CTRXPropertySheetAll::OnSysCommand(UINT nID, LPARAM lParam)
             theApp.WriteProfileInt( PROFILE_SETTING, PROFILE_SEARCH_POS_EXT, 1 );
             CTRXGlobal::m_iSearchPosExt = TRUE;
             m_NC.CheckSystemMenuItem( this, FALSE, IDM_SEARCH_POS_EXT,MF_CHECKED|MF_BYCOMMAND);
+        }
+    }
+    else if ((nID & 0xFFF0) == IDM_LOG_TRACE )
+    {
+        // int iSearchExt = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_SEARCH_POS_EXT, 0 );
+
+        if ( CTRXGlobal::m_bTraceTRNGSavegame )
+        {
+            CTRXGlobal::m_bTraceTRNGSavegame = FALSE;
+            m_NC.CheckSystemMenuItem( this, FALSE, IDM_LOG_TRACE, MF_UNCHECKED|MF_BYCOMMAND);
+        }
+        else
+        {
+            CTRXGlobal::m_bTraceTRNGSavegame = TRUE;
+            m_NC.CheckSystemMenuItem( this, FALSE, IDM_LOG_TRACE,MF_CHECKED|MF_BYCOMMAND);
         }
     }
     else if ( (nID & 0xFFF0) == IDM_DARK_THEME || (nID & 0xFFF0) == IDM_DARK_FULL )

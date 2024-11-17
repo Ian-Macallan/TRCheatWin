@@ -197,16 +197,21 @@ CTR4NGSaveGame::CTR4NGSaveGame()
     ZeroMemory ( m_pBufferBackup, sizeof(TR4NGSAVE) );
 
     //  TRNG Specific
-    m_bBlindedTRNG      = FALSE;
+    m_bBlindedTRNG          = FALSE;
 
-    m_pTRNGHealth       = NULL;
-    m_pTRNGAir          = NULL;
-    m_pTRNGGuns         = NULL;
-    m_pTRNGAmmos        = NULL;
-    m_pTRNGStatusNG     = NULL;
-    m_pTRNGCold         = NULL;
-    m_pTRNGDamage       = NULL;
-    m_pKeysToStop       = NULL;
+    m_pTRNGHealth           = NULL;
+    m_pTRNGAir              = NULL;
+    m_pTRNGGuns             = NULL;
+    m_pTRNGAmmos            = NULL;
+    m_pTRNGStatusNG         = NULL;
+    m_pTRNGCold             = NULL;
+    m_pTRNGDamage           = NULL;
+    m_pKeysToStop           = NULL;
+
+    m_pCoordinates          = NULL;
+    m_iCoordinateIndex      = -1;
+    m_iCoordinateCount      = 0;
+
 }
 
 //
@@ -389,6 +394,7 @@ BOOL CTR4NGSaveGame::GetTRNGPointers()
     m_pKeysToStop           = NULL;
     m_pCoordinates          = NULL;
     m_iCoordinateIndex      = -1;
+    m_iCoordinateCount      = 0;
 
     //
     BYTE *pBuffer = ( ( BYTE * ) m_pBuffer + 0x8000 );
@@ -482,12 +488,13 @@ BOOL CTR4NGSaveGame::GetTRNGPointers()
                 //  Normally the first two words must be 
                 TRNGBASESAVECOORD *pSave    = (TRNGBASESAVECOORD *) pValues;
                 WORD count                  = pSave->TotSalvati;
+                m_iCoordinateCount          = count;
                 WORD *pIndices              = ( WORD *) &pValues [ 1 ];
                 TRNGSaveCoord *pCoord       = ( TRNGSaveCoord * ) &pValues [ count + 1 ];
                 m_pCoordinates              = pCoord;
                 for ( int i = 0; i < count; i++ )
                 {
-                    if ( pIndices [ i ] == CTRXGlobal::m_bAlterTRNGIndice )
+                    if ( pIndices [ i ] == CTRXGlobal::m_iAlterTRNGIndice )
                     {
                         m_iCoordinateIndex  = i;
                     }
@@ -3446,10 +3453,56 @@ const TR_POSITION *CTR4NGSaveGame::GetPosition ( )
         localTRPosition.wOrientation        = pTR4Position->cOrientation << 8;
         localTRPosition.wRoom               = pTR4Position->cRoom;
 
+        SearchTRNGCoordinates ( localTRPosition.wRoom, localTRPosition.dwWestToEast, localTRPosition.dwSouthToNorth, localTRPosition.dwVertical );
+
         return &localTRPosition;
     }
 
     return NULL;
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
+BOOL CTR4NGSaveGame::SearchTRNGCoordinates ( WORD wRoom, DWORD dwWestToEast, DWORD dwSouthToNorth, DWORD dwVertical )
+{
+    m_iCoordinateIndex  = -1;
+
+    if ( m_pCoordinates == NULL )
+    {
+        return FALSE;
+    }
+
+    for ( int i = 0; i < m_iCoordinateCount; i++ )
+    {
+        if ( m_pCoordinates [ i ].Room != wRoom )
+        {
+            continue;
+        }
+
+        if ( m_pCoordinates [ i ].CordX / 2 != dwWestToEast / 2 )
+        {
+            continue;
+        }
+
+        if ( m_pCoordinates [ i ].CordZ / 2 != dwSouthToNorth / 2 )
+        {
+            continue;
+        }
+
+        if ( m_pCoordinates [ i ].CordY / 2 != dwVertical / 2 )
+        {
+            continue;
+        }
+
+        m_iCoordinateIndex = i;
+
+        break;
+
+    }
+
+    return FALSE;
 }
 
 //
@@ -3496,6 +3549,7 @@ BOOL CTR4NGSaveGame::SetPosition ( DWORD dwWestToEast, DWORD dwVertical, DWORD d
 
             if ( CTRXGlobal::m_bAlterTRNGPosition )
             {
+                SearchTRNGCoordinates ( wRoom, dwWestToEast, dwSouthToNorth, dwVertical );
 
                 if ( m_pCoordinates != NULL && m_iCoordinateIndex >= 0 )
                 {

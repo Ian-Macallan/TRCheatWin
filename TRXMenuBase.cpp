@@ -966,6 +966,16 @@ void CTRXMenuBase::AdjustMenu ( CWnd *pWnd, CMenu *pMenu )
         pMenu->CheckMenuItem ( IDM_SEARCH_POS_EXT, bUnChecked );
     }
 
+    if ( CTRXGlobal::m_bTraceTRNGSavegame )
+    {
+        pMenu->CheckMenuItem ( IDM_LOG_TRACE, bChecked );
+    }
+    else
+    {
+        pMenu->CheckMenuItem ( IDM_LOG_TRACE, bUnChecked );
+    }
+
+    //
     UINT bDisabled      = MF_DISABLED | MF_GRAYED | MF_BYCOMMAND;
     UINT bEnabled       = MF_ENABLED | MF_BYCOMMAND;
 

@@ -311,6 +311,31 @@ char *CTRXCHEATWINApp::FindFileName ( char *pText )
 /////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////
+char *CTRXCHEATWINApp::FindFileType ( char *pText )
+{
+    for ( int i = (int) strlen(pText) - 1; i >= 0 ; i-- )
+    {
+        if ( pText [ i ] == '\\' || pText [ i ] == '/' )
+        {
+            return pText + strlen(pText);
+        }
+        if ( pText [ i ] == ':' )
+        {
+            return pText + strlen(pText);
+        }
+        if ( pText [ i ] == '.' )
+        {
+            return pText + i + 1;
+        }
+    }
+
+    return pText;
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
 char *CTRXCHEATWINApp::RemoveFilename ( char *pText )
 {
     //
@@ -355,6 +380,31 @@ const char *CTRXCHEATWINApp::FindFileName ( const char *pText )
             return pText + i + 1;
         }
         if ( pText [ i ] == ':' )
+        {
+            return pText + i + 1;
+        }
+    }
+
+    return pText;
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
+const char *CTRXCHEATWINApp::FindFileType ( const char *pText )
+{
+    for ( int i = (int) strlen(pText) - 1; i >= 0 ; i-- )
+    {
+        if ( pText [ i ] == '\\' || pText [ i ] == '/' )
+        {
+            return pText + strlen(pText);
+        }
+        if ( pText [ i ] == ':' )
+        {
+            return pText + strlen(pText);
+        }
+        if ( pText [ i ] == '.' )
         {
             return pText + i + 1;
         }
@@ -632,7 +682,7 @@ BOOL CTRXCHEATWINApp::InitInstance()
 
     CTRXGlobal::m_bTraceTRNGSavegame    = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_TRACE_TRNG_SAVE, -1, FALSE );
     CTRXGlobal::m_bAlterTRNGPosition    = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_ALTER_TRNG_POS, -1, TRUE );
-    CTRXGlobal::m_bAlterTRNGIndice      = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_ALTER_TRNG_IND, -1, 84 );
+    CTRXGlobal::m_iAlterTRNGIndice      = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_ALTER_TRNG_IND, -1, 84 );
 
     //
     //  Module Filename has been read
@@ -1499,20 +1549,29 @@ void CTRXCHEATWINApp::ReStartProgram(CWnd *pWnd)
 ////////////////////////////////////////////////////////////////////////
 BOOL CTRXCHEATWINApp::AcceptedPattern ( const char *pName )
 {
-    if ( __strstri ( pName, ".bak" ) != NULL )
+    const char *pFileName = FindFileName ( pName );
+
+    if ( __strstri ( pFileName, ".bak" ) != NULL )
     {
         return FALSE;
     }
 
-    if ( __strstri ( pName, ".zip" ) != NULL )
+    if ( __strstri ( pFileName, ".log" ) != NULL )
     {
         return FALSE;
     }
 
-    if ( EndsWithI ( pName, ".sav" ) != NULL )
+    if ( __strstri ( pFileName, ".zip" ) != NULL )
     {
         return FALSE;
     }
+
+    if ( __strstri ( pFileName, ".sav" ) != NULL )
+    {
+        return FALSE;
+    }
+
+    const char *pType = FindFileType ( pName );
 
     return TRUE;
 }
