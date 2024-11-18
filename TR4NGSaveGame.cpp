@@ -492,13 +492,6 @@ BOOL CTR4NGSaveGame::GetTRNGPointers()
                 WORD *pIndices              = ( WORD *) &pValues [ 1 ];
                 TRNGSaveCoord *pCoord       = ( TRNGSaveCoord * ) &pValues [ count + 1 ];
                 m_pCoordinates              = pCoord;
-                for ( int i = 0; i < count; i++ )
-                {
-                    if ( pIndices [ i ] == CTRXGlobal::m_iAlterTRNGIndice )
-                    {
-                        m_iCoordinateIndex  = i;
-                    }
-                }
                 break;
             }
 
@@ -3549,8 +3542,6 @@ BOOL CTR4NGSaveGame::SetPosition ( DWORD dwWestToEast, DWORD dwVertical, DWORD d
 
             if ( CTRXGlobal::m_bAlterTRNGPosition )
             {
-                SearchTRNGCoordinates ( wRoom, dwWestToEast, dwSouthToNorth, dwVertical );
-
                 if ( m_pCoordinates != NULL && m_iCoordinateIndex >= 0 )
                 {
                     m_pCoordinates [ m_iCoordinateIndex ].Room      = wRoom;

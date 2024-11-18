@@ -1,4 +1,4 @@
-4.5.1.7
+4.5.1.8
 TRCheatWin
-TRCheatWin (x86) : Sun Nov 17 11:29 4.5.1.7
-TRCheatWin (x64) : Sun Nov 17 11:29 4.5.1.7
+TRCheatWin (x86) : Mon Nov 18 14:57 4.5.1.8
+TRCheatWin (x64) : Mon Nov 18 14:57 4.5.1.8
