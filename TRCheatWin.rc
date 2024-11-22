@@ -162,7 +162,8 @@ BEGIN
     GROUPBOX        "",IDC_SQUARE,296,206,99,81
     LTEXT           "Area Info",IDC_AREA_INFOS,7,281,284,9
     CONTROL         "Room",IDC_ROOM_SEARCH,"Button",BS_OWNERDRAW | WS_TABSTOP,128,239,28,14
-    EDITTEXT        IDC_STATUS,7,307,505,12,ES_AUTOHSCROLL | ES_READONLY | NOT WS_TABSTOP
+    EDITTEXT        IDC_STATUS,7,307,404,12,ES_AUTOHSCROLL | ES_READONLY | NOT WS_TABSTOP
+    EDITTEXT        IDC_VERSIONS,417,307,95,12,ES_AUTOHSCROLL | ES_READONLY | NOT WS_TABSTOP
 END
 
 IDD_ITEMS DIALOGEX 0, 0, 520, 330
@@ -720,8 +721,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 4,5,01,008
- PRODUCTVERSION 4,5,01,008
+ FILEVERSION 4,5,02,003
+ PRODUCTVERSION 4,5,02,003
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x29L
@@ -739,15 +740,15 @@ BEGIN
             VALUE "Comments", "mailto:ian.macallan@gmail.com\0"
             VALUE "CompanyName", "Macallan (c)\0"
             VALUE "FileDescription", "TRCheatWin - (MSVC)\0"
-            VALUE "FileVersion", "4.5.01.008\0"
+            VALUE "FileVersion", "4.5.02.003\0"
             VALUE "InternalName", "https://www.macallan.org/\0"
-            VALUE "LegalCopyright", "Copyright (C) Mon Nov 18 14:57, 2024\0"
+            VALUE "LegalCopyright", "Copyright (C) Fri Nov 22 13:06, 2024\0"
             VALUE "LegalTrademarks", "Author: Ian Macallan\0"
             VALUE "OriginalFilename", ORIGINAL_FILENAME
-            VALUE "PrivateBuild", "1088\0"
+            VALUE "PrivateBuild", "1093\0"
             VALUE "ProductName", PRODUCT_NAME
-            VALUE "ProductVersion", "4.5.01.008\0"
-            VALUE "SpecialBuild", "1088\0"
+            VALUE "ProductVersion", "4.5.02.003\0"
+            VALUE "SpecialBuild", "1093\0"
         END
     END
     BLOCK "VarFileInfo"

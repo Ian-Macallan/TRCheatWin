@@ -250,3 +250,5 @@ extern BOOL WriteTRXScript ( const char *pathname, const char *pDirectory, int v
 extern BOOL AnalyzeNGScript(char *pBYtes, long offset, FILE *hTxtFile );
 extern BOOL WriteNGScript(char *pBYtes, long offset, FILE *hOutFile );
 extern BOOL ReadTR4ForNG ( const char *pathname );
+
+extern const char *GetTRXScriptVersion ();

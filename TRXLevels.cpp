@@ -214,6 +214,17 @@ BOOL CTRXLevels::OnInitDialog()
                 static char szDirectory [ MAX_PATH ];
                 strcpy_s ( szDirectory, sizeof(szDirectory), m_szSaveName );
                 theApp.RemoveFilename ( szDirectory );
+                strcat_s ( szDirectory, sizeof(szDirectory), "\\SCRIPT.DAT" );
+
+                if ( ! PathFileExists ( szDirectory ) )
+                {
+                    theApp.RemoveFilename ( szDirectory );
+                    theApp.RemoveFilename ( szDirectory );
+                }
+                else
+                {
+                    theApp.RemoveFilename ( szDirectory );
+                }
 
                 for ( int levelIndex = 0; levelIndex < TR4NGMAXLEVEL; levelIndex++ )
                 {

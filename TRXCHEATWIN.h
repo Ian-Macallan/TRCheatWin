@@ -150,5 +150,5 @@ class CTRXCHEATWINApp : public CWinApp
 #define PROFILE_TRACE_TRNG_SAVE     "Trace TRNG Savegame"
 #define PROFILE_ALTER_TRNG_POS      "Alter TRNG Position"
 #define PROFILE_ALTER_TRNG_IND      "Alter TRNG Indice"
-
+#define PROFILE_ALTER_TRNG_AGUNS    "Alter TRNG Ammos and Guns"
 /////////////////////////////////////////////////////////////////////////////

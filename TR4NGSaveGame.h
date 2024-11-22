@@ -360,6 +360,8 @@ class CTR4NGSaveGame : public CTR45SaveGame
         int                 m_iCoordinateIndex;
         int                 m_iCoordinateCount;
 
+        char                m_SaveGameVersion [ 32 ];
+
     // Operations
     public:
 
@@ -432,6 +434,9 @@ class CTR4NGSaveGame : public CTR45SaveGame
 
         char *GetSaveName ();
         int GetSaveNumber ();
+
+        const char *GetScriptVersion();
+        const char *GetSavegameVersion();
 
         int GetCurrentSecrets ( );
         void SetCurrentSecrets ( char *szString, int iX = -1 );

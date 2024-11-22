@@ -319,6 +319,7 @@
 #define IDC_NBSECRETS                   1054
 #define IDC_STATUS                      1055
 #define IDC_NMAP2                       1056
+#define IDC_STATUS2                     1056
 #define IDC_NMAP1                       1057
 #define IDC_LOAD                        1058
 #define IDC_SAVENUMBER                  1059

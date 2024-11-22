@@ -127,6 +127,9 @@ static DWORD SoftOffset [ 3 ];
 static BYTE SoftBuffer [ LEN_SCRIPT_BUFFER ];
 
 //
+static char TRXScriptVersion [ 32 ] = "";
+
+//
 static BYTE AlteredBuffer [ LEN_SCRIPT_BUFFER ];
 
 //  Start Of NG Script
@@ -428,6 +431,15 @@ enum StringsEnum
     StringsPSX,
     StringsPC,
 };
+
+//
+//====================================================================================
+//
+//====================================================================================
+const char *GetTRXScriptVersion ()
+{
+    return TRXScriptVersion;
+}
 
 //
 //====================================================================================
@@ -2095,6 +2107,10 @@ BOOL AnalyzeNGScript(char *pBYtes, long offset, FILE *hTxtFile )
     ZeroMemory ( SoftValues, sizeof(SoftValues) );
     ZeroMemory ( SoftOffset, sizeof(SoftOffset) );
 
+    //
+    ZeroMemory ( TRXScriptVersion, sizeof(TRXScriptVersion) );
+
+    //
     TR4NGOffset = NULL;
     TR4NGSize   = NULL;
 
@@ -2369,6 +2385,18 @@ BOOL AnalyzeNGScript(char *pBYtes, long offset, FILE *hTxtFile )
 
             //
             case NGTAG_TOM_VERSION:
+            {
+                TRNGVERSIONHEADER *pSave = (TRNGVERSIONHEADER *) pValues;
+                sprintf_s ( szDebugString, sizeof(szDebugString), "; TRNGSCRIPT : %d\tVersion : %u.%u.%u.%u - Flag : 0x%04x\n", 
+                    (int) sizeof(TRNGVERSIONHEADER),
+                    pSave->VetVersione [ 0 ], pSave->VetVersione [ 1 ],
+                    pSave->VetVersione [ 2 ], pSave->VetVersione [ 3 ],
+                    pSave->Flags );
+                OutputTRNGScriptString( szDebugString, hTxtFile );
+                break;
+            }
+
+            //
             case NGTAG_VERSION_HEADER :
             {
                 TRNGVERSIONHEADER *pSave = (TRNGVERSIONHEADER *) pValues;
@@ -2378,6 +2406,9 @@ BOOL AnalyzeNGScript(char *pBYtes, long offset, FILE *hTxtFile )
                     pSave->VetVersione [ 2 ], pSave->VetVersione [ 3 ],
                     pSave->Flags );
                 OutputTRNGScriptString( szDebugString, hTxtFile );
+                sprintf_s ( TRXScriptVersion, sizeof(TRXScriptVersion), "%u.%u.%u.%u", 
+                    pSave->VetVersione [ 0 ], pSave->VetVersione [ 1 ],
+                    pSave->VetVersione [ 2 ], pSave->VetVersione [ 3 ] );
                 break;
             }
 

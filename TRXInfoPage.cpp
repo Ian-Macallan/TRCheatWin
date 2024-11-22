@@ -394,6 +394,7 @@ void CTRXInfoPage::DoDataExchange(CDataExchange* pDX)
     DDX_Control(pDX, IDC_LEVELS, m_Levels);
     DDX_Control(pDX, IDC_AREA_INFOS, m_AreaInfos);
     DDX_Control(pDX, IDC_ROOM_SEARCH, m_Room_Search);
+    DDX_Control(pDX, IDC_VERSIONS, m_Versions);
     //}}AFX_DATA_MAP
 }
 
@@ -1072,6 +1073,20 @@ void CTRXInfoPage::DisplayValues()
                 m_Room.EnableWindow ( FALSE );
                 m_Room.ShowWindow ( SW_HIDE );
             }
+        }
+
+        //
+        //  Versions
+        CTR4NGSaveGame *pTR4Savegame = dynamic_cast< CTR4NGSaveGame *>(CTRSaveGame::I());
+        if ( pTR4Savegame )
+        {
+            ZeroMemory ( szString, sizeof(szString) );
+            sprintf_s ( szString, "%s / %s", pTR4Savegame->GetSavegameVersion(), pTR4Savegame->GetScriptVersion() );
+            m_Versions.SetWindowText ( szString );
+        }
+        else
+        {
+            m_Versions.SetWindowText ( "" );
         }
 
         /*
@@ -2237,11 +2252,10 @@ BOOL CTRXInfoPage::  OnToolTipNotify(UINT id, NMHDR *pNMH, LRESULT *pResult)
         {
             if ( hitInfo.iItem >= 0 && hitInfo.iSubItem >= 0 )
             {
-                static char szFilename [ MAX_PATH ] = "";
-                ZeroMemory ( szFilename, sizeof(szFilename) );
-                m_ListCtrl.GetItemText ( hitInfo.iItem, hitInfo.iSubItem, szFilename, sizeof(szFilename) );
-                pText->lpszText = szFilename;
-
+                static char szToolText [ MAX_PATH ] = "";
+                ZeroMemory ( szToolText, sizeof(szToolText) );
+                m_ListCtrl.GetItemText ( hitInfo.iItem, hitInfo.iSubItem, szToolText, sizeof(szToolText) );
+                pText->lpszText = szToolText;
                 return TRUE;
             }
         }
@@ -3098,8 +3112,15 @@ BOOL CTRXInfoPage::SelectCustomFromPath (const char *pathname)
     {
         return TRUE;
     }
+
+    //
     theApp.RemoveFilename ( szFilename );
-    return SelectCustomFromDir ( szFilename );
+    if (  SelectCustomFromDir ( szFilename ) )
+    {
+        return TRUE;
+    }
+
+    return FALSE;
 }
 
 //
@@ -3142,6 +3163,16 @@ void CTRXInfoPage::OnBnClickedSeeCustom()
     strcpy_s ( szScript, sizeof(szScript), szScriptDirectory );
     strcat_s ( szScript, sizeof(szScript), "\\SCRIPT.DAT" );
 
+    //  No SCRIPT.DAT loo^k up
+    if ( ! PathFileExists ( szScript ) )
+    {
+        strcpy_s ( szScriptDirectory, sizeof(szScriptDirectory), szFilename );
+        theApp.RemoveFilename ( szScriptDirectory );
+        theApp.RemoveFilename ( szScriptDirectory );
+        strcpy_s ( szScript, sizeof(szScript), szScriptDirectory );
+        strcat_s ( szScript, sizeof(szScript), "\\SCRIPT.DAT" );
+    }
+
     //
     BOOL bRead = ReadTRXScript ( szScript, szScriptDirectory, tombraider / 10, false, AddToItemsLabels );
 
@@ -3170,7 +3201,7 @@ void CTRXInfoPage::OnBnClickedSeeCustom()
     DisplayValues();
 
     //
-    BOOL bSelected = SelectCustomFromPath ( szFilename );
+    BOOL bSelected = SelectCustomFromPath ( szScript );
     if ( bSelected )
     {
         //  This Will select the good level

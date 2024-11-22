@@ -683,6 +683,7 @@ BOOL CTRXCHEATWINApp::InitInstance()
     CTRXGlobal::m_bTraceTRNGSavegame    = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_TRACE_TRNG_SAVE, -1, FALSE );
     CTRXGlobal::m_bAlterTRNGPosition    = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_ALTER_TRNG_POS, -1, TRUE );
     CTRXGlobal::m_iAlterTRNGIndice      = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_ALTER_TRNG_IND, -1, 84 );
+    CTRXGlobal::m_bAlterTRNGAmmosGuns   = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_ALTER_TRNG_AGUNS, -1, FALSE );
 
     //
     //  Module Filename has been read
