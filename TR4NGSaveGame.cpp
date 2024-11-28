@@ -401,7 +401,14 @@ BOOL CTR4NGSaveGame::GetTRNGPointers()
     ZeroMemory ( m_SaveGameVersion, sizeof(m_SaveGameVersion) );
 
     //
-    BYTE *pBuffer = ( ( BYTE * ) m_pBuffer + 0x8000 );
+    char *pSignature    = (char* ) m_pBuffer + m_iSaveLength - 8;
+    DWORD *pDwLength    = (DWORD *) ( (char* ) m_pBuffer + m_iSaveLength - 4 );
+    DWORD dwLength      = *pDwLength;
+
+    //  This is the real address
+    BYTE *pBuffer = ( ( BYTE * ) m_pBuffer + m_iSaveLength - dwLength );
+    //  But the normal address s
+    // pBuffer = ( BYTE * ) m_pBuffer + 0x8000;
 
     //
     TRNGSPECIFIC *pTRNG = (TRNGSPECIFIC *) pBuffer;
@@ -568,7 +575,17 @@ BOOL CTR4NGSaveGame::GetTRNGPointers()
 /////////////////////////////////////////////////////////////////////////////
 void CTR4NGSaveGame::TraceTRNG(FILE *hLogFile)
 {
-    BYTE *pBuffer = ( ( BYTE * ) m_pBuffer + 0x8000 );
+    //
+    char *pSignature    = (char* ) m_pBuffer + m_iSaveLength - 8;
+    DWORD *pDwLength    = (DWORD *) ( (char* ) m_pBuffer + m_iSaveLength - 4 );
+    DWORD dwLength      = *pDwLength;
+
+    //  This is the real address
+    BYTE *pBuffer = ( ( BYTE * ) m_pBuffer + m_iSaveLength - dwLength );
+    // But the normal address is
+    // pBuffer = ( BYTE * ) m_pBuffer + 0x8000;
+
+    //
     static char szDebugString [ MAX_PATH ];
 
     //
@@ -1075,7 +1092,8 @@ void CTR4NGSaveGame::writeSaveGame()
 
     //  Compute checksum without TR4NG Extension
     unsigned checkSum = m_pBufferBackup->checkSum;
-    for ( int i = 0; i < 0x8000 /* sizeof(TR4NGSAVE) - 1 */; i++ )
+    int offsetCheckSum = offsetof ( TR4NGSAVE, checkSum );
+    for ( int i = 0; i < offsetCheckSum - 1; i++ )
     {
         if ( pBackup [ i ] != pBuffer [ i ] )
         {

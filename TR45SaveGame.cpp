@@ -39,7 +39,7 @@ BOOL CTR45SaveGame::IsTR4HealthValid( WORD health, bool bStrict )
     }
     else
     {
-        if ( health == TR4_ALT_HEALTH || ( health >= TR4_MIN_HEALTH && health <= TR4_MAX_HEALTH ) )
+        if ( health == TR4_SPC_HEALTH || health == TR4_ALT_HEALTH || ( health >= TR4_MIN_HEALTH && health <= TR4_MAX_HEALTH ) )
         {
             return TRUE;
         }
