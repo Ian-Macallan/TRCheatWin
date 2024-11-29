@@ -402,6 +402,11 @@ BOOL CTR4NGSaveGame::GetTRNGPointers()
 
     //
     char *pSignature    = (char* ) m_pBuffer + m_iSaveLength - 8;
+    if ( memcmp ( pSignature, "NGLE", 4 ) != 0  )
+    {
+        return FALSE;
+    }
+
     DWORD *pDwLength    = (DWORD *) ( (char* ) m_pBuffer + m_iSaveLength - 4 );
     DWORD dwLength      = *pDwLength;
 
@@ -577,6 +582,11 @@ void CTR4NGSaveGame::TraceTRNG(FILE *hLogFile)
 {
     //
     char *pSignature    = (char* ) m_pBuffer + m_iSaveLength - 8;
+    if ( memcmp ( pSignature, "NGLE", 4 ) != 0  )
+    {
+        return;
+    }
+
     DWORD *pDwLength    = (DWORD *) ( (char* ) m_pBuffer + m_iSaveLength - 4 );
     DWORD dwLength      = *pDwLength;
 
