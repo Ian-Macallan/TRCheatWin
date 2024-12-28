@@ -243,6 +243,11 @@ extern BOOL UnSoftTRXScript ( const char *pathname, const char *pDirectory );
 extern BOOL RemoveTRXScript ( const char *pathname, const char *pDirectory, const char *pArguments );
 
 //
+//  Alter Pure TR4 Script
+extern BOOL BackupTRXScript ( const char *pathname );
+extern BOOL AlterTRXScript ( const char *pathname, const char *pDirectory, bool bAnyLevel );
+
+//
 extern BOOL WriteTRXLanguage ( const char *pFilename, const char *pDirectory, int iLang, int version );
 extern BOOL WriteTRXScript ( const char *pathname, const char *pDirectory, int version = 4 );
 

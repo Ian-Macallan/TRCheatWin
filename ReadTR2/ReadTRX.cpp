@@ -1086,6 +1086,18 @@ BOOL ExtractData (  FILE *hOutputFile, int game,
                 pLevelData              += sizeof(NumXsectors);
 
                 //
+                if ( NumXsectors <= 0 || NumZsectors <= 0 )
+                { 
+                    bResult = FALSE;
+                    if ( hFile != NULL )
+                    {
+                        CloseOne ( &hFile );
+                    }
+
+                   return bResult;
+                }
+
+                //
                 if ( NumXsectors > 256 || NumZsectors > 256 )
                 {
                     bResult = FALSE;
@@ -1208,17 +1220,6 @@ BOOL ExtractData (  FILE *hOutputFile, int game,
 
                 AlternateGroup          = *( ( xuint8_t *) pLevelData );
                 pLevelData              += sizeof(AlternateGroup);
-
-                if ( NumXsectors <= 0 || NumZsectors <= 0 )
-                {
-                    bResult = FALSE;
-                    if ( hFile != NULL )
-                    {
-                        CloseOne ( &hFile );
-                    }
-
-                    return bResult;
-                }
 
                 //
                 Print ( hOutputFile, "\t{ %d, %ld, %ld, %ld, %ld, \"\", %d, %d, 0x%X, %d, %d, %d, %d, %d, %d, %d, }, // 0x%02X\n",

@@ -958,7 +958,53 @@ BOOL CTRXCHEATWINApp::InitInstance()
             }
         }
         //
-        //  Read Script
+        //  Alter PURE TRNG Script
+        else if ( __strnicmp ( pCommandLine, "-anylevel" ) == 0 )
+        {
+            //
+            char *pFilename = strchr ( pCommandLine, ' ' );
+            if ( pFilename != NULL )
+            {
+                pFilename = SkipSpaces ( pFilename );
+                CopyBetweenQuotes ( szPathname, sizeof(szPathname), pFilename );
+
+                LPSTR lpFilepart = NULL;
+                GetFullPathName ( szPathname, sizeof(szFullPathname), szFullPathname, &lpFilepart );
+
+                //
+                strcpy_s ( szDirectory, sizeof(szDirectory), szFullPathname );
+                RemoveFilename ( szDirectory );
+
+                //
+                //
+                BOOL bAltered = AlterTRXScript ( szFullPathname, szDirectory, true );
+            }
+        }
+        //
+        //  Alter PURE TRNG Script
+        else if ( __strnicmp ( pCommandLine, "-onelevel" ) == 0 )
+        {
+            //
+            char *pFilename = strchr ( pCommandLine, ' ' );
+            if ( pFilename != NULL )
+            {
+                pFilename = SkipSpaces ( pFilename );
+                CopyBetweenQuotes ( szPathname, sizeof(szPathname), pFilename );
+
+                LPSTR lpFilepart = NULL;
+                GetFullPathName ( szPathname, sizeof(szFullPathname), szFullPathname, &lpFilepart );
+
+                //
+                strcpy_s ( szDirectory, sizeof(szDirectory), szFullPathname );
+                RemoveFilename ( szDirectory );
+
+                //
+                //
+                BOOL bAltered = AlterTRXScript ( szFullPathname, szDirectory, false );
+            }
+        }
+        //
+        //  Write Script
         else if ( __strnicmp ( pCommandLine, "-ws4" ) == 0 )
         {
             //

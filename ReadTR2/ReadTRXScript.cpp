@@ -2456,6 +2456,12 @@ BOOL ReadTRXScript (    const char *pathname, const char *pDirectory, int versio
                         FCT_AddToItemsLabels function )
 {
     //
+    if ( ! PathFileExists ( pathname ) )
+    {
+        return FALSE;
+    }
+
+    //
     ZeroMemory ( StringTable, sizeof(StringTable) );
 
     ZeroMemory ( GlobalItemsTable, sizeof(GlobalItemsTable) );
@@ -2988,6 +2994,9 @@ BOOL UnBlindTRXScript ( const char *pathname, const char *pDirectory )
     }
 
     //
+    BackupTRXScript ( pathname );
+
+    //
     FILE *hInpFile = NULL;
     FILE *hOutFile = NULL;
 
@@ -3064,6 +3073,9 @@ BOOL UnSoftTRXScript ( const char *pathname, const char *pDirectory )
     {
         return FALSE;
     }
+
+    //
+    BackupTRXScript ( pathname );
 
     //
     FILE *hInpFile = NULL;
@@ -3380,7 +3392,7 @@ BOOL WriteNGScript(char *pBYtes, long offset, FILE *hOutFile )
 /////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////
-extern BOOL RemoveTRXScript ( const char *pathname, const char *pDirectory, const char *pArguments )
+BOOL RemoveTRXScript ( const char *pathname, const char *pDirectory, const char *pArguments )
 {
     static char szAlteredScript [ MAX_PATH ];
 
@@ -3394,6 +3406,9 @@ extern BOOL RemoveTRXScript ( const char *pathname, const char *pDirectory, cons
     {
         return FALSE;
     }
+
+    //
+    BackupTRXScript ( pathname );
 
     //
     char *token         =   NULL;
@@ -3551,6 +3566,129 @@ extern BOOL RemoveTRXScript ( const char *pathname, const char *pDirectory, cons
     CloseOne ( &hOutFile );
 
     //
+    return FALSE;
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
+BOOL BackupTRXScript ( const char *pathname )
+{
+    if ( ! PathFileExists ( pathname ) )
+    {
+        return FALSE;
+    }
+
+    //
+    static char BackupBuffer [ 4096 ];
+
+    //
+    static char szBackupFilename [ MAX_PATH ];
+    ZeroMemory ( szBackupFilename, sizeof(szBackupFilename) );
+    strcpy_s ( szBackupFilename, sizeof(szBackupFilename), pathname );
+    RemoveFileType ( szBackupFilename );
+    strcat_s ( szBackupFilename, sizeof(szBackupFilename), ".original.dat" );
+
+    //
+    //  Backup script file
+    FILE *hInpFile = NULL;
+    FILE *hOutFile = NULL;
+
+    //
+    if ( ! PathFileExists ( szBackupFilename ) )
+    {
+        //
+        fopen_s ( &hInpFile, pathname, "rb" );
+        if ( hInpFile == NULL )
+        {
+            return FALSE;
+        }
+
+        fopen_s ( &hOutFile, szBackupFilename, "wb" );
+        if ( hOutFile == NULL )
+        {
+            CloseOne ( &hInpFile );
+            return FALSE;
+        }
+
+        //
+        BOOL bContinue          = TRUE;
+        do
+        {
+            size_t iRead = fread ( BackupBuffer, 1, sizeof(BackupBuffer), hInpFile );
+            if ( iRead > 0 )
+            {
+                size_t iWrite = fwrite ( BackupBuffer, 1, iRead, hOutFile );
+            }
+            else
+            {
+                bContinue = FALSE;
+            }
+        }
+        while ( bContinue );
+
+        //
+        CloseOne ( &hInpFile );
+        CloseOne ( &hOutFile );
+
+        return TRUE;
+    }
+
+    return FALSE;
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
+BOOL AlterTRXScript ( const char *pathname, const char *pDirectory, bool bAnyLevel )
+{
+    if ( ! PathFileExists ( pathname ) )
+    {
+        return FALSE;
+    }
+
+    //
+    BOOL bRead = ReadTRXScript ( pathname, pDirectory );
+    if ( ! bRead )
+    {
+        return FALSE;
+    }
+
+    //  Do Not ALter TRNG Script
+    if ( TR4NGOffset != NULL )
+    {
+        return FALSE;
+    }
+    
+    //
+    BackupTRXScript ( pathname );
+
+    //
+    //  Backup script file
+    FILE *hInpFile = NULL;
+
+    //
+    //  Alter script file : first byte
+    fopen_s ( &hInpFile, pathname, "rb+" );
+    if ( hInpFile == NULL )
+    {
+        return FALSE;
+    }
+    size_t iRead = fread ( AlteredBuffer, 1, sizeof(AlteredBuffer), hInpFile );
+    if ( bAnyLevel )
+    {
+        AlteredBuffer [ 0 ] |= 0x08;
+    }
+    else
+    {
+        AlteredBuffer [ 0 ] &= ( 0xff ^ 0x08 );
+    }
+    fseek ( hInpFile, 0, SEEK_SET );
+    size_t iWrite = fwrite ( AlteredBuffer, 1, iRead, hInpFile );
+    CloseOne ( &hInpFile );
+
     return FALSE;
 }
 
