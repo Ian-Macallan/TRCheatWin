@@ -846,8 +846,8 @@ int CTR4NGSaveGame::ReadSavegame ( const char *pFilename )
     memset ( ( char * ) m_pBuffer, 0, sizeof ( TR4NGSAVE ) );
 
     /*
-        *      Read file.
-        */
+     *      Read file.
+     */
     hFile = NULL;
     fopen_s ( &hFile,  m_Filename, "rb" );
     if ( hFile == NULL )
@@ -859,12 +859,12 @@ int CTR4NGSaveGame::ReadSavegame ( const char *pFilename )
     /*
      *      Get Buffer.
      */
-    if ( m_iSaveLength < CTRXGlobal::m_iMinNGSize || m_iSaveLength > CTRXGlobal::m_iMaxNGSize )
+    if ( CTRXGlobal::m_ForceSaveGame == FORCE_NONE && ( m_iSaveLength < CTRXGlobal::m_iMinNGSize || m_iSaveLength > CTRXGlobal::m_iMaxNGSize ) )
     {
         AddFormatToStatus ( "Internal error in length %d versus %d = %d.",
             (int) sizeof ( TR4NGSAVE ), m_iSaveLength,
             m_iSaveLength - (int) sizeof ( TR4NGSAVE ) );
-        fclose ( hFile );
+        CloseOneFile ( &hFile );
         return 0;
     }
 
@@ -874,7 +874,7 @@ int CTR4NGSaveGame::ReadSavegame ( const char *pFilename )
     if ( uLenBuffer != m_iSaveLength )
     {
         AddToStatus ( "File size is not correct." );
-        fclose ( hFile );
+        CloseOneFile ( &hFile );
         return 0;
     }
 
@@ -885,7 +885,7 @@ int CTR4NGSaveGame::ReadSavegame ( const char *pFilename )
     if ( memcmp ( pSignature, "NGLE", 4 ) != 0  )
     {
         AddToStatus ( "File Signature is not correct." );
-        fclose ( hFile );
+        CloseOneFile ( &hFile );
         return 0;
     }
 
@@ -896,7 +896,7 @@ int CTR4NGSaveGame::ReadSavegame ( const char *pFilename )
         fseek ( hFile, 0, SEEK_END );
         long lEnd = ftell ( hFile );
         AddFormatToStatus ( "File size is too large %ld til %ld = %ld.", lPos, lEnd, lEnd - lPos );
-        fclose ( hFile );
+        CloseOneFile ( &hFile );
         return 0;
     }
 
@@ -905,7 +905,7 @@ int CTR4NGSaveGame::ReadSavegame ( const char *pFilename )
     /*
      *      Close file.
      */
-    fclose ( hFile );
+    CloseOneFile ( &hFile );
 
     //
     //  Test Flag 
@@ -1004,7 +1004,7 @@ int CTR4NGSaveGame::ReadSavegame ( const char *pFilename )
 
     if ( hLogFile != NULL )
     {
-        fclose ( hLogFile );
+        CloseOneFile ( &hLogFile );
         hLogFile    = NULL;
     }
 
@@ -1133,12 +1133,12 @@ void CTR4NGSaveGame::writeSaveGame()
     /*
      *      Get Buffer.
      */
-    if ( m_iSaveLength < CTRXGlobal::m_iMinNGSize || m_iSaveLength > CTRXGlobal::m_iMaxNGSize )
+    if ( CTRXGlobal::m_ForceSaveGame == FORCE_NONE && ( m_iSaveLength < CTRXGlobal::m_iMinNGSize || m_iSaveLength > CTRXGlobal::m_iMaxNGSize ) )
     {
         AddFormatToStatus ( "Internal error in length %d versus %d = %d.",
             (int) sizeof ( TR4NGSAVE ), m_iSaveLength,
             m_iSaveLength - (int) sizeof ( TR4NGSAVE ) );
-        fclose ( hFile );
+        CloseOneFile ( &hFile );
         return;
     }
 
@@ -1146,14 +1146,14 @@ void CTR4NGSaveGame::writeSaveGame()
     if ( uLenBuffer != m_iSaveLength )
     {
         AddToStatus ( "File size is not correct." );
-        fclose ( hFile );
+        CloseOneFile ( &hFile );
         return;
     }
 
     /*
      *      Close file.
      */
-    fclose ( hFile );
+    CloseOneFile ( &hFile );
 
     //
     memcpy ( m_pBufferBackup,  m_pBuffer, m_iSaveLength );

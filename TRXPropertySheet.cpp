@@ -149,6 +149,7 @@ void CTRXPropertySheet::SetContextMenu ( CTRXMenuBase *pMenu )
 /////////////////////////////////////////////////////////////////////////////
 void CTRXPropertySheet::SetTheActivePage ( PROPERTY_PAGE page )
 {
+
     switch ( page )
     {
         case PAGE_REMASTERED :

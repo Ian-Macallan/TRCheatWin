@@ -257,3 +257,5 @@ extern BOOL WriteNGScript(char *pBYtes, long offset, FILE *hOutFile );
 extern BOOL ReadTR4ForNG ( const char *pathname );
 
 extern const char *GetTRXScriptVersion ();
+
+extern void CloseOneFile ( FILE **phFile );

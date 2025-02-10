@@ -22,6 +22,7 @@
 #include "TR4SaveGame.h"
 #include "TR4NGSaveGame.h"
 #include "TR5SaveGame.h"
+#include "ReadTR2\ReadTRXScript.h"
 
 #include "AutomaticVersionHeader.h"
 

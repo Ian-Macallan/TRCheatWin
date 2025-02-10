@@ -1608,7 +1608,7 @@ BOOL CTR9SaveGame::ReadFile ( const char *pFilename )
     if ( m_hFile != NULL )
     {
         m_iSaveLength = (int) fread ( m_pBuffer, 1, LEN_BUFFER, m_hFile );
-        fclose ( m_hFile );
+        CloseOneFile ( &m_hFile );
         m_hFile = NULL;
 
         //
@@ -1677,7 +1677,7 @@ BOOL CTR9SaveGame::writeFile ( const char *pFilename )
         if ( m_hFile != NULL )
         {
             size_t written = fwrite ( m_pBuffer, 1, m_iSaveLength, m_hFile );
-            fclose ( m_hFile );
+            CloseOneFile ( &m_hFile );
             if ( written == m_iSaveLength )
             {
                 memcpy ( m_pBufferBackup, m_pBuffer, m_iSaveLength );
@@ -6634,7 +6634,7 @@ BOOL CTR9SaveGame::Export ( const char *pFilename, int tombraider, int block )
                 break;
             }
         }
-        fclose ( hFile );
+        CloseOneFile ( &hFile );
 
         return bResult;
     }
@@ -6696,7 +6696,7 @@ BOOL CTR9SaveGame::Import( const char *pFilename, int tombraider, int block )
                 break;
             }
         }
-        fclose ( hFile );
+        CloseOneFile ( &hFile );
 
         return bResult;
     }
@@ -9604,7 +9604,7 @@ int CTR9SaveGame::ReadIndicators(TRR_INDICATORS *IndicatorsTRTable, const int ma
     }
 
     //
-    fclose ( hFile );
+    CloseOneFile ( &hFile );
 
     return count;
 }
@@ -9657,7 +9657,7 @@ BOOL CTR9SaveGame::WriteIndicators(TRR_INDICATORS *IndicatorsTRTable, const int 
     }
     while ( index < maxTable );
 
-    fclose ( hFile );
+    CloseOneFile ( &hFile );
 
     return TRUE;
 }

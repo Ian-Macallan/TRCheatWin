@@ -144,7 +144,7 @@ CTR5SaveGame::CTR5SaveGame()
 
     m_iVersion          = 50;
 
-    m_iSaveLength       = TR5LEVELSIZE;
+    m_iSaveLength       = TR5LEVELMAXSIZE;
     m_iMaxLevel         = TR5MAXLEVEL;
 
     iMaskPistol         = TR50_GUN_SET1 | TR50_GUN_SET8;        //  Pistol
@@ -229,12 +229,12 @@ int CTR5SaveGame::ReadSavegame ( const char *pFilename )
     /*
      *      Get Buffer.
      */
-    if ( m_iSaveLength != TR5LEVELSIZE )
+    if ( CTRXGlobal::m_ForceSaveGame == FORCE_NONE && m_iSaveLength != TR5LEVELMAXSIZE )
     {
         AddFormatToStatus ( "Internal error in length %d versus %d = %d.",
             (int) sizeof ( TR5SAVE ), m_iSaveLength,
             m_iSaveLength - (int) sizeof ( TR5SAVE ) );
-        fclose ( hFile );
+        CloseOneFile ( &hFile );
         return 0;
     }
 
@@ -243,7 +243,7 @@ int CTR5SaveGame::ReadSavegame ( const char *pFilename )
     if ( uLenBuffer != m_iSaveLength )
     {
         AddToStatus ( "File size is not correct." );
-        fclose ( hFile );
+        CloseOneFile ( &hFile );
         return 0;
     }
 
@@ -253,7 +253,7 @@ int CTR5SaveGame::ReadSavegame ( const char *pFilename )
         fseek ( hFile, 0, SEEK_END );
         long lEnd = ftell ( hFile );
         AddFormatToStatus ( "File size is too large %ld til %ld = %ld.", lPos, lEnd, lEnd - lPos );
-        fclose ( hFile );
+        CloseOneFile ( &hFile );
         return 0;
     }
 
@@ -262,7 +262,7 @@ int CTR5SaveGame::ReadSavegame ( const char *pFilename )
     /*
      *      Close file.
      */
-    fclose ( hFile );
+    CloseOneFile ( &hFile );
 
         return 1;
 }
@@ -325,12 +325,12 @@ void CTR5SaveGame::writeSaveGame()
     /*
      *      Get Buffer.
      */
-    if ( m_iSaveLength != TR5LEVELSIZE )
+    if ( CTRXGlobal::m_ForceSaveGame == FORCE_NONE && m_iSaveLength != TR5LEVELMAXSIZE )
     {
         AddFormatToStatus ( "Internal error in length %d versus %d = %d.",
             (int) sizeof ( TR5SAVE ), m_iSaveLength,
             m_iSaveLength - (int) sizeof ( TR5SAVE ) );
-        fclose ( hFile );
+        CloseOneFile ( &hFile );
         return;
     }
 
@@ -338,14 +338,14 @@ void CTR5SaveGame::writeSaveGame()
     if ( uLenBuffer != m_iSaveLength )
     {
         AddToStatus ( "File size is not correct." );
-        fclose ( hFile );
+        CloseOneFile ( &hFile );
         return;
     }
 
     /*
      *      Close file.
      */
-    fclose ( hFile );
+    CloseOneFile ( &hFile );
 
     //
     memcpy ( m_pBufferBackup,  m_pBuffer, m_iSaveLength );

@@ -762,6 +762,7 @@ BOOL CTRXCHEATWINApp::InitInstance()
             dlg.SetApply ( TRUE );
 
             //
+            ZeroMemory ( szPathname, sizeof(szPathname) );
             char *pFilename = strchr ( pCommandLine, ' ' );
             if ( pFilename != NULL )
             {
@@ -797,10 +798,12 @@ BOOL CTRXCHEATWINApp::InitInstance()
                     __strnicmp ( pCommandLine, "-s " ) == 0                   ||
                     __strnicmp ( pCommandLine, "-standard " ) == 0     )
         {
+            //
             CTRXPropertySheetStandard   dlg ( TR_PROGRAM );
             dlg.SetApply ( TRUE );
 
             //
+            ZeroMemory ( szPathname, sizeof(szPathname) );
             char *pFilename = strchr ( pCommandLine, ' ' );
             if ( pFilename != NULL )
             {
@@ -818,10 +821,12 @@ BOOL CTRXCHEATWINApp::InitInstance()
         }
         //
 #ifdef _DEBUG
+        //  Analyze a TRR Remastered savegame
         else if ( __strnicmp ( pCommandLine, "-analyze" ) == 0 )
         {
             //
             SetStdOutToNewConsole();
+            ZeroMemory ( szPathname, sizeof(szPathname) );
 
             //
             char *pFilename = strchr ( pCommandLine, ' ' );
@@ -847,29 +852,145 @@ BOOL CTRXCHEATWINApp::InitInstance()
 #endif
         //
         //  Read Script
+        else if ( __strnicmp ( pCommandLine, "-force" ) == 0 )
+        {
+            char *pGame = strchr ( pCommandLine, ' ' );
+            if ( pGame != NULL )
+            {
+                static char MainWindowsTitle [ MAX_PATH ] = "";
+
+                pGame = SkipSpaces ( pGame );
+
+                if ( _strcmpi ( pGame, "TR1" ) == 0 )
+                {
+                    CTRXGlobal::m_ForceSaveGame = FORCE_TR1;
+                    strcpy_s ( MainWindowsTitle, sizeof(MainWindowsTitle), "Tombraider 1 Cheat Program" );
+                }
+                else if ( _strcmpi ( pGame, "TUB" ) == 0 )
+                {
+                    CTRXGlobal::m_ForceSaveGame = FORCE_TUB;
+                    strcpy_s ( MainWindowsTitle, sizeof(MainWindowsTitle), "Tombraider 1 UB Cheat Program" );
+                }
+                else if ( _strcmpi ( pGame, "TR2" ) == 0 )
+                {
+                    CTRXGlobal::m_ForceSaveGame = FORCE_TR2;
+                    strcpy_s ( MainWindowsTitle, sizeof(MainWindowsTitle), "Tombraider 2 Cheat Program" );
+                }
+                else if ( _strcmpi ( pGame, "TR2G" ) == 0 )
+                {
+                    CTRXGlobal::m_ForceSaveGame = FORCE_TR2G;
+                    strcpy_s ( MainWindowsTitle, sizeof(MainWindowsTitle), "Tombraider 2 Gold Cheat Program" );
+                }
+                else if ( _strcmpi ( pGame, "TR3" ) == 0 )
+                {
+                    CTRXGlobal::m_ForceSaveGame = FORCE_TR3;
+                    strcpy_s ( MainWindowsTitle, sizeof(MainWindowsTitle), "Tombraider 3 Cheat Program" );
+                }
+                else if ( _strcmpi ( pGame, "TR3G" ) == 0 )
+                {
+                    CTRXGlobal::m_ForceSaveGame = FORCE_TR3G;
+                    strcpy_s ( MainWindowsTitle, sizeof(MainWindowsTitle), "Tombraider 3 Gold Cheat Program" );
+                }
+                else if ( _strcmpi ( pGame, "TR4" ) == 0 )
+                {
+                    CTRXGlobal::m_ForceSaveGame = FORCE_TR4;
+                    strcpy_s ( MainWindowsTitle, sizeof(MainWindowsTitle), "Tombraider 4 Cheat Program" );
+                }
+                else if ( _strcmpi ( pGame, "TR4G" ) == 0 )
+                {
+                    CTRXGlobal::m_ForceSaveGame = FORCE_TR4G;
+                    strcpy_s ( MainWindowsTitle, sizeof(MainWindowsTitle), "Tombraider 4 Gold Cheat Program" );
+                }
+                else if ( _strcmpi ( pGame, "TR4NG" ) == 0 )
+                {
+                    CTRXGlobal::m_ForceSaveGame = FORCE_TR4NG;
+                    strcpy_s ( MainWindowsTitle, sizeof(MainWindowsTitle), "Tombraider 4 Next Gen Program" );
+                }
+                else if ( _strcmpi ( pGame, "TR5" ) == 0 )
+                {
+                    CTRXGlobal::m_ForceSaveGame = FORCE_TR5;
+                    strcpy_s ( MainWindowsTitle, sizeof(MainWindowsTitle), "Tombraider 5 Cheat Program" );
+                }
+                else if ( _strcmpi ( pGame, "TRR123" ) == 0 )
+                {
+                    CTRXGlobal::m_ForceSaveGame = FORCE_TRR123;
+                    strcpy_s ( MainWindowsTitle, sizeof(MainWindowsTitle), "Tombraider 123 Remastered Cheat Program" );
+                }
+                else
+                {
+                    CTRXGlobal::m_ForceSaveGame = FORCE_NONE;
+                }
+
+                //
+                switch ( CTRXGlobal::m_ForceSaveGame )
+                {
+                    //
+                    case FORCE_TRR123 :
+                    {
+                        CTRXPropertySheetRemastered dlg ( MainWindowsTitle );
+                        dlg.SetApply ( TRUE );
+                        m_pMainWnd = &dlg;
+                        nResponse = dlg.DoModal();
+                        break;
+                    }
+                    //
+                    case FORCE_NONE :
+                    {
+                        CTRXPropertySheetAll    dlg ( BOTH_PROGRAMS );
+                        m_pMainWnd = &dlg;
+                        nResponse = dlg.DoModal();
+                        break;
+                    }
+                    //
+                    default :
+                    {
+                        CTRXPropertySheetStandard   dlg ( MainWindowsTitle );
+                        dlg.SetApply ( TRUE );
+                        m_pMainWnd = &dlg;
+                        nResponse = dlg.DoModal();
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                CTRXPropertySheetAll    dlg ( BOTH_PROGRAMS );
+                m_pMainWnd = &dlg;
+                nResponse = dlg.DoModal();
+            }
+        }
+        //
+        //  Read Script
         else if ( __strnicmp ( pCommandLine, "-rs4" ) == 0 )
         {
             //
+            ZeroMemory ( szPathname, sizeof(szPathname) );
             char *pFilename = strchr ( pCommandLine, ' ' );
             if ( pFilename != NULL )
             {
                 pFilename = SkipSpaces ( pFilename );
                 CopyBetweenQuotes ( szPathname, sizeof(szPathname), pFilename );
-
-                LPSTR lpFilepart = NULL;
-                GetFullPathName ( szPathname, sizeof(szFullPathname), szFullPathname, &lpFilepart );
-
-                //
-                strcpy_s ( szDirectory, sizeof(szDirectory), szFullPathname );
-                RemoveFilename ( szDirectory );
-                BOOL bRead = ReadTRXScript ( szFullPathname, szDirectory, 4 );
             }
+
+            if ( strlen (szPathname) == 0 )
+            {
+                strcpy_s ( szPathname, sizeof(szPathname), "script.dat" );
+            }
+
+            LPSTR lpFilepart = NULL;
+            GetFullPathName ( szPathname, sizeof(szFullPathname), szFullPathname, &lpFilepart );
+
+            //
+            strcpy_s ( szDirectory, sizeof(szDirectory), szFullPathname );
+            RemoveFilename ( szDirectory );
+            BOOL bRead = ReadTRXScript ( szFullPathname, szDirectory, 4 );
         }
         //
         //  Read .TR4 for NG values
         else if ( __strnicmp ( pCommandLine, "-tr4ng" ) == 0 )
         {
             //
+            ZeroMemory ( szPathname, sizeof(szPathname) );
             char *pFilename = strchr ( pCommandLine, ' ' );
             if ( pFilename != NULL )
             {
@@ -890,46 +1011,58 @@ BOOL CTRXCHEATWINApp::InitInstance()
         else if ( __strnicmp ( pCommandLine, "-unblind" ) == 0 )
         {
             //
+            ZeroMemory ( szPathname, sizeof(szPathname) );
             char *pFilename = strchr ( pCommandLine, ' ' );
             if ( pFilename != NULL )
             {
                 pFilename = SkipSpaces ( pFilename );
                 CopyBetweenQuotes ( szPathname, sizeof(szPathname), pFilename );
-
-                LPSTR lpFilepart = NULL;
-                GetFullPathName ( szPathname, sizeof(szFullPathname), szFullPathname, &lpFilepart );
-
-                //
-                strcpy_s ( szDirectory, sizeof(szDirectory), szFullPathname );
-                RemoveFilename ( szDirectory );
-                BOOL bRead = UnBlindTRXScript ( szFullPathname, szDirectory );
             }
+            if ( strlen (szPathname) == 0 )
+            {
+                strcpy_s ( szPathname, sizeof(szPathname), "script.dat" );
+            }
+
+            LPSTR lpFilepart = NULL;
+            GetFullPathName ( szPathname, sizeof(szFullPathname), szFullPathname, &lpFilepart );
+
+            //
+            strcpy_s ( szDirectory, sizeof(szDirectory), szFullPathname );
+            RemoveFilename ( szDirectory );
+            BOOL bRead = UnBlindTRXScript ( szFullPathname, szDirectory );
         }
         //
-        //  Unblind Script
+        //  Unsoft Script
         else if ( __strnicmp ( pCommandLine, "-unsoft" ) == 0 )
         {
             //
+            ZeroMemory ( szPathname, sizeof(szPathname) );
             char *pFilename = strchr ( pCommandLine, ' ' );
             if ( pFilename != NULL )
             {
                 pFilename = SkipSpaces ( pFilename );
                 CopyBetweenQuotes ( szPathname, sizeof(szPathname), pFilename );
-
-                LPSTR lpFilepart = NULL;
-                GetFullPathName ( szPathname, sizeof(szFullPathname), szFullPathname, &lpFilepart );
-
-                //
-                strcpy_s ( szDirectory, sizeof(szDirectory), szFullPathname );
-                RemoveFilename ( szDirectory );
-                BOOL bRead = UnSoftTRXScript ( szFullPathname, szDirectory );
             }
+
+            if ( strlen (szPathname) == 0 )
+            {
+                strcpy_s ( szPathname, sizeof(szPathname), "script.dat" );
+            }
+
+            LPSTR lpFilepart = NULL;
+            GetFullPathName ( szPathname, sizeof(szFullPathname), szFullPathname, &lpFilepart );
+
+            //
+            strcpy_s ( szDirectory, sizeof(szDirectory), szFullPathname );
+            RemoveFilename ( szDirectory );
+            BOOL bRead = UnSoftTRXScript ( szFullPathname, szDirectory );
         }
         //
         //  Remove Some NG Script
         else if ( __strnicmp ( pCommandLine, "-remove" ) == 0 )
         {
             //
+            ZeroMemory ( szPathname, sizeof(szPathname) );
             char *pFilename = strchr ( pCommandLine, ' ' );
             if ( pFilename != NULL )
             {
@@ -962,52 +1095,65 @@ BOOL CTRXCHEATWINApp::InitInstance()
         else if ( __strnicmp ( pCommandLine, "-anylevel" ) == 0 )
         {
             //
+            ZeroMemory ( szPathname, sizeof(szPathname) );
             char *pFilename = strchr ( pCommandLine, ' ' );
             if ( pFilename != NULL )
             {
                 pFilename = SkipSpaces ( pFilename );
                 CopyBetweenQuotes ( szPathname, sizeof(szPathname), pFilename );
-
-                LPSTR lpFilepart = NULL;
-                GetFullPathName ( szPathname, sizeof(szFullPathname), szFullPathname, &lpFilepart );
-
-                //
-                strcpy_s ( szDirectory, sizeof(szDirectory), szFullPathname );
-                RemoveFilename ( szDirectory );
-
-                //
-                //
-                BOOL bAltered = AlterTRXScript ( szFullPathname, szDirectory, true );
             }
+
+            if ( strlen (szPathname) == 0 )
+            {
+                strcpy_s ( szPathname, sizeof(szPathname), "script.dat" );
+            }
+
+            LPSTR lpFilepart = NULL;
+            GetFullPathName ( szPathname, sizeof(szFullPathname), szFullPathname, &lpFilepart );
+
+            //
+            strcpy_s ( szDirectory, sizeof(szDirectory), szFullPathname );
+            RemoveFilename ( szDirectory );
+
+            //
+            //
+            BOOL bAltered = AlterTRXScript ( szFullPathname, szDirectory, true );
         }
         //
         //  Alter PURE TRNG Script
         else if ( __strnicmp ( pCommandLine, "-onelevel" ) == 0 )
         {
             //
+            ZeroMemory ( szPathname, sizeof(szPathname) );
             char *pFilename = strchr ( pCommandLine, ' ' );
             if ( pFilename != NULL )
             {
                 pFilename = SkipSpaces ( pFilename );
                 CopyBetweenQuotes ( szPathname, sizeof(szPathname), pFilename );
-
-                LPSTR lpFilepart = NULL;
-                GetFullPathName ( szPathname, sizeof(szFullPathname), szFullPathname, &lpFilepart );
-
-                //
-                strcpy_s ( szDirectory, sizeof(szDirectory), szFullPathname );
-                RemoveFilename ( szDirectory );
-
-                //
-                //
-                BOOL bAltered = AlterTRXScript ( szFullPathname, szDirectory, false );
             }
+
+            if ( strlen (szPathname) == 0 )
+            {
+                strcpy_s ( szPathname, sizeof(szPathname), "script.dat" );
+            }
+
+            LPSTR lpFilepart = NULL;
+            GetFullPathName ( szPathname, sizeof(szFullPathname), szFullPathname, &lpFilepart );
+
+            //
+            strcpy_s ( szDirectory, sizeof(szDirectory), szFullPathname );
+            RemoveFilename ( szDirectory );
+
+            //
+            //
+            BOOL bAltered = AlterTRXScript ( szFullPathname, szDirectory, false );
         }
         //
         //  Write Script
         else if ( __strnicmp ( pCommandLine, "-ws4" ) == 0 )
         {
             //
+            ZeroMemory ( szPathname, sizeof(szPathname) );
             char *pFilename = strchr ( pCommandLine, ' ' );
             if ( pFilename != NULL )
             {
@@ -1028,26 +1174,33 @@ BOOL CTRXCHEATWINApp::InitInstance()
         else if ( __strnicmp ( pCommandLine, "-rs5" ) == 0 )
         {
             //
+            ZeroMemory ( szPathname, sizeof(szPathname) );
             char *pFilename = strchr ( pCommandLine, ' ' );
             if ( pFilename != NULL )
             {
                 pFilename = SkipSpaces ( pFilename );
                 CopyBetweenQuotes ( szPathname, sizeof(szPathname), pFilename );
-
-                LPSTR lpFilepart = NULL;
-                GetFullPathName ( szPathname, sizeof(szFullPathname), szFullPathname, &lpFilepart );
-
-                //
-                strcpy_s ( szDirectory, sizeof(szDirectory), szFullPathname );
-                RemoveFilename ( szDirectory );
-                BOOL bRead = ReadTRXScript ( szFullPathname, szDirectory, 5 );
             }
+
+            if ( strlen (szPathname) == 0 )
+            {
+                strcpy_s ( szPathname, sizeof(szPathname), "script.dat" );
+            }
+
+            LPSTR lpFilepart = NULL;
+            GetFullPathName ( szPathname, sizeof(szFullPathname), szFullPathname, &lpFilepart );
+
+            //
+            strcpy_s ( szDirectory, sizeof(szDirectory), szFullPathname );
+            RemoveFilename ( szDirectory );
+            BOOL bRead = ReadTRXScript ( szFullPathname, szDirectory, 5 );
         }
         //
         //  Read Script
         else if ( __strnicmp ( pCommandLine, "-ws5" ) == 0 )
         {
             //
+            ZeroMemory ( szPathname, sizeof(szPathname) );
             char *pFilename = strchr ( pCommandLine, ' ' );
             if ( pFilename != NULL )
             {
@@ -1064,6 +1217,7 @@ BOOL CTRXCHEATWINApp::InitInstance()
             }
         }
         //
+        //  Show Map
         else if ( _stricmp ( pCommandLine, "-maps" ) == 0L )
         {
             CTRXAllMaps dlg;
@@ -1079,6 +1233,7 @@ BOOL CTRXCHEATWINApp::InitInstance()
                     __strnicmp ( pCommandLine, "-tr5" ) == 0L  )
         {
             //
+            ZeroMemory ( szPathname, sizeof(szPathname) );
             char *pFilename = strchr ( pCommandLine, ' ' );
             if ( pFilename != NULL )
             {
@@ -1129,6 +1284,7 @@ BOOL CTRXCHEATWINApp::InitInstance()
         //
         else if ( __strstri ( pCommandLine, "savegame." ) != NULL )
         {
+            ZeroMemory ( szPathname, sizeof(szPathname) );
             char *pFilename = SkipSpaces ( pCommandLine );
             CopyBetweenQuotes ( szPathname, sizeof(szPathname), pFilename );
 

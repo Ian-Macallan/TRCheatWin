@@ -35,7 +35,8 @@
 #define TR4BUFFEREND        14014
 #define TR4LEVELMINSIZE     15954
 #define TR4LEVELMAXSIZE     15955
-
+#define TR4LEVELALTSIZE     66330
+#define TR4LEVELBUFSIZE     80*1024
 
 //
 //  0x3ed :
@@ -273,7 +274,7 @@ struct          TR4Save
 
         struct
         {
-            char                    cFullBuffer [ TR4LEVELMAXSIZE ];
+            char                    cFullBuffer [ TR4LEVELBUFSIZE ];
         };
     };
 };

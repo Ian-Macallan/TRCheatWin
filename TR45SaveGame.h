@@ -4,7 +4,7 @@
 
 #define TR4_MIN_HEALTH      0
 #define TR4_MAX_HEALTH      1000
-#define TR4_ALT_HEALTH      0x7fff
+#define TR4_GOD_HEALTH      0x7fff
 //
 #define TR4_SPC_HEALTH          0x3E20
 

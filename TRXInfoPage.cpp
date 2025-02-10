@@ -21,6 +21,7 @@
 #include "TRXEquipmentPage.h"   // Added by ClassView
 #include "TRXPropertySheet.h"
 #include "TRXRemastered.h"
+#include "TRXGlobal.h"
 
 #include "AutomaticVersionHeader.h"
 
@@ -1306,7 +1307,6 @@ BOOL CTRXInfoPage::OnSetActive()
 
     SetGUIModified ( bModified );
 
-
     //
     return CTRXPropertyPage::OnSetActive();
 }
@@ -2214,6 +2214,7 @@ BOOL CTRXInfoPage::OnInitDialog()
     }
 
     //
+
     m_bInitDone = true;
 
     return TRUE;  // return TRUE unless you set the focus to a control

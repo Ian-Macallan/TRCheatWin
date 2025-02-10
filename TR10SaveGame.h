@@ -21,7 +21,7 @@
 #define TR1BUFFEREND        0x270F
 #define TR1LEVELMINSIZE     10675
 #define TR1LEVELMAXSIZE     10675
-
+#define TR1LEVELBUFSIZE     80*1024
 /*
  *      ------------------------------------------------
  *      Structures.
@@ -70,35 +70,46 @@ typedef struct TR10Struct TR10STRUCT;
 
 struct          TR1Save
 {
-    char            szSavename [ 0x18 ];
-    char            cFiller01 [ 0x33 ];
-    WORD            iSaveNumber;
+    union
+    {
+        struct
+        {
+            char            szSavename [ 0x18 ];
+            char            cFiller01 [ 0x33 ];
+            WORD            iSaveNumber;
 
-    char            cFiller02 [ 0x11 ];
-    TR10STRUCT      trTable [ TR1MAXLEVEL ];
-    TR10STRUCT      trSingle;
-    char            cFiller30 [ 0x0A ];
-    BYTE            cLevel;
-    BYTE            cSub;
-    char            cFiller31 [ 1 ];
-    BYTE            cUnlimited;
+            char            cFiller02 [ 0x11 ];
+            TR10STRUCT      trTable [ TR1MAXLEVEL ];
+            TR10STRUCT      trSingle;
+            char            cFiller30 [ 0x0A ];
+            BYTE            cLevel;
+            BYTE            cSub;
+            char            cFiller31 [ 1 ];
+            BYTE            cUnlimited;
 
-    BYTE            cObject_P1;
-    BYTE            cObject_P2;
+            BYTE            cObject_P1;
+            BYTE            cObject_P2;
 
-    BYTE            cObjectP1;
-    BYTE            cObjectP2;
-    BYTE            cObjectP3;
-    BYTE            cObjectP4;
+            BYTE            cObjectP1;
+            BYTE            cObjectP2;
+            BYTE            cObjectP3;
+            BYTE            cObjectP4;
 
-    BYTE            cObjectK1;
-    BYTE            cObjectK2;
-    BYTE            cObjectK3;
-    BYTE            cObjectK4;
+            BYTE            cObjectK1;
+            BYTE            cObjectK2;
+            BYTE            cObjectK3;
+            BYTE            cObjectK4;
 
-    char            cFiller40 [ 243 ];
-    BYTE            szRemain [ TR1BUFFEREND ];
+            char            cFiller40 [ 243 ];
+            BYTE            szRemain [ TR1BUFFEREND ];
+        };
 
+        struct
+        {
+            char           cFullBuffer [ TR1LEVELBUFSIZE ];
+        };
+
+    };
 };
 
 typedef struct TR1Save TR1SAVE;

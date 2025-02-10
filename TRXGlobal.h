@@ -16,6 +16,24 @@
 
 //
 /////////////////////////////////////////////////////////////////////////////
+enum ForceGame
+{
+    FORCE_NONE,
+    FORCE_TR1,
+    FORCE_TUB,
+    FORCE_TR2,
+    FORCE_TR2G,
+    FORCE_TR3,
+    FORCE_TR3G,
+    FORCE_TR4,
+    FORCE_TR4G,
+    FORCE_TR4NG,
+    FORCE_TR5,
+    FORCE_TRR123,
+};
+
+//
+/////////////////////////////////////////////////////////////////////////////
 class CTRXGlobal
 {
     private :
@@ -47,6 +65,8 @@ class CTRXGlobal
         static BOOL         m_bAlterTRNGPosition;
         static BOOL         m_iAlterTRNGIndice;
         static BOOL         m_bAlterTRNGAmmosGuns;
+
+        static ForceGame   m_ForceSaveGame;
 };
 
 extern BOOL     g_bPasteEnabled;

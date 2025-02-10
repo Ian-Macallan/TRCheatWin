@@ -272,12 +272,12 @@ int CTR4SaveGame::ReadSavegame ( const char *pFilename )
     /*
      *      Get Buffer.
      */
-    if ( m_iSaveLength < TR4LEVELMINSIZE || m_iSaveLength > TR4LEVELMAXSIZE )
+    if ( CTRXGlobal::m_ForceSaveGame == FORCE_NONE && ( m_iSaveLength < TR4LEVELMINSIZE || m_iSaveLength > TR4LEVELMAXSIZE ) )
     {
         AddFormatToStatus ( "Internal error in length %d versus %d = %d.",
             (int) sizeof ( TR4SAVE ), m_iSaveLength,
             m_iSaveLength - (int) sizeof ( TR4SAVE ) );
-        fclose ( hFile );
+        CloseOneFile ( &hFile );
         return 0;
     }
 
@@ -286,7 +286,7 @@ int CTR4SaveGame::ReadSavegame ( const char *pFilename )
     if ( uLenBuffer != m_iSaveLength )
     {
         AddToStatus ( "File size is not correct." );
-        fclose ( hFile );
+        CloseOneFile ( &hFile );
         return 0;
     }
 
@@ -296,7 +296,7 @@ int CTR4SaveGame::ReadSavegame ( const char *pFilename )
         fseek ( hFile, 0, SEEK_END );
         long lEnd = ftell ( hFile );
         AddFormatToStatus ( "File size is too large %ld til %ld = %ld.", lPos, lEnd, lEnd - lPos );
-        fclose ( hFile );
+        CloseOneFile ( &hFile );
         return 0;
     }
 
@@ -305,7 +305,7 @@ int CTR4SaveGame::ReadSavegame ( const char *pFilename )
     /*
      *      Close file.
      */
-    fclose ( hFile );
+    CloseOneFile ( &hFile );
 
     return 1;
 }
@@ -351,7 +351,6 @@ void CTR4SaveGame::writeSaveGame()
         m_pBuffer->tagGuns.m_gunCrossBow = 0;
     }
 
-
     //  Compute CheckSum
     unsigned char *pBackup = (unsigned char *)m_pBufferBackup;
     unsigned char *pBuffer = (unsigned char *)m_pBuffer;
@@ -388,12 +387,12 @@ void CTR4SaveGame::writeSaveGame()
     /*
      *      Get Buffer.
      */
-    if ( m_iSaveLength < TR4LEVELMINSIZE || m_iSaveLength > TR4LEVELMAXSIZE )
+    if ( CTRXGlobal::m_ForceSaveGame == FORCE_NONE && ( m_iSaveLength < TR4LEVELMINSIZE || m_iSaveLength > TR4LEVELMAXSIZE ) )
     {
         AddFormatToStatus ( "Internal error in length %d versus %d = %d.",
             (int) sizeof ( TR4SAVE ), m_iSaveLength,
             m_iSaveLength - (int) sizeof ( TR4SAVE ) );
-        fclose ( hFile );
+        CloseOneFile ( &hFile );
         return;
     }
 
@@ -401,14 +400,14 @@ void CTR4SaveGame::writeSaveGame()
     if ( uLenBuffer != m_iSaveLength )
     {
         AddToStatus ( "File size is not correct." );
-        fclose ( hFile );
+        CloseOneFile ( &hFile );
         return;
     }
 
     /*
      *      Close file.
      */
-    fclose ( hFile );
+    CloseOneFile ( &hFile );
 
     //
     memcpy ( m_pBufferBackup,  m_pBuffer, m_iSaveLength );

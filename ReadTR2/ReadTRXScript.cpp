@@ -1260,7 +1260,7 @@ static const char *OptionLabel ( xuint16_t option )
 /////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////
-static void CloseOne ( FILE **phFile )
+void CloseOneFile ( FILE **phFile )
 {
     if ( phFile == NULL || *phFile == NULL )
     {
@@ -1268,7 +1268,6 @@ static void CloseOne ( FILE **phFile )
     }
     fclose ( *phFile );
     *phFile = NULL;
-
 }
 
 //
@@ -1339,7 +1338,7 @@ BOOL ReadTRXLanguage ( const char *pFilename, const char *pDirectory, int iLang,
         if ( hOutFile == NULL )
         {
             Print ( hLogFile, "File Open Error %s\n", szOutputFilename );
-            CloseOne ( &hInpFile );
+            CloseOneFile ( &hInpFile );
 
             Cleanup();
 
@@ -1352,8 +1351,8 @@ BOOL ReadTRXLanguage ( const char *pFilename, const char *pDirectory, int iLang,
     size_t uRead = fread ( (char*) &langHeader, 1, sizeof(langHeader), hInpFile );
     if ( uRead != sizeof(langHeader) )
     {
-        CloseOne ( &hOutFile );
-        CloseOne ( &hInpFile );
+        CloseOneFile ( &hOutFile );
+        CloseOneFile ( &hInpFile );
 
         Cleanup();
             
@@ -1380,8 +1379,8 @@ BOOL ReadTRXLanguage ( const char *pFilename, const char *pDirectory, int iLang,
     uRead = fread ( (char*) &StringOffsetTable, 1, sizeof(xuint16_t)*countStrings, hInpFile );
     if ( uRead != sizeof(xuint16_t)*countStrings )
     {
-        CloseOne ( &hOutFile );
-        CloseOne ( &hInpFile );
+        CloseOneFile ( &hOutFile );
+        CloseOneFile ( &hInpFile );
 
         Cleanup();
             
@@ -1472,8 +1471,8 @@ BOOL ReadTRXLanguage ( const char *pFilename, const char *pDirectory, int iLang,
     Print ( hOutFile, "\n" );
 
     //
-    CloseOne ( &hOutFile );
-    CloseOne ( &hInpFile );
+    CloseOneFile ( &hOutFile );
+    CloseOneFile ( &hInpFile );
 
     bResult = TRUE;
 
@@ -1484,12 +1483,15 @@ BOOL ReadTRXLanguage ( const char *pFilename, const char *pDirectory, int iLang,
 /////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////
-static BOOL TreatLevelData (    FILE *hOutFile, xuint16_t offset, int len,
+static BOOL TreatLevelData (    const char *pDirectory, const char *pDataFileType,
+                                FILE *hOutFile, xuint16_t offset, int len,
                                 int levelIndex,
                                 int version, FCT_AddToItemsLabels function )
 {
     //
     bool bTitle = false;
+
+    static char szTRDataPath [ MAX_PATH ];
 
     //
     //  Search if Title
@@ -1544,6 +1546,15 @@ static BOOL TreatLevelData (    FILE *hOutFile, xuint16_t offset, int len,
                     {
                         Print ( hOutFile, "; Level 0x81 args : %d,$%04X,%d,%d\n",
                             pArguments->stringIndex, pArguments->levelOptions, pArguments->pathIndex, pArguments->audio );
+                        // A good place to test if path  exist
+                        strcpy_s ( szTRDataPath, sizeof(szTRDataPath), pDirectory );
+                        strcat_s ( szTRDataPath, sizeof(szTRDataPath), "\\" );
+                        strcat_s ( szTRDataPath, sizeof(szTRDataPath), pathString );
+                        strcat_s ( szTRDataPath, sizeof(szTRDataPath), pDataFileType );
+                        if ( ! PathFileExists ( szTRDataPath ) )
+                        {
+                             Print ( hOutFile, "; '%s' Does not exist\n", szTRDataPath );
+                        }
                         Print ( hOutFile, "Level=\t%s,%d\n", pathString, pArguments->audio );
 
                         if ( function != NULL )
@@ -1577,6 +1588,16 @@ static BOOL TreatLevelData (    FILE *hOutFile, xuint16_t offset, int len,
                         {
                             Print ( hOutFile, "; Level 0x82 args : %d,$%04X,%d\n",
                                 pArguments->pathIndex, pArguments->titleOptions, pArguments->audio );
+                            // A good place to test if path  exist
+                            strcpy_s ( szTRDataPath, sizeof(szTRDataPath), pDirectory );
+                            strcat_s ( szTRDataPath, sizeof(szTRDataPath), "\\" );
+                            strcat_s ( szTRDataPath, sizeof(szTRDataPath), pathString );
+                            strcat_s ( szTRDataPath, sizeof(szTRDataPath), pDataFileType );
+                            if ( ! PathFileExists ( szTRDataPath ) )
+                            {
+                                 Print ( hOutFile, "; '%s' Does not exist\n", szTRDataPath );
+                            }
+
                             Print ( hOutFile, "Level=\t%s,%d\n", pathString, pArguments->audio );
 
                             if ( function != NULL )
@@ -1591,6 +1612,16 @@ static BOOL TreatLevelData (    FILE *hOutFile, xuint16_t offset, int len,
                         {
                             Print ( hOutFile, "; Level 0x82 args : %d,$%04X,%d\n",
                                 pArguments->pathIndex, pArguments->titleOptions, pArguments->audio );
+                            // A good place to test if path  exist
+                            strcpy_s ( szTRDataPath, sizeof(szTRDataPath), pDirectory );
+                            strcat_s ( szTRDataPath, sizeof(szTRDataPath), "\\" );
+                            strcat_s ( szTRDataPath, sizeof(szTRDataPath), pathString );
+                            strcat_s ( szTRDataPath, sizeof(szTRDataPath), pDataFileType );
+                            if ( ! PathFileExists ( szTRDataPath ) )
+                            {
+                                 Print ( hOutFile, "; '%s' Does not exist\n", szTRDataPath );
+                            }
+
                             Print ( hOutFile, "Level=\t%d,%d\n", pArguments->pathIndex, pArguments->audio );
 
                             if ( function != NULL )
@@ -2462,6 +2493,18 @@ BOOL ReadTRXScript (    const char *pathname, const char *pDirectory, int versio
     }
 
     //
+    static char szDataFileType [ 32 ];
+    strcpy_s ( szDataFileType, sizeof(szDataFileType), ".TR4" );
+    if ( version == 4 )
+    {
+        strcpy_s ( szDataFileType, sizeof(szDataFileType), ".TR4" );
+    }
+    else if ( version == 5 )
+    {
+        strcpy_s ( szDataFileType, sizeof(szDataFileType), ".TRC" );
+    }
+
+    //
     ZeroMemory ( StringTable, sizeof(StringTable) );
 
     ZeroMemory ( GlobalItemsTable, sizeof(GlobalItemsTable) );
@@ -2501,8 +2544,8 @@ BOOL ReadTRXScript (    const char *pathname, const char *pDirectory, int versio
     if ( hInpFile == NULL )
     {
         Print ( hLogFile, "File Open Error %s\n", pathname );
-        CloseOne ( &hLogFile );
-        CloseOne ( &hHeaFile );
+        CloseOneFile ( &hLogFile );
+        CloseOneFile ( &hHeaFile );
         return bResult;
     }
 
@@ -2515,12 +2558,12 @@ BOOL ReadTRXScript (    const char *pathname, const char *pDirectory, int versio
         if ( hTxtFile == NULL )
         {
             Print ( hLogFile, "File Open Error %s\n", szOutputFilename );
-            CloseOne ( &hInpFile );
+            CloseOneFile ( &hInpFile );
 
             Cleanup();
 
-            CloseOne ( &hLogFile );
-            CloseOne ( &hHeaFile );
+            CloseOneFile ( &hLogFile );
+            CloseOneFile ( &hHeaFile );
 
             return bResult;
         }
@@ -2536,10 +2579,10 @@ BOOL ReadTRXScript (    const char *pathname, const char *pDirectory, int versio
     uRead = fread ( cryptHeader, 1, sizeof(cryptHeader), hInpFile );
     if ( uRead != sizeof(cryptHeader) )
     {
-        CloseOne ( &hTxtFile );
-        CloseOne ( &hInpFile );
-        CloseOne ( &hLogFile );
-        CloseOne ( &hHeaFile );
+        CloseOneFile ( &hTxtFile );
+        CloseOneFile ( &hInpFile );
+        CloseOneFile ( &hLogFile );
+        CloseOneFile ( &hHeaFile );
 
         Cleanup();
 
@@ -2573,10 +2616,10 @@ BOOL ReadTRXScript (    const char *pathname, const char *pDirectory, int versio
         uRead = fread ( (char*) &scriptHeader, 1, sizeof(scriptHeader), hInpFile );
         if ( uRead != sizeof(scriptHeader) )
         {
-            CloseOne ( &hTxtFile );
-            CloseOne ( &hInpFile );
-            CloseOne ( &hLogFile );
-            CloseOne ( &hHeaFile );
+            CloseOneFile ( &hTxtFile );
+            CloseOneFile ( &hInpFile );
+            CloseOneFile ( &hLogFile );
+            CloseOneFile ( &hHeaFile );
 
             Cleanup();
 
@@ -2593,6 +2636,8 @@ BOOL ReadTRXScript (    const char *pathname, const char *pDirectory, int versio
     //
     Print ( hTxtFile, "[Options]\n" );
     Print ( hTxtFile, "; Options : 0x%x\n", scriptHeader.Options );
+
+    //
     if ( scriptHeader.Options & 0x01 )
     {
         Print ( hTxtFile, "FlyCheat=\tENABLED\n" );
@@ -2601,6 +2646,7 @@ BOOL ReadTRXScript (    const char *pathname, const char *pDirectory, int versio
     {
         Print ( hTxtFile, "FlyCheat=\tDISABLED\n" );
     }
+
     if ( scriptHeader.Options & 0x02 )
     {
         Print ( hTxtFile, "LoadSave=\tENABLED\n" );
@@ -2609,6 +2655,7 @@ BOOL ReadTRXScript (    const char *pathname, const char *pDirectory, int versio
     {
         Print ( hTxtFile, "LoadSave=\tDISABLED\n" );
     }
+
     if ( scriptHeader.Options & 0x04 )
     {
         Print ( hTxtFile, "Title=\tENABLED\n" );
@@ -2617,6 +2664,7 @@ BOOL ReadTRXScript (    const char *pathname, const char *pDirectory, int versio
     {
         Print ( hTxtFile, "Title=\tDISABLED\n" );
     }
+
     if ( scriptHeader.Options & 0x08 )
     {
         Print ( hTxtFile, "PlayAnyLevel=\tENABLED\n" );
@@ -2625,6 +2673,7 @@ BOOL ReadTRXScript (    const char *pathname, const char *pDirectory, int versio
     {
         Print ( hTxtFile, "PlayAnyLevel=\tDISABLED\n" );
     }
+
     if ( scriptHeader.Options & 0x80 )
     {
         Print ( hTxtFile, "DemoDisc=\tENABLED\n" );
@@ -2646,11 +2695,11 @@ BOOL ReadTRXScript (    const char *pathname, const char *pDirectory, int versio
         uRead = fread ( (char*) &scriptLevelHeader, 1, sizeof(scriptLevelHeader), hInpFile );
         if ( uRead != sizeof(scriptLevelHeader) )
         {
-            CloseOne ( &hTxtFile );
-            CloseOne ( &hInpFile );
+            CloseOneFile ( &hTxtFile );
+            CloseOneFile ( &hInpFile );
 
-            CloseOne ( &hLogFile );
-            CloseOne ( &hHeaFile );
+            CloseOneFile ( &hLogFile );
+            CloseOneFile ( &hHeaFile );
 
             Cleanup();
 
@@ -2689,11 +2738,11 @@ BOOL ReadTRXScript (    const char *pathname, const char *pDirectory, int versio
             strlen ( (char *) scriptLevelHeader.PCCutString ) > 5       ||
             strlen ( (char *) scriptLevelHeader.PCFMVString ) > 5           )
     {
-        CloseOne ( &hTxtFile );
-        CloseOne ( &hInpFile );
+        CloseOneFile ( &hTxtFile );
+        CloseOneFile ( &hInpFile );
 
-        CloseOne ( &hLogFile );
-        CloseOne ( &hHeaFile );
+        CloseOneFile ( &hLogFile );
+        CloseOneFile ( &hHeaFile );
 
         Cleanup();
 
@@ -2715,11 +2764,11 @@ BOOL ReadTRXScript (    const char *pathname, const char *pDirectory, int versio
             uRead = fread ( (char*) &LevelpathStringOffsets, 1, sizeof(xuint16_t)*nbLevelPath, hInpFile );
             if ( uRead != sizeof(xuint16_t)*nbLevelPath )
             {
-                CloseOne ( &hTxtFile );
-                CloseOne ( &hInpFile );
+                CloseOneFile ( &hTxtFile );
+                CloseOneFile ( &hInpFile );
 
-                CloseOne ( &hLogFile );
-                CloseOne ( &hHeaFile );
+                CloseOneFile ( &hLogFile );
+                CloseOneFile ( &hHeaFile );
 
                 Cleanup();
 
@@ -2746,11 +2795,11 @@ BOOL ReadTRXScript (    const char *pathname, const char *pDirectory, int versio
             uRead = fread ( ( (char*) &LevelpathStringOffsets ) + toCopy, 1, toRead, hInpFile );
             if ( uRead != toRead )
             {
-                CloseOne ( &hTxtFile );
-                CloseOne ( &hInpFile );
+                CloseOneFile ( &hTxtFile );
+                CloseOneFile ( &hInpFile );
 
-                CloseOne ( &hLogFile );
-                CloseOne ( &hHeaFile );
+                CloseOneFile ( &hLogFile );
+                CloseOneFile ( &hHeaFile );
 
                 Cleanup();
 
@@ -2767,11 +2816,11 @@ BOOL ReadTRXScript (    const char *pathname, const char *pDirectory, int versio
         uRead = fread ( LevelpathStringBlockData, 1, scriptLevelHeader.LevelpathStringLen, hInpFile );
         if ( uRead != scriptLevelHeader.LevelpathStringLen )
         {
-            CloseOne ( &hTxtFile );
-            CloseOne ( &hInpFile );
+            CloseOneFile ( &hTxtFile );
+            CloseOneFile ( &hInpFile );
 
-            CloseOne ( &hLogFile );
-            CloseOne ( &hHeaFile );
+            CloseOneFile ( &hLogFile );
+            CloseOneFile ( &hHeaFile );
 
             Cleanup();
 
@@ -2797,11 +2846,11 @@ BOOL ReadTRXScript (    const char *pathname, const char *pDirectory, int versio
             uRead = fread ( LevelpathStringBlockData + toCopy, 1, toRead, hInpFile );
             if ( uRead != toRead )
             {
-                CloseOne ( &hTxtFile );
-                CloseOne ( &hInpFile );
+                CloseOneFile ( &hTxtFile );
+                CloseOneFile ( &hInpFile );
 
-                CloseOne ( &hLogFile );
-                CloseOne ( &hHeaFile );
+                CloseOneFile ( &hLogFile );
+                CloseOneFile ( &hHeaFile );
 
                 Cleanup();
 
@@ -2827,11 +2876,11 @@ BOOL ReadTRXScript (    const char *pathname, const char *pDirectory, int versio
         uRead = fread ( (char*) &LevelBlockDataOffsets, 1, sizeof(xuint16_t)*nbLevels, hInpFile );
         if ( uRead != sizeof(xuint16_t)*nbLevels )
         {
-            CloseOne ( &hTxtFile );
-            CloseOne ( &hInpFile );
+            CloseOneFile ( &hTxtFile );
+            CloseOneFile ( &hInpFile );
 
-            CloseOne ( &hLogFile );
-            CloseOne ( &hHeaFile );
+            CloseOneFile ( &hLogFile );
+            CloseOneFile ( &hHeaFile );
 
             Cleanup();
 
@@ -2845,11 +2894,11 @@ BOOL ReadTRXScript (    const char *pathname, const char *pDirectory, int versio
     uRead = fread ( LevelBlockData, 1, scriptLevelHeader.LevelBlockLen, hInpFile );
     if ( uRead != scriptLevelHeader.LevelBlockLen )
     {
-        CloseOne ( &hTxtFile );
-        CloseOne ( &hInpFile );
+        CloseOneFile ( &hTxtFile );
+        CloseOneFile ( &hInpFile );
 
-        CloseOne ( &hLogFile );
-        CloseOne ( &hHeaFile );
+        CloseOneFile ( &hLogFile );
+        CloseOneFile ( &hHeaFile );
 
         Cleanup();
 
@@ -2918,7 +2967,7 @@ BOOL ReadTRXScript (    const char *pathname, const char *pDirectory, int versio
 
         //
         //  Treat Level Data
-        TreatLevelData ( hTxtFile, LevelBlockDataOffsets [ i ],  len, i, version, function );
+        TreatLevelData ( pDirectory, szDataFileType, hTxtFile, LevelBlockDataOffsets [ i ],  len, i, version, function );
 
         //
         WriteHeader ( version, i, function );
@@ -2928,11 +2977,11 @@ BOOL ReadTRXScript (    const char *pathname, const char *pDirectory, int versio
     WriteHeader ( version, -1, function );
 
     //
-    CloseOne ( &hTxtFile );
-    CloseOne ( &hInpFile );
+    CloseOneFile ( &hTxtFile );
+    CloseOneFile ( &hInpFile );
 
-    CloseOne ( &hLogFile );
-    CloseOne ( &hHeaFile );
+    CloseOneFile ( &hLogFile );
+    CloseOneFile ( &hHeaFile );
 
     bResult     = TRUE;
 
@@ -3016,7 +3065,7 @@ BOOL UnBlindTRXScript ( const char *pathname, const char *pDirectory )
     fopen_s ( &hOutFile, szUnBlindedScript, "wb" );
     if ( hOutFile == NULL )
     {
-        CloseOne ( &hInpFile );
+        CloseOneFile ( &hInpFile );
         return FALSE;
     }
 
@@ -3048,8 +3097,8 @@ BOOL UnBlindTRXScript ( const char *pathname, const char *pDirectory )
     fwrite ( &BlindValues [ 2 ], 1, sizeof(BYTE), hOutFile );
 
     //
-    CloseOne ( &hInpFile );
-    CloseOne ( &hOutFile );
+    CloseOneFile ( &hInpFile );
+    CloseOneFile ( &hOutFile );
 
     return TRUE;
 }
@@ -3097,7 +3146,7 @@ BOOL UnSoftTRXScript ( const char *pathname, const char *pDirectory )
     fopen_s ( &hOutFile, szUnSoftScript, "wb" );
     if ( hOutFile == NULL )
     {
-        CloseOne ( &hInpFile );
+        CloseOneFile ( &hInpFile );
         return FALSE;
     }
 
@@ -3129,8 +3178,8 @@ BOOL UnSoftTRXScript ( const char *pathname, const char *pDirectory )
     fwrite ( &SoftValues [ 2 ], 1, sizeof(BYTE), hOutFile );
 
     //
-    CloseOne ( &hInpFile );
-    CloseOne ( &hOutFile );
+    CloseOneFile ( &hInpFile );
+    CloseOneFile ( &hOutFile );
 
     return TRUE;
 }
@@ -3517,7 +3566,7 @@ BOOL RemoveTRXScript ( const char *pathname, const char *pDirectory, const char 
     fopen_s ( &hOutFile, szAlteredScript, "wb" );
     if ( hOutFile == NULL )
     {
-        CloseOne ( &hInpFile );
+        CloseOneFile ( &hInpFile );
         return FALSE;
     }
 
@@ -3562,8 +3611,8 @@ BOOL RemoveTRXScript ( const char *pathname, const char *pDirectory, const char 
     WriteNGScript( pBuffer + TR4NGOffset, TR4NGOffset, hOutFile );
 
     //
-    CloseOne ( &hInpFile );
-    CloseOne ( &hOutFile );
+    CloseOneFile ( &hInpFile );
+    CloseOneFile ( &hOutFile );
 
     //
     return FALSE;
@@ -3608,7 +3657,7 @@ BOOL BackupTRXScript ( const char *pathname )
         fopen_s ( &hOutFile, szBackupFilename, "wb" );
         if ( hOutFile == NULL )
         {
-            CloseOne ( &hInpFile );
+            CloseOneFile ( &hInpFile );
             return FALSE;
         }
 
@@ -3629,8 +3678,8 @@ BOOL BackupTRXScript ( const char *pathname )
         while ( bContinue );
 
         //
-        CloseOne ( &hInpFile );
-        CloseOne ( &hOutFile );
+        CloseOneFile ( &hInpFile );
+        CloseOneFile ( &hOutFile );
 
         return TRUE;
     }
@@ -3666,6 +3715,15 @@ BOOL AlterTRXScript ( const char *pathname, const char *pDirectory, bool bAnyLev
     BackupTRXScript ( pathname );
 
     //
+    DWORD dwAttributes = GetFileAttributes ( pathname );
+    //  Remove Read Only
+    if ( ( dwAttributes & FILE_ATTRIBUTE_READONLY ) == FILE_ATTRIBUTE_READONLY )
+    {
+        dwAttributes ^= FILE_ATTRIBUTE_READONLY;
+        SetFileAttributes ( pathname, dwAttributes );
+    }
+
+    //
     //  Backup script file
     FILE *hInpFile = NULL;
 
@@ -3685,9 +3743,14 @@ BOOL AlterTRXScript ( const char *pathname, const char *pDirectory, bool bAnyLev
     {
         AlteredBuffer [ 0 ] &= ( 0xff ^ 0x08 );
     }
+
+    //  Enable Load / Save
+    AlteredBuffer [ 0 ] |= 0x02;
+
+    //
     fseek ( hInpFile, 0, SEEK_SET );
     size_t iWrite = fwrite ( AlteredBuffer, 1, iRead, hInpFile );
-    CloseOne ( &hInpFile );
+    CloseOneFile ( &hInpFile );
 
     return FALSE;
 }
@@ -3829,7 +3892,7 @@ BOOL WriteTRXLanguage ( const char *pFilename, const char *pDirectory, int iLang
             if ( hOutFile == NULL )
             {
                 Print ( hLogFile, "File Open Error %s\n", szOutputFilename );
-                CloseOne ( &hInpFile );
+                CloseOneFile ( &hInpFile );
 
                 Cleanup();
 
@@ -3890,8 +3953,8 @@ BOOL WriteTRXLanguage ( const char *pFilename, const char *pDirectory, int iLang
             while ( ! feof(hInpFile) && ! ferror( hInpFile) );
         }
 
-        CloseOne ( &hInpFile );
-        CloseOne ( &hOutFile );
+        CloseOneFile ( &hInpFile );
+        CloseOneFile ( &hOutFile );
 
     }
 
@@ -4027,7 +4090,7 @@ BOOL WriteTRXScript ( const char *pathname, const char *pDirectory, int version 
         if ( hInpFile == NULL )
         {
             Print ( hLogFile, "File Open Error %s\n", pathname );
-            CloseOne ( &hLogFile );
+            CloseOneFile ( &hLogFile );
             return FALSE;
         }
 
@@ -4040,9 +4103,9 @@ BOOL WriteTRXScript ( const char *pathname, const char *pDirectory, int version 
             if ( hOutFile == NULL )
             {
                 Print ( hLogFile, "File Open Error %s\n", szOutputFilename );
-                CloseOne ( &hInpFile );
+                CloseOneFile ( &hInpFile );
 
-                CloseOne ( &hLogFile );
+                CloseOneFile ( &hLogFile );
 
                 Cleanup();
 
@@ -5615,15 +5678,15 @@ BOOL WriteTRXScript ( const char *pathname, const char *pDirectory, int version 
 
         //
         //
-        CloseOne ( &hOutFile );
-        CloseOne ( &hInpFile );
+        CloseOneFile ( &hOutFile );
+        CloseOneFile ( &hInpFile );
 
         bResult     = TRUE;
     }
 
     Cleanup();
 
-    CloseOne ( &hLogFile );
+    CloseOneFile ( &hLogFile );
 
     return bResult;
 }

@@ -509,21 +509,6 @@ static size_t ReadChunk ( void *pBuffer, size_t iLen, FILE *hFile )
 /////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////
-static void CloseOne ( FILE **phFile )
-{
-    if ( phFile == NULL || *phFile == NULL )
-    {
-        return;
-    }
-    fclose ( *phFile );
-    *phFile = NULL;
-
-}
-
-//
-/////////////////////////////////////////////////////////////////////////////
-//
-/////////////////////////////////////////////////////////////////////////////
 BOOL ExtractData (  FILE *hOutputFile, int game,
                     const char *pPathname, const char *pName, TR_MODE TRMode, const char *pPrefix,
                     FCT_AddToCustomArea function )
@@ -556,10 +541,7 @@ BOOL ExtractData (  FILE *hOutputFile, int game,
             if ( Version != 0x20 )
             {
                 bResult = FALSE;
-                if ( hFile != NULL )
-                {
-                    CloseOne ( &hFile );
-                }
+                CloseOneFile ( &hFile );
                 return bResult;
             }
         }
@@ -569,10 +551,7 @@ BOOL ExtractData (  FILE *hOutputFile, int game,
             if ( Version != 0x002D )
             {
                 bResult = FALSE;
-                if ( hFile != NULL )
-                {
-                    CloseOne ( &hFile );
-                }
+                CloseOneFile ( &hFile );
                 return bResult;
             }
         }
@@ -582,11 +561,7 @@ BOOL ExtractData (  FILE *hOutputFile, int game,
             if ( ( Version & 0xffff ) != 0x0038 )
             {
                 bResult = FALSE;
-                if ( hFile != NULL )
-                {
-                    fclose ( hFile );
-                    hFile   = NULL;
-                }
+                CloseOneFile ( &hFile );
                 return bResult;
             }
         }
@@ -597,10 +572,7 @@ BOOL ExtractData (  FILE *hOutputFile, int game,
             if ( memcmp ( &Version, "TR4", 3 ) != 0 )
             {
                 bResult = FALSE;
-                if ( hFile != NULL )
-                {
-                    CloseOne ( &hFile );
-                }
+                CloseOneFile ( &hFile );
                 return bResult;
             }
         }
@@ -611,10 +583,7 @@ BOOL ExtractData (  FILE *hOutputFile, int game,
             if ( memcmp ( &Version, "TR4", 3 ) != 0 )
             {
                 bResult = FALSE;
-                if ( hFile != NULL )
-                {
-                    CloseOne ( &hFile );
-                }
+                CloseOneFile ( &hFile );
                 return bResult;
             }
         }
@@ -686,10 +655,7 @@ BOOL ExtractData (  FILE *hOutputFile, int game,
                     {
                         PrintStdout ( "Error Uncompressing\r\n" );
                         bResult = FALSE;
-                        if ( hFile != NULL )
-                        {
-                            CloseOne ( &hFile );
-                        }
+                        CloseOneFile ( &hFile );
 
                         return bResult;
                     }
@@ -737,10 +703,7 @@ BOOL ExtractData (  FILE *hOutputFile, int game,
             if ( NumRooms <= 0 || NumRooms > 1024 )
             {
                 bResult = FALSE;
-                if ( hFile != NULL )
-                {
-                    CloseOne ( &hFile );
-                }
+                CloseOneFile ( &hFile );
 
                 return bResult;
             }
@@ -803,10 +766,7 @@ BOOL ExtractData (  FILE *hOutputFile, int game,
                 if ( NumXsectors > 256 || NumZsectors > 256 )
                 {
                     bResult = FALSE;
-                    if ( hFile != NULL )
-                    {
-                        CloseOne ( &hFile );
-                    }
+                    CloseOneFile ( &hFile );
 
                     return bResult;
                 }
@@ -1000,10 +960,7 @@ BOOL ExtractData (  FILE *hOutputFile, int game,
                 if ( NumXsectors <= 0 || NumZsectors <= 0 )
                 {
                     bResult = FALSE;
-                    if ( hFile != NULL )
-                    {
-                        CloseOne ( &hFile );
-                    }
+                    CloseOneFile ( &hFile );
 
                     return bResult;
                 }
@@ -1055,10 +1012,7 @@ BOOL ExtractData (  FILE *hOutputFile, int game,
             if ( NumRooms <= 0 || NumRooms > 1024 )
             {
                 bResult = FALSE;
-                if ( hFile != NULL )
-                {
-                    CloseOne ( &hFile );
-                }
+                CloseOneFile ( &hFile );
 
                 return bResult;
             }
@@ -1089,10 +1043,7 @@ BOOL ExtractData (  FILE *hOutputFile, int game,
                 if ( NumXsectors <= 0 || NumZsectors <= 0 )
                 { 
                     bResult = FALSE;
-                    if ( hFile != NULL )
-                    {
-                        CloseOne ( &hFile );
-                    }
+                   CloseOneFile ( &hFile );
 
                    return bResult;
                 }
@@ -1101,10 +1052,7 @@ BOOL ExtractData (  FILE *hOutputFile, int game,
                 if ( NumXsectors > 256 || NumZsectors > 256 )
                 {
                     bResult = FALSE;
-                    if ( hFile != NULL )
-                    {
-                        CloseOne ( &hFile );
-                    }
+                    CloseOneFile ( &hFile );
 
                     return bResult;
                 }
@@ -1274,10 +1222,7 @@ BOOL ExtractData (  FILE *hOutputFile, int game,
             if ( NumRooms <= 0 || NumRooms > 1024 )
             {
                 bResult = FALSE;
-                if ( hFile != NULL )
-                {
-                    CloseOne ( &hFile );
-                }
+                CloseOneFile ( &hFile );
 
                 return bResult;
             }
@@ -1292,10 +1237,7 @@ BOOL ExtractData (  FILE *hOutputFile, int game,
                 {
                     PrintStdout ( "No XELA\n" );
                     bResult = FALSE;
-                    if ( hFile != NULL )
-                    {
-                        CloseOne ( &hFile );
-                    }
+                    CloseOneFile ( &hFile );
 
                     return bResult;
                 }
@@ -1335,10 +1277,7 @@ BOOL ExtractData (  FILE *hOutputFile, int game,
                 if ( NumXsectors > 256 || NumZsectors > 256 )
                 {
                     bResult = FALSE;
-                    if ( hFile != NULL )
-                    {
-                        CloseOne ( &hFile );
-                    }
+                    CloseOneFile ( &hFile );
 
                     return bResult;
                 }
@@ -1554,10 +1493,7 @@ BOOL ExtractData (  FILE *hOutputFile, int game,
                 if ( NumXsectors <= 0 || NumZsectors <= 0 )
                 {
                     bResult = FALSE;
-                    if ( hFile != NULL )
-                    {
-                        CloseOne ( &hFile );
-                    }
+                    CloseOneFile ( &hFile );
 
                     return bResult;
                 }
@@ -1606,10 +1542,10 @@ BOOL ExtractData (  FILE *hOutputFile, int game,
 
         bResult = TRUE;
 
-        CloseOne ( &hFile );
+        CloseOneFile ( &hFile );
     }
 
-    CloseOne ( &hFile );
+    CloseOneFile ( &hFile );
 
     return bResult;
 }
@@ -1650,8 +1586,8 @@ extern BOOL ReadTR4ForNG ( const char *pathname )
 	fread(&endNGHeader, sizeof(StrEndNgHeader), 1, hFile );
     if ( memcmp ( endNGHeader.EndCheck, "NGLE", 4 ) != 0 )
     {
-        CloseOne ( &hFile );
-        CloseOne ( &hOutFile );
+        CloseOneFile ( &hFile );
+        CloseOneFile ( &hOutFile );
         return bResult;
     }
 
@@ -1671,10 +1607,10 @@ extern BOOL ReadTR4ForNG ( const char *pathname )
     bResult = AnalyzeNGScript(buffer.ptr, indexBegin, hOutFile );
 
     //
-    CloseOne ( &hFile );
+    CloseOneFile ( &hFile );
 
     //
-    CloseOne ( &hOutFile );
+    CloseOneFile ( &hOutFile );
 
     return bResult;
 }

@@ -19,7 +19,8 @@
  */
 #define TR5MAXLEVEL         35
 #define TR5BUFFEREND        14014
-#define TR5LEVELSIZE        7743
+#define TR5LEVELMAXSIZE     7743
+#define TR5LEVELBUFSIZE     80*1024
 
 //  00000001
 #define TR50_GUN_SET1       0x01    
@@ -236,8 +237,7 @@ struct          TR5Save
         // No checksum for TR V
         struct
         {
-            char                    cFiller4 [ 7742 ];
-            BYTE                    checkSum;
+            char                    cFullBuffer [ TR5LEVELBUFSIZE ];
         };
     };
 };

@@ -150,10 +150,10 @@ int CTUBSaveGame::ReadSavegame( const char *pFilename )
     /*
      *      Get Buffer.
      */
-    if ( m_iSaveLength < TUBLEVELMINSIZE  || m_iSaveLength > TUBLEVELMAXSIZE )
+    if ( CTRXGlobal::m_ForceSaveGame == FORCE_NONE && ( m_iSaveLength < TUBLEVELMINSIZE  || m_iSaveLength > TUBLEVELMAXSIZE ) )
     {
         AddToStatus ( "Internal error in length." );
-        fclose ( hFile );
+        CloseOneFile ( &hFile );
         return 0;
     }
 
@@ -162,14 +162,14 @@ int CTUBSaveGame::ReadSavegame( const char *pFilename )
     if ( uLenBuffer != m_iSaveLength )
     {
         AddToStatus ( "File size is not correct." );
-        fclose ( hFile );
+        CloseOneFile ( &hFile );
         return 0;
     }
 
     if ( fread ( &szEmpty, 1, 1, hFile ) != 0  )
     {
         AddToStatus ( "File size is too large." );
-        fclose ( hFile );
+        CloseOneFile ( &hFile );
         return 0;
     }
 
@@ -178,7 +178,7 @@ int CTUBSaveGame::ReadSavegame( const char *pFilename )
     /*
      *      Close file.
      */
-    fclose ( hFile );
+    CloseOneFile ( &hFile );
 
     return 1;
 }
@@ -232,10 +232,10 @@ void CTUBSaveGame::writeSaveGame()
     /*
      *      Get Buffer.
      */
-    if (  m_iSaveLength < TUBLEVELMINSIZE  || m_iSaveLength > TUBLEVELMAXSIZE )
+    if ( CTRXGlobal::m_ForceSaveGame == FORCE_NONE && ( m_iSaveLength < TUBLEVELMINSIZE  || m_iSaveLength > TUBLEVELMAXSIZE ) )
     {
         AddToStatus ( "Internal error in length." );
-        fclose ( hFile );
+        CloseOneFile ( &hFile );
         return;
     }
 
@@ -243,14 +243,14 @@ void CTUBSaveGame::writeSaveGame()
     if ( uLenBuffer != m_iSaveLength )
     {
         AddToStatus ( "File size is not correct." );
-        fclose ( hFile );
+        CloseOneFile ( &hFile );
         return;
     }
 
     /*
      *      Close file.
      */
-    fclose ( hFile );
+    CloseOneFile ( &hFile );
 
     //
     memcpy ( m_pBufferBackup,  m_pBuffer, m_iSaveLength );

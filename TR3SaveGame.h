@@ -26,6 +26,7 @@
 #define TR3BUFFEREND        12102
 #define TR3LEVELMINSIZE     13913
 #define TR3LEVELMAXSIZE     13914
+#define TR3LEVELBUFSIZE     80*1024
 
 /*
  *      ------------------------------------------------
@@ -189,12 +190,12 @@ struct          TR3Save
             TR30Struct      trTable [ TR3MAXLEVEL ];
             TR3Permanent    trSingle;
 
-            BYTE           szRemain [ TR3BUFFEREND ];
+            BYTE            szRemain [ TR3BUFFEREND ];
         };
 
         struct
         {
-            char                    cFullBuffer [ TR3LEVELMAXSIZE ];
+            char            cFullBuffer [ TR3LEVELBUFSIZE ];
         };
     };
 };

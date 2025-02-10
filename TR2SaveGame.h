@@ -25,6 +25,7 @@
 #define TR2BUFFEREND        6030
 #define TR2LEVELMINSIZE     7442
 #define TR2LEVELMAXSIZE     7443
+#define TR2LEVELBUFSIZE     80*1024
 
 /*
  *      ------------------------------------------------
@@ -166,7 +167,7 @@ struct          TR2Save
         };
         struct
         {
-            char                    cFullBuffer [ TR2LEVELMAXSIZE ];
+            char           cFullBuffer [ TR2LEVELBUFSIZE ];
         };
     };
 };

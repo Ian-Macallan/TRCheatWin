@@ -25,6 +25,7 @@
 #define TUBBUFFEREND        0x270F
 #define TUBLEVELMINSIZE     10434
 #define TUBLEVELMAXSIZE     10435
+#define TUBLEVELBUFSIZE     80*1024
 
 /*
  *      ------------------------------------------------
@@ -111,7 +112,7 @@ struct          TUBSave
 
         struct
         {
-            char                    cFullBuffer [ TUBLEVELMAXSIZE ];
+            char           cFullBuffer [ TUBLEVELBUFSIZE ];
         };
     };
 

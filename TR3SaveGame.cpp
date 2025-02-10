@@ -214,10 +214,10 @@ int CTR3SaveGame::ReadSavegame( const char *pFilename )
     /*
      *      Get Buffer.
      */
-    if (  m_iSaveLength < TR3LEVELMINSIZE || m_iSaveLength > TR3LEVELMAXSIZE )
+    if ( CTRXGlobal::m_ForceSaveGame == FORCE_NONE && ( m_iSaveLength < TR3LEVELMINSIZE || m_iSaveLength > TR3LEVELMAXSIZE ) )
     {
         AddToStatus ( "Internal error in length." );
-        fclose ( hFile );
+        CloseOneFile ( &hFile );
         return 0;
     }
 
@@ -226,7 +226,7 @@ int CTR3SaveGame::ReadSavegame( const char *pFilename )
     if ( uLenBuffer != m_iSaveLength )
     {
         AddToStatus ( "File size is not correct." );
-        fclose ( hFile );
+        CloseOneFile ( &hFile );
         return 0;
     }
 
@@ -234,7 +234,7 @@ int CTR3SaveGame::ReadSavegame( const char *pFilename )
     if ( fread ( &szEmpty, 1, 1, hFile ) != 0  )
     {
         AddToStatus ( "File size is too large." );
-        fclose ( hFile );
+        CloseOneFile ( &hFile );
         return 0;
     }
 
@@ -243,7 +243,7 @@ int CTR3SaveGame::ReadSavegame( const char *pFilename )
     /*
      *      Close file.
      */
-    fclose ( hFile );
+    CloseOneFile ( &hFile );
 
     return 1;
 }
@@ -316,10 +316,10 @@ void CTR3SaveGame::writeSaveGame()
     /*
      *      Get Buffer.
      */
-    if ( m_iSaveLength < TR3LEVELMINSIZE || m_iSaveLength > TR3LEVELMAXSIZE )
+    if ( CTRXGlobal::m_ForceSaveGame == FORCE_NONE && ( m_iSaveLength < TR3LEVELMINSIZE || m_iSaveLength > TR3LEVELMAXSIZE ) )
     {
         AddToStatus ( "Internal error in length." );
-        fclose ( hFile );
+        CloseOneFile ( &hFile );
         return;
     }
 
@@ -327,14 +327,14 @@ void CTR3SaveGame::writeSaveGame()
     if ( uLenBuffer != m_iSaveLength )
     {
         AddToStatus ( "File size is not correct." );
-        fclose ( hFile );
+        CloseOneFile ( &hFile );
         return;
     }
 
     /*
      *      Close file.
      */
-    fclose ( hFile );
+    CloseOneFile ( &hFile );
 
     //
     memcpy ( m_pBufferBackup,  m_pBuffer, m_iSaveLength );
