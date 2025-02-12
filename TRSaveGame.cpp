@@ -397,7 +397,7 @@ int CTRSaveGame::InstanciateVersion (const char *szFilename )
             {
                 iVersion = 10;
                 CTR1SaveGame *pGame = dynamic_cast<CTR1SaveGame *>( GetTR1Instance() );
-                if ( pGame != NULL )
+                if ( pGame != NULL && uLen <= sizeof(TR1SAVE) )
                 {
                     pGame->Reset();
                     memcpy_s ( pGame->getBufferAddress(), sizeof(TR1SAVE), m_szBuffer, uLen );
@@ -411,7 +411,7 @@ int CTRSaveGame::InstanciateVersion (const char *szFilename )
             {
                 iVersion = 15;
                 CTUBSaveGame *pGame = dynamic_cast<CTUBSaveGame *>( GetTUBInstance() );
-                if ( pGame != NULL )
+                if ( pGame != NULL && uLen <= sizeof(TUBSAVE) )
                 {
                     pGame->Reset();
                     memcpy_s ( pGame->getBufferAddress(), sizeof(TUBSAVE), m_szBuffer, uLen );
@@ -426,7 +426,7 @@ int CTRSaveGame::InstanciateVersion (const char *szFilename )
             {
                 iVersion = 20;
                 CTR2SaveGame *pGame = dynamic_cast<CTR2SaveGame *>( GetTR2Instance() );
-                if ( pGame != NULL )
+                if ( pGame != NULL && uLen <= sizeof(TR2SAVE) )
                 {
                     pGame->Reset();
                     memcpy_s ( pGame->getBufferAddress(), sizeof(TR2SAVE), m_szBuffer, uLen );
@@ -441,7 +441,7 @@ int CTRSaveGame::InstanciateVersion (const char *szFilename )
             {
                 iVersion = 30;
                 CTR3SaveGame *pGame = dynamic_cast<CTR3SaveGame *>( GetTR3Instance() );
-                if ( pGame != NULL )
+                if ( pGame != NULL && uLen <= sizeof(TR3SAVE) )
                 {
                     pGame->Reset();
                     memcpy_s ( pGame->getBufferAddress(), sizeof(TR3SAVE), m_szBuffer, uLen );
@@ -455,7 +455,7 @@ int CTRSaveGame::InstanciateVersion (const char *szFilename )
             {
                 iVersion    = 40;
                 CTR4SaveGame *pGame = dynamic_cast<CTR4SaveGame *>( GetTR4Instance() );
-                if ( pGame != NULL )
+                if ( pGame != NULL && uLen <= sizeof(TR4SAVE) )
                 {
                     pGame->Reset();
                     memcpy_s ( pGame->getBufferAddress(), sizeof(TR4SAVE), m_szBuffer, uLen );
@@ -503,7 +503,7 @@ int CTRSaveGame::InstanciateVersion (const char *szFilename )
             {
                 iVersion = 50;
                 CTR5SaveGame *pGame = dynamic_cast<CTR5SaveGame *>( GetTR5Instance() );
-                if ( pGame != NULL )
+                if ( pGame != NULL && uLen <= sizeof(TR5SAVE ) )
                 {
                     pGame->Reset();
                     memcpy_s ( pGame->getBufferAddress(), sizeof(TR5SAVE), m_szBuffer, uLen );
