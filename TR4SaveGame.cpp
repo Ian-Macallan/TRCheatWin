@@ -583,6 +583,12 @@ int CTR4SaveGame::getLevel()
             iLevel = m_pBuffer->m_cLevels [ i ];
         }
     }
+
+    //  Some case where level not found
+    if ( iLevel == 0 )
+    {
+        iLevel = 1;
+    }
     return iLevel;
 }
 

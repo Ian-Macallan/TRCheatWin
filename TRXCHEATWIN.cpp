@@ -854,64 +854,66 @@ BOOL CTRXCHEATWINApp::InitInstance()
         //  Read Script
         else if ( __strnicmp ( pCommandLine, "-force" ) == 0 )
         {
+            ZeroMemory ( szPathname, sizeof(szPathname) );
+
             char *pGame = strchr ( pCommandLine, ' ' );
             if ( pGame != NULL )
             {
                 static char MainWindowsTitle [ MAX_PATH ] = "";
 
+                //
                 pGame = SkipSpaces ( pGame );
-
-                if ( _strcmpi ( pGame, "TR1" ) == 0 )
+                if ( _strnicmp ( pGame, "TR1", strlen("TR1") ) == 0 )
                 {
                     CTRXGlobal::m_ForceSaveGame = FORCE_TR1;
                     strcpy_s ( MainWindowsTitle, sizeof(MainWindowsTitle), "Tombraider 1 Cheat Program" );
                 }
-                else if ( _strcmpi ( pGame, "TUB" ) == 0 )
+                else if ( _strnicmp ( pGame, "TUB", strlen("TUB") ) == 0 )
                 {
                     CTRXGlobal::m_ForceSaveGame = FORCE_TUB;
                     strcpy_s ( MainWindowsTitle, sizeof(MainWindowsTitle), "Tombraider 1 UB Cheat Program" );
                 }
-                else if ( _strcmpi ( pGame, "TR2" ) == 0 )
-                {
-                    CTRXGlobal::m_ForceSaveGame = FORCE_TR2;
-                    strcpy_s ( MainWindowsTitle, sizeof(MainWindowsTitle), "Tombraider 2 Cheat Program" );
-                }
-                else if ( _strcmpi ( pGame, "TR2G" ) == 0 )
+                else if ( _strnicmp ( pGame, "TR2G", strlen("TR2G") ) == 0 )
                 {
                     CTRXGlobal::m_ForceSaveGame = FORCE_TR2G;
                     strcpy_s ( MainWindowsTitle, sizeof(MainWindowsTitle), "Tombraider 2 Gold Cheat Program" );
                 }
-                else if ( _strcmpi ( pGame, "TR3" ) == 0 )
+                else if ( _strnicmp ( pGame, "TR2", strlen("TR2") ) == 0 )
                 {
-                    CTRXGlobal::m_ForceSaveGame = FORCE_TR3;
-                    strcpy_s ( MainWindowsTitle, sizeof(MainWindowsTitle), "Tombraider 3 Cheat Program" );
+                    CTRXGlobal::m_ForceSaveGame = FORCE_TR2;
+                    strcpy_s ( MainWindowsTitle, sizeof(MainWindowsTitle), "Tombraider 2 Cheat Program" );
                 }
-                else if ( _strcmpi ( pGame, "TR3G" ) == 0 )
+                else if ( _strnicmp ( pGame, "TR3G", strlen("TR3G") ) == 0 )
                 {
                     CTRXGlobal::m_ForceSaveGame = FORCE_TR3G;
                     strcpy_s ( MainWindowsTitle, sizeof(MainWindowsTitle), "Tombraider 3 Gold Cheat Program" );
                 }
-                else if ( _strcmpi ( pGame, "TR4" ) == 0 )
+                else if ( _strnicmp ( pGame, "TR3", strlen("TR3") ) == 0 )
                 {
-                    CTRXGlobal::m_ForceSaveGame = FORCE_TR4;
-                    strcpy_s ( MainWindowsTitle, sizeof(MainWindowsTitle), "Tombraider 4 Cheat Program" );
+                    CTRXGlobal::m_ForceSaveGame = FORCE_TR3;
+                    strcpy_s ( MainWindowsTitle, sizeof(MainWindowsTitle), "Tombraider 3 Cheat Program" );
                 }
-                else if ( _strcmpi ( pGame, "TR4G" ) == 0 )
-                {
-                    CTRXGlobal::m_ForceSaveGame = FORCE_TR4G;
-                    strcpy_s ( MainWindowsTitle, sizeof(MainWindowsTitle), "Tombraider 4 Gold Cheat Program" );
-                }
-                else if ( _strcmpi ( pGame, "TR4NG" ) == 0 )
+                else if ( _strnicmp ( pGame, "TR4NG", strlen("TR4NG") ) == 0 )
                 {
                     CTRXGlobal::m_ForceSaveGame = FORCE_TR4NG;
                     strcpy_s ( MainWindowsTitle, sizeof(MainWindowsTitle), "Tombraider 4 Next Gen Program" );
                 }
-                else if ( _strcmpi ( pGame, "TR5" ) == 0 )
+                else if ( _strnicmp ( pGame, "TR4G", strlen("TR4G") ) == 0 )
+                {
+                    CTRXGlobal::m_ForceSaveGame = FORCE_TR4G;
+                    strcpy_s ( MainWindowsTitle, sizeof(MainWindowsTitle), "Tombraider 4 Gold Cheat Program" );
+                }
+                else if ( _strnicmp ( pGame, "TR4", strlen("TR4") ) == 0 )
+                {
+                    CTRXGlobal::m_ForceSaveGame = FORCE_TR4;
+                    strcpy_s ( MainWindowsTitle, sizeof(MainWindowsTitle), "Tombraider 4 Cheat Program" );
+                }
+                else if ( _strnicmp ( pGame, "TR5", strlen("TR5") ) == 0 )
                 {
                     CTRXGlobal::m_ForceSaveGame = FORCE_TR5;
                     strcpy_s ( MainWindowsTitle, sizeof(MainWindowsTitle), "Tombraider 5 Cheat Program" );
                 }
-                else if ( _strcmpi ( pGame, "TRR123" ) == 0 )
+                else if ( _strnicmp ( pGame, "TRR123", strlen("TRR123") ) == 0 )
                 {
                     CTRXGlobal::m_ForceSaveGame = FORCE_TRR123;
                     strcpy_s ( MainWindowsTitle, sizeof(MainWindowsTitle), "Tombraider 123 Remastered Cheat Program" );
@@ -922,6 +924,22 @@ BOOL CTRXCHEATWINApp::InitInstance()
                 }
 
                 //
+                char *pFilename = strchr ( pGame, ' ' );
+                if ( pFilename != NULL )
+                {
+                    pFilename = SkipSpaces ( pFilename );
+                    CopyBetweenQuotes ( szPathname, sizeof(szPathname), pFilename );
+
+                    LPSTR lpFilepart = NULL;
+                    GetFullPathName ( szPathname, sizeof(szFullPathname), szFullPathname, &lpFilepart );
+                }
+
+                if ( ! PathFileExists(szFullPathname) )
+                {
+                    ZeroMemory ( szFullPathname, sizeof(szFullPathname) );
+                }
+
+                //
                 switch ( CTRXGlobal::m_ForceSaveGame )
                 {
                     //
@@ -929,6 +947,10 @@ BOOL CTRXCHEATWINApp::InitInstance()
                     {
                         CTRXPropertySheetRemastered dlg ( MainWindowsTitle );
                         dlg.SetApply ( TRUE );
+                        if ( strlen(szFullPathname) > 0 )
+                        {
+                            dlg.SetParmPathname ( szFullPathname );
+                        }
                         m_pMainWnd = &dlg;
                         nResponse = dlg.DoModal();
                         break;
@@ -946,6 +968,10 @@ BOOL CTRXCHEATWINApp::InitInstance()
                     {
                         CTRXPropertySheetStandard   dlg ( MainWindowsTitle );
                         dlg.SetApply ( TRUE );
+                        if ( strlen(szFullPathname) > 0 )
+                        {
+                            dlg.SetParmPathname ( szFullPathname );
+                        }
                         m_pMainWnd = &dlg;
                         nResponse = dlg.DoModal();
                         break;
