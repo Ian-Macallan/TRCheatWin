@@ -1,4 +1,7 @@
 #include "stdafx.h"
+
+#include <Windows.h>
+
 #include "TRXTools.h"
 
 #include "TRXCHEATWIN.h"

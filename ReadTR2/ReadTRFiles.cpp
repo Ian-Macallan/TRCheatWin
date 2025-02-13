@@ -54,6 +54,8 @@ int main(int iArgCount, _TCHAR* pArgValue[])
 {
     FILE *hOutputFile = NULL;
 
+    //  The TR1, TR1G, TR2, TR2G, TR3, TR3G, TR4, TR4G, TR5, TR123 will produce files
+    //  Standard
     if ( iArgCount > 1 && strcmp ( pArgValue [ 1 ], "TR1" ) == 0 )
     {
         hOutputFile = NULL;
@@ -64,6 +66,7 @@ int main(int iArgCount, _TCHAR* pArgValue[])
             fclose ( hOutputFile );
         }
     }
+    //  Custom
     else if ( iArgCount > 1 && strcmp ( pArgValue [ 1 ], "-tr1" ) == 0 )
     {
         if ( iArgCount > 2 )
@@ -211,7 +214,7 @@ int main(int iArgCount, _TCHAR* pArgValue[])
         }
     }
     //  Remastered
-    else
+    else if ( iArgCount > 1 && strcmp ( pArgValue [ 1 ], "TR123" ) == 0 )
     {
         hOutputFile = NULL;
         fopen_s ( &hOutputFile, ".\\TRR1_Areas_inc.h", "w" );
@@ -260,6 +263,15 @@ int main(int iArgCount, _TCHAR* pArgValue[])
             TreatDirectory ( hOutputFile, "G:\\GOG Games\\Tomb Raider I-III Remastered\\3\\DATA\\LA", 35, TRR3_MODE, "*.TR2", "TRR3G_" );
             fclose ( hOutputFile );
         }
+    }
+    else
+    {
+        printf ( "Usage is :\n" );
+        printf ( "%s Game [directory]\n", pArgValue [ 0 ] );
+        printf ( "Where game is\n" );
+        printf ( "TR1, TR1G, TR2, TR2G, TR3, TR3G, TR4, TR4G, TR5, TR123 for standard games\n" );
+        printf ( "-tr1, -tr2, -tr3, -tr4, -tr5 for custom games and directory is needed\n" );
+
     }
 
     return 0;

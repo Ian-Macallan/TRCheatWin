@@ -1,6 +1,8 @@
 ﻿#include "stdafx.h"
 #include <Windows.h>
 
+#include <Shlwapi.h>
+
 #include "ReadTRXScript.h"
 #include "MCMemA.h"
 #include "TR4NG.h"

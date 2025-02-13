@@ -253,6 +253,9 @@
     <ClCompile Include="TRXLevels.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ReadTR2\TR4NGFunction.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="res\Aire 51.bmp">

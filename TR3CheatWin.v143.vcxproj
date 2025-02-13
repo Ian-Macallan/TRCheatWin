@@ -235,6 +235,7 @@
     <ClCompile Include="ReadTR2\MCMemA.cpp" />
     <ClCompile Include="ReadTR2\ReadTRX.cpp" />
     <ClCompile Include="ReadTR2\ReadTRXScript.cpp" />
+    <ClCompile Include="ReadTR2\TR4NGFunction.cpp" />
     <ClCompile Include="StdAfx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
