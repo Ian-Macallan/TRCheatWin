@@ -53,6 +53,11 @@ BOOL CTRXTools::IsAmmosEnabled ( int tombraider, int level, int gun )
         return TRUE;
     }
 
+    if ( level == 0 )
+    {
+        level = 1;
+    }
+
     //
     switch ( tombraider )
     {
@@ -164,6 +169,11 @@ BOOL CTRXTools::IsAGunEnabled ( int tombraider, int level, int gun )
     if ( CTRXGlobal::m_iUnchecked )
     {
         return TRUE;
+    }
+
+    if ( level == 0 )
+    {
+        level = 1;
     }
 
     //

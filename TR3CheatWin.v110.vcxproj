@@ -232,6 +232,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="GunGrids.cpp" />
+    <ClCompile Include="ReadTR2\ExportDataFiles.cpp" />
     <ClCompile Include="ReadTR2\MCMemA.cpp" />
     <ClCompile Include="ReadTR2\ReadTRX.cpp" />
     <ClCompile Include="ReadTR2\ReadTRXScript.cpp" />
@@ -509,6 +510,7 @@
     <ClInclude Include="AutomaticProductName.h" />
     <ClInclude Include="AutomaticVersionHeader.h" />
     <ClInclude Include="GunGrids.h" />
+    <ClInclude Include="ReadTR2\ExportDataFiles.h" />
     <ClInclude Include="ReadTR2\MCMemA.h" />
     <ClInclude Include="ReadTR2\ReadTRX.h" />
     <ClInclude Include="ReadTR2\ReadTRXBasicTypes.h" />

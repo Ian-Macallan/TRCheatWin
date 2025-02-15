@@ -256,6 +256,9 @@
     <ClCompile Include="ReadTR2\TR4NGFunction.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ReadTR2\ExportDataFiles.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="res\Aire 51.bmp">
@@ -838,6 +841,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="TR4NG.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ReadTR2\ExportDataFiles.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

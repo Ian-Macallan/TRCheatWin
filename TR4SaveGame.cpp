@@ -572,12 +572,15 @@ void CTR4SaveGame::GetDetailedInfo (    char *szGame, size_t iSize, int *iGame, 
 int CTR4SaveGame::getLevel()
 {
     int iLevel = 0;
+
+    //
     for ( int i = 0; i < sizeof(m_pBuffer->m_cLevels); i++ )
     {
         if ( m_pBuffer->m_cLevels [ i ] < iLevel )
         {
             // break;
         }
+
         if ( m_pBuffer->m_cLevels [ i ] != 0 )
         {
             iLevel = m_pBuffer->m_cLevels [ i ];
@@ -587,8 +590,10 @@ int CTR4SaveGame::getLevel()
     //  Some case where level not found
     if ( iLevel == 0 )
     {
-        iLevel = 1;
+        // iLevel = 1;
     }
+
+    //
     return iLevel;
 }
 
