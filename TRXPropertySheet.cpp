@@ -34,31 +34,32 @@ IMPLEMENT_DYNAMIC(CTRXPropertySheet, CPropertySheet)
 CTRXPropertySheet::CTRXPropertySheet(UINT nIDCaption, CWnd* pParentWnd, UINT iSelectPage) :
     CPropertySheet(nIDCaption, pParentWnd, iSelectPage)
 {
-    m_bApplyActive      = FALSE;
+    m_bApplyActive          = FALSE;
 
-    m_Info_Page         = NULL;
-    m_Equipment_Page    = NULL;
-    m_Gun_Page          = NULL;
-    m_Ammos_Page        = NULL;
-    m_Item_Page         = NULL;
-    m_ItemTR4_Page      = NULL;
+    m_Info_Page             = NULL;
+    m_Equipment_Page        = NULL;
+    m_Gun_Page              = NULL;
+    m_Ammos_Page            = NULL;
+    m_Item_Page             = NULL;
+    m_ItemTR4_Page          = NULL;
 
-    m_Remastered_Page   = NULL;
-    m_bInitDone         = false;
+    m_Remastered123_Page   = NULL;
+    m_Remastered456_Page   = NULL;
+    m_bInitDone             = false;
 
     ZeroMemory ( m_ParmPathname, sizeof(m_ParmPathname) );
 
     m_hIcon             = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 
-    m_pMenu             = NULL;
+    m_pMenu                 = NULL;
 
-    m_bToolTip          = FALSE;
+    m_bToolTip              = FALSE;
 
-    m_pNormalFont       = NULL;
-    m_pItalicFont       = NULL;
-    m_pBoldFont         = NULL;
-    m_pFixedFont        = NULL;
-    m_pFixedBoldFont    = NULL;
+    m_pNormalFont           = NULL;
+    m_pItalicFont           = NULL;
+    m_pBoldFont             = NULL;
+    m_pFixedFont            = NULL;
+    m_pFixedBoldFont        = NULL;
 }
 
 //
@@ -68,17 +69,18 @@ CTRXPropertySheet::CTRXPropertySheet(UINT nIDCaption, CWnd* pParentWnd, UINT iSe
 CTRXPropertySheet::CTRXPropertySheet(LPCTSTR pszCaption, CWnd* pParentWnd, UINT iSelectPage) :
         CPropertySheet(pszCaption, pParentWnd, iSelectPage)
 {
-    m_bApplyActive      = FALSE;
+    m_bApplyActive          = FALSE;
 
-    m_Info_Page         = NULL;
-    m_Equipment_Page    = NULL;
-    m_Gun_Page          = NULL;
-    m_Ammos_Page        = NULL;
-    m_Item_Page         = NULL;
-    m_ItemTR4_Page      = NULL;
+    m_Info_Page             = NULL;
+    m_Equipment_Page        = NULL;
+    m_Gun_Page              = NULL;
+    m_Ammos_Page            = NULL;
+    m_Item_Page             = NULL;
+    m_ItemTR4_Page          = NULL;
 
-    m_Remastered_Page   = NULL;
-    m_bInitDone         = false;
+    m_Remastered123_Page    = NULL;
+    m_Remastered456_Page    = NULL;
+    m_bInitDone             = false;
 
     ZeroMemory ( m_ParmPathname, sizeof(m_ParmPathname) );
 
@@ -104,7 +106,7 @@ CTRXPropertySheet::~CTRXPropertySheet()
 #define DELETE_OBJECT(o) if ( o != NULL ) { delete o; o = NULL; }
 
     RemoveStandardPage ();
-    RemoveRemasteredPage();
+    RemoveRemastered123Page();
 
     DELETE_OBJECT(m_pItalicFont)
     DELETE_OBJECT(m_pBoldFont)
@@ -126,9 +128,16 @@ void CTRXPropertySheet::SetParmPathname ( const char *pathname )
             m_Info_Page->SetParmPathname ( m_ParmPathname );
             ZeroMemory ( m_ParmPathname, sizeof(m_ParmPathname) );
         }
-        if ( m_Remastered_Page != NULL )
+
+        if ( m_Remastered123_Page != NULL )
         {
-            m_Remastered_Page->SetParmPathname ( m_ParmPathname );
+            m_Remastered123_Page->SetParmPathname ( m_ParmPathname );
+            ZeroMemory ( m_ParmPathname, sizeof(m_ParmPathname) );
+        }
+
+        if ( m_Remastered456_Page != NULL )
+        {
+            m_Remastered456_Page->SetParmPathname ( m_ParmPathname );
             ZeroMemory ( m_ParmPathname, sizeof(m_ParmPathname) );
         }
     }
@@ -152,14 +161,24 @@ void CTRXPropertySheet::SetTheActivePage ( PROPERTY_PAGE page )
 
     switch ( page )
     {
-        case PAGE_REMASTERED :
+        case PAGE_REMASTERED_123 :
         {
-            if ( m_Remastered_Page != NULL )
+            if ( m_Remastered123_Page != NULL )
             {
-                SetActivePage ( m_Remastered_Page );
+                SetActivePage ( m_Remastered123_Page );
             }
             break;
         }
+
+        case PAGE_REMASTERED_456 :
+        {
+            if ( m_Remastered456_Page != NULL )
+            {
+                SetActivePage ( m_Remastered456_Page );
+            }
+            break;
+        }
+
         case PAGE_INFOS :
         {
             if ( m_Info_Page != NULL )
@@ -220,16 +239,28 @@ void CTRXPropertySheet::DropToPage ( PROPERTY_PAGE page, const char *pFilename )
 {
     switch ( page )
     {
-        case PAGE_REMASTERED :
+        case PAGE_REMASTERED_123 :
         {
-            if ( m_Remastered_Page != NULL )
+            if ( m_Remastered123_Page != NULL )
             {
                 //  Set Active Must Be done Before
-                SetTheActivePage ( PAGE_REMASTERED );
-                m_Remastered_Page->DoDropFiles ( pFilename );
+                SetTheActivePage ( PAGE_REMASTERED_123 );
+                m_Remastered123_Page->DoDropFiles ( pFilename );
             }
             break;
         }
+
+        case PAGE_REMASTERED_456 :
+        {
+            if ( m_Remastered456_Page != NULL )
+            {
+                //  Set Active Must Be done Before
+                SetTheActivePage ( PAGE_REMASTERED_456 );
+                m_Remastered456_Page->DoDropFiles ( pFilename );
+            }
+            break;
+        }
+
         case PAGE_INFOS :
         {
             if ( m_Info_Page != NULL )
@@ -532,20 +563,49 @@ void CTRXPropertySheet::AddStandardPage ()
 /////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////
-void CTRXPropertySheet::AddRemasteredPage ()
+void CTRXPropertySheet::AddRemastered123Page ()
 {
-    if ( ! m_iRemasteredAdded )
+    if ( ! m_iRemastered123Added )
     {
-        m_Remastered_Page = new CTRXRemastered();
+        m_Remastered123_Page = new CTRXRemastered();
         if ( strlen(m_ParmPathname) > 0 )
         {
-            m_Remastered_Page->SetParmPathname ( m_ParmPathname );
+            m_Remastered123_Page->SetParmPathname ( m_ParmPathname );
             ZeroMemory ( m_ParmPathname, sizeof(m_ParmPathname) );
         }
-        m_Remastered_Page->SetApply ( m_bApplyActive );
+        m_Remastered123_Page->SetApply ( m_bApplyActive );
 
-        AddPage ( m_Remastered_Page );
-        m_iRemasteredAdded  = TRUE;
+        AddPage ( m_Remastered123_Page );
+        m_iRemastered123Added  = TRUE;
+
+#if 0
+        m_psh.dwFlags &= ~PSH_HASHELP;
+        for(int i = 0; i < GetPageCount(); ++i )
+        {
+            GetPage(i)->m_psp.dwFlags &= ~PSP_HASHELP;
+        }
+#endif
+    }
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
+void CTRXPropertySheet::AddRemastered456Page ()
+{
+    if ( ! m_iRemastered456Added )
+    {
+        m_Remastered456_Page = new CTRXRemastered456();
+        if ( strlen(m_ParmPathname) > 0 )
+        {
+            m_Remastered456_Page->SetParmPathname ( m_ParmPathname );
+            ZeroMemory ( m_ParmPathname, sizeof(m_ParmPathname) );
+        }
+        m_Remastered456_Page->SetApply ( m_bApplyActive );
+
+        AddPage ( m_Remastered456_Page );
+        m_iRemastered456Added  = TRUE;
 
 #if 0
         m_psh.dwFlags &= ~PSH_HASHELP;
@@ -615,18 +675,37 @@ void CTRXPropertySheet::RemoveStandardPage ()
 /////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////
-void CTRXPropertySheet::RemoveRemasteredPage ()
+void CTRXPropertySheet::RemoveRemastered123Page ()
 {
-    if ( m_iRemasteredAdded )
+    if ( m_iRemastered123Added )
     {
-        if ( m_Remastered_Page != NULL )
+        if ( m_Remastered123_Page != NULL )
         {
-            RemovePage ( m_Remastered_Page );
-            delete m_Remastered_Page;
-            m_Remastered_Page = NULL;
+            RemovePage ( m_Remastered123_Page );
+            delete m_Remastered123_Page;
+            m_Remastered123_Page = NULL;
         }
 
-        m_iRemasteredAdded  = FALSE;
+        m_iRemastered123Added  = FALSE;
+    }
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
+void CTRXPropertySheet::RemoveRemastered456Page ()
+{
+    if ( m_iRemastered456Added )
+    {
+        if ( m_Remastered456_Page != NULL )
+        {
+            RemovePage ( m_Remastered456_Page );
+            delete m_Remastered456_Page;
+            m_Remastered456_Page = NULL;
+        }
+
+        m_iRemastered456Added  = FALSE;
     }
 }
 
@@ -663,7 +742,8 @@ void CTRXPropertySheet::SetApply(BOOL bApply )
     if ( m_Ammos_Page != NULL ) m_Ammos_Page->SetApply ( m_bApplyActive );
     if ( m_Item_Page != NULL ) m_Item_Page->SetApply ( m_bApplyActive );
     if ( m_ItemTR4_Page != NULL ) m_ItemTR4_Page->SetApply ( m_bApplyActive );
-    if ( m_Remastered_Page != NULL ) m_Remastered_Page->SetApply ( m_bApplyActive );
+    if ( m_Remastered123_Page != NULL ) m_Remastered123_Page->SetApply ( m_bApplyActive );
+    if ( m_Remastered456_Page != NULL ) m_Remastered456_Page->SetApply ( m_bApplyActive );
 
  }
 

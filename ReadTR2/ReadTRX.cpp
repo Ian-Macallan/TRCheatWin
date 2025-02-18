@@ -577,10 +577,31 @@ BOOL ExtractData (  FILE *hOutputFile, int game,
             }
         }
 
+        if ( TRMode == TRR4_MODE )
+        {
+            if ( memcmp ( &Version, "TRX4", 4 ) != 0 )
+            {
+                bResult = FALSE;
+                CloseOneFile ( &hFile );
+                return bResult;
+            }
+        }
+
         //
         if ( TRMode == TR5_MODE )
         {
             if ( memcmp ( &Version, "TR4", 3 ) != 0 )
+            {
+                bResult = FALSE;
+                CloseOneFile ( &hFile );
+                return bResult;
+            }
+        }
+
+        //
+        if ( TRMode == TRR5_MODE  )
+        {
+            if ( memcmp ( &Version, "TRX5", 4 ) != 0 )
             {
                 bResult = FALSE;
                 CloseOneFile ( &hFile );
@@ -598,7 +619,7 @@ BOOL ExtractData (  FILE *hOutputFile, int game,
             iRead = ReadChunk (  &Palette16, sizeof(Palette16), hFile );
         }
 
-        if ( TRMode == TR4_MODE || TRMode == TR5_MODE)
+        if ( TRMode == TR4_MODE || TRMode == TR5_MODE || TRMode == TRR4_MODE || TRMode == TRR5_MODE )
         {
             iRead = ReadChunk (  &NumRoomTextiles, sizeof(NumRoomTextiles), hFile );
             iRead = ReadChunk (  &NumObjTextiles, sizeof(NumObjTextiles), hFile );
@@ -616,7 +637,7 @@ BOOL ExtractData (  FILE *hOutputFile, int game,
             iRead = ReadChunk (  &Textile32Misc_CompSize, sizeof(Textile32Misc_CompSize), hFile );
             iRead = ReadChunk (  memBuffer.ptr, Textile32Misc_CompSize, hFile );
 
-            if ( TRMode == TR5_MODE )
+            if ( TRMode == TR5_MODE || TRMode == TRR5_MODE )
             {
                 iRead = ReadChunk (  &LaraType, sizeof(LaraType), hFile );
                 iRead = ReadChunk (  &WeatherType, sizeof(WeatherType), hFile );
@@ -1000,7 +1021,7 @@ BOOL ExtractData (  FILE *hOutputFile, int game,
         }   // end TRMode == TRR1_MODE || TRMode == TRR2_MODE || TRMode == TRR3_MODE
 
         //
-        if ( TRMode == TR4_MODE )
+        if ( TRMode == TR4_MODE || TRMode == TRR4_MODE )
         {
             pLevelData  = (BYTE*) memLevelDataUnCompressed.ptr;
             pLevelData  += sizeof(xuint32_t);       //  Unused
@@ -1205,7 +1226,7 @@ BOOL ExtractData (  FILE *hOutputFile, int game,
 
 
         //
-        if ( TRMode == TR5_MODE )
+        if ( TRMode == TR5_MODE || TRMode == TRR5_MODE )
         {
             pLevelData  = (BYTE*) memLevelDataUnCompressed.ptr;
 

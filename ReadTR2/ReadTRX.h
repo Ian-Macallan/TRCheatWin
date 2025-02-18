@@ -8,6 +8,8 @@ enum TR_MODE
     TRR1_MODE,
     TRR2_MODE,
     TRR3_MODE,
+    TRR4_MODE,
+    TRR5_MODE,
     TR4_MODE,
     TR5_MODE
 };

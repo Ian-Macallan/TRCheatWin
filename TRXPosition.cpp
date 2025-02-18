@@ -6,6 +6,7 @@
 #include <math.h>
 
 #include "TRXPosition.h"
+#include "TR8SaveGame.h"
 #include "TR9SaveGame.h"
 #include "TR_Areas.h"
 #include "TRXMapAreas.h"
@@ -36,6 +37,8 @@ IMPLEMENT_DYNAMIC(CTRXPosition, CTRXDialogBase)
 CTRXPosition::CTRXPosition(CWnd* pParent /*=NULL*/) : CTRXDialogBase(CTRXPosition::IDD, pParent)
 {
     m_iArea         = -1;
+    m_123           = FALSE;
+    m_456           = FALSE;
 }
 
 //
@@ -136,9 +139,8 @@ BOOL CTRXPosition::OnInitDialog()
     static char szLabel [ MAX_PATH ];
 
     //
-    if ( CTR9SaveGame::I(FALSE) != NULL )
+    if ( m_123 && CTR9SaveGame::I(FALSE) != NULL )
     {
-
         int levelNumber     = CTR9SaveGame::I()->GetBlockLevelNumber ( m_iTombraider, m_iBlock );
         int levelIndex      = levelNumber - 1;
         const char *pLevelName = CTR9SaveGame::GetLevelName ( m_iTombraider, levelNumber );
@@ -376,6 +378,249 @@ BOOL CTRXPosition::OnInitDialog()
         }
     }
 
+    //
+    if ( m_456 && CTR8SaveGame::I(FALSE) != NULL )
+    {
+        int levelNumber     = CTR8SaveGame::I()->GetBlockLevelNumber ( m_iTombraider, m_iBlock );
+        int levelIndex      = levelNumber - 1;
+        const char *pLevelName = CTR8SaveGame::GetLevelName ( m_iTombraider, levelNumber );
+        SetWindowText ( pLevelName );
+
+        const TR_POSITION *pDwAddress = CTR8SaveGame::I()->GetPosition ( m_iTombraider, m_iBlock );
+        if ( pDwAddress != NULL )
+        {
+            //
+            ZeroMemory ( szText, sizeof(szText) );
+            sprintf_s ( szText, sizeof(szText), "%08X", pDwAddress->dwWestToEast );
+            m_West_East.SetWindowText ( szText );
+
+            ZeroMemory ( szText, sizeof(szText) );
+            sprintf_s ( szText, sizeof(szText), "%.3f", (double) (long) pDwAddress->dwWestToEast / POSITION_DIVIDER );
+            m_West_East_M.SetWindowText ( szText );
+            m_West_East_Old.SetWindowText ( szText );
+
+            //
+            ZeroMemory ( szText, sizeof(szText) );
+            sprintf_s ( szText, sizeof(szText), "%08X", pDwAddress->dwVertical );
+            m_Vertical.SetWindowText ( szText );
+
+            ZeroMemory ( szText, sizeof(szText) );
+            sprintf_s ( szText, sizeof(szText), "%.3f", (double) (long) pDwAddress->dwVertical / POSITION_DIVIDER );
+            m_Vertical_M.SetWindowText ( szText );
+            m_Vertical_Old.SetWindowText ( szText );
+
+            //
+            ZeroMemory ( szText, sizeof(szText) );
+            sprintf_s ( szText, sizeof(szText), "%08X", pDwAddress->dwSouthToNorth );
+            m_South_North.SetWindowText ( szText );
+
+            ZeroMemory ( szText, sizeof(szText) );
+            sprintf_s ( szText, sizeof(szText), "%.3f", (double) (long) pDwAddress->dwSouthToNorth / POSITION_DIVIDER );
+            m_South_North_M.SetWindowText ( szText );
+            m_South_North_Old.SetWindowText ( szText );
+
+            //  Word 0
+#if 0
+            ZeroMemory ( szText, sizeof(szText) );
+            sprintf_s ( szText, sizeof(szText), "%04X", pDwAddress->wSomething0 );
+            m_Word0.SetWindowText ( szText );
+
+            ZeroMemory ( szText, sizeof(szText) );
+            sprintf_s ( szText, sizeof(szText), "%d",  pDwAddress->wSomething0 );
+            m_Word0_X.SetWindowText ( szText );
+            m_Word0_Old.SetWindowText ( szText );
+#endif
+            //  Orientation
+            double dfOrientation = CTRXTools::ConvertOrientationFromWORD ( pDwAddress->wOrientation );
+
+            ZeroMemory ( szText, sizeof(szText) );
+            sprintf_s ( szText, sizeof(szText), "%04X", pDwAddress->wOrientation );
+            m_Word1.SetWindowText ( szText );
+
+            ZeroMemory ( szText, sizeof(szText) );
+            sprintf_s ( szText, sizeof(szText), "%.3f", dfOrientation );
+            m_Word1_D.SetWindowText ( szText );
+            m_Word1_Old.SetWindowText ( szText );
+
+            //  Word 2
+            ZeroMemory ( szText, sizeof(szText) );
+            sprintf_s ( szText, sizeof(szText), "%04X", pDwAddress->wSomething2 );
+            m_Word2.SetWindowText ( szText );
+
+            ZeroMemory ( szText, sizeof(szText) );
+            sprintf_s ( szText, sizeof(szText), "%d",  pDwAddress->wSomething2 );
+            m_Word2_X.SetWindowText ( szText );
+            m_Word2_Old.SetWindowText ( szText );
+
+            //  Word 3
+#if 0
+            ZeroMemory ( szText, sizeof(szText) );
+            sprintf_s ( szText, sizeof(szText), "%04X", pDwAddress->wSomething3 );
+            m_Word3.SetWindowText ( szText );
+
+            ZeroMemory ( szText, sizeof(szText) );
+            sprintf_s ( szText, sizeof(szText), "%d",  pDwAddress->wSomething3 );
+            m_Word3_X.SetWindowText ( szText );
+            m_Word3_Old.SetWindowText ( szText );
+#endif
+            //  Special
+            ZeroMemory ( szText, sizeof(szText) );
+            sprintf_s ( szText, sizeof(szText), "%04X", pDwAddress->wRoom );
+            m_Word4.SetWindowText ( szText );
+
+            ZeroMemory ( szText, sizeof(szText) );
+            sprintf_s ( szText, sizeof(szText), "%d",  pDwAddress->wRoom );
+            m_Word4_X.SetWindowText ( szText );
+            m_Word4_Old.SetWindowText ( szText );
+
+            //  Word 5
+#if 0
+            ZeroMemory ( szText, sizeof(szText) );
+            sprintf_s ( szText, sizeof(szText), "%04X", pDwAddress->wSomething5 );
+            m_Word5.SetWindowText ( szText );
+
+            ZeroMemory ( szText, sizeof(szText) );
+            sprintf_s ( szText, sizeof(szText), "%d",  pDwAddress->wSomething5 );
+            m_Word5_X.SetWindowText ( szText );
+            m_Word5_Old.SetWindowText ( szText );
+#endif
+            //
+            m_West_East_M.SetReadOnly ( FALSE );
+            m_Vertical_M.SetReadOnly ( FALSE );
+            m_South_North_M.SetReadOnly ( FALSE );
+
+            m_Word0_X.SetReadOnly ( FALSE );
+            m_Word1_D.SetReadOnly ( FALSE );
+            m_Word2_X.SetReadOnly ( FALSE );
+            m_Word3_X.SetReadOnly ( FALSE );
+            m_Word4_X.SetReadOnly ( FALSE );
+            m_Word5_X.SetReadOnly ( FALSE );
+
+            //
+            int levelNumber     = CTR8SaveGame::I()->GetBlockLevelNumber ( m_iTombraider, m_iBlock );
+            int levelIndex      = levelNumber - 1;
+            int currentArea     = -1;
+
+            //  Find may n ot be correct
+            currentArea = FindAreaForCoordinates ( m_iTombraider, levelIndex, pDwAddress->dwWestToEast, pDwAddress->dwVertical, pDwAddress->dwSouthToNorth );
+            currentArea = pDwAddress->wRoom;
+
+            //  Combo
+            long curX           = 0;
+            long curZ           = 0;
+            long curXSectors    = 0;
+            long curZSectors    = 0;
+            long curYTop        = 0;
+            long curYBottom     = 0;
+
+            const char *pLabel = NULL;
+            m_AreasList.ResetContent();
+            TR_AREA trArea;
+            ZeroMemory ( &trArea, sizeof( trArea) );
+            int index           = 0;
+            while ( EnumAreaForCoordinates ( m_iTombraider, levelIndex, index, &trArea ) )
+            {
+                ZeroMemory ( szLabel, sizeof(szLabel) );
+                if ( pLabel != NULL && strlen(pLabel) > 0 )
+                {
+                    strcpy_s ( szLabel, sizeof(szLabel), pLabel );
+                }
+                else
+                {
+                    ZeroMemory ( szLabel, sizeof(szLabel) );
+                    if ( ( trArea.flags & 0x01 ) == 0x01 )      // Bit 0
+                    {
+                        strcat_s ( szLabel, sizeof(szLabel), "Full of Water; " );
+                    }
+                    if ( ( trArea.flags & 0x08) == 0x08 )   //  Bit 3
+                    {
+                        strcat_s ( szLabel, sizeof(szLabel), "Open Area; " );
+                    }
+                    if ( ( trArea.flags & 0x80 ) == 0x80 )      //  Bit 7
+                    {
+                        strcat_s ( szLabel, sizeof(szLabel), "Quicksand / Mud; " );
+                    }
+                    if ( ( trArea.flags & 0x200 ) == 0x200 )    //  Bit 9
+                    {
+                        strcat_s ( szLabel, sizeof(szLabel), "Some Water; " );
+                    }
+
+                    if ( abs(trArea.yBottom - trArea.yTop) < LOW_CEILING )
+                    {
+                        strcat_s ( szLabel, sizeof(szLabel), "Low Ceiling; " );
+                    }
+
+                    {
+#ifdef _DEBUG
+                        sprintf_s ( szLabel + strlen(szLabel), sizeof(szLabel) - strlen(szLabel), "Flags : 0x%X", trArea.flags );
+#endif
+                    }
+                }
+                sprintf_s ( szText, sizeof(szText), "%03d : [%ld,%ld], [%ld,%ld], [%ld,%ld] %s",
+                            trArea.index,
+                            trArea.x,
+                            trArea.x + TR_SECTOR_SIZE * trArea.xSectors,
+                            trArea.z,
+                            trArea.z + TR_SECTOR_SIZE * trArea.zSectors, trArea.yTop, trArea.yBottom, szLabel );
+                m_AreasList.AddString ( szText );
+                if ( trArea.index == currentArea )
+                {
+                //
+                    TR_CUR_POSITION                 currentPosition;
+                    ZeroMemory ( &currentPosition, sizeof(currentPosition) );
+                    currentPosition.x               = pDwAddress->dwWestToEast;
+                    currentPosition.z               = pDwAddress->dwSouthToNorth;
+                    currentPosition.orientation     = dfOrientation;
+
+                    m_Room.SetAreaAndPosition ( &trArea, &currentPosition );
+
+                    m_iArea     = currentArea;
+
+                    sprintf_s ( szText, sizeof(szText), "%ld , %ld, %ld ",
+                        trArea.x, trArea.x + trArea.xSectors * TR_SECTOR_SIZE, trArea.xSectors );
+                    m_West_East_Range.SetWindowText ( szText );
+                    sprintf_s ( szText, sizeof(szText), "%ld , %ld ", trArea.yTop, trArea.yBottom );
+                    m_Vertical_Range.SetWindowText ( szText );
+                    sprintf_s ( szText, sizeof(szText), "%ld , %ld, %ld ",
+                        trArea.z, trArea.z + trArea.zSectors * TR_SECTOR_SIZE, trArea.zSectors );
+                    m_South_North_Range.SetWindowText ( szText );
+
+                    curX            = trArea.x;
+                    curZ            = trArea.z;
+                    curXSectors     = trArea.xSectors;
+                    curZSectors     = trArea.zSectors;
+                    curYTop         = trArea.yTop;
+                    curYBottom      = trArea.yBottom;
+                }
+                index++;
+            }
+
+            if ( currentArea != 0XFFFF )
+            {
+                m_SetManualCombo    = false;
+                m_AreasList.SetCurSel ( currentArea );
+                m_SetManualCombo = true;
+            }
+
+            //  Create the Room
+            RECT rectRanges;
+            m_Ranges.GetWindowRect ( &rectRanges );
+            ScreenToClient ( &rectRanges );
+            RECT roomRect;
+            roomRect.top        = rectRanges.bottom + RoomMargin;
+            roomRect.left       = rectRanges.left + RoomMargin;
+            roomRect.bottom     = roomRect.top + curXSectors * TR_SECTOR_SIZE / RoomDivider;
+            roomRect.right      = roomRect.left + curZSectors * TR_SECTOR_SIZE / RoomDivider;
+
+            m_Room.SetPointMode ( TRUE );
+            CTRXRoomPicture::CreateInstanceInside ( this, &m_Room, roomRect, "", SS_NOTIFY );
+
+            //
+            m_Room.SetRoomPoint ( ComputeRoomPoint (), &dfOrientation );
+            BOOL bShow = m_Room.ShowWindow ( SW_NORMAL );
+        }
+    }
+
     if ( m_bToolTip )
     {
         const char *pTools = "You will have to adjust thos values\r\nto get a correct position\r\n";
@@ -483,7 +728,7 @@ void CTRXPosition::OnBnClickedOk()
     static char szText [ 64 ];
 
     //
-    if ( CTR9SaveGame::I(FALSE) != NULL )
+    if ( m_123 && CTR9SaveGame::I(FALSE) != NULL )
     {
         TR9_POSITION *pDwAddress = ( TR9_POSITION *) CTR9SaveGame::I()->GetPositionAddress ( m_iTombraider, m_iBlock );
         if ( pDwAddress != NULL )
@@ -596,6 +841,131 @@ void CTRXPosition::OnBnClickedOk()
         }
     }
 
+    //
+    if ( m_456 && CTR8SaveGame::I(FALSE) != NULL )
+    {
+        const TR_POSITION *pDwAddress = CTR8SaveGame::I()->GetPosition ( m_iTombraider, m_iBlock );
+        if ( pDwAddress != NULL )
+        {
+            double      dfValue = 0.0;
+            unsigned    wValue = 0;
+
+            DWORD   dwWestToEast    = pDwAddress->dwWestToEast;
+            DWORD   dwVertical      = pDwAddress->dwVertical;
+            DWORD   dwSouthToNorth  = pDwAddress->dwSouthToNorth;
+            //  0 : ?
+            //  1 : Orientation 0x0000 = facing white 0xffff facing red (North)
+            //  2 : ??
+            //  3 : Room
+            WORD    wOrientation    = pDwAddress->wOrientation;
+            WORD    wRoom           = pDwAddress->wRoom;
+
+            //
+            m_West_East_M.GetWindowText ( szText, sizeof(szText) );
+            dfValue = atof ( szText );
+            dwWestToEast    = (DWORD) ( dfValue * POSITION_DIVIDER );
+
+            //
+            m_Vertical_M.GetWindowText ( szText, sizeof(szText) );
+            dfValue = atof ( szText );
+            dwVertical  = (DWORD) ( dfValue * POSITION_DIVIDER );
+
+            //
+            m_South_North_M.GetWindowText ( szText, sizeof(szText) );
+            dfValue = atof ( szText );
+            dwSouthToNorth  = (DWORD) ( dfValue * POSITION_DIVIDER );
+
+            //  Word0
+            m_Word0_X.GetWindowText ( szText, sizeof(szText) );
+            if ( strncmp ( szText, "0x", 2 ) == 0 )
+            {
+                sscanf_s ( szText + 2, "%x", &wValue );
+            }
+            else if ( strncmp ( szText, "x", 1 ) == 0 )
+            {
+                sscanf_s ( szText + 1, "%x", &wValue );
+            }
+            else
+            {
+                sscanf_s ( szText, "%d", &wValue );
+            }
+            // pDwAddress->wSomething0  = wValue;
+
+            //  Orientation
+            m_Word1_D.GetWindowText ( szText, sizeof(szText) );
+            dfValue = atof ( szText );
+            wValue  = CTRXTools::ConvertOrientationFromDouble ( dfValue );
+            wOrientation = wValue;
+
+            //  Word2
+            m_Word2_X.GetWindowText ( szText, sizeof(szText) );
+            if ( strncmp ( szText, "0x", 2 ) == 0 )
+            {
+                sscanf_s ( szText + 2, "%x", &wValue );
+            }
+            else if ( strncmp ( szText, "x", 1 ) == 0 )
+            {
+                sscanf_s ( szText + 1, "%x", &wValue );
+            }
+            else
+            {
+                sscanf_s ( szText, "%d", &wValue );
+            }
+            // position.wSomething2  = wValue;
+
+            //  Word3
+            m_Word3_X.GetWindowText ( szText, sizeof(szText) );
+            if ( strncmp ( szText, "0x", 2 ) == 0 )
+            {
+                sscanf_s ( szText + 2, "%x", &wValue );
+            }
+            else if ( strncmp ( szText, "x", 1 ) == 0 )
+            {
+                sscanf_s ( szText + 1, "%x", &wValue );
+            }
+            else
+            {
+                sscanf_s ( szText, "%d", &wValue );
+            }
+            // pDwAddress->wSomething3  = wValue;
+
+
+            //  Special
+            m_Word4_X.GetWindowText ( szText, sizeof(szText) );
+            if ( strncmp ( szText, "0x", 2 ) == 0 )
+            {
+                sscanf_s ( szText + 2, "%x", &wValue );
+            }
+            else if ( strncmp ( szText, "x", 1 ) == 0 )
+            {
+                sscanf_s ( szText + 1, "%x", &wValue );
+            }
+            else
+            {
+                sscanf_s ( szText, "%d", &wValue );
+            }
+            wRoom  = wValue;
+
+            //  Word5
+            m_Word5_X.GetWindowText ( szText, sizeof(szText) );
+            if ( strncmp ( szText, "0x", 2 ) == 0 )
+            {
+                sscanf_s ( szText + 2, "%x", &wValue );
+            }
+            else if ( strncmp ( szText, "x", 1 ) == 0 )
+            {
+                sscanf_s ( szText + 1, "%x", &wValue );
+            }
+            else
+            {
+                sscanf_s ( szText, "%d", &wValue );
+            }
+            // pDwAddress->wSomething5  = wValue;
+
+            CTR8SaveGame::I()->SetPosition ( m_iTombraider, m_iBlock, dwWestToEast, dwVertical, dwSouthToNorth, wOrientation, wRoom );
+        }
+    }
+
     CTRXDialogBase::OnOK();
 }
 
@@ -608,7 +978,7 @@ void CTRXPosition::OnBnClickedSearch()
     //
     static char szText [ 64 ];
     double      dfValue = 0.0;
-    if ( CTR9SaveGame::I(FALSE) != NULL )
+    if ( m_123 && CTR9SaveGame::I(FALSE) != NULL )
     {
         int levelNumber = CTR9SaveGame::I()->GetBlockLevelNumber ( m_iTombraider, m_iBlock );
         int levelIndex  = levelNumber - 1;
@@ -679,86 +1049,176 @@ void CTRXPosition::ChangeAreas()
         int iCurSel = m_AreasList.GetCurSel();
         if ( iCurSel != - 1 )
         {
-            int levelNumber     = CTR9SaveGame::I()->GetBlockLevelNumber ( m_iTombraider, m_iBlock );
-            int levelIndex      = levelNumber - 1;
-            TR_AREA trArea;
-            ZeroMemory ( &trArea, sizeof(trArea) );
-            BOOL bDone = EnumAreaForCoordinates ( m_iTombraider, levelIndex, iCurSel, &trArea );
-            if ( bDone )
+            //
+            if ( m_123 && CTR9SaveGame::I(FALSE) != NULL )
             {
-                //
-                m_iArea             = trArea.index;
+                int levelNumber     = CTR9SaveGame::I()->GetBlockLevelNumber ( m_iTombraider, m_iBlock );
+                int levelIndex      = levelNumber - 1;
+                TR_AREA trArea;
+                ZeroMemory ( &trArea, sizeof(trArea) );
+                BOOL bDone = EnumAreaForCoordinates ( m_iTombraider, levelIndex, iCurSel, &trArea );
+                if ( bDone )
+                {
+                    //
+                    m_iArea             = trArea.index;
 
-                //
-                long newX           = ( trArea.x + trArea.x + trArea.xSectors * TR_SECTOR_SIZE ) / 2;
-                long newZ           = ( trArea.z + trArea.z + trArea.zSectors * TR_SECTOR_SIZE ) / 2;
-                long newY           = trArea.yBottom - FROM_THE_GROUND;
+                    //
+                    long newX           = ( trArea.x + trArea.x + trArea.xSectors * TR_SECTOR_SIZE ) / 2;
+                    long newZ           = ( trArea.z + trArea.z + trArea.zSectors * TR_SECTOR_SIZE ) / 2;
+                    long newY           = trArea.yBottom - FROM_THE_GROUND;
 
-                double dfX          =  (double) (long) newX / POSITION_DIVIDER;
-                double dfZ          =  (double) (long) newZ / POSITION_DIVIDER;
-                double dfY          =  (double) (long) newY / POSITION_DIVIDER;
+                    double dfX          =  (double) (long) newX / POSITION_DIVIDER;
+                    double dfZ          =  (double) (long) newZ / POSITION_DIVIDER;
+                    double dfY          =  (double) (long) newY / POSITION_DIVIDER;
                 
-                //
-                m_Word1_D.GetWindowText ( szText, sizeof(szText) );
-                double dfOrientation = atof(szText);
+                    //
+                    m_Word1_D.GetWindowText ( szText, sizeof(szText) );
+                    double dfOrientation = atof(szText);
 
-                TR_CUR_POSITION                 currentPosition;
-                ZeroMemory ( &currentPosition, sizeof(currentPosition) );
-                currentPosition.x               = newX;
-                currentPosition.z               = newZ;
-                currentPosition.orientation     = dfOrientation;
+                    TR_CUR_POSITION                 currentPosition;
+                    ZeroMemory ( &currentPosition, sizeof(currentPosition) );
+                    currentPosition.x               = newX;
+                    currentPosition.z               = newZ;
+                    currentPosition.orientation     = dfOrientation;
 
-                //
-                m_Room.SetAreaAndPosition ( &trArea, &currentPosition );
+                    //
+                    m_Room.SetAreaAndPosition ( &trArea, &currentPosition );
 
-                //  X
-                ZeroMemory ( szText, sizeof(szText) );
-                sprintf_s ( szText, sizeof(szText), "%08X", newX );
-                m_West_East.SetWindowText ( szText );
+                    //  X
+                    ZeroMemory ( szText, sizeof(szText) );
+                    sprintf_s ( szText, sizeof(szText), "%08X", newX );
+                    m_West_East.SetWindowText ( szText );
 
-                ZeroMemory ( szText, sizeof(szText) );
-                sprintf_s ( szText, sizeof(szText), "%.3f", dfX );
-                m_West_East_M.SetWindowText ( szText );
+                    ZeroMemory ( szText, sizeof(szText) );
+                    sprintf_s ( szText, sizeof(szText), "%.3f", dfX );
+                    m_West_East_M.SetWindowText ( szText );
 
-                //  T
-                ZeroMemory ( szText, sizeof(szText) );
-                sprintf_s ( szText, sizeof(szText), "%08X", newY );
-                m_Vertical.SetWindowText ( szText );
+                    //  T
+                    ZeroMemory ( szText, sizeof(szText) );
+                    sprintf_s ( szText, sizeof(szText), "%08X", newY );
+                    m_Vertical.SetWindowText ( szText );
 
-                ZeroMemory ( szText, sizeof(szText) );
-                sprintf_s ( szText, sizeof(szText), "%.3f", dfY );
-                m_Vertical_M.SetWindowText ( szText );
+                    ZeroMemory ( szText, sizeof(szText) );
+                    sprintf_s ( szText, sizeof(szText), "%.3f", dfY );
+                    m_Vertical_M.SetWindowText ( szText );
 
-                //  Z
-                ZeroMemory ( szText, sizeof(szText) );
-                sprintf_s ( szText, sizeof(szText), "%08X", newZ );
-                m_South_North.SetWindowText ( szText );
+                    //  Z
+                    ZeroMemory ( szText, sizeof(szText) );
+                    sprintf_s ( szText, sizeof(szText), "%08X", newZ );
+                    m_South_North.SetWindowText ( szText );
 
-                ZeroMemory ( szText, sizeof(szText) );
-                sprintf_s ( szText, sizeof(szText), "%.3f", dfZ );
-                m_South_North_M.SetWindowText ( szText );
+                    ZeroMemory ( szText, sizeof(szText) );
+                    sprintf_s ( szText, sizeof(szText), "%.3f", dfZ );
+                    m_South_North_M.SetWindowText ( szText );
 
-                //  Area
-                ZeroMemory ( szText, sizeof(szText) );
-                sprintf_s ( szText, sizeof(szText), "%04X", trArea.index );
-                m_Word4.SetWindowText ( szText );
+                    //  Area
+                    ZeroMemory ( szText, sizeof(szText) );
+                    sprintf_s ( szText, sizeof(szText), "%04X", trArea.index );
+                    m_Word4.SetWindowText ( szText );
 
-                ZeroMemory ( szText, sizeof(szText) );
-                sprintf_s ( szText, sizeof(szText), "%d",  trArea.index );
-                m_Word4_X.SetWindowText ( szText );
+                    ZeroMemory ( szText, sizeof(szText) );
+                    sprintf_s ( szText, sizeof(szText), "%d",  trArea.index );
+                    m_Word4_X.SetWindowText ( szText );
 
-                //  Show Ranges
-                sprintf_s ( szText, sizeof(szText), "%ld , %ld, %ld ",
-                    trArea.x, trArea.x + trArea.xSectors * TR_SECTOR_SIZE, trArea.xSectors );
-                m_West_East_Range.SetWindowText ( szText );
-                sprintf_s ( szText, sizeof(szText), "%ld , %ld ", trArea.yTop, trArea.yBottom );
-                m_Vertical_Range.SetWindowText ( szText );
-                sprintf_s ( szText, sizeof(szText), "%ld , %ld, %ld ",
-                    trArea.z, trArea.z + trArea.zSectors * TR_SECTOR_SIZE, trArea.zSectors );
-                m_South_North_Range.SetWindowText ( szText );
+                    //  Show Ranges
+                    sprintf_s ( szText, sizeof(szText), "%ld , %ld, %ld ",
+                        trArea.x, trArea.x + trArea.xSectors * TR_SECTOR_SIZE, trArea.xSectors );
+                    m_West_East_Range.SetWindowText ( szText );
+                    sprintf_s ( szText, sizeof(szText), "%ld , %ld ", trArea.yTop, trArea.yBottom );
+                    m_Vertical_Range.SetWindowText ( szText );
+                    sprintf_s ( szText, sizeof(szText), "%ld , %ld, %ld ",
+                        trArea.z, trArea.z + trArea.zSectors * TR_SECTOR_SIZE, trArea.zSectors );
+                    m_South_North_Range.SetWindowText ( szText );
 
-                ResizeRoom ( trArea.x, trArea.z, trArea.xSectors, trArea.zSectors, trArea.yTop, trArea.yBottom );
+                    ResizeRoom ( trArea.x, trArea.z, trArea.xSectors, trArea.zSectors, trArea.yTop, trArea.yBottom );
+                }
             }
+
+            //
+            if ( m_456 && CTR8SaveGame::I(FALSE) != NULL )
+            {
+                int levelNumber     = CTR8SaveGame::I()->GetBlockLevelNumber ( m_iTombraider, m_iBlock );
+                int levelIndex      = levelNumber - 1;
+                TR_AREA trArea;
+                ZeroMemory ( &trArea, sizeof(trArea) );
+                BOOL bDone = EnumAreaForCoordinates ( m_iTombraider, levelIndex, iCurSel, &trArea );
+                if ( bDone )
+                {
+                    //
+                    m_iArea             = trArea.index;
+
+                    //
+                    long newX           = ( trArea.x + trArea.x + trArea.xSectors * TR_SECTOR_SIZE ) / 2;
+                    long newZ           = ( trArea.z + trArea.z + trArea.zSectors * TR_SECTOR_SIZE ) / 2;
+                    long newY           = trArea.yBottom - FROM_THE_GROUND;
+
+                    double dfX          =  (double) (long) newX / POSITION_DIVIDER;
+                    double dfZ          =  (double) (long) newZ / POSITION_DIVIDER;
+                    double dfY          =  (double) (long) newY / POSITION_DIVIDER;
+                
+                    //
+                    m_Word1_D.GetWindowText ( szText, sizeof(szText) );
+                    double dfOrientation = atof(szText);
+
+                    TR_CUR_POSITION                 currentPosition;
+                    ZeroMemory ( &currentPosition, sizeof(currentPosition) );
+                    currentPosition.x               = newX;
+                    currentPosition.z               = newZ;
+                    currentPosition.orientation     = dfOrientation;
+
+                    //
+                    m_Room.SetAreaAndPosition ( &trArea, &currentPosition );
+
+                    //  X
+                    ZeroMemory ( szText, sizeof(szText) );
+                    sprintf_s ( szText, sizeof(szText), "%08X", newX );
+                    m_West_East.SetWindowText ( szText );
+
+                    ZeroMemory ( szText, sizeof(szText) );
+                    sprintf_s ( szText, sizeof(szText), "%.3f", dfX );
+                    m_West_East_M.SetWindowText ( szText );
+
+                    //  T
+                    ZeroMemory ( szText, sizeof(szText) );
+                    sprintf_s ( szText, sizeof(szText), "%08X", newY );
+                    m_Vertical.SetWindowText ( szText );
+
+                    ZeroMemory ( szText, sizeof(szText) );
+                    sprintf_s ( szText, sizeof(szText), "%.3f", dfY );
+                    m_Vertical_M.SetWindowText ( szText );
+
+                    //  Z
+                    ZeroMemory ( szText, sizeof(szText) );
+                    sprintf_s ( szText, sizeof(szText), "%08X", newZ );
+                    m_South_North.SetWindowText ( szText );
+
+                    ZeroMemory ( szText, sizeof(szText) );
+                    sprintf_s ( szText, sizeof(szText), "%.3f", dfZ );
+                    m_South_North_M.SetWindowText ( szText );
+
+                    //  Area
+                    ZeroMemory ( szText, sizeof(szText) );
+                    sprintf_s ( szText, sizeof(szText), "%04X", trArea.index );
+                    m_Word4.SetWindowText ( szText );
+
+                    ZeroMemory ( szText, sizeof(szText) );
+                    sprintf_s ( szText, sizeof(szText), "%d",  trArea.index );
+                    m_Word4_X.SetWindowText ( szText );
+
+                    //  Show Ranges
+                    sprintf_s ( szText, sizeof(szText), "%ld , %ld, %ld ",
+                        trArea.x, trArea.x + trArea.xSectors * TR_SECTOR_SIZE, trArea.xSectors );
+                    m_West_East_Range.SetWindowText ( szText );
+                    sprintf_s ( szText, sizeof(szText), "%ld , %ld ", trArea.yTop, trArea.yBottom );
+                    m_Vertical_Range.SetWindowText ( szText );
+                    sprintf_s ( szText, sizeof(szText), "%ld , %ld, %ld ",
+                        trArea.z, trArea.z + trArea.zSectors * TR_SECTOR_SIZE, trArea.zSectors );
+                    m_South_North_Range.SetWindowText ( szText );
+
+                    ResizeRoom ( trArea.x, trArea.z, trArea.xSectors, trArea.zSectors, trArea.yTop, trArea.yBottom );
+                }
+            }
+
         }
     }
 }
@@ -789,31 +1249,64 @@ void CTRXPosition::OnBnClickedMap()
     //
     if ( m_iArea >= 0 )
     {
-        int levelNumber     = CTR9SaveGame::I()->GetBlockLevelNumber ( m_iTombraider, m_iBlock );
-        int levelIndex      = levelNumber - 1;
-        TR_AREA *pArea = GetTRArea ( m_iTombraider, levelIndex, m_iArea );
-        if ( pArea )
+        if ( m_123 && CTR9SaveGame::I(FALSE) != NULL )
         {
-            m_West_East_M.GetWindowText ( szText, sizeof(szText) );
-            DWORD dwWestEast        = (DWORD) ( atof(szText) * POSITION_DIVIDER);
+            int levelNumber     = CTR9SaveGame::I()->GetBlockLevelNumber ( m_iTombraider, m_iBlock );
+            int levelIndex      = levelNumber - 1;
+            TR_AREA *pArea = GetTRArea ( m_iTombraider, levelIndex, m_iArea );
+            if ( pArea )
+            {
+                m_West_East_M.GetWindowText ( szText, sizeof(szText) );
+                DWORD dwWestEast        = (DWORD) ( atof(szText) * POSITION_DIVIDER);
 
-            m_South_North_M.GetWindowText ( szText, sizeof(szText) );
-            DWORD dwSouthNorth      = (DWORD) ( atof(szText) * POSITION_DIVIDER);
+                m_South_North_M.GetWindowText ( szText, sizeof(szText) );
+                DWORD dwSouthNorth      = (DWORD) ( atof(szText) * POSITION_DIVIDER);
 
-            m_Vertical_M.GetWindowText ( szText, sizeof(szText) );
-            DWORD dwVertical        = (DWORD) ( atof(szText) * POSITION_DIVIDER);
+                m_Vertical_M.GetWindowText ( szText, sizeof(szText) );
+                DWORD dwVertical        = (DWORD) ( atof(szText) * POSITION_DIVIDER);
 
-            m_Word1_D.GetWindowText ( szText, sizeof(szText) );
-            double dfOrientation    =  atof(szText);
+                m_Word1_D.GetWindowText ( szText, sizeof(szText) );
+                double dfOrientation    =  atof(szText);
 
-            TR_CUR_POSITION currentPosition;
-            ZeroMemory ( &currentPosition, sizeof(currentPosition) );
-            currentPosition.x               = dwWestEast;
-            currentPosition.y               = dwVertical;
-            currentPosition.z               = dwSouthNorth;
-            currentPosition.orientation     = dfOrientation;
+                TR_CUR_POSITION currentPosition;
+                ZeroMemory ( &currentPosition, sizeof(currentPosition) );
+                currentPosition.x               = dwWestEast;
+                currentPosition.y               = dwVertical;
+                currentPosition.z               = dwSouthNorth;
+                currentPosition.orientation     = dfOrientation;
 
-            dlg.SetCurrentArea ( pArea, &currentPosition );
+                dlg.SetCurrentArea ( pArea, &currentPosition );
+            }
+        }
+
+        if ( m_456 && CTR8SaveGame::I(FALSE) != NULL )
+        {
+            int levelNumber     = CTR8SaveGame::I()->GetBlockLevelNumber ( m_iTombraider, m_iBlock );
+            int levelIndex      = levelNumber - 1;
+            TR_AREA *pArea = GetTRArea ( m_iTombraider, levelIndex, m_iArea );
+            if ( pArea )
+            {
+                m_West_East_M.GetWindowText ( szText, sizeof(szText) );
+                DWORD dwWestEast        = (DWORD) ( atof(szText) * POSITION_DIVIDER);
+
+                m_South_North_M.GetWindowText ( szText, sizeof(szText) );
+                DWORD dwSouthNorth      = (DWORD) ( atof(szText) * POSITION_DIVIDER);
+
+                m_Vertical_M.GetWindowText ( szText, sizeof(szText) );
+                DWORD dwVertical        = (DWORD) ( atof(szText) * POSITION_DIVIDER);
+
+                m_Word1_D.GetWindowText ( szText, sizeof(szText) );
+                double dfOrientation    =  atof(szText);
+
+                TR_CUR_POSITION currentPosition;
+                ZeroMemory ( &currentPosition, sizeof(currentPosition) );
+                currentPosition.x               = dwWestEast;
+                currentPosition.y               = dwVertical;
+                currentPosition.z               = dwSouthNorth;
+                currentPosition.orientation     = dfOrientation;
+
+                dlg.SetCurrentArea ( pArea, &currentPosition );
+            }
         }
     }
 
@@ -969,14 +1462,27 @@ void CTRXPosition::OnBnClickedPastepos()
         currentPosition.z               = g_dwSouthToNorthCopy;
         currentPosition.orientation     = dfOrientation;
 
-        int levelNumber     = CTR9SaveGame::I()->GetBlockLevelNumber ( m_iTombraider, m_iBlock );
-        int levelIndex      = levelNumber - 1;
-        TR_AREA *pArea = GetTRArea ( m_iTombraider, levelIndex, g_wRoomCopy );
-        if ( pArea )
+        if ( m_123 && CTR9SaveGame::I(FALSE) != NULL )
         {
-            m_Room.SetAreaAndPosition ( pArea, &currentPosition );
+            int levelNumber     = CTR9SaveGame::I()->GetBlockLevelNumber ( m_iTombraider, m_iBlock );
+            int levelIndex      = levelNumber - 1;
+            TR_AREA *pArea = GetTRArea ( m_iTombraider, levelIndex, g_wRoomCopy );
+            if ( pArea )
+            {
+                m_Room.SetAreaAndPosition ( pArea, &currentPosition );
+            }
         }
 
+        if ( m_456 && CTR8SaveGame::I(FALSE) != NULL )
+        {
+            int levelNumber     = CTR8SaveGame::I()->GetBlockLevelNumber ( m_iTombraider, m_iBlock );
+            int levelIndex      = levelNumber - 1;
+            TR_AREA *pArea = GetTRArea ( m_iTombraider, levelIndex, g_wRoomCopy );
+            if ( pArea )
+            {
+                m_Room.SetAreaAndPosition ( pArea, &currentPosition );
+            }
+        }
         //
         ChangeAreas ( g_wRoomCopy );
     }

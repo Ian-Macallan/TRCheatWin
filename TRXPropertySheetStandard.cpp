@@ -62,6 +62,7 @@ CTRXPropertySheetStandard::CTRXPropertySheetStandard(LPCTSTR pszCaption, CWnd* p
 /////////////////////////////////////////////////////////////////////////////
 CTRXPropertySheetStandard::~CTRXPropertySheetStandard()
 {
+    RemoveStandardPage ();
 }
 
 //

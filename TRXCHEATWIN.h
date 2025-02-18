@@ -124,6 +124,13 @@ class CTRXCHEATWINApp : public CWinApp
 #define PROFILE_STANDARD            "Standard"
 #define PROFILE_LAST_OPENED         "Last Opened"
 #define PROFILE_TRX_LAST_OPENED     "TRX Last Opened"
+#define PROFILE_TRX_LOC_COUNT       "TRX Last Location Count"
+#define PROFILE_TRX_LOCATION        "TRX Last Location %02d"
+
+#define PROFILE_TRX2_LAST_OPENED    "TRX2 Last Opened"
+#define PROFILE_TRX2_LOC_COUNT      "TRX2 Last Location Count"
+#define PROFILE_TRX2_LOCATION       "TRX2 Last Location %02d"
+
 #define PROFILE_UNCHECKED           "Unchecked"
 #define PROFILE_SEARCH_EXT          "Search Extended"
 #define PROFILE_SEARCH_POS_EXT      "Search Position Extended"

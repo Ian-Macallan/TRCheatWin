@@ -71,7 +71,7 @@ extern CTRXCHEATWINApp theApp;
 static  STRUCTLOCATION  LocationPathname [ LEN_LOCATION ];
 
 //
-static const    char *MessageTitle = "Tombraider Remastered";
+static const    char *MessageTitle = "Tombraider 123 Remastered";
 
 //
 /////////////////////////////////////////////////////////////////////////////
@@ -79,7 +79,7 @@ static const    char *MessageTitle = "Tombraider Remastered";
 /////////////////////////////////////////////////////////////////////////////
 static  int             iSortAscending      = 1;
 static  int             iSortColumn         = -1;
-static  const   int     maxData         = 2 * NB_TR_BLOCKS * NB_OF_SLOTS;
+static  const   int     maxData             = 2 * NB_TR_BLOCKS * NB_OF_SLOTS;
 typedef struct  structData
 {
     int     tombraider;
@@ -185,7 +185,7 @@ CTRXRemastered::CTRXRemastered() : CTRXPropertyPage123(CTRXRemastered::IDD)
     }
 
     //
-    LoadLocation ( LocationPathname, "TRX Last Location Count", "TRX Last Location %02d" );
+    LoadLocation ( LocationPathname, PROFILE_TRX_LOC_COUNT, PROFILE_TRX_LOCATION );
 
     //
     m_bRoomCreated  = false;
@@ -205,7 +205,7 @@ CTRXRemastered::~CTRXRemastered()
         delete pGame;
     }
 
-    SaveLocation ( LocationPathname, "TRX Last Location Count", "TRX Last Location %02d" );
+    SaveLocation ( LocationPathname, PROFILE_TRX_LOC_COUNT, PROFILE_TRX_LOCATION );
 }
 
 //
@@ -452,7 +452,7 @@ void CTRXRemastered::OnBnClickedLoad()
     //
     if ( CTR9SaveGame::IsBufferModified() )
     {
-        INT_PTR response = CTRXDifferences::MessageBoxR ( "Do you want to save your changes ?", MessageTitle, MB_YESNOCANCEL|MB_ICONQUESTION );
+        INT_PTR response = CTRXDifferences::MessageBoxR123 ( "Do you want to save your changes ?", MessageTitle, MB_YESNOCANCEL|MB_ICONQUESTION );
         if ( response == IDYES )
         {
             DisplayOne ( m_Line );
@@ -1255,11 +1255,11 @@ void CTRXRemastered::DisplayOne ( int line )
                     SET_GUN_HIDE(m_XRocket);
 
                     //
-                    SET_BLOCK_CHECK ( m_Guns, TR1_MASK_GUN );
+                    SET_BLOCK_CHECK ( m_Guns, TRR1_MASK_GUN );
 
-                    SET_BLOCK_CHECK ( m_Magnum, TR1_MASK_MAGNUM );
-                    SET_BLOCK_CHECK ( m_Uzi, TR1_MASK_UZI );
-                    SET_BLOCK_CHECK ( m_Riotgun, TR1_MASK_RIOT );
+                    SET_BLOCK_CHECK ( m_Magnum, TRR1_MASK_MAGNUM );
+                    SET_BLOCK_CHECK ( m_Uzi, TRR1_MASK_UZI );
+                    SET_BLOCK_CHECK ( m_Riotgun, TRR1_MASK_RIOT );
 
                     SET_BLOCK_HIDE ( m_M16 );
                     SET_BLOCK_HIDE ( m_Grenade );
@@ -1430,15 +1430,15 @@ void CTRXRemastered::DisplayOne ( int line )
                     SET_GUN_HIDE(m_XRocket);
 
                     //
-                    SET_BLOCK_CHECK ( m_Guns, TR2_MASK_GUN );
+                    SET_BLOCK_CHECK ( m_Guns, TRR2_MASK_GUN );
 
-                    SET_BLOCK_CHECK ( m_Magnum, TR2_MASK_MAGNUM );
-                    SET_BLOCK_CHECK ( m_Uzi, TR2_MASK_UZI );
-                    SET_BLOCK_CHECK ( m_Riotgun, TR2_MASK_RIOT );
+                    SET_BLOCK_CHECK ( m_Magnum, TRR2_MASK_MAGNUM );
+                    SET_BLOCK_CHECK ( m_Uzi, TRR2_MASK_UZI );
+                    SET_BLOCK_CHECK ( m_Riotgun, TRR2_MASK_RIOT );
 
-                    SET_BLOCK_CHECK ( m_M16, TR2_MASK_M16 );
-                    SET_BLOCK_CHECK ( m_Grenade, TR2_MASK_GRENADE );
-                    SET_BLOCK_CHECK ( m_Harpoon, TR2_MASK_HARPOON );
+                    SET_BLOCK_CHECK ( m_M16, TRR2_MASK_M16 );
+                    SET_BLOCK_CHECK ( m_Grenade, TRR2_MASK_GRENADE );
+                    SET_BLOCK_CHECK ( m_Harpoon, TRR2_MASK_HARPOON );
 
                     SET_BLOCK_HIDE ( m_Rocket );
 
@@ -1607,16 +1607,16 @@ void CTRXRemastered::DisplayOne ( int line )
                     SET_GUN_VALUE(m_XRocket,rocket);
 
                     //
-                    SET_BLOCK_CHECK ( m_Guns, TR3_MASK_GUN );
+                    SET_BLOCK_CHECK ( m_Guns, TRR3_MASK_GUN );
 
-                    SET_BLOCK_CHECK ( m_Magnum, TR3_MASK_MAGNUM );
-                    SET_BLOCK_CHECK ( m_Uzi, TR3_MASK_UZI );
-                    SET_BLOCK_CHECK ( m_Riotgun, TR3_MASK_RIOT );
+                    SET_BLOCK_CHECK ( m_Magnum, TRR3_MASK_MAGNUM );
+                    SET_BLOCK_CHECK ( m_Uzi, TRR3_MASK_UZI );
+                    SET_BLOCK_CHECK ( m_Riotgun, TRR3_MASK_RIOT );
 
-                    SET_BLOCK_CHECK ( m_M16, TR3_MASK_M16 );
-                    SET_BLOCK_CHECK ( m_Grenade, TR3_MASK_GRENADE );
-                    SET_BLOCK_CHECK ( m_Harpoon, TR3_MASK_HARPOON );
-                    SET_BLOCK_CHECK ( m_Rocket, TR3_MASK_ROCKET );
+                    SET_BLOCK_CHECK ( m_M16, TRR3_MASK_M16 );
+                    SET_BLOCK_CHECK ( m_Grenade, TRR3_MASK_GRENADE );
+                    SET_BLOCK_CHECK ( m_Harpoon, TRR3_MASK_HARPOON );
+                    SET_BLOCK_CHECK ( m_Rocket, TRR3_MASK_ROCKET );
 
                     m_Zero.EnableWindow ( TRUE );
                     m_One.EnableWindow ( TRUE );
@@ -1860,7 +1860,7 @@ void CTRXRemastered::OnBnClickedRefresh()
     //
     if ( CTR9SaveGame::IsBufferModified() )
     {
-        INT_PTR response = CTRXDifferences::MessageBoxR ( "Do you want to save your changes ?", MessageTitle, MB_YESNOCANCEL|MB_ICONQUESTION );
+        INT_PTR response = CTRXDifferences::MessageBoxR123 ( "Do you want to save your changes ?", MessageTitle, MB_YESNOCANCEL|MB_ICONQUESTION );
         if ( response == IDYES )
         {
             DisplayOne ( m_Line );
@@ -3783,7 +3783,7 @@ void CTRXRemastered::OnSelchangeCombo()
 
             if ( CTR9SaveGame::IsBufferModified() )
             {
-                INT_PTR response = CTRXDifferences::MessageBoxR ( "Do you want to save your changes ?", MessageTitle, MB_YESNOCANCEL|MB_ICONQUESTION );
+                INT_PTR response = CTRXDifferences::MessageBoxR123 ( "Do you want to save your changes ?", MessageTitle, MB_YESNOCANCEL|MB_ICONQUESTION );
                 if ( response == IDYES )
                 {
                     DisplayOne ( m_Line );
@@ -4610,12 +4610,12 @@ void CTRXRemastered::ShowPosition()
         int block               = pInfoData->block;
         int slot                = pInfoData->slot;
         int slotFound           = -1;
-
         CTRXPosition    dlg;
         dlg.m_iTombraider   = tombraider;
         dlg.m_iBlock        = block;
         dlg.m_iSlot         = slot;
         dlg.m_iLevel        = level;
+        dlg.m_123           = TRUE;
 
         dlg.DoModal();
 
@@ -5151,7 +5151,7 @@ void CTRXRemastered::OnOK()
 
     if ( CTR9SaveGame::I(FALSE) != NULL && ( IsGUIModified () || CTR9SaveGame::IsBufferModified() ) )
     {
-        INT_PTR response = CTRXDifferences::MessageBoxR ( "Do You want to save your changes ?", MessageTitle, MB_YESNO|MB_ICONQUESTION );
+        INT_PTR response = CTRXDifferences::MessageBoxR123 ( "Do You want to save your changes ?", MessageTitle, MB_YESNO|MB_ICONQUESTION );
         if ( response == IDYES )
         {
             DisplayOne ( m_Line );
@@ -5196,7 +5196,7 @@ void CTRXRemastered::OnCancel()
 
     if ( CTR9SaveGame::I( FALSE) != NULL && ( IsGUIModified () || CTR9SaveGame::IsBufferModified() ) )
     {
-        INT_PTR response = CTRXDifferences::MessageBoxR ( "Do You want to save your changes ?", MessageTitle, MB_YESNO|MB_ICONQUESTION );
+        INT_PTR response = CTRXDifferences::MessageBoxR123 ( "Do You want to save your changes ?", MessageTitle, MB_YESNO|MB_ICONQUESTION );
         if ( response == IDYES )
         {
             DisplayOne ( m_Line );
@@ -5296,7 +5296,7 @@ void CTRXRemastered::OnBnClickedJournal()
 
         //
         CTRXDifferences     dlg;
-        dlg.m_bRemastered   = TRUE;
+        dlg.m_bRemastered123   = TRUE;
         dlg.DoModal();
 
         DisplayOne ( m_Line );

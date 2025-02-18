@@ -40,8 +40,8 @@ IMPLEMENT_DYNAMIC(CTRXPropertySheetRemastered, CTRXPropertySheet)
 CTRXPropertySheetRemastered::CTRXPropertySheetRemastered(UINT nIDCaption, CWnd* pParentWnd, UINT iSelectPage) :
     CTRXPropertySheet(nIDCaption, pParentWnd, iSelectPage)
 {
-    m_iRemasteredAdded  = 0;
-    AddRemasteredPage ();
+    m_iRemastered123Added  = 0;
+    AddRemastered123Page ();
 
 }
 
@@ -52,8 +52,8 @@ CTRXPropertySheetRemastered::CTRXPropertySheetRemastered(UINT nIDCaption, CWnd* 
 CTRXPropertySheetRemastered::CTRXPropertySheetRemastered(LPCTSTR pszCaption, CWnd* pParentWnd, UINT iSelectPage) :
         CTRXPropertySheet(pszCaption, pParentWnd, iSelectPage)
 {
-    m_iRemasteredAdded  = 0;
-    AddRemasteredPage ();
+    m_iRemastered123Added  = 0;
+    AddRemastered123Page ();
 
 }
 
@@ -63,6 +63,7 @@ CTRXPropertySheetRemastered::CTRXPropertySheetRemastered(LPCTSTR pszCaption, CWn
 /////////////////////////////////////////////////////////////////////////////
 CTRXPropertySheetRemastered::~CTRXPropertySheetRemastered()
 {
+    RemoveRemastered123Page();
 }
 
 //

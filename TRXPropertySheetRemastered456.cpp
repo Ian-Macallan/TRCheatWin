@@ -1,0 +1,179 @@
+// TR3PropSheet.cpp : implementation file
+//
+
+#include "stdafx.h"
+#include "TRXCHEATWIN.h"
+#include "TRXCHEATWINDlg.h"
+
+#include "TRXEquipmentPage.h"   // Added by ClassView
+#include "TRXGunPage.h" // Added by ClassView
+#include "TRXInfoPage.h"    // Added by ClassView
+#include "TRXItems.h"   // Added by ClassView
+#include "TRXItemsTR4.h"    // Added by ClassView
+#include "TRXAmmosPage.h"   // Added by ClassView
+#include "TRXRemastered456.h"  // Added by ClassView
+
+#include "TRXPropertySheetRemastered456.h"
+
+#include "AutomaticVersionHeader.h"
+
+#ifdef _DEBUG
+#define new DEBUG_NEW
+#undef THIS_FILE
+static char THIS_FILE[] = __FILE__;
+#endif
+
+//
+extern CTRXCHEATWINApp theApp;
+
+//
+/////////////////////////////////////////////////////////////////////////////
+// CTRXPropertySheetRemastered456
+//
+/////////////////////////////////////////////////////////////////////////////
+IMPLEMENT_DYNAMIC(CTRXPropertySheetRemastered456, CTRXPropertySheet)
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
+CTRXPropertySheetRemastered456::CTRXPropertySheetRemastered456(UINT nIDCaption, CWnd* pParentWnd, UINT iSelectPage) :
+    CTRXPropertySheet(nIDCaption, pParentWnd, iSelectPage)
+{
+    m_iRemastered456Added  = 0;
+    AddRemastered456Page ();
+
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
+CTRXPropertySheetRemastered456::CTRXPropertySheetRemastered456(LPCTSTR pszCaption, CWnd* pParentWnd, UINT iSelectPage) :
+        CTRXPropertySheet(pszCaption, pParentWnd, iSelectPage)
+{
+    m_iRemastered456Added  = 0;
+    AddRemastered456Page ();
+
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
+CTRXPropertySheetRemastered456::~CTRXPropertySheetRemastered456()
+{
+    RemoveRemastered456Page();
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
+BEGIN_MESSAGE_MAP(CTRXPropertySheetRemastered456, CTRXPropertySheet) //{{AFX_MSG_MAP(CTRXPropertySheetRemastered456)
+    ON_WM_SYSCOMMAND()
+    ON_WM_DESTROY()
+    ON_WM_PAINT()
+    ON_WM_QUERYDRAGICON()
+    ON_WM_SIZE()
+    ON_WM_MOVE()
+    ON_WM_GETDLGCODE()
+        // NOTE - the ClassWizard will add and remove mapping macros here.
+    //}}AFX_MSG_MAP
+END_MESSAGE_MAP()
+
+//
+/////////////////////////////////////////////////////////////////////////////
+// CTRXPropertySheetRemastered456 message handlers
+//
+/////////////////////////////////////////////////////////////////////////////
+BOOL CTRXPropertySheetRemastered456::OnInitDialog()
+{
+    //  Parent Is NULL
+    BOOL bResult = CTRXPropertySheet::OnInitDialog();
+
+    m_bInitDone = true;
+
+    return bResult;
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
+// The system calls this to obtain the cursor to display while the user drags
+//  the minimized window.
+//
+/////////////////////////////////////////////////////////////////////////////
+HCURSOR CTRXPropertySheetRemastered456::OnQueryDragIcon()
+{
+    return (HCURSOR) m_hIcon;
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
+void CTRXPropertySheetRemastered456::OnSysCommand(UINT nID, LPARAM lParam)
+{
+    if ((nID & 0xFFF0) == IDM_ABOUTBOX)
+    {
+        CAboutDlg dlgAbout;
+        dlgAbout.DoModal();
+    }
+    else
+    {
+        CTRXPropertySheet::OnSysCommand(nID, lParam);
+    }
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
+void CTRXPropertySheetRemastered456::OnSize(UINT nType, int cx, int cy)
+{
+    CTRXPropertySheet::OnSize(nType, cx, cy);
+
+    //
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
+void CTRXPropertySheetRemastered456::OnMove(int x, int y)
+{
+    CTRXPropertySheet::OnMove(x, y);
+
+    //
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
+INT_PTR CTRXPropertySheetRemastered456::DoModal()
+{
+    //
+    return CTRXPropertySheet::DoModal();
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
+BOOL CTRXPropertySheetRemastered456::PreCreateWindow(CREATESTRUCT& cs)
+{
+    //
+    return CTRXPropertySheet::PreCreateWindow(cs);
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
+UINT CTRXPropertySheetRemastered456::OnGetDlgCode()
+{
+    //
+    UINT iResult = CTRXPropertySheet::OnGetDlgCode();
+    return iResult;
+}

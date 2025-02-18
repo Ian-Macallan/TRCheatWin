@@ -2027,7 +2027,7 @@ TR5_POSITION *CTR5SaveGame::GetTR5Position ( )
                 {
                     TR5_POSITION *pTR5Position0    = (TR5_POSITION *) ( (char *) pCurrent + i );
 
-                    short life = pTR5Position0->heath;
+                    short life = pTR5Position0->health;
 
                     //
                     if ( IsTR5HealthValid ( life, false ) )

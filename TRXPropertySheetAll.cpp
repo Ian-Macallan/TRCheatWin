@@ -46,12 +46,13 @@ CTRXPropertySheetAll::CTRXPropertySheetAll(UINT nIDCaption, CWnd* pParentWnd, UI
     int iRemastered = theApp.GetProfileInt( PROFILE_MENU, PROFILE_REMASTERED, 1 );
     int iStandard   = theApp.GetProfileInt( PROFILE_MENU, PROFILE_STANDARD, 1 );
 
-    m_iStandardAdded    = FALSE;
-    m_iRemasteredAdded  = FALSE;
+    m_iStandardAdded        = FALSE;
+    m_iRemastered123Added   = FALSE;
+    m_iRemastered456Added   = FALSE;
 
     if ( iRemastered || ( iRemastered == 0 && iStandard == 0 ) )
     {
-        AddRemasteredPage ();
+        AddRemastered123Page ();
     }
 
     if ( iStandard || ( iRemastered == 0 && iStandard == 0 ) )
@@ -70,12 +71,13 @@ CTRXPropertySheetAll::CTRXPropertySheetAll(LPCTSTR pszCaption, CWnd* pParentWnd,
     int iRemastered = theApp.GetProfileInt( PROFILE_MENU, PROFILE_REMASTERED, 1 );
     int iStandard   = theApp.GetProfileInt( PROFILE_MENU, PROFILE_STANDARD, 1 );
 
-    m_iStandardAdded    = FALSE;
-    m_iRemasteredAdded  = FALSE;
+    m_iStandardAdded        = FALSE;
+    m_iRemastered123Added   = FALSE;
+    m_iRemastered456Added   = FALSE;
 
     if ( iRemastered || ( iRemastered == 0 && iStandard == 0 ) )
     {
-        AddRemasteredPage ();
+        AddRemastered123Page ();
     }
 
     if ( iStandard || ( iRemastered == 0 && iStandard == 0 ) )
@@ -264,14 +266,14 @@ void CTRXPropertySheetAll::OnSysCommand(UINT nID, LPARAM lParam)
             {
                 theApp.WriteProfileInt( PROFILE_MENU, PROFILE_REMASTERED, 0 );
                 m_NC.CheckSystemMenuItem( this, FALSE, IDM_REMASTERED, MF_UNCHECKED|MF_BYCOMMAND);
-                RemoveRemasteredPage();
+                RemoveRemastered123Page();
             }
         }
         else
         {
             theApp.WriteProfileInt( PROFILE_MENU, PROFILE_REMASTERED, 1 );
             m_NC.CheckSystemMenuItem( this, FALSE, IDM_REMASTERED, MF_CHECKED|MF_BYCOMMAND);
-            AddRemasteredPage();
+            AddRemastered123Page();
         }
     }
     else if ((nID & 0xFFF0) == IDM_STANDARD)
@@ -462,7 +464,7 @@ void CTRXPropertySheetAll::OnSysCommand(UINT nID, LPARAM lParam)
         if ( m_Ammos_Page != NULL ) m_Ammos_Page->SetThemeChanged (  CTRXColors::m_iDarkTheme != 0 );
         if ( m_Item_Page != NULL ) m_Item_Page->SetThemeChanged (  CTRXColors::m_iDarkTheme != 0 );
         if ( m_ItemTR4_Page != NULL ) m_ItemTR4_Page->SetThemeChanged (  CTRXColors::m_iDarkTheme != 0 );
-        if ( m_Remastered_Page != NULL ) m_Remastered_Page->SetThemeChanged (  CTRXColors::m_iDarkTheme != 0 );
+        if ( m_Remastered123_Page != NULL ) m_Remastered123_Page->SetThemeChanged (  CTRXColors::m_iDarkTheme != 0 );
 
         SetThemeChanged (  CTRXColors::m_iDarkTheme != 0 );
 

@@ -2,6 +2,9 @@
 
 #include "GunGrids.h"
 
+//  Buffer for Remastered Savegame 
+#define LEN_BUFFER          (5*1024*1024)
+
 //
 /////////////////////////////////////////////////////////////////////////////
 //

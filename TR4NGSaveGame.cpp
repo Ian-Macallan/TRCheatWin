@@ -3464,7 +3464,7 @@ TR4NG_POSITION *CTR4NGSaveGame::GetTR4Position ( )
                     TR4NG_POSITION *pTR4Position0    = (TR4NG_POSITION *) ( (char * ) pCurrent + i );
 
                     //  Life between 0 and 1000
-                    short life = pTR4Position0->heath;
+                    short life = pTR4Position0->health;
 
                     //
                     if ( IsTR4NGHealthValid ( life, false )  )

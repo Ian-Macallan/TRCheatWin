@@ -10,10 +10,12 @@
 #include "TRXItemsTR4.h"    // Added by ClassView
 #include "TRXAmmosPage.h"   // Added by ClassView
 #include "TRXRemastered.h"  // Added by ClassView
+#include "TRXRemastered456.h"  // Added by ClassView
 
 enum PROPERTY_PAGE
 {
-    PAGE_REMASTERED,
+    PAGE_REMASTERED_123,
+    PAGE_REMASTERED_456,
     PAGE_INFOS,
     PAGE_EQUIPMENTS,
     PAGE_GUNS,
@@ -35,7 +37,8 @@ class CTRXPropertySheet : public CPropertySheet
         // friend class CTRXInfoPage;
 
     protected  :
-        CTRXRemastered          *m_Remastered_Page;
+        CTRXRemastered          *m_Remastered123_Page;
+        CTRXRemastered456       *m_Remastered456_Page;
         CTRXInfoPage            *m_Info_Page;
         CTRXGunPage             *m_Gun_Page;
         CTRXEquipmentPage       *m_Equipment_Page;
@@ -44,7 +47,8 @@ class CTRXPropertySheet : public CPropertySheet
         CTRXAmmosPage           *m_Ammos_Page;
 
         int                     m_iStandardAdded;
-        int                     m_iRemasteredAdded;
+        int                     m_iRemastered123Added;
+        int                     m_iRemastered456Added;
         bool                    m_bInitDone;
         char                    m_ParmPathname [ MAX_PATH ];
 
@@ -76,9 +80,12 @@ class CTRXPropertySheet : public CPropertySheet
         virtual ~CTRXPropertySheet();
 
         void AddStandardPage ();
-        void AddRemasteredPage ();
+        void AddRemastered123Page ();
+        void AddRemastered456Page ();
+
         void RemoveStandardPage ();
-        void RemoveRemasteredPage ();
+        void RemoveRemastered123Page ();
+        void RemoveRemastered456Page ();
 
         virtual void SetApply(BOOL bApply );
 

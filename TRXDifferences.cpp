@@ -45,11 +45,12 @@ IMPLEMENT_DYNAMIC(CTRXDifferences, CTRXDialogBase)
 /////////////////////////////////////////////////////////////////////////////
 CTRXDifferences::CTRXDifferences(CWnd* pParent /*=NULL*/) : CTRXDialogBase(CTRXDifferences::IDD, pParent)
 {
-    m_pListCtrl     = NULL;
-    m_bRemastered   = FALSE;
-    m_bInitList     = FALSE;
-    m_Buttons       = MB_OKCANCEL;
-    m_Result        = -1;
+    m_pListCtrl         = NULL;
+    m_bRemastered123    = FALSE;
+    m_bRemastered456    = FALSE;
+    m_bInitList         = FALSE;
+    m_Buttons           = MB_OKCANCEL;
+    m_Result            = -1;
     ZeroMemory ( m_szTitle, sizeof(m_szTitle) );
     ZeroMemory ( m_szMessage, sizeof(m_szMessage) );
 }
@@ -67,12 +68,30 @@ CTRXDifferences::~CTRXDifferences()
 /////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////
-INT_PTR CTRXDifferences::MessageBoxR( const char *pMessage, const char *pTitle, UINT buttons )
+INT_PTR CTRXDifferences::MessageBoxR123( const char *pMessage, const char *pTitle, UINT buttons )
 {
     CTRXDifferences dlg;
 
-    dlg.m_bRemastered   = TRUE;
-    dlg.m_Buttons       = buttons;
+    dlg.m_bRemastered123    = TRUE;
+    dlg.m_bRemastered456    = FALSE;
+    dlg.m_Buttons           = buttons;
+    strcpy_s ( dlg.m_szTitle, sizeof(dlg.m_szTitle), pTitle );
+    strcpy_s ( dlg.m_szMessage, sizeof(dlg.m_szMessage), pMessage );
+    
+    return dlg.DoModal();
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
+INT_PTR CTRXDifferences::MessageBoxR456( const char *pMessage, const char *pTitle, UINT buttons )
+{
+    CTRXDifferences dlg;
+
+    dlg.m_bRemastered123    = FALSE;
+    dlg.m_bRemastered456    = TRUE;
+    dlg.m_Buttons           = buttons;
     strcpy_s ( dlg.m_szTitle, sizeof(dlg.m_szTitle), pTitle );
     strcpy_s ( dlg.m_szMessage, sizeof(dlg.m_szMessage), pMessage );
     
@@ -87,9 +106,10 @@ INT_PTR CTRXDifferences::MessageBoxS( const char *pMessage, const char *pTitle, 
 {
     CTRXDifferences dlg;
 
-    dlg.m_bRemastered   = FALSE;
-    dlg.m_Buttons       = buttons;
-    dlg.m_iVersion      = CTRSaveGame::GetFullVersion();
+    dlg.m_bRemastered123    = FALSE;
+    dlg.m_bRemastered456    = FALSE;
+    dlg.m_Buttons           = buttons;
+    dlg.m_iVersion          = CTRSaveGame::GetFullVersion();
 
     strcpy_s ( dlg.m_szTitle, sizeof(dlg.m_szTitle), pTitle );
     strcpy_s ( dlg.m_szMessage, sizeof(dlg.m_szMessage), pMessage );
@@ -159,7 +179,7 @@ BOOL CTRXDifferences::OnInitDialog()
     }
 
     // Add Handler Here
-    if ( m_bRemastered  && CTR9SaveGame::I() != NULL )
+    if ( m_bRemastered123  && CTR9SaveGame::I(FALSE) != NULL )
     {
         CTRXTools::MemoryCompare ( CTR9SaveGame::I()->getBufferBackupAddress(), CTR9SaveGame::I()->getBufferAddress(), CTR9SaveGame::I()->getBufferLength() );
         const char *pText = CTRXTools::MemoryDifferences();
@@ -169,7 +189,17 @@ BOOL CTRXDifferences::OnInitDialog()
             AddToListCtrl ( pText );
         }
     }
-    else if ( ! m_bRemastered &&  CTRSaveGame::I() != NULL )
+    else if ( m_bRemastered456  && CTR8SaveGame::I(FALSE) != NULL )
+    {
+        CTRXTools::MemoryCompare ( CTR9SaveGame::I()->getBufferBackupAddress(), CTR9SaveGame::I()->getBufferAddress(), CTR9SaveGame::I()->getBufferLength() );
+        const char *pText = CTRXTools::MemoryDifferences();
+        if ( pText )
+        {
+            SetWindowText ( "Tombraider Remastered 456 Differences" );
+            AddToListCtrl ( pText );
+        }
+    }
+    else if ( ! m_bRemastered123 && ! m_bRemastered456 && CTRSaveGame::I() != NULL )
     {
         switch ( m_iVersion )
         {
@@ -543,13 +573,19 @@ void CTRXDifferences::ApplyChanges()
             BYTE *pBufferBackup = NULL;
             size_t length       = 0;
 
-            if ( m_bRemastered  && CTR9SaveGame::I() != NULL )
+            if ( m_bRemastered123  && CTR9SaveGame::I(FALSE) != NULL )
             {
                 pBufferBackup   = (BYTE*) CTR9SaveGame::I()->getBufferBackupAddress();
                 pBuffer         = (BYTE*) CTR9SaveGame::I()->getBufferAddress();
                 length          = CTR9SaveGame::I()->getBufferLength();
             }
-            else if ( ! m_bRemastered &&  CTRSaveGame::I() != NULL )
+            else if ( m_bRemastered456  && CTR8SaveGame::I(FALSE) != NULL )
+            {
+                pBufferBackup   = (BYTE*) CTR8SaveGame::I()->getBufferBackupAddress();
+                pBuffer         = (BYTE*) CTR8SaveGame::I()->getBufferAddress();
+                length          = CTR8SaveGame::I()->getBufferLength();
+            }
+            else if ( ! m_bRemastered123 && ! m_bRemastered456 &&  CTRSaveGame::I() != NULL )
             {
                 switch ( m_iVersion )
                 {
@@ -680,7 +716,7 @@ const char *CTRXDifferences::GetLabel ( unsigned offset )
 
     ZeroMemory ( szLabel, sizeof(szLabel) );
 
-    if ( m_bRemastered  && CTR9SaveGame::I() != NULL )
+    if ( m_bRemastered123 && CTR9SaveGame::I(FALSE) != NULL )
     {
         int tombraider      = -1;
         int block           = -1;
@@ -1203,7 +1239,11 @@ const char *CTRXDifferences::GetLabel ( unsigned offset )
             }
         }
     }
-    else if ( ! m_bRemastered &&  CTRSaveGame::I() != NULL )
+    else if ( m_bRemastered456 && CTR8SaveGame::I(FALSE) != NULL )
+    {
+        //
+    }
+    else if ( ! m_bRemastered123 && ! m_bRemastered456 && CTRSaveGame::I() != NULL )
     {
         bool bFound         = false;
 

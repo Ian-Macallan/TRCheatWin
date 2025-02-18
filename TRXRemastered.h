@@ -23,7 +23,7 @@ class CTRXRemastered : public CTRXPropertyPage123
         virtual ~CTRXRemastered();
 
     // Données de boîte de dialogue
-        enum { IDD = IDD_REMASTERED };
+        enum { IDD = IDD_REMASTERED_123 };
 
     protected:
         virtual void DoDataExchange(CDataExchange* pDX);    // Prise en charge de DDX/DDV

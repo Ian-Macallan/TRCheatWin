@@ -66,7 +66,7 @@ BOOL GunGrid2 [ TR2_LEVELS ] [ NB_GUNS ] =
 
 BOOL GunGrid25 [ TR2G_LEVELS ] [ NB_GUNS ] =
 {
-    //  PIS     MAG     UZI     RIO     M16     GRE     ROC     HAR
+    //  PIS     MAG     UZI     RIO     M16     GRE     ROC     HAR     CRO
     {   TRUE,   TRUE,   TRUE,   TRUE,   TRUE,   TRUE,   FALSE,  TRUE,   FALSE   },  //  19  The Cold War
     {   TRUE,   TRUE,   TRUE,   TRUE,   TRUE,   TRUE,   FALSE,  TRUE,   FALSE   },  //  20
     {   TRUE,   TRUE,   TRUE,   TRUE,   TRUE,   TRUE,   FALSE,  TRUE,   FALSE   },  //  
@@ -165,8 +165,8 @@ BOOL GunGrid4 [ TR4_LEVELS ] [ NB_GUNS ] =
 BOOL GunGrid5 [ TR5_LEVELS ] [ NB_GUNS ] =
 {
     //  PIS     MAG     UZI     RIO     HK      GRE     ROC     HAR     CRO
-    {   TRUE,   TRUE,   TRUE,   FALSE,  FALSE,  TRUE,   FALSE,  FALSE,  TRUE    },  // Level 1  STREETS OF ROME
-    {   TRUE,   TRUE,   TRUE,   TRUE,   FALSE,  TRUE,   FALSE,  FALSE,  TRUE    },  // Level 2  TRAJAN'S MARKETS
+    {   TRUE,   TRUE,   TRUE,   FALSE,  FALSE,  FALSE,  FALSE,  FALSE,  TRUE    },  // Level 1  STREETS OF ROME
+    {   TRUE,   TRUE,   TRUE,   TRUE,   FALSE,  FALSE,  FALSE,  FALSE,  TRUE    },  // Level 2  TRAJAN'S MARKETS
     {   TRUE,   TRUE,   TRUE,   TRUE,   FALSE,  FALSE,  FALSE,  FALSE,  TRUE    },  // Level 3  THE COLOSSEUM
     {   TRUE,   TRUE,   TRUE,   FALSE,  FALSE,  FALSE,  FALSE,  FALSE,  TRUE    },  // Level 4  THE BASE
     {   TRUE,   FALSE,  FALSE,  TRUE,   FALSE,  FALSE,  FALSE,  FALSE,  TRUE    },  // Level 5  THE SUBMARINE

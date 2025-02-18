@@ -1,6 +1,6 @@
 #pragma once
 
-
+#include "TR8SaveGame.h"
 #include "TR9SaveGame.h"
 #include "TRSaveGame.h"
 #include "resource.h"
@@ -28,7 +28,8 @@ class CTRXDifferences : public CTRXDialogBase
 
     public :
         //  For Remastered
-        static INT_PTR MessageBoxR(const char *pMessage, const char *pTitle, UINT buttons);
+        static INT_PTR MessageBoxR123(const char *pMessage, const char *pTitle, UINT buttons);
+        static INT_PTR MessageBoxR456(const char *pMessage, const char *pTitle, UINT buttons);
 
         //  For Standard
         static INT_PTR MessageBoxS(const char *pMessage, const char *pTitle, UINT buttons);
@@ -46,7 +47,8 @@ class CTRXDifferences : public CTRXDialogBase
 
     public :
         int             m_iVersion;
-        BOOL            m_bRemastered;
+        BOOL            m_bRemastered123;
+        BOOL            m_bRemastered456;
         BOOL            m_bInitList;
         UINT            m_Buttons;
         char            m_szTitle [  MAX_PATH ];

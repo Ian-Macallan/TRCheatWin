@@ -36,7 +36,8 @@ class CTRXPosition : public CTRXDialogBase
         int                 m_iLevel;
         int                 m_iArea;
         CTRXRoomPicture     m_Room;
-
+        BOOL                m_123;
+        BOOL                m_456;
     protected:
         virtual void DoDataExchange(CDataExchange* pDX);    // Prise en charge de DDX/DDV
 

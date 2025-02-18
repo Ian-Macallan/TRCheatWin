@@ -548,7 +548,7 @@ void CTRXPropertyPageBase::OnDropFiles(HDROP hDropInfo)
             {
                 if ( dwSize == TR123LEVELSIZE )
                 {
-                    propertySheet->DropToPage ( PAGE_REMASTERED, szFilename );
+                    propertySheet->DropToPage ( PAGE_REMASTERED_123, szFilename );
                 }
                 else
                 {

@@ -2349,8 +2349,9 @@ void CTRXInfoPage::OnBnClickedJournal()
 
         //
         CTRXDifferences     dlg;
-        dlg.m_bRemastered   = FALSE;
-        dlg.m_iVersion      = CTRSaveGame::GetVersion();
+        dlg.m_bRemastered123   = FALSE;
+        dlg.m_bRemastered456   = FALSE;
+        dlg.m_iVersion          = CTRSaveGame::GetVersion();
 
         dlg.DoModal();
 

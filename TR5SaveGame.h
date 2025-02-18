@@ -66,9 +66,9 @@ struct TR5_POSITION
     BYTE    unknown3;           //  000f
     BYTE    cMoving2;           //  0010    Change when moving
     BYTE    unknown4;
-    WORD    heath;              //  0012
+    WORD    health;             //  0012
 };
-#define TR5_LIFE_OFFSET         (offsetof(TR5_POSITION,heath)-offsetof(TR5_POSITION,indicator1))
+#define TR5_LIFE_OFFSET         (offsetof(TR5_POSITION,health)-offsetof(TR5_POSITION,indicator1))
 // #define TR5_LIFE_OFFSET         7
 
 struct          TR5Gun

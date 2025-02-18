@@ -338,6 +338,7 @@
     <ClCompile Include="TR2SaveGame.cpp" />
     <ClCompile Include="TR45SaveGame.cpp" />
     <ClCompile Include="TR4NGSaveGame.cpp" />
+    <ClCompile Include="TR8SaveGame.cpp" />
     <ClCompile Include="TR9SaveGame.cpp" />
     <ClCompile Include="TRLabelItems.cpp" />
     <ClCompile Include="TRXAllMaps.cpp" />
@@ -354,8 +355,11 @@
     <ClCompile Include="TRXMenuBase.cpp" />
     <ClCompile Include="TRXMessageBox.cpp" />
     <ClCompile Include="TRXNCColor.cpp" />
+    <ClCompile Include="TRXPropertyPage456.cpp" />
     <ClCompile Include="TRXPropertyPageBase.cpp" />
+    <ClCompile Include="TRXPropertySheetRemastered456.cpp" />
     <ClCompile Include="TRXRectangle.cpp" />
+    <ClCompile Include="TRXRemastered456.cpp" />
     <ClCompile Include="TRXRoomPicture.cpp" />
     <ClCompile Include="TRXRoomWall.cpp" />
     <ClCompile Include="TRXCHEATWIN.cpp" />
@@ -529,6 +533,7 @@
     <ClInclude Include="TR4NGSaveGame.h" />
     <ClInclude Include="TR4_Areas_inc.h" />
     <ClInclude Include="TR5_Areas_inc.h" />
+    <ClInclude Include="TR8SaveGame.h" />
     <ClInclude Include="TRLabelItems.h" />
     <ClInclude Include="TRR1G_Areas_inc.h" />
     <ClInclude Include="TRR1_Areas_inc.h" />
@@ -550,8 +555,11 @@
     <ClInclude Include="TRXMenuBase.h" />
     <ClInclude Include="TRXMessageBox.h" />
     <ClInclude Include="TRXNCColor.h" />
+    <ClInclude Include="TRXPropertyPage456.h" />
     <ClInclude Include="TRXPropertyPageBase.h" />
+    <ClInclude Include="TRXPropertySheetRemastered456.h" />
     <ClInclude Include="TRXRectangle.h" />
+    <ClInclude Include="TRXRemastered456.h" />
     <ClInclude Include="TRXRoomPicture.h" />
     <ClInclude Include="TRXRoomWall.h" />
     <ClInclude Include="TRXDialogBase.h" />

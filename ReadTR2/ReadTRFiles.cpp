@@ -177,7 +177,7 @@ int main(int iArgCount, _TCHAR* pArgValue[])
             }
         }
     }
-    //  Remastered
+    //  Remastered 123
     else if ( iArgCount > 1 && strcmp ( pArgValue [ 1 ], "TR123" ) == 0 )
     {
         hOutputFile = NULL;
@@ -225,6 +225,25 @@ int main(int iArgCount, _TCHAR* pArgValue[])
         if ( hOutputFile != NULL )
         {
             ExportDataFiles ( hOutputFile, "G:\\GOG Games\\Tomb Raider I-III Remastered\\3\\DATA\\LA", 35, TRR3_MODE, "*.TR2", "TRR3G_" );
+            fclose ( hOutputFile );
+        }
+    }
+    //  Remastered 456
+    else if ( iArgCount > 1 && strcmp ( pArgValue [ 1 ], "TR456" ) == 0 )
+    {
+        hOutputFile = NULL;
+        fopen_s ( &hOutputFile, ".\\TRR4_Areas_inc.h", "w" );
+        if ( hOutputFile != NULL )
+        {
+            ExportDataFiles ( hOutputFile, "G:\\GOG Games\\Tomb Raider IV-VI Remastered\\4\\DATA", 40, TRR4_MODE, "*.TR4", "TRR4_" );
+            fclose ( hOutputFile );
+        }
+
+        hOutputFile = NULL;
+        fopen_s ( &hOutputFile, ".\\TRR5_Areas_inc.h", "w" );
+        if ( hOutputFile != NULL )
+        {
+            ExportDataFiles ( hOutputFile, "G:\\GOG Games\\Tomb Raider IV-VI Remastered\\5\\DATA", 50, TRR5_MODE, "*.TRC", "TRR5_"  );
             fclose ( hOutputFile );
         }
     }

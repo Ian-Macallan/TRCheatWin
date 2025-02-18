@@ -22,32 +22,32 @@
 #define TR3_LEVEL_SAVE      20
 
 //
-#define TR1_MASK_COMPASS    0x01
-#define TR1_MASK_GUN        0x02
-#define TR1_MASK_MAGNUM     0x04
-#define TR1_MASK_UZI        0x08
-#define TR1_MASK_RIOT       0x10
+#define TRR1_MASK_COMPASS   0x01
+#define TRR1_MASK_GUN       0x02
+#define TRR1_MASK_MAGNUM    0x04
+#define TRR1_MASK_UZI       0x08
+#define TRR1_MASK_RIOT      0x10
 
 //
-#define TR2_MASK_COMPASS    0x01
-#define TR2_MASK_GUN        0x02
-#define TR2_MASK_MAGNUM     0x04
-#define TR2_MASK_UZI        0x08
-#define TR2_MASK_RIOT       0x10
-#define TR2_MASK_M16        0x20
-#define TR2_MASK_GRENADE    0x40
-#define TR2_MASK_HARPOON    0x80
+#define TRR2_MASK_COMPASS   0x01
+#define TRR2_MASK_GUN       0x02
+#define TRR2_MASK_MAGNUM    0x04
+#define TRR2_MASK_UZI       0x08
+#define TRR2_MASK_RIOT      0x10
+#define TRR2_MASK_M16       0x20
+#define TRR2_MASK_GRENADE   0x40
+#define TRR2_MASK_HARPOON   0x80
 
 //
-#define TR3_MASK_COMPASS    0x001
-#define TR3_MASK_GUN        0x002
-#define TR3_MASK_MAGNUM     0x004
-#define TR3_MASK_UZI        0x008
-#define TR3_MASK_RIOT       0x010
-#define TR3_MASK_M16        0x020
-#define TR3_MASK_ROCKET     0x040
-#define TR3_MASK_GRENADE    0x080
-#define TR3_MASK_HARPOON    0x100
+#define TRR3_MASK_COMPASS   0x001
+#define TRR3_MASK_GUN       0x002
+#define TRR3_MASK_MAGNUM    0x004
+#define TRR3_MASK_UZI       0x008
+#define TRR3_MASK_RIOT      0x010
+#define TRR3_MASK_M16       0x020
+#define TRR3_MASK_ROCKET    0x040
+#define TRR3_MASK_GRENADE   0x080
+#define TRR3_MASK_HARPOON   0x100
 
 //  Secrets
 //  0x0DB040 = 1000 - Save (db00c): 39 Level 16 (db628) (#62) 16: Floating Islands
@@ -180,8 +180,6 @@
 #define LEVEL_X40           0x0E28D6
 
 #define TR_OFFSET_INDICATOR 0x000004
-
-#define LEN_BUFFER          (3*1024*1024)
 
 #define TR1_GAME_PLUS       0x00018C
 #define TR2_GAME_PLUS       0x000190
@@ -588,7 +586,7 @@ class CTR9SaveGame : public CObject
         static CTR9SaveGame *GetInstance(BOOL bCreate = TRUE);
         static CTR9SaveGame *I(BOOL bCreate = TRUE);
         static BOOL IsBufferModified();
-        static BOOL WriteFile(const char *oFilename);
+        static BOOL WriteFile(const char *pFilename);
         static void Discard();
 
     protected:

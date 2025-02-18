@@ -165,6 +165,7 @@
 #define IDB_LAST_REV_1                  270
 #define IDD_ITEMS1                      272
 #define IDD_REMASTERED                  272
+#define IDD_REMASTERED_123              272
 #define IDD_ITEMS_TR4                   273
 #define IDD_LIST_SECRETS                274
 #define IDD_REMASTERED_INFO             275
@@ -172,6 +173,8 @@
 #define IDD_DIFFERENCES                 277
 #define IDD_POSITION                    278
 #define IDB_GRAPPLING                   279
+#define IDD_REMASTERED1                 279
+#define IDD_REMASTERED_456              279
 #define IDB_BITMAP5                     280
 #define IDB_AMMOS_GRAP                  280
 #define IDR_HELPTEXT1                   282

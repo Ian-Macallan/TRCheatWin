@@ -24,6 +24,7 @@
 #include "TRXPropertySheetAll.h"
 #include "TRXPropertySheetStandard.h"
 #include "TRXPropertySheetRemastered.h"
+#include "TRXPropertySheetRemastered456.h"
 #include "TRXAllMaps.h"
 #include "TRXMessageBox.h"
 #include "TR_Areas.h"
@@ -745,8 +746,8 @@ BOOL CTRXCHEATWINApp::InitInstance()
         }
         //
         else if (   _stricmp ( pCommandLine, "-123" ) == 0              ||
-                    _stricmp ( pCommandLine, "-r" ) == 0                    ||
-                    _stricmp ( pCommandLine, "-remastered" ) == 0       )
+                    _stricmp ( pCommandLine, "-r123" ) == 0             ||
+                    _stricmp ( pCommandLine, "-remastered123" ) == 0       )
         {
             CTRXPropertySheetRemastered dlg ( TRR_PROGRAM );
             dlg.SetApply ( TRUE );
@@ -755,10 +756,44 @@ BOOL CTRXCHEATWINApp::InitInstance()
         }
         //
         else if (   __strnicmp ( pCommandLine, "-123 " ) == 0               ||
-                    __strnicmp ( pCommandLine, "-r " ) == 0                   ||
-                    __strnicmp ( pCommandLine, "-remastered " ) == 0     )
+                    __strnicmp ( pCommandLine, "-r123 " ) == 0              ||
+                    __strnicmp ( pCommandLine, "-remastered123 " ) == 0         )
         {
             CTRXPropertySheetRemastered dlg ( TRR_PROGRAM );
+            dlg.SetApply ( TRUE );
+
+            //
+            ZeroMemory ( szPathname, sizeof(szPathname) );
+            char *pFilename = strchr ( pCommandLine, ' ' );
+            if ( pFilename != NULL )
+            {
+                pFilename = SkipSpaces ( pFilename );
+                CopyBetweenQuotes ( szPathname, sizeof(szPathname), pFilename );
+
+                LPSTR lpFilepart = NULL;
+                GetFullPathName ( szPathname, sizeof(szFullPathname), szFullPathname, &lpFilepart );
+
+                dlg.SetParmPathname ( szFullPathname );
+            }
+            m_pMainWnd = &dlg;
+            nResponse = dlg.DoModal();
+        }
+        //
+        else if (   _stricmp ( pCommandLine, "-456" ) == 0              ||
+                    _stricmp ( pCommandLine, "-r456" ) == 0             ||
+                    _stricmp ( pCommandLine, "-remastered456" ) == 0       )
+        {
+            CTRXPropertySheetRemastered456 dlg ( TRR_PROGRAM );
+            dlg.SetApply ( TRUE );
+            m_pMainWnd = &dlg;
+            nResponse = dlg.DoModal();
+        }
+        //
+        else if (   __strnicmp ( pCommandLine, "-456 " ) == 0               ||
+                    __strnicmp ( pCommandLine, "-r456 " ) == 0              ||
+                    __strnicmp ( pCommandLine, "-remastered456 " ) == 0     )
+        {
+            CTRXPropertySheetRemastered456 dlg ( TRR_PROGRAM );
             dlg.SetApply ( TRUE );
 
             //

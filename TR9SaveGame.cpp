@@ -1053,17 +1053,17 @@ char *CTR9SaveGame::SearchGunStructure (    char *pFrom, char *pUntil, WORD guns
     int uziZero     = uzi;
     int riotZero    = riot;
 
-    if ( ( mask & TR1_MASK_MAGNUM ) == 0 )
+    if ( ( mask & TRR1_MASK_MAGNUM ) == 0 )
     {
         magnumZero = 0;
     }
 
-    if ( ( mask & TR1_MASK_UZI ) == 0 )
+    if ( ( mask & TRR1_MASK_UZI ) == 0 )
     {
         uziZero = 0;
     }
 
-    if ( ( mask & TR1_MASK_RIOT ) == 0 )
+    if ( ( mask & TRR1_MASK_RIOT ) == 0 )
     {
         riotZero = 0;
     }
@@ -1155,32 +1155,32 @@ char *CTR9SaveGame::SearchGunStructure (    char *pFrom, char *pUntil, WORD guns
     int harpoonZero     = harpoon;
 
     //
-    if ( ( mask & TR2_MASK_MAGNUM ) == 0 )
+    if ( ( mask & TRR2_MASK_MAGNUM ) == 0 )
     {
         magnumZero = 0;
     }
 
-    if ( ( mask & TR2_MASK_UZI ) == 0 )
+    if ( ( mask & TRR2_MASK_UZI ) == 0 )
     {
         uziZero = 0;
     }
 
-    if ( ( mask & TR2_MASK_RIOT ) == 0 )
+    if ( ( mask & TRR2_MASK_RIOT ) == 0 )
     {
         riotZero = 0;
     }
 
-    if ( ( mask & TR2_MASK_M16 ) == 0 )
+    if ( ( mask & TRR2_MASK_M16 ) == 0 )
     {
         m16Zero = 0;
     }
 
-    if ( ( mask & TR2_MASK_GRENADE ) == 0 )
+    if ( ( mask & TRR2_MASK_GRENADE ) == 0 )
     {
         grenadeZero = 0;
     }
 
-    if ( ( mask & TR2_MASK_HARPOON ) == 0 )
+    if ( ( mask & TRR2_MASK_HARPOON ) == 0 )
     {
         harpoonZero = 0;
     }
@@ -1279,37 +1279,37 @@ char *CTR9SaveGame::SearchGunStructure (    char *pFrom, char *pUntil, WORD guns
     int rocketZero      = rocket;
 
     //
-    if ( ( mask & TR3_MASK_MAGNUM ) == 0 )
+    if ( ( mask & TRR3_MASK_MAGNUM ) == 0 )
     {
         magnumZero = 0;
     }
 
-    if ( ( mask & TR3_MASK_UZI ) == 0 )
+    if ( ( mask & TRR3_MASK_UZI ) == 0 )
     {
         uziZero = 0;
     }
 
-    if ( ( mask & TR3_MASK_RIOT ) == 0 )
+    if ( ( mask & TRR3_MASK_RIOT ) == 0 )
     {
         riotZero = 0;
     }
 
-    if ( ( mask & TR3_MASK_M16 ) == 0 )
+    if ( ( mask & TRR3_MASK_M16 ) == 0 )
     {
         m16Zero = 0;
     }
 
-    if ( ( mask & TR3_MASK_GRENADE ) == 0 )
+    if ( ( mask & TRR3_MASK_GRENADE ) == 0 )
     {
         grenadeZero = 0;
     }
 
-    if ( ( mask & TR3_MASK_HARPOON ) == 0 )
+    if ( ( mask & TRR3_MASK_HARPOON ) == 0 )
     {
         harpoonZero = 0;
     }
 
-    if ( ( mask & TR3_MASK_ROCKET ) == 0 )
+    if ( ( mask & TRR3_MASK_ROCKET ) == 0 )
     {
         rocketZero = 0;
     }
@@ -7643,7 +7643,7 @@ void CTR9SaveGame::SetLikeGame ( int tombraider, int block, int slot )
                 {
                     *pPickup    = 0;
                 }
-}
+            }
             break;
         }
 
@@ -7921,7 +7921,7 @@ void CTR9SaveGame::SetLikePlus ( int tombraider, int block, int slot )
                 {
                     *pPickup    = 0;
                 }
-}
+            }
             break;
         }
 
@@ -8028,11 +8028,11 @@ void CTR9SaveGame::SetPistols ( int tombraider, void *pBlocks, int level, BOOL b
                 BOOL bAuthorized = CTRXTools::IsEnablePistol ( tombraider, level );
                 if ( bAuthorized && bEnabled )
                 {
-                    pBlock->gunmask     |= TR1_MASK_GUN;    // Pistol
+                    pBlock->gunmask     |= TRR1_MASK_GUN;    // Pistol
                 }
                 else
                 {
-                    pBlock->gunmask     = pBlock->gunmask & ( TR1_MASK_GUN ^ 0xff );
+                    pBlock->gunmask     = pBlock->gunmask & ( TRR1_MASK_GUN ^ 0xff );
                 }
             }
             break;
@@ -8046,11 +8046,11 @@ void CTR9SaveGame::SetPistols ( int tombraider, void *pBlocks, int level, BOOL b
                 BOOL bAuthorized = CTRXTools::IsEnablePistol ( tombraider, level );
                 if ( bAuthorized && bEnabled )
                 {
-                    pBlock->gunmask     |= TR2_MASK_GUN;    // Pistol
+                    pBlock->gunmask     |= TRR2_MASK_GUN;    // Pistol
                 }
                 else
                 {
-                    pBlock->gunmask     = pBlock->gunmask & ( TR2_MASK_GUN ^ 0xff );
+                    pBlock->gunmask     = pBlock->gunmask & ( TRR2_MASK_GUN ^ 0xff );
                 }
             }
             break;
@@ -8064,11 +8064,11 @@ void CTR9SaveGame::SetPistols ( int tombraider, void *pBlocks, int level, BOOL b
                 BOOL bAuthorized = CTRXTools::IsEnablePistol ( tombraider, level );
                 if ( bAuthorized && bEnabled )
                 {
-                    pBlock->gunmask     |= TR3_MASK_GUN;    // Pistol
+                    pBlock->gunmask     |= TRR3_MASK_GUN;    // Pistol
                 }
                 else
                 {
-                    pBlock->gunmask     = pBlock->gunmask & ( TR3_MASK_GUN ^ 0xffff );
+                    pBlock->gunmask     = pBlock->gunmask & ( TRR3_MASK_GUN ^ 0xffff );
                 }
             }
             break;
@@ -8158,7 +8158,7 @@ void CTR9SaveGame::SetMagnum ( int tombraider, void *pBlocks, void *pGuns, int l
             {
                 if ( pBlock )
                 {
-                    pBlock->gunmask     |= TR1_MASK_MAGNUM; // Magnum
+                    pBlock->gunmask     |= TRR1_MASK_MAGNUM; // Magnum
                     pBlock->magnum      = ammos;
                 }
 
@@ -8171,7 +8171,7 @@ void CTR9SaveGame::SetMagnum ( int tombraider, void *pBlocks, void *pGuns, int l
             {
                 if ( pBlock )
                 {
-                    pBlock->gunmask     = pBlock->gunmask & ( TR1_MASK_MAGNUM ^ 0xff );
+                    pBlock->gunmask     = pBlock->gunmask & ( TRR1_MASK_MAGNUM ^ 0xff );
                 }
 
                 if ( pGun )
@@ -8207,7 +8207,7 @@ void CTR9SaveGame::SetMagnum ( int tombraider, void *pBlocks, void *pGuns, int l
             {
                 if ( pBlock )
                 {
-                    pBlock->gunmask     |= TR2_MASK_MAGNUM; // Magnum
+                    pBlock->gunmask     |= TRR2_MASK_MAGNUM; // Magnum
                     pBlock->magnum      = ammos;
                 }
                 if ( pGun )
@@ -8219,7 +8219,7 @@ void CTR9SaveGame::SetMagnum ( int tombraider, void *pBlocks, void *pGuns, int l
             {
                 if ( pBlock )
                 {
-                    pBlock->gunmask     = pBlock->gunmask & ( TR2_MASK_MAGNUM ^ 0xff );
+                    pBlock->gunmask     = pBlock->gunmask & ( TRR2_MASK_MAGNUM ^ 0xff );
                 }
 
                 if ( pGun )
@@ -8254,7 +8254,7 @@ void CTR9SaveGame::SetMagnum ( int tombraider, void *pBlocks, void *pGuns, int l
             {
                 if ( pBlock )
                 {
-                    pBlock->gunmask     |= TR3_MASK_MAGNUM; // Magnum
+                    pBlock->gunmask     |= TRR3_MASK_MAGNUM; // Magnum
                     pBlock->magnum      = ammos;
                 }
                 if ( pGun )
@@ -8266,7 +8266,7 @@ void CTR9SaveGame::SetMagnum ( int tombraider, void *pBlocks, void *pGuns, int l
             {
                 if ( pBlock )
                 {
-                    pBlock->gunmask     = pBlock->gunmask & ( TR3_MASK_MAGNUM ^ 0xffff );
+                    pBlock->gunmask     = pBlock->gunmask & ( TRR3_MASK_MAGNUM ^ 0xffff );
                 }
 
                 if ( pGun )
@@ -8378,7 +8378,7 @@ void CTR9SaveGame::SetUzi ( int tombraider, void *pBlocks, void *pGuns, int leve
             {
                 if ( pBlock )
                 {
-                    pBlock->gunmask     |= TR1_MASK_UZI;    // Uzi
+                    pBlock->gunmask     |= TRR1_MASK_UZI;    // Uzi
                     pBlock->uzi         = ammos;
                 }
 
@@ -8391,7 +8391,7 @@ void CTR9SaveGame::SetUzi ( int tombraider, void *pBlocks, void *pGuns, int leve
             {
                 if ( pBlock )
                 {
-                    pBlock->gunmask     = pBlock->gunmask & ( TR1_MASK_UZI ^ 0xff );
+                    pBlock->gunmask     = pBlock->gunmask & ( TRR1_MASK_UZI ^ 0xff );
                 }
 
                 if ( pGun )
@@ -8426,7 +8426,7 @@ void CTR9SaveGame::SetUzi ( int tombraider, void *pBlocks, void *pGuns, int leve
             {
                 if ( pBlock )
                 {
-                    pBlock->gunmask     |= TR2_MASK_UZI;    // Uzi
+                    pBlock->gunmask     |= TRR2_MASK_UZI;    // Uzi
                     pBlock->uzi         = ammos;
                 }
                 if ( pGun )
@@ -8438,7 +8438,7 @@ void CTR9SaveGame::SetUzi ( int tombraider, void *pBlocks, void *pGuns, int leve
             {
                 if ( pBlock )
                 {
-                    pBlock->gunmask     = pBlock->gunmask & ( TR2_MASK_UZI ^ 0xff );
+                    pBlock->gunmask     = pBlock->gunmask & ( TRR2_MASK_UZI ^ 0xff );
                 }
 
                 if ( pGun )
@@ -8473,7 +8473,7 @@ void CTR9SaveGame::SetUzi ( int tombraider, void *pBlocks, void *pGuns, int leve
             {
                 if ( pBlock )
                 {
-                    pBlock->gunmask     |= TR3_MASK_UZI;    // Uzi
+                    pBlock->gunmask     |= TRR3_MASK_UZI;    // Uzi
                     pBlock->uzi         = ammos;
                 }
                 if ( pGun )
@@ -8485,7 +8485,7 @@ void CTR9SaveGame::SetUzi ( int tombraider, void *pBlocks, void *pGuns, int leve
             {
                 if ( pBlock )
                 {
-                    pBlock->gunmask     = pBlock->gunmask & ( TR3_MASK_UZI ^ 0xffff );
+                    pBlock->gunmask     = pBlock->gunmask & ( TRR3_MASK_UZI ^ 0xffff );
                 }
 
                 if ( pGun )
@@ -8599,7 +8599,7 @@ void CTR9SaveGame::SetRiotgun ( int tombraider, void *pBlocks, void *pGuns, int 
             {
                 if ( pBlock )
                 {
-                    pBlock->gunmask     |= TR1_MASK_RIOT;   // riotgun
+                    pBlock->gunmask     |= TRR1_MASK_RIOT;   // riotgun
                     pBlock->riotgun     = ammos;
                 }
                 if ( pGun )
@@ -8611,7 +8611,7 @@ void CTR9SaveGame::SetRiotgun ( int tombraider, void *pBlocks, void *pGuns, int 
             {
                 if ( pBlock )
                 {
-                    pBlock->gunmask     = pBlock->gunmask & ( TR1_MASK_RIOT ^ 0xff );
+                    pBlock->gunmask     = pBlock->gunmask & ( TRR1_MASK_RIOT ^ 0xff );
                 }
 
                 if ( pGun )
@@ -8646,7 +8646,7 @@ void CTR9SaveGame::SetRiotgun ( int tombraider, void *pBlocks, void *pGuns, int 
             {
                 if ( pBlock )
                 {
-                    pBlock->gunmask     |= TR2_MASK_RIOT;   // riotgun
+                    pBlock->gunmask     |= TRR2_MASK_RIOT;   // riotgun
                     pBlock->riotgun     = ammos;
                 }
                 if ( pGun )
@@ -8658,7 +8658,7 @@ void CTR9SaveGame::SetRiotgun ( int tombraider, void *pBlocks, void *pGuns, int 
             {
                 if ( pBlock )
                 {
-                    pBlock->gunmask     = pBlock->gunmask & ( TR2_MASK_RIOT ^ 0xff );
+                    pBlock->gunmask     = pBlock->gunmask & ( TRR2_MASK_RIOT ^ 0xff );
                 }
 
                 if ( pGun )
@@ -8693,7 +8693,7 @@ void CTR9SaveGame::SetRiotgun ( int tombraider, void *pBlocks, void *pGuns, int 
             {
                 if ( pBlock )
                 {
-                    pBlock->gunmask     |= TR3_MASK_RIOT;   // riotgun
+                    pBlock->gunmask     |= TRR3_MASK_RIOT;   // riotgun
                     pBlock->riotgun     = ammos;
                 }
                 if ( pGun )
@@ -8705,7 +8705,7 @@ void CTR9SaveGame::SetRiotgun ( int tombraider, void *pBlocks, void *pGuns, int 
             {
                 if ( pBlock )
                 {
-                    pBlock->gunmask     = pBlock->gunmask & ( TR3_MASK_RIOT ^ 0xffff );
+                    pBlock->gunmask     = pBlock->gunmask & ( TRR3_MASK_RIOT ^ 0xffff );
                 }
 
                 if ( pGun )
@@ -8823,7 +8823,7 @@ void CTR9SaveGame::SetHarpoon ( int tombraider, void *pBlocks, void *pGuns, int 
             {
                 if ( pBlock )
                 {
-                    pBlock->gunmask     |= TR2_MASK_HARPOON;    // harpoon
+                    pBlock->gunmask     |= TRR2_MASK_HARPOON;    // harpoon
                     pBlock->harpoon     = ammos;
                 }
                 if ( pGun )
@@ -8835,7 +8835,7 @@ void CTR9SaveGame::SetHarpoon ( int tombraider, void *pBlocks, void *pGuns, int 
             {
                 if ( pBlock )
                 {
-                    pBlock->gunmask     = pBlock->gunmask & ( TR2_MASK_HARPOON ^ 0xff );
+                    pBlock->gunmask     = pBlock->gunmask & ( TRR2_MASK_HARPOON ^ 0xff );
                 }
 
                 if ( pGun )
@@ -8870,7 +8870,7 @@ void CTR9SaveGame::SetHarpoon ( int tombraider, void *pBlocks, void *pGuns, int 
             {
                 if ( pBlock )
                 {
-                    pBlock->gunmask     |= TR3_MASK_HARPOON;    // harpoon
+                    pBlock->gunmask     |= TRR3_MASK_HARPOON;    // harpoon
                     pBlock->harpoon     = ammos;
                 }
                 if ( pGun )
@@ -8882,7 +8882,7 @@ void CTR9SaveGame::SetHarpoon ( int tombraider, void *pBlocks, void *pGuns, int 
             {
                 if ( pBlock )
                 {
-                    pBlock->gunmask     = pBlock->gunmask & ( TR3_MASK_HARPOON ^ 0xffff );
+                    pBlock->gunmask     = pBlock->gunmask & ( TRR3_MASK_HARPOON ^ 0xffff );
                 }
 
                 if ( pGun )
@@ -8995,7 +8995,7 @@ void CTR9SaveGame::SetM16 ( int tombraider, void *pBlocks, void *pGuns, int leve
             {
                 if ( pBlock )
                 {
-                    pBlock->gunmask     |= TR2_MASK_M16;    // m16
+                    pBlock->gunmask     |= TRR2_MASK_M16;    // m16
                     pBlock->m16         = ammos;
                 }
                 if ( pGun )
@@ -9007,7 +9007,7 @@ void CTR9SaveGame::SetM16 ( int tombraider, void *pBlocks, void *pGuns, int leve
             {
                 if ( pBlock )
                 {
-                    pBlock->gunmask     = pBlock->gunmask & ( TR2_MASK_M16 ^ 0xff );
+                    pBlock->gunmask     = pBlock->gunmask & ( TRR2_MASK_M16 ^ 0xff );
                 }
 
                 if ( pGun )
@@ -9042,7 +9042,7 @@ void CTR9SaveGame::SetM16 ( int tombraider, void *pBlocks, void *pGuns, int leve
             {
                 if ( pBlock )
                 {
-                    pBlock->gunmask     |= TR3_MASK_M16;    // m16
+                    pBlock->gunmask     |= TRR3_MASK_M16;    // m16
                     pBlock->m16         = ammos;
                 }
                 if ( pGun )
@@ -9054,7 +9054,7 @@ void CTR9SaveGame::SetM16 ( int tombraider, void *pBlocks, void *pGuns, int leve
             {
                 if ( pBlock )
                 {
-                    pBlock->gunmask     = pBlock->gunmask & ( TR3_MASK_M16 ^ 0xffff );
+                    pBlock->gunmask     = pBlock->gunmask & ( TRR3_MASK_M16 ^ 0xffff );
                 }
 
                 if ( pGun )
@@ -9167,7 +9167,7 @@ void CTR9SaveGame::SetGrenade ( int tombraider, void *pBlocks, void *pGuns, int 
             {
                 if ( pBlock )
                 {
-                    pBlock->gunmask     |= TR2_MASK_GRENADE;    // grenade
+                    pBlock->gunmask     |= TRR2_MASK_GRENADE;    // grenade
                     pBlock->grenade     = ammos;
                 }
                 if ( pGun )
@@ -9179,7 +9179,7 @@ void CTR9SaveGame::SetGrenade ( int tombraider, void *pBlocks, void *pGuns, int 
             {
                 if ( pBlock )
                 {
-                    pBlock->gunmask     = pBlock->gunmask & ( TR2_MASK_GRENADE ^ 0xff );
+                    pBlock->gunmask     = pBlock->gunmask & ( TRR2_MASK_GRENADE ^ 0xff );
                 }
 
                 if ( pGun )
@@ -9214,7 +9214,7 @@ void CTR9SaveGame::SetGrenade ( int tombraider, void *pBlocks, void *pGuns, int 
             {
                 if ( pBlock )
                 {
-                    pBlock->gunmask     |= TR3_MASK_GRENADE;    // grenade
+                    pBlock->gunmask     |= TRR3_MASK_GRENADE;    // grenade
                     pBlock->grenade     = ammos;
                 }
                 if ( pGun )
@@ -9226,7 +9226,7 @@ void CTR9SaveGame::SetGrenade ( int tombraider, void *pBlocks, void *pGuns, int 
             {
                 if ( pBlock )
                 {
-                    pBlock->gunmask     = pBlock->gunmask & ( TR3_MASK_GRENADE ^ 0xffff );
+                    pBlock->gunmask     = pBlock->gunmask & ( TRR3_MASK_GRENADE ^ 0xffff );
                 }
 
                 if ( pGun )
@@ -9344,7 +9344,7 @@ void CTR9SaveGame::SetRocket ( int tombraider, void *pBlocks, void *pGuns, int l
             {
                 if ( pBlock != NULL )
                 {
-                    pBlock->gunmask     |= TR3_MASK_ROCKET; // rocket
+                    pBlock->gunmask     |= TRR3_MASK_ROCKET; // rocket
                     pBlock->rocket      = ammos;
                 }
 
@@ -9357,7 +9357,7 @@ void CTR9SaveGame::SetRocket ( int tombraider, void *pBlocks, void *pGuns, int l
             {
                 if ( pBlock != NULL )
                 {
-                    pBlock->gunmask     = pBlock->gunmask & ( TR3_MASK_ROCKET ^ 0xffff );
+                    pBlock->gunmask     = pBlock->gunmask & ( TRR3_MASK_ROCKET ^ 0xffff );
                 }
 
                 if ( pGun != NULL )

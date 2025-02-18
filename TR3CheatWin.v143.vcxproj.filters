@@ -259,6 +259,18 @@
     <ClCompile Include="ReadTR2\ExportDataFiles.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="TR8SaveGame.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TRXPropertyPage456.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TRXRemastered456.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TRXPropertySheetRemastered456.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="res\Aire 51.bmp">
@@ -844,6 +856,18 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ReadTR2\ExportDataFiles.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TR8SaveGame.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TRXPropertyPage456.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TRXRemastered456.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TRXPropertySheetRemastered456.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
