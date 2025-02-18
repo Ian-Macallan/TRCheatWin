@@ -624,7 +624,7 @@ class CTR8SaveGame : public CObject
         WORD *GetSaveAddress ( int tombraider, int block );
 
         //
-        bool isKnown(int tombraider, const char *position);
+        bool isKnown(int tombraider, const char *position, const char *pStart);
         const char *getPositionLabel(int tombraider, const char *position);
         const char *getIndicatorLabel()
         {

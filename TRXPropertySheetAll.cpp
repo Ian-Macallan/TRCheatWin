@@ -53,6 +53,7 @@ CTRXPropertySheetAll::CTRXPropertySheetAll(UINT nIDCaption, CWnd* pParentWnd, UI
     if ( iRemastered || ( iRemastered == 0 && iStandard == 0 ) )
     {
         AddRemastered123Page ();
+        AddRemastered456Page ();
     }
 
     if ( iStandard || ( iRemastered == 0 && iStandard == 0 ) )
@@ -78,6 +79,7 @@ CTRXPropertySheetAll::CTRXPropertySheetAll(LPCTSTR pszCaption, CWnd* pParentWnd,
     if ( iRemastered || ( iRemastered == 0 && iStandard == 0 ) )
     {
         AddRemastered123Page ();
+        AddRemastered456Page ();
     }
 
     if ( iStandard || ( iRemastered == 0 && iStandard == 0 ) )
@@ -92,6 +94,9 @@ CTRXPropertySheetAll::CTRXPropertySheetAll(LPCTSTR pszCaption, CWnd* pParentWnd,
 /////////////////////////////////////////////////////////////////////////////
 CTRXPropertySheetAll::~CTRXPropertySheetAll()
 {
+        RemoveRemastered123Page ();
+        RemoveRemastered456Page ();
+        RemoveStandardPage ();
 }
 
 //

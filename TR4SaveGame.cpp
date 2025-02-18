@@ -1708,7 +1708,7 @@ void CTR4SaveGame::SetGunAmmos ( const char *szGunAmmos )
 void *CTR4SaveGame::GetIndicatorAddress (int index)
 {
     //
-    int levelIndex  = GetLevelIndex() % ( sizeof(TR4IndicatorRange) / sizeof(TR_POSITION_RANGE) );;
+    int levelIndex  = GetLevelIndex() % ( sizeof(TR4IndicatorRange) / sizeof(TR_POSITION_RANGE) );
     int minOffset   = TR4IndicatorRange [ levelIndex ].minOffset;
     int maxOffset   = TR4IndicatorRange [ levelIndex ].maxOffset;
 

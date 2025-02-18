@@ -213,6 +213,71 @@ static const char *TR5LevelNames [] =
 };
 
 //
+static TR_POSITION_RANGE TRR4IndicatorRange [ TR4_LEVELS ] =
+{
+    {   0x0600,     0x0700  },      /* 1 Angkor Wat */ 
+    {   0x0100,     0x3000  },      /* 2 Race for the Iris */
+    {   0x0100,     0x3000  },      /* 3 Tomb of Seth */
+    {   0x0100,     0x3000  },      /* 4 Burial Chambers */
+    {   0x0100,     0x3000  },      /* 5 Valley of the Kings */
+    {   0x0100,     0x3000  },      /* 6 KV5 */
+    {   0x0100,     0x3000  },      /* 7 Temple of Karnak */
+    {   0x0100,     0x3000  },      /* 8 Great Hypostyle Hall */
+    {   0x0100,     0x3000  },      /* 9 Sacred Lake */
+    {   0x0100,     0x3000  },      /* 10 Nothing */ 
+    {   0x0100,     0x3000  },      /* 11 Tomb of Semerkhet */
+    {   0x0100,     0x3000  },      /* 12 Guardian of Semerkhet */
+    {   0x0100,     0x3000  },      /* 13 Desert Railroad */
+    {   0x0100,     0x3000  },      /* 14 Alexandria */
+    {   0x0100,     0x3000  },      /* 15 Coastal Ruins */
+    {   0x0100,     0x3000  },      /* 16 Pharos, Temple of Isis */
+    {   0x0100,     0x3000  },      /* 17 Cleopatra's Palaces */
+    {   0x0100,     0x3000  },      /* 18 Catacombs */
+    {   0x0100,     0x3000  },      /* 19 Temple of Poseidon */
+    {   0x0100,     0x3000  },      /* 20 The Lost Library */
+    {   0x0100,     0x3000  },      /* 21 Hall of Demetrius */
+    {   0x0100,     0x3000  },      /* 22 City of the Dead */
+    {   0x0100,     0x3000  },      /* 23 Trenches */
+    {   0x0100,     0x3000  },      /* 24 Chambers of Tulun */
+    {   0x280,      0x3000  },      /* 25 Street Bazaar */ 
+    {   0x0100,     0x3000  },      /* 26 Citadel Gate */
+    {   0x0100,     0x3000  },      /* 27 Citadel */
+    {   0x0100,     0x3000  },      /* 28 Sphinx Complex */
+    {   0x0100,     0x3000  },      /* 29 Nothing */
+    {   0x0100,     0x3000  },      /* 30 Underneath the Sphinx */
+    {   0x0100,     0x3000  },      /* 31 Menkaure's Pyramid */
+    {   0x0100,     0x3000  },      /* 32 Inside Menkaure's Pyramid */
+    {   0x0100,     0x3000  },      /* 33 The Mastabas */
+    {   0x0100,     0x3000  },      /* 34 The Great Pyramid */ 
+    {   0x0100,     0x3000  },      /* 35 Khufu's Queen's Pyramids */
+    {   0x0100,     0x3000  },      /* 36 Inside the Great Pyramid */
+    {   0x0100,     0x3000  },      /* 37 Temple of Horus */
+    {   0x0100,     0x3000  },      /* 38 Temple of Horus */ 
+    {   0x0100,     0x3000  },      /* 39 Office */
+    {   0x0100,     0x3000  },      /* 40 Times Exclusive */
+};
+
+//
+static TR_POSITION_RANGE TRR5IndicatorRange [ TR5_LEVELS ] =
+{
+    {   0x0100,     0x3000 },       //      For Level 1 Street
+    {   0x0100,     0x3000 },       //      for Level 2 trajan
+    {   0x0100,     0x3000 },       //      for Level 3 colise
+    {   0x0100,     0x3000 },       //      for Level 4 the base
+    {   0x0100,     0x3000 },       //      for Level 5 the submarine
+    {   0x0100,     0x3000 },       //      for Level 6 deep sea
+    {   0x0100,     0x3000 },       //      for Level 7 Sinking
+    {   0x0100,     0x3000 },       //      for Level 8 Gallow
+    {   0x0100,     0x3000 },       //      for Level 9 Labyrith
+    {   0x0100,     0x3000 },       //      for Level 10 Old Mill
+    {   0x0100,     0x3000 },       //      for Level 11 13th floor
+    {   0x0100,     0x3000 },       //      for Level 12 Escape with iris
+    {   0x0100,     0x3000 },       //      for Level 13 Security Breach
+    {   0x0100,     0x3000 },       //      for Level 14 Red Alert
+};
+
+
+//
 /////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////
@@ -968,21 +1033,12 @@ const char *CTR8SaveGame::GetBlockDistance ( int tombraider, int block )
 /////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////
-bool CTR8SaveGame::isKnown(int tombraider, const char *position)
+bool CTR8SaveGame::isKnown(int tombraider, const char *position, const char *pStart)
 {
     BYTE byte1 = *( position - 7 );
     BYTE byte2 = *( position - 6 );
     BYTE byte3 = *( position - 5 );
     BYTE byte4 = *( position - 4 );
-
-#ifdef _DEBUG
-    static char szDebugString [ MAX_PATH ];
-    DWORD dwRelativeAddress = CTRXTools::RelativeAddress ( position, m_pBuffer );
-    sprintf_s ( szDebugString, sizeof(szDebugString), 
-        "Looking 0x%08x : 0x%02x 0x%02x 0x%02x 0x%02x\n", 
-        dwRelativeAddress, byte1 & 0xff, byte2 & 0xff, byte3 & 0xff, byte4 & 0xff );
-    OutputDebugString ( szDebugString );
-#endif
 
     ZeroMemory ( m_szIndicatorLabel, sizeof(m_szIndicatorLabel) );
     if ( tombraider == 4 )
@@ -1008,6 +1064,15 @@ bool CTR8SaveGame::isKnown(int tombraider, const char *position)
             {
                 strcpy_s ( m_szIndicatorLabel, sizeof(m_szIndicatorLabel), IndicatorsTRR4Table [ i ].szLabel );
 
+#ifdef _DEBUG
+                static char szDebugString [ MAX_PATH ];
+                DWORD dwRelativeAddress1 = CTRXTools::RelativeAddress ( position, m_pBuffer );
+                DWORD dwRelativeAddress2 = CTRXTools::RelativeAddress ( position, pStart );
+                sprintf_s ( szDebugString, sizeof(szDebugString), 
+                    "Looking 0x%08x : 0x%08x : 0x%02x 0x%02x 0x%02x 0x%02x\n", 
+                    dwRelativeAddress1, dwRelativeAddress2, byte1 & 0xff, byte2 & 0xff, byte3 & 0xff, byte4 & 0xff );
+                OutputDebugString ( szDebugString );
+#endif
                 return true; 
             }
         }
@@ -1036,6 +1101,15 @@ bool CTR8SaveGame::isKnown(int tombraider, const char *position)
             {
                 strcpy_s ( m_szIndicatorLabel, sizeof(m_szIndicatorLabel), IndicatorsTRR5Table [ i ].szLabel );
 
+#ifdef _DEBUG
+                static char szDebugString [ MAX_PATH ];
+                DWORD dwRelativeAddress1 = CTRXTools::RelativeAddress ( position, m_pBuffer );
+                DWORD dwRelativeAddress2 = CTRXTools::RelativeAddress ( position, pStart );
+                sprintf_s ( szDebugString, sizeof(szDebugString), 
+                    "Looking 0x%08x : 0x%08x : 0x%02x 0x%02x 0x%02x 0x%02x\n", 
+                    dwRelativeAddress1, dwRelativeAddress2, byte1 & 0xff, byte2 & 0xff, byte3 & 0xff, byte4 & 0xff );
+                OutputDebugString ( szDebugString );
+#endif
                 return true; 
             }
         }
@@ -1149,19 +1223,33 @@ WORD *CTR8SaveGame::GetRealHealthAddress ( int tombraider, int block )
 #endif
 
     char *pStart        = NULL;
-    DWORD iStart        = 0x0600;
-    DWORD iLength       = 0x1000;
+    DWORD iStart        = 0x0100;
+    DWORD iLength       = 0x3000;
+    int level = GetBlockLevelNumber(tombraider, block );
+    if ( level <= 0 )
+    {
+        return NULL;
+    }
+
+
+    //
     switch ( tombraider )
     {
         case 4:
         {
+            int levelIndex = ( level - 1 ) % TR4_LEVELS;
             pStart      = (char*) GetBlockSlot ( tombraider, block );
+            iStart      = TRR4IndicatorRange [ levelIndex ].minOffset;
+            iLength     = TRR4IndicatorRange [ levelIndex ].maxOffset;
             break;
         }
 
         case 5:
         {
+            int levelIndex = ( level - 1 ) % TR5_LEVELS;
             pStart      = (char*) GetBlockSlot ( tombraider, block );
+            iStart      = TRR5IndicatorRange [ levelIndex ].minOffset;
+            iLength     = TRR5IndicatorRange [ levelIndex ].maxOffset;
             break;
         }
 
@@ -1185,20 +1273,15 @@ WORD *CTR8SaveGame::GetRealHealthAddress ( int tombraider, int block )
     }
 
     //
-    int level = GetBlockLevelNumber ( tombraider, block );
-    if ( level < 1 || level > 64 )
-    {
-        return NULL;
-    }
-
-    //
     for ( DWORD i = iStart; i <= iLength; i++ )
     {
         char *position  = pStart + i;
         int relative    = (int)( position - m_pBuffer );
 
         //  Are we on full health
-        WORD *pHealth = (WORD *)position;
+        WORD *pHealth = 0;
+#if 0
+        pHealth = (WORD *)position;
         if ( *pHealth == 1000 )
         {
             getPositionLabel ( tombraider, position );
@@ -1208,12 +1291,16 @@ WORD *CTR8SaveGame::GetRealHealthAddress ( int tombraider, int block )
             }
             return pHealth;
         }
-
+#endif
         // printf ( "%lx ", relative );
-        if ( isKnown ( tombraider, position ) )
+        if ( isKnown ( tombraider, position, pStart ) )
         {
             pHealth = ( WORD * ) position;
-            if ( *pHealth >= 0 )
+            if ( tombraider == 4 && ( *pHealth >= 0 && *pHealth <= 1000 ) )
+            {
+                return pHealth;
+            }
+            if ( tombraider == 5 && ( *pHealth > 0 && *pHealth <= 1000 ) )
             {
                 return pHealth;
             }

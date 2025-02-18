@@ -717,7 +717,7 @@ END
 IDD_REMASTERED_456 DIALOGEX 0, 0, 520, 330
 STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 EXSTYLE WS_EX_ACCEPTFILES
-CAPTION "TRR 4 5 6"
+CAPTION "TRR 4 5 6 (Beta)"
 FONT 8, "MS Sans Serif", 0, 0, 0x0
 BEGIN
     EDITTEXT        IDC_FILENAME,7,7,409,12,ES_AUTOHSCROLL | ES_READONLY | NOT WS_TABSTOP
@@ -822,8 +822,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 4,6,00,001
- PRODUCTVERSION 4,6,00,001
+ FILEVERSION 4,6,00,002
+ PRODUCTVERSION 4,6,00,002
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x29L
@@ -841,15 +841,15 @@ BEGIN
             VALUE "Comments", "mailto:ian.macallan@gmail.com\0"
             VALUE "CompanyName", "Macallan (c)\0"
             VALUE "FileDescription", "TRCheatWin - (MSVC)\0"
-            VALUE "FileVersion", "4.6.00.001\0"
+            VALUE "FileVersion", "4.6.00.002\0"
             VALUE "InternalName", "https://www.macallan.org/\0"
-            VALUE "LegalCopyright", "Copyright (C) Tue Feb 18 14:21, 2025\0"
+            VALUE "LegalCopyright", "Copyright (C) Tue Feb 18 17:10, 2025\0"
             VALUE "LegalTrademarks", "Author: Ian Macallan\0"
             VALUE "OriginalFilename", ORIGINAL_FILENAME
-            VALUE "PrivateBuild", "1116\0"
+            VALUE "PrivateBuild", "1117\0"
             VALUE "ProductName", PRODUCT_NAME
-            VALUE "ProductVersion", "4.6.00.001\0"
-            VALUE "SpecialBuild", "1116\0"
+            VALUE "ProductVersion", "4.6.00.002\0"
+            VALUE "SpecialBuild", "1117\0"
         END
     END
     BLOCK "VarFileInfo"
