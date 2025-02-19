@@ -1788,42 +1788,6 @@ BYTE *CTR8SaveGame::GetBlockLevelAddress ( int tombraider, int block )
 /////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////
-BYTE *CTR8SaveGame::GetBlockMapAddress ( int tombraider, int block )
-{
-    if ( block < 0 || block >= NB_SLOT_456 )
-    {
-        return NULL;
-    }
-
-    //
-    switch ( tombraider )
-    {
-        //
-        case 4:
-        {
-            break;
-        }
-
-        //
-        case 5:
-        {
-            break;
-        }
-
-        //
-        case 6:
-        {
-            break;
-        }
-    }
-
-    return NULL;
-}
-
-//
-/////////////////////////////////////////////////////////////////////////////
-//
-/////////////////////////////////////////////////////////////////////////////
 BYTE *CTR8SaveGame::GetBlockObjectAddress ( int tombraider, int block )
 {
     if ( block < 0 || block >= NB_SLOT_456 )
@@ -1837,12 +1801,36 @@ BYTE *CTR8SaveGame::GetBlockObjectAddress ( int tombraider, int block )
         //
         case 4:
         {
+            TABLE_TR4 *pBlock = (TABLE_TR4 *) GetBlockAddress ( tombraider, block );
+            if ( pBlock )
+            {
+#ifdef _DEBUG
+                static char szDebugString [ MAX_PATH ];
+                DWORD dwRelativeAddress1 = CTRXTools::RelativeAddress ( pBlock->m_GunTR4.m_Object, m_pBuffer );
+                sprintf_s ( szDebugString, sizeof(szDebugString), 
+                    "Objects 0x%08x\n", dwRelativeAddress1 );
+                OutputDebugString ( szDebugString );
+#endif
+                return pBlock->m_GunTR4.m_Object;
+            }
             break;
         }
 
         //
         case 5:
         {
+            TABLE_TR5 *pBlock = (TABLE_TR5 *) GetBlockAddress ( tombraider, block );
+            if ( pBlock )
+            {
+#ifdef _DEBUG
+                static char szDebugString [ MAX_PATH ];
+                DWORD dwRelativeAddress1 = CTRXTools::RelativeAddress ( pBlock->m_GunTR5.m_Object, m_pBuffer );
+                sprintf_s ( szDebugString, sizeof(szDebugString), 
+                    "Objects 0x%08x\n", dwRelativeAddress1 );
+                OutputDebugString ( szDebugString );
+#endif
+                return pBlock->m_GunTR5.m_Object;
+            }
             break;
         }
 
@@ -1854,43 +1842,6 @@ BYTE *CTR8SaveGame::GetBlockObjectAddress ( int tombraider, int block )
     }
 
     return NULL;
-}
-
-//
-/////////////////////////////////////////////////////////////////////////////
-//
-/////////////////////////////////////////////////////////////////////////////
-BYTE *CTR8SaveGame::GetBlockKeyAddress ( int tombraider, int block )
-{
-    if ( block < 0 || block >= NB_SLOT_456 )
-    {
-        return NULL;
-    }
-
-    //
-    switch ( tombraider )
-    {
-        //
-        case 4:
-        {
-            break;
-        }
-
-        //
-        case 5:
-        {
-            break;
-        }
-
-        //
-        case 6:
-        {
-            break;
-        }
-    }
-
-    return NULL;
-
 }
 
 //
@@ -2726,12 +2677,6 @@ BYTE *CTR8SaveGame::GetSlotTreasureAddress ( int tombraider, int block )
 /////////////////////////////////////////////////////////////////////////////
 int CTR8SaveGame::GetBlockObject ( int tombraider, int block, int object )
 {
-    if ( block >= NB_SLOT_456 )
-    {
-        tombraider  = 2;
-        block       -= NB_SLOT_456;
-    }
-
     if ( block < 0 || block >= NB_SLOT_456 )
     {
         return 0;
@@ -2741,10 +2686,10 @@ int CTR8SaveGame::GetBlockObject ( int tombraider, int block, int object )
     {
         case 4:
         {
-            char *pBlockAddress = (char *) GetBlockObjectAddress ( tombraider, block );
-            if ( pBlockAddress )
+            BYTE *pObjectAddress = (BYTE *) GetBlockObjectAddress ( tombraider, block );
+            if ( pObjectAddress )
             {
-                char *pAddress = pBlockAddress + object;
+                BYTE *pAddress = pObjectAddress + object;
                 return *pAddress;
             }
             break;
@@ -2752,10 +2697,10 @@ int CTR8SaveGame::GetBlockObject ( int tombraider, int block, int object )
 
         case 5:
         {
-            char *pBlockAddress = (char *) GetBlockObjectAddress ( tombraider, block );
-            if ( pBlockAddress )
+            BYTE *pObjectAddress = (BYTE *) GetBlockObjectAddress ( tombraider, block );
+            if ( pObjectAddress )
             {
-                char *pAddress = pBlockAddress + object;
+                BYTE *pAddress = pObjectAddress + object;
                 return *pAddress;
             }
             break;
@@ -2763,66 +2708,10 @@ int CTR8SaveGame::GetBlockObject ( int tombraider, int block, int object )
 
         case 6:
         {
-            char *pBlockAddress = (char *) GetBlockObjectAddress ( tombraider, block );
-            if ( pBlockAddress )
+            BYTE *pObjectAddress = (BYTE *) GetBlockObjectAddress ( tombraider, block );
+            if ( pObjectAddress )
             {
-                char *pAddress = pBlockAddress + object;
-                return *pAddress;
-            }
-            break;
-        }
-    }
-
-    return 0;
-}
-
-//
-/////////////////////////////////////////////////////////////////////////////
-//
-/////////////////////////////////////////////////////////////////////////////
-int CTR8SaveGame::GetKey ( int tombraider, int block, int key )
-{
-    if ( block >= NB_SLOT_456 )
-    {
-        tombraider  = 2;
-        block       -= NB_SLOT_456;
-    }
-
-    if ( block < 0 || block >= NB_SLOT_456 )
-    {
-        return 0;
-    }
-
-    switch ( tombraider )
-    {
-        case 4:
-        {
-            char *pBlockAddress = (char *) GetBlockKeyAddress ( tombraider, block );
-            if ( pBlockAddress )
-            {
-                char *pAddress  = pBlockAddress + key;
-                return *pAddress;
-            }
-            break;
-        }
-
-        case 5:
-        {
-            char *pBlockAddress = (char *) GetBlockKeyAddress ( tombraider, block );
-            if ( pBlockAddress )
-            {
-                char *pAddress  = pBlockAddress + key;
-                return *pAddress;
-            }
-            break;
-        }
-
-        case 6:
-        {
-            char *pBlockAddress = (char *) GetBlockKeyAddress ( tombraider, block );
-            if ( pBlockAddress )
-            {
-                char *pAddress  = pBlockAddress + key;
+                BYTE *pAddress = pObjectAddress + object;
                 return *pAddress;
             }
             break;
@@ -2838,79 +2727,7 @@ int CTR8SaveGame::GetKey ( int tombraider, int block, int key )
 /////////////////////////////////////////////////////////////////////////////
 BYTE *CTR8SaveGame::GetObjectBaseAddress ( int tombraider, int block )
 {
-    return GetBlockMapAddress ( tombraider, block );
-}
-
-
-//
-/////////////////////////////////////////////////////////////////////////////
-//
-/////////////////////////////////////////////////////////////////////////////
-int CTR8SaveGame::GetMap ( int tombraider, int block, int map )
-{
-    if ( block >= NB_SLOT_456 )
-    {
-        tombraider  = 2;
-        block       -= NB_SLOT_456;
-    }
-
-    if ( block < 0 || block >= NB_SLOT_456 )
-    {
-        return 0;
-    }
-
-    switch ( tombraider )
-    {
-        case 4:
-        {
-            char *pBlockAddress = (char *) GetBlockMapAddress ( tombraider, block );
-            if ( pBlockAddress )
-            {
-                char *pAddress  = pBlockAddress + map;
-                return *pAddress;
-            }
-            break;
-        }
-
-        case 5:
-        {
-            char *pBlockAddress = (char *) GetBlockMapAddress ( tombraider, block );
-            if ( pBlockAddress )
-            {
-                char *pAddress  = pBlockAddress + map;
-                return *pAddress;
-            }
-            break;
-        }
-
-        case 6:
-        {
-            char *pBlockAddress = (char *) GetBlockMapAddress ( tombraider, block );
-            if ( pBlockAddress )
-            {
-                char *pAddress  = pBlockAddress + map;
-                return *pAddress;
-            }
-            break;
-        }
-    }
-
-    return 0;
-}
-
-//
-/////////////////////////////////////////////////////////////////////////////
-//
-/////////////////////////////////////////////////////////////////////////////
-int CTR8SaveGame::GetTreasure ( int tombraider, int block, int treasure )
-{
-    BYTE *pTreasure = GetSlotTreasureAddress ( tombraider, block );
-    if ( pTreasure != NULL && treasure >= 0 && treasure < 4 )
-    {
-        return pTreasure [ treasure ];
-    }
-
-    return -1;
+    return GetBlockObjectAddress ( tombraider, block );
 }
 
 //
@@ -2919,12 +2736,6 @@ int CTR8SaveGame::GetTreasure ( int tombraider, int block, int treasure )
 /////////////////////////////////////////////////////////////////////////////
 void CTR8SaveGame::SetBlockObject ( int tombraider, int block, int object, int val )
 {
-    if ( block >= NB_SLOT_456 )
-    {
-        tombraider  = 2;
-        block       -= NB_SLOT_456;
-    }
-
     if ( block < 0 || block >= NB_SLOT_456 )
     {
         return;
@@ -2934,10 +2745,10 @@ void CTR8SaveGame::SetBlockObject ( int tombraider, int block, int object, int v
     {
         case 4:
         {
-            char *pBlockAddress = (char *) GetBlockObjectAddress ( tombraider, block );
-            if ( pBlockAddress )
+            BYTE *pObjectAddress = (BYTE *) GetBlockObjectAddress ( tombraider, block );
+            if ( pObjectAddress )
             {
-                char *pAddress  = pBlockAddress + object;
+                BYTE *pAddress  = pObjectAddress + object;
                 *pAddress = val;
             }
             break;
@@ -2945,10 +2756,10 @@ void CTR8SaveGame::SetBlockObject ( int tombraider, int block, int object, int v
 
         case 5:
         {
-            char *pBlockAddress = (char *) GetBlockObjectAddress ( tombraider, block );
-            if ( pBlockAddress )
+            BYTE *pObjectAddress = (BYTE *) GetBlockObjectAddress ( tombraider, block );
+            if ( pObjectAddress )
             {
-                char *pAddress  = pBlockAddress + object;
+                BYTE *pAddress  = pObjectAddress + object;
                 *pAddress = val;
             }
             break;
@@ -2956,10 +2767,10 @@ void CTR8SaveGame::SetBlockObject ( int tombraider, int block, int object, int v
 
         case 6:
         {
-            char *pBlockAddress = (char *) GetBlockObjectAddress ( tombraider, block );
-            if ( pBlockAddress )
+            BYTE *pObjectAddress = (BYTE *) GetBlockObjectAddress ( tombraider, block );
+            if ( pObjectAddress )
             {
-                char *pAddress  = pBlockAddress + object;
+                BYTE *pAddress  = pObjectAddress + object;
                 *pAddress = val;
             }
             break;
@@ -2967,130 +2778,6 @@ void CTR8SaveGame::SetBlockObject ( int tombraider, int block, int object, int v
     }
 }
 
-//
-/////////////////////////////////////////////////////////////////////////////
-//
-/////////////////////////////////////////////////////////////////////////////
-void CTR8SaveGame::SetKey ( int tombraider, int block, int key, int val )
-{
-    if ( block >= NB_SLOT_456 )
-    {
-        tombraider  = 2;
-        block       -= NB_SLOT_456;
-    }
-
-    if ( block < 0 || block >= NB_SLOT_456 )
-    {
-        return;
-    }
-
-    switch ( tombraider )
-    {
-        case 4:
-        {
-            char *pBlockAddress = (char *) GetBlockKeyAddress ( tombraider, block );
-            if ( pBlockAddress )
-            {
-                char *pAddress  = pBlockAddress + key;
-                *pAddress = val;
-            }
-            break;
-        }
-
-        case 5:
-        {
-            char *pBlockAddress = (char *) GetBlockKeyAddress ( tombraider, block );
-            if ( pBlockAddress )
-            {
-                char *pAddress  = pBlockAddress + key;
-                *pAddress = val;
-            }
-            break;
-        }
-
-        case 6:
-        {
-            char *pBlockAddress = (char *) GetBlockKeyAddress ( tombraider, block );
-            if ( pBlockAddress )
-            {
-                char *pAddress  = pBlockAddress + key;
-                *pAddress = val;
-            }
-            break;
-        }
-    }
-
-}
-
-//
-/////////////////////////////////////////////////////////////////////////////
-//
-/////////////////////////////////////////////////////////////////////////////
-void CTR8SaveGame::SetMap ( int tombraider, int block, int map, int val )
-{
-    if ( block >= NB_SLOT_456 )
-    {
-        tombraider  = 2;
-        block       -= NB_SLOT_456;
-    }
-
-    if ( block < 0 || block >= NB_SLOT_456 )
-    {
-        return;
-    }
-
-    switch ( tombraider )
-    {
-        case 4:
-        {
-            char *pBlockAddress = (char *) GetBlockMapAddress ( tombraider, block );
-            if ( pBlockAddress )
-            {
-                char *pAddress  = pBlockAddress + map;
-                *pAddress = val;
-            }
-            break;
-        }
-
-        case 5:
-        {
-            char *pBlockAddress = (char *) GetBlockMapAddress ( tombraider, block );
-            if ( pBlockAddress )
-            {
-                char *pAddress  = pBlockAddress + map;
-                *pAddress = val;
-            }
-            break;
-        }
-
-        case 6:
-        {
-            char *pBlockAddress = (char *) GetBlockMapAddress ( tombraider, block );
-            if ( pBlockAddress )
-            {
-                char *pAddress  = pBlockAddress + map;
-                *pAddress = val;
-            }
-            break;
-        }
-    }
-
-}
-
-//
-/////////////////////////////////////////////////////////////////////////////
-//
-/////////////////////////////////////////////////////////////////////////////
-void CTR8SaveGame::SetTreasure ( int tombraider, int block, int treasure, int val )
-{
-    BYTE *pTreasure = GetSlotTreasureAddress ( tombraider, block );
-    if ( pTreasure != NULL && treasure >= 0 && treasure < 4 )
-    {
-        pTreasure [ treasure ] = val;
-    }
-
-    return;
-}
 
 //
 /////////////////////////////////////////////////////////////////////////////
@@ -4514,17 +4201,6 @@ const char *CTR8SaveGame::GetInterest ( int tombraider, int block )
         else
         {
             sprintf_s ( szResponse + strlen(szResponse), sizeof(szResponse) - strlen(szResponse), "%16s: NULL\r\n", "Objects" );
-        }
-
-        pAddress = ( char *) GetBlockMapAddress ( tombraider, block );
-        if ( pAddress )
-        {
-            sprintf_s ( szResponse + strlen(szResponse), sizeof(szResponse) - strlen(szResponse),
-                        "%16s: 0x%08lX : %d\r\n", "Map", RelativeAddress ( pAddress ), *((BYTE *) pAddress) );
-        }
-        else
-        {
-            sprintf_s ( szResponse + strlen(szResponse), sizeof(szResponse) - strlen(szResponse), "%16s: NULL\r\n", "Map" );
         }
 
         pAddress = ( char *) GetBlockSecretsCurrentAddress ( tombraider, block );

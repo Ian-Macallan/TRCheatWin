@@ -28,6 +28,8 @@
 #include "TRXEquipmentPage.h"   // Added by ClassView
 #include "TRXPropertySheet.h"
 
+#include "TRXItemsTRR456.h"
+
 #include "TRXColors.h"
 
 //
@@ -306,6 +308,7 @@ void CTRXRemastered456::DoDataExchange(CDataExchange* pDX)
     DDX_Control(pDX, IDC_FRAME_POSITION, m_Frame_Position);
     DDX_Control(pDX, IDC_SHELL, m_Shell);
     DDX_Control(pDX, IDC_POS_LABEL, m_Position_Label);
+    DDX_Control(pDX, IDC_ITEMS, m_Items);
 }
 
 //
@@ -329,9 +332,6 @@ BEGIN_MESSAGE_MAP(CTRXRemastered456, CTRXPropertyPage456)
     ON_CBN_SELCHANGE(IDC_COMBO, &CTRXRemastered456::OnSelchangeCombo)
     ON_BN_CLICKED(IDC_BURNING, &CTRXRemastered456::OnBnClickedBurning)
     ON_BN_CLICKED(IDC_REMOVE_LOC, &CTRXRemastered456::OnBnClickedRemoveLoc)
-    ON_BN_CLICKED(IDC_ZERO, &CTRXRemastered456::OnBnClickedZero)
-    ON_BN_CLICKED(IDC_ONE, &CTRXRemastered456::OnBnClickedOne)
-    ON_BN_CLICKED(IDC_FOUR, &CTRXRemastered456::OnBnClickedFour)
     ON_BN_CLICKED(IDC_STRONG, &CTRXRemastered456::OnBnClickedStrong)
     ON_NOTIFY_EX( TTN_NEEDTEXT, 0, OnToolTipNotify )
     ON_BN_CLICKED(IDC_SET, &CTRXRemastered456::OnBnClickedSet)
@@ -404,6 +404,7 @@ BEGIN_MESSAGE_MAP(CTRXRemastered456, CTRXPropertyPage456)
     ON_BN_CLICKED(IDC_POSITION, &CTRXRemastered456::OnBnClickedPosition)
     ON_BN_CLICKED(IDC_SHOW_MAP, &CTRXRemastered456::OnBnClickedShowMap)
     ON_BN_CLICKED(IDC_SHELL, &CTRXRemastered456::OnBnClickedShell)
+    ON_BN_CLICKED(IDC_ITEMS, &CTRXRemastered456::OnBnClickedItems)
 END_MESSAGE_MAP()
 
 
@@ -2857,22 +2858,6 @@ void CTRXRemastered456::MaxOne ( int line )
                 GUN_TR4 *pGun       = ( GUN_TR4 * ) pGunEntry;
                 UpdateBuffer ( tombraider, block, pBlock, pGun, bMax );
 
-                if ( false )
-                {
-                    CTR8SaveGame::I()->SetBlockObject ( tombraider, block, 0, 1 );
-                    CTR8SaveGame::I()->SetBlockObject ( tombraider, block, 1, 1 );
-                    CTR8SaveGame::I()->SetBlockObject ( tombraider, block, 2, 1 );
-                    CTR8SaveGame::I()->SetBlockObject ( tombraider, block, 3, 1 );
-
-                    CTR8SaveGame::I()->SetKey ( tombraider, block, 0, 1 );
-                    CTR8SaveGame::I()->SetKey ( tombraider, block, 1, 1 );
-                    CTR8SaveGame::I()->SetKey ( tombraider, block, 2, 1 );
-                    CTR8SaveGame::I()->SetKey ( tombraider, block, 3, 1 );
-
-                    CTR8SaveGame::I()->SetMap ( tombraider, block, 0, 1 );
-                    CTR8SaveGame::I()->SetMap ( tombraider, block, 1, 1 );
-                }
-
                 break;
             }
 
@@ -2883,22 +2868,6 @@ void CTRXRemastered456::MaxOne ( int line )
                 GUN_TR5 *pGun       = ( GUN_TR5 * ) pGunEntry;
                 UpdateBuffer ( tombraider, block, pBlock, pGun, bMax );
 
-                if ( false )
-                {
-                    CTR8SaveGame::I()->SetBlockObject ( tombraider, block, 0, 1 );
-                    CTR8SaveGame::I()->SetBlockObject ( tombraider, block, 1, 1 );
-                    CTR8SaveGame::I()->SetBlockObject ( tombraider, block, 2, 1 );
-                    CTR8SaveGame::I()->SetBlockObject ( tombraider, block, 3, 1 );
-
-                    CTR8SaveGame::I()->SetKey ( tombraider, block, 0, 1 );
-                    CTR8SaveGame::I()->SetKey ( tombraider, block, 1, 1 );
-                    CTR8SaveGame::I()->SetKey ( tombraider, block, 2, 1 );
-                    CTR8SaveGame::I()->SetKey ( tombraider, block, 3, 1 );
-
-                    CTR8SaveGame::I()->SetMap ( tombraider, block, 0, 1 );
-                    CTR8SaveGame::I()->SetMap ( tombraider, block, 1, 1 );
-                }
-
                 break;
             }
 
@@ -2908,22 +2877,6 @@ void CTRXRemastered456::MaxOne ( int line )
                 TABLE_TR6 *pBlock   = ( TABLE_TR6 *)pBlockEntry;
                 GUN_TR6 *pGun       = ( GUN_TR6 * ) pGunEntry;
                 UpdateBuffer ( tombraider, block, pBlock, pGun, bMax );
-
-                if ( false )
-                {
-                    CTR8SaveGame::I()->SetBlockObject ( tombraider, block, 0, 1 );
-                    CTR8SaveGame::I()->SetBlockObject ( tombraider, block, 1, 1 );
-                    CTR8SaveGame::I()->SetBlockObject ( tombraider, block, 2, 1 );
-                    CTR8SaveGame::I()->SetBlockObject ( tombraider, block, 3, 1 );
-
-                    CTR8SaveGame::I()->SetKey ( tombraider, block, 0, 1 );
-                    CTR8SaveGame::I()->SetKey ( tombraider, block, 1, 1 );
-                    CTR8SaveGame::I()->SetKey ( tombraider, block, 2, 1 );
-                    CTR8SaveGame::I()->SetKey ( tombraider, block, 3, 1 );
-
-                    CTR8SaveGame::I()->SetMap ( tombraider, block, 0, 1 );
-                    CTR8SaveGame::I()->SetMap ( tombraider, block, 1, 1 );
-                }
 
                 break;
             }
@@ -3106,81 +3059,6 @@ void CTRXRemastered456::OnBnClickedRemoveLoc()
         }
     }
 
-}
-
-//
-/////////////////////////////////////////////////////////////////////////////
-//
-/////////////////////////////////////////////////////////////////////////////
-void CTRXRemastered456::OnBnClickedZero()
-{
-    if ( m_Line >= 0 )
-    {
-        DWORD_PTR   dwData      = m_ListCtrl.GetItemData ( m_Line );
-        STRUCTDATA  *pInfoData  = (STRUCTDATA *) dwData;
-        int tombraider          = pInfoData->tombraider;
-        int level               = pInfoData->level;
-        int block               = pInfoData->block;
-
-        SetBlockObjectOnDisplay ( tombraider, block, 0 );
-    }
-}
-
-//
-/////////////////////////////////////////////////////////////////////////////
-//
-/////////////////////////////////////////////////////////////////////////////
-void CTRXRemastered456::OnBnClickedOne()
-{
-    if ( m_Line >= 0 )
-    {
-        DWORD_PTR   dwData      = m_ListCtrl.GetItemData ( m_Line );
-        STRUCTDATA  *pInfoData  = (STRUCTDATA *) dwData;
-        int tombraider          = pInfoData->tombraider;
-        int level               = pInfoData->level;
-        int block               = pInfoData->block;
-
-        SetBlockObjectOnDisplay ( tombraider, block, 1 );
-    }
-}
-
-//
-/////////////////////////////////////////////////////////////////////////////
-//
-/////////////////////////////////////////////////////////////////////////////
-void CTRXRemastered456::OnBnClickedFour()
-{
-    if ( m_Line >= 0 )
-    {
-        DWORD_PTR   dwData      = m_ListCtrl.GetItemData ( m_Line );
-        STRUCTDATA  *pInfoData  = (STRUCTDATA *) dwData;
-        int tombraider          = pInfoData->tombraider;
-        int level               = pInfoData->level;
-        int block               = pInfoData->block;
-
-#ifdef _DEBUG
-        for ( tombraider = 1; tombraider <= 3; tombraider++ )
-        {
-            for ( block = 0; block < NB_SLOT_456; block++ )
-            {
-                for ( int i = 0; i < 2; i++ )
-                {
-                    CTR8SaveGame::I()->SetMap ( tombraider, block, i, i + 10 );
-                }
-
-                for ( int i = 0; i < 4; i++ )
-                {
-                    CTR8SaveGame::I()->SetBlockObject ( tombraider, block, i, i + 2 );
-                    CTR8SaveGame::I()->SetKey ( tombraider, block, i, i + 6 );
-                }
-            }
-        }
-
-        DisplayOne ( m_Line );
-#else
-        SetBlockObjectOnDisplay ( tombraider, block, 4 );
-#endif
-    }
 }
 
 //
@@ -4546,4 +4424,39 @@ void CTRXRemastered456::OnBnClickedShell()
     m_Filename.GetWindowText ( szDirectory, sizeof ( szDirectory ) - 1 );
     theApp.RemoveFilename ( szDirectory );
     HINSTANCE hInst = ShellExecute ( NULL, "open", szDirectory, "", "", SW_SHOWDEFAULT );
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
+void CTRXRemastered456::OnBnClickedItems()
+{
+    //
+    //
+    //
+    //  To SHow Item Again
+    int currentTombraider   = -1;
+    int currentLevel        = -1;
+    int currentBlock        = -1;
+    int currentSlot         = -1;
+    if ( m_Line >= 0 && CTR8SaveGame::I() != NULL )
+    {
+        //
+        DWORD_PTR   dwData      = m_ListCtrl.GetItemData ( m_Line );
+        STRUCTDATA  *pInfoData  = (STRUCTDATA *) dwData;
+        currentTombraider           = pInfoData->tombraider;
+        currentLevel                = pInfoData->level;
+        currentBlock                = pInfoData->block;
+
+        if ( currentTombraider >= 4 && currentTombraider <= 5 && currentBlock >= 0 && currentLevel >= 1 )
+        {
+            CTRXItemsTRR456 dlg;
+            dlg.m_iTombraider       = currentTombraider;
+            dlg.m_iBlock            = currentBlock;
+            dlg.m_iLevel            = currentLevel;
+            dlg.DoModal();
+        }
+    }
+
 }

@@ -177,6 +177,7 @@
 #define IDD_REMASTERED_456              279
 #define IDB_BITMAP5                     280
 #define IDB_AMMOS_GRAP                  280
+#define IDD_ITEMS_TRR456                280
 #define IDR_HELPTEXT1                   282
 #define IDR_HELP_TEXT                   282
 #define IDI_ICON1                       283
@@ -564,6 +565,7 @@
 #define IDC_ZRIOTGUN                    1227
 #define IDC_ALL_GUNS                    1227
 #define IDC_FULL                        1227
+#define IDC_ITEMS                       1227
 #define IDC_LBL_OBJ_1                   1228
 #define IDC_BUTTON2                     1228
 #define IDC_MAP                         1228

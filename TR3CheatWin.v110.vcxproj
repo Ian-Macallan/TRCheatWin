@@ -350,6 +350,7 @@
     <ClCompile Include="TRXCToolTipCtrlBase.cpp" />
     <ClCompile Include="TRXEditBase.cpp" />
     <ClCompile Include="TRXHelpDialog.cpp" />
+    <ClCompile Include="TRXItemsTRR456.cpp" />
     <ClCompile Include="TRXLevels.cpp" />
     <ClCompile Include="TRXListCtrlBase.cpp" />
     <ClCompile Include="TRXMenuBase.cpp" />
@@ -550,6 +551,7 @@
     <ClInclude Include="TRXEditBase.h" />
     <ClInclude Include="TRXGDI.h" />
     <ClInclude Include="TRXHelpDialog.h" />
+    <ClInclude Include="TRXItemsTRR456.h" />
     <ClInclude Include="TRXLevels.h" />
     <ClInclude Include="TRXListCtrlBase.h" />
     <ClInclude Include="TRXMenuBase.h" />

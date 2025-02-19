@@ -149,6 +149,8 @@ class CTRXRemastered456 : public CTRXPropertyPage456
 
         CTRXStaticBase m_Position_Label;
 
+        CTRXButtonBase m_Items;
+
         //
         afx_msg void OnBnClickedLoad();
         afx_msg void OnBnClickedWrite();
@@ -165,9 +167,6 @@ class CTRXRemastered456 : public CTRXPropertyPage456
         afx_msg void OnSelchangeCombo();
         afx_msg void OnBnClickedBurning();
         afx_msg void OnBnClickedRemoveLoc();
-        afx_msg void OnBnClickedZero();
-        afx_msg void OnBnClickedOne();
-        afx_msg void OnBnClickedFour();
         afx_msg void OnBnClickedStrong();
         afx_msg void OnBnClickedShow();
         afx_msg void OnBnClickedSet();
@@ -203,6 +202,7 @@ class CTRXRemastered456 : public CTRXPropertyPage456
         afx_msg void OnBnClickedShowMap();
         afx_msg void OnHelp();
         afx_msg void OnBnClickedShell();
+        afx_msg void OnBnClickedItems();
 
         virtual BOOL OnToolTipNotify(UINT id, NMHDR *pNMH, LRESULT *pResult);
         virtual BOOL OnInitDialog();

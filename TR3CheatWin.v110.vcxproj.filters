@@ -271,6 +271,9 @@
     <ClCompile Include="TRXPropertySheetRemastered456.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="TRXItemsTRR456.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="res\Aire 51.bmp">
@@ -868,6 +871,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="TRXPropertySheetRemastered456.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TRXItemsTRR456.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

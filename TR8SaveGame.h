@@ -114,6 +114,11 @@ struct GUN_TR4
     // 0x00c60B : 01
     BYTE        m_gunCrowBar;
 
+    //
+    BYTE        m_Unknown01;
+    BYTE        m_Unknown02;
+    BYTE        m_Unknown03;
+
     //  0x00c60C
     union
     {
@@ -160,7 +165,6 @@ struct GUN_TR4
 //  Level 0xC66C
 struct TABLE_TR4
 {
-
     //
     union
     {
@@ -282,6 +286,10 @@ struct GUN_TR5
 
     //  0x177 : 01
     BYTE        m_gunHeadSet;       //  9
+
+    BYTE        m_Unknown02;
+
+    BYTE        m_Unknown03;
 
     //  0x178
     union
@@ -666,20 +674,15 @@ class CTR8SaveGame : public CObject
         const char *GetBlockElapsed ( int tombraider, int block );
         const char *GetBlockDistance ( int tombraider, int block );
 
-        //  Only In Block : Object / Items / Keys / Map / Treasures
+        //  Only In Block : Object 
         BYTE *GetObjectBaseAddress ( int tombraider, int block );
+        BYTE *GetBlockObjectAddress ( int tombraider, int block );
 
-        //  Object / Items / Keys / Map / Treasures
+        //  Object 
         int GetBlockObject ( int tombraider, int block, int object );
-        int GetKey ( int tombraider, int block, int key );
-        int GetMap ( int tombraider, int block, int map );
-        int GetTreasure ( int tombraider, int block, int treasure );
 
-        //  Object / Items / Keys / Map / Treasures
+        //  Object 
         void SetBlockObject ( int tombraider, int block, int object, int val );
-        void SetKey ( int tombraider, int block, int key, int val );
-        void SetMap ( int tombraider, int block, int map, int val );
-        void SetTreasure ( int tombraider, int block, int treasure, int val );
 
         //  Addresses In Table
         ////////////////////////////////////////////////////
@@ -711,9 +714,6 @@ class CTR8SaveGame : public CObject
         BYTE *GetBlockLevelAddress ( int tombraider, int block );
         BYTE *GetBlockSecretsBaseAddress ( int tombraider, int block );
 
-        BYTE *GetBlockMapAddress ( int tombraider, int block );
-        BYTE *GetBlockObjectAddress ( int tombraider, int block );
-        BYTE *GetBlockKeyAddress ( int tombraider, int block );
 
         //
         WORD GetBlockKills ( int tombraider, int block );
