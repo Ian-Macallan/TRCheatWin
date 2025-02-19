@@ -3410,7 +3410,7 @@ BOOL CTRXRemastered456::OnToolTipNotify(UINT id, NMHDR *pNMH, LRESULT *pResult)
                 if ( hitInfo.iSubItem == COLR_ADDRESS_1 )
                 {
                     sprintf_s ( szText + strlen(szText), sizeof(szText) - strlen(szText),
-                        "%d %d:%d:%d\r\n", hitInfo.iItem, tombraider, block );
+                        "%d %d:%d\r\n", hitInfo.iItem, tombraider, block );
                     void *pAddress = NULL;
                     pAddress = ( void *) CTR8SaveGame::I()->GetBlockAddress ( tombraider, block );
                     sprintf_s ( szText + strlen(szText), sizeof(szText) - strlen(szText),
