@@ -420,6 +420,12 @@ struct TABLE_TR5
             BYTE        unknown05 [  0x14AE4A - 0x14AE00 ];
             WORD        m_iAir;
         };
+
+        struct
+        {
+            BYTE        unknown06 [  0x14AE78 - 0x14AE00 ];
+            BYTE        m_iLara;
+        };
     };
 };
 

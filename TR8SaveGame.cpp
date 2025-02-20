@@ -4107,6 +4107,11 @@ BYTE CTR8SaveGame::GetState ( int tombraider, int block )
 
         case 5:
         {
+            TABLE_TR5 *pBlock   = ( TABLE_TR5 *) m_TR5_Blocks [ block ];
+            if ( pBlock )
+            {
+                return pBlock->m_iLara;
+            }
             break;
         }
 
@@ -4144,6 +4149,11 @@ void CTR8SaveGame::SetState ( int tombraider, int block, BYTE iState )
 
         case 5:
         {
+            TABLE_TR5 *pBlock   = ( TABLE_TR5 *) m_TR5_Blocks [ block ];
+            if ( pBlock )
+            {
+                pBlock->m_iLara = iState;
+            }
             break;
         }
 
