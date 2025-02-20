@@ -1388,9 +1388,12 @@ WORD CTR8SaveGame::GetRealHealth ( int tombraider, int block )
     WORD *pAddress = GetRealHealthAddress ( tombraider, block );
     if ( pAddress != NULL )
     {
-        if ( *pAddress == 0 )
+        int level = GetBlockLevelNumber(tombraider, block );
+
+        //
+        if ( tombraider == 4 && *pAddress == 0 )
         {
-            return 1000;
+//            return 1000;
         }
         return *pAddress;
     }
@@ -1407,9 +1410,12 @@ void CTR8SaveGame::SetRealHealth ( int tombraider, int block, WORD value )
     WORD *pAddress = GetRealHealthAddress ( tombraider, block );
     if ( pAddress != NULL )
     {
+        int level = GetBlockLevelNumber(tombraider, block );
+
+        //
         if ( tombraider == 4 && value == 1000 )
         {
-            value = 0;
+//            value = 0;
         }
         *pAddress = value;
     }
@@ -4091,6 +4097,11 @@ BYTE CTR8SaveGame::GetState ( int tombraider, int block )
     {
         case 4:
         {
+            TABLE_TR4 *pBlock   = ( TABLE_TR4 *) m_TR4_Blocks [ block ];
+            if ( pBlock )
+            {
+                return pBlock->m_iLara;
+            }
             break;
         }
 
@@ -4112,7 +4123,7 @@ BYTE CTR8SaveGame::GetState ( int tombraider, int block )
 /////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////
-void CTR8SaveGame::SetState ( int tombraider, int block, BYTE iAir )
+void CTR8SaveGame::SetState ( int tombraider, int block, BYTE iState )
 {
     if ( block < 0 || block >= NB_SLOT_456 )
     {
@@ -4123,6 +4134,11 @@ void CTR8SaveGame::SetState ( int tombraider, int block, BYTE iAir )
     {
         case 4:
         {
+            TABLE_TR4 *pBlock   = ( TABLE_TR4 *) m_TR4_Blocks [ block ];
+            if ( pBlock )
+            {
+                pBlock->m_iLara = iState;
+            }
             break;
         }
 

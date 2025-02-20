@@ -63,8 +63,11 @@ extern CTRXCHEATWINApp theApp;
 #define MAX_AMMOS           6000
 #define MAX_AMMOS_MAX       (6*6000)
 
-#define STATE_SAFE          0x0a
-#define STATE_BURNING       0x1a
+#define STATE_SAFE          0x06
+#define STATE_BURNING       0x0e
+
+#define STATE_SAFE_TEXT     "0x06"
+#define STATE_BURNING_TEXT  "0x0e"
 
 //
 //
@@ -577,6 +580,7 @@ BOOL CTRXRemastered456::OnInitDialog()
         m_ToolTip.AddTool( &m_Set, "Set Secrets for previous levels");
         m_ToolTip.AddTool( &m_Show, "Show Secrets for levels");
         m_ToolTip.AddTool( &m_Status, "Status");
+        m_ToolTip.AddTool( &m_Real_Health, "For TR4 0 means full health");
         m_ToolTip.AddTool( &m_Update, "Update the modification in memory\r\nThen use Write to save the file");
         m_ToolTip.AddTool( &m_Write, "Use write to save modified file");
         m_ToolTip.AddTool( &m_ResetToPlus, "Reset to Start Plus conditions\r\nGet All guns\r\nReset Secrets, Pickups, Kill\r\n");
@@ -1088,7 +1092,7 @@ void CTRXRemastered456::DisplayOne ( int line )
                         m_State.SetWindowText ( szText );
                         m_State.EnableWindow ( TRUE );
                         m_Burning.EnableWindow ( TRUE );
-                        m_Burning.SetCheck ( CTR8SaveGame::I()->GetState ( tombraider, block ) == 0x1a );
+                        m_Burning.SetCheck ( CTR8SaveGame::I()->GetState ( tombraider, block ) == STATE_BURNING );
                     }
                     else
                     {
@@ -1252,7 +1256,7 @@ void CTRXRemastered456::DisplayOne ( int line )
                         m_State.SetWindowText ( szText );
                         m_State.EnableWindow ( TRUE );
                         m_Burning.EnableWindow ( TRUE );
-                        m_Burning.SetCheck ( CTR8SaveGame::I()->GetState ( tombraider, block ) == 0x1a );
+                        m_Burning.SetCheck ( CTR8SaveGame::I()->GetState ( tombraider, block ) == STATE_BURNING );
                     }
                     else
                     {
@@ -2206,7 +2210,10 @@ void CTRXRemastered456::UpdateGun(int tombraider, int block, GUN_TR4 *pGun, TABL
 
             CTR8SaveGame::I()->SetAir ( tombraider, block,  MAX_AIR );
             CTR8SaveGame::I()->SetState ( tombraider, block,  STATE_SAFE );
-            CTR8SaveGame::I()->SetRealHealth ( tombraider, block,  MAX_HEALTH );
+            if ( tombraider == 5 )
+            {
+                CTR8SaveGame::I()->SetRealHealth ( tombraider, block,  MAX_HEALTH );
+            }
         }
         else
         {
@@ -2997,11 +3004,11 @@ void CTRXRemastered456::OnBnClickedBurning()
 
     if ( m_Burning.GetCheck() )
     {
-        m_State.SetWindowText ( "0x1a" );
+        m_State.SetWindowText ( STATE_BURNING_TEXT );
     }
     else
     {
-        m_State.SetWindowText ( "0x0a" );
+        m_State.SetWindowText ( STATE_SAFE_TEXT );
     }
 }
 

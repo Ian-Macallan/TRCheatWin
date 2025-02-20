@@ -91,6 +91,9 @@
 #define TRR5_MASK_CROWBAR   TRR5_GUN_SET1
 #define TRR5_MASK_REVOLVER  (TRR5_GUN_SET1|TRR5_GUN_SETC)
 
+
+#define TRR4_STATE_OFFSET   (0x226C-0x2194)
+
 #pragma pack(push, pack1, 1)
 
 //  0000C605: 01 00
@@ -261,6 +264,12 @@ struct TABLE_TR4
         {
             BYTE        unknown05 [  0x00C4BA - 0x00c470 ];
             WORD        m_iAir;
+        };
+
+        struct
+        {
+            BYTE        unknown06 [  0x00C4E8 - 0x00c470 ];
+            BYTE        m_iLara;
         };
     };
 
