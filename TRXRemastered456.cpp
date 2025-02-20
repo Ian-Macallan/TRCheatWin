@@ -2526,34 +2526,6 @@ void CTRXRemastered456::UpdateBuffer( )
 #if 0
                     TABLE_TR6 *pBlock   = ( TABLE_TR6 *) pBlockEntry;
                     GUN_TR6 *pGun       = ( GUN_TR6 * ) pGunEntry;
-                    UpdateBuffer ( tombraider, block, pBlock, pGun, bMax );
-
-                    //  Object and keys are for a block
-                    CTR8SaveGame::I()->SetBlockObject ( tombraider, block, 0, GetValue ( m_Object_1 ) );
-                    CTR8SaveGame::I()->SetBlockObject ( tombraider, block, 1, GetValue ( m_Object_2 ) );
-                    CTR8SaveGame::I()->SetBlockObject ( tombraider, block, 2, GetValue ( m_Object_3 ) );
-                    CTR8SaveGame::I()->SetBlockObject ( tombraider, block, 3, GetValue ( m_Object_4 ) );
-
-                    CTR8SaveGame::I()->SetKey ( tombraider, block, 0, GetValue ( m_Key_1 ) );
-                    CTR8SaveGame::I()->SetKey ( tombraider, block, 1, GetValue ( m_Key_2 ) );
-                    CTR8SaveGame::I()->SetKey ( tombraider, block, 2, GetValue ( m_Key_3 ) );
-                    CTR8SaveGame::I()->SetKey ( tombraider, block, 3, GetValue ( m_Key_4 ) );
-
-                    CTR8SaveGame::I()->SetMap ( tombraider, block, 0, GetValue ( m_Map_1 ) );
-                    CTR8SaveGame::I()->SetMap ( tombraider, block, 1, GetValue ( m_Map_2 ) );
-
-                    CTR8SaveGame::I()->SetTreasure ( tombraider, block, 0, GetValue ( m_Tre_1 ) );
-                    CTR8SaveGame::I()->SetTreasure ( tombraider, block, 1, GetValue ( m_Tre_2 ) );
-                    CTR8SaveGame::I()->SetTreasure ( tombraider, block, 2, GetValue ( m_Tre_3 ) );
-                    CTR8SaveGame::I()->SetTreasure ( tombraider, block, 3, GetValue ( m_Tre_4 ) );
-
-                    CTR8SaveGame::I()->SetBlockPickup ( tombraider, block, GetValue ( m_Pickup ) );
-                    CTR8SaveGame::I()->SetBlockKills ( tombraider, block, GetValue ( m_Kill ) );
-                    CTR8SaveGame::I()->SetBlockCrystal ( tombraider, block, GetValue ( m_Crystal ) );
-
-                    CTR8SaveGame::I()->SetBlockSecretsAcquired ( tombraider, block, GetValue ( m_Secrets_A ) );
-
-                    CTR8SaveGame::I()->SetGamePlus ( tombraider, block, m_Game_Plus.GetCheck() );
 #endif
                     break;
                 }

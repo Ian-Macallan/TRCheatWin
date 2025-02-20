@@ -1231,25 +1231,25 @@ WORD *CTR8SaveGame::GetRealHealthAddress ( int tombraider, int block )
         return NULL;
     }
 
+    //
+    int levelIndex = level - 1;
 
     //
     switch ( tombraider )
     {
         case 4:
         {
-            int levelIndex = ( level - 1 ) % TR4_LEVELS;
             pStart      = (char*) GetBlockSlot ( tombraider, block );
-            iStart      = TRR4IndicatorRange [ levelIndex ].minOffset;
-            iLength     = TRR4IndicatorRange [ levelIndex ].maxOffset;
+            iStart      = TRR4IndicatorRange [ levelIndex % TR4_LEVELS ].minOffset;
+            iLength     = TRR4IndicatorRange [ levelIndex % TR4_LEVELS ].maxOffset;
             break;
         }
 
         case 5:
         {
-            int levelIndex = ( level - 1 ) % TR5_LEVELS;
             pStart      = (char*) GetBlockSlot ( tombraider, block );
-            iStart      = TRR5IndicatorRange [ levelIndex ].minOffset;
-            iLength     = TRR5IndicatorRange [ levelIndex ].maxOffset;
+            iStart      = TRR5IndicatorRange [ levelIndex % TR5_LEVELS ].minOffset;
+            iLength     = TRR5IndicatorRange [ levelIndex % TR5_LEVELS ].maxOffset;
             break;
         }
 
@@ -1298,11 +1298,45 @@ WORD *CTR8SaveGame::GetRealHealthAddress ( int tombraider, int block )
             pHealth = ( WORD * ) position;
             if ( tombraider == 4 && ( *pHealth >= 0 && *pHealth <= 1000 ) )
             {
-                return pHealth;
+                //
+                //  Verify Position
+                for ( int i = 0; i <= CTRXGlobal::m_iExtSearchPos; i++ )
+                {
+                   TR8_POSITION *position = (TR8_POSITION *)( ( BYTE * ) pHealth - offsetof(TR8_POSITION,health) - i );
+            
+                    DWORD dwSouthToNorth    = ( DWORD) position->wSouthToNorth * TR4_FACTOR;
+                    DWORD dwVertical        = ( DWORD ) position->wVertical * TR4_FACTOR;
+                    DWORD dwWestToEast      = ( DWORD ) position->wWestToEast * TR4_FACTOR;
+                    WORD wRoom              = position->cRoom;
+
+                    BOOL bCheck = CheckAreaForCoordinates ( tombraider, levelIndex,  wRoom, dwWestToEast, dwVertical, dwSouthToNorth );
+                    if ( bCheck )
+                    {
+                        //
+                        return pHealth;
+                    }
+                }
             }
             if ( tombraider == 5 && ( *pHealth > 0 && *pHealth <= 1000 ) )
             {
-                return pHealth;
+                //
+                //  Verify Position
+                for ( int i = 0; i <= CTRXGlobal::m_iExtSearchPos; i++ )
+                {
+                   TR8_POSITION *position = (TR8_POSITION *)( ( BYTE * ) pHealth - offsetof(TR8_POSITION,health) - i );
+            
+                    DWORD dwSouthToNorth    = ( DWORD) position->wSouthToNorth * TR5_FACTOR;
+                    DWORD dwVertical        = ( DWORD ) position->wVertical * TR5_FACTOR;
+                    DWORD dwWestToEast      = ( DWORD ) position->wWestToEast * TR5_FACTOR;
+                    WORD wRoom              = position->cRoom;
+
+                    BOOL bCheck = CheckAreaForCoordinates ( tombraider, levelIndex,  wRoom, dwWestToEast, dwVertical, dwSouthToNorth );
+                    if ( bCheck )
+                    {
+                        //
+                        return pHealth;
+                    }
+                }
             }
         }
     }
