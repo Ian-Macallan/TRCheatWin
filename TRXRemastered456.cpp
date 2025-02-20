@@ -929,7 +929,7 @@ void CTRXRemastered456::DisplayOne ( int line )
         //
         void *pBlockEntry   = NULL;
         void *pGunEntry     = NULL;
-        pBlockEntry     = CTR8SaveGame::I()->GetBlockAddress ( tombraider, block );
+        pBlockEntry     = CTR8SaveGame::I()->GetSlotAddress ( tombraider, block );
         pGunEntry       = CTR8SaveGame::I()->GetGunAddress ( tombraider, block );
 
         //
@@ -1870,7 +1870,7 @@ void CTRXRemastered456::DisplayListFull ( bool bShort )
     int tombraider = 4;
     for ( int block = 0; block < NB_SLOT_456; block++ )
     {
-        TABLE_TR4 *pAddress1    = (TABLE_TR4 *) CTR8SaveGame::I()->GetBlockAddress ( tombraider, block );
+        TABLE_TR4 *pAddress1    = (TABLE_TR4 *) CTR8SaveGame::I()->GetSlotAddress ( tombraider, block );
         void *pAddress2         = CTR8SaveGame::I()->GetGunAddress ( tombraider, block );
 
         if ( bShort && pAddress2 == NULL )
@@ -1961,7 +1961,7 @@ void CTRXRemastered456::DisplayListFull ( bool bShort )
     tombraider = 5;
     for ( int block = 0; block < NB_SLOT_456; block++ )
     {
-        TABLE_TR5 *pAddress1 = (TABLE_TR5 *) CTR8SaveGame::I()->GetBlockAddress ( tombraider, block );
+        TABLE_TR5 *pAddress1 = (TABLE_TR5 *) CTR8SaveGame::I()->GetSlotAddress ( tombraider, block );
         void *pAddress2 = CTR8SaveGame::I()->GetGunAddress ( tombraider, block );
 
         WORD    save    = CTR8SaveGame::I()->GetSaveNumber ( tombraider, block );
@@ -2047,7 +2047,7 @@ void CTRXRemastered456::DisplayListFull ( bool bShort )
     tombraider = 6;
     for ( int block = 0; block < NB_SLOT_456; block++ )
     {
-        TABLE_TR6 *pAddress1 = (TABLE_TR6 *) CTR8SaveGame::I()->GetBlockAddress ( tombraider, block );
+        TABLE_TR6 *pAddress1 = (TABLE_TR6 *) CTR8SaveGame::I()->GetSlotAddress ( tombraider, block );
         void *pAddress2 = CTR8SaveGame::I()->GetGunAddress ( tombraider, block );
 
         WORD    save    = CTR8SaveGame::I()->GetSaveNumber ( tombraider, block );
@@ -2470,7 +2470,7 @@ void CTRXRemastered456::UpdateBuffer( )
         void *pGunEntry     = NULL;
 
         //
-        pBlockEntry     = CTR8SaveGame::I()->GetBlockAddress( tombraider, block );
+        pBlockEntry     = CTR8SaveGame::I()->GetSlotAddress( tombraider, block );
         pGunEntry       = CTR8SaveGame::I()->GetGunAddress ( tombraider, block );
 
         CTR8SaveGame::I()->SetTRPlus ( 1, m_TR1_Plus.GetCheck () );
@@ -2822,7 +2822,7 @@ void CTRXRemastered456::MaxOne ( int line )
     bool bMax = true;
 
     //
-    pBlockEntry     = CTR8SaveGame::I()->GetBlockAddress( tombraider, block );
+    pBlockEntry     = CTR8SaveGame::I()->GetSlotAddress( tombraider, block );
     pGunEntry       = CTR8SaveGame::I()->GetGunAddress ( tombraider, block );
 
 
@@ -3391,7 +3391,7 @@ BOOL CTRXRemastered456::OnToolTipNotify(UINT id, NMHDR *pNMH, LRESULT *pResult)
                     sprintf_s ( szText + strlen(szText), sizeof(szText) - strlen(szText),
                         "%d %d:%d\r\n", hitInfo.iItem, tombraider, block );
                     void *pAddress = NULL;
-                    pAddress = ( void *) CTR8SaveGame::I()->GetBlockAddress ( tombraider, block );
+                    pAddress = ( void *) CTR8SaveGame::I()->GetSlotAddress ( tombraider, block );
                     sprintf_s ( szText + strlen(szText), sizeof(szText) - strlen(szText),
                                 " - Address : 0x%08lX\r\n", RelativeAddress ( pAddress ) );
 
@@ -3866,9 +3866,9 @@ void CTRXRemastered456::OnMenulistDelete()
 void CTRXRemastered456::OnMenulistExport()
 {
     //
-    static char BASED_CODE szFilter1[] = "Exports|savegame.1.*.trx|All Files (*.*)|*.*||";
-    static char BASED_CODE szFilter2[] = "Exports|savegame.2.*.trx|All Files (*.*)|*.*||";
-    static char BASED_CODE szFilter3[] = "Exports|savegame.3.*.trx|All Files (*.*)|*.*||";
+    static char BASED_CODE szFilter1[] = "Exports|savegame.4.*.trx|All Files (*.*)|*.*||";
+    static char BASED_CODE szFilter2[] = "Exports|savegame.5.*.trx|All Files (*.*)|*.*||";
+    static char BASED_CODE szFilter3[] = "Exports|savegame.6.*.trx|All Files (*.*)|*.*||";
 
     static char szDefault1 [ MAX_PATH ];
     static char szDefault2 [ MAX_PATH ];
@@ -3885,9 +3885,9 @@ void CTRXRemastered456::OnMenulistExport()
         const char *pFilter     = szFilter1;
         const char *pDefault    = szDefault1;
 
-        sprintf_s ( szDefault1, "savegame.1.%02d.trx", CTR8SaveGame::I()->GetBlockLevelNumber( tombraider, block ) );
-        sprintf_s ( szDefault2, "savegame.2.%02d.trx", CTR8SaveGame::I()->GetBlockLevelNumber( tombraider, block ) );
-        sprintf_s ( szDefault3, "savegame.3.%02d.trx", CTR8SaveGame::I()->GetBlockLevelNumber( tombraider, block ) );
+        sprintf_s ( szDefault1, "savegame.4.%02d.trx", CTR8SaveGame::I()->GetBlockLevelNumber( tombraider, block ) );
+        sprintf_s ( szDefault2, "savegame.5.%02d.trx", CTR8SaveGame::I()->GetBlockLevelNumber( tombraider, block ) );
+        sprintf_s ( szDefault3, "savegame.6.%02d.trx", CTR8SaveGame::I()->GetBlockLevelNumber( tombraider, block ) );
 
         switch ( tombraider )
         {
@@ -3938,13 +3938,13 @@ void CTRXRemastered456::OnMenulistExport()
 void CTRXRemastered456::OnMenulistImport()
 {
     //
-    static char BASED_CODE szFilter1[] = "Exports|savegame.1.*.trx|All Files (*.*)|*.*||";
-    static char BASED_CODE szFilter2[] = "Exports|savegame.2.*.trx|All Files (*.*)|*.*||";
-    static char BASED_CODE szFilter3[] = "Exports|savegame.3.*.trx|All Files (*.*)|*.*||";
+    static char BASED_CODE szFilter1[] = "Exports|savegame.4.*.trx|All Files (*.*)|*.*||";
+    static char BASED_CODE szFilter2[] = "Exports|savegame.5.*.trx|All Files (*.*)|*.*||";
+    static char BASED_CODE szFilter3[] = "Exports|savegame.6.*.trx|All Files (*.*)|*.*||";
 
-    const char *pDefault1   = "savegame.1.*.trx";
-    const char *pDefault2   = "savegame.2.*.trx";
-    const char *pDefault3   = "savegame.3.*.trx";
+    const char *pDefault1   = "savegame.4.*.trx";
+    const char *pDefault2   = "savegame.5.*.trx";
+    const char *pDefault3   = "savegame.6.*.trx";
 
     const char *pFilter     = szFilter1;
     const char *pDefault    = pDefault1;

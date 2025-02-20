@@ -846,15 +846,17 @@ class CTR8SaveGame : public CObject
         //
         static int GetBlockLength ( int tombraider );
         static int GetSlotLength ( int tombraider );
-        static void *GetBlockStart ( int tombraider, int block, bool bForce = false );
-        static void *GetSlotsEnd ( int tombraider, int block, bool bForce = false );
+
+        static void *GetBlockStart ( int tombraider );
+        static void *GetBlockEnd ( int tombraider );
+
         //  Return directly m_TRx_Blocks [ b ] [ s ]
         static void *GetBlockSlot ( int tombraider, int block );
 
         //  return  m_TRX_Guns [ block ] [ slot ]
         static void *GetBlockGuns ( int tombraider, int block );
         //  Return m_TRx_Blocks [ b ] [ s ] but iif null can return the theorical address
-        static void *GetBlockAddress ( int tombraider, int block, bool bForce = false );
+        static void *GetSlotAddress ( int tombraider, int block, bool bForce = false );
         //  return  m_TRX_Guns [ block ] [ slot ]
         static void *GetGunAddress ( int tombraider, int block );
 

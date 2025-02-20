@@ -1481,7 +1481,7 @@ WORD *CTR8SaveGame::GetSaveAddress ( int tombraider, int block )
     {
         case 4:
         {
-            TABLE_TR4 *pBlock = (TABLE_TR4 *)GetBlockAddress ( tombraider, block );
+            TABLE_TR4 *pBlock = (TABLE_TR4 *)GetSlotAddress ( tombraider, block );
             if ( pBlock )
             {
                 return &pBlock->savenumber;
@@ -1490,7 +1490,7 @@ WORD *CTR8SaveGame::GetSaveAddress ( int tombraider, int block )
         }
         case 5:
         {
-            TABLE_TR5 *pBlock = (TABLE_TR5 *)GetBlockAddress ( tombraider, block );
+            TABLE_TR5 *pBlock = (TABLE_TR5 *)GetSlotAddress ( tombraider, block );
             if ( pBlock )
             {
                 return &pBlock->savenumber;
@@ -1510,13 +1510,8 @@ WORD *CTR8SaveGame::GetSaveAddress ( int tombraider, int block )
 /////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////
-void *CTR8SaveGame::GetBlockStart ( int tombraider, int block, bool bForce )
+void *CTR8SaveGame::GetBlockStart ( int tombraider )
 {
-
-    if ( block < 0 || block >= NB_SLOT_456 )
-    {
-        return NULL;
-    }
 
     switch ( tombraider )
     {
@@ -1549,12 +1544,12 @@ void *CTR8SaveGame::GetBlockStart ( int tombraider, int block, bool bForce )
 /////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////
-void *CTR8SaveGame::GetSlotsEnd ( int tombraider, int block, bool bForce )
+void *CTR8SaveGame::GetBlockEnd ( int tombraider )
 {
-    BYTE *pStart = ( BYTE* ) GetBlockStart ( tombraider, block, bForce );
+    BYTE *pStart = ( BYTE* ) GetBlockStart ( tombraider );
     if ( pStart != NULL )
     {
-        pStart = pStart + GetSlotLength(tombraider) * NB_SLOT_456;
+        pStart = pStart + GetBlockLength(tombraider);
     }
 
     return pStart;
@@ -1584,7 +1579,7 @@ void *CTR8SaveGame::GetBlockSlot ( int tombraider, int block )
 /////////////////////////////////////////////////////////////////////////////
 //  Return m_TRx_Blocks [ b ] [ s ] but iif null can return the theorical address
 /////////////////////////////////////////////////////////////////////////////
-void *CTR8SaveGame::GetBlockAddress ( int tombraider, int block, bool bForce )
+void *CTR8SaveGame::GetSlotAddress ( int tombraider, int block, bool bForce )
 {
     if ( block < 0 || block >= NB_SLOT_456 )
     {
@@ -1710,9 +1705,9 @@ int CTR8SaveGame::GetBlockLength ( int tombraider )
 {
     switch ( tombraider )
     {
-        case 4 : return TR456_SLOT_LENGTH;
-        case 5 : return TR456_SLOT_LENGTH;
-        case 6 : return TR456_SLOT_LENGTH;
+        case 4 : return TR456_SLOT_LENGTH * NB_SLOT_456;
+        case 5 : return TR456_SLOT_LENGTH * NB_SLOT_456;
+        case 6 : return TR456_SLOT_LENGTH * NB_SLOT_456;
     }
     return 0;
 }
@@ -1739,7 +1734,7 @@ int CTR8SaveGame::GetSlotLength ( int tombraider )
 /////////////////////////////////////////////////////////////////////////////
 BYTE CTR8SaveGame::GetBlockIndicator ( int tombraider, int block )
 {
-    void *pStartBlock = GetBlockStart ( tombraider, block );
+    void *pStartBlock = GetBlockStart ( tombraider );
     if ( pStartBlock )
     {
     }
@@ -1756,7 +1751,7 @@ const char *CTR8SaveGame::GetBlockHexa ( int tombraider, int block, int iStart, 
     static char szResult [ 0x40  * 4 ];
     ZeroMemory ( szResult, sizeof(szResult) );
 
-    BYTE *pBlock = (BYTE * ) GetBlockAddress ( tombraider, block );
+    BYTE *pBlock = (BYTE * ) GetSlotAddress ( tombraider, block );
     if ( pBlock )
     {
         int slotLength = GetSlotLength ( tombraider );
@@ -1795,7 +1790,7 @@ BYTE *CTR8SaveGame::GetBlockLevelAddress ( int tombraider, int block )
         //
         case 4:
         {
-            TABLE_TR4 *pBlock = (TABLE_TR4 *) GetBlockAddress ( tombraider, block );
+            TABLE_TR4 *pBlock = (TABLE_TR4 *) GetSlotAddress ( tombraider, block );
             if ( pBlock )
             {
                 return pBlock->m_cLevels;
@@ -1806,7 +1801,7 @@ BYTE *CTR8SaveGame::GetBlockLevelAddress ( int tombraider, int block )
         //
         case 5:
         {
-            TABLE_TR5 *pBlock = (TABLE_TR5 *) GetBlockAddress ( tombraider, block );
+            TABLE_TR5 *pBlock = (TABLE_TR5 *) GetSlotAddress ( tombraider, block );
             if ( pBlock )
             {
                 return & pBlock->m_cLevel;
@@ -1841,7 +1836,7 @@ BYTE *CTR8SaveGame::GetBlockObjectAddress ( int tombraider, int block )
         //
         case 4:
         {
-            TABLE_TR4 *pBlock = (TABLE_TR4 *) GetBlockAddress ( tombraider, block );
+            TABLE_TR4 *pBlock = (TABLE_TR4 *) GetSlotAddress ( tombraider, block );
             if ( pBlock )
             {
 #ifdef _DEBUG
@@ -1859,7 +1854,7 @@ BYTE *CTR8SaveGame::GetBlockObjectAddress ( int tombraider, int block )
         //
         case 5:
         {
-            TABLE_TR5 *pBlock = (TABLE_TR5 *) GetBlockAddress ( tombraider, block );
+            TABLE_TR5 *pBlock = (TABLE_TR5 *) GetSlotAddress ( tombraider, block );
             if ( pBlock )
             {
 #ifdef _DEBUG
@@ -3798,6 +3793,7 @@ void CTR8SaveGame::ReNumber ( )
         //  Sort by Level / SaveNo
         for ( int i = 0; i < NB_SLOT_456; i++ )
         {
+            //
             for ( int j = i + 1; j < NB_SLOT_456; j++ )
             {
                 bool bSwap = false;
@@ -3833,7 +3829,8 @@ void CTR8SaveGame::ReNumber ( )
         {
             WORD *pSaveAddress  = GetSaveAddress ( tombraider, blockNo [ block ] );
             int level           = GetBlockLevelNumber ( tombraider, blockNo [ block ] );
-            if ( pSaveAddress != NULL && level != 0 )
+            int save            = GetSaveNumber ( tombraider, blockNo [ block ] );
+            if ( pSaveAddress != NULL && save != 0 && level != 0 )
             {
                 saveNo [ block ]    = count;
                 count++;
@@ -3845,7 +3842,8 @@ void CTR8SaveGame::ReNumber ( )
         {
             WORD *pSaveAddress  = GetSaveAddress ( tombraider, blockNo [ block ] );
             int level           = GetBlockLevelNumber ( tombraider, blockNo [ block ] );
-            if ( pSaveAddress != NULL && level != 0 )
+            int save            = GetSaveNumber ( tombraider, blockNo [ block ] );
+            if ( pSaveAddress != NULL && save != 0 && level != 0 )
             {
                 *pSaveAddress   = saveNo [ block ];
             }
@@ -3863,17 +3861,25 @@ BOOL CTR8SaveGame::Delete ( int tombraider, int block )
     {
         case 4:
         {
+            char    *pBuffer = ( char *) GetBlockSlot ( tombraider, block );
+            memset ( pBuffer, 0, GetSlotLength ( tombraider ) );
             break;
         }
         case 5:
         {
+            char    *pBuffer = ( char *) GetBlockSlot ( tombraider, block );
+            memset ( pBuffer, 0, GetSlotLength ( tombraider ) );
             break;
         }
         case 6:
         {
+            char    *pBuffer = ( char *) GetBlockSlot ( tombraider, block );
+            memset ( pBuffer, 0, GetSlotLength ( tombraider ) );
             break;
         }
     }
+
+    return TRUE;
 
     return TRUE;
 }
@@ -3895,14 +3901,23 @@ BOOL CTR8SaveGame::Export ( const char *pFilename, int tombraider, int block )
         {
             case 4:
             {
+                char    *pBuffer = ( char *) GetBlockSlot ( tombraider, block );
+                fwrite ( pBuffer, 1, GetSlotLength ( tombraider ), hFile );
+                bResult = TRUE;
                 break;
             }
             case 5:
             {
+                char    *pBuffer = ( char *) GetBlockSlot ( tombraider, block );
+                fwrite ( pBuffer, 1, GetSlotLength ( tombraider ), hFile );
+                bResult = TRUE;
                 break;
             }
             case 6:
             {
+                char    *pBuffer = ( char *) GetBlockSlot ( tombraider, block );
+                fwrite ( pBuffer, 1, GetSlotLength ( tombraider ), hFile );
+                bResult = TRUE;
                 break;
             }
         }
@@ -3930,14 +3945,41 @@ BOOL CTR8SaveGame::Import( const char *pFilename, int tombraider, int block )
         {
             case 4:
             {
+                char    *pSrcBuffer = ( char *) malloc ( GetSlotLength ( tombraider ) + 1 );
+                char    *pObjBuffer = ( char *) GetBlockSlot ( tombraider, block );
+                size_t iRead = fread ( pSrcBuffer, 1, GetSlotLength ( tombraider ) + 1, hFile );
+                if ( iRead == GetSlotLength ( tombraider ) )
+                {
+                    memcpy ( pObjBuffer, pSrcBuffer, GetSlotLength ( tombraider ) );
+                    bResult = TRUE;
+                }
+                free ( pSrcBuffer );
                 break;
             }
             case 5:
             {
+                char    *pSrcBuffer = ( char *) malloc ( GetSlotLength ( tombraider ) + 1 );
+                char    *pObjBuffer = ( char *) GetBlockSlot ( tombraider, block );
+                size_t iRead = fread ( pSrcBuffer, 1, GetSlotLength ( tombraider ) + 1, hFile );
+                if ( iRead == GetSlotLength ( tombraider ) )
+                {
+                    memcpy ( pObjBuffer, pSrcBuffer, GetSlotLength ( tombraider ) );
+                    bResult = TRUE;
+                }
+                free ( pSrcBuffer );
                 break;
             }
             case 6:
             {
+                char    *pSrcBuffer = ( char *) malloc ( GetSlotLength ( tombraider ) + 1 );
+                char    *pObjBuffer = ( char *) GetBlockSlot ( tombraider, block );
+                int iRead = (int) fread ( pSrcBuffer, 1, GetSlotLength ( tombraider ) + 1, hFile );
+                if ( iRead == GetSlotLength ( tombraider ) )
+                {
+                    memcpy ( pObjBuffer, pSrcBuffer, GetSlotLength ( tombraider ) );
+                    bResult = TRUE;
+                }
+                free ( pSrcBuffer );
                 break;
             }
         }
@@ -3946,7 +3988,6 @@ BOOL CTR8SaveGame::Import( const char *pFilename, int tombraider, int block )
         return bResult;
     }
     return bResult;
-
 }
 
 //
@@ -4192,12 +4233,12 @@ const char *CTR8SaveGame::GetInterest ( int tombraider, int block )
             sprintf_s ( szResponse + strlen(szResponse), sizeof(szResponse) - strlen(szResponse), "%16s: NULL\r\n", "Save" );
         }
 
-        pAddress = ( char *) GetBlockStart ( tombraider, block );
+        pAddress = ( char *) GetBlockStart ( tombraider );
         if ( pAddress )
         {
             sprintf_s ( szResponse + strlen(szResponse), sizeof(szResponse) - strlen(szResponse),
                         "%16s: 0x%08lX\r\n", "Start", RelativeAddress ( pAddress ) );
-            pAddress = (char * ) pAddress + GetSlotLength ( tombraider ) * NB_SLOT_456;
+            pAddress = ( char * ) pAddress + GetBlockLength ( tombraider );
             sprintf_s ( szResponse + strlen(szResponse), sizeof(szResponse) - strlen(szResponse),
                         "%16s: 0x%08lX\r\n", "Last", RelativeAddress ( pAddress ) );
         }
@@ -4206,7 +4247,7 @@ const char *CTR8SaveGame::GetInterest ( int tombraider, int block )
             sprintf_s ( szResponse + strlen(szResponse), sizeof(szResponse) - strlen(szResponse), "%16s: NULL\r\n", "Start" );
         }
 
-        pAddress = ( char *) GetBlockAddress ( tombraider, block );
+        pAddress = ( char *) GetSlotAddress ( tombraider, block );
         if ( pAddress )
         {
             sprintf_s ( szResponse + strlen(szResponse), sizeof(szResponse) - strlen(szResponse),

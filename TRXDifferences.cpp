@@ -1374,6 +1374,11 @@ const char *CTRXDifferences::GetLabel ( unsigned offset )
                         strcat_s ( szLabel, sizeof(szLabel), " - Flares" );
                         bFound = true;
                     }
+                    else if ( Match2BytesOffset ( offsetof(TABLE_TR4,savenumber), offsetInBlock ) )
+                    {
+                        strcat_s ( szLabel, sizeof(szLabel), " - Save Game Number" );
+                        bFound = true;
+                    }
                     else
                     {
                         strcat_s ( szLabel, sizeof(szLabel), " - Ammos" );

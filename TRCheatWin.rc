@@ -8,7 +8,6 @@
 // Generated from the TEXTINCLUDE 2 resource.
 //
 #include "afxres.h"
-#include "AutomaticProductName.h"
 
 /////////////////////////////////////////////////////////////////////////////
 #undef APSTUDIO_READONLY_SYMBOLS
@@ -717,7 +716,7 @@ END
 IDD_REMASTERED_456 DIALOGEX 0, 0, 520, 330
 STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 EXSTYLE WS_EX_ACCEPTFILES
-CAPTION "TRR 4 5 6 (Beta)"
+CAPTION "TRR 4 5 (6)"
 FONT 8, "MS Sans Serif", 0, 0, 0x0
 BEGIN
     EDITTEXT        IDC_FILENAME,7,7,409,12,ES_AUTOHSCROLL | ES_READONLY | NOT WS_TABSTOP
@@ -923,8 +922,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 4,6,01,004
- PRODUCTVERSION 4,6,01,004
+ FILEVERSION 4,6,1,7
+ PRODUCTVERSION 4,6,1,7
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x29L
@@ -939,18 +938,18 @@ BEGIN
     BEGIN
         BLOCK "040904b0"
         BEGIN
-            VALUE "Comments", "mailto:ian.macallan@gmail.com\0"
-            VALUE "CompanyName", "Macallan (c)\0"
-            VALUE "FileDescription", "TRCheatWin - (MSVC)\0"
-            VALUE "FileVersion", "4.6.01.004\0"
-            VALUE "InternalName", "https://www.macallan.org/\0"
-            VALUE "LegalCopyright", "Copyright (C) Thu Feb 20 12:33, 2025\0"
-            VALUE "LegalTrademarks", "Author: Ian Macallan\0"
-            VALUE "OriginalFilename", ORIGINAL_FILENAME
-            VALUE "PrivateBuild", "1129\0"
-            VALUE "ProductName", PRODUCT_NAME
-            VALUE "ProductVersion", "4.6.01.004\0"
-            VALUE "SpecialBuild", "1129\0"
+            VALUE "Comments", "mailto:ian.macallan@gmail.com"
+            VALUE "CompanyName", "Macallan (c)"
+            VALUE "FileDescription", "TRCheatWin - (MSVC)"
+            VALUE "FileVersion", "4.6.01.007"
+            VALUE "InternalName", "https://www.macallan.org/"
+            VALUE "LegalCopyright", "Copyright (C) Thu Feb 20 13:41, 2025"
+            VALUE "LegalTrademarks", "Author: Ian Macallan"
+            VALUE "OriginalFilename", "TRCheatWin (x86 MBCS) (MSVC)"
+            VALUE "PrivateBuild", "1132"
+            VALUE "ProductName", "TRCheatWin - Version 4.6.01.007\r\n(Build 1132) - (x86 MBCS) (MSVC)"
+            VALUE "ProductVersion", "4.6.01.007"
+            VALUE "SpecialBuild", "1132"
         END
     END
     BLOCK "VarFileInfo"
