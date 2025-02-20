@@ -151,6 +151,10 @@ class CTRXRemastered456 : public CTRXPropertyPage456
 
         CTRXButtonBase m_Items;
 
+        CTRXButtonBase m_Binocular;
+        CTRXButtonBase m_Laser;
+        CTRXButtonBase m_Crowbar;
+
         //
         afx_msg void OnBnClickedLoad();
         afx_msg void OnBnClickedWrite();
@@ -287,4 +291,5 @@ class CTRXRemastered456 : public CTRXPropertyPage456
 
         //  Ca Be Use by other
         static const char *GetLabelForObject ( int tombraider, int levelIndex, int iObject, bool bDouble = false );
+        CButton m_HeadSet;
 };

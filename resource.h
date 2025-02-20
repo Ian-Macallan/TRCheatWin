@@ -214,6 +214,8 @@
 #define IDC_ITEM_02                     1002
 #define IDC_CROWBAR                     1002
 #define IDC_GUNS                        1003
+#define IDC_CROWBAR2                    1003
+#define IDC_HEADSET                     1003
 #define IDC_UZI                         1004
 #define IDC_RIOTGUN                     1005
 #define IDC_MP5                         1006

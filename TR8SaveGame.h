@@ -117,8 +117,8 @@ struct GUN_TR4
     // 0x00c607 : 09
     BYTE        m_gunGrenadesLauncher;
 
-    // 0x00c60A : 01
-    BYTE        m_gunBinocular;
+    // 0x00c60B : 01
+    BYTE        m_Unknown01;
 
     // 0x00c608 : 09
     BYTE        m_gunRevolver;
@@ -126,11 +126,11 @@ struct GUN_TR4
     // 0x00c609 : 01
     BYTE        m_gunLaserLight;
 
-    // 0x00c60B : 01
-    BYTE        m_gunCrowBar;
+    // 0x00c60A : 01
+    BYTE        m_gunBinocular;
 
     //
-    BYTE        m_Unknown01;
+    BYTE        m_gunCrowBar;
     BYTE        m_Unknown02;
     BYTE        m_Unknown03;
 
@@ -293,8 +293,8 @@ struct GUN_TR5
     //  0x173 : 09
     BYTE        m_gunHK;            //  5
 
-    //  A Delta
-    BYTE        m_Unknown01;
+    //  
+    BYTE        m_Unknown02;
 
     //  0x174 : 01
     BYTE        m_gunRevolver;      //  6
@@ -305,10 +305,11 @@ struct GUN_TR5
     //  0x176 : 01
     BYTE        m_gunBinocular;     //  8
 
+    //
+    BYTE        m_gunCrowBar;
+
     //  0x177 : 01
     BYTE        m_gunHeadSet;       //  9
-
-    BYTE        m_Unknown02;
 
     BYTE        m_Unknown03;
 
@@ -799,6 +800,11 @@ class CTR8SaveGame : public CObject
 
         BYTE IsGamePlus ( int tombraider, int block );
         void SetGamePlus ( int tombraider, int block, BYTE value );
+
+        void SetBinocular ( int tombraider, int block, BYTE value );
+        void SetLaser ( int tombraider, int block, BYTE value );
+        void SetCrowbar ( int tombraider, int block, BYTE value );
+        void SetHeadSet ( int tombraider, int block, BYTE value );
 
         //
         void KillWillard ( int tombraider, int block );

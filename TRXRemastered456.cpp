@@ -312,6 +312,10 @@ void CTRXRemastered456::DoDataExchange(CDataExchange* pDX)
     DDX_Control(pDX, IDC_SHELL, m_Shell);
     DDX_Control(pDX, IDC_POS_LABEL, m_Position_Label);
     DDX_Control(pDX, IDC_ITEMS, m_Items);
+    DDX_Control(pDX, IDC_BINOCULAR, m_Binocular);
+    DDX_Control(pDX, IDC_LASER, m_Laser);
+    DDX_Control(pDX, IDC_CROWBAR, m_Crowbar);
+    DDX_Control(pDX, IDC_HEADSET, m_HeadSet);
 }
 
 //
@@ -885,6 +889,12 @@ void CTRXRemastered456::Enable ( int tombraider, int level )
     //
     m_ARocket.EnableWindow ( CTRXTools::IsEnableRocket ( tombraider, level ) );
 
+    //
+    m_Binocular.EnableWindow ( TRUE );
+    m_Laser.EnableWindow ( TRUE );
+    m_Crowbar.EnableWindow ( TRUE );
+    m_HeadSet.EnableWindow ( tombraider == 5 );
+
 }
 
 //
@@ -1026,6 +1036,13 @@ void CTRXRemastered456::DisplayOne ( int line )
                     // SET_BLOCK_HIDE ( m_Harpoon );
                     SET_BLOCK_HIDE ( m_M16 );
                     SET_BLOCK_HIDE ( m_Rocket );
+
+                    //
+                    SET_GUN_VALUE ( m_Binocular, m_gunBinocular );
+                    SET_GUN_VALUE ( m_Laser, m_gunLaserLight );
+                    SET_GUN_VALUE ( m_Crowbar, m_gunCrowBar );
+                    // SET_GUN_VALUE ( m_HeadSet, m_gunHeadSet);
+
 
                     SetBlockObjectOnDisplay ( tombraider, block, -1 );
 
@@ -1176,7 +1193,6 @@ void CTRXRemastered456::DisplayOne ( int line )
                     SET_GUN_HIDE(m_XHarpoon);
 
                     //
-                    //
                     if ( pGun != NULL )
                     {
                         SET_BLOCK_CHECK ( m_Guns, m_gunPistol, TRR5_GUN_SET );
@@ -1190,6 +1206,12 @@ void CTRXRemastered456::DisplayOne ( int line )
                      
                     SET_BLOCK_HIDE ( m_Rocket );
                     SET_BLOCK_HIDE ( m_Harpoon );
+
+                    //
+                    SET_GUN_VALUE ( m_Binocular, m_gunBinocular );
+                    SET_GUN_VALUE ( m_Laser, m_gunLaserLight );
+                    SET_GUN_VALUE ( m_Crowbar, m_gunCrowBar );
+                    SET_GUN_VALUE ( m_HeadSet, m_gunHeadSet);
 
                     //
                     SetBlockObjectOnDisplay ( tombraider, block, -1 );
@@ -2505,6 +2527,11 @@ void CTRXRemastered456::UpdateBuffer( )
 
                     CTR8SaveGame::I()->SetGamePlus ( tombraider, block, m_Game_Plus.GetCheck() );
 
+                    CTR8SaveGame::I()->SetBinocular ( tombraider, block, m_Binocular.GetCheck() );
+                    CTR8SaveGame::I()->SetLaser ( tombraider, block, m_Laser.GetCheck() );
+                    CTR8SaveGame::I()->SetCrowbar ( tombraider, block, m_Crowbar.GetCheck() );
+                    // CTR8SaveGame::I()->SetHeadSet ( tombraider, block, m_Binocular.GetCheck() );
+
                     break;
                 }
 
@@ -2523,6 +2550,11 @@ void CTRXRemastered456::UpdateBuffer( )
                     CTR8SaveGame::I()->SetBlockSecretsAcquired ( tombraider, block, GetValue ( m_Secrets_A ) );
 
                     CTR8SaveGame::I()->SetGamePlus ( tombraider, block, m_Game_Plus.GetCheck() );
+
+                    CTR8SaveGame::I()->SetBinocular ( tombraider, block, m_Binocular.GetCheck() );
+                    CTR8SaveGame::I()->SetLaser ( tombraider, block, m_Laser.GetCheck() );
+                    CTR8SaveGame::I()->SetCrowbar ( tombraider, block, m_Crowbar.GetCheck() );
+                    CTR8SaveGame::I()->SetHeadSet ( tombraider, block, m_HeadSet.GetCheck() );
 
                     break;
                 }

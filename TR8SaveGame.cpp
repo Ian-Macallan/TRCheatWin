@@ -4825,7 +4825,6 @@ void CTR8SaveGame::SetMagnum ( int tombraider, void *pBlocks, void *pGuns, int l
                 if ( pGun )
                 {
                     pGun->m_gunRevolver         |= TRR4_MASK_MAGNUM; // Magnum
-                    pGun->m_gunLaserLight       |= TRR4_MASK_LASER; // Laser
                 }
 
                 if ( pBlock )
@@ -4838,7 +4837,6 @@ void CTR8SaveGame::SetMagnum ( int tombraider, void *pBlocks, void *pGuns, int l
                 if ( pGun )
                 {
                     pGun->m_gunRevolver         = pGun->m_gunRevolver & ( TRR4_MASK_MAGNUM ^ 0xff );
-                    pGun->m_gunLaserLight       = pGun->m_gunLaserLight & ( TRR4_MASK_LASER ^ 0xff );
                 }
 
                 if ( pBlock )
@@ -4876,7 +4874,6 @@ void CTR8SaveGame::SetMagnum ( int tombraider, void *pBlocks, void *pGuns, int l
                 if ( pGun )
                 {
                     pGun->m_gunRevolver         |= TRR5_MASK_REVOLVER; // Magnum
-                    pGun->m_gunLaserLight       |= TRR5_MASK_LASER; // Laser
                 }
 
                 if ( pBlock )
@@ -4889,7 +4886,6 @@ void CTR8SaveGame::SetMagnum ( int tombraider, void *pBlocks, void *pGuns, int l
                 if ( pGun )
                 {
                     pGun->m_gunRevolver         = pGun->m_gunRevolver & ( TRR5_MASK_REVOLVER ^ 0xff );
-                    pGun->m_gunLaserLight       = pGun->m_gunLaserLight & ( TRR5_MASK_LASER ^ 0xff );
                 }
 
                 if ( pBlock )
@@ -5953,5 +5949,224 @@ BOOL CTR8SaveGame::SetPosition (    int tombraider, int block,
     }
 
     return FALSE;
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
+void CTR8SaveGame::SetBinocular ( int tombraider, int block, BYTE value )
+{
+    if ( block < 0 || block >= NB_SLOT_456 )
+    {
+        return;
+    }
+
+    switch ( tombraider )
+    {
+        //
+        case 4:
+        {
+            GUN_TR4 *pGun       = ( GUN_TR4 * ) m_TR4_Guns [ block ];
+            if ( pGun )
+            {
+                if ( value )
+                {
+                    pGun->m_gunBinocular    = TRR4_MASK_LASER;
+                }
+                else
+                {
+                    pGun->m_gunBinocular    = pGun->m_gunBinocular & ( TRR4_MASK_LASER ^ 0xff );
+                }
+            }
+            break;
+        }
+        //
+        case 5:
+        {
+            GUN_TR5 *pGun       = ( GUN_TR5 * ) m_TR5_Guns [ block ];
+            if ( pGun )
+            {
+                if ( value )
+                {
+                    pGun->m_gunBinocular    = TRR5_MASK_LASER;
+                }
+                else
+                {
+                    pGun->m_gunBinocular    = pGun->m_gunBinocular & ( TRR5_MASK_LASER ^ 0xff );
+                }
+            }
+            break;
+        }
+
+        //
+        case 6:
+        {
+            break;
+        }
+    }
+
+    return;
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
+void CTR8SaveGame::SetLaser ( int tombraider, int block, BYTE value )
+{
+    if ( block < 0 || block >= NB_SLOT_456 )
+    {
+        return;
+    }
+
+    switch ( tombraider )
+    {
+        //
+        case 4:
+        {
+            GUN_TR4 *pGun       = ( GUN_TR4 * ) m_TR4_Guns [ block ];
+            if ( pGun )
+            {
+                if ( value )
+                {
+                    pGun->m_gunLaserLight    = TRR4_GUN_SET1;
+                }
+                else
+                {
+                    pGun->m_gunLaserLight    = pGun->m_gunLaserLight & ( TRR4_GUN_SET1 ^ 0xff );
+                }
+            }
+            break;
+        }
+        //
+        case 5:
+        {
+            GUN_TR5 *pGun       = ( GUN_TR5 * ) m_TR5_Guns [ block ];
+            if ( pGun )
+            {
+                if ( value )
+                {
+                    pGun->m_gunLaserLight    = TRR5_GUN_SET1;
+                }
+                else
+                {
+                    pGun->m_gunLaserLight    = pGun->m_gunLaserLight & ( TRR5_GUN_SET1 ^ 0xff );
+                }
+            }
+            break;
+        }
+
+        //
+        case 6:
+        {
+            break;
+        }
+    }
+
+    return;
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
+void CTR8SaveGame::SetCrowbar ( int tombraider, int block, BYTE value )
+{
+    if ( block < 0 || block >= NB_SLOT_456 )
+    {
+        return;
+    }
+
+    switch ( tombraider )
+    {
+        //
+        case 4:
+        {
+            GUN_TR4 *pGun       = ( GUN_TR4 * ) m_TR4_Guns [ block ];
+            if ( pGun )
+            {
+                if ( value )
+                {
+                    pGun->m_gunCrowBar    = TRR4_GUN_SET1;
+                }
+                else
+                {
+                    pGun->m_gunCrowBar    = pGun->m_gunCrowBar & ( TRR4_GUN_SET1 ^ 0xff );
+                }
+            }
+            break;
+        }
+        //
+        case 5:
+        {
+            GUN_TR5 *pGun       = ( GUN_TR5 * ) m_TR5_Guns [ block ];
+            if ( pGun )
+            {
+                if ( value )
+                {
+                    pGun->m_gunCrowBar    = TRR5_GUN_SET1;
+                }
+                else
+                {
+                    pGun->m_gunCrowBar    = pGun->m_gunCrowBar & ( TRR5_GUN_SET1 ^ 0xff );
+                }
+            }
+            break;
+        }
+
+        //
+        case 6:
+        {
+            break;
+        }
+    }
+
+    return;
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
+void CTR8SaveGame::SetHeadSet ( int tombraider, int block, BYTE value )
+{
+    if ( block < 0 || block >= NB_SLOT_456 )
+    {
+        return;
+    }
+
+    switch ( tombraider )
+    {
+        //
+        case 4:
+        {
+            break;
+        }
+        //
+        case 5:
+        {
+            GUN_TR5 *pGun       = ( GUN_TR5 * ) m_TR5_Guns [ block ];
+            if ( pGun )
+            {
+                if ( value )
+                {
+                    pGun->m_gunHeadSet    = TRR5_GUN_SET1;
+                }
+                else
+                {
+                    pGun->m_gunHeadSet    = pGun->m_gunHeadSet & ( TRR5_GUN_SET1 ^ 0xff );
+                }
+            }
+            break;
+        }
+        //
+        case 6:
+        {
+            break;
+        }
+    }
+
+    return;
 }
 
