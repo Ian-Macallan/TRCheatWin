@@ -25,7 +25,7 @@ env:
   # You can convert this to a build matrix if you need coverage of multiple configuration types.
   # https://docs.github.com/actions/learn-github-actions/managing-complex-workflows#using-a-build-matrix
   BUILD_CONFIGURATION: Release
-  BUILD_VERSION: 4.6.1.8 # Version
+  BUILD_VERSION: 4.6.1.9 # Version
 #
 permissions: 
   actions: write

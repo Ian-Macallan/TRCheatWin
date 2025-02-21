@@ -1354,19 +1354,63 @@ TR8_POSITION *CTR8SaveGame::GetPositionAddress ( int tombraider, int block )
     OutputDebugString ( "GetPositionAddress TR Remastered\n" );
 #endif
 
-    BYTE *pAddress = (BYTE *) GetRealHealthAddress ( tombraider, block );
-    if ( pAddress )
+    int level = GetBlockLevelNumber(tombraider, block );
+    if ( level <= 0 )
+    {
+        return NULL;
+    }
+
+    //
+    int levelIndex = level - 1;
+
+    //
+    BYTE *pHealth = (BYTE *) GetRealHealthAddress ( tombraider, block );
+    if ( pHealth )
     {
         switch ( tombraider )
         {
             case 4:
             {
-                return (TR8_POSITION *)( pAddress - offsetof(TR8_POSITION,health) );
+                //
+                //  Verify Position
+                for ( int i = 0; i <= CTRXGlobal::m_iExtSearchPos; i++ )
+                {
+                   TR8_POSITION *position = (TR8_POSITION *)( ( BYTE * ) pHealth - offsetof(TR8_POSITION,health) - i );
+            
+                    DWORD dwSouthToNorth    = ( DWORD) position->wSouthToNorth * TR4_FACTOR;
+                    DWORD dwVertical        = ( DWORD ) position->wVertical * TR4_FACTOR;
+                    DWORD dwWestToEast      = ( DWORD ) position->wWestToEast * TR4_FACTOR;
+                    WORD wRoom              = position->cRoom;
+
+                    BOOL bCheck = CheckAreaForCoordinates ( tombraider, levelIndex,  wRoom, dwWestToEast, dwVertical, dwSouthToNorth );
+                    if ( bCheck )
+                    {
+                        //
+                        return position;
+                    }
+                }
                 break;
             }
             case 5:
             {
-                return (TR8_POSITION *)( pAddress - offsetof(TR8_POSITION,health) );
+                //
+                //  Verify Position
+                for ( int i = 0; i <= CTRXGlobal::m_iExtSearchPos; i++ )
+                {
+                   TR8_POSITION *position = (TR8_POSITION *)( ( BYTE * ) pHealth - offsetof(TR8_POSITION,health) - i );
+            
+                    DWORD dwSouthToNorth    = ( DWORD) position->wSouthToNorth * TR5_FACTOR;
+                    DWORD dwVertical        = ( DWORD ) position->wVertical * TR5_FACTOR;
+                    DWORD dwWestToEast      = ( DWORD ) position->wWestToEast * TR5_FACTOR;
+                    WORD wRoom              = position->cRoom;
+
+                    BOOL bCheck = CheckAreaForCoordinates ( tombraider, levelIndex,  wRoom, dwWestToEast, dwVertical, dwSouthToNorth );
+                    if ( bCheck )
+                    {
+                        //
+                        return position;
+                    }
+                }
                 break;
             }
             case 6:

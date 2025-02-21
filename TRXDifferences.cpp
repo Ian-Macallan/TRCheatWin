@@ -1252,9 +1252,9 @@ const char *CTRXDifferences::GetLabel ( unsigned offset )
         {
             tombraider = 4;
             strcpy_s ( szLabel, sizeof(szLabel), "Tombraider IV" );
-            block = ( offset - TR4_BLOCK_START ) / TR4_BLOCK_LENGTH;
+            block = ( offset - TR4_BLOCK_START ) / TR4_SLOT_LENGTH;
             sprintf_s ( szLabel + strlen(szLabel), sizeof(szLabel) - strlen(szLabel), " - Block %d", block );
-            unsigned blockStart     = TR4_BLOCK_START + block * TR4_BLOCK_LENGTH;
+            unsigned blockStart     = TR4_BLOCK_START + block * TR4_SLOT_LENGTH;
             unsigned blockEnd       = blockStart + TR4_SLOT_LENGTH;
 
             //
@@ -1407,6 +1407,126 @@ const char *CTRXDifferences::GetLabel ( unsigned offset )
         {
             tombraider = 5;
             strcpy_s ( szLabel, sizeof(szLabel), "Tombraider V" );
+
+            block = ( offset - TR5_BLOCK_START ) / TR5_SLOT_LENGTH;
+            sprintf_s ( szLabel + strlen(szLabel), sizeof(szLabel) - strlen(szLabel), " - Block %d", block );
+            unsigned blockStart     = TR5_BLOCK_START + block * TR5_SLOT_LENGTH;
+            unsigned blockEnd       = blockStart + TR5_SLOT_LENGTH;
+
+            //
+            //  Start By Guns
+            if ( ! bFound )
+            {
+                //
+                BYTE *pGunStart = (BYTE *)CTR8SaveGame::I()->GetGunAddress( tombraider, block );
+                if ( pGunStart != NULL )
+                {
+                    unsigned gunOffset  = CTR8SaveGame::I()->RelativeAddress ( pGunStart );
+                    if ( offset >= gunOffset && offset < gunOffset + sizeof(GUN_TR5) )
+                    {
+                        unsigned offsetInGuns   = offset - gunOffset;
+                        if ( Match1ByteOffset ( offsetof(GUN_TR5,m_gunPistol), offsetInGuns ) )
+                        {
+                            strcat_s ( szLabel, sizeof(szLabel), " - Gun Pistol" );
+                            bFound = true;
+                        }
+                        else if (  Match1ByteOffset ( offsetof(GUN_TR5,m_gunRevolver), offsetInGuns ) )
+                        {
+                            strcat_s ( szLabel, sizeof(szLabel), " - Gun Magnum" );
+                            bFound = true;
+                        }
+                        else if (  Match1ByteOffset ( offsetof(GUN_TR5,m_gunUzis), offsetInGuns ) )
+                        {
+                            strcat_s ( szLabel, sizeof(szLabel), " - Gun Uzi" );
+                            bFound = true;
+                        }
+                        else if (  Match1ByteOffset ( offsetof(GUN_TR5,m_gunRiotGun), offsetInGuns ) )
+                        {
+                            strcat_s ( szLabel, sizeof(szLabel), " - Gun Riot" );
+                            bFound = true;
+                        }
+                        else
+                        {
+                            strcat_s ( szLabel, sizeof(szLabel), " - Gun Structure" );
+                            bFound = true;
+                        }
+                    }
+                }
+            }
+
+            //  Inside TABLE (Ammos)
+            if ( ! bFound )
+            {
+                if ( offset >= blockStart && offset < blockStart + sizeof(TABLE_TR5) )
+                {
+                    unsigned offsetInBlock  = offset - blockStart;
+                    if ( Match2BytesOffset ( offsetof(TABLE_TR5,m_iGunAmmos), offsetInBlock ) )
+                    {
+                        strcat_s ( szLabel, sizeof(szLabel), " - Ammos Gun" );
+                        bFound = true;
+                    }
+                    else if (  Match2BytesOffset ( offsetof(TABLE_TR5,m_iRevolverAmmos), offsetInBlock ) )
+                    {
+                        strcat_s ( szLabel, sizeof(szLabel), " - Ammos Magnum" );
+                        bFound = true;
+                    }
+                    else if (  Match2BytesOffset ( offsetof(TABLE_TR5,m_iUziAmmos), offsetInBlock ) )
+                    {
+                        strcat_s ( szLabel, sizeof(szLabel), " - Ammos Uzi" );
+                        bFound = true;
+                    }
+                    else if (  Match2BytesOffset ( offsetof(TABLE_TR5,m_iShotGunAmmo1), offsetInBlock ) )
+                    {
+                        strcat_s ( szLabel, sizeof(szLabel), " - Ammos Riot 1" );
+                        bFound = true;
+                    }
+                    else if (  Match2BytesOffset ( offsetof(TABLE_TR5,m_iShotGunAmmo2), offsetInBlock ) )
+                    {
+                        strcat_s ( szLabel, sizeof(szLabel), " - Ammos Riot 2" );
+                        bFound = true;
+                    }
+                    else if ( Match2BytesOffset ( offsetof(TABLE_TR5,m_iSmallMedipak), offsetInBlock ) )
+                    {
+                        strcat_s ( szLabel, sizeof(szLabel), " - Small Medipak" );
+                        bFound = true;
+                    }
+                    else if ( Match2BytesOffset ( offsetof(TABLE_TR5,m_iLargeMedipak), offsetInBlock ) )
+                    {
+                        strcat_s ( szLabel, sizeof(szLabel), " - Large MediPak" );
+                        bFound = true;
+                    }
+                    else if ( Match2BytesOffset ( offsetof(TABLE_TR5,m_iFlares), offsetInBlock ) )
+                    {
+                        strcat_s ( szLabel, sizeof(szLabel), " - Flares" );
+                        bFound = true;
+                    }
+                    else if ( Match2BytesOffset ( offsetof(TABLE_TR5,savenumber), offsetInBlock ) )
+                    {
+                        strcat_s ( szLabel, sizeof(szLabel), " - Save Game Number" );
+                        bFound = true;
+                    }
+                    else
+                    {
+                        strcat_s ( szLabel, sizeof(szLabel), " - Ammos" );
+                        bFound = true;
+                    }
+                }
+            }
+
+            //
+            if ( ! bFound )
+            {
+                TR8_POSITION *position = CTR8SaveGame::I()->GetPositionAddress(tombraider, block );
+                if ( position != NULL )
+                {
+                    unsigned positionOffset =  CTR8SaveGame::RelativeAddress ( position );
+                    if ( offset >= positionOffset && offset < positionOffset + sizeof(TR9_POSITION) )
+                    {
+                        strcat_s ( szLabel, sizeof(szLabel), " - Position" );
+                        bFound = true;
+                    }
+                }
+            }
         }
         else
         {

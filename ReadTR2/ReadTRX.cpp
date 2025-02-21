@@ -619,7 +619,8 @@ BOOL ExtractData (  FILE *hOutputFile, int game,
             iRead = ReadChunk (  &Palette16, sizeof(Palette16), hFile );
         }
 
-        if ( TRMode == TR4_MODE || TRMode == TR5_MODE || TRMode == TRR4_MODE || TRMode == TRR5_MODE )
+        //
+        if ( TRMode == TR4_MODE || TRMode == TR5_MODE )
         {
             iRead = ReadChunk (  &NumRoomTextiles, sizeof(NumRoomTextiles), hFile );
             iRead = ReadChunk (  &NumObjTextiles, sizeof(NumObjTextiles), hFile );
@@ -680,6 +681,62 @@ BOOL ExtractData (  FILE *hOutputFile, int game,
 
                         return bResult;
                     }
+                }
+            }
+            else
+            {
+                memcpy ( memLevelDataUnCompressed.ptr, memLevelDataCompressed.ptr, LevelData_UncompSize );
+            }
+        }
+
+        //
+        if ( TRMode == TRR4_MODE || TRMode == TRR5_MODE )
+        {
+            iRead = ReadChunk (  &NumRoomTextiles, sizeof(NumRoomTextiles), hFile );
+            iRead = ReadChunk (  &NumObjTextiles, sizeof(NumObjTextiles), hFile );
+            iRead = ReadChunk (  &NumBumpTextiles, sizeof(NumBumpTextiles), hFile );
+
+            iRead = ReadChunk (  &Textile32_UncompSize, sizeof(Textile32_UncompSize), hFile );
+            iRead = ReadChunk (  &Textile32_CompSize, sizeof(Textile32_CompSize), hFile );
+            iRead = ReadChunk (  memBuffer.ptr, Textile32_CompSize, hFile );
+
+            iRead = ReadChunk (  &Textile16_UncompSize, sizeof(Textile16_UncompSize), hFile );
+            iRead = ReadChunk (  &Textile16_CompSize, sizeof(Textile16_CompSize), hFile );
+            iRead = ReadChunk (  memBuffer.ptr, Textile16_CompSize, hFile );
+
+            iRead = ReadChunk (  &Textile32Misc_UncompSize, sizeof(Textile32Misc_UncompSize), hFile );
+            iRead = ReadChunk (  &Textile32Misc_CompSize, sizeof(Textile32Misc_CompSize), hFile );
+            iRead = ReadChunk (  memBuffer.ptr, Textile32Misc_CompSize, hFile );
+
+            if ( TRMode == TR5_MODE || TRMode == TRR5_MODE )
+            {
+                iRead = ReadChunk (  &LaraType, sizeof(LaraType), hFile );
+                iRead = ReadChunk (  &WeatherType, sizeof(WeatherType), hFile );
+                iRead = ReadChunk (  &Padding, sizeof(Padding), hFile );
+            }
+
+            ZeroMemory ( memLevelDataCompressed.ptr, memLevelDataCompressed.len );
+            ZeroMemory ( memLevelDataUnCompressed.ptr, memLevelDataUnCompressed.len );
+
+            long lDataPosition = ftell ( hFile );
+            iRead = ReadChunk (  &LevelData_UncompSize, sizeof(LevelData_UncompSize), hFile );
+            iRead = ReadChunk (  &LevelData_CompSize, sizeof(LevelData_CompSize), hFile );
+            iRead = ReadChunk (  memLevelDataCompressed.ptr, LevelData_CompSize, hFile );
+
+            long lUncompSize    = LevelData_UncompSize;
+            long lCompSize      = LevelData_CompSize;
+
+            //  Uncompress Level Data
+            if ( LevelData_UncompSize != LevelData_CompSize )
+            {
+                int compressStatus = uncompress2( (Bytef *) memLevelDataUnCompressed.ptr, &LevelData_UncompSize,
+                    (Bytef *) memLevelDataCompressed.ptr, &LevelData_CompSize);
+                if ( compressStatus != Z_OK )
+                {
+                    bResult = FALSE;
+                    CloseOneFile ( &hFile );
+
+                    return bResult;
                 }
             }
             else
