@@ -70,9 +70,15 @@ BOOL CTRXRemasteredInfos::OnInitDialog()
 
     //
     //
-
     m_Text.SetFont ( m_pFixedFont );
-    m_Text.SetWindowText ( CTR9SaveGame::I()->GetInterest(m_iTombraider, m_iBlock, m_iSlot ) );
+    if ( m_iTombraider >= 1 && m_iTombraider <= 3 )
+    {
+        m_Text.SetWindowText ( CTR9SaveGame::I()->GetInterest(m_iTombraider, m_iBlock, m_iSlot ) );
+    }
+    else if ( m_iTombraider >= 4 && m_iTombraider <= 5 )
+    {
+        m_Text.SetWindowText ( CTR8SaveGame::I()->GetInterest(m_iTombraider, m_iBlock ) );
+    }
 
     m_bInitDone = true;
 

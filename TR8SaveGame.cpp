@@ -216,7 +216,7 @@ static const char *TR5LevelNames [] =
 static TR_POSITION_RANGE TRR4IndicatorRange [ TR4_LEVELS ] =
 {
     {   0x0600,     0x0700  },      /* 1 Angkor Wat */ 
-    {   0x0100,     0x3000  },      /* 2 Race for the Iris */
+    {   0x0100,     0x4000  },      /* 2 Race for the Iris */
     {   0x0100,     0x3000  },      /* 3 Tomb of Seth */
     {   0x0100,     0x3000  },      /* 4 Burial Chambers */
     {   0x0100,     0x3000  },      /* 5 Valley of the Kings */
@@ -235,7 +235,7 @@ static TR_POSITION_RANGE TRR4IndicatorRange [ TR4_LEVELS ] =
     {   0x0100,     0x3000  },      /* 18 Catacombs */
     {   0x0100,     0x3000  },      /* 19 Temple of Poseidon */
     {   0x0100,     0x3000  },      /* 20 The Lost Library */
-    {   0x0100,     0x3000  },      /* 21 Hall of Demetrius */
+    {   0x0100,     0x4000  },      /* 21 Hall of Demetrius */
     {   0x0100,     0x3000  },      /* 22 City of the Dead */
     {   0x0100,     0x3000  },      /* 23 Trenches */
     {   0x0100,     0x3000  },      /* 24 Chambers of Tulun */
@@ -251,8 +251,8 @@ static TR_POSITION_RANGE TRR4IndicatorRange [ TR4_LEVELS ] =
     {   0x0100,     0x3000  },      /* 34 The Great Pyramid */ 
     {   0x0100,     0x3000  },      /* 35 Khufu's Queen's Pyramids */
     {   0x0100,     0x3000  },      /* 36 Inside the Great Pyramid */
-    {   0x0100,     0x3000  },      /* 37 Temple of Horus */
-    {   0x0100,     0x3000  },      /* 38 Temple of Horus */ 
+    {   0x0100,     0x4000  },      /* 37 Temple of Horus */
+    {   0x0100,     0x4000  },      /* 38 Temple of Horus */ 
     {   0x0100,     0x3000  },      /* 39 Office */
     {   0x0100,     0x3000  },      /* 40 Times Exclusive */
 };
@@ -1317,6 +1317,7 @@ WORD *CTR8SaveGame::GetRealHealthAddress ( int tombraider, int block )
                     }
                 }
             }
+
             if ( tombraider == 5 && ( *pHealth > 0 && *pHealth <= 1000 ) )
             {
                 //

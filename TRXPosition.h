@@ -101,4 +101,8 @@ class CTRXPosition : public CTRXDialogBase
         CTRXStaticBase m_Ranges;
         CTRXButtonBase m_CopyPos;
         CTRXButtonBase m_PastePos;
+
+        //
+        CTRXStaticBase m_Left;
+        CTRXStaticBase m_Right;
 };

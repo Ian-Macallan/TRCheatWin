@@ -2738,23 +2738,26 @@ void CTRXRemastered456::SortItems ( int col )
     {
         STRUCTDATA  *pData = (STRUCTDATA *) m_ListCtrl.GetItemData ( i );
 
-        ZeroMemory ( szString, sizeof(szString) );
-        m_ListCtrl.GetItemText( i, col, szString, sizeof(szString) );
+        //  Sort By Column
+        ZeroMemory ( pData->szText, sizeof(pData->szText) );
 
-        ZeroMemory ( pData->szText, sizeof( pData->szText) );
-        strcpy_s ( pData->szText, sizeof( pData->szText), szString );
-
+        //  First Always Add GAME
         ZeroMemory ( szString, sizeof(szString) );
         m_ListCtrl.GetItemText( i, COLR_GAME, szString, sizeof(szString) );
+        strcat_s ( pData->szText, sizeof( pData->szText), szString );
+
+        ZeroMemory ( szString, sizeof(szString) );
+        m_ListCtrl.GetItemText( i, col, szString, sizeof(szString) );
+        strcat_s ( pData->szText, sizeof( pData->szText), szString );
+
+        ZeroMemory ( szString, sizeof(szString) );
+        m_ListCtrl.GetItemText( i, COLR_SLOT, szString, sizeof(szString) );
         strcat_s ( pData->szText, sizeof( pData->szText), szString );
 
         ZeroMemory ( szString, sizeof(szString) );
         m_ListCtrl.GetItemText( i, COLR_LEVEL_NO, szString, sizeof(szString) );
         strcat_s ( pData->szText, sizeof( pData->szText), szString );
 
-        ZeroMemory ( szString, sizeof(szString) );
-        m_ListCtrl.GetItemText( i, COLR_SLOT, szString, sizeof(szString) );
-        strcat_s ( pData->szText, sizeof( pData->szText), szString );
     }
 
     DWORD       dwData  = col;
@@ -2786,8 +2789,6 @@ void CTRXRemastered456::OnItemclickListctrl(NMHDR *pNMHDR, LRESULT *pResult)
 
     SortItems ( pLV->iItem );
     iSortColumn = pLV->iItem;
-    
-    
 
     *pResult = 0;
 }
@@ -3698,7 +3699,7 @@ void CTRXRemastered456::ShowMap()
 
         //
         CTRXMapAreas dlg;
-        dlg.SetTombraiderLevelIndex ( tombraider, level - 1 );
+        dlg.SetTombraiderLevelIndex ( tombraider * 10, level - 1 );
         dlg.SetClickable ( FALSE );
 
         //

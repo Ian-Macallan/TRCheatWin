@@ -6,22 +6,22 @@
 #ifdef _WIN64
 #ifdef UNICODE
 #define ORIGINAL_FILENAME   L"TRCheatWin (x64 Unicode) (MSVC)\0"
-#define PRODUCT_NAME        L"TRCheatWin - Version 4.6.01.009\r\n(Build 1134) - (x64 Unicode) (MSVC)\0"
+#define PRODUCT_NAME        L"TRCheatWin - Version 4.6.01.010\r\n(Build 1135) - (x64 Unicode) (MSVC)\0"
 #else
 #define ORIGINAL_FILENAME   "TRCheatWin (x64 MBCS) (MSVC)\0"
-#define PRODUCT_NAME        "TRCheatWin - Version 4.6.01.009\r\n(Build 1134) - (x64 MBCS) (MSVC)\0"
+#define PRODUCT_NAME        "TRCheatWin - Version 4.6.01.010\r\n(Build 1135) - (x64 MBCS) (MSVC)\0"
 #endif
 #elif _WIN32
 #ifdef UNICODE
 #define ORIGINAL_FILENAME   L"TRCheatWin (x86 Unicode) (MSVC)\0"
-#define PRODUCT_NAME        L"TRCheatWin - Version 4.6.01.009\r\n(Build 1134) - (x86 Unicode) (MSVC)\0"
+#define PRODUCT_NAME        L"TRCheatWin - Version 4.6.01.010\r\n(Build 1135) - (x86 Unicode) (MSVC)\0"
 #else
 #define ORIGINAL_FILENAME   "TRCheatWin (x86 MBCS) (MSVC)\0"
-#define PRODUCT_NAME        "TRCheatWin - Version 4.6.01.009\r\n(Build 1134) - (x86 MBCS) (MSVC)\0"
+#define PRODUCT_NAME        "TRCheatWin - Version 4.6.01.010\r\n(Build 1135) - (x86 MBCS) (MSVC)\0"
 #endif
 #else
 #define ORIGINAL_FILENAME   "TRCheatWin (MSVC)\0"
-#define PRODUCT_NAME        "TRCheatWin - Version 4.6.01.009\r\n(Build 1134) - (MSVC)\0"
+#define PRODUCT_NAME        "TRCheatWin - Version 4.6.01.010\r\n(Build 1135) - (MSVC)\0"
 #endif
 
 #endif

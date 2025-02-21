@@ -1,6 +1,7 @@
 #pragma once
 
 #include "resource.h"
+#include "TR8SaveGame.h"
 #include "TR9SaveGame.h"
 #include "afxwin.h"
 #include "TRXDialogBase.h"

@@ -102,6 +102,8 @@ void CTRXPosition::DoDataExchange(CDataExchange* pDX)
     DDX_Control(pDX, IDC_RANGES, m_Ranges);
     DDX_Control(pDX, IDC_COPYPOS, m_CopyPos);
     DDX_Control(pDX, IDC_PASTEPOS, m_PastePos);
+    DDX_Control(pDX, IDC_LEFT, m_Left);
+    DDX_Control(pDX, IDC_RIGHT, m_Right);
 }
 
 //
@@ -141,6 +143,11 @@ BOOL CTRXPosition::OnInitDialog()
     //
     if ( m_123 && CTR9SaveGame::I(FALSE) != NULL )
     {
+        //
+        m_Left.SetWindowText ( "North" );
+        m_Right.SetWindowText ( "South" );
+
+        //
         int levelNumber     = CTR9SaveGame::I()->GetBlockLevelNumber ( m_iTombraider, m_iBlock );
         int levelIndex      = levelNumber - 1;
         const char *pLevelName = CTR9SaveGame::GetLevelName ( m_iTombraider, levelNumber );
@@ -381,6 +388,11 @@ BOOL CTRXPosition::OnInitDialog()
     //
     if ( m_456 && CTR8SaveGame::I(FALSE) != NULL )
     {
+        //
+        m_Left.SetWindowText ( "South" );
+        m_Right.SetWindowText ( "North" );
+
+        //
         int levelNumber     = CTR8SaveGame::I()->GetBlockLevelNumber ( m_iTombraider, m_iBlock );
         int levelIndex      = levelNumber - 1;
         const char *pLevelName = CTR8SaveGame::GetLevelName ( m_iTombraider, levelNumber );
@@ -628,7 +640,8 @@ BOOL CTRXPosition::OnInitDialog()
         m_ToolTip.AddTool( &m_AreasList, "List Of All Rooms (Area) for this level");
         m_ToolTip.AddTool( &m_OK, "Validate your changes\r\nBeware the values could be wrong\r\n");
         m_ToolTip.AddTool( &m_Word4_X, "Use Search to find\r\nthe associate ares (room)" );
-        m_ToolTip.AddTool( &m_Word1_D, "Orientation \n(Facing : South=0, East=90, \nNorth=180, West=270)\n" );
+        m_ToolTip.AddTool( &m_Word1_D, 
+            "Orientation \n(For 123 : Facing : South=0, East=90, \nNorth=180, West=270)\n(For 45 : Facing : North=0)\n" );
         m_ToolTip.AddTool( &m_West_East_M, pTools);
         m_ToolTip.AddTool( &m_South_North_M, pTools);
         m_ToolTip.AddTool( &m_Vertical_M, pTools);
