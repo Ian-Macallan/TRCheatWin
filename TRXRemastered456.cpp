@@ -291,9 +291,9 @@ void CTRXRemastered456::DoDataExchange(CDataExchange* pDX)
     DDX_Control(pDX, IDC_COL_CRYSTAL, m_Col_Crystal);
     DDX_Control(pDX, IDC_SET, m_Set);
     DDX_Control(pDX, IDC_SHOW, m_Show);
-    DDX_Control(pDX, IDC_TR1_PLUS, m_TR1_Plus);
-    DDX_Control(pDX, IDC_TR2_PLUS, m_TR2_Plus);
-    DDX_Control(pDX, IDC_TR3_PLUS, m_TR3_Plus);
+    DDX_Control(pDX, IDC_TR4_PLUS, m_TR4_Plus);
+    DDX_Control(pDX, IDC_TR5_PLUS, m_TR5_Plus);
+    DDX_Control(pDX, IDC_TR6_PLUS, m_TR6_Plus);
     DDX_Control(pDX, IDC_GAME_PLUS, m_Game_Plus);
     DDX_Control(pDX, IDC_KILL_WILLARD, m_Kill_Willard);
     DDX_Control(pDX, IDC_SAVE, m_Save_No);
@@ -943,9 +943,9 @@ void CTRXRemastered456::DisplayOne ( int line )
         pGunEntry       = CTR8SaveGame::I()->GetGunAddress ( tombraider, block );
 
         //
-        m_TR1_Plus.SetCheck ( CTR8SaveGame::I()->GetTRPlus ( 4 ) );
-        m_TR2_Plus.SetCheck ( CTR8SaveGame::I()->GetTRPlus ( 5 ) );
-        m_TR3_Plus.SetCheck ( CTR8SaveGame::I()->GetTRPlus ( 6 ) );
+        m_TR4_Plus.SetCheck ( CTR8SaveGame::I()->GetTRPlus ( 4 ) );
+        m_TR5_Plus.SetCheck ( CTR8SaveGame::I()->GetTRPlus ( 5 ) );
+        m_TR6_Plus.SetCheck ( CTR8SaveGame::I()->GetTRPlus ( 6 ) );
 
         //
         if ( pBlockEntry != NULL /* && pGunEntry != NULL */ )
@@ -2495,9 +2495,9 @@ void CTRXRemastered456::UpdateBuffer( )
         pBlockEntry     = CTR8SaveGame::I()->GetSlotAddress( tombraider, block );
         pGunEntry       = CTR8SaveGame::I()->GetGunAddress ( tombraider, block );
 
-        CTR8SaveGame::I()->SetTRPlus ( 1, m_TR1_Plus.GetCheck () );
-        CTR8SaveGame::I()->SetTRPlus ( 2, m_TR2_Plus.GetCheck () );
-        CTR8SaveGame::I()->SetTRPlus ( 3, m_TR3_Plus.GetCheck () );
+        CTR8SaveGame::I()->SetTRPlus ( 4, m_TR4_Plus.GetCheck () );
+        CTR8SaveGame::I()->SetTRPlus ( 5, m_TR5_Plus.GetCheck () );
+        CTR8SaveGame::I()->SetTRPlus ( 6, m_TR6_Plus.GetCheck () );
 
 
         CTR8SaveGame::I()->SetSaveNumber ( tombraider, block, GetValue ( m_Save_No ) );

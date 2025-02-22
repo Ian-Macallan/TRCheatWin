@@ -667,6 +667,9 @@
 #define IDC_ROOM_SEARCH                 1279
 #define IDC_LEFT                        1280
 #define IDC_RIGHT                       1281
+#define IDC_TR4_PLUS                    1282
+#define IDC_TR5_PLUS                    1283
+#define IDC_TR6_PLUS                    1284
 #define ID_MENULIST_EXPORT              32771
 #define ID_MENULIST_IMPORT              32772
 #define ID_MENULIST_DELETE              32773
@@ -709,7 +712,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        308
 #define _APS_NEXT_COMMAND_VALUE         32832
-#define _APS_NEXT_CONTROL_VALUE         1282
+#define _APS_NEXT_CONTROL_VALUE         1285
 #define _APS_NEXT_SYMED_VALUE           127
 #endif
 #endif

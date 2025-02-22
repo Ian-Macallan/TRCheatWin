@@ -734,9 +734,9 @@ BEGIN
     CONTROL         "Reset",IDC_RESETGAME,"Button",BS_OWNERDRAW | WS_TABSTOP,442,38,32,14
     CONTROL         "Reset+",IDC_RESET,"Button",BS_OWNERDRAW | WS_TABSTOP,480,38,32,14
     CONTROL         "",IDC_LISTCTRL,"SysListView32",LVS_REPORT | LVS_SINGLESEL | LVS_SHOWSELALWAYS | WS_BORDER | WS_TABSTOP,7,57,505,82
-    CONTROL         "TR1+",IDC_TR1_PLUS,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,60,142,34,10
-    CONTROL         "TR2+",IDC_TR2_PLUS,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,96,142,34,10
-    CONTROL         "TR3+",IDC_TR3_PLUS,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,132,142,34,10
+    CONTROL         "TR4+",IDC_TR4_PLUS,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,60,142,34,10
+    CONTROL         "TR5+",IDC_TR5_PLUS,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,96,142,34,10
+    CONTROL         "TR6+",IDC_TR6_PLUS,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,132,142,34,10
     LTEXT           "Save :",IDC_STATIC,171,143,59,8,0,WS_EX_RIGHT
     EDITTEXT        IDC_SAVE,239,140,40,14,ES_AUTOHSCROLL
     CONTROL         "Magnum",IDC_MAGNUM,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,161,43,10
@@ -927,8 +927,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 4,6,01,010
- PRODUCTVERSION 4,6,01,010
+ FILEVERSION 4,6,01,012
+ PRODUCTVERSION 4,6,01,012
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x29L
@@ -946,15 +946,15 @@ BEGIN
             VALUE "Comments", "mailto:ian.macallan@gmail.com\0"
             VALUE "CompanyName", "Macallan (c)\0"
             VALUE "FileDescription", "TRCheatWin - (MSVC)\0"
-            VALUE "FileVersion", "4.6.01.010\0"
+            VALUE "FileVersion", "4.6.01.012\0"
             VALUE "InternalName", "https://www.macallan.org/\0"
-            VALUE "LegalCopyright", "Copyright (C) Fri Feb 21 11:27, 2025\0"
+            VALUE "LegalCopyright", "Copyright (C) Sat Feb 22 16:30, 2025\0"
             VALUE "LegalTrademarks", "Author: Ian Macallan\0"
             VALUE "OriginalFilename", ORIGINAL_FILENAME
-            VALUE "PrivateBuild", "1135\0"
+            VALUE "PrivateBuild", "1137\0"
             VALUE "ProductName", PRODUCT_NAME
-            VALUE "ProductVersion", "4.6.01.010\0"
-            VALUE "SpecialBuild", "1135\0"
+            VALUE "ProductVersion", "4.6.01.012\0"
+            VALUE "SpecialBuild", "1137\0"
         END
     END
     BLOCK "VarFileInfo"

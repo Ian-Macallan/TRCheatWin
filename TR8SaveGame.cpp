@@ -252,7 +252,7 @@ static TR_POSITION_RANGE TRR4IndicatorRange [ TR4_LEVELS ] =
     {   0x0100,     0x3000  },      /* 35 Khufu's Queen's Pyramids */
     {   0x0100,     0x3000  },      /* 36 Inside the Great Pyramid */
     {   0x0100,     0x4000  },      /* 37 Temple of Horus */
-    {   0x0100,     0x4000  },      /* 38 Temple of Horus */ 
+    {   0x0100,     0x5000  },      /* 38 Temple of Horus */ 
     {   0x0100,     0x3000  },      /* 39 Office */
     {   0x0100,     0x3000  },      /* 40 Times Exclusive */
 };
@@ -2314,14 +2314,17 @@ DWORD CTR8SaveGame::GetTRPlus ( int tombraider )
     {
         case 4:
         {
+            return m_pBuffer [ TR4_GAME_PLUS ];
             break;
         }
         case 5:
         {
+            return m_pBuffer [ TR5_GAME_PLUS ];
             break;
         }
         case 6:
         {
+            return m_pBuffer [ TR6_GAME_PLUS ];
             break;
         }
     }
@@ -2344,14 +2347,17 @@ void CTR8SaveGame::SetTRPlus ( int tombraider, DWORD value )
     {
         case 4:
         {
+            m_pBuffer [ TR4_GAME_PLUS ] = (BYTE ) ( value & 0xFF );
             break;
         }
         case 5:
         {
+            m_pBuffer [ TR5_GAME_PLUS ] = (BYTE ) ( value & 0xFF );
             break;
         }
         case 6:
         {
+            m_pBuffer [ TR6_GAME_PLUS ] = (BYTE ) ( value & 0xFF );
             break;
         }
     }
@@ -2376,11 +2382,21 @@ BYTE CTR8SaveGame::IsGamePlus ( int tombraider, int block )
         //
         case 4:
         {
+            TABLE_TR4 *pTable      = (TABLE_TR4 *) GetBlockSlot ( tombraider, block );
+            if ( pTable != NULL )
+            {
+                return pTable->m_iPius;
+            }
             break;
         }
         //
         case 5:
         {
+            TABLE_TR5 *pTable      = (TABLE_TR5 *) GetBlockSlot ( tombraider, block );
+            if ( pTable != NULL )
+            {
+                return pTable->m_iPius;
+            }
             break;
         }
 
@@ -2411,11 +2427,21 @@ void CTR8SaveGame::SetGamePlus ( int tombraider, int block, BYTE value )
         //
         case 4:
         {
+            TABLE_TR4 *pTable      = (TABLE_TR4 *) GetBlockSlot ( tombraider, block );
+            if ( pTable != NULL )
+            {
+                pTable->m_iPius = value;
+            }
             break;
         }
         //
         case 5:
         {
+            TABLE_TR5 *pTable      = (TABLE_TR5 *) GetBlockSlot ( tombraider, block );
+            if ( pTable != NULL )
+            {
+                pTable->m_iPius = value;
+            }
             break;
         }
 

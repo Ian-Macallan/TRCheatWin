@@ -271,6 +271,13 @@ struct TABLE_TR4
             BYTE        unknown06 [  0x00C4E8 - 0x00c470 ];
             BYTE        m_iLara;
         };
+
+        struct
+        {
+            BYTE        unknown07 [  0x1C ];
+            BYTE        m_iPius;
+        };
+
     };
 
 };
@@ -427,6 +434,13 @@ struct TABLE_TR5
             BYTE        unknown06 [  0x14AE78 - 0x14AE00 ];
             BYTE        m_iLara;
         };
+
+        struct
+        {
+            BYTE        unknown07 [  0x1C ];
+            BYTE        m_iPius;
+        };
+
     };
 };
 
@@ -440,6 +454,21 @@ struct GUN_TR6
 struct TABLE_TR6
 {
 
+};
+
+//  0x0014B038 - 0x0014AE00
+struct TABLE_TR5_STATS
+{
+    WORD        ammosUsed;
+    WORD        unk1;
+
+    //
+    WORD        unk2;
+    WORD        unk3;
+    WORD        pickups;
+    WORD        unk4;
+    WORD        kills;
+    WORD        unk5;
 };
 
 //  Starts at 0x2000
@@ -537,6 +566,10 @@ struct TR8_POSITION
     BYTE    unknown4;
     WORD    health;             //  0012
 };
+
+#define TR4_GAME_PLUS       0x0001A4
+#define TR5_GAME_PLUS       0x0001A8
+#define TR6_GAME_PLUS       0x0001AC
 
 #pragma pack(pop, pack1)
 

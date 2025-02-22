@@ -119,9 +119,9 @@ class CTRXRemastered456 : public CTRXPropertyPage456
         CTRXButtonBase m_Set;
 
         CTRXButtonBase m_Show;
-        CTRXButtonBase m_TR1_Plus;
-        CTRXButtonBase m_TR2_Plus;
-        CTRXButtonBase m_TR3_Plus;
+        CTRXButtonBase m_TR4_Plus;
+        CTRXButtonBase m_TR5_Plus;
+        CTRXButtonBase m_TR6_Plus;
         CTRXButtonBase m_Game_Plus;
 
         CTRXButtonBase m_Kill_Willard;
