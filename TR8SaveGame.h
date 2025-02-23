@@ -26,72 +26,6 @@
 #define TR6_SLOT_LENGTH     TR456_SLOT_LENGTH
 
 //
-//  00000001
-#define TRR4_GUN_SET1       0x01
-//  00000100
-#define TRR4_GUN_SET4       0x04
-//  00001000
-#define TRR4_GUN_SET8       0x08
-//  00001001
-#define TRR4_GUN_SET        (TRR4_GUN_SET1|TRR4_GUN_SET8)
-//  00001101
-#define TRR4_GUN_MASK       (TRR4_GUN_SET1|TRR4_GUN_SET4|TRR4_GUN_SET8)
-
-//    iMaskGun            = TRR4_GUN_SET1 | TRR4_GUN_SET8;        //  Pistol
-//    iMaskUzi            = TRR4_GUN_SET1;
-//    iMaskRiotGun        = TRR4_GUN_SET1 | TRR4_GUN_SET8;
-//    iMaskCrossBow       = TRR4_GUN_SET1 | TRR4_GUN_SET8;        // Crossbow
-//    iMaskGrenade        = TRR4_GUN_SET1 | TRR4_GUN_SET8;
-//    iMaskRevolver       = TRR4_GUN_SET1;                        // Revolver
-//    iMaskLaser          = TRR4_GUN_SET1;
-//    iMaskBinocular      = TRR4_GUN_SET1;
-//    iMaskCrowBar        = TRR4_GUN_SET1;
-
-#define TRR4_MASK_PISTOL    TRR4_GUN_SET
-#define TRR4_MASK_UZI       TRR4_GUN_SET1
-#define TRR4_MASK_RIOTGUN   TRR4_GUN_SET
-#define TRR4_MASK_CROSSBOW  TRR4_GUN_SET
-#define TRR4_MASK_GRENADE   TRR4_GUN_SET
-#define TRR4_MASK_MAGNUM    TRR4_GUN_SET
-#define TRR4_MASK_LASER     TRR4_GUN_SET1
-#define TRR4_MASK_BINOCULAR TRR4_GUN_SET1
-#define TRR4_MASK_CROWBAR   TRR4_GUN_SET1
-
-
-//  00000001
-#define TRR5_GUN_SET1       0x01    
-//  00000100
-#define TRR5_GUN_SET4       0x04
-//  00001000
-#define TRR5_GUN_SET8       0x08
-//  00001100
-#define TRR5_GUN_SETC       0x0C
-//  00001001
-#define TRR5_GUN_SET        (TRR5_GUN_SET1|TRR5_GUN_SET8)
-//  00001101
-#define TRR5_GUN_MASK       (TRR5_GUN_SET1|TRR5_GUN_SET4|TRR5_GUN_SET8|TRR5_GUN_SETC)
-
-//    iMaskPistol         = TRR5_GUN_SET1 | TRR5_GUN_SET8;        //  Pistol
-//    iMaskUzi            = TRR5_GUN_SET1 | TRR5_GUN_SET8;
-//    iMaskRiotGun        = TRR5_GUN_SET1 | TRR5_GUN_SET8;
-//    iMaskHK             = TRR5_GUN_SET1 | TRR5_GUN_SET8;
-//    iMaskDesertEagle    = TRR5_GUN_SET1 | TRR5_GUN_SETC;        // Revolver
-//    iMaskLaser          = TRR5_GUN_SET1;
-//    iMaskBinocular      = TRR5_GUN_SET1;
-//    iMaskHeadSet        = TRR5_GUN_SET1;
-//    iMaskRevolver       = TRR5_GUN_SET1 | TRR5_GUN_SETC;
-
-#define TRR5_MASK_PISTOL    (TRR5_GUN_SET1|TRR5_GUN_SET8)
-#define TRR5_MASK_UZI       (TRR5_GUN_SET1|TRR5_GUN_SET8)
-#define TRR5_MASK_RIOTGUN   (TRR5_GUN_SET1|TRR5_GUN_SET8)
-#define TRR5_MASK_HK        TRR5_GUN_SET1
-#define TRR5_MASK_GRAP      (TRR5_GUN_SET1|TRR5_GUN_SETC)
-#define TRR5_MASK_LASER     TRR5_GUN_SET1
-#define TRR5_MASK_BINOCULAR TRR5_GUN_SET1
-#define TRR5_MASK_CROWBAR   TRR5_GUN_SET1
-#define TRR5_MASK_REVOLVER  (TRR5_GUN_SET1|TRR5_GUN_SETC)
-
-
 #define TRR4_STATE_OFFSET   (0x226C-0x2194)
 
 #pragma pack(push, pack1, 1)
@@ -382,7 +316,7 @@ struct TABLE_TR5
             BYTE        unknown02 [ 0x14AFBE - 0x14AE00 ];
 
             //  0x194
-            WORD         m_iSmallMedipak;
+            WORD        m_iSmallMedipak;
 
             //  0x196
             WORD        m_iLargeMedipak;
@@ -409,12 +343,15 @@ struct TABLE_TR5
             WORD        m_iHKAmmos;
 
             //  0x1A6
+            WORD        unknown03 [ 3 ];
+
+            //  0x1A6
             WORD        m_iGrapplingAmmos;
         };
 
         struct
         {
-            BYTE        unknown03 [  0x14B06F - 0x14AE00 ];
+            BYTE        unknown04 [  0x14B06F - 0x14AE00 ];
 
             //      0x00C66C
             BYTE        m_cLevel;
@@ -423,25 +360,25 @@ struct TABLE_TR5
 
         struct
         {
-            BYTE        unknown04 [  0x14AF94 - 0x14AE00 ];
+            BYTE        unknown05 [  0x14AF94 - 0x14AE00 ];
             GUN_TR5     m_GunTR5;
         };
 
         struct
         {
-            BYTE        unknown05 [  0x14AE4A - 0x14AE00 ];
+            BYTE        unknown06 [  0x14AE4A - 0x14AE00 ];
             WORD        m_iAir;
         };
 
         struct
         {
-            BYTE        unknown06 [  0x14AE78 - 0x14AE00 ];
+            BYTE        unknown07 [  0x14AE78 - 0x14AE00 ];
             BYTE        m_iLara;
         };
 
         struct
         {
-            BYTE        unknown07 [  0x1C ];
+            BYTE        unknown08 [  0x1C ];
             BYTE        m_iPius;
         };
 
@@ -627,6 +564,48 @@ class CTR8SaveGame : public CObject
         void Init( bool bFromContructor = false );
 
         //  Each block contains 31 structures for save position
+
+    public :
+#define TRR4_MASK_PISTOL    TRR4_GUN_SET
+#define TRR4_MASK_UZI       TRR4_GUN_SET1
+#define TRR4_MASK_RIOTGUN   TRR4_GUN_SET
+#define TRR4_MASK_CROSSBOW  TRR4_GUN_SET
+#define TRR4_MASK_GRENADE   TRR4_GUN_SET
+#define TRR4_MASK_MAGNUM    TRR4_GUN_SET
+#define TRR4_MASK_LASER     TRR4_GUN_SET1
+#define TRR4_MASK_BINOCULAR TRR4_GUN_SET1
+#define TRR4_MASK_CROWBAR   TRR4_GUN_SET1
+
+        static BYTE m_TR4MaskPistol;
+        static BYTE m_TR4MaskUzi;
+        static BYTE m_TR4MaskShotgun;
+        static BYTE m_TR4MaskCrossbow;
+        static BYTE m_TR4MaskGrenade;
+        static BYTE m_TR4MaskRevolver;
+        static BYTE m_TR4MaskLaser;
+        static BYTE m_TR4MaskBinocular;
+        static BYTE m_TR4MaskCrowbar;
+
+#define TRR5_MASK_PISTOL    (TRR5_GUN_SET1|TRR5_GUN_SET8)
+#define TRR5_MASK_UZI       (TRR5_GUN_SET1|TRR5_GUN_SET8)
+#define TRR5_MASK_RIOTGUN   (TRR5_GUN_SET1|TRR5_GUN_SET8)
+#define TRR5_MASK_HK        TRR5_GUN_SET1
+#define TRR5_MASK_REVOLVER  (TRR5_GUN_SET1|TRR5_GUN_SETC)
+#define TRR5_MASK_GRAP      (TRR5_GUN_SET1|TRR5_GUN_SETC)
+#define TRR5_MASK_LASER     TRR5_GUN_SET1
+#define TRR5_MASK_BINOCULAR TRR5_GUN_SET1
+#define TRR5_MASK_CROWBAR   TRR5_GUN_SET1
+
+
+        static BYTE m_TR5MaskPistol;
+        static BYTE m_TR5MaskUzi;
+        static BYTE m_TR5MaskShotgun;
+        static BYTE m_TR5MaskHK;
+        static BYTE m_TR5MaskRevolver;
+        static BYTE m_TR5MaskGrap;
+        static BYTE m_TR5MaskLaser;
+        static BYTE m_TR5MaskBinocular;
+        static BYTE m_TR5MaskCrowbar;
 
     protected :
         static char *m_TR4_Start;

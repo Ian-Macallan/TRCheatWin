@@ -1028,13 +1028,13 @@ void CTRXRemastered456::DisplayOne ( int line )
                     //
                     if ( pGun != NULL )
                     {
-                        SET_BLOCK_CHECK ( m_Guns, m_gunPistol, TRR4_GUN_SET );
+                        SET_BLOCK_CHECK ( m_Guns, m_gunPistol, CTR8SaveGame::m_TR4MaskPistol );
 
-                        SET_BLOCK_CHECK ( m_Magnum, m_gunRevolver, TRR4_GUN_SET );
-                        SET_BLOCK_CHECK ( m_Uzi, m_gunUzis, TRR4_GUN_SET );
-                        SET_BLOCK_CHECK ( m_Riotgun, m_gunRiotGun, TRR4_GUN_SET );
-                        SET_BLOCK_CHECK ( m_Grenade, m_gunGrenadesLauncher, TRR4_GUN_SET );
-                        SET_BLOCK_CHECK ( m_Harpoon, m_gunCrossBow, TRR4_GUN_SET );
+                        SET_BLOCK_CHECK ( m_Magnum, m_gunRevolver, CTR8SaveGame::m_TR4MaskRevolver );
+                        SET_BLOCK_CHECK ( m_Uzi, m_gunUzis, CTR8SaveGame::m_TR4MaskUzi );
+                        SET_BLOCK_CHECK ( m_Riotgun, m_gunRiotGun, CTR8SaveGame::m_TR4MaskShotgun );
+                        SET_BLOCK_CHECK ( m_Grenade, m_gunGrenadesLauncher, CTR8SaveGame::m_TR4MaskGrenade );
+                        SET_BLOCK_CHECK ( m_Harpoon, m_gunCrossBow, CTR8SaveGame::m_TR4MaskCrossbow );
                     }
 
                     // SET_BLOCK_HIDE ( m_Grenade );
@@ -1187,29 +1187,29 @@ void CTRXRemastered456::DisplayOne ( int line )
                     SET_BLOCK_UNITS(m_M16_Clip,m_iHKAmmos,M16_CLIP);
 
                     //  Grenade Used as Grapling
-                    SET_BLOCK_VALUE(m_AGrenade,m_iGrapplingAmmos);
-                    SET_GUN_VALUE(m_XGrenade,m_gunGrappling);
+                    SET_BLOCK_VALUE(m_AHarpoon,m_iGrapplingAmmos);
+                    SET_GUN_VALUE(m_XHarpoon,m_gunGrappling);
 
                     SET_BLOCK_HIDE(m_ARocket);
                     SET_GUN_HIDE(m_XRocket);
 
-                    SET_BLOCK_HIDE(m_AHarpoon);
-                    SET_GUN_HIDE(m_XHarpoon);
+                    SET_BLOCK_HIDE(m_AGrenade);
+                    SET_GUN_HIDE(m_XGrenade);
 
                     //
                     if ( pGun != NULL )
                     {
-                        SET_BLOCK_CHECK ( m_Guns, m_gunPistol, TRR5_GUN_SET );
+                        SET_BLOCK_CHECK ( m_Guns, m_gunPistol, CTR8SaveGame::m_TR5MaskPistol );          //  0x09
 
-                        SET_BLOCK_CHECK ( m_Uzi, m_gunUzis, TRR5_GUN_SET );
-                        SET_BLOCK_CHECK ( m_Riotgun, m_gunRiotGun, TRR5_GUN_SET );
-                        SET_BLOCK_CHECK ( m_Grenade, m_gunGrappling, TRR5_GUN_SET );
-                        SET_BLOCK_CHECK ( m_M16, m_gunHK, TRR5_GUN_SET );
-                        SET_BLOCK_CHECK ( m_Magnum, m_gunRevolver, TRR5_GUN_SET );
+                        SET_BLOCK_CHECK ( m_Uzi, m_gunUzis, CTR8SaveGame::m_TR5MaskUzi );             //  0x09
+                        SET_BLOCK_CHECK ( m_Riotgun, m_gunRiotGun, CTR8SaveGame::m_TR5MaskShotgun );      //  0x09
+                        SET_BLOCK_CHECK ( m_Harpoon, m_gunGrappling, CTR8SaveGame::m_TR5MaskGrap );    //  0x09
+                        SET_BLOCK_CHECK ( m_M16, m_gunHK, CTR8SaveGame::m_TR5MaskHK );              //  0x01
+                        SET_BLOCK_CHECK ( m_Magnum, m_gunRevolver, CTR8SaveGame::m_TR5MaskRevolver );      //  0x09
                     }
                      
                     SET_BLOCK_HIDE ( m_Rocket );
-                    SET_BLOCK_HIDE ( m_Harpoon );
+                    SET_BLOCK_HIDE ( m_Grenade );
 
                     //
                     SET_GUN_VALUE ( m_Binocular, m_gunBinocular );
