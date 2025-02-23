@@ -953,6 +953,11 @@ BOOL CTRXCHEATWINApp::InitInstance()
                     CTRXGlobal::m_ForceSaveGame = FORCE_TRR123;
                     strcpy_s ( MainWindowsTitle, sizeof(MainWindowsTitle), "Tombraider 123 Remastered Cheat Program" );
                 }
+                else if ( _strnicmp ( pGame, "TRR456", strlen("TRR456") ) == 0 )
+                {
+                    CTRXGlobal::m_ForceSaveGame = FORCE_TRR456;
+                    strcpy_s ( MainWindowsTitle, sizeof(MainWindowsTitle), "Tombraider 456 Remastered Cheat Program" );
+                }
                 else
                 {
                     CTRXGlobal::m_ForceSaveGame = FORCE_NONE;
@@ -981,6 +986,19 @@ BOOL CTRXCHEATWINApp::InitInstance()
                     case FORCE_TRR123 :
                     {
                         CTRXPropertySheetRemastered dlg ( MainWindowsTitle );
+                        dlg.SetApply ( TRUE );
+                        if ( strlen(szFullPathname) > 0 )
+                        {
+                            dlg.SetParmPathname ( szFullPathname );
+                        }
+                        m_pMainWnd = &dlg;
+                        nResponse = dlg.DoModal();
+                        break;
+                    }
+                    //
+                    case FORCE_TRR456 :
+                    {
+                        CTRXPropertySheetRemastered456 dlg ( MainWindowsTitle );
                         dlg.SetApply ( TRUE );
                         if ( strlen(szFullPathname) > 0 )
                         {
@@ -1379,6 +1397,14 @@ BOOL CTRXCHEATWINApp::InitInstance()
                     if ( dwSize == TR123LEVELSIZE )
                     {
                         CTRXPropertySheetRemastered dlg ( TRR_PROGRAM );
+                        dlg.SetApply ( TRUE );
+                        dlg.SetParmPathname ( szFullPathname );
+                        m_pMainWnd = &dlg;
+                        nResponse = dlg.DoModal();
+                    }
+                    else if ( dwSize == TR456LEVELSIZE )
+                    {
+                        CTRXPropertySheetRemastered456 dlg ( TRR_PROGRAM );
                         dlg.SetApply ( TRUE );
                         dlg.SetParmPathname ( szFullPathname );
                         m_pMainWnd = &dlg;

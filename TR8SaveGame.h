@@ -310,15 +310,19 @@ struct GUN_TR5
     BYTE        m_gunLaserLight;    //  7
 
     //  0x176 : 01
-    BYTE        m_gunBinocular;     //  8
+    union
+    {
+        BYTE        m_gunBinocular;     //  8
+        //  0x177 : 01
+        BYTE        m_gunHeadSet;       //  9
+    };
 
     //
     BYTE        m_gunCrowBar;
 
-    //  0x177 : 01
-    BYTE        m_gunHeadSet;       //  9
-
+    //
     BYTE        m_Unknown03;
+    BYTE        m_Unknown04;
 
     //  0x178
     union

@@ -30,6 +30,7 @@ enum ForceGame
     FORCE_TR4NG,
     FORCE_TR5,
     FORCE_TRR123,
+    FORCE_TRR456,
 };
 
 //

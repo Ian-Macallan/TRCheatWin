@@ -812,7 +812,6 @@ BEGIN
     CONTROL         "Binocular",IDC_BINOCULAR,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,455,161,45,10
     CONTROL         "Laser",IDC_LASER,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,455,179,33,10
     CONTROL         "Crowbar",IDC_CROWBAR,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,455,198,42,10
-    CONTROL         "Head Set",IDC_HEADSET,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,455,215,46,10
     CONTROL         "Log",IDC_JOURNAL,"Button",BS_OWNERDRAW | WS_TABSTOP,425,266,32,14
     GROUPBOX        "Position",IDC_FRAME_POSITION,281,175,55,32
     LTEXT           "Pos Label",IDC_POS_LABEL,325,233,45,8
@@ -927,8 +926,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 4,6,02,005
- PRODUCTVERSION 4,6,02,005
+ FILEVERSION 4,6,02,006
+ PRODUCTVERSION 4,6,02,006
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x29L
@@ -946,15 +945,15 @@ BEGIN
             VALUE "Comments", "mailto:ian.macallan@gmail.com\0"
             VALUE "CompanyName", "Macallan (c)\0"
             VALUE "FileDescription", "TRCheatWin - (MSVC)\0"
-            VALUE "FileVersion", "4.6.02.005\0"
+            VALUE "FileVersion", "4.6.02.006\0"
             VALUE "InternalName", "https://www.macallan.org/\0"
-            VALUE "LegalCopyright", "Copyright (C) Sun Feb 23 11:05, 2025\0"
+            VALUE "LegalCopyright", "Copyright (C) Sun Feb 23 13:16, 2025\0"
             VALUE "LegalTrademarks", "Author: Ian Macallan\0"
             VALUE "OriginalFilename", ORIGINAL_FILENAME
-            VALUE "PrivateBuild", "1142\0"
+            VALUE "PrivateBuild", "1143\0"
             VALUE "ProductName", PRODUCT_NAME
-            VALUE "ProductVersion", "4.6.02.005\0"
-            VALUE "SpecialBuild", "1142\0"
+            VALUE "ProductVersion", "4.6.02.006\0"
+            VALUE "SpecialBuild", "1143\0"
         END
     END
     BLOCK "VarFileInfo"

@@ -315,7 +315,6 @@ void CTRXRemastered456::DoDataExchange(CDataExchange* pDX)
     DDX_Control(pDX, IDC_BINOCULAR, m_Binocular);
     DDX_Control(pDX, IDC_LASER, m_Laser);
     DDX_Control(pDX, IDC_CROWBAR, m_Crowbar);
-    DDX_Control(pDX, IDC_HEADSET, m_HeadSet);
 }
 
 //
@@ -893,7 +892,6 @@ void CTRXRemastered456::Enable ( int tombraider, int level )
     m_Binocular.EnableWindow ( tombraider != 6 );
     m_Laser.EnableWindow ( tombraider != 6 );
     m_Crowbar.EnableWindow ( tombraider != 6 );
-    m_HeadSet.EnableWindow ( tombraider == 5 );
 
 }
 
@@ -1048,9 +1046,8 @@ void CTRXRemastered456::DisplayOne ( int line )
                     SET_GUN_VALUE ( m_Binocular, m_gunBinocular );
                     SET_GUN_VALUE ( m_Laser, m_gunLaserLight );
                     SET_GUN_VALUE ( m_Crowbar, m_gunCrowBar );
-                    // SET_GUN_VALUE ( m_HeadSet, m_gunHeadSet);
 
-
+                    //
                     SetBlockObjectOnDisplay ( tombraider, block, -1 );
 
                     //
@@ -1218,7 +1215,6 @@ void CTRXRemastered456::DisplayOne ( int line )
                     SET_GUN_VALUE ( m_Binocular, m_gunBinocular );
                     SET_GUN_VALUE ( m_Laser, m_gunLaserLight );
                     SET_GUN_VALUE ( m_Crowbar, m_gunCrowBar );
-                    SET_GUN_VALUE ( m_HeadSet, m_gunHeadSet);
 
                     //
                     SetBlockObjectOnDisplay ( tombraider, block, -1 );
@@ -1394,12 +1390,10 @@ void CTRXRemastered456::DisplayOne ( int line )
     m_Binocular.EnableWindow ( FALSE );
     m_Laser.EnableWindow ( FALSE );
     m_Crowbar.EnableWindow ( FALSE );
-    m_HeadSet.EnableWindow ( FALSE );
 
     SetValue ( m_Binocular, 0, FALSE );
     SetValue ( m_Laser, 0, FALSE );
     SetValue ( m_Crowbar, 0, FALSE );
-    SetValue ( m_HeadSet, 0, FALSE );
 
     //
     m_Secrets_A.EnableWindow ( FALSE );
@@ -2549,7 +2543,6 @@ void CTRXRemastered456::UpdateBuffer( )
                     CTR8SaveGame::I()->SetBinocular ( tombraider, block, m_Binocular.GetCheck() );
                     CTR8SaveGame::I()->SetLaser ( tombraider, block, m_Laser.GetCheck() );
                     CTR8SaveGame::I()->SetCrowbar ( tombraider, block, m_Crowbar.GetCheck() );
-                    // CTR8SaveGame::I()->SetHeadSet ( tombraider, block, m_Binocular.GetCheck() );
 
                     break;
                 }
@@ -2573,7 +2566,6 @@ void CTRXRemastered456::UpdateBuffer( )
                     CTR8SaveGame::I()->SetBinocular ( tombraider, block, m_Binocular.GetCheck() );
                     CTR8SaveGame::I()->SetLaser ( tombraider, block, m_Laser.GetCheck() );
                     CTR8SaveGame::I()->SetCrowbar ( tombraider, block, m_Crowbar.GetCheck() );
-                    CTR8SaveGame::I()->SetHeadSet ( tombraider, block, m_HeadSet.GetCheck() );
 
                     break;
                 }
