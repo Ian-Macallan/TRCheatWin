@@ -2105,7 +2105,7 @@ void CTRXRemastered456::DisplayListFull ( bool bShort )
             sprintf_s  ( szString, sizeof(szString), "%02d", level );
             m_ListCtrl.SetItemText ( position, COLR_LEVEL_NO, szString);
 
-            strcpy_s ( szString, sizeof(szString), CTR8SaveGame::GetLevelName ( tombraider, level ) );
+            strcpy_s ( szString, sizeof(szString), CTR8SaveGame::GetLevelName ( tombraider, 0, block ) );
             if (  CTR8SaveGame::I()->IsGamePlus ( tombraider, block  ) )
             {
                 strcat_s ( szString, sizeof(szString), "+" );

@@ -466,16 +466,17 @@ struct TABLE_TR6
             char        m_tomb [ 4 ];     // TOMB
 
             //  Word
-            WORD        m_iLevel;
-
+            DWORD       unknown03 [ 3 ];
+            BYTE        m_cLevels [ 2 ];
         };
 
         struct
         {
             //  
-            BYTE        unknown03 [ 0XE190 - 0xE070 - 0x04 ];
-            DWORD       m_iLevelAgain;
-            DWORD       unknown04;
+            BYTE        unknown10 [ 0XE190 - 0xE070 - 0x04 ];
+            WORD        savenumber;
+            WORD        unknown11;
+            DWORD       unknown12;
             char        m_szLevelName [ 64 ];
         };
     };
@@ -756,7 +757,7 @@ class CTR8SaveGame : public CObject
         int countTag ( int tombraider, int block );
 
         //  Get Level Number from 1 to 25...
-        BYTE GetBlockLevelNumber ( int tombraider, int block );
+        WORD GetBlockLevelNumber ( int tombraider, int block );
         const char *GetBlockElapsed ( int tombraider, int block );
         const char *GetBlockDistance ( int tombraider, int block );
 
