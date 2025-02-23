@@ -450,10 +450,35 @@ struct GUN_TR6
 
 };
 
-//
+//  First Slot  0x293C00
+//  Second Slot 0x29E070
 struct TABLE_TR6
 {
+    //
+    union
+    {
+        struct
+        {
+            //  
+            DWORD       unknown02 [ 1 ];
 
+            //
+            char        m_tomb [ 4 ];     // TOMB
+
+            //  Word
+            WORD        m_iLevel;
+
+        };
+
+        struct
+        {
+            //  
+            BYTE        unknown03 [ 0XE190 - 0xE070 - 0x04 ];
+            DWORD       m_iLevelAgain;
+            DWORD       unknown04;
+            char        m_szLevelName [ 64 ];
+        };
+    };
 };
 
 //  0x0014B038 - 0x0014AE00
@@ -906,7 +931,7 @@ class CTR8SaveGame : public CObject
         static WORD GetCrystalsForLevel ( int tombraider, int levelIndex );
 
         //  From 1 to 32
-        static const char *GetLevelName ( int tombraider, int level );
+        static const char *GetLevelName ( int tombraider, int level, int block = 0 );
         static int GetLevelCount ( int tombraider );
 
         static const char *GetIndicatorFileType()

@@ -890,9 +890,9 @@ void CTRXRemastered456::Enable ( int tombraider, int level )
     m_ARocket.EnableWindow ( CTRXTools::IsEnableRocket ( tombraider, level ) );
 
     //
-    m_Binocular.EnableWindow ( TRUE );
-    m_Laser.EnableWindow ( TRUE );
-    m_Crowbar.EnableWindow ( TRUE );
+    m_Binocular.EnableWindow ( tombraider != 6 );
+    m_Laser.EnableWindow ( tombraider != 6 );
+    m_Crowbar.EnableWindow ( tombraider != 6 );
     m_HeadSet.EnableWindow ( tombraider == 5 );
 
 }
@@ -931,9 +931,16 @@ void CTRXRemastered456::DisplayOne ( int line )
         int slotFound           = -1;
 
         //
-        const char *pLevelName = CTR8SaveGame::GetLevelName ( tombraider, CTR8SaveGame::I()->GetBlockLevelNumber (  tombraider, block ) );
-        m_Status.SetWindowText ( pLevelName );
-
+        if ( tombraider == 4 || tombraider == 5 )
+        {
+            const char *pLevelName = CTR8SaveGame::GetLevelName ( tombraider, CTR8SaveGame::I()->GetBlockLevelNumber (  tombraider, block ) );
+            m_Status.SetWindowText ( pLevelName );
+        }
+        else if ( tombraider == 6 )
+        {
+            const char *pLevelName = CTR8SaveGame::GetLevelName ( tombraider, 0, block );
+            m_Status.SetWindowText ( pLevelName );
+        }
         //
 
         //
@@ -1313,6 +1320,7 @@ void CTRXRemastered456::DisplayOne ( int line )
                 //
                 case 6:
                 {
+                    //  Nothing to Update : let disable 
                     break;
                 }
             }
@@ -1381,6 +1389,17 @@ void CTRXRemastered456::DisplayOne ( int line )
     m_Pickup_Max.SetWindowText ( "" );
     m_Crystal_Max.SetWindowText ( "" );
     m_Kill_Max.SetWindowText ( "" );
+
+    //
+    m_Binocular.EnableWindow ( FALSE );
+    m_Laser.EnableWindow ( FALSE );
+    m_Crowbar.EnableWindow ( FALSE );
+    m_HeadSet.EnableWindow ( FALSE );
+
+    SetValue ( m_Binocular, 0, FALSE );
+    SetValue ( m_Laser, 0, FALSE );
+    SetValue ( m_Crowbar, 0, FALSE );
+    SetValue ( m_HeadSet, 0, FALSE );
 
     //
     m_Secrets_A.EnableWindow ( FALSE );
@@ -1782,7 +1801,7 @@ void CTRXRemastered456::DisplayListBrief ( )
             sprintf_s  ( szString, sizeof(szString), "%02d", level );
             m_ListCtrl.SetItemText ( position, COLR_LEVEL_NO, szString);
 
-            strcpy_s ( szString, sizeof(szString), CTR8SaveGame::GetLevelName ( tombraider, level ) );
+            strcpy_s ( szString, sizeof(szString), CTR8SaveGame::GetLevelName ( tombraider, 0, block ) );
             if (  CTR8SaveGame::I()->IsGamePlus ( tombraider, block  ) )
             {
                 strcat_s ( szString, sizeof(szString), "+" );

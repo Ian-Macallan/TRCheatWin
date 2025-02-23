@@ -301,6 +301,9 @@ int     CTR8SaveGame::m_iSaveLength         = 0;
 BOOL TraceMode456                           = FALSE;
 
 //
+static WORD TR6SaveNumber = 0;
+
+//
 /////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////
@@ -826,7 +829,7 @@ BOOL CTR8SaveGame::Load ( )
 
             m_TR4_Guns [ i ] = &pSaveGame->trr4s.trr4 [ i ].table.m_GunTR4;
             m_TR5_Guns [ i ] = &pSaveGame->trr5s.trr5 [ i ].table.m_GunTR5;
-            // m_TR6_Guns [ i ] = &pSaveGame->trr6s.trr6 [ i ].table.m_GunTR6;
+            m_TR6_Guns [ i ] = NULL; // &pSaveGame->trr6s.trr6 [ i ].table.m_GunTR6;
         }
     }
 
@@ -900,7 +903,13 @@ BYTE CTR8SaveGame::GetBlockLevelNumber ( int tombraider, int block )
         }
 
         //
-        if ( tombraider == 5 )
+        else if ( tombraider == 5 )
+        {
+            return *levelAddress;
+        }
+
+        //
+        else if ( tombraider == 6 )
         {
             return *levelAddress;
         }
@@ -1544,6 +1553,12 @@ WORD *CTR8SaveGame::GetSaveAddress ( int tombraider, int block )
         }
         case 6:
         {
+            TABLE_TR6 *pBlock = (TABLE_TR6 *)GetSlotAddress ( tombraider, block );
+            if ( pBlock )
+            {
+                TR6SaveNumber = block + 1;
+                return &TR6SaveNumber;
+            }
             break;
         }
     }
@@ -1857,6 +1872,11 @@ BYTE *CTR8SaveGame::GetBlockLevelAddress ( int tombraider, int block )
         //
         case 6:
         {
+            TABLE_TR6 *pBlock = (TABLE_TR6 *) GetSlotAddress ( tombraider, block );
+            if ( pBlock )
+            {
+                return (BYTE*) &pBlock->m_iLevel;
+            }
             break;
         }
     }
@@ -2253,7 +2273,7 @@ int CTR8SaveGame::countTag ( int tombraider, int block )
 /////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////
-const char *CTR8SaveGame::GetLevelName ( int tombraider, int level )
+const char *CTR8SaveGame::GetLevelName ( int tombraider, int level, int block )
 {
     switch ( tombraider )
     {
@@ -2275,6 +2295,14 @@ const char *CTR8SaveGame::GetLevelName ( int tombraider, int level )
         }
         case 6:
         {
+            if ( block > 0 )
+            {
+                TABLE_TR6 *pBlock = (TABLE_TR6 *) GetSlotAddress ( tombraider, block );
+                if ( pBlock )
+                {
+                    return pBlock->m_szLevelName;
+                }
+            }
             break;
         }
     }
