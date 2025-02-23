@@ -920,6 +920,7 @@ WORD CTR8SaveGame::GetBlockLevelNumber ( int tombraider, int block )
 
             //
             int iLevel = levelAddress [ 1 ] + levelAddress [ 0 ] * 100;
+            iLevel = levelAddress [ 0 ] + 1;
 
             //  Some case where level not found
             if ( iLevel == 0 )
