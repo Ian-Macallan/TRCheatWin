@@ -1276,7 +1276,7 @@ const char *CTRXDifferences::GetLabel ( unsigned offset )
                         }
                         else if (  Match1ByteOffset ( offsetof(GUN_TR4,m_gunRevolver), offsetInGuns ) )
                         {
-                            strcat_s ( szLabel, sizeof(szLabel), " - Gun Magnum" );
+                            strcat_s ( szLabel, sizeof(szLabel), " - Gun Revolver" );
                             bFound = true;
                         }
                         else if (  Match1ByteOffset ( offsetof(GUN_TR4,m_gunUzis), offsetInGuns ) )
@@ -1287,6 +1287,26 @@ const char *CTRXDifferences::GetLabel ( unsigned offset )
                         else if (  Match1ByteOffset ( offsetof(GUN_TR4,m_gunRiotGun), offsetInGuns ) )
                         {
                             strcat_s ( szLabel, sizeof(szLabel), " - Gun Riot" );
+                            bFound = true;
+                        }
+                        else if (  Match1ByteOffset ( offsetof(GUN_TR4,m_gunCrossBow), offsetInGuns ) )
+                        {
+                            strcat_s ( szLabel, sizeof(szLabel), " - Gun CrossBow" );
+                            bFound = true;
+                        }
+                        else if (  Match1ByteOffset ( offsetof(GUN_TR4,m_gunBinocular), offsetInGuns ) )
+                        {
+                            strcat_s ( szLabel, sizeof(szLabel), " - Gun Binocular" );
+                            bFound = true;
+                        }
+                        else if (  Match1ByteOffset ( offsetof(GUN_TR4,m_gunLaserLight), offsetInGuns ) )
+                        {
+                            strcat_s ( szLabel, sizeof(szLabel), " - Gun LaserLight" );
+                            bFound = true;
+                        }
+                        else if (  Match1ByteOffset ( offsetof(GUN_TR4,m_gunCrowBar), offsetInGuns ) )
+                        {
+                            strcat_s ( szLabel, sizeof(szLabel), " - Gun CrowBar" );
                             bFound = true;
                         }
                         else
@@ -1432,7 +1452,7 @@ const char *CTRXDifferences::GetLabel ( unsigned offset )
                         }
                         else if (  Match1ByteOffset ( offsetof(GUN_TR5,m_gunRevolver), offsetInGuns ) )
                         {
-                            strcat_s ( szLabel, sizeof(szLabel), " - Gun Magnum" );
+                            strcat_s ( szLabel, sizeof(szLabel), " - Gun Revolver" );
                             bFound = true;
                         }
                         else if (  Match1ByteOffset ( offsetof(GUN_TR5,m_gunUzis), offsetInGuns ) )
@@ -1443,6 +1463,31 @@ const char *CTRXDifferences::GetLabel ( unsigned offset )
                         else if (  Match1ByteOffset ( offsetof(GUN_TR5,m_gunRiotGun), offsetInGuns ) )
                         {
                             strcat_s ( szLabel, sizeof(szLabel), " - Gun Riot" );
+                            bFound = true;
+                        }
+                        else if (  Match1ByteOffset ( offsetof(GUN_TR5,m_gunHK), offsetInGuns ) )
+                        {
+                            strcat_s ( szLabel, sizeof(szLabel), " - Gun HK" );
+                            bFound = true;
+                        }
+                        else if (  Match1ByteOffset ( offsetof(GUN_TR5,m_gunGrappling), offsetInGuns ) )
+                        {
+                            strcat_s ( szLabel, sizeof(szLabel), " - Gun Grappling" );
+                            bFound = true;
+                        }
+                        else if (  Match1ByteOffset ( offsetof(GUN_TR5,m_gunBinocular), offsetInGuns ) )
+                        {
+                            strcat_s ( szLabel, sizeof(szLabel), " - Gun Binocular" );
+                            bFound = true;
+                        }
+                        else if (  Match1ByteOffset ( offsetof(GUN_TR5,m_gunLaserLight), offsetInGuns ) )
+                        {
+                            strcat_s ( szLabel, sizeof(szLabel), " - Gun LaserLight" );
+                            bFound = true;
+                        }
+                        else if (  Match1ByteOffset ( offsetof(GUN_TR5,m_gunCrowBar), offsetInGuns ) )
+                        {
+                            strcat_s ( szLabel, sizeof(szLabel), " - Gun CrowBar" );
                             bFound = true;
                         }
                         else
