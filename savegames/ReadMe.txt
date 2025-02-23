@@ -7,7 +7,7 @@ C:\Users\{YourUsername}\AppData\Roaming\TRX2\{YourID}
 
 Then launch TRR 4 5 6.
 
-Note that I custom Keys son change it if your want.
+Note that I custom Keys so change it if your want.
 View 	: Num 0
 Flares 	: Num 5
 Duck 	: Num 1
