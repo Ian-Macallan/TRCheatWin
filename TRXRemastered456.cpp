@@ -295,7 +295,7 @@ void CTRXRemastered456::DoDataExchange(CDataExchange* pDX)
     DDX_Control(pDX, IDC_TR5_PLUS, m_TR5_Plus);
     DDX_Control(pDX, IDC_TR6_PLUS, m_TR6_Plus);
     DDX_Control(pDX, IDC_GAME_PLUS, m_Game_Plus);
-    DDX_Control(pDX, IDC_KILL_WILLARD, m_Kill_Willard);
+    DDX_Control(pDX, IDC_KILL_BOSS, m_Kill_Willard);
     DDX_Control(pDX, IDC_SAVE, m_Save_No);
     DDX_Control(pDX, IDC_PICKUP_MAX, m_Pickup_Max);
     DDX_Control(pDX, IDC_CRISTAL_MAX, m_Crystal_Max);
@@ -342,7 +342,7 @@ BEGIN_MESSAGE_MAP(CTRXRemastered456, CTRXPropertyPage456)
     ON_NOTIFY_EX( TTN_NEEDTEXT, 0, OnToolTipNotify )
     ON_BN_CLICKED(IDC_SET, &CTRXRemastered456::OnBnClickedSet)
     ON_BN_CLICKED(IDC_SHOW, &CTRXRemastered456::OnBnClickedShow)
-    ON_BN_CLICKED(IDC_KILL_WILLARD, &CTRXRemastered456::OnBnClickedKillWillard)
+    ON_BN_CLICKED(IDC_KILL_BOSS, &CTRXRemastered456::OnBnClickedKillTR45)
     ON_NOTIFY(NM_RCLICK, IDC_LISTCTRL, &CTRXRemastered456::OnRclickListctrl)
     ON_COMMAND(ID_MENULIST_DELETE, &CTRXRemastered456::OnMenulistDelete)
     ON_COMMAND(ID_MENULIST_EXPORT, &CTRXRemastered456::OnMenulistExport)
@@ -571,7 +571,7 @@ BOOL CTRXRemastered456::OnInitDialog()
 
         m_ToolTip.AddTool( &m_Crystal, "Crystal");
         m_ToolTip.AddTool( &m_Kill, "Kills");
-        m_ToolTip.AddTool( &m_Kill_Willard, "Kill Willard in TR3 Meteore Cavern\r\nOr Nearly Kill The Great Pyramid Boss\r\n");
+        m_ToolTip.AddTool( &m_Kill_Willard, "Kill TR5 Mecanical Head\r\n");
         m_ToolTip.AddTool( &m_List_All, "List All Entries\r\nCan be useful if a game entry is not the correct one");
         m_ToolTip.AddTool( &m_Load, "Load a file");
         m_ToolTip.AddTool( &m_Max, "Set Max Ammos for all saves");
@@ -3619,7 +3619,7 @@ DWORD CTRXRemastered456::RelativeAddress ( const void *pAddress )
 /////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////
-void CTRXRemastered456::OnBnClickedKillWillard()
+void CTRXRemastered456::OnBnClickedKillTR45()
 {
     if ( m_Line >= 0 && CTR8SaveGame::I() )
     {
@@ -3629,13 +3629,13 @@ void CTRXRemastered456::OnBnClickedKillWillard()
         int level               = pInfoData->level;
         int block               = pInfoData->block;
 
-        if ( tombraider == 1 && level == 15 )
+        if ( tombraider == 5 && level == 2 )
         {
-            CTR8SaveGame::I()->KillTR1Boss ( tombraider, block );
+            CTR8SaveGame::I()->KillTR5MecanicalHead ( tombraider, block );
         }
-        else if ( tombraider == 3 && level == 19 )
+        else if ( tombraider == 5 && level == 99 )  // Not Used
         {
-            CTR8SaveGame::I()->KillWillard ( tombraider, block );
+            CTR8SaveGame::I()->KillTR5Boss ( tombraider, block );
         }
 
         SetGUIModified( TRUE );
@@ -3929,9 +3929,11 @@ void CTRXRemastered456::OnMenulistExport()
         const char *pFilter     = szFilter1;
         const char *pDefault    = szDefault1;
 
-        sprintf_s ( szDefault1, "savegame.4.%02d.trx", CTR8SaveGame::I()->GetBlockLevelNumber( tombraider, block ) );
-        sprintf_s ( szDefault2, "savegame.5.%02d.trx", CTR8SaveGame::I()->GetBlockLevelNumber( tombraider, block ) );
-        sprintf_s ( szDefault3, "savegame.6.%02d.trx", CTR8SaveGame::I()->GetBlockLevelNumber( tombraider, block ) );
+        int levelNumber   = CTR8SaveGame::I()->GetBlockLevelNumber( tombraider, block );
+        int saveNumber    = CTR8SaveGame::I()->GetSaveNumber ( tombraider, block );
+        sprintf_s ( szDefault1, "savegame.4.%02d.%d.trx", levelNumber, saveNumber );
+        sprintf_s ( szDefault2, "savegame.5.%02d.%d.trx", levelNumber, saveNumber );
+        sprintf_s ( szDefault3, "savegame.6.%02d.%d.trx", levelNumber, saveNumber );
 
         switch ( tombraider )
         {

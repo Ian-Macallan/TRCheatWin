@@ -7029,7 +7029,7 @@ void CTR9SaveGame::SetState ( int tombraider, int block, BYTE iAir )
 /////////////////////////////////////////////////////////////////////////////
 const char *CTR9SaveGame::GetInterest ( int tombraider, int block, int slot )
 {
-    static char szResponse [ 2048 ];
+    static char szResponse [ 4096 ];
     ZeroMemory ( szResponse, sizeof(szResponse) );
 
     //
@@ -7076,7 +7076,8 @@ const char *CTR9SaveGame::GetInterest ( int tombraider, int block, int slot )
             sprintf_s ( szResponse + strlen(szResponse), sizeof(szResponse) - strlen(szResponse), "%16s: NULL\r\n", "Start" );
         }
 
-        pAddress = ( char *) GetBlockAddress ( tombraider, block, slot );
+        pAddress    = ( char *) GetBlockAddress ( tombraider, block, slot );
+        char *pSlot = pAddress;
         if ( pAddress )
         {
             sprintf_s ( szResponse + strlen(szResponse), sizeof(szResponse) - strlen(szResponse),
@@ -7171,6 +7172,9 @@ const char *CTR9SaveGame::GetInterest ( int tombraider, int block, int slot )
         {
             sprintf_s ( szResponse + strlen(szResponse), sizeof(szResponse) - strlen(szResponse),
                         "%16s: 0x%08lX : %d\r\n", "Health", RelativeAddress ( pAddress ), *((WORD *) pAddress) );
+            sprintf_s ( szResponse + strlen(szResponse), sizeof(szResponse) - strlen(szResponse),
+                        "%16s: 0x%08lX : %d\r\n", "Health", CTRXTools::RelativeAddress ( pAddress, pSlot ),
+                        *((WORD *) pAddress) );
         }
         else
         {

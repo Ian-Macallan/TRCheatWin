@@ -157,7 +157,7 @@ struct TABLE_TR4
             WORD        m_iShotGunAmmo2;
 
             //  0x00C63E
-            WORD        m_iWhatAmmos;
+            WORD        unknown03;
 
             //  0x00C640
             WORD        m_iGrenade1;
@@ -181,7 +181,7 @@ struct TABLE_TR4
 
         struct
         {
-            BYTE        unknown03 [  0x00C66C - 0x00c470 ];
+            BYTE        unknown04 [  0x00C66C - 0x00c470 ];
 
             //      0x00C66C
 #define     m_cLevelsLen        10
@@ -190,25 +190,25 @@ struct TABLE_TR4
 
         struct
         {
-            BYTE        unknown04 [  0x00c604 - 0x00c470 ];
+            BYTE        unknown05 [  0x00c604 - 0x00c470 ];
             GUN_TR4     m_GunTR4;
         };
 
         struct
         {
-            BYTE        unknown05 [  0x00C4BA - 0x00c470 ];
+            BYTE        unknown06 [  0x00C4BA - 0x00c470 ];
             WORD        m_iAir;
         };
 
         struct
         {
-            BYTE        unknown06 [  0x00C4E8 - 0x00c470 ];
+            BYTE        unknown07 [  0x00C4E8 - 0x00c470 ];
             BYTE        m_iLara;
         };
 
         struct
         {
-            BYTE        unknown07 [  0x1C ];
+            BYTE        unknown08 [  0x1C ];
             BYTE        m_iPius;
         };
 
@@ -294,6 +294,9 @@ struct GUN_TR5
     };
 
 };
+
+//  Mecanical Head in 0xa13, 0xa15 0xa15 : 0x36 0x01 0xff
+//  Set to zero and mecanical head is killed
 
 //  14AE00
 struct TABLE_TR5
@@ -849,8 +852,8 @@ class CTR8SaveGame : public CObject
         void SetHeadSet ( int tombraider, int block, BYTE value );
 
         //
-        void KillWillard ( int tombraider, int block );
-        void KillTR1Boss ( int tombraider, int block );
+        void KillTR5MecanicalHead ( int tombraider, int block );
+        void KillTR5Boss ( int tombraider, int block );
         BOOL IsKillEnabled ( int tombraider, int block );
 
         const char *GetInterest ( int tombraider, int block );

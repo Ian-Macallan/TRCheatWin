@@ -174,7 +174,7 @@ class CTRXRemastered456 : public CTRXPropertyPage456
         afx_msg void OnBnClickedStrong();
         afx_msg void OnBnClickedShow();
         afx_msg void OnBnClickedSet();
-        afx_msg void OnBnClickedKillWillard();
+        afx_msg void OnBnClickedKillTR45();
         afx_msg void OnRclickListctrl(NMHDR *pNMHDR, LRESULT *pResult);
         afx_msg void OnMenulistDelete();
         afx_msg void OnMenulistExport();

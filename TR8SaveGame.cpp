@@ -1585,11 +1585,40 @@ void CTR8SaveGame::SetRealHealth ( int tombraider, int block, WORD value )
 //
 /////////////////////////////////////////////////////////////////////////////
 //
+//  Mecanical Head in 0xa13, 0xa15 0xa15 : 0x36 0x01 0xff
+//  Set to zero and mecanical head is killed
+//  0xa13 - 0x886
 /////////////////////////////////////////////////////////////////////////////
-void CTR8SaveGame::KillWillard ( int tombraider, int block )
+void CTR8SaveGame::KillTR5MecanicalHead ( int tombraider, int block )
 {
-    if ( tombraider == 3 && GetBlockLevelNumber (tombraider, block ) == 19 )
+    if ( tombraider == 5 && GetBlockLevelNumber (tombraider, block ) == 2 )
     {
+        BYTE *pSlot     = (BYTE *) GetSlotAddress ( tombraider, block );
+        BYTE *pHealth   = (BYTE *) GetRealHealthAddress ( tombraider, block );
+        if ( pHealth )
+        {
+            int index = 0xa13 - 0x886;
+            DWORD healthInSlot      = CTRXTools::RelativeAddress ( pHealth, pSlot );
+            DWORD relativeToSlot    = CTRXTools::RelativeAddress ( pHealth + index, pSlot );
+
+
+            if (    healthInSlot == 0x886 && 
+                    ( pHealth [ index + 1 ] == 0x00 || pHealth [ index + 1 ] == 0x01 ) &&
+                    ( pHealth [ index + 2 ] == 0xff || pHealth [ index + 2 ] == 0xfb ) )
+            {
+#ifdef _DEBUG
+                static char szDebugString [ MAX_PATH ];
+                sprintf_s ( szDebugString, sizeof(szDebugString), 
+                    "TR5MecanicalHead 0x%04lx 0x%04lx : 0x%02x 0x%02x 0x%02x\n", 
+                    healthInSlot, relativeToSlot, pHealth [ index ], pHealth [ index + 1 ], pHealth [ index + 2 ] );
+                OutputDebugString ( szDebugString );
+#endif
+
+                pHealth [ index ]       = 0x00;
+                pHealth [ index + 1 ]   = 0x00;
+                pHealth [ index + 2 ]   = 0x00;
+            }
+        }
     }
 
     return;
@@ -1599,11 +1628,8 @@ void CTR8SaveGame::KillWillard ( int tombraider, int block )
 /////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////
-void CTR8SaveGame::KillTR1Boss ( int tombraider, int block )
+void CTR8SaveGame::KillTR5Boss ( int tombraider, int block )
 {
-    if ( tombraider == 1 && GetBlockLevelNumber (tombraider, block ) == 15 )
-    {
-    }
     return;
 }
 
@@ -1613,12 +1639,23 @@ void CTR8SaveGame::KillTR1Boss ( int tombraider, int block )
 /////////////////////////////////////////////////////////////////////////////
 BOOL CTR8SaveGame::IsKillEnabled ( int tombraider, int block )
 {
-    if ( tombraider == 1 && GetBlockLevelNumber (tombraider, block ) == 15 )
+    if ( tombraider == 5 && GetBlockLevelNumber (tombraider, block ) == 2 )
     {
-    }
+        BYTE *pSlot     = (BYTE *) GetSlotAddress ( tombraider, block );
+        BYTE *pHealth   = (BYTE *) GetRealHealthAddress ( tombraider, block );
+        if ( pHealth )
+        {
+            DWORD healthInSlot = CTRXTools::RelativeAddress ( pHealth, pSlot );
 
-    if ( tombraider == 3 && GetBlockLevelNumber (tombraider, block ) == 19 )
-    {
+            int index = 0xa13 - 0x886;
+
+            if (    healthInSlot == 0x886 && 
+                    ( pHealth [ index + 1 ] == 0x00 || pHealth [ index + 1 ] == 0x01 ) &&
+                    ( pHealth [ index + 2 ] == 0xff || pHealth [ index + 2 ] == 0xfb )      )
+            {
+                return TRUE;
+            }
+        }
     }
 
     return FALSE;
@@ -2644,12 +2681,14 @@ void *CTR8SaveGame::SearchBlockEntry ( int tombraider, int block )
         //
         case 4:
         {
+            return GetSlotAddress ( tombraider, block );
             break;
         }
 
         //
         case 5:
         {
+            return GetSlotAddress ( tombraider, block );
             break;
         }
 
@@ -2715,12 +2754,14 @@ void *CTR8SaveGame::SearchGunEntry ( int tombraider, int block )
     {
         case 4:
         {
+            return GetGunAddress ( tombraider, block );
             break;
         }
 
         //
         case 5:
         {
+            return GetGunAddress ( tombraider, block );
             break;
         }
 
@@ -4414,7 +4455,7 @@ void CTR8SaveGame::SetState ( int tombraider, int block, BYTE iState )
 /////////////////////////////////////////////////////////////////////////////
 const char *CTR8SaveGame::GetInterest ( int tombraider, int block )
 {
-    static char szResponse [ 2048 ];
+    static char szResponse [ 4096 ];
     ZeroMemory ( szResponse, sizeof(szResponse) );
 
     //
@@ -4450,7 +4491,8 @@ const char *CTR8SaveGame::GetInterest ( int tombraider, int block )
             sprintf_s ( szResponse + strlen(szResponse), sizeof(szResponse) - strlen(szResponse), "%16s: NULL\r\n", "Start" );
         }
 
-        pAddress = ( char *) GetSlotAddress ( tombraider, block );
+        pAddress  = ( char *) GetSlotAddress ( tombraider, block );
+        char *pSlot     = pAddress;
         if ( pAddress )
         {
             sprintf_s ( szResponse + strlen(szResponse), sizeof(szResponse) - strlen(szResponse),
@@ -4534,6 +4576,9 @@ const char *CTR8SaveGame::GetInterest ( int tombraider, int block )
         {
             sprintf_s ( szResponse + strlen(szResponse), sizeof(szResponse) - strlen(szResponse),
                         "%16s: 0x%08lX : %d\r\n", "Health", RelativeAddress ( pAddress ), *((WORD *) pAddress) );
+            sprintf_s ( szResponse + strlen(szResponse), sizeof(szResponse) - strlen(szResponse),
+                        "%16s: 0x%08lX : %d\r\n", "Health", CTRXTools::RelativeAddress ( pAddress, pSlot ),
+                        *((WORD *) pAddress) );
         }
         else
         {

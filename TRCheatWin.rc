@@ -803,7 +803,7 @@ BEGIN
     EDITTEXT        IDC_SECRETS_1,269,292,16,14,ES_AUTOHSCROLL | ES_READONLY | NOT WS_TABSTOP
     EDITTEXT        IDC_SECRETS_2,291,292,16,14,ES_AUTOHSCROLL | ES_READONLY | NOT WS_TABSTOP
     CONTROL         "Plus",IDC_GAME_PLUS,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,324,160,29,10
-    CONTROL         "Kill W",IDC_KILL_WILLARD,"Button",BS_OWNERDRAW | WS_TABSTOP,325,266,30,14
+    CONTROL         "Kill Boss",IDC_KILL_BOSS,"Button",BS_OWNERDRAW | WS_TABSTOP,325,266,30,14
     CONTROL         "Max",IDC_MAX_ONE,"Button",BS_OWNERDRAW | WS_TABSTOP,357,266,32,14
     LTEXT           "You must restart Tombraider Remastered to use the modifications.",IDC_STATIC,380,286,132,22,0,WS_EX_CLIENTEDGE
     CONTROL         "Set",IDC_SET,"Button",BS_OWNERDRAW | WS_TABSTOP,311,292,32,14
@@ -926,8 +926,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 4,6,03,001
- PRODUCTVERSION 4,6,03,001
+ FILEVERSION 4,6,03,003
+ PRODUCTVERSION 4,6,03,003
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x29L
@@ -945,15 +945,15 @@ BEGIN
             VALUE "Comments", "mailto:ian.macallan@gmail.com\0"
             VALUE "CompanyName", "Macallan (c)\0"
             VALUE "FileDescription", "TRCheatWin - (MSVC)\0"
-            VALUE "FileVersion", "4.6.03.001\0"
+            VALUE "FileVersion", "4.6.03.003\0"
             VALUE "InternalName", "https://www.macallan.org/\0"
-            VALUE "LegalCopyright", "Copyright (C) Sun Feb 23 16:47, 2025\0"
+            VALUE "LegalCopyright", "Copyright (C) Tue Feb 25 09:35, 2025\0"
             VALUE "LegalTrademarks", "Author: Ian Macallan\0"
             VALUE "OriginalFilename", ORIGINAL_FILENAME
-            VALUE "PrivateBuild", "1148\0"
+            VALUE "PrivateBuild", "1150\0"
             VALUE "ProductName", PRODUCT_NAME
-            VALUE "ProductVersion", "4.6.03.001\0"
-            VALUE "SpecialBuild", "1148\0"
+            VALUE "ProductVersion", "4.6.03.003\0"
+            VALUE "SpecialBuild", "1150\0"
         END
     END
     BLOCK "VarFileInfo"
