@@ -2436,12 +2436,42 @@ const char *CTR8SaveGame::GetLevelName ( int tombraider, int level, int block )
         }
         case 6:
         {
-            if ( block > 0 )
+            if ( block >= 0 ) 
             {
                 TABLE_TR6 *pBlock = (TABLE_TR6 *) GetSlotAddress ( tombraider, block );
                 if ( pBlock )
                 {
-                    return pBlock->m_szLevelName;
+                    //
+                    //  Convert From UTF8
+                    static WCHAR levelNameW [ MAX_PATH ];
+                    static char  levelNameA [ MAX_PATH ];
+                    char    cDefaultChar = '?';
+                    BOOL    UsedDefaultChar = FALSE;
+
+                    ZeroMemory ( levelNameW, sizeof(levelNameW) );
+                    ZeroMemory ( levelNameA, sizeof(levelNameA) );
+
+                    int iResW = 
+                        MultiByteToWideChar (
+                            CP_UTF8, MB_ERR_INVALID_CHARS, 
+                            pBlock->m_szLevelName, (int) strlen(pBlock->m_szLevelName),
+                            levelNameW, (int) ( sizeof(levelNameW) / sizeof(WCHAR) ) - 1 );
+                    if ( iResW <= 0 )
+                    {
+                        return pBlock->m_szLevelName;
+                    }
+
+                    int resA = 
+                        WideCharToMultiByte ( CP_ACP, WC_NO_BEST_FIT_CHARS, 
+                        levelNameW, (int) wcslen(levelNameW),
+                        levelNameA, (int) sizeof(levelNameA) - 1,
+                        &cDefaultChar, &UsedDefaultChar );
+                    if ( iResW <= 0 )
+                    {
+                        return pBlock->m_szLevelName;
+                    }
+
+                    return levelNameA;
                 }
             }
             break;

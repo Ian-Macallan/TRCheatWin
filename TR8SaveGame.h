@@ -417,7 +417,7 @@ struct TABLE_TR6
         struct
         {
             //  
-            BYTE        unknown10 [ 0XE190 - 0xE070 - 0x04 ];
+            BYTE        unknown10 [ 0XE190 - 0xE070 - 0x04 ];       //  0x11C
             WORD        savenumber;
             WORD        unknown11;
             DWORD       unknown12;
