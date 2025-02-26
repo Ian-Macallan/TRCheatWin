@@ -129,7 +129,7 @@ struct TABLE_TR4
         struct
         {
             //
-            BYTE        unknown02 [ 0xc62e - 0xc470 ];
+            BYTE        unknown02 [ 0xc62e - 0xc470 ];      // 0x1BE
 
             //  0x00C62E
             WORD        m_iSmallMedipak;
@@ -181,7 +181,7 @@ struct TABLE_TR4
 
         struct
         {
-            BYTE        unknown04 [  0x00C66C - 0x00c470 ];
+            BYTE        unknown04 [  0x00C66C - 0x00c470 ];     //  0x1FC
 
             //      0x00C66C
 #define     m_cLevelsLen        10
@@ -190,19 +190,19 @@ struct TABLE_TR4
 
         struct
         {
-            BYTE        unknown05 [  0x00c604 - 0x00c470 ];
+            BYTE        unknown05 [  0x00c604 - 0x00c470 ];     //  0x194
             GUN_TR4     m_GunTR4;
         };
 
         struct
         {
-            BYTE        unknown06 [  0x00C4BA - 0x00c470 ];
+            BYTE        unknown06 [  0x00C4BA - 0x00c470 ];     // 0x04A
             WORD        m_iAir;
         };
 
         struct
         {
-            BYTE        unknown07 [  0x00C4E8 - 0x00c470 ];
+            BYTE        unknown07 [  0x00C4E8 - 0x00c470 ];     // 0x078
             BYTE        m_iLara;
         };
 
@@ -212,6 +212,20 @@ struct TABLE_TR4
             BYTE        m_iPius;
         };
 
+        //  Global Statistics
+        struct
+        {
+            BYTE        unknown09 [  0x0230 ];
+            DWORD       elapsed;
+            DWORD       distance;
+            WORD        ammosUsed;      //  0x0238
+            WORD        none1 [ 3 ];
+            WORD        pickups;        //  0x0240
+            WORD        none2;          //  0x0242
+            WORD        kills;          //  0x0244
+            BYTE        secrets;        //  0x0246
+            BYTE        mediPakUsed;    //  0x0247
+        };
     };
 
 };
@@ -385,6 +399,20 @@ struct TABLE_TR5
             BYTE        m_iPius;
         };
 
+        //  Global Statistics
+        struct
+        {
+            BYTE        unknown09 [  0x0230 ];
+            DWORD       elapsed;
+            DWORD       distance;
+            WORD        ammosUsed;      //  0x0238
+            WORD        none1 [ 3 ];
+            WORD        pickups;        //  0x0240
+            WORD        none2;          //  0x0242
+            WORD        kills;          //  0x0244
+            BYTE        secrets;        //  0x0246
+            BYTE        mediPakUsed;    //  0x0247
+        };
     };
 };
 
@@ -774,7 +802,7 @@ class CTR8SaveGame : public CObject
         //  Get Medipak address Used
         BYTE *GetBlockMedipakUsedAddress(int tombraider, int block);
         //  Pickup Address  follow by Meidpak used
-        BYTE *GetBlockPickupAddress(int tombraider, int block);
+        WORD *GetBlockPickupAddress(int tombraider, int block);
         //  Get Kill Address
         WORD *GetBlockKillsAddress (int tombraider, int block);
 
@@ -790,14 +818,14 @@ class CTR8SaveGame : public CObject
 
         //
         WORD GetBlockKills ( int tombraider, int block );
-        BYTE GetBlockPickup ( int tombraider, int block );
+        WORD GetBlockPickup ( int tombraider, int block );
         BYTE GetBlockCrystal(int tombraider, int block);
 
 
         //  Get First Address of Stats
         // BYTE *GetBlocksSecretsBaseAddress(int tombraider, int block);
 
-        void SetBlockPickup(int tombraider, int block, BYTE pickup);
+        void SetBlockPickup(int tombraider, int block, WORD pickup);
         void SetBlockCrystal(int tombraider, int block, BYTE crystals);
         void SetBlockKills(int tombraider, int block, WORD kills);
 

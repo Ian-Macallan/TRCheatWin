@@ -1658,7 +1658,7 @@ void CTRXRemastered456::DisplayListBrief ( )
             sprintf_s  ( szString, sizeof(szString), "%02d",  CTR8SaveGame::I()->countTag ( tombraider, block ) );
             m_ListCtrl.SetItemText ( position, COLR_FOUND, szString);
 
-            m_ListCtrl.SetItemText ( position, COLR_TOMBRAIDER, "1");
+            m_ListCtrl.SetItemText ( position, COLR_TOMBRAIDER, "4");
 
             sprintf_s  ( szString, sizeof(szString), "%d",  CTR8SaveGame::I()->GetBlockKills ( tombraider, block ) );
             m_ListCtrl.SetItemText ( position, COLR_KILLS, szString);
@@ -1746,7 +1746,7 @@ void CTRXRemastered456::DisplayListBrief ( )
             sprintf_s  ( szString, sizeof(szString), "%02d",  CTR8SaveGame::I()->countTag ( tombraider, block ) );
             m_ListCtrl.SetItemText ( position, COLR_FOUND, szString);
 
-            m_ListCtrl.SetItemText ( position, COLR_TOMBRAIDER, "2");
+            m_ListCtrl.SetItemText ( position, COLR_TOMBRAIDER, "5");
 
             sprintf_s  ( szString, sizeof(szString), "%d",  CTR8SaveGame::I()->GetBlockKills ( tombraider, block ) );
             m_ListCtrl.SetItemText ( position, COLR_KILLS, szString);
@@ -1834,7 +1834,7 @@ void CTRXRemastered456::DisplayListBrief ( )
             sprintf_s  ( szString, sizeof(szString), "%02d",  CTR8SaveGame::I()->countTag ( tombraider, block ) );
             m_ListCtrl.SetItemText ( position, COLR_FOUND, szString);
 
-            m_ListCtrl.SetItemText ( position, COLR_TOMBRAIDER, "3");
+            m_ListCtrl.SetItemText ( position, COLR_TOMBRAIDER, "6");
 
             sprintf_s  ( szString, sizeof(szString), "%d",  CTR8SaveGame::I()->GetBlockKills ( tombraider, block ) );
             m_ListCtrl.SetItemText ( position, COLR_KILLS, szString);
@@ -1962,7 +1962,7 @@ void CTRXRemastered456::DisplayListFull ( bool bShort )
             sprintf_s  ( szString, sizeof(szString), "%02d",  CTR8SaveGame::I()->countTag ( tombraider, block ) );
             m_ListCtrl.SetItemText ( position, COLR_FOUND, szString);
 
-            m_ListCtrl.SetItemText ( position, COLR_TOMBRAIDER, "1");
+            m_ListCtrl.SetItemText ( position, COLR_TOMBRAIDER, "4");
 
             sprintf_s  ( szString, sizeof(szString), "%d",  CTR8SaveGame::I()->GetBlockKills ( tombraider, block ) );
             m_ListCtrl.SetItemText ( position, COLR_KILLS, szString);
@@ -2048,7 +2048,7 @@ void CTRXRemastered456::DisplayListFull ( bool bShort )
             sprintf_s  ( szString, sizeof(szString), "%02d",  CTR8SaveGame::I()->countTag ( tombraider, block ) );
             m_ListCtrl.SetItemText ( position, COLR_FOUND, szString);
 
-            m_ListCtrl.SetItemText ( position, COLR_TOMBRAIDER, "2");
+            m_ListCtrl.SetItemText ( position, COLR_TOMBRAIDER, "5");
 
             sprintf_s  ( szString, sizeof(szString), "%d",  CTR8SaveGame::I()->GetBlockKills ( tombraider, block ) );
             m_ListCtrl.SetItemText ( position, COLR_KILLS, szString);
@@ -2135,7 +2135,7 @@ void CTRXRemastered456::DisplayListFull ( bool bShort )
             sprintf_s  ( szString, sizeof(szString), "%02d",  CTR8SaveGame::I()->countTag ( tombraider, block ) );
             m_ListCtrl.SetItemText ( position, COLR_FOUND, szString);
 
-            m_ListCtrl.SetItemText ( position, COLR_TOMBRAIDER, "3");
+            m_ListCtrl.SetItemText ( position, COLR_TOMBRAIDER, "6");
 
             sprintf_s  ( szString, sizeof(szString), "%d",  CTR8SaveGame::I()->GetBlockKills ( tombraider, block ) );
             m_ListCtrl.SetItemText ( position, COLR_KILLS, szString);
