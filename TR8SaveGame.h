@@ -48,11 +48,11 @@ struct GUN_TR4
     // 0x00c606 : 09
     BYTE        m_gunCrossBow;
 
-    // 0x00c607 : 09
-    BYTE        m_gunGrenadesLauncher;
-
     // 0x00c60B : 01
     BYTE        m_Unknown01;
+
+    // 0x00c607 : 09
+    BYTE        m_gunGrenadesLauncher;
 
     // 0x00c608 : 09
     BYTE        m_gunRevolver;
@@ -184,8 +184,7 @@ struct TABLE_TR4
             BYTE        unknown04 [  0x00C66C - 0x00c470 ];     //  0x1FC
 
             //      0x00C66C
-#define     m_cLevelsLen        10
-            BYTE        m_cLevels [ m_cLevelsLen ];
+            BYTE        m_cLevels [ 10 ];
         };
 
         struct
@@ -216,17 +215,23 @@ struct TABLE_TR4
         struct
         {
             BYTE        unknown09 [  0x0230 ];
-            DWORD       elapsed;
-            DWORD       distance;
-            WORD        ammosUsed;      //  0x0238
+            DWORD       totalElapsed;
+            DWORD       totalDistance;
+            WORD        totalAmmosUsed;     //  0x0238
             WORD        none1 [ 3 ];
-            WORD        pickups;        //  0x0240
-            WORD        none2;          //  0x0242
-            WORD        kills;          //  0x0244
-            BYTE        secrets;        //  0x0246
-            BYTE        mediPakUsed;    //  0x0247
-        };
-    };
+            WORD        totalPickups;       //  0x0240
+            WORD        none2;              //  0x0242
+            WORD        totalKills;         //  0x0244
+            BYTE        totalSecrets;       //  0x0246
+            BYTE        totalMediPakUsed;   //  0x0247
+       };
+
+        //  Maybe secrets for the level
+        //  01 in 0x284 OK
+        //  03 in 0x286 OK
+        //  11 in 0x288 OK
+        //  13 in 0x28A OK
+   };
 
 };
 
@@ -403,16 +408,17 @@ struct TABLE_TR5
         struct
         {
             BYTE        unknown09 [  0x0230 ];
-            DWORD       elapsed;
-            DWORD       distance;
-            WORD        ammosUsed;      //  0x0238
+            DWORD       totalElapsed;
+            DWORD       totalDistance;
+            WORD        totalAmmosUsed;     //  0x0238
             WORD        none1 [ 3 ];
-            WORD        pickups;        //  0x0240
-            WORD        none2;          //  0x0242
-            WORD        kills;          //  0x0244
-            BYTE        secrets;        //  0x0246
-            BYTE        mediPakUsed;    //  0x0247
+            WORD        totalPickups;       //  0x0240
+            WORD        none2;              //  0x0242
+            WORD        totalKills;         //  0x0244
+            BYTE        totalSecrets;       //  0x0246
+            BYTE        totalMediPakUsed;   //  0x0247
         };
+
     };
 };
 
@@ -833,7 +839,7 @@ class CTR8SaveGame : public CObject
         BYTE GetSecretsMaximum ( int tombraider, int block );
 
         //
-        void GetBlocksSecrets ( int tombraider, int block, BYTE vector[32] );
+        void GetBlocksSecrets ( int tombraider, int block, BYTE vector[40] );
 
         //  Compare Secrets Completed with stats
         int CompareSecretsCompleted ( int tombraider, int block, BYTE *pStartCompleted );

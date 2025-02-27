@@ -3544,7 +3544,7 @@ void CTRXRemastered456::OnBnClickedSet()
                     int completed   = CTR8SaveGame::I()->GetSecretsCompleted ( tombraider, block );
                     if ( acquired == completed )
                     {
-                        // CTR8SaveGame::I()->SetBlockSecretsAcquired ( tombraider, block );
+                        CTR8SaveGame::I()->SetBlockSecretsAcquired ( tombraider, block );
                     }
                     CTR8SaveGame::I()->SetBlockSecretsAcquiredAll ( tombraider, block, -1 );
                     break;
@@ -3555,7 +3555,7 @@ void CTRXRemastered456::OnBnClickedSet()
                     int completed   = CTR8SaveGame::I()->GetSecretsCompleted ( tombraider, block );
                     if ( acquired == completed )
                     {
-                        // CTR8SaveGame::I()->SetBlockSecretsAcquired ( tombraider, block );
+                        CTR8SaveGame::I()->SetBlockSecretsAcquired ( tombraider, block );
                     }
                     CTR8SaveGame::I()->SetBlockSecretsAcquiredAll ( tombraider, block, -1 );
                     break;
@@ -3910,9 +3910,9 @@ void CTRXRemastered456::OnMenulistDelete()
 void CTRXRemastered456::OnMenulistExport()
 {
     //
-    static char BASED_CODE szFilter1[] = "Exports|savegame.4.*.trx|All Files (*.*)|*.*||";
-    static char BASED_CODE szFilter2[] = "Exports|savegame.5.*.trx|All Files (*.*)|*.*||";
-    static char BASED_CODE szFilter3[] = "Exports|savegame.6.*.trx|All Files (*.*)|*.*||";
+    static char BASED_CODE szFilter1[] = "Exports|savegame.4.*.trx2|All Files (*.*)|*.*||";
+    static char BASED_CODE szFilter2[] = "Exports|savegame.5.*.trx2|All Files (*.*)|*.*||";
+    static char BASED_CODE szFilter3[] = "Exports|savegame.6.*.trx2|All Files (*.*)|*.*||";
 
     static char szDefault1 [ MAX_PATH ];
     static char szDefault2 [ MAX_PATH ];
@@ -3931,9 +3931,9 @@ void CTRXRemastered456::OnMenulistExport()
 
         int levelNumber   = CTR8SaveGame::I()->GetBlockLevelNumber( tombraider, block );
         int saveNumber    = CTR8SaveGame::I()->GetSaveNumber ( tombraider, block );
-        sprintf_s ( szDefault1, "savegame.4.%02d.%d.trx", levelNumber, saveNumber );
-        sprintf_s ( szDefault2, "savegame.5.%02d.%d.trx", levelNumber, saveNumber );
-        sprintf_s ( szDefault3, "savegame.6.%02d.%d.trx", levelNumber, saveNumber );
+        sprintf_s ( szDefault1, "savegame.4.%02d.%d.trx2", levelNumber, saveNumber );
+        sprintf_s ( szDefault2, "savegame.5.%02d.%d.trx2", levelNumber, saveNumber );
+        sprintf_s ( szDefault3, "savegame.6.%02d.%d.trx2", levelNumber, saveNumber );
 
         switch ( tombraider )
         {
@@ -3984,13 +3984,13 @@ void CTRXRemastered456::OnMenulistExport()
 void CTRXRemastered456::OnMenulistImport()
 {
     //
-    static char BASED_CODE szFilter1[] = "Exports|savegame.4.*.trx|All Files (*.*)|*.*||";
-    static char BASED_CODE szFilter2[] = "Exports|savegame.5.*.trx|All Files (*.*)|*.*||";
-    static char BASED_CODE szFilter3[] = "Exports|savegame.6.*.trx|All Files (*.*)|*.*||";
+    static char BASED_CODE szFilter1[] = "Exports|savegame.4.*.trx2|All Files (*.*)|*.*||";
+    static char BASED_CODE szFilter2[] = "Exports|savegame.5.*.trx2|All Files (*.*)|*.*||";
+    static char BASED_CODE szFilter3[] = "Exports|savegame.6.*.trx2|All Files (*.*)|*.*||";
 
-    const char *pDefault1   = "savegame.4.*.trx";
-    const char *pDefault2   = "savegame.5.*.trx";
-    const char *pDefault3   = "savegame.6.*.trx";
+    const char *pDefault1   = "savegame.4.*.trx2";
+    const char *pDefault2   = "savegame.5.*.trx2";
+    const char *pDefault3   = "savegame.6.*.trx2";
 
     const char *pFilter     = szFilter1;
     const char *pDefault    = pDefault1;

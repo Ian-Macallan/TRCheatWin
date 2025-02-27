@@ -749,7 +749,7 @@ BEGIN
     CONTROL         "Riotgun",IDC_RIOTGUN,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,198,41,10
     EDITTEXT        IDC_ARIOTGUN,61,196,40,14,ES_AUTOHSCROLL
     EDITTEXT        IDC_XRIOTGUN,105,196,26,14,ES_AUTOHSCROLL | ES_READONLY | NOT WS_TABSTOP
-    CONTROL         "M16",IDC_M16,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,215,30,10
+    CONTROL         "HK",IDC_M16,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,215,26,10
     EDITTEXT        IDC_AM16,61,213,40,14,ES_AUTOHSCROLL
     EDITTEXT        IDC_XM16,105,213,26,14,ES_AUTOHSCROLL | ES_READONLY | NOT WS_TABSTOP
     EDITTEXT        IDC_M16_CLIP,136,213,26,14,ES_AUTOHSCROLL | ES_READONLY | NOT WS_TABSTOP
@@ -760,7 +760,7 @@ BEGIN
     CONTROL         "Rocket",IDC_ROCKET,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,251,39,10
     EDITTEXT        IDC_AROCKET,61,249,40,14,ES_AUTOHSCROLL
     EDITTEXT        IDC_XROCKET,105,249,26,14,ES_AUTOHSCROLL | ES_READONLY | NOT WS_TABSTOP
-    CONTROL         "Harpoon",IDC_HARPOON,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,270,43,10
+    CONTROL         "Crossbow",IDC_HARPOON,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,270,47,10
     EDITTEXT        IDC_AHARPOON,61,268,40,14,ES_AUTOHSCROLL
     EDITTEXT        IDC_XHARPOON,105,268,26,14,ES_AUTOHSCROLL | ES_READONLY | NOT WS_TABSTOP
     CONTROL         "Guns",IDC_GUN,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,287,33,10
@@ -926,8 +926,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 4,6,03,006
- PRODUCTVERSION 4,6,03,006
+ FILEVERSION 4,6,04,001
+ PRODUCTVERSION 4,6,04,001
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x29L
@@ -945,15 +945,15 @@ BEGIN
             VALUE "Comments", "mailto:ian.macallan@gmail.com\0"
             VALUE "CompanyName", "Macallan (c)\0"
             VALUE "FileDescription", "TRCheatWin - (MSVC)\0"
-            VALUE "FileVersion", "4.6.03.006\0"
+            VALUE "FileVersion", "4.6.04.001\0"
             VALUE "InternalName", "https://www.macallan.org/\0"
-            VALUE "LegalCopyright", "Copyright (C) Wed Feb 26 13:07, 2025\0"
+            VALUE "LegalCopyright", "Copyright (C) Thu Feb 27 09:30, 2025\0"
             VALUE "LegalTrademarks", "Author: Ian Macallan\0"
             VALUE "OriginalFilename", ORIGINAL_FILENAME
-            VALUE "PrivateBuild", "1153\0"
+            VALUE "PrivateBuild", "1156\0"
             VALUE "ProductName", PRODUCT_NAME
-            VALUE "ProductVersion", "4.6.03.006\0"
-            VALUE "SpecialBuild", "1153\0"
+            VALUE "ProductVersion", "4.6.04.001\0"
+            VALUE "SpecialBuild", "1156\0"
         END
     END
     BLOCK "VarFileInfo"

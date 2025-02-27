@@ -2,6 +2,7 @@
 #include "afxcmn.h"
 
 #include "resource.h"
+#include "TR8SaveGame.h"
 #include "TR9SaveGame.h"
 
 #include "TRXDialogBase.h"

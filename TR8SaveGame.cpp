@@ -53,6 +53,25 @@ static char    TRR4NBSecrets [ ] =
     /* Times Exclusive */               0,  //  40  index 39
 };
 
+static char    TRR5NBSecrets [ ] =
+{
+    /* Streets of Rome */       3,      //  01
+    /* Trajan's Markets */      3,      //  12
+    /* The Colosseum */         3,      //  03
+    /* The Base */              3,      //  04
+    /* The Submarine */         3,      //  05
+    /* Deep Sea Dive */         1,      //  06
+    /* Sinking Submarine */     2,      //  07
+    /* Gallows Tree */          3,      //  08
+    /* Labyrinth */             3,      //  09
+    /* Old Mill */              3,      //  10
+    /* 13th Floor */            3,      //  11
+    /* Escape With The Iris */  3,      //  12
+    /*  Security Breach */      0,      //  13
+    /* Red Alert! */            3       //  14
+};
+
+
 //
 /////////////////////////////////////////////////////////////////////////////
 //  Indicator Table
@@ -2177,7 +2196,7 @@ WORD *CTR8SaveGame::GetBlockKillsAddress ( int tombraider, int block )
             TABLE_TR4 *pTable = (TABLE_TR4 *)GetSlotAddress ( tombraider, block );
             if ( pTable )
             {
-                return &pTable->kills;
+                return &pTable->totalKills;
             }
             break;
         }
@@ -2188,7 +2207,7 @@ WORD *CTR8SaveGame::GetBlockKillsAddress ( int tombraider, int block )
             TABLE_TR5 *pTable = (TABLE_TR5 *)GetSlotAddress ( tombraider, block );
             if ( pTable )
             {
-                return &pTable->kills;
+                return &pTable->totalKills;
             }
             break;
         }
@@ -2239,7 +2258,7 @@ DWORD *CTR8SaveGame::GetBlockDistanceAddress ( int tombraider, int block )
             TABLE_TR4 *pTable = (TABLE_TR4 *)GetSlotAddress ( tombraider, block );
             if ( pTable )
             {
-                return &pTable->distance;
+                return &pTable->totalDistance;
             }
             break;
         }
@@ -2250,7 +2269,7 @@ DWORD *CTR8SaveGame::GetBlockDistanceAddress ( int tombraider, int block )
             TABLE_TR5 *pTable = (TABLE_TR5 *)GetSlotAddress ( tombraider, block );
             if ( pTable )
             {
-                return &pTable->distance;
+                return &pTable->totalDistance;
             }
             break;
         }
@@ -2286,7 +2305,7 @@ DWORD *CTR8SaveGame::GetBlockElapsedAddress ( int tombraider, int block )
             TABLE_TR4 *pTable = (TABLE_TR4 *)GetSlotAddress ( tombraider, block );
             if ( pTable )
             {
-                return &pTable->elapsed;
+                return &pTable->totalElapsed;
             }
             break;
         }
@@ -2297,7 +2316,7 @@ DWORD *CTR8SaveGame::GetBlockElapsedAddress ( int tombraider, int block )
             TABLE_TR5 *pTable = (TABLE_TR5 *)GetSlotAddress ( tombraider, block );
             if ( pTable )
             {
-                return &pTable->elapsed;
+                return &pTable->totalElapsed;
             }
             break;
         }
@@ -2374,7 +2393,7 @@ WORD *CTR8SaveGame::GetBlockPickupAddress ( int tombraider, int block )
             TABLE_TR4 *pTable = (TABLE_TR4 *)GetSlotAddress ( tombraider, block );
             if ( pTable )
             {
-                return &pTable->pickups;
+                return &pTable->totalPickups;
             }
             break;
         }
@@ -2385,7 +2404,7 @@ WORD *CTR8SaveGame::GetBlockPickupAddress ( int tombraider, int block )
             TABLE_TR5 *pTable = (TABLE_TR5 *)GetSlotAddress ( tombraider, block );
             if ( pTable )
             {
-                return &pTable->pickups;
+                return &pTable->totalPickups;
             }
             break;
         }
@@ -3187,7 +3206,7 @@ WORD *CTR8SaveGame::GetBlockAmmosUsedAddress(int tombraider, int block)
             TABLE_TR4 *pTable = (TABLE_TR4 *)GetSlotAddress ( tombraider, block );
             if ( pTable )
             {
-                return &pTable->ammosUsed;
+                return &pTable->totalAmmosUsed;
             }
             break;
         }
@@ -3198,7 +3217,7 @@ WORD *CTR8SaveGame::GetBlockAmmosUsedAddress(int tombraider, int block)
             TABLE_TR5 *pTable = (TABLE_TR5 *)GetSlotAddress ( tombraider, block );
             if ( pTable )
             {
-                return &pTable->ammosUsed;
+                return &pTable->totalAmmosUsed;
             }
             break;
         }
@@ -3235,7 +3254,7 @@ BYTE *CTR8SaveGame::GetBlockMedipakUsedAddress(int tombraider, int block)
             TABLE_TR4 *pTable = (TABLE_TR4 *)GetSlotAddress ( tombraider, block );
             if ( pTable )
             {
-                return &pTable->mediPakUsed;
+                return &pTable->totalMediPakUsed;
             }
             break;
         }
@@ -3246,7 +3265,7 @@ BYTE *CTR8SaveGame::GetBlockMedipakUsedAddress(int tombraider, int block)
             TABLE_TR5 *pTable = (TABLE_TR5 *)GetSlotAddress ( tombraider, block );
             if ( pTable )
             {
-                return &pTable->mediPakUsed;
+                return &pTable->totalMediPakUsed;
             }
             break;
         }
@@ -3440,7 +3459,7 @@ BYTE *CTR8SaveGame::GetSecretsCompletedBaseAddress (int tombraider, int block)
 /////////////////////////////////////////////////////////////////////////////
 //  Enable address is relative to Gun for TR3 other wise it is fixed
 /////////////////////////////////////////////////////////////////////////////
-BYTE *CTR8SaveGame::GetSecretsCompletedAddress(int tombraider, int block, int iLevel)
+BYTE *CTR8SaveGame::GetSecretsCompletedAddress(int tombraider, int block, int iLevelNdx)
 {
     if ( block < 0 || block >= NB_SLOT_456 )
     {
@@ -3449,13 +3468,13 @@ BYTE *CTR8SaveGame::GetSecretsCompletedAddress(int tombraider, int block, int iL
 
     //
     WORD    levelindex = 0;
-    if ( iLevel < 0 )
+    if ( iLevelNdx < 0 )
     {
         levelindex = GetBlockLevelNumber ( tombraider, block ) - 1;
     }
     else
     {
-        levelindex = iLevel;
+        levelindex = iLevelNdx;
     }
 
     //
@@ -3464,12 +3483,22 @@ BYTE *CTR8SaveGame::GetSecretsCompletedAddress(int tombraider, int block, int iL
         //
         case 4:
         {
+            TABLE_TR4 *pTable = (TABLE_TR4 *)GetSlotAddress ( tombraider, block );
+            if ( pTable )
+            {
+                
+            }
             break;
         }
 
         //
         case 5:
         {
+            TABLE_TR5 *pTable = (TABLE_TR5 *)GetSlotAddress ( tombraider, block );
+            if ( pTable )
+            {
+                
+            }
             break;
         }
 
@@ -3494,10 +3523,18 @@ BYTE CTR8SaveGame::GetSecretsForLevel ( int tombraider, int levelindex )
     {
         case 4:
         {
+            if ( levelindex >= 0 && levelindex < sizeof(TRR4NBSecrets) )
+            {
+                return TRR4NBSecrets[levelindex];
+            }
             break;
         }
         case 5:
         {
+            if ( levelindex >= 0 && levelindex < sizeof(TRR5NBSecrets) )
+            {
+                return TRR5NBSecrets[levelindex];
+            }
             break;
         }
         case 6:
@@ -3592,7 +3629,7 @@ WORD    CTR8SaveGame::GetCrystalsForLevel ( int tombraider, int levelindex )
 /////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////
-void CTR8SaveGame::GetBlocksSecrets ( int tombraider, int block, BYTE vector[32] )
+void CTR8SaveGame::GetBlocksSecrets ( int tombraider, int block, BYTE vector[40] )
 {
     if ( block < 0 || block >= NB_SLOT_456 )
     {
@@ -3604,12 +3641,22 @@ void CTR8SaveGame::GetBlocksSecrets ( int tombraider, int block, BYTE vector[32]
         //
         case 4:
         {
+            TABLE_TR4 *pTable = (TABLE_TR4 *)GetSlotAddress ( tombraider, block );
+            if ( pTable )
+            {
+                
+            }
             break;
         }
 
         //
         case 5:
         {
+            TABLE_TR5 *pTable = (TABLE_TR5 *)GetSlotAddress ( tombraider, block );
+            if ( pTable )
+            {
+                
+            }
             break;
         }
 
@@ -3644,7 +3691,7 @@ BYTE CTR8SaveGame::GetBlockSecretsAcquiredBits(int tombraider, int block)
             TABLE_TR4 *pTable = (TABLE_TR4 *)GetSlotAddress ( tombraider, block );
             if ( pTable )
             {
-                return pTable->secrets;
+                return pTable->totalSecrets;
             }
             break;
         }
@@ -3654,7 +3701,7 @@ BYTE CTR8SaveGame::GetBlockSecretsAcquiredBits(int tombraider, int block)
             TABLE_TR5 *pTable = (TABLE_TR5 *)GetSlotAddress ( tombraider, block );
             if ( pTable )
             {
-                return pTable->secrets;
+                return pTable->totalSecrets;
             }
             break;
         }
@@ -3757,7 +3804,7 @@ BYTE CTR8SaveGame::GetSecretsCompletedBits(int tombraider, int block, int iLevel
 /////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////
-BYTE CTR8SaveGame::GetSecretsCompletedValue(int tombraider, int block, int iLevel)
+BYTE CTR8SaveGame::GetSecretsCompletedValue(int tombraider, int block, int iLevelNdx)
 {
     if ( block < 0 || block >= NB_SLOT_456 )
     {
@@ -3766,13 +3813,13 @@ BYTE CTR8SaveGame::GetSecretsCompletedValue(int tombraider, int block, int iLeve
 
     //
     WORD    levelindex = 0;
-    if ( iLevel < 0 )
+    if ( iLevelNdx < 0 )
     {
         levelindex = GetBlockLevelNumber ( tombraider, block ) - 1;
     }
     else
     {
-        levelindex = iLevel;
+        levelindex = iLevelNdx;
     }
 
     //
@@ -3816,17 +3863,17 @@ BYTE CTR8SaveGame::GetSecretsCompletedValue(int tombraider, int block, int iLeve
 /////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////
-BYTE CTR8SaveGame::GetSecretsCompleted(int tombraider, int block, int iLevel)
+BYTE CTR8SaveGame::GetSecretsCompleted(int tombraider, int block, int iLevelNdx )
 {
     //
     WORD    levelindex = 0;
-    if ( iLevel < 0 )
+    if ( iLevelNdx < 0 )
     {
         levelindex = GetBlockLevelNumber ( tombraider, block ) - 1;
     }
     else
     {
-        levelindex = iLevel;
+        levelindex = iLevelNdx;
     }
 
     switch ( tombraider )
@@ -4023,11 +4070,21 @@ void CTR8SaveGame::SetBlockSecretsAcquiredAll(int tombraider, int block, int exc
     {
         case 4:
         {
+            TABLE_TR4 *pTable = (TABLE_TR4 *)GetSlotAddress ( tombraider, block );
+            if ( pTable )
+            {
+                
+            }
             break;
         }
 
         case 5:
         {
+            TABLE_TR5 *pTable = (TABLE_TR5 *)GetSlotAddress ( tombraider, block );
+            if ( pTable )
+            {
+                
+            }
             break;
         }
 
@@ -4069,7 +4126,7 @@ void CTR8SaveGame::SetBlockSecretsAcquired(int tombraider, int block, BYTE secre
             TABLE_TR4 *pTable = (TABLE_TR4 *)GetSlotAddress ( tombraider, block );
             if ( pTable )
             {
-                pTable->secrets = secrets;
+                
             }
             break;
         }
@@ -4079,7 +4136,7 @@ void CTR8SaveGame::SetBlockSecretsAcquired(int tombraider, int block, BYTE secre
             TABLE_TR5 *pTable = (TABLE_TR5 *)GetSlotAddress ( tombraider, block );
             if ( pTable )
             {
-                pTable->secrets = secrets;
+                
             }
             break;
         }
