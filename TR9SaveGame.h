@@ -903,7 +903,7 @@ class CTR9SaveGame : public CObject
 
         //  Get Maximum Secrets for level Index from 0
         static BYTE GetSecretsForLevel ( int tombraider, int levelIndex );
-        static WORD GetKillssForLevel ( int tombraider, int levelIndex );
+        static WORD GetKillsForLevel ( int tombraider, int levelIndex );
         static WORD GetPickupsForLevel ( int tombraider, int levelIndex );
         static WORD GetCrystalsForLevel ( int tombraider, int levelIndex );
 

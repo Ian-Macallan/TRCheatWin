@@ -794,9 +794,8 @@ class CTR8SaveGame : public CObject
         //  Addresses In Table
         ////////////////////////////////////////////////////
         BYTE *GetSlotMedipakUsedAddress(int tombraider, int block);
-        BYTE *GetSlotPickupAddress(int tombraider, int block);
+        WORD *GetSlotPickupAddress(int tombraider, int block);
         WORD *GetSlotKillsAddress(int tombraider, int block);
-        BYTE *GetSlotCrystalAddress ( int tombraider, int block );
         BYTE *GetSlotTreasureAddress ( int tombraider, int block );
 
         //  Addresses In Blocks
@@ -804,7 +803,6 @@ class CTR8SaveGame : public CObject
         DWORD *GetBlockElapsedAddress ( int tombraider, int block );
         DWORD *GetBlockDistanceAddress ( int tombraider, int block );
 
-        BYTE *GetBlockCrystalAddress ( int tombraider, int block );
         //  Get Medipak address Used
         BYTE *GetBlockMedipakUsedAddress(int tombraider, int block);
         //  Pickup Address  follow by Meidpak used
@@ -816,63 +814,29 @@ class CTR8SaveGame : public CObject
         //  Ammos Used Follow by Hit and Kill
         WORD *GetBlockAmmosUsedAddress(int tombraider, int block);
         WORD *GetBlockAmmosHitsAddress(int tombraider, int block);
-        BYTE *GetBlockSecretsAddress ( int tombraider, int block );
 
         BYTE *GetBlockLevelAddress ( int tombraider, int block );
-        BYTE *GetBlockSecretsBaseAddress ( int tombraider, int block );
 
 
         //
         WORD GetBlockKills ( int tombraider, int block );
         WORD GetBlockPickup ( int tombraider, int block );
-        BYTE GetBlockCrystal(int tombraider, int block);
 
 
         //  Get First Address of Stats
         // BYTE *GetBlocksSecretsBaseAddress(int tombraider, int block);
 
         void SetBlockPickup(int tombraider, int block, WORD pickup);
-        void SetBlockCrystal(int tombraider, int block, BYTE crystals);
         void SetBlockKills(int tombraider, int block, WORD kills);
 
-        //  Get Maximum for current block
-        BYTE GetSecretsMaximum ( int tombraider, int block );
-
         //
-        void GetBlocksSecrets ( int tombraider, int block, BYTE vector[40] );
-
-        //  Compare Secrets Completed with stats
-        int CompareSecretsCompleted ( int tombraider, int block, BYTE *pStartCompleted );
-        //  Return First Address of Secrets Completed
-        BYTE *SearchSecretsCompleted ( int tombraider, int block );
-
-        //BYTE *GetBlocksSecretsBaseAddress(int tombraider, int block);
-        //  Cnt Addr is relative for TR3 like stats and fixed otherwise
-        BYTE *GetBlockSecretsCurrentAddress(int tombraider, int block);
-
         //  Get Secrets Acquired
-        BYTE GetBlockSecretsAcquiredBits(int tombraider, int block);
-        BYTE GetBlockSecretsAcquired(int tombraider, int block);
-
-        //  Get The number of secrets possible
-        BYTE GetBlockSecretsCurrentValue(int tombraider, int block);
-        BYTE GetBlockSecretsCurrent(int tombraider, int block);
+        BYTE GetBlockSecretsTotal(int tombraider, int block);
 
         //
-        BYTE *GetSecretsCompletedBaseAddress(int tombraider, int block );
-        //  Enable address is relative to Gun for TR3 other wise it is fixed
-        BYTE *GetSecretsCompletedAddress(int tombraider, int block, int iLevel = -1 );
-
-        //  Get Secrets Enabled
-        BYTE GetSecretsCompletedBits(int tombraider, int block, int iLevel = -1 );
-        BYTE GetSecretsCompletedValue(int tombraider, int block, int iLevel = -1 );
-        BYTE GetSecretsCompleted(int tombraider, int block, int iLevel = -1 );
-
         //
-        void SetBlockSecretsAcquiredAll(int tombraider, int block, int excludeLevel = -1 );
-
         //  Set Secret acquired
-        void SetBlockSecretsAcquired(int tombraider, int block, BYTE secrets = 0xff );
+        void SetBlockSecretsTotal(int tombraider, int block, BYTE secrets = 0xff );
 
         DWORD GetTRPlus ( int tombraider );
         void SetTRPlus ( int tombraider, DWORD value );
@@ -947,9 +911,10 @@ class CTR8SaveGame : public CObject
 
         //  Get Maximum Secrets for level Index from 0
         static BYTE GetSecretsForLevel ( int tombraider, int levelIndex );
-        static WORD GetKillssForLevel ( int tombraider, int levelIndex );
-        static WORD GetPickupsForLevel ( int tombraider, int levelIndex );
-        static WORD GetCrystalsForLevel ( int tombraider, int levelIndex );
+
+        static WORD GetSecretsTilLevel ( int tombraider, int levelIndex );
+        static WORD GetKillsTilLevel ( int tombraider, int levelIndex );
+        static WORD GetPickupsTilLevel ( int tombraider, int levelIndex );
 
         //  From 1 to 32
         static const char *GetLevelName ( int tombraider, int level, int block = 0 );

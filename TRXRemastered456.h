@@ -108,14 +108,10 @@ class CTRXRemastered456 : public CTRXPropertyPage456
         CTRXButtonBase m_Invincible;
 
         CTRXEditBase m_Pickup;
-        CTRXEditBase m_Crystal;
         CTRXEditBase m_Kill;
         CTRXEditBase m_Secrets_A;
-        CTRXEditBase m_Secrets_C;
-        CTRXEditBase m_Secrets_E;
 
         CTRXEditBase m_Secrets_Max;
-        CTRXEditBase m_Col_Crystal;
         CTRXButtonBase m_Set;
 
         CTRXButtonBase m_Show;
@@ -129,7 +125,6 @@ class CTRXRemastered456 : public CTRXPropertyPage456
 
         CTRXEditBase m_Save_No;
         CTRXEditBase m_Pickup_Max;
-        CTRXEditBase m_Crystal_Max;
         CTRXEditBase m_Kill_Max;
 
         CTRXButtonBase m_ResetToPlus;

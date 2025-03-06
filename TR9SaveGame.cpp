@@ -5617,7 +5617,7 @@ BYTE CTR9SaveGame::GetSecretsForLevel ( int tombraider, int levelindex )
 /////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////
-WORD    CTR9SaveGame::GetKillssForLevel ( int tombraider, int levelindex )
+WORD    CTR9SaveGame::GetKillsForLevel ( int tombraider, int levelindex )
 {
     //
     switch ( tombraider )

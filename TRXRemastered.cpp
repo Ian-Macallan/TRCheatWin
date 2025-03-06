@@ -1299,7 +1299,7 @@ void CTRXRemastered::DisplayOne ( int line )
                     sprintf_s ( szText, sizeof(szText),  "%d", CTR9SaveGame::I()->GetCrystalsForLevel ( tombraider, level - 1 ) );
                     m_Crystal_Max.SetWindowText ( szText);
 
-                    sprintf_s ( szText, sizeof(szText),  "%d", CTR9SaveGame::I()->GetKillssForLevel ( tombraider, level - 1 ) );
+                    sprintf_s ( szText, sizeof(szText),  "%d", CTR9SaveGame::I()->GetKillsForLevel ( tombraider, level - 1 ) );
                     m_Kill_Max.SetWindowText ( szText);
 
                     int acqsuired = CTR9SaveGame::I()->GetBlockSecretsAcquired( tombraider, block );
@@ -1477,7 +1477,7 @@ void CTRXRemastered::DisplayOne ( int line )
                     sprintf_s ( szText, sizeof(szText),  "%d", CTR9SaveGame::I()->GetCrystalsForLevel ( tombraider, level - 1 ) );
                     m_Crystal_Max.SetWindowText ( szText);
 
-                    sprintf_s ( szText, sizeof(szText),  "%d", CTR9SaveGame::I()->GetKillssForLevel ( tombraider, level - 1 ) );
+                    sprintf_s ( szText, sizeof(szText),  "%d", CTR9SaveGame::I()->GetKillsForLevel ( tombraider, level - 1 ) );
                     m_Kill_Max.SetWindowText ( szText);
 
                     int acqsuired = CTR9SaveGame::I()->GetBlockSecretsAcquired( tombraider, block );
@@ -1658,7 +1658,7 @@ void CTRXRemastered::DisplayOne ( int line )
                     sprintf_s ( szText, sizeof(szText),  "%d", CTR9SaveGame::I()->GetCrystalsForLevel ( tombraider, level - 1 ) );
                     m_Crystal_Max.SetWindowText ( szText);
 
-                    sprintf_s ( szText, sizeof(szText),  "%d", CTR9SaveGame::I()->GetKillssForLevel ( tombraider, level - 1 ) );
+                    sprintf_s ( szText, sizeof(szText),  "%d", CTR9SaveGame::I()->GetKillsForLevel ( tombraider, level - 1 ) );
                     m_Kill_Max.SetWindowText ( szText);
 
                     int acqsuired = CTR9SaveGame::I()->GetBlockSecretsAcquired( tombraider, block );

@@ -282,13 +282,9 @@ void CTRXRemastered456::DoDataExchange(CDataExchange* pDX)
     DDX_Control(pDX, IDC_REAL_HEALTH, m_Real_Health);
     DDX_Control(pDX, IDC_STRONG, m_Invincible);
     DDX_Control(pDX, IDC_PICKUP, m_Pickup);
-    DDX_Control(pDX, IDC_CRYSTAL, m_Crystal);
     DDX_Control(pDX, IDC_KILL, m_Kill);
     DDX_Control(pDX, IDC_SECRETS, m_Secrets_A);
-    DDX_Control(pDX, IDC_SECRETS_1, m_Secrets_C);
-    DDX_Control(pDX, IDC_SECRETS_2, m_Secrets_E);
     DDX_Control(pDX, IDC_SECRETS_MAX, m_Secrets_Max);
-    DDX_Control(pDX, IDC_COL_CRYSTAL, m_Col_Crystal);
     DDX_Control(pDX, IDC_SET, m_Set);
     DDX_Control(pDX, IDC_SHOW, m_Show);
     DDX_Control(pDX, IDC_TR4_PLUS, m_TR4_Plus);
@@ -298,7 +294,6 @@ void CTRXRemastered456::DoDataExchange(CDataExchange* pDX)
     DDX_Control(pDX, IDC_KILL_BOSS, m_Kill_Willard);
     DDX_Control(pDX, IDC_SAVE, m_Save_No);
     DDX_Control(pDX, IDC_PICKUP_MAX, m_Pickup_Max);
-    DDX_Control(pDX, IDC_CRISTAL_MAX, m_Crystal_Max);
     DDX_Control(pDX, IDC_KILLS_MAX, m_Kill_Max);
     DDX_Control(pDX, IDC_RESET, m_ResetToPlus);
     DDX_Control(pDX, IDC_RESETGAME, m_ResetGames);
@@ -569,7 +564,6 @@ BOOL CTRXRemastered456::OnInitDialog()
 
         m_ToolTip.AddTool( &m_Flare, "Flares for TR2/TR3\r\nScions for TR1");
 
-        m_ToolTip.AddTool( &m_Crystal, "Crystal");
         m_ToolTip.AddTool( &m_Kill, "Kills");
         m_ToolTip.AddTool( &m_Kill_Willard, "Kill TR5 Mecanical Head\r\n");
         m_ToolTip.AddTool( &m_List_All, "List All Entries\r\nCan be useful if a game entry is not the correct one");
@@ -999,8 +993,6 @@ void CTRXRemastered456::DisplayOne ( int line )
                     SET_BLOCK_VALUE(m_SmallPak,m_iSmallMedipak);
                     SET_BLOCK_VALUE(m_Flare,m_iFlares);
 
-                    SET_BLOCK_HIDE(m_Col_Crystal);
-
                     SET_BLOCK_VALUE(m_AMagnum,m_iRevolverAmmos);
                     SET_GUN_VALUE(m_XMagnum,m_gunRevolver);
 
@@ -1054,46 +1046,27 @@ void CTRXRemastered456::DisplayOne ( int line )
                     sprintf_s ( szText, sizeof(szText),  "%d", CTR8SaveGame::I()->GetBlockPickup ( tombraider, block ) );
                     m_Pickup.SetWindowText ( szText);
 
-                    sprintf_s ( szText, sizeof(szText),  "%d", CTR8SaveGame::I()->GetBlockCrystal( tombraider, block ) );
-                    m_Crystal.SetWindowText ( szText);
-
                     sprintf_s ( szText, sizeof(szText),  "%d", CTR8SaveGame::I()->GetBlockKills( tombraider, block ) );
                     m_Kill.SetWindowText ( szText);
 
-                    sprintf_s ( szText, sizeof(szText),  "%d", CTR8SaveGame::I()->GetPickupsForLevel ( tombraider, level - 1 ) );
+                    sprintf_s ( szText, sizeof(szText),  "%d", CTR8SaveGame::I()->GetPickupsTilLevel ( tombraider, level - 1 ) );
                     m_Pickup_Max.SetWindowText ( szText);
 
-                    sprintf_s ( szText, sizeof(szText),  "%d", CTR8SaveGame::I()->GetCrystalsForLevel ( tombraider, level - 1 ) );
-                    m_Crystal_Max.SetWindowText ( szText);
-
-                    sprintf_s ( szText, sizeof(szText),  "%d", CTR8SaveGame::I()->GetKillssForLevel ( tombraider, level - 1 ) );
+                    sprintf_s ( szText, sizeof(szText),  "%d", CTR8SaveGame::I()->GetKillsTilLevel ( tombraider, level - 1 ) );
                     m_Kill_Max.SetWindowText ( szText);
 
-                    int acqsuired = CTR8SaveGame::I()->GetBlockSecretsAcquired( tombraider, block );
-                    sprintf_s ( szText, sizeof(szText),  "%d", acqsuired );
+                    sprintf_s ( szText, sizeof(szText),  "%d", CTR8SaveGame::I()->GetBlockSecretsTotal( tombraider, block ) );
                     m_Secrets_A.SetWindowText ( szText);
 
-                    sprintf_s ( szText, sizeof(szText),  "%d", CTR8SaveGame::I()->GetSecretsMaximum( tombraider, block ) );
+                    sprintf_s ( szText, sizeof(szText),  "%d", CTR8SaveGame::I()->GetSecretsTilLevel( tombraider, level - 1 ) );
                     m_Secrets_Max.SetWindowText ( szText);
-
-                    sprintf_s ( szText, sizeof(szText),  "%d", CTR8SaveGame::I()->GetBlockSecretsCurrent( tombraider, block ) );
-                    m_Secrets_C.SetWindowText ( szText);
-
-                    int completed =  CTR8SaveGame::I()->GetSecretsCompleted( tombraider, block );
-                    sprintf_s ( szText, sizeof(szText),  "%d", completed );
-                    m_Secrets_E.SetWindowText ( szText);
 
                     m_Pickup.EnableWindow ( TRUE );
                     m_Kill.EnableWindow ( TRUE );
-                    m_Crystal.EnableWindow ( FALSE );
-                    if ( acqsuired == completed )
-                    {
-                        m_Secrets_A.EnableWindow ( TRUE );
-                    }
-                    else
-                    {
-                        m_Secrets_A.EnableWindow ( FALSE );
-                    }
+                    
+                    m_Secrets_A.EnableWindow ( TRUE );
+                    m_Secrets_Max.EnableWindow ( TRUE );
+
                     m_Set.EnableWindow ( TRUE );
 
 #ifdef _DEBUG
@@ -1170,7 +1143,6 @@ void CTRXRemastered456::DisplayOne ( int line )
                     SET_BLOCK_VALUE(m_LargePak,m_iLargeMedipak);
                     SET_BLOCK_VALUE(m_SmallPak,m_iSmallMedipak);
                     SET_BLOCK_VALUE(m_Flare,m_iFlares);
-                    SET_BLOCK_HIDE(m_Col_Crystal);
 
                     SET_BLOCK_VALUE(m_AMagnum,m_iRevolverAmmos);
                     SET_GUN_VALUE(m_XMagnum,m_gunRevolver);
@@ -1223,46 +1195,26 @@ void CTRXRemastered456::DisplayOne ( int line )
                     sprintf_s ( szText, sizeof(szText),  "%d", CTR8SaveGame::I()->GetBlockPickup ( tombraider, block ) );
                     m_Pickup.SetWindowText ( szText);
 
-                    sprintf_s ( szText, sizeof(szText),  "%d", CTR8SaveGame::I()->GetBlockCrystal( tombraider, block ) );
-                    m_Crystal.SetWindowText ( szText);
-
                     sprintf_s ( szText, sizeof(szText),  "%d", CTR8SaveGame::I()->GetBlockKills( tombraider, block ) );
                     m_Kill.SetWindowText ( szText);
 
-                    sprintf_s ( szText, sizeof(szText),  "%d", CTR8SaveGame::I()->GetPickupsForLevel ( tombraider, level - 1 ) );
+                    sprintf_s ( szText, sizeof(szText),  "%d", CTR8SaveGame::I()->GetPickupsTilLevel ( tombraider, level - 1 ) );
                     m_Pickup_Max.SetWindowText ( szText);
 
-                    sprintf_s ( szText, sizeof(szText),  "%d", CTR8SaveGame::I()->GetCrystalsForLevel ( tombraider, level - 1 ) );
-                    m_Crystal_Max.SetWindowText ( szText);
-
-                    sprintf_s ( szText, sizeof(szText),  "%d", CTR8SaveGame::I()->GetKillssForLevel ( tombraider, level - 1 ) );
+                    sprintf_s ( szText, sizeof(szText),  "%d", CTR8SaveGame::I()->GetKillsTilLevel ( tombraider, level - 1 ) );
                     m_Kill_Max.SetWindowText ( szText);
 
-                    int acqsuired = CTR8SaveGame::I()->GetBlockSecretsAcquired( tombraider, block );
-                    sprintf_s ( szText, sizeof(szText),  "%d", acqsuired );
+                    sprintf_s ( szText, sizeof(szText),  "%d", CTR8SaveGame::I()->GetBlockSecretsTotal( tombraider, block ) );
                     m_Secrets_A.SetWindowText ( szText);
 
-                    sprintf_s ( szText, sizeof(szText),  "%d", CTR8SaveGame::I()->GetSecretsMaximum( tombraider, block ) );
+                    sprintf_s ( szText, sizeof(szText),  "%d", CTR8SaveGame::I()->GetSecretsTilLevel( tombraider, level - 1 ) );
                     m_Secrets_Max.SetWindowText ( szText);
 
-                    sprintf_s ( szText, sizeof(szText),  "%d", CTR8SaveGame::I()->GetBlockSecretsCurrent( tombraider, block ) );
-                    m_Secrets_C.SetWindowText ( szText);
-
-                    int completed =  CTR8SaveGame::I()->GetSecretsCompleted( tombraider, block );
-                    sprintf_s ( szText, sizeof(szText),  "%d", completed );
-                    m_Secrets_E.SetWindowText ( szText);
-
                     m_Pickup.EnableWindow ( TRUE );
-                    m_Crystal.EnableWindow ( FALSE );
                     m_Kill.EnableWindow ( TRUE );
-                    if ( acqsuired == completed )
-                    {
-                        m_Secrets_A.EnableWindow ( TRUE );
-                    }
-                    else
-                    {
-                        m_Secrets_A.EnableWindow ( FALSE );
-                    }
+
+                    m_Secrets_A.EnableWindow ( TRUE );
+                    m_Secrets_Max.EnableWindow ( TRUE );
                     m_Set.EnableWindow ( TRUE );
 
 #ifdef _DEBUG
@@ -1332,7 +1284,6 @@ void CTRXRemastered456::DisplayOne ( int line )
     SetValue ( m_LargePak, 0, FALSE );
     SetValue ( m_SmallPak, 0, FALSE );
     SetValue ( m_Flare, 0, FALSE );
-    SetValue ( m_Col_Crystal, 0, FALSE );
 
     SetValue ( m_Guns, 0, FALSE );
 
@@ -1379,11 +1330,9 @@ void CTRXRemastered456::DisplayOne ( int line )
     m_ResetGames.EnableWindow ( FALSE );
 
     m_Pickup.EnableWindow ( FALSE );
-    m_Crystal.EnableWindow ( FALSE );
     m_Kill.EnableWindow ( FALSE );
 
     m_Pickup_Max.SetWindowText ( "" );
-    m_Crystal_Max.SetWindowText ( "" );
     m_Kill_Max.SetWindowText ( "" );
 
     //
@@ -1397,6 +1346,7 @@ void CTRXRemastered456::DisplayOne ( int line )
 
     //
     m_Secrets_A.EnableWindow ( FALSE );
+    m_Secrets_Max.EnableWindow ( FALSE );
 
     m_Set.EnableWindow ( FALSE );
     m_Show.EnableWindow ( FALSE );
@@ -2534,9 +2484,8 @@ void CTRXRemastered456::UpdateBuffer( )
 
                     CTR8SaveGame::I()->SetBlockPickup ( tombraider, block, GetValue ( m_Pickup ) );
                     CTR8SaveGame::I()->SetBlockKills ( tombraider, block, GetValue ( m_Kill ) );
-                    CTR8SaveGame::I()->SetBlockCrystal ( tombraider, block, GetValue ( m_Crystal ) );
 
-                    CTR8SaveGame::I()->SetBlockSecretsAcquired ( tombraider, block, GetValue ( m_Secrets_A ) );
+                    CTR8SaveGame::I()->SetBlockSecretsTotal ( tombraider, block, GetValue ( m_Secrets_A ) );
 
                     CTR8SaveGame::I()->SetGamePlus ( tombraider, block, m_Game_Plus.GetCheck() );
 
@@ -2557,9 +2506,8 @@ void CTRXRemastered456::UpdateBuffer( )
                     //  Object and keys are for a block
                     CTR8SaveGame::I()->SetBlockPickup ( tombraider, block, GetValue ( m_Pickup ) );
                     CTR8SaveGame::I()->SetBlockKills ( tombraider, block, GetValue ( m_Kill ) );
-                    CTR8SaveGame::I()->SetBlockCrystal ( tombraider, block, GetValue ( m_Crystal ) );
 
-                    CTR8SaveGame::I()->SetBlockSecretsAcquired ( tombraider, block, GetValue ( m_Secrets_A ) );
+                    CTR8SaveGame::I()->SetBlockSecretsTotal ( tombraider, block, GetValue ( m_Secrets_A ) );
 
                     CTR8SaveGame::I()->SetGamePlus ( tombraider, block, m_Game_Plus.GetCheck() );
 
@@ -3438,26 +3386,6 @@ BOOL CTRXRemastered456::OnToolTipNotify(UINT id, NMHDR *pNMH, LRESULT *pResult)
                     pAddress = ( void *) CTR8SaveGame::I()->GetSlotAddress ( tombraider, block );
                     sprintf_s ( szText + strlen(szText), sizeof(szText) - strlen(szText),
                                 " - Address : 0x%08lX\r\n", RelativeAddress ( pAddress ) );
-
-                    //
-                    pAddress = ( void *) CTR8SaveGame::I()->GetBlockSecretsAddress ( tombraider, block );
-                    if ( pAddress )
-                    {
-                        sprintf_s ( szText + strlen(szText), sizeof(szText) - strlen(szText),
-                                    " - A : 0x%08lX\r\n", RelativeAddress ( pAddress ) );
-                    }
-                    pAddress = ( void *) CTR8SaveGame::I()->GetBlockSecretsCurrentAddress ( tombraider, block );
-                    if ( pAddress )
-                    {
-                        sprintf_s ( szText + strlen(szText), sizeof(szText) - strlen(szText),
-                                    " - C : 0x%08lX\r\n", RelativeAddress ( pAddress ) );
-                    }
-                    pAddress = ( void *) CTR8SaveGame::I()->GetSecretsCompletedAddress ( tombraider, block );
-                    if ( pAddress )
-                    {
-                        sprintf_s ( szText + strlen(szText), sizeof(szText) - strlen(szText),
-                                    " - E : 0x%08lX\r\n", RelativeAddress ( pAddress ) );
-                    }
                 }
                 else if ( hitInfo.iSubItem == COLR_ADDRESS_2 )
                 {
@@ -3540,35 +3468,19 @@ void CTRXRemastered456::OnBnClickedSet()
             {
                 case 4:
                 {
-                    int acquired    = CTR8SaveGame::I()->GetBlockSecretsAcquired ( tombraider, block );
-                    int completed   = CTR8SaveGame::I()->GetSecretsCompleted ( tombraider, block );
-                    if ( acquired == completed )
-                    {
-                        CTR8SaveGame::I()->SetBlockSecretsAcquired ( tombraider, block );
-                    }
-                    CTR8SaveGame::I()->SetBlockSecretsAcquiredAll ( tombraider, block, -1 );
+                    WORD maxSecret    = CTR8SaveGame::I()->GetSecretsTilLevel( tombraider, level - 1 );
+                    CTR8SaveGame::I()->SetBlockSecretsTotal ( tombraider, block, (BYTE) maxSecret );
                     break;
                 }
                 case 5:
                 {
-                    int acquired    = CTR8SaveGame::I()->GetBlockSecretsAcquired ( tombraider, block );
-                    int completed   = CTR8SaveGame::I()->GetSecretsCompleted ( tombraider, block );
-                    if ( acquired == completed )
-                    {
-                        CTR8SaveGame::I()->SetBlockSecretsAcquired ( tombraider, block );
-                    }
-                    CTR8SaveGame::I()->SetBlockSecretsAcquiredAll ( tombraider, block, -1 );
+                    WORD maxSecret    = CTR8SaveGame::I()->GetSecretsTilLevel( tombraider, level - 1 );
+                    CTR8SaveGame::I()->SetBlockSecretsTotal ( tombraider, block, (BYTE) maxSecret );
                     break;
                 }
                 case 6:
                 {
-                    int acquired    = CTR8SaveGame::I()->GetBlockSecretsAcquired ( tombraider, block );
-                    int completed   = CTR8SaveGame::I()->GetSecretsCompleted ( tombraider, block );
-                    if ( acquired == completed )
-                    {
-                        // CTR8SaveGame::I()->SetBlockSecretsAcquired ( tombraider, block );
-                    }
-                    CTR8SaveGame::I()->SetBlockSecretsAcquiredAll ( tombraider, block, -1 );
+                    WORD maxSecret    = CTR8SaveGame::I()->GetSecretsTilLevel( tombraider, level - 1 );
                     break;
                 }
             }

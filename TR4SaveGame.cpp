@@ -33,26 +33,26 @@ static char    TR4NBSecrets [ ] =
     /* Burial Chambers */               5,  //  04
     /* Valley of the Kings */           3,  //  05
     /* KV5 */                           4,  //  06
-    /* Temple of Karnak */              4,  //  07
-    /* Great Hypostyle Hall */          0,  //  08
-    /* Sacred Lake */                   1,  //  09
+    /* Temple of Karnak */              4+0,    //  07
+    /* Great Hypostyle Hall */          0+0,    //  08
+    /* Sacred Lake */                   0+1,    //  09
     /* Nothing */                       0,  //  10
     /* Tomb of Semerkhet */             7,  //  11
     /* Guardian of Semerkhet */         3,  //  12
     /* Desert Railroad */               3,  //  13
     /* Alexandria */                    1,  //  14
-    /* Coastal Ruins */                 0,  //  15
+    /* Coastal Ruins */                 0+1,    //  15
     /* Pharos, Temple of Isis */        0,  //  16
     /* Cleopatra's Palaces */           1,  //  17
-    /* Catacombs */                     4,  //  18
+    /* Catacombs */                     4+0,    //  18
     /* Temple of Poseidon */            1,  //  19
     /* The Lost Library */              3,  //  20
-    /* Hall of Demetrius */             1,  //  21
-    /* City of the Dead */              2,  //  22
-    /* Trenches */                      0,  //  23
-    /* Chambers of Tulun */             2,  //  24
+    /* Hall of Demetrius */             0,  //  21
+    /* City of the Dead */              1+1,    //  22
+    /* Trenches */                      0+0,    //  23
+    /* Chambers of Tulun */             2+0,    //  24
     /* Street Bazaar */                 1,  //  25
-    /* Citadel Gate */                  1,  //  26
+    /* Citadel Gate */                  1+0,    //  26
     /* Citadel */                       2,  //  27
     /* Sphinx Complex */                1,  //  28
     /* Nothing */                       0,  //  29

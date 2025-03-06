@@ -152,9 +152,6 @@ BOOL CTRXSecretsDialog::OnInitDialog()
     //
     if ( m_iTombraider >= 4 && m_iTombraider <= 5 )
     {
-        BYTE secrets [ 64  ];
-        ZeroMemory ( secrets, sizeof(secrets) );
-        CTR8SaveGame::I()->GetBlocksSecrets ( m_iTombraider, m_iBlock, secrets );
 
         int totalAcquired = 0;
         int totalPossible = 0;
@@ -165,8 +162,7 @@ BOOL CTRXSecretsDialog::OnInitDialog()
             m_List_Secrets.InsertItem ( iX, pLevelName );
 
             ZeroMemory ( szText, sizeof(szText) );
-            sprintf_s ( szText, sizeof(szText), "%d", secrets [ iX ] );
-            totalAcquired += secrets [ iX ];
+            sprintf_s ( szText, sizeof(szText), "NA" );
             m_List_Secrets.SetItemText ( iX, 1, szText );
 
             ZeroMemory ( szText, sizeof(szText) );
@@ -175,21 +171,7 @@ BOOL CTRXSecretsDialog::OnInitDialog()
             sprintf_s ( szText, sizeof(szText), "%d", iMax );
             m_List_Secrets.SetItemText ( iX, 2, szText );
 
-            if ( iMax == secrets [ iX ] )
-            {
-                if ( iMax != 0 )
-                {
-                    m_List_Secrets.SetItemText ( iX, 3, "OK" );
-                }
-                else
-                {
-                    m_List_Secrets.SetItemText ( iX, 3, "-" );
-                }
-            }
-            else
-            {
-                m_List_Secrets.SetItemText ( iX, 3, "" );
-            }
+            m_List_Secrets.SetItemText ( iX, 3, "" );
 
             sprintf_s ( szText, sizeof(szText), "%2d/%2d", totalAcquired, totalPossible );
             m_List_Secrets.SetItemText ( iX, 4, szText );
@@ -197,13 +179,11 @@ BOOL CTRXSecretsDialog::OnInitDialog()
             ZeroMemory ( szText, sizeof(szText) );
             if ( m_iTombraider == 4  || m_iTombraider == 5 )
             {
-                int iEnabled = CTR8SaveGame::I()->GetSecretsCompleted ( m_iTombraider, m_iBlock, iX );
-                sprintf_s ( szText, sizeof(szText), "%d", iEnabled );
+                sprintf_s ( szText, sizeof(szText), "NA");
             }
             else if ( m_iLevel == iX + 1 )
             {
-                int iEnabled = CTR8SaveGame::I()->GetSecretsCompleted ( m_iTombraider, m_iBlock, iX );
-                sprintf_s ( szText, sizeof(szText), "%d", iEnabled );
+                sprintf_s ( szText, sizeof(szText), "NA" );
             }
             m_List_Secrets.SetItemText ( iX, 5, szText );
         }
