@@ -18,6 +18,12 @@
 // #pragma warning (disable : 4311)
 // #pragma warning (disable : 4302)
 
+#define STATE_123_SAFE          0xEF
+#define STATE_123_BURNING       0x10
+
+#define STATE_45_SAFE           0xF7
+#define STATE_45_BURNING        0x08
+
 //
 /////////////////////////////////////////////////////////////////////////////
 // CTRSaveGame document

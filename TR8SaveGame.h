@@ -211,10 +211,20 @@ struct TABLE_TR4
             BYTE        m_iPius;
         };
 
+        //
+        struct
+        {
+            BYTE        unknown09 [  0x36 ];
+            //  Must be combined with arm : m_iLara | 0x04
+            WORD        m_Torch1;       //  Must be 04 instead of 00
+            WORD        m_Torch2;       //  Must be 08 instead of 06 or 00
+            WORD        m_Torch3;       //  Must be 08 instead of 06 or 00
+        };
+
         //  Global Statistics
         struct
         {
-            BYTE        unknown09 [  0x0230 ];
+            BYTE        unknown10 [  0x0230 ];
             DWORD       totalElapsed;
             DWORD       totalDistance;
             WORD        totalAmmosUsed;     //  0x0238
@@ -404,10 +414,20 @@ struct TABLE_TR5
             BYTE        m_iPius;
         };
 
+        //  Not verified
+        struct
+        {
+            BYTE        unknown09 [  0x36 ];
+            //  Must be combined with arm : m_iLara | 0x04
+            WORD        m_Torch1;       //  Must be 04 instead of 00
+            WORD        m_Torch2;       //  Must be 08 instead of 06 or 00
+            WORD        m_Torch3;       //  Must be 08 instead of 06 or 00
+        };
+
         //  Global Statistics
         struct
         {
-            BYTE        unknown09 [  0x0230 ];
+            BYTE        unknown10 [  0x0230 ];
             DWORD       totalElapsed;
             DWORD       totalDistance;
             WORD        totalAmmosUsed;     //  0x0238
@@ -771,6 +791,9 @@ class CTR8SaveGame : public CObject
         WORD GetAir ( int tombraider, int block );
         void SetAir ( int tombraider, int block, WORD iAir );
 
+        WORD *GetTorchAddress ( int tombraider, int block );
+
+        BYTE *GetStateAddress ( int tombraider, int block );
         BYTE GetState ( int tombraider, int block );
         void SetState ( int tombraider, int block, BYTE iState );
 

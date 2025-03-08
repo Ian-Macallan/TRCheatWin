@@ -104,6 +104,7 @@ void CTRXPosition::DoDataExchange(CDataExchange* pDX)
     DDX_Control(pDX, IDC_PASTEPOS, m_PastePos);
     DDX_Control(pDX, IDC_LEFT, m_Left);
     DDX_Control(pDX, IDC_RIGHT, m_Right);
+    DDX_Control(pDX, IDC_ROOM_BUT, m_Room_Button);
 }
 
 //
@@ -120,6 +121,7 @@ BEGIN_MESSAGE_MAP(CTRXPosition, CTRXDialogBase)
     ON_EN_CHANGE(IDC_ORIENTATION_D, &CTRXPosition::OnChangeOrientationD)
     ON_BN_CLICKED(IDC_COPYPOS, &CTRXPosition::OnBnClickedCopypos)
     ON_BN_CLICKED(IDC_PASTEPOS, &CTRXPosition::OnBnClickedPastepos)
+    ON_BN_CLICKED(IDC_ROOM_BUT, &CTRXPosition::OnBnClickedRoomBut)
 END_MESSAGE_MAP()
 
 
@@ -991,9 +993,46 @@ void CTRXPosition::OnBnClickedSearch()
     //
     static char szText [ 64 ];
     double      dfValue = 0.0;
+
     if ( m_123 && CTR9SaveGame::I(FALSE) != NULL )
     {
         int levelNumber = CTR9SaveGame::I()->GetBlockLevelNumber ( m_iTombraider, m_iBlock );
+        int levelIndex  = levelNumber - 1;
+
+        m_West_East_M.GetWindowText ( szText, sizeof(szText) );
+        dfValue = atof ( szText );
+        DWORD dwWestToEast  = (DWORD) ( dfValue * POSITION_DIVIDER );
+
+        //
+        m_Vertical_M.GetWindowText ( szText, sizeof(szText) );
+        dfValue = atof ( szText );
+        DWORD dwVertical    = (DWORD) ( dfValue * POSITION_DIVIDER );
+
+        //
+        m_South_North_M.GetWindowText ( szText, sizeof(szText) );
+        dfValue = atof ( szText );
+        DWORD dwSouthToNorth    = (DWORD) ( dfValue * POSITION_DIVIDER );
+
+        WORD area = FindAreaForCoordinates ( m_iTombraider, levelIndex, dwWestToEast, dwVertical, dwSouthToNorth );
+        if ( area != 0XFFFF )
+        {
+            sprintf_s ( szText, sizeof(szText), "%d", area );
+            m_Word4_X.SetWindowText ( szText );
+
+            m_iArea = area;
+
+            m_Room.SetRoomPoint ( ComputeRoomPoint () );
+        }
+        else
+        {
+            MessageBox ( "Room/Area Not Found" );
+            m_iArea = -1;
+        }
+    }
+
+    if ( m_456 && CTR8SaveGame::I(FALSE) != NULL )
+    {
+        int levelNumber = CTR8SaveGame::I()->GetBlockLevelNumber ( m_iTombraider, m_iBlock );
         int levelIndex  = levelNumber - 1;
 
         m_West_East_M.GetWindowText ( szText, sizeof(szText) );
@@ -1036,14 +1075,30 @@ void CTRXPosition::ChangeAreas( int room )
 {
     if ( room != -1 )
     {
-        int levelNumber     = CTR9SaveGame::I()->GetBlockLevelNumber ( m_iTombraider, m_iBlock );
-        int levelIndex      = levelNumber - 1;
-        TR_AREA trArea;
-        ZeroMemory ( &trArea, sizeof(trArea) );
-        BOOL bDone = EnumAreaForCoordinates ( m_iTombraider, levelIndex, room, &trArea );
-        if ( bDone )
+        if ( m_123 && CTR9SaveGame::I(FALSE) != NULL )
         {
-            ResizeRoom ( trArea.x, trArea.z, trArea.xSectors, trArea.zSectors, trArea.yTop, trArea.yBottom );
+            int levelNumber     = CTR9SaveGame::I()->GetBlockLevelNumber ( m_iTombraider, m_iBlock );
+            int levelIndex      = levelNumber - 1;
+            TR_AREA trArea;
+            ZeroMemory ( &trArea, sizeof(trArea) );
+            BOOL bDone = EnumAreaForCoordinates ( m_iTombraider, levelIndex, room, &trArea );
+            if ( bDone )
+            {
+                ResizeRoom ( trArea.x, trArea.z, trArea.xSectors, trArea.zSectors, trArea.yTop, trArea.yBottom );
+            }
+        }
+
+        if ( m_456 && CTR8SaveGame::I(FALSE) != NULL )
+        {
+            int levelNumber     = CTR8SaveGame::I()->GetBlockLevelNumber ( m_iTombraider, m_iBlock );
+            int levelIndex      = levelNumber - 1;
+            TR_AREA trArea;
+            ZeroMemory ( &trArea, sizeof(trArea) );
+            BOOL bDone = EnumAreaForCoordinates ( m_iTombraider, levelIndex, room, &trArea );
+            if ( bDone )
+            {
+                ResizeRoom ( trArea.x, trArea.z, trArea.xSectors, trArea.zSectors, trArea.yTop, trArea.yBottom );
+            }
         }
     }
 }
@@ -1496,7 +1551,111 @@ void CTRXPosition::OnBnClickedPastepos()
                 m_Room.SetAreaAndPosition ( pArea, &currentPosition );
             }
         }
+
         //
         ChangeAreas ( g_wRoomCopy );
+    }
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//  Search Room for Current values
+/////////////////////////////////////////////////////////////////////////////
+void CTRXPosition::OnBnClickedRoomBut()
+{
+    static char     szString [ 64 ];
+
+    //
+    if ( m_123 && CTR9SaveGame::I(FALSE) != NULL )
+    {
+        int levelIndex  = m_iLevel - 1;
+
+        m_West_East_M.GetWindowText ( szString, sizeof(szString) );
+        long dwWestEast        = (long) ( atof(szString) * POSITION_DIVIDER);
+
+        m_South_North_M.GetWindowText ( szString, sizeof(szString) );
+        long dwSouthNorth      = (long) ( atof(szString) * POSITION_DIVIDER);
+
+        m_Vertical_M.GetWindowText ( szString, sizeof(szString) );
+        long dwVertical        = (long) ( atof(szString) * POSITION_DIVIDER);
+
+        m_Word1_D.GetWindowText ( szString, sizeof(szString) );
+        double dfOrientation    =  atof(szString);
+
+        //
+        WORD area = FindAreaForCoordinates ( m_iTombraider, levelIndex, dwWestEast, dwVertical, dwSouthNorth );
+        if ( area != 0XFFFF )
+        {
+            sprintf_s ( szString, sizeof(szString), "%d", area );
+            m_Word4_X.SetWindowText ( szString );
+
+            //
+            TR_CUR_POSITION                 currentPosition;
+            ZeroMemory ( &currentPosition, sizeof(currentPosition) );
+            currentPosition.x               = dwWestEast;
+            currentPosition.z               = dwSouthNorth;
+            currentPosition.orientation     = dfOrientation;
+
+            if ( m_123 && CTR9SaveGame::I(FALSE) != NULL )
+            {
+                int levelNumber     = CTR9SaveGame::I()->GetBlockLevelNumber ( m_iTombraider, m_iBlock );
+                int levelIndex      = levelNumber - 1;
+                TR_AREA *pArea = GetTRArea ( m_iTombraider, levelIndex, area );
+                if ( pArea )
+                {
+                    m_Room.SetAreaAndPosition ( pArea, &currentPosition );
+                }
+            }
+
+            //
+            ChangeAreas ( area );
+        }
+    }
+
+    //
+    if ( m_456 && CTR8SaveGame::I(FALSE) != NULL )
+    {
+        int levelIndex  = m_iLevel - 1;
+
+        m_West_East_M.GetWindowText ( szString, sizeof(szString) );
+        long dwWestEast        = (long) ( atof(szString) * POSITION_DIVIDER);
+
+        m_South_North_M.GetWindowText ( szString, sizeof(szString) );
+        long dwSouthNorth      = (long) ( atof(szString) * POSITION_DIVIDER);
+
+        m_Vertical_M.GetWindowText ( szString, sizeof(szString) );
+        long dwVertical        = (long) ( atof(szString) * POSITION_DIVIDER);
+
+        m_Word1_D.GetWindowText ( szString, sizeof(szString) );
+        double dfOrientation    =  atof(szString);
+
+        //
+        WORD area = FindAreaForCoordinates ( m_iTombraider, levelIndex, dwWestEast, dwVertical, dwSouthNorth );
+        if ( area != 0XFFFF )
+        {
+            sprintf_s ( szString, sizeof(szString), "%d", area );
+            m_Word4_X.SetWindowText ( szString );
+
+            TR_CUR_POSITION                 currentPosition;
+            ZeroMemory ( &currentPosition, sizeof(currentPosition) );
+            currentPosition.x               = dwWestEast;
+            currentPosition.z               = dwSouthNorth;
+            currentPosition.orientation     = dfOrientation;
+
+            if ( m_456 && CTR8SaveGame::I(FALSE) != NULL )
+            {
+                int levelNumber     = CTR8SaveGame::I()->GetBlockLevelNumber ( m_iTombraider, m_iBlock );
+                int levelIndex      = levelNumber - 1;
+                TR_AREA *pArea = GetTRArea ( m_iTombraider, levelIndex, area );
+                if ( pArea )
+                {
+                    m_Room.SetAreaAndPosition ( pArea, &currentPosition );
+                }
+            }
+
+            //
+            ChangeAreas ( area );
+        }
+
     }
 }

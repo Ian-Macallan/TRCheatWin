@@ -8,7 +8,6 @@
 // Generated from the TEXTINCLUDE 2 resource.
 //
 #include "afxres.h"
-#include "AutomaticProductName.h"
 
 /////////////////////////////////////////////////////////////////////////////
 #undef APSTUDIO_READONLY_SYMBOLS
@@ -593,7 +592,7 @@ BEGIN
     LTEXT           "Orientation ( 0° = facing S or N): ",IDC_STATIC,7,104,112,8,0,WS_EX_RIGHT
     LTEXT           "Word 2 : ",IDC_STATIC,7,122,112,8,0,WS_EX_RIGHT
     LTEXT           "Word 3 : ",IDC_STATIC,7,140,112,8,0,WS_EX_RIGHT
-    LTEXT           "Room Number (Area) : ",IDC_STATIC,7,158,112,8,0,WS_EX_RIGHT
+    CONTROL         "Room Number (Area) : ",IDC_ROOM_BUT,"Button",BS_OWNERDRAW | WS_TABSTOP,7,155,112,14
     LTEXT           "Word 5 : ",IDC_STATIC,7,176,112,8,0,WS_EX_RIGHT
     GROUPBOX        "Hexadecimal",IDC_STATIC,125,15,63,180
     EDITTEXT        IDC_WEST_EAST,131,29,49,14,ES_AUTOHSCROLL | ES_READONLY | NOT WS_TABSTOP
@@ -919,8 +918,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 4,6,04,003
- PRODUCTVERSION 4,6,04,003
+ FILEVERSION 4,6,4,6
+ PRODUCTVERSION 4,6,4,6
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x29L
@@ -935,18 +934,18 @@ BEGIN
     BEGIN
         BLOCK "040904b0"
         BEGIN
-            VALUE "Comments", "mailto:ian.macallan@gmail.com\0"
-            VALUE "CompanyName", "Macallan (c)\0"
-            VALUE "FileDescription", "TRCheatWin - (MSVC)\0"
-            VALUE "FileVersion", "4.6.04.003\0"
-            VALUE "InternalName", "https://www.macallan.org/\0"
-            VALUE "LegalCopyright", "Copyright (C) Thu Mar 06 09:44, 2025\0"
-            VALUE "LegalTrademarks", "Author: Ian Macallan\0"
-            VALUE "OriginalFilename", ORIGINAL_FILENAME
-            VALUE "PrivateBuild", "1158\0"
-            VALUE "ProductName", PRODUCT_NAME
-            VALUE "ProductVersion", "4.6.04.003\0"
-            VALUE "SpecialBuild", "1158\0"
+            VALUE "Comments", "mailto:ian.macallan@gmail.com"
+            VALUE "CompanyName", "Macallan (c)"
+            VALUE "FileDescription", "TRCheatWin - (MSVC)"
+            VALUE "FileVersion", "4.6.04.006"
+            VALUE "InternalName", "https://www.macallan.org/"
+            VALUE "LegalCopyright", "Copyright (C) Sat Mar 08 09:06, 2025"
+            VALUE "LegalTrademarks", "Author: Ian Macallan"
+            VALUE "OriginalFilename", "TRCheatWin (x86 MBCS) (MSVC)"
+            VALUE "PrivateBuild", "1161"
+            VALUE "ProductName", "TRCheatWin - Version 4.6.04.006\r\n(Build 1161) - (x86 MBCS) (MSVC)"
+            VALUE "ProductVersion", "4.6.04.006"
+            VALUE "SpecialBuild", "1161"
         END
     END
     BLOCK "VarFileInfo"

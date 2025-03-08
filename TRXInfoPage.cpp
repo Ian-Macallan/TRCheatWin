@@ -2283,7 +2283,7 @@ void CTRXInfoPage::OnBnClickedLaraburning()
     }
     else
     {
-        if( CTRSaveGame::I()->IsLaraBurning() )
+        if ( CTRSaveGame::I()->IsLaraBurning() )
         {
             CTRSaveGame::I()->SetLaraNoBurning ( 0 );
         }

@@ -3940,7 +3940,7 @@ void CTR8SaveGame::SetAir ( int tombraider, int block, WORD iAir )
 /////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////
-BYTE CTR8SaveGame::GetState ( int tombraider, int block )
+WORD *CTR8SaveGame::GetTorchAddress ( int tombraider, int block )
 {
     if ( block < 0 || block >= NB_SLOT_456 )
     {
@@ -3954,7 +3954,7 @@ BYTE CTR8SaveGame::GetState ( int tombraider, int block )
             TABLE_TR4 *pBlock   = ( TABLE_TR4 *) m_TR4_Blocks [ block ];
             if ( pBlock )
             {
-                return pBlock->m_iLara;
+                return &pBlock->m_Torch1;
             }
             break;
         }
@@ -3964,7 +3964,91 @@ BYTE CTR8SaveGame::GetState ( int tombraider, int block )
             TABLE_TR5 *pBlock   = ( TABLE_TR5 *) m_TR5_Blocks [ block ];
             if ( pBlock )
             {
-                return pBlock->m_iLara;
+                return &pBlock->m_Torch1;
+            }
+            break;
+        }
+
+        case 6:
+        {
+            break;
+        }
+    }
+
+    return NULL;
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
+BYTE *CTR8SaveGame::GetStateAddress ( int tombraider, int block )
+{
+    if ( block < 0 || block >= NB_SLOT_456 )
+    {
+        return 0;
+    }
+
+    switch ( tombraider )
+    {
+        case 4:
+        {
+            TABLE_TR4 *pBlock   = ( TABLE_TR4 *) m_TR4_Blocks [ block ];
+            if ( pBlock )
+            {
+                return &pBlock->m_iLara;
+            }
+            break;
+        }
+
+        case 5:
+        {
+            TABLE_TR5 *pBlock   = ( TABLE_TR5 *) m_TR5_Blocks [ block ];
+            if ( pBlock )
+            {
+                return &pBlock->m_iLara;
+            }
+            break;
+        }
+
+        case 6:
+        {
+            break;
+        }
+    }
+
+    return NULL;
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
+BYTE CTR8SaveGame::GetState ( int tombraider, int block )
+{
+    if ( block < 0 || block >= NB_SLOT_456 )
+    {
+        return 0;
+    }
+
+    switch ( tombraider )
+    {
+        case 4:
+        {
+            BYTE *pByte   = GetStateAddress (tombraider, block) ;
+            if ( pByte )
+            {
+                return *pByte;
+            }
+            break;
+        }
+
+        case 5:
+        {
+            BYTE *pByte   = GetStateAddress (tombraider, block) ;
+            if ( pByte )
+            {
+                return *pByte;
             }
             break;
         }
@@ -3993,20 +4077,20 @@ void CTR8SaveGame::SetState ( int tombraider, int block, BYTE iState )
     {
         case 4:
         {
-            TABLE_TR4 *pBlock   = ( TABLE_TR4 *) m_TR4_Blocks [ block ];
-            if ( pBlock )
+            BYTE *pByte   = GetStateAddress (tombraider, block) ;
+            if ( pByte )
             {
-                pBlock->m_iLara = iState;
+                *pByte = iState;
             }
             break;
         }
 
         case 5:
         {
-            TABLE_TR5 *pBlock   = ( TABLE_TR5 *) m_TR5_Blocks [ block ];
-            if ( pBlock )
+            BYTE *pByte   = GetStateAddress (tombraider, block) ;
+            if ( pByte )
             {
-                pBlock->m_iLara = iState;
+                *pByte = iState;
             }
             break;
         }
@@ -4046,6 +4130,7 @@ const char *CTR8SaveGame::GetInterest ( int tombraider, int block )
             sprintf_s ( szResponse + strlen(szResponse), sizeof(szResponse) - strlen(szResponse), "%16s: NULL\r\n", "Save" );
         }
 
+        //
         pAddress = ( char *) GetBlockStart ( tombraider );
         if ( pAddress )
         {
@@ -4076,11 +4161,11 @@ const char *CTR8SaveGame::GetInterest ( int tombraider, int block )
         if ( pAddress )
         {
             sprintf_s ( szResponse + strlen(szResponse), sizeof(szResponse) - strlen(szResponse),
-                        "%16s: 0x%08lX\r\n", "Other", RelativeAddress ( pAddress ) );
+                        "%16s: 0x%08lX\r\n", "Elapsed", RelativeAddress ( pAddress ) );
         }
         else
         {
-            sprintf_s ( szResponse + strlen(szResponse), sizeof(szResponse) - strlen(szResponse), "%16s: NULL\r\n", "Other" );
+            sprintf_s ( szResponse + strlen(szResponse), sizeof(szResponse) - strlen(szResponse), "%16s: NULL\r\n", "Elapsed" );
         }
 
         //
@@ -4095,6 +4180,7 @@ const char *CTR8SaveGame::GetInterest ( int tombraider, int block )
             sprintf_s ( szResponse + strlen(szResponse), sizeof(szResponse) - strlen(szResponse), "%16s: NULL\r\n", "Level" );
         }
 
+        //
         pAddress = ( char *) GetObjectBaseAddress ( tombraider, block );
         if ( pAddress )
         {
@@ -4106,6 +4192,31 @@ const char *CTR8SaveGame::GetInterest ( int tombraider, int block )
             sprintf_s ( szResponse + strlen(szResponse), sizeof(szResponse) - strlen(szResponse), "%16s: NULL\r\n", "Objects" );
         }
 
+        //
+        pAddress = ( char *) GetStateAddress ( tombraider, block );
+        if ( pAddress )
+        {
+            sprintf_s ( szResponse + strlen(szResponse), sizeof(szResponse) - strlen(szResponse),
+                        "%16s: 0x%08lX : %d\r\n", "State", RelativeAddress ( pAddress ), *((BYTE *) pAddress) );
+        }
+        else
+        {
+            sprintf_s ( szResponse + strlen(szResponse), sizeof(szResponse) - strlen(szResponse), "%16s: NULL\r\n", "State" );
+        }
+
+        //
+        pAddress = ( char *) GetTorchAddress ( tombraider, block );
+        if ( pAddress )
+        {
+            sprintf_s ( szResponse + strlen(szResponse), sizeof(szResponse) - strlen(szResponse),
+                        "%16s: 0x%08lX : %d\r\n", "Torch", RelativeAddress ( pAddress ), *((WORD *) pAddress) );
+        }
+        else
+        {
+            sprintf_s ( szResponse + strlen(szResponse), sizeof(szResponse) - strlen(szResponse), "%16s: NULL\r\n", "Torch" );
+        }
+
+        //
         pAddress = ( char *) GetRealHealthAddress ( tombraider, block );
         if ( pAddress )
         {

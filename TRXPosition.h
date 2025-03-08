@@ -54,6 +54,7 @@ class CTRXPosition : public CTRXDialogBase
         afx_msg void OnChangeOrientationD();
         afx_msg void OnBnClickedCopypos();
         afx_msg void OnBnClickedPastepos();
+        afx_msg void OnBnClickedRoomBut();
 
         CTRXEditBase m_West_East;
         CTRXEditBase m_West_East_M;
@@ -105,4 +106,5 @@ class CTRXPosition : public CTRXDialogBase
         //
         CTRXStaticBase m_Left;
         CTRXStaticBase m_Right;
+        CTRXButtonBase m_Room_Button;
 };

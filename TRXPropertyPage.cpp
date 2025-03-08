@@ -227,7 +227,7 @@ BOOL CTRXPropertyPage::OnApply()
     return CTRXPropertyPageBase::OnApply();
 }
 
-//
+////
 /////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////
@@ -237,6 +237,29 @@ int CTRXPropertyPage::GetValue ( CEdit &edit )
     char szString [ 32 ];
     ZeroMemory ( szString, sizeof(szString) );
     edit.GetWindowText ( szString, sizeof(szString) );
+    int result = 0;
+    if ( strncmp ( szString, "0x", 2 ) == 0 )
+    {
+        sscanf_s ( szString + 2, "%x", &result );
+    }
+    else
+    {
+        result = atoi(szString);
+    }
+
+    return result;
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
+int CTRXPropertyPage::GetValue ( CStatic &stat )
+{
+    //
+    char szString [ 32 ];
+    ZeroMemory ( szString, sizeof(szString) );
+    stat.GetWindowText ( szString, sizeof(szString) );
     int result = 0;
     if ( strncmp ( szString, "0x", 2 ) == 0 )
     {

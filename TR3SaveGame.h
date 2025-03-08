@@ -292,6 +292,7 @@ class CTR3SaveGame : public CTR123SaveGame
 
         void SetAllObjects ();
 
+        int GetLaraState ( );
         int IsLaraBurning ();
         void SetLaraBurning (int state = -1);
         void SetLaraNoBurning (int state = -1);

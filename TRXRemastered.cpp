@@ -60,9 +60,6 @@ extern CTRXCHEATWINApp theApp;
 #define MAX_AMMOS           6000
 #define MAX_AMMOS_MAX       (6*6000)
 
-#define STATE_SAFE          0x0a
-#define STATE_BURNING       0x1a
-
 //
 //
 /////////////////////////////////////////////////////////////////////////////
@@ -1346,7 +1343,7 @@ void CTRXRemastered::DisplayOne ( int line )
                         m_State.SetWindowText ( szText );
                         m_State.EnableWindow ( TRUE );
                         m_Burning.EnableWindow ( TRUE );
-                        m_Burning.SetCheck ( CTR9SaveGame::I()->GetState ( tombraider, block ) == 0x1a );
+                        m_Burning.SetCheck ( CTR9SaveGame::I()->GetState ( tombraider, block ) & STATE_123_BURNING );
                     }
                     else
                     {
@@ -1523,7 +1520,7 @@ void CTRXRemastered::DisplayOne ( int line )
                         m_State.SetWindowText ( szText );
                         m_State.EnableWindow ( TRUE );
                         m_Burning.EnableWindow ( TRUE );
-                        m_Burning.SetCheck ( CTR9SaveGame::I()->GetState ( tombraider, block ) == 0x1a );
+                        m_Burning.SetCheck ( CTR9SaveGame::I()->GetState ( tombraider, block ) & STATE_123_BURNING );
                     }
                     else
                     {
@@ -1707,7 +1704,7 @@ void CTRXRemastered::DisplayOne ( int line )
                         m_State.SetWindowText ( szText );
                         m_State.EnableWindow ( TRUE );
                         m_Burning.EnableWindow ( TRUE );
-                        m_Burning.SetCheck ( CTR9SaveGame::I()->GetState ( tombraider, block ) == 0x1a );
+                        m_Burning.SetCheck ( CTR9SaveGame::I()->GetState ( tombraider, block ) & STATE_123_BURNING );
                     }
                     else
                     {
@@ -2732,7 +2729,7 @@ void CTRXRemastered::UpdateGun(int tombraider, int block, GUN_TR1 *pGun, TABLE_T
             CTR9SaveGame::I()->SetRiotgun( tombraider, pBlock, pGun, level, true, MAX_AMMOS, true );
 
             CTR9SaveGame::I()->SetAir ( tombraider, block,  MAX_AIR );
-            CTR9SaveGame::I()->SetState ( tombraider, block,  STATE_SAFE );
+            CTR9SaveGame::I()->SetState ( tombraider, block,  STATE_123_SAFE );
             CTR9SaveGame::I()->SetRealHealth ( tombraider, block,  MAX_HEALTH );
         }
         else
@@ -2863,7 +2860,7 @@ void CTRXRemastered::UpdateGun(int tombraider, int block, GUN_TR2 *pGun, TABLE_T
             CTR9SaveGame::I()->SetM16( tombraider, pBlock, pGun, level, true, MAX_AMMOS + 3, true );
 
             CTR9SaveGame::I()->SetAir ( tombraider, block,  MAX_AIR );
-            CTR9SaveGame::I()->SetState ( tombraider, block,  STATE_SAFE );
+            CTR9SaveGame::I()->SetState ( tombraider, block,  STATE_123_SAFE );
             CTR9SaveGame::I()->SetRealHealth ( tombraider, block,  MAX_HEALTH );
         }
         else
@@ -3001,7 +2998,7 @@ void CTRXRemastered::UpdateGun(int tombraider, int block, GUN_TR3 *pGun, TABLE_T
             CTR9SaveGame::I()->SetRocket( tombraider, pBlock, pGun, level, true, MAX_AMMOS + 4, true );
 
             CTR9SaveGame::I()->SetAir ( tombraider, block,  MAX_AIR );
-            CTR9SaveGame::I()->SetState ( tombraider, block,  STATE_SAFE );
+            CTR9SaveGame::I()->SetState ( tombraider, block,  STATE_123_SAFE );
             CTR9SaveGame::I()->SetRealHealth ( tombraider, block,  MAX_HEALTH );
         }
         else
@@ -3827,14 +3824,22 @@ void CTRXRemastered::OnBnClickedBurning()
 {
     SetGUIModified( TRUE );
 
+    //
+    char szState [ 32 ];
+    ZeroMemory ( szState, sizeof(szState) );
+
+    int iState = GetValue ( m_State );
+
     if ( m_Burning.GetCheck() )
     {
-        m_State.SetWindowText ( "0x1a" );
+        iState = iState | STATE_123_BURNING;
     }
     else
     {
-        m_State.SetWindowText ( "0x0a" );
+        iState = iState & STATE_123_SAFE;
     }
+    sprintf_s ( szState, sizeof(szState), "0x%x", iState );
+    m_State.SetWindowText ( szState );
 }
 
 //

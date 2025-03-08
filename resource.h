@@ -671,6 +671,7 @@
 #define IDC_TR5_PLUS                    1283
 #define IDC_TR6_PLUS                    1284
 #define IDC_KILL_BOSS                   1285
+#define IDC_ROOM_BUT                    1286
 #define ID_MENULIST_EXPORT              32771
 #define ID_MENULIST_IMPORT              32772
 #define ID_MENULIST_DELETE              32773
@@ -713,7 +714,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        308
 #define _APS_NEXT_COMMAND_VALUE         32832
-#define _APS_NEXT_CONTROL_VALUE         1286
+#define _APS_NEXT_CONTROL_VALUE         1287
 #define _APS_NEXT_SYMED_VALUE           127
 #endif
 #endif

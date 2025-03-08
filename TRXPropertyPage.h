@@ -61,6 +61,7 @@ class CTRXPropertyPage : public CTRXPropertyPageBase
         virtual BOOL OnInitDialog();
 
         virtual int GetValue ( CEdit &edit );
+        virtual int GetValue ( CStatic &stat );
         virtual int GetValue ( CButton &button );
 
         void SetGUIModified( BOOL bChanged = TRUE, const char *pWhere = "" );

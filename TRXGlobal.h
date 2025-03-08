@@ -70,6 +70,9 @@ class CTRXGlobal
         static ForceGame   m_ForceSaveGame;
 };
 
+//
+//  Global Variables for Copy / Paste position
+//  Can be used in remastered or normal games
 extern BOOL     g_bPasteEnabled;
 extern DWORD    g_dwWestToEastCopy;
 extern DWORD    g_dwVerticalCopy;

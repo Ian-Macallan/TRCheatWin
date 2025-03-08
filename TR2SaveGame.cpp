@@ -1393,11 +1393,25 @@ void CTR2SaveGame::SetAllSecrets ( )
 /////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////
+int CTR2SaveGame::GetLaraState ()
+{
+    if ( m_pGun != NULL )
+    {
+        return m_pGun->cState;
+    }
+
+    return 0;
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
 int CTR2SaveGame::IsLaraBurning ()
 {
     if ( m_pGun != NULL )
     {
-        if ( m_pGun->cState & 0x10 )
+        if ( m_pGun->cState & STATE_123_BURNING )
         {
             return 1;
         }
@@ -1414,8 +1428,8 @@ void CTR2SaveGame::SetLaraBurning (int state)
 {
     if ( m_pGun != NULL && state != -1 )
     {
-        m_pGun->cState &= 0xEF;
-        m_pGun->cState |= 0x10;
+        m_pGun->cState &= STATE_123_SAFE;
+        m_pGun->cState |= STATE_123_BURNING;
     }
 }
 
@@ -1427,7 +1441,7 @@ void CTR2SaveGame::SetLaraNoBurning (int state)
 {
     if ( m_pGun != NULL && state != -1 )
     {
-        m_pGun->cState &= 0xEF;
+        m_pGun->cState &= STATE_123_SAFE;
     }
 }
 

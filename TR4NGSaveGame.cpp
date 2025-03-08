@@ -2623,7 +2623,7 @@ void CTR4NGSaveGame::SetAllSecrets ( )
 /////////////////////////////////////////////////////////////////////////////
 int CTR4NGSaveGame::IsLaraBurning ()
 {
-    if ( ( m_pBuffer->laraState & 0x0c ) == 0x0c )
+    if ( m_pBuffer->laraState & STATE_45_BURNING )
     {
         return 1;
     }
@@ -2638,7 +2638,7 @@ void CTR4NGSaveGame::SetLaraBurning (int state)
 {
     if ( state != -1 )
     {
-        m_pBuffer->laraState = 0x0c;
+        m_pBuffer->laraState |= STATE_45_BURNING;
     }
 }
 
@@ -2650,7 +2650,7 @@ void CTR4NGSaveGame::SetLaraNoBurning (int state)
 {
     if ( state != -1 )
     {
-        m_pBuffer->laraState = 0x04;
+        m_pBuffer->laraState &= STATE_45_SAFE;
     }
 }
 

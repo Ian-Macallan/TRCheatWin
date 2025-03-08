@@ -7092,11 +7092,11 @@ const char *CTR9SaveGame::GetInterest ( int tombraider, int block, int slot )
         if ( pAddress )
         {
             sprintf_s ( szResponse + strlen(szResponse), sizeof(szResponse) - strlen(szResponse),
-                        "%16s: 0x%08lX\r\n", "Other", RelativeAddress ( pAddress ) );
+                        "%16s: 0x%08lX\r\n", "Elapsed", RelativeAddress ( pAddress ) );
         }
         else
         {
-            sprintf_s ( szResponse + strlen(szResponse), sizeof(szResponse) - strlen(szResponse), "%16s: NULL\r\n", "Other" );
+            sprintf_s ( szResponse + strlen(szResponse), sizeof(szResponse) - strlen(szResponse), "%16s: NULL\r\n", "Elapsed" );
         }
 
         pAddress = ( char *) GetBlockSecretsAddress ( tombraider, block );
