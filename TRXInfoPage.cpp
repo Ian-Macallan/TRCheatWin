@@ -22,6 +22,7 @@
 #include "TRXPropertySheet.h"
 #include "TRXRemastered.h"
 #include "TRXGlobal.h"
+#include "TRXMessageBox.h"
 
 #include "AutomaticVersionHeader.h"
 
@@ -3463,6 +3464,10 @@ void CTRXInfoPage::OnBnClickedRoomSearch()
         {
             sprintf_s ( szString, sizeof(szString), "%d", area );
             m_Area.SetWindowText ( szString );
+        }
+        else
+        {
+            CTRXMessageBox::MessageBox ( "Room/Area Not Found" );
         }
     }
 }

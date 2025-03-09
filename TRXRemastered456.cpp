@@ -19,6 +19,7 @@
 #include "TRXMapAreas.h"
 #include "TRXAllMaps.h"
 #include "TRXMenuBase.h"
+#include "TRXMessageBox.h"
 
 #include "TRXGunPage.h"         // Added by ClassView
 #include "TRXInfoPage.h"        // Added by ClassView
@@ -534,7 +535,7 @@ void CTRXRemastered456::WriteFile()
     }
     else
     {
-        MessageBox ( "Failed : File has not been written", MessageTitle, MB_OK|MB_ICONERROR );
+        CTRXMessageBox::MessageBox ( "Failed : File has not been written", MessageTitle, MB_OK|MB_ICONERROR );
         m_Status.SetWindowText ( "Failed : File has not been written." );
     }
 
@@ -3768,7 +3769,7 @@ void CTRXRemastered456::DeleteOneGame()
         int level               = pInfoData->level;
         int block               = pInfoData->block;
 
-        int iResponse = MessageBox ( "Are You sure to want to delete this line ?", MessageTitle, MB_YESNO|MB_ICONQUESTION );
+        UINT_PTR iResponse = CTRXMessageBox::MessageBox ( "Are You sure to want to delete this line ?", MessageTitle, MB_YESNO|MB_ICONQUESTION );
         if ( iResponse == IDYES )
         {
             CTR8SaveGame::I(FALSE)->Delete ( tombraider, block );
@@ -3885,7 +3886,7 @@ void CTRXRemastered456::OnMenulistExport()
             BOOL bResult = CTR8SaveGame::I()->Export ( dlgFileDialog.GetPathName(), tombraider, block );
             if ( ! bResult )
             {
-                MessageBox ( "Export fails", MessageTitle, MB_OK|MB_ICONERROR );
+                CTRXMessageBox::MessageBox ( "Export fails", MessageTitle, MB_OK|MB_ICONERROR );
             }
         }
     }
@@ -3957,7 +3958,7 @@ void CTRXRemastered456::OnMenulistImport()
             }
             else
             {
-                MessageBox ( "Import fails", MessageTitle, MB_OK|MB_ICONERROR );
+                CTRXMessageBox::MessageBox ( "Import fails", MessageTitle, MB_OK|MB_ICONERROR );
             }
 
         }

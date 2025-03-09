@@ -12,6 +12,7 @@
 #include "TRXInfoPage.h"
 #include "TRXGlobal.h"
 #include "TRXColors.h"
+#include "TRXMessageBox.h"
 
 #include "resource.h"
 

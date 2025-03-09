@@ -12,6 +12,7 @@
 #include "TRXMapAreas.h"
 #include "TRXGlobal.h"
 #include "TRXColors.h"
+#include "TRXMessageBox.h"
 
 // Boîte de dialogue CTRXPosition
 
@@ -1025,7 +1026,7 @@ void CTRXPosition::OnBnClickedSearch()
         }
         else
         {
-            MessageBox ( "Room/Area Not Found" );
+            CTRXMessageBox::MessageBox ( "Room/Area Not Found" );
             m_iArea = -1;
         }
     }
@@ -1061,7 +1062,7 @@ void CTRXPosition::OnBnClickedSearch()
         }
         else
         {
-            MessageBox ( "Room/Area Not Found" );
+            CTRXMessageBox::MessageBox ( "Room/Area Not Found" );
             m_iArea = -1;
         }
     }
@@ -1610,6 +1611,10 @@ void CTRXPosition::OnBnClickedRoomBut()
             //
             ChangeAreas ( area );
         }
+        else
+        {
+            CTRXMessageBox::MessageBox ( "Room/Area Not Found" );
+        }
     }
 
     //
@@ -1656,6 +1661,9 @@ void CTRXPosition::OnBnClickedRoomBut()
             //
             ChangeAreas ( area );
         }
-
+        else
+        {
+            CTRXMessageBox::MessageBox ( "Room/Area Not Found" );
+        }
     }
 }

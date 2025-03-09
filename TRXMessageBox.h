@@ -19,6 +19,7 @@ class CTRXMessageBox : public CTRXDialogBase
 
         static BOOL bDontShowAgain;
         static UINT_PTR ShowMessage ( const char *pTitle, const char *pMessage, UINT icon = MB_ICONEXCLAMATION );
+        static UINT_PTR MessageBox ( const char *pMessage, const char *pCaption = NULL, UINT icon = MB_ICONEXCLAMATION );
 
         void SetMessage ( const char *pTitle, const char *pMessage, UINT icon = MB_ICONEXCLAMATION );
 
@@ -31,9 +32,10 @@ class CTRXMessageBox : public CTRXDialogBase
         DECLARE_MESSAGE_MAP()
 
     protected :
-        char    m_szTitle [ MAX_PATH ];
-        char    m_szMessage [ MAX_PATH ];
-        UINT    m_Icon;
+        char            m_szTitle [ MAX_PATH ];
+        char            m_szMessage [ MAX_PATH ];
+        UINT            m_Icon;
+        INT_PTR         m_Result;
 
     public:
         CTRXEditBase m_Text;
@@ -41,7 +43,16 @@ class CTRXMessageBox : public CTRXDialogBase
         CStatic m_Picture;
         CTRXButtonBase m_OK;
         CTRXButtonBase m_Cancel;
+        CTRXButtonBase m_Yes;
+        CTRXButtonBase m_No;
+
         virtual BOOL OnInitDialog();
         virtual BOOL PreTranslateMessage(MSG* pMsg);
+        virtual INT_PTR DoModal();
+
         afx_msg void OnBnClickedDontShow();
+        afx_msg void OnBnClickedYes();
+        afx_msg void OnBnClickedNo();
+        afx_msg void OnBnClickedOk();
+        afx_msg void OnBnClickedCancel();
 };
