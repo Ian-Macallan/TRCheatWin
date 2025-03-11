@@ -15,7 +15,8 @@
 /////////////////////////////////////////////////////////////////////////////
 IMPLEMENT_DYNAMIC(CTRXMessageBox, CTRXDialogBase)
 
-BOOL CTRXMessageBox::bDontShowAgain = FALSE;
+BOOL CTRXMessageBox::m_bDontShowAgain = FALSE;
+BOOL CTRXMessageBox::m_bHideShowAgain = FALSE;
 
 //
 /////////////////////////////////////////////////////////////////////////////
@@ -32,13 +33,14 @@ CTRXMessageBox::CTRXMessageBox(CWnd* pParent /*=NULL*/) : CTRXDialogBase(CTRXMes
 /////////////////////////////////////////////////////////////////////////////
 CTRXMessageBox::~CTRXMessageBox()
 {
+    m_bHideShowAgain = FALSE;
 }
 
 //
 /////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////
-void CTRXMessageBox::SetMessage ( const char *pTitle, const char *pMessage, UINT icon )
+void CTRXMessageBox::SetMessage ( const char *pTitle, const char *pMessage, UINT icon, BOOL bAlways )
 {
     ZeroMemory ( m_szTitle, sizeof(m_szTitle) );
     ZeroMemory ( m_szMessage, sizeof(m_szMessage) );
@@ -47,20 +49,31 @@ void CTRXMessageBox::SetMessage ( const char *pTitle, const char *pMessage, UINT
     strcpy_s ( m_szMessage, sizeof(m_szMessage), pMessage );
 
     m_Icon  = icon;
+
+    if ( bAlways )
+    {
+        m_bHideShowAgain = TRUE;
+    }
 }
 
 //
 /////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////
-UINT_PTR CTRXMessageBox::ShowMessage ( const char *pTitle, const char *pMessage, UINT icon )
+UINT_PTR CTRXMessageBox::ShowMessage ( const char *pTitle, const char *pMessage, UINT icon, BOOL bAlways )
 {
-    if ( ! bDontShowAgain )
+    if ( ! m_bDontShowAgain || bAlways )
     {
         CTRXMessageBox  dlg;
-        dlg.SetMessage ( pTitle, pMessage, icon );
+        if ( pTitle == NULL )
+        {
+            pTitle = PROGRAM_NAME;
+        }
+        dlg.SetMessage ( pTitle, pMessage, icon, bAlways );
 
-        return dlg.DoModal();
+        UINT_PTR result = dlg.DoModal();
+
+        return result;
     }
 
     return IDCANCEL;
@@ -70,18 +83,20 @@ UINT_PTR CTRXMessageBox::ShowMessage ( const char *pTitle, const char *pMessage,
 /////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////
-UINT_PTR CTRXMessageBox::MessageBox ( const char *pMessage, const char *pCaption, UINT icon )
+UINT_PTR CTRXMessageBox::MessageBox ( const char *pMessage, const char *pCaption, UINT icon, BOOL bAlways )
 {
-    if ( ! bDontShowAgain )
+    if ( ! m_bDontShowAgain || bAlways )
     {
         CTRXMessageBox  dlg;
         if ( pCaption == NULL )
         {
             pCaption = PROGRAM_NAME;
         }
-        dlg.SetMessage ( pCaption, pMessage, icon );
+        dlg.SetMessage ( pCaption, pMessage, icon, bAlways );
 
-        return dlg.DoModal();
+        UINT_PTR result = dlg.DoModal();
+
+        return result;
     }
 
     return IDCANCEL;
@@ -138,6 +153,11 @@ BOOL CTRXMessageBox::OnInitDialog()
     m_No.ShowWindow ( SW_HIDE );
     m_OK.ShowWindow ( SW_HIDE );
     m_Cancel.ShowWindow ( SW_HIDE );
+
+    if ( m_bHideShowAgain )
+    {
+        m_Dont_Show.ShowWindow ( SW_HIDE );
+    }
 
     switch ( m_Icon & 0x0f )
     {
@@ -244,11 +264,11 @@ void CTRXMessageBox::OnBnClickedDontShow()
 {
     if ( m_Dont_Show.GetCheck() )
     {
-        bDontShowAgain  = TRUE;
+        m_bDontShowAgain  = TRUE;
     }
     else
     {
-        bDontShowAgain  = FALSE;
+        m_bDontShowAgain  = FALSE;
     }
 }
 

@@ -638,7 +638,7 @@ BOOL ExtractData (  FILE *hOutputFile, int game,
             iRead = ReadChunk (  &Textile32Misc_CompSize, sizeof(Textile32Misc_CompSize), hFile );
             iRead = ReadChunk (  memBuffer.ptr, Textile32Misc_CompSize, hFile );
 
-            if ( TRMode == TR5_MODE || TRMode == TRR5_MODE )
+            if ( TRMode == TR5_MODE )
             {
                 iRead = ReadChunk (  &LaraType, sizeof(LaraType), hFile );
                 iRead = ReadChunk (  &WeatherType, sizeof(WeatherType), hFile );
@@ -697,9 +697,11 @@ BOOL ExtractData (  FILE *hOutputFile, int game,
             iRead = ReadChunk (  &NumBumpTextiles, sizeof(NumBumpTextiles), hFile );
 
             iRead = ReadChunk (  &Textile32_UncompSize, sizeof(Textile32_UncompSize), hFile );
-            iRead = ReadChunk (  &Textile32_CompSize, sizeof(Textile32_CompSize), hFile );
+            Textile32_CompSize = Textile32_UncompSize;
+            // iRead = ReadChunk (  &Textile32_CompSize, sizeof(Textile32_CompSize), hFile );
             iRead = ReadChunk (  memBuffer.ptr, Textile32_CompSize, hFile );
 
+            // Now for ALEXHUB.TR4 we are at 0x44000A
             iRead = ReadChunk (  &Textile16_UncompSize, sizeof(Textile16_UncompSize), hFile );
             iRead = ReadChunk (  &Textile16_CompSize, sizeof(Textile16_CompSize), hFile );
             iRead = ReadChunk (  memBuffer.ptr, Textile16_CompSize, hFile );
@@ -708,7 +710,7 @@ BOOL ExtractData (  FILE *hOutputFile, int game,
             iRead = ReadChunk (  &Textile32Misc_CompSize, sizeof(Textile32Misc_CompSize), hFile );
             iRead = ReadChunk (  memBuffer.ptr, Textile32Misc_CompSize, hFile );
 
-            if ( TRMode == TR5_MODE || TRMode == TRR5_MODE )
+            if ( TRMode == TRR5_MODE )
             {
                 iRead = ReadChunk (  &LaraType, sizeof(LaraType), hFile );
                 iRead = ReadChunk (  &WeatherType, sizeof(WeatherType), hFile );

@@ -17,11 +17,13 @@ class CTRXMessageBox : public CTRXDialogBase
         CTRXMessageBox(CWnd* pParent = NULL);   // constructeur standard
         virtual ~CTRXMessageBox();
 
-        static BOOL bDontShowAgain;
-        static UINT_PTR ShowMessage ( const char *pTitle, const char *pMessage, UINT icon = MB_ICONEXCLAMATION );
-        static UINT_PTR MessageBox ( const char *pMessage, const char *pCaption = NULL, UINT icon = MB_ICONEXCLAMATION );
+        static BOOL m_bDontShowAgain;
+        static BOOL m_bHideShowAgain;
 
-        void SetMessage ( const char *pTitle, const char *pMessage, UINT icon = MB_ICONEXCLAMATION );
+        static UINT_PTR ShowMessage ( const char *pTitle, const char *pMessage, UINT icon = MB_ICONEXCLAMATION, BOOL bAlways = FALSE );
+        static UINT_PTR MessageBox ( const char *pMessage, const char *pCaption = NULL, UINT icon = MB_ICONEXCLAMATION, BOOL bAlways = TRUE );
+
+        void SetMessage ( const char *pTitle, const char *pMessage, UINT icon = MB_ICONEXCLAMATION, BOOL bAlways = FALSE );
 
     // Données de boîte de dialogue
         enum { IDD = IDD_TRXMESSAGEBOX };
