@@ -67,7 +67,11 @@ class CTRXGlobal
         static BOOL         m_iAlterTRNGIndice;
         static BOOL         m_bAlterTRNGAmmosGuns;
 
-        static ForceGame   m_ForceSaveGame;
+        static ForceGame    m_ForceSaveGame;
+
+
+        static char         m_szTRXNumber [ 32 ];
+        static char         m_szTRX2Number [ 32 ];
 };
 
 //

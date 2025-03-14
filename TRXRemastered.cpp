@@ -30,6 +30,7 @@
 #include "TRXPropertySheet.h"
 
 #include "TRXColors.h"
+#include "TRXGlobal.h"
 
 //
 /////////////////////////////////////////////////////////////////////////////
@@ -718,7 +719,9 @@ BOOL CTRXRemastered::OnSetActive()
         {
             strcat_s ( szDefault, sizeof(szDefault), "C:`\\Users\\yourname" );
         }
-        strcat_s ( szDefault, sizeof(szDefault), "\\AppData\\Roaming\\TRX\\292733983277432559\\savegame.dat" );
+        strcat_s ( szDefault, sizeof(szDefault), "\\AppData\\Roaming\\TRX\\" );
+        strcat_s ( szDefault, sizeof(szDefault), CTRXGlobal::m_szTRXNumber );
+        strcat_s ( szDefault, sizeof(szDefault), "\\savegame.dat" );
         m_Default.SetWindowText ( szDefault );
 
         //

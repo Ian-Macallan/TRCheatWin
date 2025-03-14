@@ -582,6 +582,89 @@ void CTRXCHEATWINApp::WriteIndicators()
 
 //
 /////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
+const char *CTRXCHEATWINApp::SearchRemasteredDirectory( const char *pathname )
+{
+    static  char szfilename [ MAX_PATH ];
+    ZeroMemory ( szfilename, sizeof(szfilename) );
+
+    //
+    struct _finddata_t fileinfo;
+    intptr_t handle = _findfirst ( pathname, &fileinfo );
+    if ( handle !=  -1 )
+    {
+        int iRes = 0;
+        do
+        {
+            if ( *fileinfo.name != '.' )
+            {
+                strcat_s ( szfilename, sizeof(szfilename), fileinfo.name );
+                break;
+            }
+
+            //
+            iRes = _findnext ( handle, &fileinfo );
+        }
+        while ( iRes == 0 );
+
+        _findclose(handle);
+    }
+
+    return szfilename;
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
+void CTRXCHEATWINApp::SearchRemasteredDirectory()
+{
+    static char szDefaultTRX [ MAX_PATH ];
+    static char szDefaultTRX2 [ MAX_PATH ];
+
+    static char szProfile [ MAX_PATH ];
+    size_t iProfile = sizeof(szProfile);
+
+    static char szUsername [ MAX_PATH ];
+    size_t iUsername = sizeof(szUsername);
+
+    ZeroMemory ( szDefaultTRX, sizeof(szDefaultTRX) );
+    ZeroMemory ( szDefaultTRX2, sizeof(szDefaultTRX2) );
+    ZeroMemory ( szProfile, sizeof(szProfile) );
+    ZeroMemory ( szUsername, sizeof(szUsername) );
+
+    getenv_s ( &iProfile, szProfile, sizeof(szProfile), "USERPROFILE");
+    getenv_s ( &iUsername, szUsername, sizeof(szUsername), "USERNAME");
+
+
+    if ( iProfile > 0 )
+    {
+        strcat_s ( szDefaultTRX, sizeof(szDefaultTRX), szProfile );
+    }
+    else if ( iUsername > 0 )
+    {
+        strcat_s ( szDefaultTRX, sizeof(szDefaultTRX), "C:\\Users\\" );
+        strcat_s ( szDefaultTRX, sizeof(szDefaultTRX), szUsername );
+    }
+    else
+    {
+        strcat_s ( szDefaultTRX, sizeof(szDefaultTRX), "C:`\\Users\\yourname" );
+    }
+    strcat_s ( szDefaultTRX2, sizeof(szDefaultTRX2), szDefaultTRX );
+
+    //
+    strcat_s ( szDefaultTRX, sizeof(szDefaultTRX), "\\AppData\\Roaming\\TRX\\*" );
+    const char *pTrx = SearchRemasteredDirectory ( szDefaultTRX );
+    strcpy_s ( CTRXGlobal::m_szTRXNumber, sizeof(CTRXGlobal::m_szTRXNumber), pTrx );
+
+    strcat_s ( szDefaultTRX2, sizeof(szDefaultTRX2), "\\AppData\\Roaming\\TRX2\\*" );
+    const char *pTrx2 = SearchRemasteredDirectory ( szDefaultTRX2 );
+    strcpy_s ( CTRXGlobal::m_szTRX2Number, sizeof(CTRXGlobal::m_szTRX2Number), pTrx2 );
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
 // CTRXCHEATWINApp initialization
 //
 /////////////////////////////////////////////////////////////////////////////
@@ -685,6 +768,31 @@ BOOL CTRXCHEATWINApp::InitInstance()
     CTRXGlobal::m_bAlterTRNGPosition    = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_ALTER_TRNG_POS, -1, TRUE );
     CTRXGlobal::m_iAlterTRNGIndice      = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_ALTER_TRNG_IND, -1, 84 );
     CTRXGlobal::m_bAlterTRNGAmmosGuns   = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_ALTER_TRNG_AGUNS, -1, FALSE );
+
+    //
+    //  Get Default directories for Remastered
+    SearchRemasteredDirectory();
+
+    //
+    CString trx = theApp.GetProfileString ( PROFILE_SETTING, PROFILE_TRX, "NA" );
+    if ( trx == "NA" )
+    {
+        theApp.WriteProfileString ( PROFILE_SETTING, PROFILE_TRX, CTRXGlobal::m_szTRXNumber );
+    }
+    else
+    {
+        strcpy_s ( CTRXGlobal::m_szTRXNumber, sizeof(CTRXGlobal::m_szTRXNumber), trx );
+    }
+
+    CString trx2 = theApp.GetProfileString ( PROFILE_SETTING, PROFILE_TRX2, "NA" );
+    if ( trx2 == "NA" )
+    {
+        theApp.WriteProfileString ( PROFILE_SETTING, PROFILE_TRX2, CTRXGlobal::m_szTRX2Number );
+    }
+    else
+    {
+        strcpy_s ( CTRXGlobal::m_szTRX2Number, sizeof(CTRXGlobal::m_szTRX2Number), trx2 );
+    }
 
     //
     //  Module Filename has been read
@@ -1686,7 +1794,8 @@ double CTRXCHEATWINApp::GetProfileDouble ( const char *section,  const char *key
 ////////////////////////////////////////////////////////////////////////
 //
 ////////////////////////////////////////////////////////////////////////
-CString CTRXCHEATWINApp::GetProfileString( const char *section,  const char *keyName, const char *pDefaultValue )
+CString CTRXCHEATWINApp::GetProfileString ( const char *section,  const char *keyName, const char *pDefaultValue,
+                                            char *pTarget, size_t iTarget )
 {
     if ( pDefaultValue == NULL )
     {
@@ -1701,7 +1810,13 @@ CString CTRXCHEATWINApp::GetProfileString( const char *section,  const char *key
     {
         return pDefaultValue;
     }
+
     result = szText;
+
+    if ( pTarget != NULL && iTarget > 0 )
+    {
+        strcpy_s ( pTarget, iTarget, result );
+    }
 
     return result;
 }

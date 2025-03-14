@@ -703,11 +703,13 @@ BOOL ExtractData (  FILE *hOutputFile, int game,
 
             // Now for ALEXHUB.TR4 we are at 0x44000A
             iRead = ReadChunk (  &Textile16_UncompSize, sizeof(Textile16_UncompSize), hFile );
-            iRead = ReadChunk (  &Textile16_CompSize, sizeof(Textile16_CompSize), hFile );
+            Textile16_CompSize = Textile16_UncompSize;
+            // iRead = ReadChunk (  &Textile16_CompSize, sizeof(Textile16_CompSize), hFile );
             iRead = ReadChunk (  memBuffer.ptr, Textile16_CompSize, hFile );
 
             iRead = ReadChunk (  &Textile32Misc_UncompSize, sizeof(Textile32Misc_UncompSize), hFile );
-            iRead = ReadChunk (  &Textile32Misc_CompSize, sizeof(Textile32Misc_CompSize), hFile );
+            Textile32Misc_CompSize = Textile32Misc_UncompSize;
+            // iRead = ReadChunk (  &Textile32Misc_CompSize, sizeof(Textile32Misc_CompSize), hFile );
             iRead = ReadChunk (  memBuffer.ptr, Textile32Misc_CompSize, hFile );
 
             if ( TRMode == TRR5_MODE )
@@ -722,6 +724,7 @@ BOOL ExtractData (  FILE *hOutputFile, int game,
 
             long lDataPosition = ftell ( hFile );
             iRead = ReadChunk (  &LevelData_UncompSize, sizeof(LevelData_UncompSize), hFile );
+            LevelData_CompSize = LevelData_UncompSize;
             iRead = ReadChunk (  &LevelData_CompSize, sizeof(LevelData_CompSize), hFile );
             iRead = ReadChunk (  memLevelDataCompressed.ptr, LevelData_CompSize, hFile );
 

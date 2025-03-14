@@ -77,6 +77,9 @@ class CTRXCHEATWINApp : public CWinApp
         static void RemoveEnclosingQuotes ( char *pText, size_t iLength );
         static char *CopyBetweenQuotes ( char *pTarget, size_t iLength, char *pSource );
 
+        const char *SearchRemasteredDirectory( const char *pathname );
+        void SearchRemasteredDirectory();
+
         void ReadIndicators();
         void WriteIndicators();
 
@@ -96,7 +99,8 @@ class CTRXCHEATWINApp : public CWinApp
         UINT GetProfileInt ( const char *section,  const char *keyName, int novalue, int defaultValue );
         ULONG GetProfileLong ( const char *section,  const char *keyName, int defaultValue );
         double GetProfileDouble ( const char *section,  const char *keyName, double defaultValue );
-        CString GetProfileString( const char *section,  const char *keyName, const char *pDefaultValue = "" );
+        CString GetProfileString ( const char *section,  const char *keyName, const char *pDefaultValue = "",
+                                    char *pTarget = NULL, size_t iTarget = 0 );
 
         BOOL WriteProfileLong ( const char *section,  const char *keyName, long value, bool bHexa = false );
         BOOL WriteProfileInt ( const char *section,  const char *keyName, int value, bool bHexa = false );
@@ -159,4 +163,8 @@ class CTRXCHEATWINApp : public CWinApp
 #define PROFILE_ALTER_TRNG_POS      "Alter TRNG Position"
 #define PROFILE_ALTER_TRNG_IND      "Alter TRNG Indice"
 #define PROFILE_ALTER_TRNG_AGUNS    "Alter TRNG Ammos and Guns"
+
+#define PROFILE_TRX                 "TRX Number"
+#define PROFILE_TRX2                "TRX2 Number"
+
 /////////////////////////////////////////////////////////////////////////////
