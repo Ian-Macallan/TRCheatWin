@@ -2186,6 +2186,7 @@ BOOL CTRXInfoPage::OnInitDialog()
         m_ToolTip.AddTool( &m_CopyPosition, "Copy Position" );
         m_ToolTip.AddTool( &m_PastePosition, "Paste Position" );
         m_ToolTip.AddTool( &m_Room_Search, "Search Best Room for Position" );
+        m_ToolTip.AddTool( &m_Direction, "For TR4 or TR5 0 means facing north\nOtherwise for 123 means facing south" );
         m_ToolTip.AddTool( &m_ListCtrl, LPSTR_TEXTCALLBACK );
         m_ToolTip.Activate(TRUE);
     }
