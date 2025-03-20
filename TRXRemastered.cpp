@@ -2733,7 +2733,7 @@ void CTRXRemastered::UpdateGun(int tombraider, int block, GUN_TR1 *pGun, TABLE_T
             CTR9SaveGame::I()->SetRiotgun( tombraider, pBlock, pGun, level, true, MAX_AMMOS, true );
 
             CTR9SaveGame::I()->SetAir ( tombraider, block,  MAX_AIR );
-            CTR9SaveGame::I()->SetState ( tombraider, block,  STATE_123_SAFE );
+            CTR9SaveGame::I()->SetState ( tombraider, block, CTR9SaveGame::I()->GetState ( tombraider, block ) &  STATE_123_SAFE );
             CTR9SaveGame::I()->SetRealHealth ( tombraider, block,  MAX_HEALTH );
         }
         else
@@ -2864,7 +2864,7 @@ void CTRXRemastered::UpdateGun(int tombraider, int block, GUN_TR2 *pGun, TABLE_T
             CTR9SaveGame::I()->SetM16( tombraider, pBlock, pGun, level, true, MAX_AMMOS + 3, true );
 
             CTR9SaveGame::I()->SetAir ( tombraider, block,  MAX_AIR );
-            CTR9SaveGame::I()->SetState ( tombraider, block,  STATE_123_SAFE );
+            CTR9SaveGame::I()->SetState ( tombraider, block,  CTR9SaveGame::I()->GetState ( tombraider, block ) &  STATE_123_SAFE );
             CTR9SaveGame::I()->SetRealHealth ( tombraider, block,  MAX_HEALTH );
         }
         else
@@ -3002,7 +3002,7 @@ void CTRXRemastered::UpdateGun(int tombraider, int block, GUN_TR3 *pGun, TABLE_T
             CTR9SaveGame::I()->SetRocket( tombraider, pBlock, pGun, level, true, MAX_AMMOS + 4, true );
 
             CTR9SaveGame::I()->SetAir ( tombraider, block,  MAX_AIR );
-            CTR9SaveGame::I()->SetState ( tombraider, block,  STATE_123_SAFE );
+            CTR9SaveGame::I()->SetState ( tombraider, block,  CTR9SaveGame::I()->GetState ( tombraider, block ) &  STATE_123_SAFE );
             CTR9SaveGame::I()->SetRealHealth ( tombraider, block,  MAX_HEALTH );
         }
         else

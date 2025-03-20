@@ -2192,7 +2192,7 @@ void CTRXRemastered456::UpdateGun(int tombraider, int block, GUN_TR4 *pGun, TABL
             CTR8SaveGame::I()->SetHarpoon( tombraider, pBlock, pGun, level, true, MAX_AMMOS + 2, true );
 
             CTR8SaveGame::I()->SetAir ( tombraider, block,  MAX_AIR );
-            CTR8SaveGame::I()->SetState ( tombraider, block,  STATE_45_SAFE );
+            CTR8SaveGame::I()->SetState ( tombraider, block,  CTR8SaveGame::I()->GetState ( tombraider, block) & STATE_45_SAFE );
             if ( tombraider == 5 )
             {
                 CTR8SaveGame::I()->SetRealHealth ( tombraider, block,  MAX_HEALTH );
@@ -2314,7 +2314,7 @@ void CTRXRemastered456::UpdateGun(int tombraider, int block, GUN_TR5 *pGun, TABL
             CTR8SaveGame::I()->SetM16( tombraider, pBlock, pGun, level, true, MAX_AMMOS + 3, true );
 
             CTR8SaveGame::I()->SetAir ( tombraider, block,  MAX_AIR );
-            CTR8SaveGame::I()->SetState ( tombraider, block,  STATE_45_SAFE );
+            CTR8SaveGame::I()->SetState ( tombraider, block, CTR8SaveGame::I()->GetState ( tombraider, block) & STATE_45_SAFE );
             CTR8SaveGame::I()->SetRealHealth ( tombraider, block,  MAX_HEALTH );
         }
         else
