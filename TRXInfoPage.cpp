@@ -449,7 +449,43 @@ void CTRXInfoPage::OnHelp()
 {
     //
     CTRXHelpDialog dlg;
+    switch ( CTRSaveGame::GetVersion () )
+    {
+        case 1:
+        case 10:
+        case 15:
+        {
+            dlg.m_ID_Resource = IDR_TR1CHEATS;
+            break;
+        }
+
+        case 2:
+        case 20:
+        case 25:
+        {
+            dlg.m_ID_Resource = IDR_TR2CHEATS;
+            break;
+        }
+
+        case 3:
+        case 30:
+        case 35:
+        {
+            dlg.m_ID_Resource = IDR_TR3CHEATS;
+            break;
+        }
+
+        case 4:
+        case 40:
+        case 45:
+        case 49:
+        {
+            dlg.m_ID_Resource = IDR_TR4CHEATS;
+            break;
+        }
+    }
     dlg.DoModal();
+
 }
 
 //

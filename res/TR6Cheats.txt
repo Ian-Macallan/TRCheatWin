@@ -1,0 +1,26 @@
+TOMB RAIDER: THE ANGEL OF DARKNESS (TR6)
+Level Select/Level Skip (all systems):
+
+    Pause the game 
+    (i.e., open the inventory menu, with 
+    Items, Load Game, Save Game, etc.).
+    Hold Duck + Look + Down + Action simultaneously,
+    then release.
+    Without exiting the pause menu, quickly press 
+    Action, Up, Walk, Action, Right, Down sequentially.
+    You should now see the 'Level Skip' and
+    'Level Select' options in the menu ring.
+
+All Weapons + 10 Health Packs (all systems):
+
+    Pause the game 
+    (i.e., open the inventory menu, with 
+    Items, Load Game, Save Game, etc.).
+    Hold Draw Weapon + Look + Left + Action simultaneously,
+    then release.
+    Without exiting the pause menu, quickly press 
+    Walk, Walk, Walk (three times sequentially).
+    Exit the menu and re-open it, and you should have all weapons, 
+    with a good amount of ammo for each, 
+    plus 10 extra large health packs.
+

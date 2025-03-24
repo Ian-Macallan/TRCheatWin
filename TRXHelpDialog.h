@@ -24,6 +24,7 @@ class CTRXHelpDialog : public CTRXDialogBase
 
 
     public :
+        DWORD m_ID_Resource;
 
     protected:
         virtual void DoDataExchange(CDataExchange* pDX);    // Prise en charge de DDX/DDV

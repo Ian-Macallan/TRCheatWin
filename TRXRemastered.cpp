@@ -213,8 +213,34 @@ CTRXRemastered::~CTRXRemastered()
 /////////////////////////////////////////////////////////////////////////////
 void CTRXRemastered::OnHelp()
 {
+    int tombraider          = -1;
+    if ( m_Line >= 0 && CTR9SaveGame::I(FALSE) != NULL )
+    {
+        DWORD_PTR   dwData      = m_ListCtrl.GetItemData ( m_Line );
+        STRUCTDATA  *pInfoData  = (STRUCTDATA *) dwData;
+        tombraider              = pInfoData->tombraider;
+    }
+
     //
     CTRXHelpDialog dlg;
+    switch ( tombraider )
+    {
+        case 1:
+        {
+            dlg.m_ID_Resource = IDR_TR1CHEATS;
+            break;
+        }
+        case 2:
+        {
+            dlg.m_ID_Resource = IDR_TR2CHEATS;
+            break;
+        }
+        case 3:
+        {
+            dlg.m_ID_Resource = IDR_TR3CHEATS;
+            break;
+        }
+    }
     dlg.DoModal();
 }
 

@@ -210,6 +210,13 @@
 #define IDI_REFRESH_BLACK               306
 #define IDI_ICON6                       307
 #define IDI_REFRESH_WHITE               307
+#define IDR_HELPTEXT2                   308
+#define IDR_TR1CHEATS                   308
+#define IDR_TR2CHEATS                   310
+#define IDR_TR3CHEATS                   312
+#define IDR_TR4CHEATS                   313
+#define IDR_RCDATA1                     314
+#define IDR_TR6CHEATS                   314
 #define IDC_DESERTEAGLE                 1001
 #define IDC_ITEM_02                     1002
 #define IDC_CROWBAR                     1002
@@ -712,7 +719,7 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        308
+#define _APS_NEXT_RESOURCE_VALUE        315
 #define _APS_NEXT_COMMAND_VALUE         32832
 #define _APS_NEXT_CONTROL_VALUE         1287
 #define _APS_NEXT_SYMED_VALUE           127

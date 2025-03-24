@@ -643,6 +643,11 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="res\HelpText.txt" />
+    <Text Include="res\TR1Cheats.txt" />
+    <Text Include="res\TR2Cheats.txt" />
+    <Text Include="res\TR3Cheats.txt" />
+    <Text Include="res\TR4Cheats.txt" />
+    <Text Include="res\TR6Cheats.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

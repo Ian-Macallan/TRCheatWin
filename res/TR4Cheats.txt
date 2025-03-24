@@ -1,0 +1,37 @@
+TOMB RAIDER: THE LAST REVELATION (TR4)
+Level Skip:
+
+Windows PC:
+
+    Face due North.
+    Open Inventory.
+    Highlight the Sunglasses icon.
+    Press and hold H + E + L + P keys simultaneously 
+    (just the letter keys that spell 'help,' not the plus symbol).
+    Release those keys, 
+    then close the inventory to skip to the next level.
+
+
+All Weapons, Unlimited Ammo, Health & Flares:
+
+Windows PC:
+
+    Face due North.
+    Open Inventory.
+    Highlight the Small Medipack icon.
+    Press and hold G + U + N + S keys simultaneously
+    (just the letter keys that spell 'guns,' not the plus symbol).
+    Release those keys and you should have max everything.
+
+
+All Keys & Puzzle Items:
+
+Windows PC:
+
+    Face due North.
+    Open Inventory.
+    Highlight the Large Medipack icon.
+    Press and hold B + I + T + S keys simultaneously
+    (just the letter keys that spell 'bits,' not the plus symbol).
+    Release those keys and you should have max everything.
+

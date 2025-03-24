@@ -22,6 +22,7 @@ IMPLEMENT_DYNAMIC(CTRXHelpDialog, CTRXDialogBase)
 CTRXHelpDialog::CTRXHelpDialog(CWnd* pParent /*=NULL*/) : CTRXDialogBase(CTRXHelpDialog::IDD, pParent)
 {
     //
+    m_ID_Resource   = 0xffffffff;
 }
 
 //
@@ -167,8 +168,19 @@ BOOL CTRXHelpDialog::OnInitDialog()
     m_Help_Text.SetFont ( m_pFixedFont );
 
     //      Load resource and so on
-    HRSRC hRes = FindResource ( NULL, ( char * ) IDR_HELP_TEXT, "HELPTEXT" );
+    HRSRC hRes = NULL;
+    if ( m_ID_Resource != 0xffffffff )
+    {
+        hRes = FindResource ( NULL, ( char * ) m_ID_Resource, "HELPTEXT" );
+    }
 
+    //
+    if ( hRes == NULL )
+    {
+        hRes = FindResource ( NULL, ( char * ) IDR_HELP_TEXT, "HELPTEXT" );
+    }
+
+    //
     if ( hRes != NULL )
     {
         char        *pBuffer;

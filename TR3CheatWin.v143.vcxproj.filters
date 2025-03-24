@@ -991,5 +991,20 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="res\HelpText.txt" />
+    <Text Include="res\TR1Cheats.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="res\TR2Cheats.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="res\TR3Cheats.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="res\TR4Cheats.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="res\TR6Cheats.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
   </ItemGroup>
 </Project>

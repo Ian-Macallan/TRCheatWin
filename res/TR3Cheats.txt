@@ -1,0 +1,32 @@
+TOMB RAIDER 3
+
+Level Skip (all systems):
+
+    Draw pistols.
+    Walk one step backward.
+    Walk one step forward.
+    Crouch.
+    Release crouch.
+    Turn around three times 
+    (i.e., turn while standing in place).
+    Jump forward 
+    (i.e., standing jump, not running jump).
+
+All Weapons, Max Ammo, and Health Packs (all systems):
+
+    Draw pistols.
+    Walk one step back.
+    Walk one step forward.
+    Crouch.
+    Release crouch.
+    Turn around three times 
+    (i.e., turn while standing in place).
+    Jump backwards (i.e., backflip).
+
+Exploding Lara (all systems):
+
+    Walk one step forward.
+    Walk one step backward.
+    Turn around 3 times counter-clockwise
+    (i.e., turn while standing in place).
+    Jump backwards (i.e., backflip).
