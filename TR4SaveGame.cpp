@@ -204,7 +204,7 @@ CTR4SaveGame::CTR4SaveGame()
 
     iRiotGunUnits       = 6;
 
-    m_pLife             = NULL;
+    m_pRealHealth             = NULL;
 
     m_pBuffer           = new ( TR4SAVE );
     ZeroMemory ( m_pBuffer, sizeof(TR4SAVE) );
@@ -1756,9 +1756,9 @@ void *CTR4SaveGame::GetIndicatorAddress (int index)
                 }
 
                 // In TR4 Life is between 0 and 999 (0 means 1000)
-                short life = * (short * ) ( pBuffer + iBuffer + TR4_LIFE_OFFSET );
+                WORD wRealHealth = * (WORD * ) ( pBuffer + iBuffer + TR4_REALHEALTH_OFFSET );
                 //  Life Is valid between 0 and 1000
-                if ( ! IsTR4HealthValid ( life, false )  )
+                if ( ! IsTR4HealthValid ( wRealHealth, false )  )
                 {
                     continue;
                 }
@@ -1782,14 +1782,14 @@ void *CTR4SaveGame::GetIndicatorAddress (int index)
 /////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////
-WORD *CTR4SaveGame::GetTR4LifeAddress()
+WORD *CTR4SaveGame::GetTR4RealHealthAddress()
 {
     char *pBuffer   = ( char * ) GetIndicatorAddress();
     if ( pBuffer != NULL )
     {
-        WORD *pLife = ( WORD * ) ( pBuffer + TR4_LIFE_OFFSET );
+        WORD *pRealHealth = ( WORD * ) ( pBuffer + TR4_REALHEALTH_OFFSET );
 
-        if ( ! IsTR4HealthValid ( *pLife, true )  )
+        if ( ! IsTR4HealthValid ( *pRealHealth, true )  )
         {
             return NULL;
         }
@@ -1799,7 +1799,7 @@ WORD *CTR4SaveGame::GetTR4LifeAddress()
         DWORD dwRelativeAddress = CTRXTools::RelativeAddress ( pBuffer, m_pBuffer );
         sprintf_s ( szDebugString, sizeof(szDebugString), 
             "Life Indicators 0x%08x : 0x%02x 0x%02x 0x%02x 0x%02x H:%-6d\n", 
-            dwRelativeAddress, pBuffer [ 0 ] & 0xff, pBuffer [ 1 ] & 0xff, pBuffer [ 2 ] & 0xff, pBuffer [ 3 ] & 0xff, *pLife );
+            dwRelativeAddress, pBuffer [ 0 ] & 0xff, pBuffer [ 1 ] & 0xff, pBuffer [ 2 ] & 0xff, pBuffer [ 3 ] & 0xff, *pRealHealth );
         OutputDebugString ( szDebugString );
 #endif
 
@@ -1818,7 +1818,7 @@ WORD *CTR4SaveGame::GetTR4LifeAddress()
             if ( bCheck )
             {
                 //
-                return pLife;
+                return pRealHealth;
             }
         }
     }
@@ -1854,18 +1854,18 @@ WORD *CTR4SaveGame::GetTR4LifeAddress()
 //  00000CD3: FF 00
 //
 /////////////////////////////////////////////////////////////////////////////
-int CTR4SaveGame::GetLife ()
+int CTR4SaveGame::GetRealHealth ()
 {
     //
-    WORD *pLife = GetTR4LifeAddress();
-    if ( pLife != NULL )
+    WORD *pRealHealth = GetTR4RealHealthAddress();
+    if ( pRealHealth != NULL )
     {
-        WORD life = *pLife;
-        if ( life == TR4_MIN_HEALTH )
+        WORD wRealHealth = *pRealHealth;
+        if ( wRealHealth == TR4_MIN_HEALTH )
         {
-            life = TR4_MAX_HEALTH;
+            wRealHealth = TR4_MAX_HEALTH;
         }
-        return life;
+        return wRealHealth;
     }
 
     return -1;
@@ -1875,19 +1875,19 @@ int CTR4SaveGame::GetLife ()
 /////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////
-void CTR4SaveGame::SetLife ( const char *szLife )
+void CTR4SaveGame::SetRealHealth ( const char *szRealHealth )
 {
     //
-    WORD *pLife = GetTR4LifeAddress();
-    if ( pLife != NULL )
+    WORD *pRealHealth = GetTR4RealHealthAddress();
+    if ( pRealHealth != NULL )
     {
-        WORD life = (WORD) atoi(szLife);
-        if ( life == TR4_MAX_HEALTH )
+        WORD wRealHealth = (WORD) atoi(szRealHealth);
+        if ( wRealHealth == TR4_MAX_HEALTH )
         {
-            life = TR4_MIN_HEALTH;
+            wRealHealth = TR4_MIN_HEALTH;
         }
 
-        *pLife = (WORD) life;
+        *pRealHealth = (WORD) wRealHealth;
     }
 }
 
@@ -2088,7 +2088,7 @@ TR4_POSITION *CTR4SaveGame::GetTR4Position ( )
                 {
 #ifdef _DEBUG
                     // In TR4 Life is between 0 and 999 (0 means 1000)
-                    short life = * (short * ) ( pBuffer + TR4_LIFE_OFFSET );
+                    WORD wRealHealth = * (WORD * ) ( pBuffer + TR4_REALHEALTH_OFFSET );
 
                     DWORD dwRelativeAddress = CTRXTools::RelativeAddress ( pBuffer - i, m_pBuffer );
                     static char szDebugString [ MAX_PATH ];
@@ -2097,7 +2097,7 @@ TR4_POSITION *CTR4SaveGame::GetTR4Position ( )
                         dwRelativeAddress,
                         pTR4Position0->indicator1, pTR4Position0->indicator2, pTR4Position0->indicator3, pTR4Position0->indicator4, 
                         wRoom, dwVertical, dwSouthToNorth, dwWestToEast, pTR4Position->cOrientation,
-                        life ); 
+                        wRealHealth ); 
                     OutputDebugString ( szDebugString );
 #endif
                     positionTable [ 0 ] = pTR4Position;
@@ -2194,10 +2194,10 @@ TR4_POSITION *CTR4SaveGame::GetTR4Position ( )
                     TR4_POSITION *pTR4Position0    = (TR4_POSITION *) ( (char *) pCurrent + i );
 
                     //  Life between 0 and 1000
-                    short life = pTR4Position0->health;
+                    WORD wRealHealth = pTR4Position0->health;
 
                     //
-                    if ( IsTR4HealthValid ( life, false ) )
+                    if ( IsTR4HealthValid ( wRealHealth, false ) )
                     {
                         positionTable [ positionCount ] = pCurrent;
                         if ( pTR4Position == NULL )
@@ -2213,7 +2213,7 @@ TR4_POSITION *CTR4SaveGame::GetTR4Position ( )
                         "- indicators 0x%08x : 0x%02x 0x%02x 0x%02x 0x%02x H:%-6d\n", 
                         dwRelativeAddress,
                         pTR4Position0->indicator1, pTR4Position0->indicator2, pTR4Position0->indicator3, pTR4Position0->indicator4,
-                        life ); 
+                        wRealHealth ); 
                     OutputDebugString ( szDebugString );
 
                     if ( CTRXGlobal::m_iUnchecked == FALSE )

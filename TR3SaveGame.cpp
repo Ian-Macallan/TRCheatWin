@@ -144,7 +144,7 @@ CTR3SaveGame::CTR3SaveGame()
     iMaskGrenade        = 0x0080;
     iMaskHarpoon        = 0x0100;
 
-    m_pLife             = NULL;
+    m_pRealHealth             = NULL;
 
     m_pGun              = NULL;
 
@@ -1849,11 +1849,11 @@ void CTR3SaveGame::discard ()
 /////////////////////////////////////////////////////////////////////////////
 const TR_POSITION *CTR3SaveGame::GetPosition ( )
 {
-    GetLife ();
-    if ( m_pLife != NULL )
+    GetRealHealth ();
+    if ( m_pRealHealth != NULL )
     {
-        long dwDelta = (long) ( (BYTE* )m_pLife - (BYTE* )m_pBuffer );
-        TR_POSITION *position = ( TR_POSITION *) ( (BYTE *) m_pLife - TR_POSITION_OFFSET );
+        long dwDelta = (long) ( (BYTE* )m_pRealHealth - (BYTE* )m_pBuffer );
+        TR_POSITION *position = ( TR_POSITION *) ( (BYTE *) m_pRealHealth - TR_POSITION_OFFSET );
         int tombraider = GetFullVersion();
         int levelIndex = GetLevelIndex();
         BOOL bCheck =
@@ -1893,7 +1893,7 @@ const TR_POSITION *CTR3SaveGame::GetPosition ( )
 /////////////////////////////////////////////////////////////////////////////
 BOOL CTR3SaveGame::SetPosition ( DWORD dwWestToEast, DWORD dwVertical, DWORD dwSouthToNorth, WORD wDirection, WORD wRoom )
 {
-    GetLife ();
+    GetRealHealth ();
 
     //  Check if position was good
     if ( GetPosition ( ) == NULL )
@@ -1901,10 +1901,10 @@ BOOL CTR3SaveGame::SetPosition ( DWORD dwWestToEast, DWORD dwVertical, DWORD dwS
         return FALSE;
     }
 
-    if ( m_pLife != NULL )
+    if ( m_pRealHealth != NULL )
     {
-        long dwDelta = (long) ( (BYTE* )m_pLife - (BYTE* )m_pBuffer );
-        TR_POSITION *position = ( TR_POSITION *) ( (BYTE *) m_pLife - TR_POSITION_OFFSET );
+        long dwDelta = (long) ( (BYTE* )m_pRealHealth - (BYTE* )m_pBuffer );
+        TR_POSITION *position = ( TR_POSITION *) ( (BYTE *) m_pRealHealth - TR_POSITION_OFFSET );
         position->dwWestToEast      = dwWestToEast;
         position->dwVertical        = dwVertical;
         position->dwSouthToNorth    = dwSouthToNorth;

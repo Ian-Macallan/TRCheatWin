@@ -2002,7 +2002,7 @@ void CTRXInfoPage::OnBnClickedMax()
         /*
          *      Set Life.
         */
-        CTRSaveGame::I()->SetLife ( Many32K );
+        // CTRSaveGame::I()->SetRealHealth ( Many32K );
 
         //  Binocular
         CTRSaveGame::I()->SetBinocular ( 1 );

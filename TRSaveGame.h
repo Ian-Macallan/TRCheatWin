@@ -31,7 +31,7 @@
 /////////////////////////////////////////////////////////////////////////////
 #pragma pack(push, pack1, 1)
 
-//  Seems to be 24 before TRLife found
+//  Seems to be 24 before TRRealHealth found
 //  0x22 (34) from iLife
 //  Struct Size 3 * 4 + 4 * 2 = 20 bytes
 #define TR_POSITION_OFFSET      24
@@ -53,16 +53,16 @@ struct TR_POSITION
 };
 
 //  Struct Size 12 in decimal
-struct          TRLife
+struct          TRRealHealth
 {
-    WORD  w1;       /* Must Be 0x0002 */
-    WORD  w2;       /* Must Be 0x0002 */
+    WORD  w1;               /* Must Be 0x0002 */
+    WORD  w2;               /* Must Be 0x0002 */
     WORD  w3;  
-    WORD  w4;       /* Must Be 0x0067 */
+    WORD  w4;               /* Must Be 0x0067 */
     WORD  cFiller2;
-    WORD  iLife;    /* This is the Life */
+    WORD  wRealHealth;      /* This is the Life */
 };
-typedef struct TRLife   TRLIFE;
+typedef struct TRRealHealth   TRREALHEALTH;
 
 #define MAX_SAVELENGTH  (2*1024*1024)
 
@@ -136,8 +136,8 @@ class CTRSaveGame  : public CObject
         WORD                m_iRevolver;
         WORD                m_iGunAmmos;
 
-        int                 m_iLife;
-        TRLIFE              *m_pLife;
+        WORD                m_wRealHealth;
+        TRREALHEALTH        *m_pRealHealth;
 
         unsigned            m_iSaveLength;
         int                 m_iMaxLevel;
@@ -279,14 +279,14 @@ class CTRSaveGame  : public CObject
         virtual size_t getBufferLength() = 0;
         virtual void SetBufferLength(size_t len) { m_iSaveLength = (unsigned) len; };
 
-        virtual TRLIFE *GetLifeAddress ();
-        virtual int GetLife ();
-        virtual void SetLife ( const char *szLife );
-        virtual void SetLife ( int val )
+        virtual TRREALHEALTH *GetRealHealthAddress ();
+        virtual int GetRealHealth ();
+        virtual void SetRealHealth ( const char *szRealHealth );
+        virtual void SetRealHealth ( int val )
         {
             char szText [ 32 ];
             sprintf_s ( szText, sizeof(szText), "%d", val );
-            SetLife ( szText );
+            SetRealHealth ( szText );
         }
 
         virtual int GetMap1 () = 0;

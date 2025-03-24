@@ -188,7 +188,7 @@ CTR4NGSaveGame::CTR4NGSaveGame()
 
     iRiotGunUnits       = 6;
 
-    m_pLife             = NULL;
+    m_pRealHealth             = NULL;
 
     m_pBuffer           = new ( TR4NGSAVE );
     ZeroMemory ( m_pBuffer, sizeof(TR4NGSAVE) );
@@ -2997,10 +2997,10 @@ void *CTR4NGSaveGame::GetIndicatorAddress (int index)
                 }
 
                 // In TR4 Life is between 0 and 999 (0 means 1000)
-                short life = * (short * ) ( pBuffer + iBuffer + TR4NG_LIFE_OFFSET );
+                WORD wRealHealth = * (WORD * ) ( pBuffer + iBuffer + TR4NG_REALHEALTH_OFFSET );
 
                 //  Life Is valid between 0 and 1000
-                if ( ! IsTR4NGHealthValid ( life, false ) )
+                if ( ! IsTR4NGHealthValid ( wRealHealth, false ) )
                 {
                     continue;
                 }
@@ -3025,14 +3025,14 @@ void *CTR4NGSaveGame::GetIndicatorAddress (int index)
 /////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////
-WORD *CTR4NGSaveGame::GetTR4NGLifeAddress()
+WORD *CTR4NGSaveGame::GetTR4NGRealHealthAddress()
 {
     char *pBuffer   = ( char * ) GetIndicatorAddress();
     if ( pBuffer != NULL )
     {
-        WORD *pLife = ( WORD * ) ( pBuffer + TR4NG_LIFE_OFFSET );
+        WORD *pRealHealth = ( WORD * ) ( pBuffer + TR4NG_REALHEALTH_OFFSET );
 
-        if ( ! IsTR4NGHealthValid ( *pLife, true ) )
+        if ( ! IsTR4NGHealthValid ( *pRealHealth, true ) )
         {
             return NULL;
         }
@@ -3044,7 +3044,7 @@ WORD *CTR4NGSaveGame::GetTR4NGLifeAddress()
             "Life Indicators 0x%08x : 0x%02x 0x%02x 0x%02x 0x%02x H:%-6d\n", 
             dwRelativeAddress, 
             pBuffer [ 0 ] & 0xff, pBuffer [ 1 ] & 0xff, pBuffer [ 2 ] & 0xff, pBuffer [ 3 ] & 0xff,
-            *pLife );
+            *pRealHealth );
         OutputDebugString ( szDebugString );
 #endif
 
@@ -3063,7 +3063,7 @@ WORD *CTR4NGSaveGame::GetTR4NGLifeAddress()
             if ( bCheck )
             {
                 //
-                return pLife;
+                return pRealHealth;
             }
         }
     }
@@ -3100,18 +3100,18 @@ WORD *CTR4NGSaveGame::GetTR4NGLifeAddress()
 //  00000CD3: FF 00
 //
 /////////////////////////////////////////////////////////////////////////////
-int CTR4NGSaveGame::GetLife ()
+int CTR4NGSaveGame::GetRealHealth ()
 {
     //
-    WORD *pLife = GetTR4NGLifeAddress();
-    if ( pLife != NULL )
+    WORD *pRealHealth = GetTR4NGRealHealthAddress();
+    if ( pRealHealth != NULL )
     {
-        WORD life = *pLife;
-        if ( life == TR4_MIN_HEALTH )
+        WORD wRealHealth = *pRealHealth;
+        if ( wRealHealth == TR4_MIN_HEALTH )
         {
-            life = TR4_MAX_HEALTH;
+            wRealHealth = TR4_MAX_HEALTH;
         }
-        return life;
+        return wRealHealth;
     }
 
     return -1;
@@ -3121,19 +3121,19 @@ int CTR4NGSaveGame::GetLife ()
 /////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////
-void CTR4NGSaveGame::SetLife ( const char *szLife )
+void CTR4NGSaveGame::SetRealHealth ( const char *szRealHealth )
 {
     //
-    WORD *pLife = GetTR4NGLifeAddress();
-    if ( pLife != NULL )
+    WORD *pRealHealth = GetTR4NGRealHealthAddress();
+    if ( pRealHealth != NULL )
     {
-        WORD life = (WORD) atoi(szLife);
-        if ( life == TR4_MAX_HEALTH )
+        WORD wRealHealth = (WORD) atoi(szRealHealth);
+        if ( wRealHealth == TR4_MAX_HEALTH )
         {
-            life = TR4_MIN_HEALTH;
+            wRealHealth = TR4_MIN_HEALTH;
         }
 
-        *pLife = (WORD) life;
+        *pRealHealth = (WORD) wRealHealth;
     }
 }
 
@@ -3363,7 +3363,7 @@ TR4NG_POSITION *CTR4NGSaveGame::GetTR4Position ( )
                 {
 #ifdef _DEBUG
                     //  Life is not there
-                    short life = * (short * ) ( pBuffer + TR4NG_LIFE_OFFSET );
+                    WORD wRealHealth = * (WORD * ) ( pBuffer + TR4NG_REALHEALTH_OFFSET );
 
                     DWORD dwRelativeAddress = CTRXTools::RelativeAddress ( pBuffer - i, m_pBuffer );
                     static char szDebugString [ MAX_PATH ];
@@ -3372,7 +3372,7 @@ TR4NG_POSITION *CTR4NGSaveGame::GetTR4Position ( )
                         dwRelativeAddress, 
                         pTR4Position0->indicator1, pTR4Position0->indicator2, pTR4Position0->indicator3, pTR4Position0->indicator4, 
                         wRoom, dwVertical, dwSouthToNorth, dwWestToEast, pTR4Position->cOrientation,
-                        life ); 
+                        wRealHealth ); 
                     OutputDebugString ( szDebugString );
 #endif
                     positionTable [ 0 ] = pTR4Position;
@@ -3464,10 +3464,10 @@ TR4NG_POSITION *CTR4NGSaveGame::GetTR4Position ( )
                     TR4NG_POSITION *pTR4Position0    = (TR4NG_POSITION *) ( (char * ) pCurrent + i );
 
                     //  Life between 0 and 1000
-                    short life = pTR4Position0->health;
+                    WORD wRealHealth = pTR4Position0->health;
 
                     //
-                    if ( IsTR4NGHealthValid ( life, false )  )
+                    if ( IsTR4NGHealthValid ( wRealHealth, false )  )
                     {
                         positionTable [ positionCount ] = pCurrent;
                         if ( pTR4Position == NULL )
@@ -3483,7 +3483,7 @@ TR4NG_POSITION *CTR4NGSaveGame::GetTR4Position ( )
                         "- indicators 0x%08x : 0x%02x 0x%02x 0x%02x 0x%02x H:%-6d\n", 
                         dwRelativeAddress,
                         pTR4Position0->indicator1, pTR4Position0->indicator2, pTR4Position0->indicator3, pTR4Position0->indicator4,
-                        life ); 
+                        wRealHealth ); 
                     OutputDebugString ( szDebugString );
 
                     if ( CTRXGlobal::m_iUnchecked == FALSE )

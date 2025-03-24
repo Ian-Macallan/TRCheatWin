@@ -87,7 +87,7 @@ struct TR4NG_POSITION
     BYTE    unknown4;
     WORD    health;             //  0012
 };
-#define TR4NG_LIFE_OFFSET       (offsetof(TR4NG_POSITION,health)-offsetof(TR4NG_POSITION,indicator1))
+#define TR4NG_REALHEALTH_OFFSET (offsetof(TR4NG_POSITION,health)-offsetof(TR4NG_POSITION,indicator1))
 
 struct          TR4NGGun
 {
@@ -385,9 +385,9 @@ class CTR4NGSaveGame : public CTR45SaveGame
         int GetLaraState ( );
         void SetLaraState ( int state );
 
-        WORD *GetTR4NGLifeAddress();
-        int GetLife ();
-        void SetLife ( const char *szLife );
+        WORD *GetTR4NGRealHealthAddress();
+        int GetRealHealth ();
+        void SetRealHealth ( const char *szRealHealth );
         void *GetIndicatorAddress ( int index = 0 );
 
         int GetMap1 ();

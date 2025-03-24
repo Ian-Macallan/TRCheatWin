@@ -79,7 +79,7 @@ struct TR4_POSITION
     BYTE    unknown4;
     WORD    health;             //  0012
 };
-#define TR4_LIFE_OFFSET         (offsetof(TR4_POSITION,health)-offsetof(TR4_POSITION,indicator1))
+#define TR4_REALHEALTH_OFFSET   (offsetof(TR4_POSITION,health)-offsetof(TR4_POSITION,indicator1))
 
 struct          TR4Gun
 {
@@ -337,9 +337,9 @@ class CTR4SaveGame : public CTR45SaveGame
         int GetLaraState ( );
         void SetLaraState ( int state );
 
-        WORD *GetTR4LifeAddress();
-        int GetLife ();
-        void SetLife ( const char *szLife );
+        WORD *GetTR4RealHealthAddress();
+        int GetRealHealth ();
+        void SetRealHealth ( const char *szRealHealth );
         void *GetIndicatorAddress ( int index = 0 );
 
         int GetMap1 ();

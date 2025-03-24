@@ -159,7 +159,7 @@ CTR5SaveGame::CTR5SaveGame()
 
     iRiotGunUnits       = 6;
 
-    m_pLife             = NULL;
+    m_pRealHealth             = NULL;
 
     m_pBuffer           = new ( TR5SAVE );
     ZeroMemory ( m_pBuffer, sizeof(TR5SAVE) );
@@ -1644,8 +1644,8 @@ void *CTR5SaveGame::GetIndicatorAddress ( int index )
                     continue;
                 }
 
-                short life = * ( short * ) ( pBuffer + iBuffer + TR5_LIFE_OFFSET );
-                if ( ! IsTR5HealthValid ( life, false ) )
+                WORD wRealHealth = * ( WORD * ) ( pBuffer + iBuffer + TR5_REALHEALTH_OFFSET );
+                if ( ! IsTR5HealthValid ( wRealHealth, false ) )
                 {
                     continue;
                 }
@@ -1669,15 +1669,15 @@ void *CTR5SaveGame::GetIndicatorAddress ( int index )
 /////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////
-WORD *CTR5SaveGame::GetTR5LifeAddress ()
+WORD *CTR5SaveGame::GetTR5RealHealthAddress ()
 {
     //
     char *pBuffer   = ( char * ) GetIndicatorAddress();
     if ( pBuffer )
     {
-        WORD *pLife = ( WORD * ) ( pBuffer + TR5_LIFE_OFFSET );
+        WORD *pRealHealth = ( WORD * ) ( pBuffer + TR5_REALHEALTH_OFFSET );
 
-        if ( ! IsTR5HealthValid ( *pLife, true ) )
+        if ( ! IsTR5HealthValid ( *pRealHealth, true ) )
         {
             return NULL;
         }
@@ -1687,7 +1687,7 @@ WORD *CTR5SaveGame::GetTR5LifeAddress ()
         DWORD dwRelativeAddress = CTRXTools::RelativeAddress ( pBuffer, m_pBuffer );
         sprintf_s ( szDebugString, sizeof(szDebugString), 
             "Life Indicators 0x%08x : 0x%02x 0x%02x 0x%02x 0x%02x H:%-6d\n", 
-            dwRelativeAddress, pBuffer [ 0 ] & 0xff, pBuffer [ 1 ] & 0xff, pBuffer [ 2 ] & 0xff, pBuffer [ 3 ] & 0xff, *pLife );
+            dwRelativeAddress, pBuffer [ 0 ] & 0xff, pBuffer [ 1 ] & 0xff, pBuffer [ 2 ] & 0xff, pBuffer [ 3 ] & 0xff, *pRealHealth );
         OutputDebugString ( szDebugString );
 #endif
 
@@ -1706,7 +1706,7 @@ WORD *CTR5SaveGame::GetTR5LifeAddress ()
             if ( bCheck )
             {
                 //
-                return pLife;
+                return pRealHealth;
             }
         }
     }
@@ -1718,13 +1718,13 @@ WORD *CTR5SaveGame::GetTR5LifeAddress ()
 /////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////
-int CTR5SaveGame::GetLife ()
+int CTR5SaveGame::GetRealHealth ()
 {
     //
-    WORD *pLife = GetTR5LifeAddress();
-    if ( pLife )
+    WORD *pRealHealth = GetTR5RealHealthAddress();
+    if ( pRealHealth )
     {
-        return (int) *pLife;
+        return (int) *pRealHealth;
     }
 
     return -1;
@@ -1735,13 +1735,13 @@ int CTR5SaveGame::GetLife ()
 /////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////
-void CTR5SaveGame::SetLife ( const char *szLife )
+void CTR5SaveGame::SetRealHealth ( const char *szRealHealth )
 {
-    int iLife = atoi(szLife);
-    WORD *pLife = GetTR5LifeAddress();
-    if ( pLife )
+    int iLife = atoi(szRealHealth);
+    WORD *pRealHealth = GetTR5RealHealthAddress();
+    if ( pRealHealth )
     {
-        *pLife = (WORD) iLife;
+        *pRealHealth = (WORD) iLife;
     }
 }
 
@@ -1932,7 +1932,7 @@ TR5_POSITION *CTR5SaveGame::GetTR5Position ( )
                 if ( bCheck )
                 {
 #ifdef _DEBUG
-                    short life = * ( short * ) ( pBuffer + TR5_LIFE_OFFSET );
+                    WORD wRealHealth = * ( WORD * ) ( pBuffer + TR5_REALHEALTH_OFFSET );
 
                     DWORD dwRelativeAddress = CTRXTools::RelativeAddress ( pBuffer - i, m_pBuffer );
                     static char szDebugString [ MAX_PATH ];
@@ -1941,7 +1941,7 @@ TR5_POSITION *CTR5SaveGame::GetTR5Position ( )
                         dwRelativeAddress, 
                         pTR5Position0->indicator1, pTR5Position0->indicator2, pTR5Position0->indicator3, pTR5Position0->indicator4,
                         wRoom, dwVertical, dwSouthToNorth, dwWestToEast, pTR5Position->cOrientation,
-                        life ); 
+                        wRealHealth ); 
                     OutputDebugString ( szDebugString );
 #endif
                     positionTable [ 0 ] = pTR5Position;
@@ -2027,10 +2027,10 @@ TR5_POSITION *CTR5SaveGame::GetTR5Position ( )
                 {
                     TR5_POSITION *pTR5Position0    = (TR5_POSITION *) ( (char *) pCurrent + i );
 
-                    short life = pTR5Position0->health;
+                    WORD wRealHealth = pTR5Position0->health;
 
                     //
-                    if ( IsTR5HealthValid ( life, false ) )
+                    if ( IsTR5HealthValid ( wRealHealth, false ) )
                     {
                         positionTable [ positionCount ] = pCurrent;
                         if ( pTR5Position == NULL )
@@ -2046,7 +2046,7 @@ TR5_POSITION *CTR5SaveGame::GetTR5Position ( )
                         "- indicators 0x%08x : 0x%02x 0x%02x 0x%02x 0x%02x H:%-6d\n", 
                         dwRelativeAddress,
                         pTR5Position0->indicator1, pTR5Position0->indicator2, pTR5Position0->indicator3, pTR5Position0->indicator4,
-                        life ); 
+                        wRealHealth ); 
                     OutputDebugString ( szDebugString );
 
                     if ( CTRXGlobal::m_iUnchecked == FALSE )

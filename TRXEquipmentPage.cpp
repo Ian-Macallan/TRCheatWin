@@ -159,7 +159,7 @@ void CTRXEquipmentPage::DisplayValues()
         sprintf_s ( szString, sizeof(szString), "%d", CTRSaveGame::I()->GetGunAmmos ( ) );
         m_GunAmmos.SetWindowText ( szString );
 
-        iVal = CTRSaveGame::I()->GetLife ( );
+        iVal = CTRSaveGame::I()->GetRealHealth ( );
         sprintf_s ( szString, sizeof(szString), "%d", iVal );
         m_Life.SetWindowText ( szString );
 
@@ -278,7 +278,7 @@ void CTRXEquipmentPage::UpdateBuffer()
         /*
          *      Set Life.
          */
-        CTRSaveGame::I()->SetLife ( GetValue ( m_Life ) );
+        CTRSaveGame::I()->SetRealHealth ( GetValue ( m_Life ) );
 
         //  Binocular
         CTRSaveGame::I()->SetBinocular ( GetValue ( m_Binocular ) );

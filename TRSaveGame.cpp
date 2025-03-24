@@ -108,10 +108,10 @@ void CTRSaveGame::Reset()
     ZeroMemory ( m_FilenameBak, sizeof(m_FilenameBak) );
     ZeroMemory ( m_Status, sizeof(m_Status) );
 
-    m_iGunAmmos         = 0;
+    m_iGunAmmos             = 0;
 
-    m_iLife             = 0;
-    m_pLife             = NULL;
+    m_wRealHealth           = 0;
+    m_pRealHealth           = NULL;
 
 }
 
@@ -885,23 +885,23 @@ void CTRSaveGame::Backup_Savegame()
 /////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////
-TRLIFE *CTRSaveGame::GetLifeAddress ()
+TRREALHEALTH *CTRSaveGame::GetRealHealthAddress ()
 {
-    if ( m_pLife != NULL )
+    if ( m_pRealHealth != NULL )
     {
-        return m_pLife;
+        return m_pRealHealth;
     }
 
 #ifdef _DEBUG
-    OutputDebugString ( "GetLifeAddress TR Standard\n" );
+    OutputDebugString ( "GetRealHealthAddress TR Standard\n" );
 #endif
 
     //
     char        *pBuffer;
-    TRLIFE      *pLife;
+    TRREALHEALTH      *pRealHealth;
     int         iX;
 
-    m_pLife     = NULL;
+    m_pRealHealth     = NULL;
 
     /*
      *      Initializations.
@@ -920,9 +920,9 @@ TRLIFE *CTRSaveGame::GetLifeAddress ()
     ZeroMemory ( m_szIndicatorLabel, sizeof(m_szIndicatorLabel) );
 
     //
-    while ( iX > sizeof ( TRLIFE ) )
+    while ( iX > sizeof ( TRREALHEALTH ) )
     {
-        pLife = ( TRLIFE * ) pBuffer;
+        pRealHealth = ( TRREALHEALTH * ) pBuffer;
 
         for ( int i = 0; i < IndicatorsTR123Table1Count; i++ )
         {
@@ -936,18 +936,18 @@ TRLIFE *CTRSaveGame::GetLifeAddress ()
                 continue;
             }
 
-            if (    pLife->w1 == IndicatorsTR123Table1 [ i ].w1 &&
-                    pLife->w2 == IndicatorsTR123Table1 [ i ].w2 &&
-                    pLife->w4 == IndicatorsTR123Table1 [ i ].w4 )
+            if (    pRealHealth->w1 == IndicatorsTR123Table1 [ i ].w1 &&
+                    pRealHealth->w2 == IndicatorsTR123Table1 [ i ].w2 &&
+                    pRealHealth->w4 == IndicatorsTR123Table1 [ i ].w4 )
             {
-                if ( IndicatorsTR123Table1 [ i ].useW3 && pLife->w3 != IndicatorsTR123Table1 [ i ].w3 )
+                if ( IndicatorsTR123Table1 [ i ].useW3 && pRealHealth->w3 != IndicatorsTR123Table1 [ i ].w3 )
                 {
                     continue;
                 }
-                m_pLife = pLife;
-                m_iLife = pLife->iLife;
+                m_pRealHealth = pRealHealth;
+                m_wRealHealth = pRealHealth->wRealHealth;
                 strcpy_s ( m_szIndicatorLabel, sizeof(m_szIndicatorLabel), IndicatorsTR123Table1 [ i ].szLabel );
-                return m_pLife;
+                return m_pRealHealth;
             }
         }
         
@@ -961,9 +961,9 @@ TRLIFE *CTRSaveGame::GetLifeAddress ()
     iX          = m_iSaveLength;
     pBuffer     = getBufferAddress ();
 
-    while ( iX > sizeof ( TRLIFE ) )
+    while ( iX > sizeof ( TRREALHEALTH ) )
     {
-        pLife = ( TRLIFE * ) pBuffer;
+        pRealHealth = ( TRREALHEALTH * ) pBuffer;
 
         for ( int i = 0; i < IndicatorsTR123Table2Count; i++ )
         {
@@ -977,19 +977,19 @@ TRLIFE *CTRSaveGame::GetLifeAddress ()
                 continue;
             }
 
-            if (    pLife->w1 == IndicatorsTR123Table2 [ i ].w1 &&
-                    pLife->w2 == IndicatorsTR123Table2 [ i ].w2 &&
-                    pLife->w4 == IndicatorsTR123Table2 [ i ].w4 )
+            if (    pRealHealth->w1 == IndicatorsTR123Table2 [ i ].w1 &&
+                    pRealHealth->w2 == IndicatorsTR123Table2 [ i ].w2 &&
+                    pRealHealth->w4 == IndicatorsTR123Table2 [ i ].w4 )
             {
-                if ( IndicatorsTR123Table2 [ i ].useW3 && pLife->w3 != IndicatorsTR123Table2 [ i ].w3 )
+                if ( IndicatorsTR123Table2 [ i ].useW3 && pRealHealth->w3 != IndicatorsTR123Table2 [ i ].w3 )
                 {
                     continue;
                 }
 
-                m_pLife = pLife;
-                m_iLife = pLife->iLife;
+                m_pRealHealth = pRealHealth;
+                m_wRealHealth = pRealHealth->wRealHealth;
                 strcpy_s ( m_szIndicatorLabel, sizeof(m_szIndicatorLabel), IndicatorsTR123Table1 [ i ].szLabel );
-                return m_pLife;
+                return m_pRealHealth;
             }
         }
 
@@ -1005,12 +1005,12 @@ TRLIFE *CTRSaveGame::GetLifeAddress ()
 /////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////
-int CTRSaveGame::GetLife ()
+int CTRSaveGame::GetRealHealth ()
 {
-    TRLIFE      *pLife  = GetLifeAddress();
-    if ( pLife != NULL )
+    TRREALHEALTH      *pRealHealth  = GetRealHealthAddress();
+    if ( pRealHealth != NULL )
     {
-        return ( pLife->iLife );
+        return ( pRealHealth->wRealHealth );
     }
 
     return -1;
@@ -1020,11 +1020,11 @@ int CTRSaveGame::GetLife ()
 /////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////
-void CTRSaveGame::SetLife ( const char *szLife )
+void CTRSaveGame::SetRealHealth ( const char *szRealHealth )
 {
-    if ( m_pLife != NULL )
+    if ( m_pRealHealth != NULL )
     {
-        m_pLife->iLife = atoi ( szLife );
+        m_pRealHealth->wRealHealth = atoi ( szRealHealth );
     }
 
     return;

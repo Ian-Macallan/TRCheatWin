@@ -68,8 +68,8 @@ struct TR5_POSITION
     BYTE    unknown4;
     WORD    health;             //  0012
 };
-#define TR5_LIFE_OFFSET         (offsetof(TR5_POSITION,health)-offsetof(TR5_POSITION,indicator1))
-// #define TR5_LIFE_OFFSET         7
+#define TR5_REALHEALTH_OFFSET   (offsetof(TR5_POSITION,health)-offsetof(TR5_POSITION,indicator1))
+// #define TR5_REALHEALTH_OFFSET         7
 
 struct          TR5Gun
 {
@@ -301,9 +301,9 @@ class CTR5SaveGame : public CTR45SaveGame
         void SetLaraState ( int state );
 
         void *GetIndicatorAddress ( int index = 0 );
-        WORD *GetTR5LifeAddress (  );
-        int GetLife ();
-        void SetLife ( const char *szLife );
+        WORD *GetTR5RealHealthAddress (  );
+        int GetRealHealth ();
+        void SetRealHealth ( const char *szRealHealth );
 
         int GetMap1 ();
         int GetMap2 ();
