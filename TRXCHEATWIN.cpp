@@ -531,6 +531,22 @@ void CTRXCHEATWINApp::ReadIndicators()
     strcat_s ( szIndicatorsFilename, sizeof(szIndicatorsFilename), CTR9SaveGame::GetIndicatorFileType() );
     CTR9SaveGame::ReadIndicators ( IndicatorsTRRTable, IndicatorsTRRTableCount, szIndicatorsFilename );
 
+    //
+    strcpy_s ( szIndicatorsFilename, sizeof(szIndicatorsFilename), InitFileName );
+    RemoveFileType ( szIndicatorsFilename );
+    strcat_s ( szIndicatorsFilename, sizeof(szIndicatorsFilename), CTR8SaveGame::GetIndicator4FileType() );
+#ifdef _DEBUG
+    CTR8SaveGame::ReadIndicators ( IndicatorsTRR4Table, IndicatorsTRR4TableCount, szIndicatorsFilename );
+#endif
+
+    //
+    strcpy_s ( szIndicatorsFilename, sizeof(szIndicatorsFilename), InitFileName );
+    RemoveFileType ( szIndicatorsFilename );
+    strcat_s ( szIndicatorsFilename, sizeof(szIndicatorsFilename), CTR8SaveGame::GetIndicator5FileType() );
+#ifdef _DEBUG
+    CTR8SaveGame::ReadIndicators ( IndicatorsTRR5Table, IndicatorsTRR5TableCount, szIndicatorsFilename );
+#endif
+
 }
 
 //
@@ -575,8 +591,23 @@ void CTRXCHEATWINApp::WriteIndicators()
     strcpy_s ( szIndicatorsFilename, sizeof(szIndicatorsFilename), InitFileName );
     RemoveFileType ( szIndicatorsFilename );
     strcat_s ( szIndicatorsFilename, sizeof(szIndicatorsFilename), CTR9SaveGame::GetIndicatorFileType() );
-    CTR9SaveGame::WriteIndicators ( IndicatorsTRRTable,IndicatorsTRRTableCount, szIndicatorsFilename );
+    CTR9SaveGame::WriteIndicators ( IndicatorsTRRTable, IndicatorsTRRTableCount, szIndicatorsFilename );
 
+    //
+    strcpy_s ( szIndicatorsFilename, sizeof(szIndicatorsFilename), InitFileName );
+    RemoveFileType ( szIndicatorsFilename );
+    strcat_s ( szIndicatorsFilename, sizeof(szIndicatorsFilename), CTR8SaveGame::GetIndicator4FileType() );
+#ifdef _DEBUG
+    CTR8SaveGame::WriteIndicators ( IndicatorsTRR4Table, IndicatorsTRR4TableCount, szIndicatorsFilename );
+#endif
+
+    //
+    strcpy_s ( szIndicatorsFilename, sizeof(szIndicatorsFilename), InitFileName );
+    RemoveFileType ( szIndicatorsFilename );
+    strcat_s ( szIndicatorsFilename, sizeof(szIndicatorsFilename), CTR8SaveGame::GetIndicator5FileType() );
+#ifdef _DEBUG
+    CTR8SaveGame::WriteIndicators ( IndicatorsTRR5Table, IndicatorsTRR5TableCount, szIndicatorsFilename );
+#endif
 
 }
 

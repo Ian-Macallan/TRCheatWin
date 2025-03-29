@@ -3495,6 +3495,11 @@ void CTRXInfoPage::OnBnClickedRoomSearch()
             levelIndex = 0;
         }
 
+        if ( IsCustomArea() && ( tombraider == 40 || tombraider == 45 ) )
+        {
+            tombraider = 49;
+        }
+
         //
         WORD area = FindAreaForCoordinates ( tombraider, levelIndex, dwWestToEast, dwVertical, dwSouthToNorth );
         if ( area != 0XFFFF )

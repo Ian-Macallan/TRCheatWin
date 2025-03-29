@@ -822,6 +822,8 @@ short FindAreaForCoordinates ( int tombraider, int levelIndex, long x, long y, l
 {
     //
     int count = 0;
+
+    //
     TRN_AREA *trLevelsAreas = GetTable ( tombraider, levelIndex, count );
     if ( trLevelsAreas == NULL )
     {

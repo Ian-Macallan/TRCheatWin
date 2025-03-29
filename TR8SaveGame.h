@@ -943,10 +943,16 @@ class CTR8SaveGame : public CObject
         static const char *GetLevelName ( int tombraider, int level, int block = 0 );
         static int GetLevelCount ( int tombraider );
 
-        static const char *GetIndicatorFileType()
+        static const char *GetIndicator4FileType()
         {
-            return ".trr.txt";
+            return ".trr4.txt";
         }
+
+        static const char *GetIndicator5FileType()
+        {
+            return ".trr5.txt";
+        }
+
         static int ReadIndicators( TRR45_INDICATORS *IndicatorsTRTable, const int maxTable, const char *pFilename );
         static BOOL WriteIndicators( TRR45_INDICATORS *IndicatorsTRTable, const int maxTable, const char *pFilename );
         static int CountIndicators( TRR45_INDICATORS *IndicatorsTRTable, const int maxTable );
@@ -957,3 +963,10 @@ class CTR8SaveGame : public CObject
         BOOL SetPosition (  int tombraider, int block,
                             DWORD dwWestToEast, DWORD dwVertical, DWORD dwSouthToNorth, WORD wDirection, WORD wRoom );
 };
+
+extern TRR45_INDICATORS IndicatorsTRR4Table [ MAX_INDICATORS ];
+extern int IndicatorsTRR4TableCount;
+
+extern TRR45_INDICATORS IndicatorsTRR5Table [ MAX_INDICATORS ];
+extern int IndicatorsTRR5TableCount;
+
