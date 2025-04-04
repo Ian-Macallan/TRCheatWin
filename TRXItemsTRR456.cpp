@@ -231,12 +231,30 @@ void CTRXItemsTRR456::SetLabel ( UINT checkId, UINT editId, char **pTableInd, ch
         if ( pTableInd != NULL && pTableInd [ index ] != NULL && strlen(pTableInd [ index ]) > 0 )
         {
             ZeroMemory ( szLabel, sizeof(szLabel) );
-            strcpy_s ( szLabel, pTableInd [ index ] );
+
+            //  Puzzle
+            if ( index >= 6 && index < 18 )
+            {
+                strcat_s ( szLabel, sizeof(szLabel), "# " );
+            }
+
+            strcat_s ( szLabel, sizeof(szLabel), pTableInd [ index ] );
             char *pCR = strchr ( szLabel, '\r' );
             if ( pCR != NULL )
             {
                 *pCR = '\0';
             }
+
+            //  Puzzle
+            if ( index >= 6 && index < 18 )
+            {
+                char *pOne = strstr ( szLabel, "(1)" );
+                if ( pOne != NULL )
+                {
+                    *pOne = '\0';
+                }
+            }
+
             pCheckWnd->SetFont ( m_pBoldFont, TRUE );
             pEditWnd->SetFont ( m_pBoldFont, TRUE );
             pCheckWnd->SetWindowText ( szLabel );
@@ -244,12 +262,30 @@ void CTRXItemsTRR456::SetLabel ( UINT checkId, UINT editId, char **pTableInd, ch
         else if ( pTableGen != NULL && pTableGen [ index ] != NULL && strlen(pTableGen [ index ]) > 0 )
         {
             ZeroMemory ( szLabel, sizeof(szLabel) );
-            strcpy_s ( szLabel, pTableGen [ index ] );
+
+            //  Puzzle
+            if ( index >= 6 && index < 18 )
+            {
+                strcat_s ( szLabel, sizeof(szLabel), "# " );
+            }
+
+            strcat_s ( szLabel, sizeof(szLabel), pTableGen [ index ] );
             char *pCR = strchr ( szLabel, '\r' );
             if ( pCR != NULL )
             {
                 *pCR = '\0';
             }
+
+            //  Puzzle
+            if ( index >= 6 && index < 18 )
+            {
+                char *pOne = strstr ( szLabel, "(1)" );
+                if ( pOne != NULL )
+                {
+                    *pOne = '\0';
+                }
+            }
+
             pCheckWnd->SetFont ( m_pNormalFont, TRUE );
             pEditWnd->SetFont ( m_pNormalFont, TRUE );
             pCheckWnd->SetWindowText ( szLabel );

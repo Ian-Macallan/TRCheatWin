@@ -3490,11 +3490,13 @@ void CTRXInfoPage::OnBnClickedRoomSearch()
         m_South_North.GetWindowText ( szString, sizeof(szString) );
         DWORD dwSouthToNorth        = atol(szString);
         
+        //
         if ( IsCustomArea() || tombraider == 49 || tombraider == 99 )
         {
             levelIndex = 0;
         }
 
+        //
         if ( IsCustomArea() && ( tombraider == 40 || tombraider == 45 ) )
         {
             tombraider = 49;
