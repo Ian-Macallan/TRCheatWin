@@ -200,19 +200,22 @@ void CTUBSaveGame::writeSaveGame()
      */
     int     iX      = getLevelIndex ();
 
-    if ( ! ( m_pBuffer->trSingle.cGunBitmap & iMaskMagnum) )
+    if ( m_pGun != NULL )
     {
-        m_pGun->m_iDesertEagle = 0 ;
-    }
+        if ( ! ( m_pBuffer->trSingle.cGunBitmap & iMaskMagnum) )
+        {
+            m_pGun->m_iDesertEagle = 0 ;
+        }
 
-    if ( ! ( m_pBuffer->trSingle.cGunBitmap & iMaskUzi ) )
-    {
-        m_pGun->m_iUzis = 0;
-    }
+        if ( ! ( m_pBuffer->trSingle.cGunBitmap & iMaskUzi ) )
+        {
+            m_pGun->m_iUzis = 0;
+        }
 
-    if ( ! ( m_pBuffer->trSingle.cGunBitmap & iMaskShotGun ) )
-    {
-        m_pGun->m_iRiotGun = 0;
+        if ( ! ( m_pBuffer->trSingle.cGunBitmap & iMaskShotGun ) )
+        {
+            m_pGun->m_iRiotGun = 0;
+        }
     }
 
     //
@@ -429,7 +432,7 @@ TUBAMMOS *CTUBSaveGame::SearchGunStructure ( WORD m_iGunAmmos, WORD gunBitmap, i
                 if ( CheckIfAmmosMatch ( pGun, gunBitmap ) )
                 {
                     *iPos = iX - 1;
-                    return ( pGun );
+                    return pGun;
                 }
             }
 
@@ -439,7 +442,7 @@ TUBAMMOS *CTUBSaveGame::SearchGunStructure ( WORD m_iGunAmmos, WORD gunBitmap, i
         *iPos = -1;
         pGun = NULL;
 
-        return ( pGun );
+        return pGun;
 
 
 }
@@ -661,8 +664,12 @@ int CTUBSaveGame::GetAmmos2(int iX )
         return ( m_pBuffer->trSingle.m_iDesertEagle );
     }
 
-    return ( m_pGun->m_iDesertEagle );
+    if ( m_pGun != NULL )
+    {
+        return ( m_pGun->m_iDesertEagle );
+    }
 
+    return -1;
 }
 
 //
@@ -676,8 +683,12 @@ int CTUBSaveGame::GetAmmos3( int iX )
         return ( m_pBuffer->trSingle.m_iUzis );
     }
 
-    return ( m_pGun->m_iUzis );
+    if ( m_pGun != NULL )
+    {
+        return ( m_pGun->m_iUzis );
+    }
 
+    return -1;
 }
 
 //
@@ -691,7 +702,12 @@ int CTUBSaveGame::GetAmmos4a( int iX )
         return ( m_pBuffer->trSingle.m_iRiotGun );
     }
 
-    return ( m_pGun->m_iRiotGun );
+    if ( m_pGun != NULL )
+    {
+        return ( m_pGun->m_iRiotGun );
+    }
+
+    return -1;
 
 }
 
@@ -709,7 +725,6 @@ int CTUBSaveGame::GetAmmos5( int iX )
 //  return ( m_pGun->m_iM16Gun );
 
     return -1;
-
 }
 
 //
@@ -725,8 +740,7 @@ int CTUBSaveGame::GetAmmos6( int iX )
 
 //  return ( m_pGun->m_iRockets );
 
-    return ( -1 );
-
+    return -1;
 }
 
 //
@@ -774,7 +788,10 @@ void CTUBSaveGame::SetAmmos2 ( const char *szString, int iX )
         m_pBuffer->trSingle.m_iDesertEagle = atoi ( szString );
     }
 
-    m_pGun->m_iDesertEagle = atoi ( szString );
+    if ( m_pGun != NULL )
+    {
+        m_pGun->m_iDesertEagle = atoi ( szString );
+    }
 
 }
 
@@ -789,7 +806,10 @@ void CTUBSaveGame::SetAmmos3 ( const char *szString, int iX )
         m_pBuffer->trSingle.m_iUzis = atoi ( szString );
     }
 
-    m_pGun->m_iUzis = atoi ( szString );
+    if ( m_pGun != NULL )
+    {
+        m_pGun->m_iUzis = atoi ( szString );
+    }
 
 }
 
@@ -804,7 +824,10 @@ void CTUBSaveGame::SetAmmos4a ( const char *szString, int iX )
         m_pBuffer->trSingle.m_iRiotGun = atoi ( szString );
     }
 
-    m_pGun->m_iRiotGun = atoi ( szString );
+    if ( m_pGun != NULL )
+    {
+        m_pGun->m_iRiotGun = atoi ( szString );
+    }
 
 }
 
@@ -1191,7 +1214,12 @@ int CTUBSaveGame::GetFlares ( int iX )
 /////////////////////////////////////////////////////////////////////////////
 int CTUBSaveGame::GetAir ( )
 {
-    return ( m_pGun->iAir );
+    if ( m_pGun != NULL )
+    {
+        return ( m_pGun->iAir );
+    }
+
+    return -1;
 }
 
 //
@@ -1227,7 +1255,10 @@ void CTUBSaveGame::SetFlares ( const char *szString, int iX )
 /////////////////////////////////////////////////////////////////////////////
 void CTUBSaveGame::SetAir ( const char *szString )
 {
-    m_pGun->iAir = atoi ( szString );
+    if ( m_pGun != NULL )
+    {
+        m_pGun->iAir = atoi ( szString );
+    }
 }
 
 //

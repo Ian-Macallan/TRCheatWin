@@ -81,54 +81,54 @@ typedef struct TR3Ammos TR3AMMOS;
 
 struct          TR30Struct
 {
-    WORD  m_iGunAmmos;
+    WORD        m_iGunAmmos;
 
     //  Desert Eagle
-    WORD  m_iDesertEagleAmmos;
+    WORD        m_iDesertEagleAmmos;
 
     //  Uzi
-    WORD  m_iUziAmmos;
+    WORD        m_iUziAmmos;
 
     // Riot Gun
-    WORD  m_iRiotGunAmmos;
+    WORD        m_iRiotGunAmmos;
 
     //  MP5
-    WORD  m_iMP5Ammos;
+    WORD        m_iMP5Ammos;
 
     //  Rocket
-    WORD  m_iRocketAmmos;
+    WORD        m_iRocketAmmos;
 
     //  Harpoo,s
-    WORD  m_iHarpoonAmmos;
+    WORD        m_iHarpoonAmmos;
 
     //  Grenade
-    WORD  m_iGrenadeAmmos;
+    WORD        m_iGrenadeAmmos;
 
     //  Small Pack
-    BYTE   cSmallPack;
+    BYTE        cSmallPack;
 
     //  Large Pack
-    BYTE   cLargePack;
+    BYTE        cLargePack;
 
-    BYTE   cUnknown;
+    BYTE        cUnknown;
 
     //  Flare
-    BYTE    cFlare;
-    BYTE    cFiller1;
-    BYTE    cFiller2;
-    BYTE    cFiller3;
-    WORD    cGunBitmap;
+    BYTE        cFlare;
+    BYTE        cFiller1;
+    BYTE        cFiller2;
+    BYTE        cFiller3;
+    WORD        cGunBitmap;
 
-    WORD    cFiller4;
+    WORD        cFiller4;
 
-    BYTE    cNbObject1;
-    BYTE    cNbObject2;
-    BYTE    cNbObject3;
-    BYTE    cNbObject4;
+    BYTE        cNbObject1;
+    BYTE        cNbObject2;
+    BYTE        cNbObject3;
+    BYTE        cNbObject4;
 
-    BYTE    cFillers [ 18 ];
-    char    cSecrets;
-    BYTE    cFiller99;
+    BYTE        cFillers [ 18 ];
+    char        cSecrets;
+    BYTE        cFiller99;
 
 };
 

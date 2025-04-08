@@ -229,34 +229,37 @@ void CTR2SaveGame::writeSaveGame()
      */
     int     iX      = getLevelIndex ();
 
-    if ( ! ( m_pBuffer->trTable [ iX ].cGunBitmap & iMaskDesertEagle ) )
+    if ( m_pGun != NULL )
     {
-        m_pGun->m_iDesertEagle  = 0 ;
-    }
+        if ( ! ( m_pBuffer->trTable [ iX ].cGunBitmap & iMaskDesertEagle ) )
+        {
+            m_pGun->m_iDesertEagle  = 0 ;
+        }
 
-    if ( ! ( m_pBuffer->trTable [ iX ].cGunBitmap & iMaskUzi ) )
-    {
-        m_pGun->m_iUzis = 0;
-    }
+        if ( ! ( m_pBuffer->trTable [ iX ].cGunBitmap & iMaskUzi ) )
+        {
+            m_pGun->m_iUzis = 0;
+        }
 
-    if ( ! ( m_pBuffer->trTable [ iX ].cGunBitmap & MaskShotGun ) )
-    {
-        m_pGun->m_iRiotGun = 0;
-    }
+        if ( ! ( m_pBuffer->trTable [ iX ].cGunBitmap & MaskShotGun ) )
+        {
+            m_pGun->m_iRiotGun = 0;
+        }
 
-    if ( ! ( m_pBuffer->trTable [ iX ].cGunBitmap & iMaskGrenade ) )
-    {
-        m_pGun->m_iGrenades = 0;
-    }
+        if ( ! ( m_pBuffer->trTable [ iX ].cGunBitmap & iMaskGrenade ) )
+        {
+            m_pGun->m_iGrenades = 0;
+        }
 
-    if ( ! ( m_pBuffer->trTable [ iX ].cGunBitmap & iMaskHarpoon ) )
-    {
-        m_pGun->m_iHarpoon = 0;
-    }
+        if ( ! ( m_pBuffer->trTable [ iX ].cGunBitmap & iMaskHarpoon ) )
+        {
+            m_pGun->m_iHarpoon = 0;
+        }
 
-    if ( ! ( m_pBuffer->trTable [ iX ].cGunBitmap & iMaskM16 ) )
-    {
-        m_pGun->m_iM16Gun = 0;
+        if ( ! ( m_pBuffer->trTable [ iX ].cGunBitmap & iMaskM16 ) )
+        {
+            m_pGun->m_iM16Gun = 0;
+        }
     }
 
     //
@@ -505,7 +508,7 @@ TR2AMMOS *CTR2SaveGame::SearchGunStructure ( unsigned short m_iGunAmmos, WORD gu
                 if ( CheckIfAmmosMatch ( pGun, gunBitmap ) )
                 {
                     *iPos = iX - 1;
-                    return ( pGun );
+                    return pGun;
                 }
             }
 
@@ -515,7 +518,7 @@ TR2AMMOS *CTR2SaveGame::SearchGunStructure ( unsigned short m_iGunAmmos, WORD gu
         *iPos = -1;
         pGun = NULL;
 
-        return ( pGun );
+        return pGun;
 }
 
 //
@@ -783,8 +786,12 @@ int CTR2SaveGame::GetAmmos2(int iX )
         return ( m_pBuffer->trTable [ iX ].m_iDesertEagleAmmos );
     }
 
-    return ( m_pGun->m_iDesertEagle );
-
+    if ( m_pGun != NULL )
+    {
+        return ( m_pGun->m_iDesertEagle );
+    }
+    
+    return -1;
 }
 
 //
@@ -798,8 +805,12 @@ int CTR2SaveGame::GetAmmos3( int iX )
         return ( m_pBuffer->trTable [ iX ].m_iUziAmmos );
     }
 
-    return ( m_pGun->m_iUzis );
+    if ( m_pGun != NULL )
+    {
+        return ( m_pGun->m_iUzis );
+    }
 
+    return -1;
 }
 
 //
@@ -813,8 +824,12 @@ int CTR2SaveGame::GetAmmos4a ( int iX )
         return ( m_pBuffer->trTable [ iX ].m_iRiotGunAmmos );
     }
 
-    return ( m_pGun->m_iRiotGun );
+    if ( m_pGun != NULL )
+    {
+        return ( m_pGun->m_iRiotGun );
+    }
 
+    return -1;
 }
 
 //
@@ -828,7 +843,12 @@ int CTR2SaveGame::GetAmmos5( int iX )
         return ( m_pBuffer->trTable [ iX ].m_iM16GunAmmos );
     }
 
-    return ( m_pGun->m_iM16Gun );
+    if ( m_pGun != NULL )
+    {
+        return ( m_pGun->m_iM16Gun );
+    }
+
+    return -1;
 
 }
 
@@ -860,8 +880,12 @@ int CTR2SaveGame::GetAmmos7a( int iX )
         return ( m_pBuffer->trTable [ iX ].m_iGrenadeAmmos );
     }
 
-    return ( m_pGun->m_iGrenades );
+    if ( m_pGun != NULL )
+    {
+        return ( m_pGun->m_iGrenades );
+    }
 
+    return -1;
 }
 
 //
@@ -875,7 +899,12 @@ int CTR2SaveGame::GetAmmos8a( int iX )
         return ( m_pBuffer->trTable [ iX ].m_iHarpoonAmmos );
     }
 
-    return ( m_pGun->m_iHarpoon );
+    if ( m_pGun != NULL )
+    {
+        return ( m_pGun->m_iHarpoon );
+    }
+
+    return -1;
 }
 
 //
@@ -889,7 +918,10 @@ void CTR2SaveGame::SetAmmos2 ( const char *szString, int iX )
         m_pBuffer->trTable [ iX ].m_iDesertEagleAmmos = atoi ( szString );
     }
 
-    m_pGun->m_iDesertEagle = atoi ( szString );
+    if ( m_pGun != NULL )
+    {
+        m_pGun->m_iDesertEagle = atoi ( szString );
+    }
 
 }
 
@@ -904,7 +936,10 @@ void CTR2SaveGame::SetAmmos3 ( const char *szString, int iX )
         m_pBuffer->trTable [ iX ].m_iUziAmmos = atoi ( szString );
     }
 
-    m_pGun->m_iUzis = atoi ( szString );
+    if ( m_pGun != NULL )
+    {
+        m_pGun->m_iUzis = atoi ( szString );
+    }
 
 }
 
@@ -919,7 +954,10 @@ void CTR2SaveGame::SetAmmos4a ( const char *szString, int iX )
         m_pBuffer->trTable [ iX ].m_iRiotGunAmmos = atoi ( szString );
     }
 
-    m_pGun->m_iRiotGun = atoi ( szString );
+    if ( m_pGun != NULL )
+    {
+        m_pGun->m_iRiotGun = atoi ( szString );
+    }
 
 }
 
@@ -934,8 +972,10 @@ void CTR2SaveGame::SetAmmos5 ( const char *szString, int iX )
         m_pBuffer->trTable [ iX ].m_iM16GunAmmos = atoi ( szString );
     }
 
-    m_pGun->m_iM16Gun = atoi ( szString );
-
+    if ( m_pGun != NULL )
+    {
+        m_pGun->m_iM16Gun = atoi ( szString );
+    }
 }
 
 //
@@ -964,7 +1004,10 @@ void CTR2SaveGame::SetAmmos7a ( const char *szString, int iX )
         m_pBuffer->trTable [ iX ].m_iGrenadeAmmos = atoi ( szString );
     }
 
-    m_pGun->m_iGrenades = atoi ( szString );
+    if ( m_pGun != NULL )
+    {
+        m_pGun->m_iGrenades = atoi ( szString );
+    }
 }
 
 //
@@ -978,7 +1021,10 @@ void CTR2SaveGame::SetAmmos8a ( const char *szString, int iX )
         m_pBuffer->trTable [ iX ].m_iHarpoonAmmos = atoi ( szString );
     }
 
-    m_pGun->m_iHarpoon = atoi ( szString );
+    if ( m_pGun != NULL )
+    {
+        m_pGun->m_iHarpoon = atoi ( szString );
+    }
 
 }
 
@@ -1304,7 +1350,12 @@ int CTR2SaveGame::GetFlares ( int iX )
 /////////////////////////////////////////////////////////////////////////////
 int CTR2SaveGame::GetAir ( )
 {
-    return ( m_pGun->iAir );
+    if ( m_pGun != NULL )
+    {
+        return ( m_pGun->iAir );
+    }
+
+    return -1;
 }
 
 //
@@ -1340,7 +1391,10 @@ void CTR2SaveGame::SetFlares ( const char *szString, int iX )
 /////////////////////////////////////////////////////////////////////////////
 void CTR2SaveGame::SetAir ( const char *szString )
 {
-    m_pGun->iAir = atoi ( szString );
+    if ( m_pGun != NULL )
+    {
+        m_pGun->iAir = atoi ( szString );
+    }
 }
 
 //

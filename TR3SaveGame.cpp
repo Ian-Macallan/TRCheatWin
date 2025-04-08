@@ -118,21 +118,21 @@ static unsigned TR30Positions [ ] =
 
 static unsigned TR39Positions [ ] =
 {
-    0x0000,     /* 01 */
-    0x0000,     /* 02 */
-    0x0000,     /* 03 */
-    0x0000,     /* 04 */
-    0x0000,     /* 05 */
-    0x0000,     /* 06 */
-    0x0000,     /* 07 */
-    0x0000,     /* 08 */
-    0x0000,     /* 09 */
-    0x0000,     /* 10 */
-    0x0000,     /* 11 */
-    0x0000,     /* 12 */
-    0x0000,     /* 13 */
-    0x0000,     /* 14 */
-    0x0000,     /* 15 */
+    0x0001,     /* 01 */
+    0x0002,     /* 02 */
+    0x0003,     /* 03 */
+    0x0004,     /* 04 */
+    0x0005,     /* 05 */
+    0x0006,     /* 06 */
+    0x0007,     /* 07 */
+    0x0008,     /* 08 */
+    0x0009,     /* 09 */
+    0x000a,     /* 10 */
+    0x000b,     /* 11 */
+    0x000c,     /* 12 */
+    0x000d,     /* 13 */
+    0x000e,     /* 14 */
+    0x000f,     /* 15 */
     0x0000,     /* 16 */
     0x0000,     /* 17 */
     0x0000,     /* 18 */
@@ -295,39 +295,42 @@ void CTR3SaveGame::writeSaveGame()
      */
     int     iX      = getLevelIndex ();
 
-    if ( ! ( m_pBuffer->trTable [ iX ].cGunBitmap & iMaskDesertEagle ) )
+    if ( m_pGun != NULL )
     {
-        m_pGun->m_iDesertEagle  = 0 ;
-    }
+        if ( ! ( m_pBuffer->trTable [ iX ].cGunBitmap & iMaskDesertEagle ) )
+        {
+            m_pGun->m_iDesertEagle  = 0 ;
+        }
 
-    if ( ! ( m_pBuffer->trTable [ iX ].cGunBitmap & iMaskUzi ) )
-    {
-        m_pGun->m_iUzis = 0;
-    }
+        if ( ! ( m_pBuffer->trTable [ iX ].cGunBitmap & iMaskUzi ) )
+        {
+            m_pGun->m_iUzis = 0;
+        }
 
-    if ( ! ( m_pBuffer->trTable [ iX ].cGunBitmap & iMaskShotGun ) )
-    {
-        m_pGun->m_iRiotGun = 0;
-    }
+        if ( ! ( m_pBuffer->trTable [ iX ].cGunBitmap & iMaskShotGun ) )
+        {
+            m_pGun->m_iRiotGun = 0;
+        }
 
-    if ( ! ( m_pBuffer->trTable [ iX ].cGunBitmap & iMaskGrenade ) )
-    {
-        m_pGun->m_iGrenades = 0;
-    }
+        if ( ! ( m_pBuffer->trTable [ iX ].cGunBitmap & iMaskGrenade ) )
+        {
+            m_pGun->m_iGrenades = 0;
+        }
 
-    if ( ! ( m_pBuffer->trTable [ iX ].cGunBitmap & iMaskRocket ) )
-    {
-        m_pGun->m_iRockets = 0;
-    }
+        if ( ! ( m_pBuffer->trTable [ iX ].cGunBitmap & iMaskRocket ) )
+        {
+            m_pGun->m_iRockets = 0;
+        }
 
-    if ( ! ( m_pBuffer->trTable [ iX ].cGunBitmap & iMaskHarpoon ) )
-    {
-        m_pGun->m_iHarpoon = 0;
-    }
+        if ( ! ( m_pBuffer->trTable [ iX ].cGunBitmap & iMaskHarpoon ) )
+        {
+            m_pGun->m_iHarpoon = 0;
+        }
 
-    if ( ! ( m_pBuffer->trTable [ iX ].cGunBitmap & iMaskMP5 ) )
-    {
-        m_pGun->m_iMP5 = 0;
+        if ( ! ( m_pBuffer->trTable [ iX ].cGunBitmap & iMaskMP5 ) )
+        {
+            m_pGun->m_iMP5 = 0;
+        }
     }
 
     //
@@ -567,7 +570,7 @@ TR3AMMOS *CTR3SaveGame::SearchGunStructure ( unsigned short m_iGunAmmos, WORD gu
                 if ( CheckIfAmmosMatch ( pGun, gunBitmap ) )
                 {
                     *iPos = iX - 1;
-                    return ( pGun );
+                    return pGun;
                 }
             }
 
@@ -577,9 +580,7 @@ TR3AMMOS *CTR3SaveGame::SearchGunStructure ( unsigned short m_iGunAmmos, WORD gu
         *iPos = -1;
         pGun = NULL;
 
-        return ( pGun );
-
-
+        return pGun;
 }
 
 //
@@ -850,8 +851,12 @@ int CTR3SaveGame::GetAmmos1(int iX )
         return ( m_pBuffer->trTable [ iX ].m_iGunAmmos );
     }
 
-    return ( m_pGun->m_iGunAmmos );
+    if ( m_pGun != NULL )
+    {
+        return ( m_pGun->m_iGunAmmos );
+    }
 
+    return -1;
 }
 
 //
@@ -880,8 +885,12 @@ int CTR3SaveGame::GetAmmos3( int iX )
         return ( m_pBuffer->trTable [ iX ].m_iUziAmmos );
     }
 
-    return ( m_pGun->m_iUzis );
+    if ( m_pGun != NULL )
+    {
+        return ( m_pGun->m_iUzis );
+    }
 
+    return -1;
 }
 
 //
@@ -895,8 +904,12 @@ int CTR3SaveGame::GetAmmos4a( int iX )
         return ( m_pBuffer->trTable [ iX ].m_iRiotGunAmmos );
     }
 
-    return ( m_pGun->m_iRiotGun );
+    if ( m_pGun != NULL )
+    {
+        return ( m_pGun->m_iRiotGun );
+    }
 
+    return -1;
 }
 
 //
@@ -910,8 +923,12 @@ int CTR3SaveGame::GetAmmos5( int iX )
         return ( m_pBuffer->trTable [ iX ].m_iMP5Ammos );
     }
 
-    return ( m_pGun->m_iMP5 );
+    if ( m_pGun != NULL )
+    {
+        return ( m_pGun->m_iMP5 );
+    }
 
+    return -1;
 }
 
 //
@@ -925,8 +942,12 @@ int CTR3SaveGame::GetAmmos6( int iX )
         return ( m_pBuffer->trTable [ iX ].m_iRocketAmmos );
     }
 
-    return ( m_pGun->m_iRockets );
+    if ( m_pGun != NULL )
+    {
+        return ( m_pGun->m_iRockets );
+    }
 
+    return -1;
 }
 
 //
@@ -940,8 +961,12 @@ int CTR3SaveGame::GetAmmos7a( int iX )
         return ( m_pBuffer->trTable [ iX ].m_iGrenadeAmmos );
     }
 
-    return ( m_pGun->m_iGrenades );
+    if ( m_pGun != NULL )
+    {
+        return ( m_pGun->m_iGrenades );
+    }
 
+    return -1;
 }
 
 //
@@ -955,7 +980,12 @@ int CTR3SaveGame::GetAmmos8a( int iX )
         return ( m_pBuffer->trTable [ iX ].m_iHarpoonAmmos );
     }
 
-    return ( m_pGun->m_iHarpoon );
+    if ( m_pGun != NULL )
+    {
+        return ( m_pGun->m_iHarpoon );
+    }
+
+    return -1;
 }
 
 //
@@ -969,7 +999,10 @@ void CTR3SaveGame::SetAmmos2 ( const char *szString, int iX )
         m_pBuffer->trTable [ iX ].m_iDesertEagleAmmos = atoi ( szString );
     }
 
-    m_pGun->m_iDesertEagle = atoi ( szString );
+    if ( m_pGun != NULL )
+    {
+        m_pGun->m_iDesertEagle = atoi ( szString );
+    }
 
 }
 
@@ -984,7 +1017,10 @@ void CTR3SaveGame::SetAmmos3 ( const char *szString, int iX )
         m_pBuffer->trTable [ iX ].m_iUziAmmos = atoi ( szString );
     }
 
-    m_pGun->m_iUzis = atoi ( szString );
+    if ( m_pGun != NULL )
+    {
+        m_pGun->m_iUzis = atoi ( szString );
+    }
 
 }
 
@@ -999,7 +1035,10 @@ void CTR3SaveGame::SetAmmos4a ( const char *szString, int iX )
         m_pBuffer->trTable [ iX ].m_iRiotGunAmmos = atoi ( szString );
     }
 
-    m_pGun->m_iRiotGun = atoi ( szString );
+    if ( m_pGun != NULL )
+    {
+        m_pGun->m_iRiotGun = atoi ( szString );
+    }
 
 }
 
@@ -1014,7 +1053,10 @@ void CTR3SaveGame::SetAmmos5 ( const char *szString, int iX )
         m_pBuffer->trTable [ iX ].m_iMP5Ammos = atoi ( szString );
     }
 
-    m_pGun->m_iMP5 = atoi ( szString );
+    if ( m_pGun != NULL )
+    {
+        m_pGun->m_iMP5 = atoi ( szString );
+    }
 
 }
 
@@ -1029,7 +1071,10 @@ void CTR3SaveGame::SetAmmos6 ( const char *szString, int iX )
         m_pBuffer->trTable [ iX ].m_iRocketAmmos = atoi ( szString );
     }
 
-    m_pGun->m_iRockets = atoi ( szString );
+    if ( m_pGun != NULL )
+    {
+        m_pGun->m_iRockets = atoi ( szString );
+    }
 
 }
 
@@ -1044,7 +1089,10 @@ void CTR3SaveGame::SetAmmos7a ( const char *szString, int iX )
         m_pBuffer->trTable [ iX ].m_iGrenadeAmmos = atoi ( szString );
     }
 
-    m_pGun->m_iGrenades = atoi ( szString );
+    if ( m_pGun != NULL )
+    {
+        m_pGun->m_iGrenades = atoi ( szString );
+    }
 }
 
 //
@@ -1058,7 +1106,10 @@ void CTR3SaveGame::SetAmmos8a ( const char *szString, int iX )
         m_pBuffer->trTable [ iX ].m_iHarpoonAmmos = atoi ( szString );
     }
 
-    m_pGun->m_iHarpoon = atoi ( szString );
+    if ( m_pGun != NULL )
+    {
+        m_pGun->m_iHarpoon = atoi ( szString );
+    }
 
 }
 
@@ -1394,7 +1445,12 @@ int CTR3SaveGame::GetFlares ( int iX )
 /////////////////////////////////////////////////////////////////////////////
 int CTR3SaveGame::GetAir ( )
 {
-    return ( m_pGun->iAir );
+    if ( m_pGun != NULL )
+    {
+        return ( m_pGun->iAir );
+    }
+    
+    return -1;
 }
 
 //
@@ -1430,7 +1486,11 @@ void CTR3SaveGame::SetFlares ( const char *szString, int iX )
 /////////////////////////////////////////////////////////////////////////////
 void CTR3SaveGame::SetAir ( const char *szString )
 {
-    m_pGun->iAir = atoi ( szString );
+    if ( m_pGun != NULL )
+    {
+        m_pGun->iAir = atoi ( szString );
+    }
+
 }
 
 //

@@ -64,6 +64,7 @@ BOOL CTRXTools::IsAmmosEnabled ( int tombraider, int level, int gun )
         //  TR1
         case GAME_TRR1:
         case GAME_TR10:
+        case GAME_TR19:
         {
             level       = level - 1;
             if ( level >= 0 && level < TR1_LEVELS )
@@ -87,6 +88,7 @@ BOOL CTRXTools::IsAmmosEnabled ( int tombraider, int level, int gun )
         //  TR2
         case GAME_TRR2:
         case GAME_TR20:
+        case GAME_TR29:
         {
             level       = level - 1;
             if ( level >= 0 && level < TR2_LEVELS )
@@ -110,6 +112,7 @@ BOOL CTRXTools::IsAmmosEnabled ( int tombraider, int level, int gun )
         //
         case GAME_TRR3:
         case GAME_TR30:
+        case GAME_TR39:
         {
             level       = level - 1;
             if ( level >= 0 && level < TR3_LEVELS )
@@ -147,6 +150,7 @@ BOOL CTRXTools::IsAmmosEnabled ( int tombraider, int level, int gun )
         //  Chronicles
         case GAME_TRR5:
         case GAME_TR50:
+        case GAME_TR59:
         {
             level       = level - 1;
             if ( level >= 0 && level < TR5_LEVELS )
@@ -182,6 +186,7 @@ BOOL CTRXTools::IsAGunEnabled ( int tombraider, int level, int gun )
         //  TR1
         case GAME_TRR1:
         case GAME_TR10:
+        case GAME_TR19:
         {
             level       = level - 1;
             if ( level >= 0 && level < TR1_LEVELS )
@@ -205,6 +210,7 @@ BOOL CTRXTools::IsAGunEnabled ( int tombraider, int level, int gun )
         //  TR2
         case GAME_TRR2:
         case GAME_TR20:
+        case GAME_TR29:
         {
             level       = level - 1;
             if ( level >= 0 && level < TR2_LEVELS )
@@ -228,6 +234,7 @@ BOOL CTRXTools::IsAGunEnabled ( int tombraider, int level, int gun )
         //
         case GAME_TRR3:
         case GAME_TR30:
+        case GAME_TR39:
         {
             level       = level - 1;
             if ( level >= 0 && level < TR3_LEVELS )
@@ -265,6 +272,7 @@ BOOL CTRXTools::IsAGunEnabled ( int tombraider, int level, int gun )
         //  Chronicles
         case GAME_TRR5:
         case GAME_TR50:
+        case GAME_TR59:
         {
             level       = level - 1;
             if ( level >= 0 && level < TR5_LEVELS )
