@@ -262,6 +262,7 @@ class CTRSaveGame  : public CObject
             return m_szIndicatorLabel;
         }
 
+        //
         virtual int getFullVersion ()
         {
             if ( m_iVersion >= 10 )

@@ -961,17 +961,17 @@ void CTRXVerticalMap::SetTombraiderLevelIndex ( int iTombraider, int iLevelIndex
 {
     switch ( iTombraider )
     {
-        //
-        case 1 :
-        case 10 :
+        //  TR1
+        case GAME_TRR1 :
+        case GAME_TR10 :
         {
             m_iTombraiderFull   = iTombraider;
             m_iTombraider       = 1;
             break;
         }
 
-        //
-        case 15 :
+        //  TUB
+        case GAME_TR15 :
         {
             m_iTombraiderFull   = iTombraider;
             m_iTombraider       = 1;
@@ -982,17 +982,17 @@ void CTRXVerticalMap::SetTombraiderLevelIndex ( int iTombraider, int iLevelIndex
             break;
         }
 
-        //
-        case 2 :
-        case 20 :
+        //  TR2
+        case GAME_TRR2 :
+        case GAME_TR20 :
         {
             m_iTombraiderFull   = iTombraider;
             m_iTombraider       = 2;
             break;
         }
 
-        //
-        case 25 :
+        //  TR2 Gold
+        case GAME_TR25 :
         {
             m_iTombraiderFull   = iTombraider;
             m_iTombraider       = 2;
@@ -1003,17 +1003,17 @@ void CTRXVerticalMap::SetTombraiderLevelIndex ( int iTombraider, int iLevelIndex
             break;
         }
 
-        //
-        case 3:
-        case 30 :
+        //  TR3
+        case GAME_TRR3:
+        case GAME_TR30 :
         {
             m_iTombraiderFull   = iTombraider;
             m_iTombraider       = 3;
             break;
         }
 
-        //
-        case 35 :
+        //  TR3 GOLD
+        case GAME_TR35 :
         {
             m_iTombraiderFull   = iTombraider;
             m_iTombraider       = 3;
@@ -1024,15 +1024,16 @@ void CTRXVerticalMap::SetTombraiderLevelIndex ( int iTombraider, int iLevelIndex
             break;
         }
 
-        //
-        case 4:
-        case 40 :
+        //  TR4
+        case GAME_TRR4:
+        case GAME_TR40 :
         {
             m_iTombraiderFull   = iTombraider;
             m_iTombraider       = 4;
             break;
         }
-        case 45 :
+        //  Times Exclusive
+        case GAME_TR45 :
         {
             m_iTombraiderFull   = iTombraider;
             m_iTombraider       = 4;
@@ -1042,23 +1043,24 @@ void CTRXVerticalMap::SetTombraiderLevelIndex ( int iTombraider, int iLevelIndex
             }
             break;
         }
-        //
-        case 49 :
+        //  Custom
+        case GAME_TR49 :
         {
             m_iTombraiderFull   = iTombraider;
             m_iTombraider       = 4;
             break;
         }
-        //
-        case 5:
-        case 50 :
+        //  TR5
+        case GAME_TRR5:
+        case GAME_TR50 :
         {
             m_iTombraiderFull   = iTombraider;
             m_iTombraider       = 5;
             break;
         }
 
-        case 99 :
+        //  Custom
+        case GAME_TR99 :
         {
             m_iTombraiderFull   = iTombraider;
             m_iTombraider       = 99;

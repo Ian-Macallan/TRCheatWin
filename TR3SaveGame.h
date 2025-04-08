@@ -1,13 +1,9 @@
-#if !defined(AFX_TR3SAVEGAME_H__F8F73C01_A0DB_11D2_8146_444553540000__INCLUDED_)
-#define AFX_TR3SAVEGAME_H__F8F73C01_A0DB_11D2_8146_444553540000__INCLUDED_
+#pragma once
 
 #include "TR123SaveGame.h"
 
 #include "TRXTools.h"
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
 
 //
 /////////////////////////////////////////////////////////////////////////////
@@ -26,6 +22,7 @@
 #define TR3BUFFEREND        12102
 #define TR3LEVELMINSIZE     13913
 #define TR3LEVELMAXSIZE     13914
+#define TR3LEVELALTSIZE     18912
 #define TR3LEVELBUFSIZE     80*1024
 
 /*
@@ -48,36 +45,36 @@ struct          TR3Ammos
     char            cFiller2 [ 145 ];
 
     //  Health
-    WORD  m_iGunAmmos;
-    WORD  iFiller10;
+    WORD            m_iGunAmmos;
+    WORD            iFiller10;
 
     //  Desert Eagle
-    WORD  m_iDesertEagle;
-    WORD  iFiller11;
+    WORD            m_iDesertEagle;
+    WORD            iFiller11;
 
     //  Uzi
-    WORD  m_iUzis;
-    WORD  iFiller12;
+    WORD            m_iUzis;
+    WORD            iFiller12;
 
     //  Riot Gun
-    WORD  m_iRiotGun;
-    WORD  iFiller13;
+    WORD            m_iRiotGun;
+    WORD            iFiller13;
 
     //  Harpoon
-    WORD  m_iHarpoon;
-    WORD  iFiller14;
+    WORD            m_iHarpoon;
+    WORD            iFiller14;
 
     //  Rocket
-    WORD  m_iRockets;
-    WORD  iFiller15;
+    WORD            m_iRockets;
+    WORD            iFiller15;
 
     //  Greande
-    WORD  m_iGrenades;
-    WORD  iFiller16;
+    WORD            m_iGrenades;
+    WORD            iFiller16;
 
     //  MP5
-    WORD  m_iMP5;
-    WORD  iFiller17;
+    WORD            m_iMP5;
+    WORD            iFiller17;
 
 };
 typedef struct TR3Ammos TR3AMMOS;
@@ -116,22 +113,22 @@ struct          TR30Struct
     BYTE   cUnknown;
 
     //  Flare
-    BYTE   cFlare;
-    BYTE   cFiller1;
-    BYTE   cFiller2;
-    BYTE   cFiller3;
-    WORD  cGunBitmap;
+    BYTE    cFlare;
+    BYTE    cFiller1;
+    BYTE    cFiller2;
+    BYTE    cFiller3;
+    WORD    cGunBitmap;
 
-    WORD  cFiller4;
+    WORD    cFiller4;
 
-    BYTE   cNbObject1;
-    BYTE   cNbObject2;
-    BYTE   cNbObject3;
-    BYTE   cNbObject4;
+    BYTE    cNbObject1;
+    BYTE    cNbObject2;
+    BYTE    cNbObject3;
+    BYTE    cNbObject4;
 
-    BYTE   cFillers [ 18 ];
-    char   cSecrets;
-    BYTE   cFiller99;
+    BYTE    cFillers [ 18 ];
+    char    cSecrets;
+    BYTE    cFiller99;
 
 };
 
@@ -437,4 +434,3 @@ class CTR3SaveGame : public CTR123SaveGame
 // The savegame object.
 
 
-#endif // !defined(AFX_TR3SAVEGAME_H__F8F73C01_A0DB_11D2_8146_444553540000__INCLUDED_)

@@ -95,7 +95,7 @@ IMPLEMENT_DYNAMIC(CTR2SaveGame, CTR123SaveGame)
 CTR2SaveGame::CTR2SaveGame()
 {
 
-    m_iVersion          = 20;
+    m_iVersion          = GAME_TR20;
 
     m_iSaveLength       = TR2LEVELMAXSIZE;
     m_iMaxLevel         = TR2MAXLEVEL;
@@ -109,7 +109,7 @@ CTR2SaveGame::CTR2SaveGame()
     iMaskM16            = 0x40;
     iMaskGrenade        = 0x80;
 
-    m_pRealHealth             = NULL;
+    m_pRealHealth       = NULL;
 
     m_pGun              = NULL;
 
@@ -339,7 +339,7 @@ void CTR2SaveGame::RetrieveInformation( const char *pFilename )
 
         if ( m_pBuffer->ind1 == 'P' )
         {
-            m_iSubVersion = 5;
+            m_iSubVersion = GAME_TRG5;
         }
         else if ( m_pBuffer->ind1 == 'L' )
         {
@@ -421,7 +421,7 @@ void CTR2SaveGame::RetrieveInformation( const char *pFilename )
             pGunAddress   = pStartAddress + TR2Positions [ iX ];
             m_pGun = (TR2AMMOS * ) pGunAddress;
 
-            AddFormatToStatus ("Unable to find something in the file: Setting the address %x.", TR2Positions [ iX ] );
+            AddFormatToStatus ("Unable to find something in the file: Setting the address %04x.", TR2Positions [ iX ] );
 
             m_pGun->m_iGunAmmos = m_iGunAmmos;
             m_pGun = NULL;
@@ -459,12 +459,12 @@ void CTR2SaveGame::RetrieveInformation( const char *pFilename )
             pAddress = ( char * ) m_pGun;
             iPosition = (unsigned) ( pAddress - pStartAddress );
             AddFormatToStatus ( 
-                "The %d address(es) differ(s): Reference is at the address %lx or %lx instead of %lx.",
+                "The %d address(es) differ(s): Reference is at the address %04lx or %04lx instead of %04lx.",
                 iCount, TR2Positions [ iX ], TR2GPositions [ iX ], iPosition );
             if ( false )
             {
                 AddFormatToStatus ( 
-                    "The %d address(es) differ(s): Setting the address %lx instead of %lx.",
+                    "The %d address(es) differ(s): Setting the address %04lx instead of %04lx.",
                     iCount, TR2Positions [ iX ], iPosition );
                 m_pGun = ( TR2AMMOS * ) pGunAddress;
                 m_pGun->m_iGunAmmos = m_iGunAmmos;
@@ -726,7 +726,7 @@ void CTR2SaveGame::GetDetailedInfo (    char *szGame, size_t iSize, int *iGame, 
     if ( m_pBuffer->ind1 == 'P' )
     {
         strcpy_s ( szGame, iSize, "TR2G" );
-        m_iSubVersion = 5;
+        m_iSubVersion = GAME_TRG5;
     }
 }
 

@@ -804,15 +804,15 @@ char *CTR8SaveGame::SearchGunStructure (    int tombraider, int block, WORD guns
     //
     switch ( tombraider )
     {
-        case 4:
+        case GAME_TRR4:
         {
             break;
         }
-        case 5:
+        case GAME_TRR5:
         {
             break;
         }
-        case 6:
+        case GAME_TRR6:
         {
             break;
         }
@@ -840,15 +840,15 @@ char *CTR8SaveGame::SearchGunStructure ( int tombraider, int block, WORD guns,
     //
     switch ( tombraider )
     {
-        case 4:
+        case GAME_TRR4:
         {
             break;
         }
-        case 5:
+        case GAME_TRR5:
         {
             break;
         }
-        case 6:
+        case GAME_TRR6:
         {
             break;
         }
@@ -877,15 +877,15 @@ char *CTR8SaveGame::SearchGunStructure ( int tombraider, int block, WORD guns,
     //
     switch ( tombraider )
     {
-        case 4:
+        case GAME_TRR4:
         {
             break;
         }
-        case 5:
+        case GAME_TRR5:
         {
             break;
         }
-        case 6:
+        case GAME_TRR6:
         {
             break;
         }
@@ -1500,7 +1500,7 @@ WORD *CTR8SaveGame::GetRealHealthAddress ( int tombraider, int block )
     //
     switch ( tombraider )
     {
-        case 4:
+        case GAME_TRR4:
         {
             pStart      = (char*) GetBlockSlot ( tombraider, block );
             iStart      = TRR4IndicatorRange [ levelIndex % TR4_LEVELS ].minOffset;
@@ -1508,7 +1508,7 @@ WORD *CTR8SaveGame::GetRealHealthAddress ( int tombraider, int block )
             break;
         }
 
-        case 5:
+        case GAME_TRR5:
         {
             pStart      = (char*) GetBlockSlot ( tombraider, block );
             iStart      = TRR5IndicatorRange [ levelIndex % TR5_LEVELS ].minOffset;
@@ -1516,7 +1516,7 @@ WORD *CTR8SaveGame::GetRealHealthAddress ( int tombraider, int block )
             break;
         }
 
-        case 6:
+        case GAME_TRR6:
         {
             return NULL;
             break;
@@ -1633,7 +1633,7 @@ TR8_POSITION *CTR8SaveGame::GetPositionAddress ( int tombraider, int block )
     {
         switch ( tombraider )
         {
-            case 4:
+            case GAME_TRR4:
             {
                 //
                 //  Verify Position
@@ -1655,7 +1655,7 @@ TR8_POSITION *CTR8SaveGame::GetPositionAddress ( int tombraider, int block )
                 }
                 break;
             }
-            case 5:
+            case GAME_TRR5:
             {
                 //
                 //  Verify Position
@@ -1677,7 +1677,7 @@ TR8_POSITION *CTR8SaveGame::GetPositionAddress ( int tombraider, int block )
                 }
                 break;
             }
-            case 6:
+            case GAME_TRR6:
             {
                 break;
             }
@@ -1824,7 +1824,7 @@ WORD *CTR8SaveGame::GetSaveAddress ( int tombraider, int block )
     //
     switch ( tombraider )
     {
-        case 4:
+        case GAME_TRR4:
         {
             TABLE_TR4 *pBlock = (TABLE_TR4 *)GetSlotAddress ( tombraider, block );
             if ( pBlock )
@@ -1833,7 +1833,7 @@ WORD *CTR8SaveGame::GetSaveAddress ( int tombraider, int block )
             }
             break;
         }
-        case 5:
+        case GAME_TRR5:
         {
             TABLE_TR5 *pBlock = (TABLE_TR5 *)GetSlotAddress ( tombraider, block );
             if ( pBlock )
@@ -1842,7 +1842,7 @@ WORD *CTR8SaveGame::GetSaveAddress ( int tombraider, int block )
             }
             break;
         }
-        case 6:
+        case GAME_TRR6:
         {
             TABLE_TR6 *pBlock = (TABLE_TR6 *)GetSlotAddress ( tombraider, block );
             if ( pBlock )
@@ -1866,21 +1866,21 @@ void *CTR8SaveGame::GetBlockStart ( int tombraider )
     switch ( tombraider )
     {
         //
-        case 4:
+        case GAME_TRR4:
         {
             return m_TR4_Start;
             break;
         }
 
         //
-        case 5:
+        case GAME_TRR5:
         {
             return m_TR5_Start;
             break;
         }
 
         //
-        case 6:
+        case GAME_TRR6:
         {
             return m_TR6_Start;
             break;
@@ -1918,9 +1918,9 @@ void *CTR8SaveGame::GetBlockSlot ( int tombraider, int block )
 
     switch ( tombraider )
     {
-        case 4 : return  m_TR4_Blocks [ block ];
-        case 5 : return  m_TR5_Blocks [ block ];
-        case 6 : return  m_TR6_Blocks [ block ];
+        case GAME_TRR4 : return  m_TR4_Blocks [ block ];
+        case GAME_TRR5 : return  m_TR5_Blocks [ block ];
+        case GAME_TRR6 : return  m_TR6_Blocks [ block ];
     }
     return NULL;
 }
@@ -1939,7 +1939,7 @@ void *CTR8SaveGame::GetSlotAddress ( int tombraider, int block, bool bForce )
     switch ( tombraider )
     {
         //
-        case 4:
+        case GAME_TRR4:
         {
             void *pVoid = (void *) m_TR4_Blocks [ block ];
             if ( pVoid != NULL )
@@ -1954,7 +1954,7 @@ void *CTR8SaveGame::GetSlotAddress ( int tombraider, int block, bool bForce )
         }
 
         //
-        case 5:
+        case GAME_TRR5:
         {
             void *pVoid = (void *) m_TR5_Blocks [ block ];
             if ( pVoid != NULL )
@@ -1969,7 +1969,7 @@ void *CTR8SaveGame::GetSlotAddress ( int tombraider, int block, bool bForce )
         }
 
         //
-        case 6:
+        case GAME_TRR6:
         {
             void *pVoid = (void *) m_TR6_Blocks [ block ];
             if ( pVoid != NULL )
@@ -2003,21 +2003,21 @@ void *CTR8SaveGame::GetGunAddress ( int tombraider, int block )
     switch ( tombraider )
     {
         //
-        case 4:
+        case GAME_TRR4:
         {
             return (void *) m_TR4_Guns [ block ];
             break;
         }
 
         //
-        case 5:
+        case GAME_TRR5:
         {
             return (void *) m_TR5_Guns [ block ];
             break;
         }
 
         //
-        case 6:
+        case GAME_TRR6:
         {
             return (void *) m_TR6_Guns [ block ];
             break;
@@ -2040,9 +2040,9 @@ void *CTR8SaveGame::GetBlockGuns ( int tombraider, int block )
 
     switch ( tombraider )
     {
-        case 4 : return  m_TR4_Guns [ block ];
-        case 5 : return  m_TR5_Guns [ block ];
-        case 6 : return  m_TR6_Guns [ block ];
+        case GAME_TRR4 : return  m_TR4_Guns [ block ];
+        case GAME_TRR5 : return  m_TR5_Guns [ block ];
+        case GAME_TRR6 : return  m_TR6_Guns [ block ];
     }
     return NULL;
 }
@@ -2055,9 +2055,9 @@ int CTR8SaveGame::GetBlockLength ( int tombraider )
 {
     switch ( tombraider )
     {
-        case 4 : return TR456_SLOT_LENGTH * NB_SLOT_456;
-        case 5 : return TR456_SLOT_LENGTH * NB_SLOT_456;
-        case 6 : return TR456_SLOT_LENGTH * NB_SLOT_456;
+        case GAME_TRR4 : return TR456_SLOT_LENGTH * NB_SLOT_456;
+        case GAME_TRR5 : return TR456_SLOT_LENGTH * NB_SLOT_456;
+        case GAME_TRR6 : return TR456_SLOT_LENGTH * NB_SLOT_456;
     }
     return 0;
 }
@@ -2070,9 +2070,9 @@ int CTR8SaveGame::GetSlotLength ( int tombraider )
 {
     switch ( tombraider )
     {
-        case 4 : return TR456_SLOT_LENGTH;
-        case 5 : return TR456_SLOT_LENGTH;
-        case 6 : return TR456_SLOT_LENGTH;
+        case GAME_TRR4 : return TR456_SLOT_LENGTH;
+        case GAME_TRR5 : return TR456_SLOT_LENGTH;
+        case GAME_TRR6 : return TR456_SLOT_LENGTH;
     }
 
     return 0;
@@ -2138,7 +2138,7 @@ BYTE *CTR8SaveGame::GetBlockLevelAddress ( int tombraider, int block )
     switch ( tombraider )
     {
         //
-        case 4:
+        case GAME_TRR4:
         {
             TABLE_TR4 *pBlock = (TABLE_TR4 *) GetSlotAddress ( tombraider, block );
             if ( pBlock )
@@ -2149,7 +2149,7 @@ BYTE *CTR8SaveGame::GetBlockLevelAddress ( int tombraider, int block )
         }
 
         //
-        case 5:
+        case GAME_TRR5:
         {
             TABLE_TR5 *pBlock = (TABLE_TR5 *) GetSlotAddress ( tombraider, block );
             if ( pBlock )
@@ -2160,7 +2160,7 @@ BYTE *CTR8SaveGame::GetBlockLevelAddress ( int tombraider, int block )
         }
 
         //
-        case 6:
+        case GAME_TRR6:
         {
             TABLE_TR6 *pBlock = (TABLE_TR6 *) GetSlotAddress ( tombraider, block );
             if ( pBlock )
@@ -2189,7 +2189,7 @@ BYTE *CTR8SaveGame::GetBlockObjectAddress ( int tombraider, int block )
     switch ( tombraider )
     {
         //
-        case 4:
+        case GAME_TRR4:
         {
             TABLE_TR4 *pBlock = (TABLE_TR4 *) GetSlotAddress ( tombraider, block );
             if ( pBlock )
@@ -2207,7 +2207,7 @@ BYTE *CTR8SaveGame::GetBlockObjectAddress ( int tombraider, int block )
         }
 
         //
-        case 5:
+        case GAME_TRR5:
         {
             TABLE_TR5 *pBlock = (TABLE_TR5 *) GetSlotAddress ( tombraider, block );
             if ( pBlock )
@@ -2225,7 +2225,7 @@ BYTE *CTR8SaveGame::GetBlockObjectAddress ( int tombraider, int block )
         }
 
         //
-        case 6:
+        case GAME_TRR6:
         {
             break;
         }
@@ -2249,7 +2249,7 @@ WORD *CTR8SaveGame::GetBlockKillsAddress ( int tombraider, int block )
     switch ( tombraider )
     {
         //
-        case 4:
+        case GAME_TRR4:
         {
             TABLE_TR4 *pTable = (TABLE_TR4 *)GetSlotAddress ( tombraider, block );
             if ( pTable )
@@ -2260,7 +2260,7 @@ WORD *CTR8SaveGame::GetBlockKillsAddress ( int tombraider, int block )
         }
 
         //
-        case 5:
+        case GAME_TRR5:
         {
             TABLE_TR5 *pTable = (TABLE_TR5 *)GetSlotAddress ( tombraider, block );
             if ( pTable )
@@ -2271,7 +2271,7 @@ WORD *CTR8SaveGame::GetBlockKillsAddress ( int tombraider, int block )
         }
 
         //
-        case 6:
+        case GAME_TRR6:
         {
             break;
         }
@@ -2311,7 +2311,7 @@ DWORD *CTR8SaveGame::GetBlockDistanceAddress ( int tombraider, int block )
     switch ( tombraider )
     {
         //
-        case 4:
+        case GAME_TRR4:
         {
             TABLE_TR4 *pTable = (TABLE_TR4 *)GetSlotAddress ( tombraider, block );
             if ( pTable )
@@ -2322,7 +2322,7 @@ DWORD *CTR8SaveGame::GetBlockDistanceAddress ( int tombraider, int block )
         }
 
         //
-        case 5:
+        case GAME_TRR5:
         {
             TABLE_TR5 *pTable = (TABLE_TR5 *)GetSlotAddress ( tombraider, block );
             if ( pTable )
@@ -2333,7 +2333,7 @@ DWORD *CTR8SaveGame::GetBlockDistanceAddress ( int tombraider, int block )
         }
 
         //
-        case 6:
+        case GAME_TRR6:
         {
             break;
         }
@@ -2358,7 +2358,7 @@ DWORD *CTR8SaveGame::GetBlockElapsedAddress ( int tombraider, int block )
     switch ( tombraider )
     {
         //
-        case 4:
+        case GAME_TRR4:
         {
             TABLE_TR4 *pTable = (TABLE_TR4 *)GetSlotAddress ( tombraider, block );
             if ( pTable )
@@ -2369,7 +2369,7 @@ DWORD *CTR8SaveGame::GetBlockElapsedAddress ( int tombraider, int block )
         }
 
         //
-        case 5:
+        case GAME_TRR5:
         {
             TABLE_TR5 *pTable = (TABLE_TR5 *)GetSlotAddress ( tombraider, block );
             if ( pTable )
@@ -2380,7 +2380,7 @@ DWORD *CTR8SaveGame::GetBlockElapsedAddress ( int tombraider, int block )
         }
 
         //
-        case 6:
+        case GAME_TRR6:
         {
             break;
         }
@@ -2406,7 +2406,7 @@ WORD *CTR8SaveGame::GetBlockPickupAddress ( int tombraider, int block )
     switch ( tombraider )
     {
         //
-        case 4:
+        case GAME_TRR4:
         {
             TABLE_TR4 *pTable = (TABLE_TR4 *)GetSlotAddress ( tombraider, block );
             if ( pTable )
@@ -2417,7 +2417,7 @@ WORD *CTR8SaveGame::GetBlockPickupAddress ( int tombraider, int block )
         }
 
         //
-        case 5:
+        case GAME_TRR5:
         {
             TABLE_TR5 *pTable = (TABLE_TR5 *)GetSlotAddress ( tombraider, block );
             if ( pTable )
@@ -2428,7 +2428,7 @@ WORD *CTR8SaveGame::GetBlockPickupAddress ( int tombraider, int block )
         }
 
         //
-        case 6:
+        case GAME_TRR6:
         {
             break;
         }
@@ -2470,15 +2470,15 @@ int CTR8SaveGame::countTag ( int tombraider, int block )
     void * pAddress = NULL;
     switch ( tombraider )
     {
-        case 4:
+        case GAME_TRR4:
         {
             break;
         }
-        case 5:
+        case GAME_TRR5:
         {
             break;
         }
-        case 6:
+        case GAME_TRR6:
         {
             break;
         }
@@ -2495,7 +2495,10 @@ const char *CTR8SaveGame::GetLevelName ( int tombraider, int level, int block )
 {
     switch ( tombraider )
     {
-        case 4:
+        //
+        case GAME_TRR4:
+        case GAME_TR40:
+        case GAME_TR45:
         {
             if ( level >= 1 && level <= sizeof(TR4LevelNames)/sizeof(const char*) )
             {
@@ -2503,7 +2506,10 @@ const char *CTR8SaveGame::GetLevelName ( int tombraider, int level, int block )
             }
             break;
         }
-        case 5:
+
+        //
+        case GAME_TRR5:
+        case GAME_TR50:
         {
             if ( level >= 1 && level <= sizeof(TR5LevelNames)/sizeof(const char*) )
             {
@@ -2511,7 +2517,9 @@ const char *CTR8SaveGame::GetLevelName ( int tombraider, int level, int block )
             }
             break;
         }
-        case 6:
+
+        //
+        case GAME_TRR6:
         {
             if ( block >= 0 ) 
             {
@@ -2553,6 +2561,18 @@ const char *CTR8SaveGame::GetLevelName ( int tombraider, int level, int block )
             }
             break;
         }
+
+        //
+        case GAME_TR19:
+        case GAME_TR29:
+        case GAME_TR39:
+        case GAME_TR49:
+        case GAME_TR59:
+        case GAME_TR99:
+        {
+            return GetCustomLevelName();
+            break;
+        }
     }
 
     return "";
@@ -2566,9 +2586,9 @@ int CTR8SaveGame::GetLevelCount ( int tombraider )
 {
     switch ( tombraider )
     {
-        case 4: return sizeof(TR4LevelNames) / sizeof(char *);
-        case 5: return sizeof(TR5LevelNames) / sizeof(char *);
-        case 6: // return sizeof(TR6Secrets);
+        case GAME_TRR4: return sizeof(TR4LevelNames) / sizeof(char *);
+        case GAME_TRR5: return sizeof(TR5LevelNames) / sizeof(char *);
+        case GAME_TRR6: // return sizeof(TR6Secrets);
             break;
     }
 
@@ -2588,17 +2608,17 @@ DWORD CTR8SaveGame::GetTRPlus ( int tombraider )
 
     switch ( tombraider )
     {
-        case 4:
+        case GAME_TRR4:
         {
             return m_pBuffer [ TR4_GAME_PLUS ];
             break;
         }
-        case 5:
+        case GAME_TRR5:
         {
             return m_pBuffer [ TR5_GAME_PLUS ];
             break;
         }
-        case 6:
+        case GAME_TRR6:
         {
             return m_pBuffer [ TR6_GAME_PLUS ];
             break;
@@ -2621,17 +2641,17 @@ void CTR8SaveGame::SetTRPlus ( int tombraider, DWORD value )
 
     switch ( tombraider )
     {
-        case 4:
+        case GAME_TRR4:
         {
             m_pBuffer [ TR4_GAME_PLUS ] = (BYTE ) ( value & 0xFF );
             break;
         }
-        case 5:
+        case GAME_TRR5:
         {
             m_pBuffer [ TR5_GAME_PLUS ] = (BYTE ) ( value & 0xFF );
             break;
         }
-        case 6:
+        case GAME_TRR6:
         {
             m_pBuffer [ TR6_GAME_PLUS ] = (BYTE ) ( value & 0xFF );
             break;
@@ -2656,7 +2676,7 @@ BYTE CTR8SaveGame::IsGamePlus ( int tombraider, int block )
     switch ( tombraider )
     {
         //
-        case 4:
+        case GAME_TRR4:
         {
             TABLE_TR4 *pTable      = (TABLE_TR4 *) GetBlockSlot ( tombraider, block );
             if ( pTable != NULL )
@@ -2666,7 +2686,7 @@ BYTE CTR8SaveGame::IsGamePlus ( int tombraider, int block )
             break;
         }
         //
-        case 5:
+        case GAME_TRR5:
         {
             TABLE_TR5 *pTable      = (TABLE_TR5 *) GetBlockSlot ( tombraider, block );
             if ( pTable != NULL )
@@ -2677,7 +2697,7 @@ BYTE CTR8SaveGame::IsGamePlus ( int tombraider, int block )
         }
 
         //
-        case 6:
+        case GAME_TRR6:
         {
             break;
         }
@@ -2701,7 +2721,7 @@ void CTR8SaveGame::SetGamePlus ( int tombraider, int block, BYTE value )
     switch ( tombraider )
     {
         //
-        case 4:
+        case GAME_TRR4:
         {
             TABLE_TR4 *pTable      = (TABLE_TR4 *) GetBlockSlot ( tombraider, block );
             if ( pTable != NULL )
@@ -2711,7 +2731,7 @@ void CTR8SaveGame::SetGamePlus ( int tombraider, int block, BYTE value )
             break;
         }
         //
-        case 5:
+        case GAME_TRR5:
         {
             TABLE_TR5 *pTable      = (TABLE_TR5 *) GetBlockSlot ( tombraider, block );
             if ( pTable != NULL )
@@ -2722,7 +2742,7 @@ void CTR8SaveGame::SetGamePlus ( int tombraider, int block, BYTE value )
         }
 
         //
-        case 6:
+        case GAME_TRR6:
         {
             break;
         }
@@ -2749,19 +2769,19 @@ void *CTR8SaveGame::GetDefaultBlockEntry ( int tombraider, int block )
     switch ( tombraider )
     {
         //  Normally The Slot is always the 24
-        case 4:
+        case GAME_TRR4:
         {
             break;
         }
 
         //
-        case 5:
+        case GAME_TRR5:
         {
             break;
         }
 
         //
-        case 6:
+        case GAME_TRR6:
         {
             break;
         }
@@ -2786,21 +2806,21 @@ void *CTR8SaveGame::SearchBlockEntry ( int tombraider, int block )
     switch ( tombraider )
     {
         //
-        case 4:
+        case GAME_TRR4:
         {
             return GetSlotAddress ( tombraider, block );
             break;
         }
 
         //
-        case 5:
+        case GAME_TRR5:
         {
             return GetSlotAddress ( tombraider, block );
             break;
         }
 
         //
-        case 6:
+        case GAME_TRR6:
         {
             break;
         }
@@ -2824,19 +2844,19 @@ void *CTR8SaveGame::GetDefaultGunEntry ( int tombraider, int block )
     switch ( tombraider )
     {
         //
-        case 4:
+        case GAME_TRR4:
         {
             break;
         }
 
         //
-        case 5:
+        case GAME_TRR5:
         {
             break;
         }
 
         //
-        case 6:
+        case GAME_TRR6:
         {
             break;
         }
@@ -2859,21 +2879,21 @@ void *CTR8SaveGame::SearchGunEntry ( int tombraider, int block )
 
     switch ( tombraider )
     {
-        case 4:
+        case GAME_TRR4:
         {
             return GetGunAddress ( tombraider, block );
             break;
         }
 
         //
-        case 5:
+        case GAME_TRR5:
         {
             return GetGunAddress ( tombraider, block );
             break;
         }
 
         //
-        case 6:
+        case GAME_TRR6:
         {
             break;
         }
@@ -2898,17 +2918,17 @@ BYTE *CTR8SaveGame::GetSlotMedipakUsedAddress(int tombraider, int block)
     //
     switch ( tombraider )
     {
-        case 4:
+        case GAME_TRR4:
         {
             break;
         }
 
-        case 5:
+        case GAME_TRR5:
         {
             break;
         }
 
-        case 6:
+        case GAME_TRR6:
         {
             break;
         }
@@ -2931,7 +2951,7 @@ WORD *CTR8SaveGame::GetSlotPickupAddress(int tombraider, int block)
     //
     switch ( tombraider )
     {
-        case 4:
+        case GAME_TRR4:
         {
             TABLE_TR4 *pTable = (TABLE_TR4 *)GetSlotAddress ( tombraider, block );
             if ( pTable )
@@ -2941,7 +2961,7 @@ WORD *CTR8SaveGame::GetSlotPickupAddress(int tombraider, int block)
             break;
         }
 
-        case 5:
+        case GAME_TRR5:
         {
             TABLE_TR5 *pTable = (TABLE_TR5 *)GetSlotAddress ( tombraider, block );
             if ( pTable )
@@ -2951,7 +2971,7 @@ WORD *CTR8SaveGame::GetSlotPickupAddress(int tombraider, int block)
             break;
         }
 
-        case 6:
+        case GAME_TRR6:
         {
             break;
         }
@@ -2975,7 +2995,7 @@ WORD *CTR8SaveGame::GetSlotKillsAddress(int tombraider, int block)
     //
     switch ( tombraider )
     {
-        case 4:
+        case GAME_TRR4:
         {
             TABLE_TR4 *pTable = (TABLE_TR4 *)GetSlotAddress ( tombraider, block );
             if ( pTable )
@@ -2985,7 +3005,7 @@ WORD *CTR8SaveGame::GetSlotKillsAddress(int tombraider, int block)
             break;
         }
 
-        case 5:
+        case GAME_TRR5:
         {
             TABLE_TR5 *pTable = (TABLE_TR5 *)GetSlotAddress ( tombraider, block );
             if ( pTable )
@@ -2995,7 +3015,7 @@ WORD *CTR8SaveGame::GetSlotKillsAddress(int tombraider, int block)
             break;
         }
 
-        case 6:
+        case GAME_TRR6:
         {
             break;
         }
@@ -3021,21 +3041,21 @@ BYTE *CTR8SaveGame::GetSlotTreasureAddress ( int tombraider, int block )
     switch ( tombraider )
     {
         //
-        case 4:
+        case GAME_TRR4:
         {
             return NULL;
             break;
         }
 
         //
-        case 5:
+        case GAME_TRR5:
         {
             return NULL;
             break;
         }
 
         //
-        case 6:
+        case GAME_TRR6:
         {
             break;
         }
@@ -3057,7 +3077,7 @@ int CTR8SaveGame::GetBlockObject ( int tombraider, int block, int object )
 
     switch ( tombraider )
     {
-        case 4:
+        case GAME_TRR4:
         {
             BYTE *pObjectAddress = (BYTE *) GetBlockObjectAddress ( tombraider, block );
             if ( pObjectAddress )
@@ -3068,7 +3088,7 @@ int CTR8SaveGame::GetBlockObject ( int tombraider, int block, int object )
             break;
         }
 
-        case 5:
+        case GAME_TRR5:
         {
             BYTE *pObjectAddress = (BYTE *) GetBlockObjectAddress ( tombraider, block );
             if ( pObjectAddress )
@@ -3079,7 +3099,7 @@ int CTR8SaveGame::GetBlockObject ( int tombraider, int block, int object )
             break;
         }
 
-        case 6:
+        case GAME_TRR6:
         {
             BYTE *pObjectAddress = (BYTE *) GetBlockObjectAddress ( tombraider, block );
             if ( pObjectAddress )
@@ -3116,7 +3136,7 @@ void CTR8SaveGame::SetBlockObject ( int tombraider, int block, int object, int v
 
     switch ( tombraider )
     {
-        case 4:
+        case GAME_TRR4:
         {
             BYTE *pObjectAddress = (BYTE *) GetBlockObjectAddress ( tombraider, block );
             if ( pObjectAddress )
@@ -3127,7 +3147,7 @@ void CTR8SaveGame::SetBlockObject ( int tombraider, int block, int object, int v
             break;
         }
 
-        case 5:
+        case GAME_TRR5:
         {
             BYTE *pObjectAddress = (BYTE *) GetBlockObjectAddress ( tombraider, block );
             if ( pObjectAddress )
@@ -3138,7 +3158,7 @@ void CTR8SaveGame::SetBlockObject ( int tombraider, int block, int object, int v
             break;
         }
 
-        case 6:
+        case GAME_TRR6:
         {
             BYTE *pObjectAddress = (BYTE *) GetBlockObjectAddress ( tombraider, block );
             if ( pObjectAddress )
@@ -3168,19 +3188,19 @@ WORD *CTR8SaveGame::GetBlockAmmosHitsAddress(int tombraider, int block)
     switch ( tombraider )
     {
         //
-        case 4:
+        case GAME_TRR4:
         {
             break;
         }
 
         //
-        case 5:
+        case GAME_TRR5:
         {
             break;
         }
 
         //
-        case 6:
+        case GAME_TRR6:
         {
             break;
         }
@@ -3206,7 +3226,7 @@ WORD *CTR8SaveGame::GetBlockAmmosUsedAddress(int tombraider, int block)
     switch ( tombraider )
     {
         //
-        case 4:
+        case GAME_TRR4:
         {
             TABLE_TR4 *pTable = (TABLE_TR4 *)GetSlotAddress ( tombraider, block );
             if ( pTable )
@@ -3217,7 +3237,7 @@ WORD *CTR8SaveGame::GetBlockAmmosUsedAddress(int tombraider, int block)
         }
 
         //
-        case 5:
+        case GAME_TRR5:
         {
             TABLE_TR5 *pTable = (TABLE_TR5 *)GetSlotAddress ( tombraider, block );
             if ( pTable )
@@ -3228,7 +3248,7 @@ WORD *CTR8SaveGame::GetBlockAmmosUsedAddress(int tombraider, int block)
         }
 
         //
-        case 6:
+        case GAME_TRR6:
         {
             break;
         }
@@ -3254,7 +3274,7 @@ BYTE *CTR8SaveGame::GetBlockMedipakUsedAddress(int tombraider, int block)
     switch ( tombraider )
     {
         //
-        case 4:
+        case GAME_TRR4:
         {
             TABLE_TR4 *pTable = (TABLE_TR4 *)GetSlotAddress ( tombraider, block );
             if ( pTable )
@@ -3265,7 +3285,7 @@ BYTE *CTR8SaveGame::GetBlockMedipakUsedAddress(int tombraider, int block)
         }
 
         //
-        case 5:
+        case GAME_TRR5:
         {
             TABLE_TR5 *pTable = (TABLE_TR5 *)GetSlotAddress ( tombraider, block );
             if ( pTable )
@@ -3276,7 +3296,7 @@ BYTE *CTR8SaveGame::GetBlockMedipakUsedAddress(int tombraider, int block)
         }
 
         //
-        case 6:
+        case GAME_TRR6:
         {
             break;
         }
@@ -3295,7 +3315,7 @@ BYTE CTR8SaveGame::GetSecretsForLevel ( int tombraider, int levelindex )
     //
     switch ( tombraider )
     {
-        case 4:
+        case GAME_TRR4:
         {
             if ( levelindex >= 0 && levelindex < sizeof(TRR4NBSecrets) )
             {
@@ -3303,7 +3323,7 @@ BYTE CTR8SaveGame::GetSecretsForLevel ( int tombraider, int levelindex )
             }
             break;
         }
-        case 5:
+        case GAME_TRR5:
         {
             if ( levelindex >= 0 && levelindex < sizeof(TRR5NBSecrets) )
             {
@@ -3311,7 +3331,7 @@ BYTE CTR8SaveGame::GetSecretsForLevel ( int tombraider, int levelindex )
             }
             break;
         }
-        case 6:
+        case GAME_TRR6:
         {
             break;
         }
@@ -3329,7 +3349,7 @@ WORD CTR8SaveGame::GetSecretsTilLevel ( int tombraider, int levelindex )
     //
     switch ( tombraider )
     {
-        case 4:
+        case GAME_TRR4:
         {
             if ( levelindex >= 0 && levelindex < sizeof(TRR4NBSecrets) )
             {
@@ -3342,7 +3362,7 @@ WORD CTR8SaveGame::GetSecretsTilLevel ( int tombraider, int levelindex )
             }
             break;
         }
-        case 5:
+        case GAME_TRR5:
         {
             if ( levelindex >= 0 && levelindex < sizeof(TRR5NBSecrets) )
             {
@@ -3355,7 +3375,7 @@ WORD CTR8SaveGame::GetSecretsTilLevel ( int tombraider, int levelindex )
             }
             break;
         }
-        case 6:
+        case GAME_TRR6:
         {
             break;
         }
@@ -3373,7 +3393,7 @@ WORD    CTR8SaveGame::GetKillsTilLevel ( int tombraider, int levelindex )
     //
     switch ( tombraider )
     {
-        case 4:
+        case GAME_TRR4:
         {
             if ( levelindex >= 0 && levelindex < sizeof(TRR4NBKills) )
             {
@@ -3386,7 +3406,7 @@ WORD    CTR8SaveGame::GetKillsTilLevel ( int tombraider, int levelindex )
             }
             break;
         }
-        case 5:
+        case GAME_TRR5:
         {
             if ( levelindex >= 0 && levelindex < sizeof(TRR5NBKills) )
             {
@@ -3398,7 +3418,7 @@ WORD    CTR8SaveGame::GetKillsTilLevel ( int tombraider, int levelindex )
                 return result;
             }
         }
-        case 6:
+        case GAME_TRR6:
         {
             break;
         }
@@ -3416,7 +3436,7 @@ WORD    CTR8SaveGame::GetPickupsTilLevel ( int tombraider, int levelindex )
     //
     switch ( tombraider )
     {
-        case 4:
+        case GAME_TRR4:
         {
             if ( levelindex >= 0 && levelindex < sizeof(TRR4NBPickups) )
             {
@@ -3429,7 +3449,7 @@ WORD    CTR8SaveGame::GetPickupsTilLevel ( int tombraider, int levelindex )
             }
             break;
         }
-        case 5:
+        case GAME_TRR5:
         {
             if ( levelindex >= 0 && levelindex < sizeof(TRR5NBPickups) )
             {
@@ -3442,7 +3462,7 @@ WORD    CTR8SaveGame::GetPickupsTilLevel ( int tombraider, int levelindex )
             }
             break;
         }
-        case 6:
+        case GAME_TRR6:
         {
             break;
         }
@@ -3468,7 +3488,7 @@ BYTE CTR8SaveGame::GetBlockSecretsTotal(int tombraider, int block)
     //
     switch ( tombraider )
     {
-        case 4:
+        case GAME_TRR4:
         {
             TABLE_TR4 *pTable = (TABLE_TR4 *)GetSlotAddress ( tombraider, block );
             if ( pTable )
@@ -3478,7 +3498,7 @@ BYTE CTR8SaveGame::GetBlockSecretsTotal(int tombraider, int block)
             break;
         }
 
-        case 5:
+        case GAME_TRR5:
         {
             TABLE_TR5 *pTable = (TABLE_TR5 *)GetSlotAddress ( tombraider, block );
             if ( pTable )
@@ -3488,7 +3508,7 @@ BYTE CTR8SaveGame::GetBlockSecretsTotal(int tombraider, int block)
             break;
         }
 
-        case 6:
+        case GAME_TRR6:
         {
             break;
         }
@@ -3546,7 +3566,7 @@ void CTR8SaveGame::SetBlockSecretsTotal(int tombraider, int block, BYTE secrets)
     //
     switch ( tombraider )
     {
-        case 4:
+        case GAME_TRR4:
         {
             TABLE_TR4 *pTable = (TABLE_TR4 *)GetSlotAddress ( tombraider, block );
             if ( pTable )
@@ -3556,7 +3576,7 @@ void CTR8SaveGame::SetBlockSecretsTotal(int tombraider, int block, BYTE secrets)
             break;
         }
 
-        case 5:
+        case GAME_TRR5:
         {
             TABLE_TR5 *pTable = (TABLE_TR5 *)GetSlotAddress ( tombraider, block );
             if ( pTable )
@@ -3567,7 +3587,7 @@ void CTR8SaveGame::SetBlockSecretsTotal(int tombraider, int block, BYTE secrets)
         }
 
         //
-        case 6:
+        case GAME_TRR6:
         {
             break;
         }
@@ -3672,19 +3692,19 @@ BOOL CTR8SaveGame::Delete ( int tombraider, int block )
 {
     switch ( tombraider )
     {
-        case 4:
+        case GAME_TRR4:
         {
             char    *pBuffer = ( char *) GetBlockSlot ( tombraider, block );
             memset ( pBuffer, 0, GetSlotLength ( tombraider ) );
             break;
         }
-        case 5:
+        case GAME_TRR5:
         {
             char    *pBuffer = ( char *) GetBlockSlot ( tombraider, block );
             memset ( pBuffer, 0, GetSlotLength ( tombraider ) );
             break;
         }
-        case 6:
+        case GAME_TRR6:
         {
             char    *pBuffer = ( char *) GetBlockSlot ( tombraider, block );
             memset ( pBuffer, 0, GetSlotLength ( tombraider ) );
@@ -3712,21 +3732,21 @@ BOOL CTR8SaveGame::Export ( const char *pFilename, int tombraider, int block )
     {
         switch ( tombraider )
         {
-            case 4:
+            case GAME_TRR4:
             {
                 char    *pBuffer = ( char *) GetBlockSlot ( tombraider, block );
                 fwrite ( pBuffer, 1, GetSlotLength ( tombraider ), hFile );
                 bResult = TRUE;
                 break;
             }
-            case 5:
+            case GAME_TRR5:
             {
                 char    *pBuffer = ( char *) GetBlockSlot ( tombraider, block );
                 fwrite ( pBuffer, 1, GetSlotLength ( tombraider ), hFile );
                 bResult = TRUE;
                 break;
             }
-            case 6:
+            case GAME_TRR6:
             {
                 char    *pBuffer = ( char *) GetBlockSlot ( tombraider, block );
                 fwrite ( pBuffer, 1, GetSlotLength ( tombraider ), hFile );
@@ -3756,7 +3776,7 @@ BOOL CTR8SaveGame::Import( const char *pFilename, int tombraider, int block )
     {
         switch ( tombraider )
         {
-            case 4:
+            case GAME_TRR4:
             {
                 char    *pSrcBuffer = ( char *) malloc ( GetSlotLength ( tombraider ) + 1 );
                 char    *pObjBuffer = ( char *) GetBlockSlot ( tombraider, block );
@@ -3769,7 +3789,7 @@ BOOL CTR8SaveGame::Import( const char *pFilename, int tombraider, int block )
                 free ( pSrcBuffer );
                 break;
             }
-            case 5:
+            case GAME_TRR5:
             {
                 char    *pSrcBuffer = ( char *) malloc ( GetSlotLength ( tombraider ) + 1 );
                 char    *pObjBuffer = ( char *) GetBlockSlot ( tombraider, block );
@@ -3782,7 +3802,7 @@ BOOL CTR8SaveGame::Import( const char *pFilename, int tombraider, int block )
                 free ( pSrcBuffer );
                 break;
             }
-            case 6:
+            case GAME_TRR6:
             {
                 char    *pSrcBuffer = ( char *) malloc ( GetSlotLength ( tombraider ) + 1 );
                 char    *pObjBuffer = ( char *) GetBlockSlot ( tombraider, block );
@@ -3816,15 +3836,15 @@ void CTR8SaveGame::TraceBlock ( int tombraider, int block )
 
     switch ( tombraider )
     {
-        case 4:
+        case GAME_TRR4:
         {
             break;
         }
-        case 5:
+        case GAME_TRR5:
         {
             break;
         }
-        case 6:
+        case GAME_TRR6:
         {
             break;
         }
@@ -3844,15 +3864,15 @@ void CTR8SaveGame::TraceGun ( int tombraider, int block )
 
     switch ( tombraider )
     {
-        case 4:
+        case GAME_TRR4:
         {
             break;
         }
-        case 5:
+        case GAME_TRR5:
         {
             break;
         }
-        case 6:
+        case GAME_TRR6:
         {
             break;
         }
@@ -3879,7 +3899,7 @@ WORD *CTR8SaveGame::GetAirAddress ( int tombraider, int block )
 
     switch ( tombraider )
     {
-        case 4:
+        case GAME_TRR4:
         {
             TABLE_TR4 *pBlock   = ( TABLE_TR4 *) m_TR4_Blocks [ block ];
             if ( pBlock )
@@ -3889,7 +3909,7 @@ WORD *CTR8SaveGame::GetAirAddress ( int tombraider, int block )
             break;
         }
 
-        case 5:
+        case GAME_TRR5:
         {
             TABLE_TR5 *pBlock   = ( TABLE_TR5 *) m_TR5_Blocks [ block ];
             if ( pBlock )
@@ -3899,7 +3919,7 @@ WORD *CTR8SaveGame::GetAirAddress ( int tombraider, int block )
             break;
         }
 
-        case 6:
+        case GAME_TRR6:
         {
             break;
         }
@@ -3949,7 +3969,7 @@ WORD *CTR8SaveGame::GetTorchAddress ( int tombraider, int block )
 
     switch ( tombraider )
     {
-        case 4:
+        case GAME_TRR4:
         {
             TABLE_TR4 *pBlock   = ( TABLE_TR4 *) m_TR4_Blocks [ block ];
             if ( pBlock )
@@ -3959,7 +3979,7 @@ WORD *CTR8SaveGame::GetTorchAddress ( int tombraider, int block )
             break;
         }
 
-        case 5:
+        case GAME_TRR5:
         {
             TABLE_TR5 *pBlock   = ( TABLE_TR5 *) m_TR5_Blocks [ block ];
             if ( pBlock )
@@ -3969,7 +3989,7 @@ WORD *CTR8SaveGame::GetTorchAddress ( int tombraider, int block )
             break;
         }
 
-        case 6:
+        case GAME_TRR6:
         {
             break;
         }
@@ -3991,7 +4011,7 @@ BYTE *CTR8SaveGame::GetStateAddress ( int tombraider, int block )
 
     switch ( tombraider )
     {
-        case 4:
+        case GAME_TRR4:
         {
             TABLE_TR4 *pBlock   = ( TABLE_TR4 *) m_TR4_Blocks [ block ];
             if ( pBlock )
@@ -4001,7 +4021,7 @@ BYTE *CTR8SaveGame::GetStateAddress ( int tombraider, int block )
             break;
         }
 
-        case 5:
+        case GAME_TRR5:
         {
             TABLE_TR5 *pBlock   = ( TABLE_TR5 *) m_TR5_Blocks [ block ];
             if ( pBlock )
@@ -4011,7 +4031,7 @@ BYTE *CTR8SaveGame::GetStateAddress ( int tombraider, int block )
             break;
         }
 
-        case 6:
+        case GAME_TRR6:
         {
             break;
         }
@@ -4033,7 +4053,7 @@ BYTE CTR8SaveGame::GetState ( int tombraider, int block )
 
     switch ( tombraider )
     {
-        case 4:
+        case GAME_TRR4:
         {
             BYTE *pByte   = GetStateAddress (tombraider, block) ;
             if ( pByte )
@@ -4043,7 +4063,7 @@ BYTE CTR8SaveGame::GetState ( int tombraider, int block )
             break;
         }
 
-        case 5:
+        case GAME_TRR5:
         {
             BYTE *pByte   = GetStateAddress (tombraider, block) ;
             if ( pByte )
@@ -4053,7 +4073,7 @@ BYTE CTR8SaveGame::GetState ( int tombraider, int block )
             break;
         }
 
-        case 6:
+        case GAME_TRR6:
         {
             break;
         }
@@ -4075,7 +4095,7 @@ void CTR8SaveGame::SetState ( int tombraider, int block, BYTE iState )
 
     switch ( tombraider )
     {
-        case 4:
+        case GAME_TRR4:
         {
             BYTE *pByte   = GetStateAddress (tombraider, block) ;
             if ( pByte )
@@ -4085,7 +4105,7 @@ void CTR8SaveGame::SetState ( int tombraider, int block, BYTE iState )
             break;
         }
 
-        case 5:
+        case GAME_TRR5:
         {
             BYTE *pByte   = GetStateAddress (tombraider, block) ;
             if ( pByte )
@@ -4095,7 +4115,7 @@ void CTR8SaveGame::SetState ( int tombraider, int block, BYTE iState )
             break;
         }
 
-        case 6:
+        case GAME_TRR6:
         {
             break;
         }
@@ -4361,17 +4381,17 @@ const char *CTR8SaveGame::GetInterest ( int tombraider, int block )
     switch ( tombraider )
     {
         //
-        case 4:
+        case GAME_TRR4:
         {
             break;
         }
         //
-        case 5:
+        case GAME_TRR5:
         {
             break;
         }
         //
-        case 6:
+        case GAME_TRR6:
         {
             break;
         }
@@ -4435,19 +4455,19 @@ void CTR8SaveGame::SetLikeGame ( int tombraider, int block )
     switch ( tombraider )
     {
         //
-        case 4:
+        case GAME_TRR4:
         {
             break;
         }
 
         //
-        case 5:
+        case GAME_TRR5:
         {
             break;
         }
 
         //
-        case 6:
+        case GAME_TRR6:
         {
             break;
         }
@@ -4476,19 +4496,19 @@ void CTR8SaveGame::SetLikePlus ( int tombraider, int block )
     switch ( tombraider )
     {
         //
-        case 4:
+        case GAME_TRR4:
         {
             break;
         }
 
         //
-        case 5:
+        case GAME_TRR5:
         {
             break;
         }
 
         //
-        case 6:
+        case GAME_TRR6:
         {
             break;
         }
@@ -4505,7 +4525,7 @@ void CTR8SaveGame::SetPistols ( int tombraider, void *pBlocks, void *pGuns, int 
     switch ( tombraider )
     {
         //
-        case 4:
+        case GAME_TRR4:
         {
             TABLE_TR4 *pBlock   = ( TABLE_TR4 *) pBlocks;
             GUN_TR4 *pGun       = ( GUN_TR4 * ) pGuns;
@@ -4554,7 +4574,7 @@ void CTR8SaveGame::SetPistols ( int tombraider, void *pBlocks, void *pGuns, int 
             break;
         }
         //
-        case 5:
+        case GAME_TRR5:
         {
             TABLE_TR5 *pBlock   = ( TABLE_TR5 *) pBlocks;
             GUN_TR5 *pGun       = ( GUN_TR5 * ) pGuns;
@@ -4603,7 +4623,7 @@ void CTR8SaveGame::SetPistols ( int tombraider, void *pBlocks, void *pGuns, int 
             break;
         }
         //
-        case 6:
+        case GAME_TRR6:
         {
             break;
         }
@@ -4635,7 +4655,7 @@ void CTR8SaveGame::SetPistols ( int tombraider, int block, BOOL bEnabled )
     switch ( tombraider )
     {
         //
-        case 4:
+        case GAME_TRR4:
         {
             TABLE_TR4 *pBlock   = ( TABLE_TR4 *) m_TR4_Blocks [ block ];
             GUN_TR4 *pGun       = ( GUN_TR4 * ) m_TR4_Guns [ block ];
@@ -4647,7 +4667,7 @@ void CTR8SaveGame::SetPistols ( int tombraider, int block, BOOL bEnabled )
             break;
         }
         //
-        case 5:
+        case GAME_TRR5:
         {
             TABLE_TR5 *pBlock   = ( TABLE_TR5 *) m_TR5_Blocks [ block ];
             GUN_TR5 *pGun       = ( GUN_TR5 * ) m_TR5_Guns [ block ];
@@ -4658,7 +4678,7 @@ void CTR8SaveGame::SetPistols ( int tombraider, int block, BOOL bEnabled )
             break;
         }
         //
-        case 6:
+        case GAME_TRR6:
         {
             break;
         }
@@ -4676,7 +4696,7 @@ void CTR8SaveGame::SetMagnum ( int tombraider, void *pBlocks, void *pGuns, int l
     switch ( tombraider )
     {
         //
-        case 4:
+        case GAME_TRR4:
         {
             TABLE_TR4 *pBlock   = ( TABLE_TR4 *) pBlocks;
             GUN_TR4 *pGun       = ( GUN_TR4 * ) pGuns;
@@ -4725,7 +4745,7 @@ void CTR8SaveGame::SetMagnum ( int tombraider, void *pBlocks, void *pGuns, int l
             break;
         }
         //
-        case 5:
+        case GAME_TRR5:
         {
             TABLE_TR5 *pBlock   = ( TABLE_TR5 *) pBlocks;
             GUN_TR5 *pGun       = ( GUN_TR5 * ) pGuns;
@@ -4774,7 +4794,7 @@ void CTR8SaveGame::SetMagnum ( int tombraider, void *pBlocks, void *pGuns, int l
             break;
         }
         //
-        case 6:
+        case GAME_TRR6:
         {
             break;
         }
@@ -4799,7 +4819,7 @@ void CTR8SaveGame::SetMagnum ( int tombraider, int block, BOOL bEnabled, WORD am
     switch ( tombraider )
     {
         //
-        case 4:
+        case GAME_TRR4:
         {
             TABLE_TR4 *pBlock   = ( TABLE_TR4 *) m_TR4_Blocks [ block ];
             GUN_TR4 *pGun       = ( GUN_TR4 * ) m_TR4_Guns [ block ];
@@ -4811,7 +4831,7 @@ void CTR8SaveGame::SetMagnum ( int tombraider, int block, BOOL bEnabled, WORD am
             break;
         }
         //
-        case 5:
+        case GAME_TRR5:
         {
             TABLE_TR5 *pBlock   = ( TABLE_TR5 *) m_TR5_Blocks [ block ];
             GUN_TR5 *pGun       = ( GUN_TR5 * ) m_TR5_Guns [ block ];
@@ -4822,7 +4842,7 @@ void CTR8SaveGame::SetMagnum ( int tombraider, int block, BOOL bEnabled, WORD am
             break;
         }
         //
-        case 6:
+        case GAME_TRR6:
         {
             break;
         }
@@ -4840,7 +4860,7 @@ void CTR8SaveGame::SetUzi ( int tombraider, void *pBlocks, void *pGuns, int leve
     switch ( tombraider )
     {
         //
-        case 4:
+        case GAME_TRR4:
         {
             TABLE_TR4 *pBlock   = ( TABLE_TR4 *) pBlocks;
             GUN_TR4 *pGun       = ( GUN_TR4 * ) pGuns;
@@ -4889,7 +4909,7 @@ void CTR8SaveGame::SetUzi ( int tombraider, void *pBlocks, void *pGuns, int leve
             break;
         }
         //
-        case 5:
+        case GAME_TRR5:
         {
             TABLE_TR5 *pBlock   = ( TABLE_TR5 *) pBlocks;
             GUN_TR5 *pGun       = ( GUN_TR5 * ) pGuns;
@@ -4938,7 +4958,7 @@ void CTR8SaveGame::SetUzi ( int tombraider, void *pBlocks, void *pGuns, int leve
             break;
         }
         //
-        case 6:
+        case GAME_TRR6:
         {
             break;
         }
@@ -4965,7 +4985,7 @@ void CTR8SaveGame::SetUzi ( int tombraider, int block, BOOL bEnabled, WORD ammos
     switch ( tombraider )
     {
         //
-        case 4:
+        case GAME_TRR4:
         {
             TABLE_TR4 *pBlock   = ( TABLE_TR4 *) m_TR4_Blocks [ block ];
             GUN_TR4 *pGun       = ( GUN_TR4 * ) m_TR4_Guns [ block ];
@@ -4976,7 +4996,7 @@ void CTR8SaveGame::SetUzi ( int tombraider, int block, BOOL bEnabled, WORD ammos
             break;
         }
         //
-        case 5:
+        case GAME_TRR5:
         {
             TABLE_TR5 *pBlock   = ( TABLE_TR5 *) m_TR5_Blocks [ block ];
             GUN_TR5 *pGun       = ( GUN_TR5 * ) m_TR5_Guns [ block ];
@@ -4987,7 +5007,7 @@ void CTR8SaveGame::SetUzi ( int tombraider, int block, BOOL bEnabled, WORD ammos
             break;
         }
         //
-        case 6:
+        case GAME_TRR6:
         {
             break;
         }
@@ -5005,7 +5025,7 @@ void CTR8SaveGame::SetRiotgun ( int tombraider, void *pBlocks, void *pGuns, int 
     switch ( tombraider )
     {
         //
-        case 4:
+        case GAME_TRR4:
         {
             TABLE_TR4 *pBlock   = ( TABLE_TR4 *) pBlocks;
             GUN_TR4 *pGun       = ( GUN_TR4 * ) pGuns;
@@ -5058,7 +5078,7 @@ void CTR8SaveGame::SetRiotgun ( int tombraider, void *pBlocks, void *pGuns, int 
             break;
         }
         //
-        case 5:
+        case GAME_TRR5:
         {
             TABLE_TR5 *pBlock   = ( TABLE_TR5 *) pBlocks;
             GUN_TR5 *pGun       = ( GUN_TR5 * ) pGuns;
@@ -5111,7 +5131,7 @@ void CTR8SaveGame::SetRiotgun ( int tombraider, void *pBlocks, void *pGuns, int 
             break;
         }
         //
-        case 6:
+        case GAME_TRR6:
         {
             break;
         }
@@ -5136,7 +5156,7 @@ void CTR8SaveGame::SetRiotgun ( int tombraider, int block, BOOL bEnabled, WORD a
     switch ( tombraider )
     {
         //
-        case 4:
+        case GAME_TRR4:
         {
             TABLE_TR4 *pBlock   = ( TABLE_TR4 *) m_TR4_Blocks [ block ];
             GUN_TR4 *pGun       = ( GUN_TR4 * ) m_TR4_Guns [ block ];
@@ -5147,7 +5167,7 @@ void CTR8SaveGame::SetRiotgun ( int tombraider, int block, BOOL bEnabled, WORD a
             break;
         }
         //
-        case 5:
+        case GAME_TRR5:
         {
             TABLE_TR5 *pBlock   = ( TABLE_TR5 *) m_TR5_Blocks [ block ];
             GUN_TR5 *pGun       = ( GUN_TR5 * ) m_TR5_Guns [ block ];
@@ -5158,7 +5178,7 @@ void CTR8SaveGame::SetRiotgun ( int tombraider, int block, BOOL bEnabled, WORD a
             break;
         }
         //
-        case 6:
+        case GAME_TRR6:
         {
             break;
         }
@@ -5176,7 +5196,7 @@ void CTR8SaveGame::SetHarpoon ( int tombraider, void *pBlocks, void *pGuns, int 
     switch ( tombraider )
     {
         //
-        case 4:
+        case GAME_TRR4:
         {
             TABLE_TR4 *pBlock   = ( TABLE_TR4 *) pBlocks;
             GUN_TR4 *pGun       = ( GUN_TR4 * ) pGuns;
@@ -5233,7 +5253,7 @@ void CTR8SaveGame::SetHarpoon ( int tombraider, void *pBlocks, void *pGuns, int 
             break;
         }
         //
-        case 5:
+        case GAME_TRR5:
         {
             TABLE_TR5 *pBlock   = ( TABLE_TR5 *) pBlocks;
             GUN_TR5 *pGun       = ( GUN_TR5 * ) pGuns;
@@ -5283,7 +5303,7 @@ void CTR8SaveGame::SetHarpoon ( int tombraider, void *pBlocks, void *pGuns, int 
             break;
         }
         //
-        case 6:
+        case GAME_TRR6:
         {
             break;
         }
@@ -5308,7 +5328,7 @@ void CTR8SaveGame::SetHarpoon ( int tombraider, int block, BOOL bEnabled, WORD a
     switch ( tombraider )
     {
         //
-        case 4:
+        case GAME_TRR4:
         {
 
             TABLE_TR4 *pBlock   = ( TABLE_TR4 *) m_TR4_Blocks [ block ];
@@ -5320,7 +5340,7 @@ void CTR8SaveGame::SetHarpoon ( int tombraider, int block, BOOL bEnabled, WORD a
             break;
         }
         //
-        case 5:
+        case GAME_TRR5:
         {
             TABLE_TR5 *pBlock   = ( TABLE_TR5 *) m_TR4_Blocks [ block ];
             GUN_TR5 *pGun       = ( GUN_TR5 * ) m_TR4_Guns [ block ];
@@ -5331,7 +5351,7 @@ void CTR8SaveGame::SetHarpoon ( int tombraider, int block, BOOL bEnabled, WORD a
             break;
         }
         //
-        case 6:
+        case GAME_TRR6:
         {
             break;
         }
@@ -5349,13 +5369,13 @@ void CTR8SaveGame::SetM16 ( int tombraider, void *pBlocks, void *pGuns, int leve
     switch ( tombraider )
     {
         //
-        case 4:
+        case GAME_TRR4:
         {
 
             break;
         }
         //
-        case 5:
+        case GAME_TRR5:
         {
             TABLE_TR5 *pBlock   = ( TABLE_TR5 *) pBlocks;
             GUN_TR5 *pGun       = ( GUN_TR5 * ) pGuns;
@@ -5404,7 +5424,7 @@ void CTR8SaveGame::SetM16 ( int tombraider, void *pBlocks, void *pGuns, int leve
             break;
         }
         //
-        case 6:
+        case GAME_TRR6:
         {
             break;
         }
@@ -5429,13 +5449,13 @@ void CTR8SaveGame::SetM16 ( int tombraider, int block, BOOL bEnabled, WORD ammos
     switch ( tombraider )
     {
         //
-        case 4:
+        case GAME_TRR4:
         {
 
             break;
         }
         //
-        case 5:
+        case GAME_TRR5:
         {
             TABLE_TR5 *pBlock   = ( TABLE_TR5 *) m_TR5_Blocks [ block ];
             GUN_TR5 *pGun       = ( GUN_TR5 * ) m_TR5_Guns [ block ];
@@ -5447,7 +5467,7 @@ void CTR8SaveGame::SetM16 ( int tombraider, int block, BOOL bEnabled, WORD ammos
             break;
         }
         //
-        case 6:
+        case GAME_TRR6:
         {
             break;
         }
@@ -5465,7 +5485,7 @@ void CTR8SaveGame::SetGrenade ( int tombraider, void *pBlocks, void *pGuns, int 
     switch ( tombraider )
     {
         //
-        case 4:
+        case GAME_TRR4:
         {
             TABLE_TR4 *pBlock   = ( TABLE_TR4 *) pBlocks;
             GUN_TR4 *pGun       = ( GUN_TR4 * ) pGuns;
@@ -5522,7 +5542,7 @@ void CTR8SaveGame::SetGrenade ( int tombraider, void *pBlocks, void *pGuns, int 
             break;
         }
         //
-        case 5:
+        case GAME_TRR5:
         {
             TABLE_TR5 *pBlock   = ( TABLE_TR5 *) pBlocks;
             GUN_TR5 *pGun       = ( GUN_TR5 * ) pGuns;
@@ -5571,7 +5591,7 @@ void CTR8SaveGame::SetGrenade ( int tombraider, void *pBlocks, void *pGuns, int 
             break;
         }
         //
-        case 6:
+        case GAME_TRR6:
         {
             break;
         }
@@ -5596,7 +5616,7 @@ void CTR8SaveGame::SetGrenade ( int tombraider, int block, BOOL bEnabled, WORD a
     switch ( tombraider )
     {
         //
-        case 4:
+        case GAME_TRR4:
         {
             TABLE_TR4 *pBlock   = ( TABLE_TR4 *) m_TR4_Blocks [ block ];
             GUN_TR4 *pGun       = ( GUN_TR4 * ) m_TR4_Guns [ block ];
@@ -5607,7 +5627,7 @@ void CTR8SaveGame::SetGrenade ( int tombraider, int block, BOOL bEnabled, WORD a
             break;
         }
         //
-        case 5:
+        case GAME_TRR5:
         {
             TABLE_TR5 *pBlock   = ( TABLE_TR5 *) m_TR5_Blocks [ block ];
             GUN_TR5 *pGun       = ( GUN_TR5 * ) m_TR5_Guns [ block ];
@@ -5618,7 +5638,7 @@ void CTR8SaveGame::SetGrenade ( int tombraider, int block, BOOL bEnabled, WORD a
             break;
         }
         //
-        case 6:
+        case GAME_TRR6:
         {
             break;
         }
@@ -5636,18 +5656,18 @@ void CTR8SaveGame::SetRocket ( int tombraider, void *pBlocks, void *pGuns, int l
     switch ( tombraider )
     {
         //
-        case 4:
+        case GAME_TRR4:
         {
 
             break;
         }
         //
-        case 5:
+        case GAME_TRR5:
         {
             break;
         }
         //
-        case 6:
+        case GAME_TRR6:
         {
             break;
         }
@@ -5674,18 +5694,18 @@ void CTR8SaveGame::SetRocket ( int tombraider, int block, BOOL bEnabled, WORD am
     switch ( tombraider )
     {
         //
-        case 4:
+        case GAME_TRR4:
         {
 
             break;
         }
         //
-        case 5:
+        case GAME_TRR5:
         {
             break;
         }
         //
-        case 6:
+        case GAME_TRR6:
         {
             break;
         }
@@ -6083,7 +6103,7 @@ void CTR8SaveGame::SetBinocular ( int tombraider, int block, BYTE value )
     switch ( tombraider )
     {
         //
-        case 4:
+        case GAME_TRR4:
         {
             GUN_TR4 *pGun       = ( GUN_TR4 * ) m_TR4_Guns [ block ];
             if ( pGun )
@@ -6100,7 +6120,7 @@ void CTR8SaveGame::SetBinocular ( int tombraider, int block, BYTE value )
             break;
         }
         //
-        case 5:
+        case GAME_TRR5:
         {
             GUN_TR5 *pGun       = ( GUN_TR5 * ) m_TR5_Guns [ block ];
             if ( pGun )
@@ -6118,7 +6138,7 @@ void CTR8SaveGame::SetBinocular ( int tombraider, int block, BYTE value )
         }
 
         //
-        case 6:
+        case GAME_TRR6:
         {
             break;
         }
@@ -6141,7 +6161,7 @@ void CTR8SaveGame::SetLaser ( int tombraider, int block, BYTE value )
     switch ( tombraider )
     {
         //
-        case 4:
+        case GAME_TRR4:
         {
             GUN_TR4 *pGun       = ( GUN_TR4 * ) m_TR4_Guns [ block ];
             if ( pGun )
@@ -6158,7 +6178,7 @@ void CTR8SaveGame::SetLaser ( int tombraider, int block, BYTE value )
             break;
         }
         //
-        case 5:
+        case GAME_TRR5:
         {
             GUN_TR5 *pGun       = ( GUN_TR5 * ) m_TR5_Guns [ block ];
             if ( pGun )
@@ -6176,7 +6196,7 @@ void CTR8SaveGame::SetLaser ( int tombraider, int block, BYTE value )
         }
 
         //
-        case 6:
+        case GAME_TRR6:
         {
             break;
         }
@@ -6199,7 +6219,7 @@ void CTR8SaveGame::SetCrowbar ( int tombraider, int block, BYTE value )
     switch ( tombraider )
     {
         //
-        case 4:
+        case GAME_TRR4:
         {
             GUN_TR4 *pGun       = ( GUN_TR4 * ) m_TR4_Guns [ block ];
             if ( pGun )
@@ -6216,7 +6236,7 @@ void CTR8SaveGame::SetCrowbar ( int tombraider, int block, BYTE value )
             break;
         }
         //
-        case 5:
+        case GAME_TRR5:
         {
             GUN_TR5 *pGun       = ( GUN_TR5 * ) m_TR5_Guns [ block ];
             if ( pGun )
@@ -6234,7 +6254,7 @@ void CTR8SaveGame::SetCrowbar ( int tombraider, int block, BYTE value )
         }
 
         //
-        case 6:
+        case GAME_TRR6:
         {
             break;
         }
@@ -6257,12 +6277,12 @@ void CTR8SaveGame::SetHeadSet ( int tombraider, int block, BYTE value )
     switch ( tombraider )
     {
         //
-        case 4:
+        case GAME_TRR4:
         {
             break;
         }
         //
-        case 5:
+        case GAME_TRR5:
         {
             GUN_TR5 *pGun       = ( GUN_TR5 * ) m_TR5_Guns [ block ];
             if ( pGun )
@@ -6279,7 +6299,7 @@ void CTR8SaveGame::SetHeadSet ( int tombraider, int block, BYTE value )
             break;
         }
         //
-        case 6:
+        case GAME_TRR6:
         {
             break;
         }

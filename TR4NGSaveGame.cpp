@@ -170,8 +170,8 @@ IMPLEMENT_DYNAMIC(CTR4NGSaveGame, CTR45SaveGame)
 CTR4NGSaveGame::CTR4NGSaveGame()
 {
 
-    m_iVersion          = 49;
-    m_iSubVersion       = 9,
+    m_iVersion          = GAME_TR49;
+    m_iSubVersion       = GAME_TRC9;
 
     m_iSaveLength       = CTRXGlobal::m_iMaxNGSize;
     m_iMaxLevel         = TR4NGMAXLEVEL;
@@ -188,7 +188,7 @@ CTR4NGSaveGame::CTR4NGSaveGame()
 
     iRiotGunUnits       = 6;
 
-    m_pRealHealth             = NULL;
+    m_pRealHealth       = NULL;
 
     m_pBuffer           = new ( TR4NGSAVE );
     ZeroMemory ( m_pBuffer, sizeof(TR4NGSAVE) );
@@ -1030,7 +1030,7 @@ void CTR4NGSaveGame::RetrieveInformation( const char *pFilename )
     if ( ReadSavegame ( pFilename ) )
     {
         RetrieveHeader ( );
-        m_iSubVersion   = 9;
+        m_iSubVersion   = GAME_TRC9;
     }
 }
 

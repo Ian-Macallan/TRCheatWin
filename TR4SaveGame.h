@@ -255,10 +255,19 @@ struct          TR4Save
 
         struct
         {
-            char                    cFiller3b [ 0x1b5];
+            char                    cFiller3b [ 0x1b5 ];
 
             //      0x1b5
             BYTE                    m_cLevels [ 10 ];
+        };
+
+        //  For TR4 with 66330 save files the level number is there
+        struct
+        {
+            char                    cFiller3c [ 0x1e7 ];
+
+            //      0x1e7
+            BYTE                    m_cLevelNum;
         };
 
         //   0x1e8  : statistics timing ...

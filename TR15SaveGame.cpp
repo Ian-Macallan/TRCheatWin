@@ -66,7 +66,7 @@ IMPLEMENT_DYNAMIC(CTUBSaveGame, CTR123SaveGame)
 CTUBSaveGame::CTUBSaveGame()
 {
 
-    m_iVersion          = 15;
+    m_iVersion          = GAME_TR15;
 
     m_iSaveLength       = TUBLEVELMAXSIZE;
     m_iMaxLevel         = TUBMAXLEVEL;
@@ -80,7 +80,7 @@ CTUBSaveGame::CTUBSaveGame()
     iMaskMP5            = 0x40;
     iMaskGrenade        = 0x80;
 
-    m_pRealHealth             = NULL;
+    m_pRealHealth       = NULL;
 
     m_pGun              = NULL;
 
@@ -90,7 +90,7 @@ CTUBSaveGame::CTUBSaveGame()
     m_pBufferBackup     = new ( TUBSAVE );
     ZeroMemory ( m_pBufferBackup, sizeof(TUBSAVE) );
 
-    m_iSubVersion       = 5;
+    m_iSubVersion       = GAME_TRG5;
 }
 
 //
@@ -283,7 +283,7 @@ void CTUBSaveGame::RetrieveInformation( const char *pFilename )
      */
     m_pGun          = NULL;
 
-    m_iSubVersion   = 5;
+    m_iSubVersion   = GAME_TRG5;
 
     /*
      *      Read file.
@@ -352,7 +352,7 @@ void CTUBSaveGame::RetrieveInformation( const char *pFilename )
             pGunAddress   = pStartAddress + TUBPositions [ iX ];
             m_pGun = (TUBAMMOS * ) pGunAddress;
 
-            AddFormatToStatus ( "Unable to find something in the file: Setting the address %x.",
+            AddFormatToStatus ( "Unable to find something in the file: Setting the address %04x.",
                 TUBPositions [ iX ] );
 
             m_pGun->m_iGunAmmos = m_iGunAmmos;
@@ -385,12 +385,12 @@ void CTUBSaveGame::RetrieveInformation( const char *pFilename )
             pAddress = ( char * ) m_pGun;
             iPosition = (unsigned) ( pAddress - pStartAddress );
             AddFormatToStatus ( 
-                "The %d address(es) differ(s): Reference is at the address %lx instead of %lx.",
+                "The %d address(es) differ(s): Reference is at the address %04lx instead of %04lx.",
                 iCount, TUBPositions [ iX ], iPosition );
             if ( false )
             {
                 AddFormatToStatus ( 
-                    "The %d address(es) differ(s): Setting the address %lx instead of %lx.",
+                    "The %d address(es) differ(s): Setting the address %04lx instead of %04lx.",
                     iCount, TUBPositions [ iX ], iPosition );
                 m_pGun = ( TUBAMMOS * ) pGunAddress;
                 m_pGun->m_iGunAmmos = m_iGunAmmos;
@@ -605,7 +605,7 @@ void CTUBSaveGame::GetDetailedInfo (    char *szGame, size_t iSize, int *iGame, 
     strcpy_s ( szTitle, iSizeTitle, m_pBuffer->szSavename );
     *iGame          = m_pBuffer->iSaveNumber;
     *iLevel         = m_pBuffer->cLevel + 1;
-    m_iSubVersion   = 5;
+    m_iSubVersion   = GAME_TRG5;
 }
 
 //

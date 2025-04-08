@@ -24,7 +24,12 @@ class CTRXHelpDialog : public CTRXDialogBase
 
 
     public :
-        DWORD m_ID_Resource;
+        DWORD   m_ID_Resource;
+        int     m_Tombraider;
+        int     m_LevelNumber;
+        char    m_szTitle [ MAX_PATH ];
+        char    m_szLevelName [ MAX_PATH ];
+        char    m_szWalkThru [ MAX_PATH ];
 
     protected:
         virtual void DoDataExchange(CDataExchange* pDX);    // Prise en charge de DDX/DDV
@@ -43,6 +48,8 @@ class CTRXHelpDialog : public CTRXDialogBase
         CTRXEditBase        m_Help_Text;
         CTRXButtonBase      m_OK;
         CTRXButtonBase      m_Cancel;
+        CTRXButtonBase      m_Walk;
 
         afx_msg void OnVscrollHelpText();
+        afx_msg void OnBnClickedWalkthru();
 };

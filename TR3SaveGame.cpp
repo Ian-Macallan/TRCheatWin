@@ -85,7 +85,8 @@ static char    TR3GSecrets [ ] =
     0x00    /* 06 0 */
 };
 
-static unsigned TR3Positions [ ] =
+//  Standard TR3 positions
+static unsigned TR30Positions [ ] =
 {
     0x158f,     /* 01 */
     0x2311,     /* 02 */
@@ -107,14 +108,43 @@ static unsigned TR3Positions [ ] =
     0x1cdb,     /* 18 */
     0xa3f,      /* 19 */
     0xf71,      /* 20 */
-    0x00,       /* 0 */
-    0x00,       /* 0 */
-    0x00,       /* 0 */
-    0x00,       /* 0 */
-    0x00,       /* 0 */
-    0x00,       /* 0 */
+    0x0000,     /* 0 */
+    0x0000,     /* 0 */
+    0x0000,     /* 0 */
+    0x0000,     /* 0 */
+    0x0000,     /* 0 */
+    0x0000,     /* 0 */
 };
 
+static unsigned TR39Positions [ ] =
+{
+    0x0000,     /* 01 */
+    0x0000,     /* 02 */
+    0x0000,     /* 03 */
+    0x0000,     /* 04 */
+    0x0000,     /* 05 */
+    0x0000,     /* 06 */
+    0x0000,     /* 07 */
+    0x0000,     /* 08 */
+    0x0000,     /* 09 */
+    0x0000,     /* 10 */
+    0x0000,     /* 11 */
+    0x0000,     /* 12 */
+    0x0000,     /* 13 */
+    0x0000,     /* 14 */
+    0x0000,     /* 15 */
+    0x0000,     /* 16 */
+    0x0000,     /* 17 */
+    0x0000,     /* 18 */
+    0x0000,     /* 19 */
+    0x0000,     /* 20 */
+    0x0000,     /* 0 */
+    0x0000,     /* 0 */
+    0x0000,     /* 0 */
+    0x0000,     /* 0 */
+    0x0000,     /* 0 */
+    0x0000,     /* 0 */
+};
 //
 /////////////////////////////////////////////////////////////////////////////
 // CTR3SaveGame
@@ -128,7 +158,7 @@ IMPLEMENT_DYNAMIC(CTR3SaveGame, CTR123SaveGame)
 /////////////////////////////////////////////////////////////////////////////
 CTR3SaveGame::CTR3SaveGame()
 {
-    m_iVersion          = 30;
+    m_iVersion          = GAME_TR30;
 
     m_iSaveLength       = TR3LEVELMAXSIZE;
     m_iMaxLevel         = TR3MAXLEVEL;
@@ -144,7 +174,7 @@ CTR3SaveGame::CTR3SaveGame()
     iMaskGrenade        = 0x0080;
     iMaskHarpoon        = 0x0100;
 
-    m_pRealHealth             = NULL;
+    m_pRealHealth       = NULL;
 
     m_pGun              = NULL;
 
@@ -214,7 +244,8 @@ int CTR3SaveGame::ReadSavegame( const char *pFilename )
     /*
      *      Get Buffer.
      */
-    if ( CTRXGlobal::m_ForceSaveGame == FORCE_NONE && ( m_iSaveLength < TR3LEVELMINSIZE || m_iSaveLength > TR3LEVELMAXSIZE ) )
+    if ( CTRXGlobal::m_ForceSaveGame == FORCE_NONE && m_iSaveLength != TR3LEVELALTSIZE && 
+        ( m_iSaveLength < TR3LEVELMINSIZE || m_iSaveLength > TR3LEVELMAXSIZE ) )
     {
         AddToStatus ( "Internal error in length." );
         CloseOneFile ( &hFile );
@@ -316,7 +347,8 @@ void CTR3SaveGame::writeSaveGame()
     /*
      *      Get Buffer.
      */
-    if ( CTRXGlobal::m_ForceSaveGame == FORCE_NONE && ( m_iSaveLength < TR3LEVELMINSIZE || m_iSaveLength > TR3LEVELMAXSIZE ) )
+    if ( CTRXGlobal::m_ForceSaveGame == FORCE_NONE && m_iSaveLength != TR3LEVELALTSIZE && 
+        ( m_iSaveLength < TR3LEVELMINSIZE || m_iSaveLength > TR3LEVELMAXSIZE ) )
     {
         AddToStatus ( "Internal error in length." );
         CloseOneFile ( &hFile );
@@ -365,9 +397,11 @@ void CTR3SaveGame::RetrieveInformation( const char *pFilename )
     /*
      *  Set address to error.
      */
-    m_pGun           = NULL;
+    m_pGun                      = NULL;
 
-    m_iSubVersion   = 0;
+    m_iSubVersion               = 0;
+
+    unsigned *TR3Positions     = TR30Positions;
 
     /*
      *      Read file.
@@ -382,7 +416,13 @@ void CTR3SaveGame::RetrieveInformation( const char *pFilename )
         }
         else
         {
-            m_iSubVersion = 9;
+            m_iSubVersion       = GAME_TRG5;
+        }
+
+        if ( m_iSaveLength == TR3LEVELALTSIZE )
+        {
+            m_iSubVersion       = GAME_TRC9;
+            TR3Positions        = TR39Positions;
         }
 
         /*
@@ -400,7 +440,6 @@ void CTR3SaveGame::RetrieveInformation( const char *pFilename )
         do
         {
             pGun = SearchGunStructure ( m_iGunAmmos, m_pBuffer->trTable [ iX ].cGunBitmap, &iPos );
-
             if ( pGun != NULL )
             {
                 iCount++;
@@ -411,8 +450,8 @@ void CTR3SaveGame::RetrieveInformation( const char *pFilename )
                 /*
                  *      Test if it it the same as in the table.
                  */
-                pStartAddress = ( char * ) m_pBuffer;
-                pGunAddress = pStartAddress + TR3Positions [ iX ];
+                pStartAddress   = ( char * ) m_pBuffer;
+                pGunAddress     = pStartAddress + TR3Positions [ iX ];
                 if ( ( char * ) m_pGun == pGunAddress )
                 {
                     bExactFound = 1;
@@ -428,7 +467,7 @@ void CTR3SaveGame::RetrieveInformation( const char *pFilename )
         {
             pStartAddress = ( char * ) m_pBuffer;
             pGunAddress   = pStartAddress + TR3Positions [ iX ];
-            m_pGun = (TR3AMMOS * ) pGunAddress;
+            m_pGun = ( TR3AMMOS * ) pGunAddress;
         }
 
         /*
@@ -443,9 +482,8 @@ void CTR3SaveGame::RetrieveInformation( const char *pFilename )
 
             pStartAddress = ( char * ) m_pBuffer;
             pGunAddress   = pStartAddress + TR3Positions [ iX ];
-            m_pGun = (TR3AMMOS * ) pGunAddress;
-
-            AddFormatToStatus ( "Unable to find something in the file: Setting the address %x.",
+            m_pGun = ( TR3AMMOS * ) pGunAddress;
+            AddFormatToStatus ( "Unable to find something in the file: Setting the address %04x.",
                 TR3Positions [ iX ] );
 
             m_pGun->m_iGunAmmos = m_iGunAmmos;
@@ -478,13 +516,13 @@ void CTR3SaveGame::RetrieveInformation( const char *pFilename )
             pAddress = ( char * ) m_pGun;
             iPosition = (unsigned) ( pAddress - pStartAddress );
             AddFormatToStatus ( 
-                "The %d address(es) differ(s): Reference is at the address %lx instead of %lx.",
+                "The %d address(es) differ(s): Reference is at the address %04lx instead of %04lx.",
                 iCount, TR3Positions [ iX ], iPosition );
 
-            if ( false )
+            if (  false )
             {
                 AddFormatToStatus ( 
-                    "The %d address(es) differ(s): Setting the address %lx instead of %lx.",
+                    "The %d address(es) differ(s): Setting the address %04lx instead of %04lx.",
                     iCount, TR3Positions [ iX ], iPosition );
                 m_pGun = ( TR3AMMOS * ) pGunAddress;
                 m_pGun->m_iGunAmmos = m_iGunAmmos;
@@ -502,10 +540,15 @@ TR3AMMOS *CTR3SaveGame::SearchGunStructure ( unsigned short m_iGunAmmos, WORD gu
 {
         int                     iX;
         unsigned char           *pString;
-        TR3AMMOS                    *pGun;
+        TR3AMMOS                *pGun;
         
+        //
+        DWORD offset = offsetof(TR3SAVE,szRemain);
+
+        //
         if ( *iPos == -1 )
         {
+            //  Size of remains minus size of structure
             iX = TR3BUFFEREND - sizeof ( TR3AMMOS );
         }
         else
@@ -759,9 +802,14 @@ void CTR3SaveGame::GetDetailedInfo (    char *szGame, size_t iSize, int *iGame, 
     if ( m_pBuffer->ind1 != 0xFA )
     {
         strcpy_s ( szGame, iSize, "TR3G" );
-        m_iSubVersion = 5;
+        m_iSubVersion = GAME_TRG5;
     }
 
+    if ( m_iSaveLength == TR3LEVELALTSIZE )
+    {
+        strcpy_s ( szGame, iSize, "TR3X" );
+        m_iSubVersion       = GAME_TRC9;
+    }
 }
 
 //

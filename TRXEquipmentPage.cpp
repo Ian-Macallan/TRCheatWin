@@ -315,23 +315,23 @@ int CTRXEquipmentPage::EnableForVersion()
     //      m_Air.EnableWindow ( bEnable2 );
     if ( iVersion != 0 )
     {
-        m_Flares.EnableWindow ( iVersion >= 20 );
-        m_But_Flares.EnableWindow ( iVersion >= 20 );
+        m_Flares.EnableWindow ( iVersion >= GAME_TR20 );
+        m_But_Flares.EnableWindow ( iVersion >= GAME_TR20 );
 
-        m_Laser.EnableWindow ( iVersion >= 40 );
-        m_Binocular.EnableWindow ( iVersion >= 40 );
+        m_Laser.EnableWindow ( iVersion >= GAME_TR40 );
+        m_Binocular.EnableWindow ( iVersion >= GAME_TR40 );
 
-        m_Life.EnableWindow ( iVersion <= 30 || iVersion >= 30 || iVersion == 50 );
-        m_GunAmmos.EnableWindow ( iVersion <= 30 );
-        m_Unfinite_Air.EnableWindow ( iVersion <= 30 || iVersion == 40 || iVersion == 45 || iVersion == 49 || iVersion == 50 );
-        m_Air.EnableWindow ( iVersion <= 30 || iVersion == 40 || iVersion == 45 || iVersion == 49 || iVersion == 50 );
-        m_God.EnableWindow ( iVersion <= 30 );
+        m_Life.EnableWindow ( iVersion <= GAME_TR30 || iVersion >= GAME_TR30 || iVersion == GAME_TR50 );
+        m_GunAmmos.EnableWindow ( iVersion <= GAME_TR30 );
+        m_Unfinite_Air.EnableWindow ( iVersion <= GAME_TR30 || iVersion == GAME_TR40 || iVersion == GAME_TR45 || iVersion == GAME_TR49 || iVersion == GAME_TR50 );
+        m_Air.EnableWindow ( iVersion <= GAME_TR30 || iVersion == GAME_TR40 || iVersion == GAME_TR45 || iVersion == GAME_TR49 || iVersion == GAME_TR50 );
+        m_God.EnableWindow ( iVersion <= GAME_TR30 );
 
-        m_TRNG_Guns.EnableWindow ( iVersion == 49 );
-        m_TRNG_GodMode.EnableWindow ( iVersion == 49 );
-        m_TRNG_GodReset.EnableWindow ( iVersion == 49 );
-        m_TRNG_Doors.EnableWindow ( iVersion == 49 );
-        m_TRNG_Enemies.EnableWindow ( iVersion == 49 );
+        m_TRNG_Guns.EnableWindow ( iVersion == GAME_TR49 );
+        m_TRNG_GodMode.EnableWindow ( iVersion == GAME_TR49 );
+        m_TRNG_GodReset.EnableWindow ( iVersion == GAME_TR49 );
+        m_TRNG_Doors.EnableWindow ( iVersion == GAME_TR49 );
+        m_TRNG_Enemies.EnableWindow ( iVersion == GAME_TR49 );
 
         //
         if ( ! CTRSaveGame::I()->EnableGuns( TRUE ) )

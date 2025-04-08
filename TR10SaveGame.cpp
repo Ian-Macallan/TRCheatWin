@@ -66,7 +66,7 @@ IMPLEMENT_DYNAMIC(CTR1SaveGame, CTR123SaveGame)
 CTR1SaveGame::CTR1SaveGame()
 {
 
-    m_iVersion          = 10;
+    m_iVersion          = GAME_TR10;
 
     m_iSaveLength       = TR1LEVELMAXSIZE;
     m_iMaxLevel         = TR1MAXLEVEL;
@@ -80,7 +80,7 @@ CTR1SaveGame::CTR1SaveGame()
     iMaskMP5            = 0x40;
     iMaskGrenade        = 0x80;
 
-    m_pRealHealth             = NULL;
+    m_pRealHealth       = NULL;
     m_pGun              = NULL;
 
     m_pBuffer           = new ( TR1SAVE );
@@ -348,7 +348,7 @@ void CTR1SaveGame::RetrieveInformation( const char *pFilename )
             pGunAddress   = pStartAddress + TR1Positions [ iX ];
             m_pGun = (TR1AMMOS * ) pGunAddress;
 
-            AddFormatToStatus ( "Unable to find something in the file: Setting the address %x.", TR1Positions [ iX ] );
+            AddFormatToStatus ( "Unable to find something in the file: Setting the address %04x.", TR1Positions [ iX ] );
 
             m_pGun->m_iGunAmmos = m_iGunAmmos;
             m_pGun              = NULL;
@@ -380,12 +380,12 @@ void CTR1SaveGame::RetrieveInformation( const char *pFilename )
             pAddress = ( char * ) m_pGun;
             iPosition = (unsigned) ( pAddress - pStartAddress );
             AddFormatToStatus (
-                "The %d address(es) differ(s): Reference is at the address %lx instead of %lx.",
+                "The %d address(es) differ(s): Reference is at the address %04lx instead of %04lx.",
                 iCount, TR1Positions [ iX ], iPosition );
             if ( false )
             {
                 AddFormatToStatus (
-                    "The %d address(es) differ(s): Setting the address %lx instead of %lx.",
+                    "The %d address(es) differ(s): Setting the address %04lx instead of %04lx.",
                     iCount, TR1Positions [ iX ], iPosition );
                 m_pGun = ( TR1AMMOS * ) pGunAddress;
                 m_pGun->m_iGunAmmos = m_iGunAmmos;

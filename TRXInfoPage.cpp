@@ -449,36 +449,129 @@ void CTRXInfoPage::OnHelp()
 {
     //
     CTRXHelpDialog dlg;
-    switch ( CTRSaveGame::GetVersion () )
+
+    //
+    if ( CTRSaveGame::I(NULL) != NULL )
     {
-        case 1:
-        case 10:
-        case 15:
+        strcpy_s ( dlg.m_szTitle, sizeof(dlg.m_szTitle), CTRSaveGame::I(NULL)->GetSaveName() );
+    }
+
+    //
+    strcpy_s ( dlg.m_szLevelName, sizeof(dlg.m_szLevelName), dlg.m_szTitle );
+
+    //
+    dlg.m_Tombraider    = CTRSaveGame::GetFullVersion ();
+    dlg.m_LevelNumber   = CTRSaveGame::GetLevel ();
+
+    //
+    if ( IsCustomArea() )
+    {
+        dlg.m_Tombraider = ( dlg.m_Tombraider / 10 ) * 10 + GAME_TRC9;
+    }
+
+    //
+    static char szFilename [ MAX_PATH ];
+    ZeroMemory ( szFilename, sizeof(szFilename) );
+
+    //
+    //  Use Directory Name for custom levels
+    if ( dlg.m_Tombraider % 10 == GAME_TRC9  )
+    {
+        m_Filename.GetWindowText ( szFilename, sizeof(szFilename) );
+        theApp.RemoveFilename ( szFilename );
+        const char *pDirectory = theApp.FindFileName ( szFilename );
+        if ( _strcmpi ( pDirectory, "save" ) == 0 )
+        {
+            theApp.RemoveFilename ( szFilename );
+            pDirectory = theApp.FindFileName ( szFilename );
+        }
+        else if ( _strcmpi ( pDirectory, "saves" ) == 0 )
+        {
+            theApp.RemoveFilename ( szFilename );
+            pDirectory = theApp.FindFileName ( szFilename );
+        }
+
+        //
+        ZeroMemory ( dlg.m_szTitle, sizeof(dlg.m_szTitle) );
+        bool caseChanged    = false;
+        bool isUpper        = false;
+
+        int iPos            = 0;
+        for ( size_t i = 0; i < strlen(pDirectory); i++ )
+        {
+            if ( pDirectory [ i ] >= 'a' && pDirectory [ i ] <= 'z' )
+            {
+                if ( isUpper )
+                {
+                    // caseChanged = true;
+                }
+                isUpper     = false;
+            }
+
+            if ( pDirectory [ i ] >= 'A' && pDirectory [ i ] <= 'Z' )
+            {
+                if ( ! isUpper && iPos > 0 )
+                {
+                    caseChanged = true;
+                }
+                isUpper     = true;
+            }
+
+            if ( caseChanged && iPos > 0 )
+            {
+                dlg.m_szTitle [ iPos ] = ' ';
+                iPos++;
+                caseChanged = false;
+            }
+
+            if (    ( pDirectory [ i ] >= '0' && pDirectory [ i ] <= '9' ) ||
+                    ( pDirectory [ i ] >= 'a' && pDirectory [ i ] <= 'z' ) ||
+                    ( pDirectory [ i ] >= 'A' && pDirectory [ i ] <= 'Z' )      )
+            {
+                dlg.m_szTitle [ iPos ] = pDirectory [ i ];
+                iPos++;
+            }
+        }
+    }
+
+    //
+    switch ( CTRSaveGame::GetFullVersion () )
+    {
+        //
+        case GAME_TRR1:
+        case GAME_TR10:
+        case GAME_TR15:
+        case GAME_TR19:
         {
             dlg.m_ID_Resource = IDR_TR1CHEATS;
             break;
         }
 
-        case 2:
-        case 20:
-        case 25:
+        //
+        case GAME_TRR2:
+        case GAME_TR20:
+        case GAME_TR25:
+        case GAME_TR29:
         {
             dlg.m_ID_Resource = IDR_TR2CHEATS;
             break;
         }
 
-        case 3:
-        case 30:
-        case 35:
+        //
+        case GAME_TRR3:
+        case GAME_TR30:
+        case GAME_TR35:
+        case GAME_TR39:
         {
             dlg.m_ID_Resource = IDR_TR3CHEATS;
             break;
         }
 
-        case 4:
-        case 40:
-        case 45:
-        case 49:
+        //
+        case GAME_TRR4:
+        case GAME_TR40:
+        case GAME_TR45:
+        case GAME_TR49:
         {
             dlg.m_ID_Resource = IDR_TR4CHEATS;
             break;
@@ -728,8 +821,9 @@ void CTRXInfoPage::DisplayValues()
         //
         switch ( tombraider )
         {
-            case 1 :
-            case 10 :
+            case GAME_TRR1 :
+            case GAME_TR10 :
+            case GAME_TR19 :
             {
                 m_pBitmapLevel->LoadBitmap ( IDB_TR1_END );
                 m_pBitmapContinent->LoadBitmap ( IDB_TR1_START );
@@ -741,7 +835,7 @@ void CTRXInfoPage::DisplayValues()
                 break;
             }
 
-            case 15 :
+            case GAME_TR15 :
             {
                 m_pBitmapLevel->LoadBitmap ( IDB_TUB_END );
                 m_pBitmapContinent->LoadBitmap ( IDB_TUB_START );
@@ -753,9 +847,10 @@ void CTRXInfoPage::DisplayValues()
                 break;
             }
 
-            case 2:
-            case 20 :
-            case 25 :
+            case GAME_TRR2:
+            case GAME_TR20 :
+            case GAME_TR25 :
+            case GAME_TR29 :
             {
                 m_pBitmapLevel->LoadBitmap ( IDB_TR2_END );
                 m_pBitmapContinent->LoadBitmap ( IDB_TR2_START );
@@ -766,9 +861,10 @@ void CTRXInfoPage::DisplayValues()
                 break;
             }
 
-            case 3 :
-            case 30 :
-            case 35 :
+            case GAME_TRR3 :
+            case GAME_TR30 :
+            case GAME_TR35 :
+            case GAME_TR39 :
             {
                 switch ( levelIndex )
                 {
@@ -929,10 +1025,10 @@ void CTRXInfoPage::DisplayValues()
 
             } /* Case Version */
 
-            case 4 :
-            case 40 :
-            case 45 :
-            case 49 :
+            case GAME_TRR4 :
+            case GAME_TR40 :
+            case GAME_TR45 :
+            case GAME_TR49 :
             {
                 m_pBitmapLevel->LoadBitmap ( IDB_LAST_REV_0 );
                 m_pBitmapContinent->LoadBitmap ( IDB_LAST_REV_1 );
@@ -943,8 +1039,9 @@ void CTRXInfoPage::DisplayValues()
                 break;
             }
 
-            case 5 :
-            case 50 :
+            case GAME_TRR5 :
+            case GAME_TR50 :
+            case GAME_TR59 :
             {
                 m_pBitmapLevel->LoadBitmap ( IDB_CHRONICLES_0 );
                 m_pBitmapContinent->LoadBitmap ( IDB_CHRONICLES_1 );
@@ -2053,7 +2150,7 @@ void CTRXInfoPage::OnBnClickedMax()
 
         //
         //  Guns
-        if ( CTRSaveGame::GetVersion () <= 49 )
+        if ( CTRSaveGame::GetVersion () <= GAME_TR49 )
         {
             if ( CTRSaveGame::I()->HasWeapon1() ) CTRSaveGame::I()->GrabWeapon1 ( iLevelIndex );
             if ( CTRSaveGame::I()->HasWeapon2() ) CTRSaveGame::I()->GrabWeapon2 ( iLevelIndex );
@@ -2701,9 +2798,11 @@ BOOL CTRXInfoPage::GetCustomParams ( TR_MODE *pTrMode, STRUCTLOCATION  **ppTable
     //
     switch ( tombraider )
     {
-        case 1 :
-        case 10 :
-        case 15 :
+        //
+        case GAME_TRR1 :
+        case GAME_TR10 :
+        case GAME_TR15 :
+        case GAME_TR19 :
         {
             if ( pTrMode != NULL )      *pTrMode        = TRR1_MODE;
             if ( ppTable != NULL )      *ppTable        = CustomPathnames1;
@@ -2712,9 +2811,11 @@ BOOL CTRXInfoPage::GetCustomParams ( TR_MODE *pTrMode, STRUCTLOCATION  **ppTable
             if ( ppTypeName != NULL )   *ppTypeName     = ".PHD";
             return TRUE;
         }
-        case 2:
-        case 20 :
-        case 25 :
+        //
+        case GAME_TRR2:
+        case GAME_TR20 :
+        case GAME_TR25 :
+        case GAME_TR29 :
         {
             if ( pTrMode != NULL )      *pTrMode        = TRR2_MODE;
             if ( ppTable != NULL )      *ppTable        = CustomPathnames2;
@@ -2723,9 +2824,11 @@ BOOL CTRXInfoPage::GetCustomParams ( TR_MODE *pTrMode, STRUCTLOCATION  **ppTable
             if ( ppTypeName != NULL )   *ppTypeName     = ".tr2";
             return TRUE;
         }
-        case 3:
-        case 30 :
-        case 35 :
+        //
+        case GAME_TRR3:
+        case GAME_TR30 :
+        case GAME_TR35 :
+        case GAME_TR39 :
         {
             if ( pTrMode != NULL )      *pTrMode        = TRR3_MODE;
             if ( ppTable != NULL )      *ppTable        = CustomPathnames3;
@@ -2734,10 +2837,11 @@ BOOL CTRXInfoPage::GetCustomParams ( TR_MODE *pTrMode, STRUCTLOCATION  **ppTable
             if ( ppTypeName != NULL )   *ppTypeName     = ".tr2";
             return TRUE;
         }
-        case 4:
-        case 40 :
-        case 45 :
-        case 49 :
+        //
+        case GAME_TRR4:
+        case GAME_TR40 :
+        case GAME_TR45 :
+        case GAME_TR49 :
         {
             if ( pTrMode != NULL )      *pTrMode        = TR4_MODE;
             if ( ppTable != NULL )      *ppTable        = CustomPathnames4;
@@ -2746,8 +2850,10 @@ BOOL CTRXInfoPage::GetCustomParams ( TR_MODE *pTrMode, STRUCTLOCATION  **ppTable
             if ( ppTypeName != NULL )   *ppTypeName     = ".tr4";
             return TRUE;
         }
-        case 5:
-        case 50 :
+        //
+        case GAME_TRR5:
+        case GAME_TR50 :
+        case GAME_TR59 :
         {
             if ( pTrMode != NULL )      *pTrMode        = TR5_MODE;
             if ( ppTable != NULL )      *ppTable        = CustomPathnames5;
@@ -2756,6 +2862,7 @@ BOOL CTRXInfoPage::GetCustomParams ( TR_MODE *pTrMode, STRUCTLOCATION  **ppTable
             if ( ppTypeName != NULL )   *ppTypeName     = ".trc";
             return TRUE;
         }
+        //
         default:
         {
             return FALSE;
@@ -2829,7 +2936,7 @@ void CTRXInfoPage::OnBnClickedAddCustom()
         }
 
         //
-        //  Read Script
+        //  Read Script for TR4 / TR5
         strcpy_s ( szScriptDirectory, sizeof(szScriptDirectory), szPathname );  // EG root\game\DATA\level.tr4
         theApp.RemoveFilename ( szScriptDirectory );
         theApp.RemoveFilename ( szScriptDirectory );
@@ -2837,7 +2944,7 @@ void CTRXInfoPage::OnBnClickedAddCustom()
         strcat_s ( szScript, sizeof(szScript), "\\SCRIPT.DAT" );
 
         //
-        //  Reset
+        //  Reset TR4 / TR5 data
         ZeroMemory ( CustomDataFiles, sizeof(CustomDataFiles) );
         theApp.ResetCustomLabels ();
 
@@ -2904,41 +3011,51 @@ void CTRXInfoPage::OnBnClickedRemoveCustom()
     //
     switch ( tombraider )
     {
-        case 1 :
-        case 10 :
-        case 15 :
+        //
+        case GAME_TRR1 :
+        case GAME_TR10 :
+        case GAME_TR15 :
+        case GAME_TR19 :
         {
             pTable  = CustomPathnames1;
             break;
         }
-        case 2:
-        case 20 :
-        case 25 :
+        //
+        case GAME_TRR2:
+        case GAME_TR20 :
+        case GAME_TR25 :
+        case GAME_TR29 :
         {
             pTable  = CustomPathnames2;
             break;
         }
-        case 3:
-        case 30 :
-        case 35 :
+        //
+        case GAME_TRR3:
+        case GAME_TR30 :
+        case GAME_TR35 :
+        case GAME_TR39 :
         {
             pTable  = CustomPathnames3;
             break;
         }
-        case 4:
-        case 40 :
-        case 45 :
-        case 49 :
+        //
+        case GAME_TRR4:
+        case GAME_TR40 :
+        case GAME_TR45 :
+        case GAME_TR49 :
         {
             pTable  = CustomPathnames4;
             break;
         }
-        case 5:
-        case 50 :
+        //
+        case GAME_TRR5:
+        case GAME_TR50 :
+        case GAME_TR59 :
         {
             pTable  = CustomPathnames5;
             break;
         }
+        //
         default:
         {
             return;
@@ -3491,15 +3608,15 @@ void CTRXInfoPage::OnBnClickedRoomSearch()
         DWORD dwSouthToNorth        = atol(szString);
         
         //
-        if ( IsCustomArea() || tombraider == 49 || tombraider == 99 )
+        if ( IsCustomArea() || ( tombraider % 10 ) == GAME_TRC9 )
         {
             levelIndex = 0;
         }
 
         //
-        if ( IsCustomArea() && ( tombraider == 40 || tombraider == 45 ) )
+        if ( IsCustomArea() )
         {
-            tombraider = 49;
+            tombraider = ( tombraider / 10 ) * 10 + GAME_TRC9;
         }
 
         //

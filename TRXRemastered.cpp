@@ -214,28 +214,46 @@ CTRXRemastered::~CTRXRemastered()
 void CTRXRemastered::OnHelp()
 {
     int tombraider          = -1;
+    int level               = -1;
     if ( m_Line >= 0 && CTR9SaveGame::I(FALSE) != NULL )
     {
         DWORD_PTR   dwData      = m_ListCtrl.GetItemData ( m_Line );
         STRUCTDATA  *pInfoData  = (STRUCTDATA *) dwData;
         tombraider              = pInfoData->tombraider;
+        level                   = pInfoData->level;
     }
+
 
     //
     CTRXHelpDialog dlg;
+
+    //
+    dlg.m_Tombraider    = tombraider;
+    dlg.m_LevelNumber   = level;
+
+    //
+    if ( CTR9SaveGame::I(NULL) != NULL )
+    {
+        strcpy_s ( dlg.m_szTitle, sizeof(dlg.m_szTitle), CTR9SaveGame::I(NULL)->GetLevelName(tombraider,level) );
+    }
+
+    //
+    strcpy_s ( dlg.m_szLevelName, sizeof(dlg.m_szLevelName), dlg.m_szTitle );
+
+    //
     switch ( tombraider )
     {
-        case 1:
+        case GAME_TRR1:
         {
             dlg.m_ID_Resource = IDR_TR1CHEATS;
             break;
         }
-        case 2:
+        case GAME_TRR2:
         {
             dlg.m_ID_Resource = IDR_TR2CHEATS;
             break;
         }
-        case 3:
+        case GAME_TRR3:
         {
             dlg.m_ID_Resource = IDR_TR3CHEATS;
             break;
@@ -1205,9 +1223,9 @@ void CTRXRemastered::DisplayOne ( int line )
         }
 
         //
-        m_TR1_Plus.SetCheck ( CTR9SaveGame::I()->GetTRPlus ( 1 ) );
-        m_TR2_Plus.SetCheck ( CTR9SaveGame::I()->GetTRPlus ( 2 ) );
-        m_TR3_Plus.SetCheck ( CTR9SaveGame::I()->GetTRPlus ( 3 ) );
+        m_TR1_Plus.SetCheck ( CTR9SaveGame::I()->GetTRPlus ( GAME_TRR1 ) );
+        m_TR2_Plus.SetCheck ( CTR9SaveGame::I()->GetTRPlus ( GAME_TRR2 ) );
+        m_TR3_Plus.SetCheck ( CTR9SaveGame::I()->GetTRPlus ( GAME_TRR3 ) );
 
         //
         if ( pBlockEntry != NULL /* && pGunEntry != NULL */ )
@@ -1231,7 +1249,7 @@ void CTRXRemastered::DisplayOne ( int line )
             //
             switch ( tombraider )
             {
-                case 1:
+                case GAME_TRR1:
                 {
                     TABLE_TR1 *pBlock   = ( TABLE_TR1 *) pBlockEntry;
                     GUN_TR1 *pGun       = ( GUN_TR1 *) pGunEntry;
@@ -1406,7 +1424,7 @@ void CTRXRemastered::DisplayOne ( int line )
                 }
 
                 //
-                case 2:
+                case GAME_TRR2:
                 {
                     TABLE_TR2 *pBlock = ( TABLE_TR2 *) pBlockEntry;
                     GUN_TR2 *pGun = ( GUN_TR2 *) pGunEntry;
@@ -1583,7 +1601,7 @@ void CTRXRemastered::DisplayOne ( int line )
                 }
 
                 //
-                case 3:
+                case GAME_TRR3:
                 {
                     TABLE_TR3   *pBlock = ( TABLE_TR3 *) pBlockEntry;
                     GUN_TR3 *pGun       = ( GUN_TR3 *) pGunEntry;
@@ -2067,7 +2085,7 @@ void CTRXRemastered::DisplayListBrief ( )
     int slotFound   = -1;
 
     //
-    int tombraider = 1;
+    int tombraider = GAME_TRR1;
     for ( int block = 0; block < NB_TR1_BLOCKS; block++ )
     {
         WORD save   = CTR9SaveGame::I()->GetSaveNumber ( tombraider, block );
@@ -2160,7 +2178,7 @@ void CTRXRemastered::DisplayListBrief ( )
     }
 
     //  TR2
-    tombraider = 2;
+    tombraider = GAME_TRR2;
     for ( int block = 0; block < NB_TR2_BLOCKS; block++ )
     {
         WORD save   = CTR9SaveGame::I()->GetSaveNumber ( tombraider, block );
@@ -2253,7 +2271,7 @@ void CTRXRemastered::DisplayListBrief ( )
     }
 
     //  TR3
-    tombraider = 3;
+    tombraider = GAME_TRR3;
     for ( int block = 0; block < NB_TR3_BLOCKS; block++ )
     {
         WORD save   = CTR9SaveGame::I()->GetSaveNumber ( tombraider, block );
@@ -2382,7 +2400,7 @@ void CTRXRemastered::DisplayListFull ( bool bShort )
     int position = 0;
 
     //
-    int tombraider = 1;
+    int tombraider = GAME_TRR1;
     for ( int block = 0; block < NB_TR1_BLOCKS; block++ )
     {
         for ( int slot = 0; slot < NB_OF_SLOTS; slot++ )
@@ -2481,7 +2499,7 @@ void CTRXRemastered::DisplayListFull ( bool bShort )
     }
 
     //
-    tombraider = 2;
+    tombraider = GAME_TRR2;
     for ( int block = 0; block < NB_TR2_BLOCKS; block++ )
     {
         for ( int slot = 0; slot < NB_OF_SLOTS; slot++ )
@@ -2575,7 +2593,7 @@ void CTRXRemastered::DisplayListFull ( bool bShort )
     }
 
     //
-    tombraider = 3;
+    tombraider = GAME_TRR3;
     for ( int block = 0; block < NB_TR3_BLOCKS; block++ )
     {
         for ( int slot = 0; slot < NB_OF_SLOTS; slot++ )
@@ -2681,7 +2699,7 @@ void CTRXRemastered::DisplayListFull ( bool bShort )
 /////////////////////////////////////////////////////////////////////////////
 void CTRXRemastered::UpdateBlock(TABLE_TR1 *pBlock, bool bMax, int level )
 {
-    int tombraider = 1;
+    int tombraider = GAME_TRR1;
 
     if ( pBlock != NULL )
     {
@@ -2802,7 +2820,7 @@ void CTRXRemastered::UpdateBuffer(int tombraider, int block, TABLE_TR1 *pBlock, 
 /////////////////////////////////////////////////////////////////////////////
 void CTRXRemastered::UpdateBlock(TABLE_TR2 *pBlock, bool bMax, int level )
 {
-    int tombraider = 2;
+    int tombraider = GAME_TRR2;
 
     if ( pBlock != NULL )
     {
@@ -2938,7 +2956,7 @@ void CTRXRemastered::UpdateBuffer(int tombraider, int block, TABLE_TR2 *pBlock, 
 /////////////////////////////////////////////////////////////////////////////
 void CTRXRemastered::UpdateBlock (TABLE_TR3 *pBlock, bool bMax, int level)
 {
-    int tombraider = 3;
+    int tombraider = GAME_TRR3;
 
     if ( pBlock != NULL )
     {
@@ -3127,7 +3145,7 @@ void CTRXRemastered::UpdateBuffer(BOOL bRecurse)
             switch ( tombraider )
             {
                 //
-                case 1:
+                case GAME_TRR1:
                 {
                     if ( slot < 0 )
                     {
@@ -3173,7 +3191,7 @@ void CTRXRemastered::UpdateBuffer(BOOL bRecurse)
                 }
 
                 //
-                case 2:
+                case GAME_TRR2:
                 {
                     if ( slot < 0 )
                     {
@@ -3218,7 +3236,7 @@ void CTRXRemastered::UpdateBuffer(BOOL bRecurse)
                 }
 
                 //
-                case 3:
+                case GAME_TRR3:
                 {
 
                     if ( slot < 0 )
@@ -3594,7 +3612,7 @@ void CTRXRemastered::MaxOne ( int line, BOOL bRecurse )
         switch ( tombraider )
         {
             //
-            case 1:
+            case GAME_TRR1:
             {
                 if ( slot < 0 )
                 {
@@ -3633,7 +3651,7 @@ void CTRXRemastered::MaxOne ( int line, BOOL bRecurse )
             }
 
             //
-            case 2:
+            case GAME_TRR2:
             {
                 if ( slot < 0 )
                 {
@@ -3672,7 +3690,7 @@ void CTRXRemastered::MaxOne ( int line, BOOL bRecurse )
             }
 
             //
-            case 3:
+            case GAME_TRR3:
             {
                 if ( slot < 0 )
                 {
@@ -3957,7 +3975,7 @@ void CTRXRemastered::OnBnClickedFour()
         int slotFound           = -1;
 
 #ifdef _DEBUG
-        for ( tombraider = 1; tombraider <= 3; tombraider++ )
+        for ( tombraider = GAME_TRR1; tombraider <= GAME_TRR3; tombraider++ )
         {
             for ( block = 0; block < NB_TR_BLOCKS; block++ )
             {
@@ -4010,17 +4028,17 @@ const char *CTRXRemastered::GetLabelForObject ( int tombraider, int levelIndex, 
 
     switch ( tombraider )
     {
-        case 15 :
+        case GAME_TR15 :
         {
             levelIndex  = levelIndex + TR1G_START;
             break;
         }
-        case 25 :
+        case GAME_TR25 :
         {
             levelIndex  = levelIndex + TR2G_START;
             break;
         }
-        case 35 :
+        case GAME_TR35 :
         {
             levelIndex  = levelIndex + TR3G_START;
             break;
@@ -4031,9 +4049,9 @@ const char *CTRXRemastered::GetLabelForObject ( int tombraider, int levelIndex, 
     switch ( tombraider )
     {
         //
-        case 1:
-        case 10:
-        case 15:
+        case GAME_TRR1:
+        case GAME_TR10:
+        case GAME_TR15:
         {
             switch ( iObject )
             {
@@ -4071,9 +4089,9 @@ const char *CTRXRemastered::GetLabelForObject ( int tombraider, int levelIndex, 
         }
 
         //
-        case 2:
-        case 20:
-        case 25:
+        case GAME_TRR2:
+        case GAME_TR20:
+        case GAME_TR25:
         {
             switch ( iObject )
             {
@@ -4111,9 +4129,9 @@ const char *CTRXRemastered::GetLabelForObject ( int tombraider, int levelIndex, 
         }
 
         //
-        case 3:
-        case 30:
-        case 35:
+        case GAME_TRR3:
+        case GAME_TR30:
+        case GAME_TR35:
         {
             switch ( iObject )
             {
@@ -4496,7 +4514,8 @@ void CTRXRemastered::OnBnClickedSet()
 
             switch ( tombraider )
             {
-                case 1:
+                //
+                case GAME_TRR1:
                 {
                     int acquired    = CTR9SaveGame::I()->GetBlockSecretsAcquired ( tombraider, block );
                     int completed   = CTR9SaveGame::I()->GetSecretsCompleted ( tombraider, block );
@@ -4507,7 +4526,8 @@ void CTRXRemastered::OnBnClickedSet()
                     CTR9SaveGame::I()->SetBlockSecretsAcquiredAll ( tombraider, block, -1 );
                     break;
                 }
-                case 2:
+                //
+                case GAME_TRR2:
                 {
                     int acquired    = CTR9SaveGame::I()->GetBlockSecretsAcquired ( tombraider, block );
                     int completed   = CTR9SaveGame::I()->GetSecretsCompleted ( tombraider, block );
@@ -4518,7 +4538,8 @@ void CTRXRemastered::OnBnClickedSet()
                     CTR9SaveGame::I()->SetBlockSecretsAcquiredAll ( tombraider, block, -1 );
                     break;
                 }
-                case 3:
+                //
+                case GAME_TRR3:
                 {
                     int acquired    = CTR9SaveGame::I()->GetBlockSecretsAcquired ( tombraider, block );
                     int completed   = CTR9SaveGame::I()->GetSecretsCompleted ( tombraider, block );
@@ -4591,11 +4612,11 @@ void CTRXRemastered::OnBnClickedKillWillard()
         int slot                = pInfoData->slot;
         int slotFound           = -1;
 
-        if ( tombraider == 1 && level == 15 )
+        if ( tombraider == GAME_TRR1 && level == 15 )
         {
             CTR9SaveGame::I()->KillTR1Boss ( tombraider, block );
         }
-        else if ( tombraider == 3 && level == 19 )
+        else if ( tombraider == GAME_TRR3 && level == 19 )
         {
             CTR9SaveGame::I()->KillWillard ( tombraider, block );
         }
@@ -4908,19 +4929,19 @@ void CTRXRemastered::OnMenulistExport()
 
         switch ( tombraider )
         {
-            case 1 :
+            case GAME_TRR1 :
             {
                 pFilter     = szFilter1;
                 pDefault    = szDefault1;
                 break;
             }
-            case 2 :
+            case GAME_TRR2 :
             {
                 pFilter     = szFilter2;
                 pDefault    = szDefault2;
                 break;
             }
-            case 3 :
+            case GAME_TRR3 :
             {
                 pFilter     = szFilter3;
                 pDefault    = szDefault3;
@@ -4978,19 +4999,19 @@ void CTRXRemastered::OnMenulistImport()
 
         switch ( tombraider )
         {
-            case 1 :
+            case GAME_TRR1 :
             {
                 pFilter     = szFilter1;
                 pDefault    = pDefault1;
                 break;
             }
-            case 2 :
+            case GAME_TRR2 :
             {
                 pFilter     = szFilter2;
                 pDefault    = pDefault2;
                 break;
             }
-            case 3 :
+            case GAME_TRR3 :
             {
                 pFilter     = szFilter3;
                 pDefault    = pDefault3;

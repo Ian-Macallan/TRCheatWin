@@ -541,15 +541,15 @@ void CTRXWallPicture::SetWall ( int iTombraider, WallDirectionEnum eWall )
     switch ( m_iTombraider )
     {
         //
-        case 1 :
-        case 10 :
-        case 15 :
-        case 2 :
-        case 20 :
-        case 25 :
-        case 3 :
-        case 30 :
-        case 35 :
+        case GAME_TRR1 :
+        case GAME_TR10 :
+        case GAME_TR15 :
+        case GAME_TRR2 :
+        case GAME_TR20 :
+        case GAME_TR25 :
+        case GAME_TRR3 :
+        case GAME_TR30 :
+        case GAME_TR35 :
         {
             m_bTombraider123    = TRUE;
             break;

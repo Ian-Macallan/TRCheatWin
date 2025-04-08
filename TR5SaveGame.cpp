@@ -142,7 +142,7 @@ IMPLEMENT_DYNAMIC(CTR5SaveGame, CTR45SaveGame)
 CTR5SaveGame::CTR5SaveGame()
 {
 
-    m_iVersion          = 50;
+    m_iVersion          = GAME_TR50;
 
     m_iSaveLength       = TR5LEVELMAXSIZE;
     m_iMaxLevel         = TR5MAXLEVEL;
@@ -159,7 +159,7 @@ CTR5SaveGame::CTR5SaveGame()
 
     iRiotGunUnits       = 6;
 
-    m_pRealHealth             = NULL;
+    m_pRealHealth       = NULL;
 
     m_pBuffer           = new ( TR5SAVE );
     ZeroMemory ( m_pBuffer, sizeof(TR5SAVE) );
@@ -264,7 +264,7 @@ int CTR5SaveGame::ReadSavegame ( const char *pFilename )
      */
     CloseOneFile ( &hFile );
 
-        return 1;
+    return 1;
 }
 
 //

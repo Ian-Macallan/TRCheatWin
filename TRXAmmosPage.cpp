@@ -497,19 +497,19 @@ int CTRXAmmosPage::EnableForVersion()
     //
     switch ( iVersion )
     {
-        case 10 :
+        case GAME_TR10 :
         {
             break;
         }
-        case 15 :
+        case GAME_TR15 :
         {
             break;
         }
-        case 20 :
+        case GAME_TR20 :
         {
             break;
         }
-        case 30 :
+        case GAME_TR30 :
         {
             break;
         }

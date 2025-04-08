@@ -4,6 +4,7 @@
 #include <math.h>
 
 #include "TR_Areas.h"
+#include "GunGrids.h"
 
 //
 /////////////////////////////////////////////////////////////////////////////
@@ -492,7 +493,7 @@ static TRN_AREA *GetTable ( int tombraider, int &levelIndex, int &count )
     {
 
         //
-        case 1 :
+        case GAME_TRR1 :
         {
             count   = sizeof(TRR1_AREAS)/sizeof(TRN_AREA);
             return TRR1_AREAS;
@@ -500,7 +501,7 @@ static TRN_AREA *GetTable ( int tombraider, int &levelIndex, int &count )
         }
 
         //
-        case 10 :
+        case GAME_TR10 :
         {
             count   = sizeof(TR1_AREAS)/sizeof(TRN_AREA);
             return TR1_AREAS;
@@ -508,19 +509,7 @@ static TRN_AREA *GetTable ( int tombraider, int &levelIndex, int &count )
         }
 
         //  UB
-        case 15 :
-        {
-            if ( levelIndex < 4 )
-            {
-                levelIndex  = levelIndex + 15;
-            }
-            count   = sizeof(TR1_AREAS)/sizeof(TRN_AREA);
-            return TR1_AREAS;
-            break;
-        }
-
-        //  UB
-        case 19 :
+        case GAME_TR15 :
         {
             if ( levelIndex < 4 )
             {
@@ -532,7 +521,7 @@ static TRN_AREA *GetTable ( int tombraider, int &levelIndex, int &count )
         }
 
         //
-        case 2 :
+        case GAME_TRR2 :
         {
             count   = sizeof(TRR2_AREAS)/sizeof(TRN_AREA);
             return TRR2_AREAS;
@@ -540,7 +529,7 @@ static TRN_AREA *GetTable ( int tombraider, int &levelIndex, int &count )
         }
 
         //
-        case 20 :
+        case GAME_TR20 :
         {
             count   = sizeof(TR2_AREAS)/sizeof(TRN_AREA);
             return TR2_AREAS;
@@ -548,19 +537,7 @@ static TRN_AREA *GetTable ( int tombraider, int &levelIndex, int &count )
         }
 
         //  GOLD
-        case 25 :
-        {
-            if ( levelIndex < 5 )
-            {
-                levelIndex  = levelIndex + 18;
-            }
-            count   = sizeof(TR2_AREAS)/sizeof(TRN_AREA);
-            return TR2_AREAS;
-            break;
-        }
-
-        //  GOLD
-        case 29 :
+        case GAME_TR25 :
         {
             if ( levelIndex < 5 )
             {
@@ -572,7 +549,7 @@ static TRN_AREA *GetTable ( int tombraider, int &levelIndex, int &count )
         }
 
         //
-        case 3 :
+        case GAME_TRR3 :
         {
             count   = sizeof(TRR3_AREAS)/sizeof(TRN_AREA);
             return TRR3_AREAS;
@@ -580,7 +557,7 @@ static TRN_AREA *GetTable ( int tombraider, int &levelIndex, int &count )
         }
 
         //
-        case 30 :
+        case GAME_TR30 :
         {
             count   = sizeof(TR3_AREAS)/sizeof(TRN_AREA);
             return TR3_AREAS;
@@ -588,19 +565,7 @@ static TRN_AREA *GetTable ( int tombraider, int &levelIndex, int &count )
         }
 
         //  The Lost Artifact
-        case 35 :
-        {
-            if ( levelIndex < 6 )
-            {
-                levelIndex  = levelIndex + 20;
-            }
-            count   = sizeof(TR3_AREAS)/sizeof(TRN_AREA);
-            return TR3_AREAS;
-            break;
-        }
-
-        //  The Lost Artifact
-        case 39 :
+        case GAME_TR35 :
         {
             if ( levelIndex < 6 )
             {
@@ -612,8 +577,8 @@ static TRN_AREA *GetTable ( int tombraider, int &levelIndex, int &count )
         }
 
         //
-        case 4 :
-        case 40 :
+        case GAME_TRR4 :
+        case GAME_TR40 :
         {
             count   = sizeof(TR4_AREAS)/sizeof(TRN_AREA);
             return TR4_AREAS;
@@ -621,7 +586,7 @@ static TRN_AREA *GetTable ( int tombraider, int &levelIndex, int &count )
         }
 
         //  Times Exclusive
-        case 45 :
+        case GAME_TR45 :
         {
             if ( levelIndex < 2 )
             {
@@ -633,7 +598,11 @@ static TRN_AREA *GetTable ( int tombraider, int &levelIndex, int &count )
         }
 
         //  Custom Levels
-        case 49 :
+        case GAME_TR19 :
+        case GAME_TR29 :
+        case GAME_TR39 :
+        case GAME_TR49 :
+        case GAME_TR59 :
         {
             if ( TRCCustomLevel )
             {
@@ -644,8 +613,8 @@ static TRN_AREA *GetTable ( int tombraider, int &levelIndex, int &count )
         }
 
         //
-        case 5 :
-        case 50 :
+        case GAME_TRR5 :
+        case GAME_TR50 :
         {
             count   = sizeof(TR5_AREAS)/sizeof(TRN_AREA);
             return TR5_AREAS;
@@ -653,7 +622,7 @@ static TRN_AREA *GetTable ( int tombraider, int &levelIndex, int &count )
         }
 
         //  Custom Level
-        case 99 :
+        case GAME_TR99 :
         {
             count = 1;
             return TRC_AREAS;
@@ -672,94 +641,78 @@ int GetTRTableSize ( int tombraider )
 {
     switch ( tombraider )
     {
-        case 1 :
+        case GAME_TRR1 :
         {
             return sizeof(TRR1_AREAS)/sizeof(TRN_AREA);
             break;
         }
-        case 10 :
+        case GAME_TR10 :
         {
             return sizeof(TR1_AREAS)/sizeof(TRN_AREA);
             break;
         }
 
         //  UB
-        case 15 :
+        case GAME_TR15 :
         {
             return sizeof(TR1_AREAS)/sizeof(TRN_AREA);
             break;
         }
 
-        //  UB
-        case 19 :
-        {
-            return sizeof(TR1_AREAS)/sizeof(TRN_AREA);
-            break;
-        }
-
-        case 2 :
+        case GAME_TRR2 :
         {
             return sizeof(TRR2_AREAS)/sizeof(TRN_AREA);
             break;
         }
-        case 20 :
+        case GAME_TR20 :
         {
             return sizeof(TR2_AREAS)/sizeof(TRN_AREA);
             break;
         }
 
         //  GOLD
-        case 25 :
+        case GAME_TR25 :
         {
             return sizeof(TR2_AREAS)/sizeof(TRN_AREA);
             break;
         }
 
-        //  GOLD
-        case 29 :
-        {
-            return sizeof(TR2_AREAS)/sizeof(TRN_AREA);
-            break;
-        }
-
-        case 3 :
+        case GAME_TRR3 :
         {
             return sizeof(TRR3_AREAS)/sizeof(TRN_AREA);
             break;
         }
-        case 30 :
+        case GAME_TR30 :
         {
             return sizeof(TR3_AREAS)/sizeof(TRN_AREA);
             break;
         }
 
         //  GOLD
-        case 35 :
-        {
-            return sizeof(TR3_AREAS)/sizeof(TRN_AREA);
-            break;
-        }
-        //  GOLD
-        case 39 :
+        case GAME_TR35 :
         {
             return sizeof(TR3_AREAS)/sizeof(TRN_AREA);
             break;
         }
         //
-        case 4 :
-        case 40 :
+        case GAME_TRR4 :
+        case GAME_TR40 :
         {
             return sizeof(TR4_AREAS)/sizeof(TRN_AREA);
             break;
         }
-        case 45 :
+        case GAME_TR45 :
         {
             return sizeof(TR4_AREAS)/sizeof(TRN_AREA);
             break;
         }
 
         //  Custom Level
-        case 49 :
+        case GAME_TR19 :
+        case GAME_TR29 :
+        case GAME_TR39 :
+        case GAME_TR49 :
+        case GAME_TR59 :
         {
             if ( TRCCustomLevel )
             {
@@ -768,14 +721,14 @@ int GetTRTableSize ( int tombraider )
             break;
         }
 
-        case 5 :
-        case 50 :
+        case GAME_TRR5 :
+        case GAME_TR50 :
         {
             return sizeof(TR5_AREAS)/sizeof(TRN_AREA);
             break;
         }
         //
-        case 99 :
+        case GAME_TR99 :
         {
             return TRCCustomCount;
         }

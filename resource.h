@@ -3,6 +3,8 @@
 // Utilisé par TRCheatWin.rc
 //
 #define _USING_V110_SDK71_              1
+#define IDCANCEL2                       3
+#define ID_WALKTHRU                     3
 #define IDM_ABOUTBOX                    0x0010
 #define IDM_REMASTERED                  0x0020
 #define IDM_STANDARD                    0x0030

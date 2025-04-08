@@ -2007,6 +2007,21 @@ BOOL CTRXCHEATWINApp::AcceptedPattern ( const char *pName )
         return FALSE;
     }
 
+    if ( __strstri ( pFileName, ".txt" ) != NULL )
+    {
+        return FALSE;
+    }
+
+    if ( __strstri ( pFileName, ".doc" ) != NULL )
+    {
+        return FALSE;
+    }
+
+    if ( __strstri ( pFileName, ".pdf" ) != NULL )
+    {
+        return FALSE;
+    }
+
     const char *pType = FindFileType ( pName );
 
     return TRUE;

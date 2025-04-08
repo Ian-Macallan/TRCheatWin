@@ -489,7 +489,8 @@ BOOL CTRXItemsTR4::OnSetActive()
         SET_LABEL(26,25);
         SET_LABEL(27,26);
         SET_LABEL(28,27);
-        if ( iVersion == 4 || ( iVersion >= 40 && iVersion <= 49 ) )
+
+        if ( iVersion == GAME_TRR4 || ( iVersion / 10 ) == GAME_TRR4 )
         {
             SET_LABEL(29,28);
         }
@@ -675,7 +676,8 @@ int CTRXItemsTR4::EnableForVersion()
         ENA_ITEM ( 26 );
         ENA_ITEM ( 27 );
         ENA_ITEM ( 28 );
-        if ( iVersion == 4 || ( iVersion >= 40 && iVersion <= 49 ) )
+
+        if ( iVersion == GAME_TRR4 || ( iVersion / 10 ) == GAME_TRR4 )
         {
             ENA_ITEM ( 29 );
         }
@@ -753,7 +755,8 @@ void CTRXItemsTR4::DisplayValues()
         SET_DLG_ITEM(26,26);
         SET_DLG_ITEM(27,27);
         SET_DLG_ITEM(28,28);
-        if ( iVersion == 4 || ( iVersion >= 40 && iVersion <= 49 ) )
+
+        if ( iVersion == GAME_TRR4 || ( iVersion / 10 ) == GAME_TRR4 )
         {
             SET_DLG_ITEM(29,29);
         }
@@ -803,7 +806,8 @@ void CTRXItemsTR4::UpdateBuffer()
         GET_DLG_ITEM(26,26);
         GET_DLG_ITEM(27,27);
         GET_DLG_ITEM(28,28);
-        if ( iVersion == 4 || ( iVersion >= 40 && iVersion <= 49 ) )
+
+        if ( iVersion == GAME_TRR4 || ( iVersion / 10 ) == GAME_TRR4 )
         {
             GET_DLG_ITEM(29,29);
         }
@@ -897,7 +901,8 @@ void CTRXItemsTR4::OnBnClickedZero()
     SET_DLG_ITEM_ZERO(26);
     SET_DLG_ITEM_ZERO(27);
     SET_DLG_ITEM_ZERO(28);
-    if ( iVersion == 4 || ( iVersion >= 40 && iVersion <= 49 ) )
+
+    if ( iVersion == GAME_TRR4 || ( iVersion / 10 ) == GAME_TRR4 )
     {
         SET_DLG_ITEM_ZERO(29);
     }
@@ -941,7 +946,8 @@ void CTRXItemsTR4::OnBnClickedOne()
     SET_DLG_ITEM_ONE(26);
     SET_DLG_ITEM_ONE(27);
     SET_DLG_ITEM_ONE(28);
-    if ( iVersion == 4 || ( iVersion >= 40 && iVersion <= 49 ) )
+
+    if ( iVersion == GAME_TRR4 || ( iVersion / 10 ) == GAME_TRR4 )
     {
         SET_DLG_ITEM_ONE(29);
     }
@@ -991,7 +997,7 @@ void CTRXItemsTR4::OnBnClickedFour()
     SET_DLG_ITEM_FOUR(27);
     SET_DLG_ITEM_FOUR(28);
 
-    if ( iVersion == 4 || ( iVersion >= 40 && iVersion <= 49 ) )
+    if ( iVersion == GAME_TRR4 || ( iVersion / 10 ) == GAME_TRR4 )
     {
         SET_DLG_ITEM_FOUR(29);
     }
@@ -1162,7 +1168,7 @@ BOOL CTRXItemsTR4::OnToolTipNotify(UINT id, NMHDR *pNMH, LRESULT *pResult)
                     pTable = TR49ItemsNameGen;
                 }
             }
-            else if ( iVersion == 49 )
+            else if ( iVersion == GAME_TR49 )
             {
                 pTable = TR49ItemsNameGen;
             }

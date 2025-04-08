@@ -216,23 +216,52 @@ CTRXRemastered456::~CTRXRemastered456()
 void CTRXRemastered456::OnHelp()
 {
     int tombraider          = -1;
+    int block               = 0;
+    int level               = -1;
     if ( m_Line >= 0 && CTR8SaveGame::I(FALSE) != NULL )
     {
         DWORD_PTR   dwData      = m_ListCtrl.GetItemData ( m_Line );
         STRUCTDATA  *pInfoData  = (STRUCTDATA *) dwData;
         tombraider              = pInfoData->tombraider;
+        block                   = pInfoData->block;
+        level                   = pInfoData->level;
     }
 
     //
     CTRXHelpDialog dlg;
+
+    //
+    dlg.m_Tombraider    = tombraider;
+    dlg.m_LevelNumber   = level;
+
+    //
+    if ( CTR8SaveGame::I(NULL) != NULL )
+    {
+        //
+        if ( tombraider == GAME_TRR4 || tombraider == GAME_TRR5 )
+        {
+            const char *pLevelName = CTR8SaveGame::GetLevelName ( tombraider, CTR8SaveGame::I()->GetBlockLevelNumber (  tombraider, block ) );
+            strcpy_s ( dlg.m_szTitle, sizeof(dlg.m_szTitle), pLevelName );
+        }
+        else if ( tombraider == GAME_TRR6 )
+        {
+            const char *pLevelName = CTR8SaveGame::GetLevelName ( tombraider, 0, block );
+            strcpy_s ( dlg.m_szTitle, sizeof(dlg.m_szTitle), pLevelName );
+        }
+    }
+
+    //
+    strcpy_s ( dlg.m_szLevelName, sizeof(dlg.m_szLevelName), dlg.m_szTitle );
+
+    //
     switch ( tombraider )
     {
-        case 4:
+        case GAME_TRR4:
         {
             dlg.m_ID_Resource = IDR_TR4CHEATS;
             break;
         }
-        case 6:
+        case GAME_TRR6:
         {
             dlg.m_ID_Resource = IDR_TR6CHEATS;
             break;
@@ -903,9 +932,9 @@ void CTRXRemastered456::Enable ( int tombraider, int level )
     m_ARocket.EnableWindow ( CTRXTools::IsEnableRocket ( tombraider, level ) );
 
     //
-    m_Binocular.EnableWindow ( tombraider != 6 );
-    m_Laser.EnableWindow ( tombraider != 6 );
-    m_Crowbar.EnableWindow ( tombraider != 6 );
+    m_Binocular.EnableWindow ( tombraider != GAME_TRR6 );
+    m_Laser.EnableWindow ( tombraider != GAME_TRR6 );
+    m_Crowbar.EnableWindow ( tombraider != GAME_TRR6 );
 
 }
 
@@ -943,12 +972,12 @@ void CTRXRemastered456::DisplayOne ( int line )
         int slotFound           = -1;
 
         //
-        if ( tombraider == 4 || tombraider == 5 )
+        if ( tombraider == GAME_TRR4 || tombraider == GAME_TRR5 )
         {
             const char *pLevelName = CTR8SaveGame::GetLevelName ( tombraider, CTR8SaveGame::I()->GetBlockLevelNumber (  tombraider, block ) );
             m_Status.SetWindowText ( pLevelName );
         }
-        else if ( tombraider == 6 )
+        else if ( tombraider == GAME_TRR6 )
         {
             const char *pLevelName = CTR8SaveGame::GetLevelName ( tombraider, 0, block );
             m_Status.SetWindowText ( pLevelName );
@@ -962,9 +991,9 @@ void CTRXRemastered456::DisplayOne ( int line )
         pGunEntry       = CTR8SaveGame::I()->GetGunAddress ( tombraider, block );
 
         //
-        m_TR4_Plus.SetCheck ( CTR8SaveGame::I()->GetTRPlus ( 4 ) );
-        m_TR5_Plus.SetCheck ( CTR8SaveGame::I()->GetTRPlus ( 5 ) );
-        m_TR6_Plus.SetCheck ( CTR8SaveGame::I()->GetTRPlus ( 6 ) );
+        m_TR4_Plus.SetCheck ( CTR8SaveGame::I()->GetTRPlus ( GAME_TRR4 ) );
+        m_TR5_Plus.SetCheck ( CTR8SaveGame::I()->GetTRPlus ( GAME_TRR5 ) );
+        m_TR6_Plus.SetCheck ( CTR8SaveGame::I()->GetTRPlus ( GAME_TRR6 ) );
 
         //
         if ( pBlockEntry != NULL /* && pGunEntry != NULL */ )
@@ -988,7 +1017,7 @@ void CTRXRemastered456::DisplayOne ( int line )
             //
             switch ( tombraider )
             {
-                case 4:
+                case GAME_TRR4:
                 {
                     TABLE_TR4 *pBlock   = ( TABLE_TR4 *) pBlockEntry;
                     GUN_TR4 *pGun       = ( GUN_TR4 *) pGunEntry;
@@ -1139,7 +1168,7 @@ void CTRXRemastered456::DisplayOne ( int line )
                 }
 
                 //
-                case 5:
+                case GAME_TRR5:
                 {
                     TABLE_TR5 *pBlock = ( TABLE_TR5 *) pBlockEntry;
                     GUN_TR5 *pGun = ( GUN_TR5 *) pGunEntry;
@@ -1572,7 +1601,7 @@ void CTRXRemastered456::DisplayListBrief ( )
     int position    = 0;
 
     //
-    int tombraider = 4;
+    int tombraider = GAME_TRR4;
     for ( int block = 0; block < NB_SLOT_456; block++ )
     {
         WORD save   = CTR8SaveGame::I()->GetSaveNumber ( tombraider, block );
@@ -1660,7 +1689,7 @@ void CTRXRemastered456::DisplayListBrief ( )
     }
 
     //  TR5
-    tombraider = 5;
+    tombraider = GAME_TRR5;
     for ( int block = 0; block < NB_SLOT_456; block++ )
     {
         WORD save   = CTR8SaveGame::I()->GetSaveNumber ( tombraider, block );
@@ -1748,7 +1777,7 @@ void CTRXRemastered456::DisplayListBrief ( )
     }
 
     //  TR6
-    tombraider = 6;
+    tombraider = GAME_TRR6;
     for ( int block = 0; block < NB_SLOT_456; block++ )
     {
         WORD save   = CTR8SaveGame::I()->GetSaveNumber ( tombraider, block );
@@ -1872,7 +1901,7 @@ void CTRXRemastered456::DisplayListFull ( bool bShort )
     int position = 0;
 
     //
-    int tombraider = 4;
+    int tombraider = GAME_TRR4;
     for ( int block = 0; block < NB_SLOT_456; block++ )
     {
         TABLE_TR4 *pAddress1    = (TABLE_TR4 *) CTR8SaveGame::I()->GetSlotAddress ( tombraider, block );
@@ -1963,7 +1992,7 @@ void CTRXRemastered456::DisplayListFull ( bool bShort )
     }
 
     //
-    tombraider = 5;
+    tombraider = GAME_TRR5;
     for ( int block = 0; block < NB_SLOT_456; block++ )
     {
         TABLE_TR5 *pAddress1 = (TABLE_TR5 *) CTR8SaveGame::I()->GetSlotAddress ( tombraider, block );
@@ -2049,7 +2078,7 @@ void CTRXRemastered456::DisplayListFull ( bool bShort )
     }
 
     //
-    tombraider = 6;
+    tombraider = GAME_TRR6;
     for ( int block = 0; block < NB_SLOT_456; block++ )
     {
         TABLE_TR6 *pAddress1 = (TABLE_TR6 *) CTR8SaveGame::I()->GetSlotAddress ( tombraider, block );
@@ -2147,7 +2176,7 @@ void CTRXRemastered456::DisplayListFull ( bool bShort )
 /////////////////////////////////////////////////////////////////////////////
 void CTRXRemastered456::UpdateBlock(TABLE_TR4 *pBlock, bool bMax, int level )
 {
-    int tombraider = 4;
+    int tombraider = GAME_TRR4;
 
     if ( pBlock != NULL )
     {
@@ -2215,7 +2244,7 @@ void CTRXRemastered456::UpdateGun(int tombraider, int block, GUN_TR4 *pGun, TABL
 
             CTR8SaveGame::I()->SetAir ( tombraider, block,  MAX_AIR );
             CTR8SaveGame::I()->SetState ( tombraider, block,  CTR8SaveGame::I()->GetState ( tombraider, block) & STATE_45_SAFE );
-            if ( tombraider == 5 )
+            if ( tombraider == GAME_TRR5 )
             {
                 CTR8SaveGame::I()->SetRealHealth ( tombraider, block,  MAX_HEALTH );
             }
@@ -2263,7 +2292,7 @@ void CTRXRemastered456::UpdateBuffer(int tombraider, int block, TABLE_TR4 *pBloc
 /////////////////////////////////////////////////////////////////////////////
 void CTRXRemastered456::UpdateBlock(TABLE_TR5 *pBlock, bool bMax, int level )
 {
-    int tombraider = 5;
+    int tombraider = GAME_TRR5;
 
     if ( pBlock != NULL )
     {
@@ -2384,7 +2413,7 @@ void CTRXRemastered456::UpdateBuffer(int tombraider, int block, TABLE_TR5 *pBloc
 /////////////////////////////////////////////////////////////////////////////
 void CTRXRemastered456::UpdateBlock (TABLE_TR6 *pBlock, bool bMax, int level)
 {
-    int tombraider = 6;
+    int tombraider = GAME_TRR6;
 
     if ( pBlock != NULL )
     {
@@ -2478,9 +2507,9 @@ void CTRXRemastered456::UpdateBuffer( )
         pBlockEntry     = CTR8SaveGame::I()->GetSlotAddress( tombraider, block );
         pGunEntry       = CTR8SaveGame::I()->GetGunAddress ( tombraider, block );
 
-        CTR8SaveGame::I()->SetTRPlus ( 4, m_TR4_Plus.GetCheck () );
-        CTR8SaveGame::I()->SetTRPlus ( 5, m_TR5_Plus.GetCheck () );
-        CTR8SaveGame::I()->SetTRPlus ( 6, m_TR6_Plus.GetCheck () );
+        CTR8SaveGame::I()->SetTRPlus ( GAME_TRR4, m_TR4_Plus.GetCheck () );
+        CTR8SaveGame::I()->SetTRPlus ( GAME_TRR5, m_TR5_Plus.GetCheck () );
+        CTR8SaveGame::I()->SetTRPlus ( GAME_TRR6, m_TR6_Plus.GetCheck () );
 
 
         CTR8SaveGame::I()->SetSaveNumber ( tombraider, block, GetValue ( m_Save_No ) );
@@ -2493,7 +2522,7 @@ void CTRXRemastered456::UpdateBuffer( )
             switch ( tombraider )
             {
                 //
-                case 4:
+                case GAME_TRR4:
                 {
                     //  Update All Occurrences
                     TABLE_TR4 *pBlock   = ( TABLE_TR4 *) pBlockEntry;
@@ -2517,7 +2546,7 @@ void CTRXRemastered456::UpdateBuffer( )
                 }
 
                 //
-                case 5:
+                case GAME_TRR5:
                 {
                     TABLE_TR5 *pBlock   = ( TABLE_TR5 *) pBlockEntry;
                     GUN_TR5 *pGun       = ( GUN_TR5 * ) pGunEntry;
@@ -2539,7 +2568,7 @@ void CTRXRemastered456::UpdateBuffer( )
                 }
 
                 //
-                case 6:
+                case GAME_TRR6:
                 {
 #if 0
                     TABLE_TR6 *pBlock   = ( TABLE_TR6 *) pBlockEntry;
@@ -2843,7 +2872,7 @@ void CTRXRemastered456::MaxOne ( int line )
         switch ( tombraider )
         {
             //
-            case 4:
+            case GAME_TRR4:
             {
                 TABLE_TR4 *pBlock   = ( TABLE_TR4 *)pBlockEntry;
                 GUN_TR4 *pGun       = ( GUN_TR4 * ) pGunEntry;
@@ -2853,7 +2882,7 @@ void CTRXRemastered456::MaxOne ( int line )
             }
 
             //
-            case 5:
+            case GAME_TRR5:
             {
                 TABLE_TR5 *pBlock   = ( TABLE_TR5 *)pBlockEntry;
                 GUN_TR5 *pGun       = ( GUN_TR5 * ) pGunEntry;
@@ -3089,17 +3118,17 @@ const char *CTRXRemastered456::GetLabelForObject ( int tombraider, int levelInde
 
     switch ( tombraider )
     {
-        case 15 :
+        case GAME_TR15 :
         {
             levelIndex  = levelIndex + TR1G_START;
             break;
         }
-        case 25 :
+        case GAME_TR25 :
         {
             levelIndex  = levelIndex + TR2G_START;
             break;
         }
-        case 35 :
+        case GAME_TR35 :
         {
             levelIndex  = levelIndex + TR3G_START;
             break;
@@ -3110,9 +3139,9 @@ const char *CTRXRemastered456::GetLabelForObject ( int tombraider, int levelInde
     switch ( tombraider )
     {
         //
-        case 1:
-        case 10:
-        case 15:
+        case GAME_TRR1:
+        case GAME_TR10:
+        case GAME_TR15:
         {
             switch ( iObject )
             {
@@ -3150,9 +3179,9 @@ const char *CTRXRemastered456::GetLabelForObject ( int tombraider, int levelInde
         }
 
         //
-        case 2:
-        case 20:
-        case 25:
+        case GAME_TRR2:
+        case GAME_TR20:
+        case GAME_TR25:
         {
             switch ( iObject )
             {
@@ -3190,9 +3219,9 @@ const char *CTRXRemastered456::GetLabelForObject ( int tombraider, int levelInde
         }
 
         //
-        case 3:
-        case 30:
-        case 35:
+        case GAME_TRR3:
+        case GAME_TR30:
+        case GAME_TR35:
         {
             switch ( iObject )
             {
@@ -3494,19 +3523,19 @@ void CTRXRemastered456::OnBnClickedSet()
 
             switch ( tombraider )
             {
-                case 4:
+                case GAME_TRR4:
                 {
                     WORD maxSecret    = CTR8SaveGame::I()->GetSecretsTilLevel( tombraider, level - 1 );
                     CTR8SaveGame::I()->SetBlockSecretsTotal ( tombraider, block, (BYTE) maxSecret );
                     break;
                 }
-                case 5:
+                case GAME_TRR5:
                 {
                     WORD maxSecret    = CTR8SaveGame::I()->GetSecretsTilLevel( tombraider, level - 1 );
                     CTR8SaveGame::I()->SetBlockSecretsTotal ( tombraider, block, (BYTE) maxSecret );
                     break;
                 }
-                case 6:
+                case GAME_TRR6:
                 {
                     WORD maxSecret    = CTR8SaveGame::I()->GetSecretsTilLevel( tombraider, level - 1 );
                     break;
@@ -3569,11 +3598,11 @@ void CTRXRemastered456::OnBnClickedKillTR45()
         int level               = pInfoData->level;
         int block               = pInfoData->block;
 
-        if ( tombraider == 5 && level == 2 )
+        if ( tombraider == GAME_TRR5 && level == 2 )
         {
             CTR8SaveGame::I()->KillTR5MecanicalHead ( tombraider, block );
         }
-        else if ( tombraider == 5 && level == 99 )  // Not Used
+        else if ( tombraider == GAME_TRR5 && level == 99 )  // Not Used
         {
             CTR8SaveGame::I()->KillTR5Boss ( tombraider, block );
         }
@@ -3877,19 +3906,19 @@ void CTRXRemastered456::OnMenulistExport()
 
         switch ( tombraider )
         {
-            case 4 :
+            case GAME_TRR4 :
             {
                 pFilter     = szFilter1;
                 pDefault    = szDefault1;
                 break;
             }
-            case 5 :
+            case GAME_TRR5 :
             {
                 pFilter     = szFilter2;
                 pDefault    = szDefault2;
                 break;
             }
-            case 6 :
+            case GAME_TRR6 :
             {
                 pFilter     = szFilter3;
                 pDefault    = szDefault3;
@@ -3945,19 +3974,19 @@ void CTRXRemastered456::OnMenulistImport()
 
         switch ( tombraider )
         {
-            case 4 :
+            case GAME_TRR4 :
             {
                 pFilter     = szFilter1;
                 pDefault    = pDefault1;
                 break;
             }
-            case 5 :
+            case GAME_TRR5 :
             {
                 pFilter     = szFilter2;
                 pDefault    = pDefault2;
                 break;
             }
-            case 6 :
+            case GAME_TRR6 :
             {
                 pFilter     = szFilter3;
                 pDefault    = pDefault3;
@@ -4414,7 +4443,7 @@ void CTRXRemastered456::OnBnClickedItems()
         currentLevel                = pInfoData->level;
         currentBlock                = pInfoData->block;
 
-        if ( currentTombraider >= 4 && currentTombraider <= 5 && currentBlock >= 0 && currentLevel >= 1 )
+        if ( currentTombraider >= GAME_TRR4 && currentTombraider <= GAME_TRR5 && currentBlock >= 0 && currentLevel >= 1 )
         {
             CTRXItemsTRR456 dlg;
             dlg.m_iTombraider       = currentTombraider;

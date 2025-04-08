@@ -363,7 +363,7 @@ int CTRSaveGame::InstanciateVersion (const char *szFilename )
 {
     FILE        *hFile      = NULL;
 
-    size_t  uLen        = 0;
+    size_t  uLen            = 0;
 
     int         iVersion    = 0;
 
@@ -395,7 +395,7 @@ int CTRSaveGame::InstanciateVersion (const char *szFilename )
         {
             case FORCE_TR1 :
             {
-                iVersion = 10;
+                iVersion = GAME_TR10;
                 CTR1SaveGame *pGame = dynamic_cast<CTR1SaveGame *>( GetTR1Instance() );
                 if ( pGame != NULL && uLen <= sizeof(TR1SAVE) )
                 {
@@ -409,7 +409,7 @@ int CTRSaveGame::InstanciateVersion (const char *szFilename )
 
             case FORCE_TUB :
             {
-                iVersion = 15;
+                iVersion = GAME_TR15;
                 CTUBSaveGame *pGame = dynamic_cast<CTUBSaveGame *>( GetTUBInstance() );
                 if ( pGame != NULL && uLen <= sizeof(TUBSAVE) )
                 {
@@ -424,7 +424,7 @@ int CTRSaveGame::InstanciateVersion (const char *szFilename )
             case FORCE_TR2 :
             case FORCE_TR2G :
             {
-                iVersion = 20;
+                iVersion = GAME_TR20;
                 CTR2SaveGame *pGame = dynamic_cast<CTR2SaveGame *>( GetTR2Instance() );
                 if ( pGame != NULL && uLen <= sizeof(TR2SAVE) )
                 {
@@ -439,7 +439,7 @@ int CTRSaveGame::InstanciateVersion (const char *szFilename )
             case FORCE_TR3 :
             case FORCE_TR3G :
             {
-                iVersion = 30;
+                iVersion = GAME_TR30;
                 CTR3SaveGame *pGame = dynamic_cast<CTR3SaveGame *>( GetTR3Instance() );
                 if ( pGame != NULL && uLen <= sizeof(TR3SAVE) )
                 {
@@ -453,7 +453,7 @@ int CTRSaveGame::InstanciateVersion (const char *szFilename )
 
             case FORCE_TR4 :
             {
-                iVersion    = 40;
+                iVersion    = GAME_TR40;
                 CTR4SaveGame *pGame = dynamic_cast<CTR4SaveGame *>( GetTR4Instance() );
                 if ( pGame != NULL && uLen <= sizeof(TR4SAVE) )
                 {
@@ -480,7 +480,7 @@ int CTRSaveGame::InstanciateVersion (const char *szFilename )
                     }
 
                     //
-                    iVersion    = 49;
+                    iVersion    = GAME_TR49;
                     CTR4NGSaveGame *pGame = dynamic_cast<CTR4NGSaveGame *>( GetTR4NGInstance() );
                     if ( pGame != NULL )
                     {
@@ -501,7 +501,7 @@ int CTRSaveGame::InstanciateVersion (const char *szFilename )
 
             case FORCE_TR5 :
             {
-                iVersion = 50;
+                iVersion = GAME_TR50;
                 CTR5SaveGame *pGame = dynamic_cast<CTR5SaveGame *>( GetTR5Instance() );
                 if ( pGame != NULL && uLen <= sizeof(TR5SAVE ) )
                 {
@@ -522,7 +522,7 @@ int CTRSaveGame::InstanciateVersion (const char *szFilename )
                 {
                     case TR1LEVELMINSIZE:
                     {
-                        iVersion = 10;
+                        iVersion = GAME_TR10;
                         CTR1SaveGame *pGame = dynamic_cast<CTR1SaveGame *>( GetTR1Instance() );
                         if ( pGame != NULL )
                         {
@@ -538,7 +538,7 @@ int CTRSaveGame::InstanciateVersion (const char *szFilename )
                     case TUBLEVELMINSIZE :
                     case TUBLEVELMAXSIZE :
                     {
-                        iVersion = 15;
+                        iVersion = GAME_TR15;
                         CTUBSaveGame *pGame = dynamic_cast<CTUBSaveGame *>( GetTUBInstance() );
                         if ( pGame != NULL )
                         {
@@ -555,7 +555,7 @@ int CTRSaveGame::InstanciateVersion (const char *szFilename )
                     case TR2LEVELMINSIZE :
                     case TR2LEVELMAXSIZE :
                     {
-                        iVersion = 20;
+                        iVersion = GAME_TR20;
                         CTR2SaveGame *pGame = dynamic_cast<CTR2SaveGame *>( GetTR2Instance() );
                         if ( pGame != NULL )
                         {
@@ -570,8 +570,9 @@ int CTRSaveGame::InstanciateVersion (const char *szFilename )
 
                     case TR3LEVELMINSIZE :
                     case TR3LEVELMAXSIZE :
+                    case TR3LEVELALTSIZE :
                     {
-                        iVersion = 30;
+                        iVersion = GAME_TR30;
                         CTR3SaveGame *pGame = dynamic_cast<CTR3SaveGame *>( GetTR3Instance() );
                         if ( pGame != NULL )
                         {
@@ -586,8 +587,9 @@ int CTRSaveGame::InstanciateVersion (const char *szFilename )
 
                     case TR4LEVELMINSIZE :
                     case TR4LEVELMAXSIZE :
+                    case TR4LEVELALTSIZE :
                     {
-                        iVersion    = 40;
+                        iVersion    = GAME_TR40;
                         CTR4SaveGame *pGame = dynamic_cast<CTR4SaveGame *>( GetTR4Instance() );
                         if ( pGame != NULL )
                         {
@@ -602,7 +604,7 @@ int CTRSaveGame::InstanciateVersion (const char *szFilename )
 
                     case TR5LEVELMAXSIZE :
                     {
-                        iVersion = 50;
+                        iVersion = GAME_TR50;
                         CTR5SaveGame *pGame = dynamic_cast<CTR5SaveGame *>( GetTR5Instance() );
                         if ( pGame != NULL )
                         {
@@ -630,7 +632,7 @@ int CTRSaveGame::InstanciateVersion (const char *szFilename )
                             }
 
                             //
-                            iVersion    = 49;
+                            iVersion    = GAME_TR49;
                             CTR4NGSaveGame *pGame = dynamic_cast<CTR4NGSaveGame *>( GetTR4NGInstance() );
                             if ( pGame != NULL )
                             {

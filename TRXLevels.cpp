@@ -89,12 +89,12 @@ BOOL CTRXLevels::OnInitDialog()
 
         if ( countCustom > 0 )
         {
-            m_iVersion  = 49;
+            m_iVersion  = ( m_iVersion / 10 ) * 10 + GAME_TRC9;
         }
 
         m_LevelList.InsertColumn( COL_LEVEL, "Level", LVCFMT_RIGHT, 48 );
         m_LevelList.InsertColumn( COL_NAME, "Name", LVCFMT_LEFT, 320 );
-        if ( m_iVersion == 49 )
+        if ( m_iVersion == GAME_TR49 )
         {
             m_LevelList.InsertColumn( COL_DATA, "Data File", LVCFMT_LEFT, 192 );
             m_LevelList.InsertColumn( COL_EXIST, "Exists", LVCFMT_LEFT, 48 );
@@ -108,9 +108,9 @@ BOOL CTRXLevels::OnInitDialog()
         switch ( m_iVersion )
         {
             //
-            case 1 :
-            case 10 :
-            case 15 :
+            case GAME_TRR1 :
+            case GAME_TR10 :
+            case GAME_TR15 :
             {
                 for ( int level = 1; level <= TR1_LEVELS; level++ )
                 {
@@ -133,9 +133,9 @@ BOOL CTRXLevels::OnInitDialog()
                 break;
             }
             //
-            case 2 :
-            case 20 :
-            case 25 :
+            case GAME_TRR2 :
+            case GAME_TR20 :
+            case GAME_TR25 :
             {
                 for ( int level = 1; level <= TR2_LEVELS; level++ )
                 {
@@ -158,10 +158,9 @@ BOOL CTRXLevels::OnInitDialog()
                 break;
             }
             //
-            case 3 :
-            case 30 :
-            case 35 :
-            case 39 :
+            case GAME_TRR3 :
+            case GAME_TR30 :
+            case GAME_TR35 :
             {
                 for ( int level = 1; level <= TR3_LEVELS; level++ )
                 {
@@ -184,9 +183,9 @@ BOOL CTRXLevels::OnInitDialog()
                 break;
             }
             //
-            case 4 :
-            case 40 :
-            case 45 :
+            case GAME_TRR4 :
+            case GAME_TR40 :
+            case GAME_TR45 :
             {
                 for ( int level = 1; level <= TR4_LEVELS; level++ )
                 {
@@ -209,7 +208,15 @@ BOOL CTRXLevels::OnInitDialog()
                 break;
             }
             //
-            case 49 :
+            case GAME_TR19 :
+            case GAME_TR29 :
+            case GAME_TR39 :
+            case GAME_TR59 :
+            {
+                break;
+            }
+
+            case GAME_TR49 :
             {
                 static char szDirectory [ MAX_PATH ];
                 strcpy_s ( szDirectory, sizeof(szDirectory), m_szSaveName );
@@ -255,8 +262,8 @@ BOOL CTRXLevels::OnInitDialog()
                 break;
             }
             //
-            case 5 :
-            case 50 :
+            case GAME_TRR5 :
+            case GAME_TR50 :
             {
                 for ( int level = 1; level <= TR5_LEVELS; level++ )
                 {

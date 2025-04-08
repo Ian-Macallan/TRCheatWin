@@ -1,5 +1,44 @@
 #pragma once
 
+#define GAME_TRR1           1
+#define GAME_TR10           10
+#define GAME_TR15           15
+#define GAME_TR1G           15
+#define GAME_TRUB           15
+#define GAME_TR19           19
+
+#define GAME_TRR2           2
+#define GAME_TR20           20
+#define GAME_TR25           25
+#define GAME_TR2G           25
+#define GAME_TR29           29
+
+#define GAME_TRR3           3
+#define GAME_TR30           30
+#define GAME_TR35           35
+#define GAME_TR3G           35
+#define GAME_TR39           39
+
+#define GAME_TRR4           4
+#define GAME_TR40           40
+#define GAME_TR45           45
+#define GAME_TR4G           45
+#define GAME_TR49           49
+
+#define GAME_TRR5           5
+#define GAME_TR50           50
+#define GAME_TR55           55
+#define GAME_TR59           59
+
+#define GAME_TRR6           6
+#define GAME_TR60           60
+
+#define GAME_TRG5           5
+
+//  Custom Sub Game
+#define GAME_TRC9           9
+#define GAME_TR99           99
+
 //  Gun Grid determine guns depending on Level
 #define TR1_LEVELS          19
 #define TR2_LEVELS          23

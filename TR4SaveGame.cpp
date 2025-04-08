@@ -187,7 +187,7 @@ IMPLEMENT_DYNAMIC(CTR4SaveGame, CTR45SaveGame)
 CTR4SaveGame::CTR4SaveGame()
 {
 
-    m_iVersion          = 40;
+    m_iVersion          = GAME_TR40;
 
     m_iSaveLength       = TR4LEVELMINSIZE;
     m_iMaxLevel         = TR4MAXLEVEL;
@@ -204,7 +204,7 @@ CTR4SaveGame::CTR4SaveGame()
 
     iRiotGunUnits       = 6;
 
-    m_pRealHealth             = NULL;
+    m_pRealHealth       = NULL;
 
     m_pBuffer           = new ( TR4SAVE );
     ZeroMemory ( m_pBuffer, sizeof(TR4SAVE) );
@@ -249,7 +249,7 @@ int CTR4SaveGame::ReadSavegame ( const char *pFilename )
 {
 
     FILE                    *hFile;
-    size_t                uLenBuffer;
+    size_t                  uLenBuffer;
 
     char                    szEmpty [ 1 ];
 
@@ -272,7 +272,8 @@ int CTR4SaveGame::ReadSavegame ( const char *pFilename )
     /*
      *      Get Buffer.
      */
-    if ( CTRXGlobal::m_ForceSaveGame == FORCE_NONE && ( m_iSaveLength < TR4LEVELMINSIZE || m_iSaveLength > TR4LEVELMAXSIZE ) )
+    if ( CTRXGlobal::m_ForceSaveGame == FORCE_NONE && m_iSaveLength != TR4LEVELALTSIZE &&
+        ( m_iSaveLength < TR4LEVELMINSIZE || m_iSaveLength > TR4LEVELMAXSIZE ) )
     {
         AddFormatToStatus ( "Internal error in length %d versus %d = %d.",
             (int) sizeof ( TR4SAVE ), m_iSaveLength,
@@ -387,7 +388,8 @@ void CTR4SaveGame::writeSaveGame()
     /*
      *      Get Buffer.
      */
-    if ( CTRXGlobal::m_ForceSaveGame == FORCE_NONE && ( m_iSaveLength < TR4LEVELMINSIZE || m_iSaveLength > TR4LEVELMAXSIZE ) )
+    if ( CTRXGlobal::m_ForceSaveGame == FORCE_NONE && m_iSaveLength != TR4LEVELALTSIZE &&
+        ( m_iSaveLength < TR4LEVELMINSIZE || m_iSaveLength > TR4LEVELMAXSIZE ) )
     {
         AddFormatToStatus ( "Internal error in length %d versus %d = %d.",
             (int) sizeof ( TR4SAVE ), m_iSaveLength,
@@ -431,11 +433,16 @@ void CTR4SaveGame::RetrieveInformation( const char *pFilename )
 
         if ( strstr ( (char *) m_pBuffer, "Times" ) != NULL )
         {
-            m_iSubVersion   = 5;
+            m_iSubVersion   = GAME_TRG5;
         }
         else
         {
             m_iSubVersion   = 0;
+        }
+
+        if ( m_iSaveLength == TR4LEVELALTSIZE )
+        {
+            m_iSubVersion   = GAME_TRC9;
         }
     }
 }
@@ -561,7 +568,13 @@ void CTR4SaveGame::GetDetailedInfo (    char *szGame, size_t iSize, int *iGame, 
     if ( strstr ( (char*) m_pBuffer, "Times" ) != NULL )
     {
         strcpy_s ( szGame, iSize, "TR4 Times Exclusive" );
-        m_iSubVersion   = 5;
+        m_iSubVersion   = GAME_TRG5;
+    }
+
+    if ( m_iSaveLength == TR4LEVELALTSIZE )
+    {
+        strcpy_s ( szGame, iSize, "TR4 TRLE" );
+        m_iSubVersion   = GAME_TRC9;
     }
 }
 
@@ -587,10 +600,11 @@ int CTR4SaveGame::getLevel()
         }
     }
 
+
     //  Some case where level not found
-    if ( iLevel == 0 )
+    if ( iLevel == 0 && m_iSaveLength == TR4LEVELALTSIZE )
     {
-        // iLevel = 1;
+        iLevel = m_pBuffer->m_cLevelNum;
     }
 
     //

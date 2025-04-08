@@ -62,8 +62,8 @@ BOOL CTRXTools::IsAmmosEnabled ( int tombraider, int level, int gun )
     switch ( tombraider )
     {
         //  TR1
-        case 1:
-        case 10:
+        case GAME_TRR1:
+        case GAME_TR10:
         {
             level       = level - 1;
             if ( level >= 0 && level < TR1_LEVELS )
@@ -74,7 +74,7 @@ BOOL CTRXTools::IsAmmosEnabled ( int tombraider, int level, int gun )
         }
 
         //  TR HUB
-        case 15:
+        case GAME_TR15:
         {
             level       = level - 1;
             if ( level >= 0 && level < TR1G_LEVELS )
@@ -85,8 +85,8 @@ BOOL CTRXTools::IsAmmosEnabled ( int tombraider, int level, int gun )
         }
 
         //  TR2
-        case 2:
-        case 20:
+        case GAME_TRR2:
+        case GAME_TR20:
         {
             level       = level - 1;
             if ( level >= 0 && level < TR2_LEVELS )
@@ -97,7 +97,7 @@ BOOL CTRXTools::IsAmmosEnabled ( int tombraider, int level, int gun )
         }
 
         //  TR2 Gold
-        case 25:
+        case GAME_TR25:
         {
             level       = level - 1;
             if ( level >= 0 && level < TR2G_LEVELS )
@@ -108,8 +108,8 @@ BOOL CTRXTools::IsAmmosEnabled ( int tombraider, int level, int gun )
         }
 
         //
-        case 3:
-        case 30:
+        case GAME_TRR3:
+        case GAME_TR30:
         {
             level       = level - 1;
             if ( level >= 0 && level < TR3_LEVELS )
@@ -120,7 +120,7 @@ BOOL CTRXTools::IsAmmosEnabled ( int tombraider, int level, int gun )
         }
 
         //  TR3 Gold
-        case 35:
+        case GAME_TR35:
         {
             level       = level - 1;
             if ( level >= 0 && level < TR3G_LEVELS )
@@ -131,10 +131,10 @@ BOOL CTRXTools::IsAmmosEnabled ( int tombraider, int level, int gun )
         }
 
         //  Last Revelations
-        case 4:
-        case 40:
-        case 45:
-        case 49:
+        case GAME_TRR4:
+        case GAME_TR40:
+        case GAME_TR45:
+        case GAME_TR49:
         {
             level       = level - 1;
             if ( level >= 0 && level < TR4_LEVELS )
@@ -145,8 +145,8 @@ BOOL CTRXTools::IsAmmosEnabled ( int tombraider, int level, int gun )
         }
 
         //  Chronicles
-        case 5:
-        case 50:
+        case GAME_TRR5:
+        case GAME_TR50:
         {
             level       = level - 1;
             if ( level >= 0 && level < TR5_LEVELS )
@@ -180,8 +180,8 @@ BOOL CTRXTools::IsAGunEnabled ( int tombraider, int level, int gun )
     switch ( tombraider )
     {
         //  TR1
-        case 1:
-        case 10:
+        case GAME_TRR1:
+        case GAME_TR10:
         {
             level       = level - 1;
             if ( level >= 0 && level < TR1_LEVELS )
@@ -192,7 +192,7 @@ BOOL CTRXTools::IsAGunEnabled ( int tombraider, int level, int gun )
         }
 
         //  TR HUB
-        case 15:
+        case GAME_TR15:
         {
             level       = level - 1;
             if ( level >= 0 && level < TR1G_LEVELS )
@@ -203,8 +203,8 @@ BOOL CTRXTools::IsAGunEnabled ( int tombraider, int level, int gun )
         }
 
         //  TR2
-        case 2:
-        case 20:
+        case GAME_TRR2:
+        case GAME_TR20:
         {
             level       = level - 1;
             if ( level >= 0 && level < TR2_LEVELS )
@@ -215,7 +215,7 @@ BOOL CTRXTools::IsAGunEnabled ( int tombraider, int level, int gun )
         }
 
         //  TR2 Gold
-        case 25:
+        case GAME_TR25:
         {
             level       = level - 1;
             if ( level >= 0 && level < TR2G_LEVELS )
@@ -226,8 +226,8 @@ BOOL CTRXTools::IsAGunEnabled ( int tombraider, int level, int gun )
         }
 
         //
-        case 3:
-        case 30:
+        case GAME_TRR3:
+        case GAME_TR30:
         {
             level       = level - 1;
             if ( level >= 0 && level < TR3_LEVELS )
@@ -238,7 +238,7 @@ BOOL CTRXTools::IsAGunEnabled ( int tombraider, int level, int gun )
         }
 
         //  TR3 Gold
-        case 35:
+        case GAME_TR35:
         {
             level       = level - 1;
             if ( level >= 0 && level < TR3G_LEVELS )
@@ -249,10 +249,10 @@ BOOL CTRXTools::IsAGunEnabled ( int tombraider, int level, int gun )
         }
 
         //  Last Revelations
-        case 4:
-        case 40:
-        case 45:
-        case 49:
+        case GAME_TRR4:
+        case GAME_TR40:
+        case GAME_TR45:
+        case GAME_TR49:
         {
             level       = level - 1;
             if ( level >= 0 && level < TR4_LEVELS )
@@ -263,8 +263,8 @@ BOOL CTRXTools::IsAGunEnabled ( int tombraider, int level, int gun )
         }
 
         //  Chronicles
-        case 5:
-        case 50:
+        case GAME_TRR5:
+        case GAME_TR50:
         {
             level       = level - 1;
             if ( level >= 0 && level < TR5_LEVELS )

@@ -203,57 +203,57 @@ BOOL CTRXDifferences::OnInitDialog()
     {
         switch ( m_iVersion )
         {
-            case 1:
-            case 10:
+            case GAME_TRR1:
+            case GAME_TR10:
             {
                 CTR1SaveGame *pGame = (CTR1SaveGame *) CTRSaveGame::I();
                 CTRXTools::MemoryCompare ( pGame->getBufferBackupAddress(), pGame->getBufferAddress(), pGame->getBufferLength() );
                 SetWindowText ( "Tombraider 1 Differences" );
                 break;
             }
-            case 15:
+            case GAME_TR15:
             {
                 CTUBSaveGame *pGame = (CTUBSaveGame * )CTRSaveGame::I();
                 CTRXTools::MemoryCompare ( pGame->getBufferBackupAddress(), pGame->getBufferAddress(), pGame->getBufferLength() );
                 SetWindowText ( "Tombraider Unfinished Business Differences" );
                 break;
             }
-            case 2:
-            case 20:
-            case 25:
+            case GAME_TRR2:
+            case GAME_TR20:
+            case GAME_TR25:
             {
                 CTR2SaveGame *pGame = (CTR2SaveGame *) CTRSaveGame::I();
                 CTRXTools::MemoryCompare ( pGame->getBufferBackupAddress(), pGame->getBufferAddress(), pGame->getBufferLength() );
                 SetWindowText ( "Tombraider 2 and Gold Differences" );
                 break;
             }
-            case 3:
-            case 30:
-            case 35:
+            case GAME_TRR3:
+            case GAME_TR30:
+            case GAME_TR35:
             {
                 CTR3SaveGame *pGame = (CTR3SaveGame *) CTRSaveGame::I();
                 CTRXTools::MemoryCompare ( pGame->getBufferBackupAddress(), pGame->getBufferAddress(), pGame->getBufferLength() );
                 SetWindowText ( "Tombraider 3 and Gold Differences" );
                 break;
             }
-            case 4:
-            case 40:
-            case 45:
+            case GAME_TRR4:
+            case GAME_TR40:
+            case GAME_TR45:
             {
                 CTR4SaveGame *pGame = (CTR4SaveGame *) CTRSaveGame::I();
                 CTRXTools::MemoryCompare ( pGame->getBufferBackupAddress(), pGame->getBufferAddress(), pGame->getBufferLength() );
                 SetWindowText ( "Tombraider 4 Differences" );
                 break;
             }
-            case 49:
+            case GAME_TR49:
             {
                 CTR4SaveGame *pGame = (CTR4SaveGame *) CTRSaveGame::I();
                 CTRXTools::MemoryCompare ( pGame->getBufferBackupAddress(), pGame->getBufferAddress(), pGame->getBufferLength() );
                 SetWindowText ( "Tombraider 4 Next Generation Differences" );
                 break;
             }
-            case 5:
-            case 50:
+            case GAME_TRR5:
+            case GAME_TR50:
             {
                 CTR5SaveGame *pGame = (CTR5SaveGame *) CTRSaveGame::I();
                 CTRXTools::MemoryCompare ( pGame->getBufferBackupAddress(), pGame->getBufferAddress(), pGame->getBufferLength() );
@@ -589,8 +589,8 @@ void CTRXDifferences::ApplyChanges()
             {
                 switch ( m_iVersion )
                 {
-                    case 1:
-                    case 10:
+                    case GAME_TRR1:
+                    case GAME_TR10:
                     {
                         CTR1SaveGame *pGame = (CTR1SaveGame *) CTRSaveGame::I();
                         pBufferBackup       = (BYTE*) pGame->getBufferBackupAddress();
@@ -598,7 +598,7 @@ void CTRXDifferences::ApplyChanges()
                         length              = pGame->getBufferLength();
                         break;
                     }
-                    case 15:
+                    case GAME_TR15:
                     {
                         CTUBSaveGame *pGame = (CTUBSaveGame * )CTRSaveGame::I();
                         pBufferBackup       = (BYTE*) pGame->getBufferBackupAddress();
@@ -606,9 +606,9 @@ void CTRXDifferences::ApplyChanges()
                         length              = pGame->getBufferLength();
                         break;
                     }
-                    case 2:
-                    case 20:
-                    case 25:
+                    case GAME_TRR2:
+                    case GAME_TR20:
+                    case GAME_TR25:
                     {
                         CTR2SaveGame *pGame = (CTR2SaveGame *) CTRSaveGame::I();
                         pBufferBackup       = (BYTE*) pGame->getBufferBackupAddress();
@@ -616,9 +616,9 @@ void CTRXDifferences::ApplyChanges()
                         length              = pGame->getBufferLength();
                         break;
                     }
-                    case 3:
-                    case 30:
-                    case 35:
+                    case GAME_TRR3:
+                    case GAME_TR30:
+                    case GAME_TR35:
                     {
                         CTR3SaveGame *pGame = (CTR3SaveGame *) CTRSaveGame::I();
                         pBufferBackup       = (BYTE*) pGame->getBufferBackupAddress();
@@ -626,9 +626,9 @@ void CTRXDifferences::ApplyChanges()
                         length              = pGame->getBufferLength();
                         break;
                     }
-                    case 4:
-                    case 40:
-                    case 45:
+                    case GAME_TRR4:
+                    case GAME_TR40:
+                    case GAME_TR45:
                     {
                         CTR4SaveGame *pGame = (CTR4SaveGame *) CTRSaveGame::I();
                         pBufferBackup       = (BYTE*) pGame->getBufferBackupAddress();
@@ -636,7 +636,7 @@ void CTRXDifferences::ApplyChanges()
                         length              = pGame->getBufferLength();
                         break;
                     }
-                    case 49:
+                    case GAME_TR49:
                     {
                         CTR4NGSaveGame *pGame = (CTR4NGSaveGame *) CTRSaveGame::I();
                         pBufferBackup           = (BYTE*) pGame->getBufferBackupAddress();
@@ -644,8 +644,8 @@ void CTRXDifferences::ApplyChanges()
                         length                  = pGame->getBufferLength();
                         break;
                     }
-                    case 5:
-                    case 50:
+                    case GAME_TRR5:
+                    case GAME_TR50:
                     {
                         CTR5SaveGame *pGame = (CTR5SaveGame *) CTRSaveGame::I();
                         pBufferBackup       = (BYTE*) pGame->getBufferBackupAddress();
@@ -1587,8 +1587,8 @@ const char *CTRXDifferences::GetLabel ( unsigned offset )
         switch ( m_iVersion )
         {
             //
-            case 1:
-            case 10:
+            case GAME_TRR1:
+            case GAME_TR10:
             {
                 strcpy_s ( szLabel, sizeof(szLabel), "Tombraider I" );
 
@@ -1630,7 +1630,7 @@ const char *CTRXDifferences::GetLabel ( unsigned offset )
             }
 
             //
-            case 15:
+            case GAME_TR15:
             {
                 strcpy_s ( szLabel, sizeof(szLabel), "Tombraider Unfinished Business" );
 
@@ -1671,8 +1671,8 @@ const char *CTRXDifferences::GetLabel ( unsigned offset )
             }
 
             //
-            case 2:
-            case 20:
+            case GAME_TRR2:
+            case GAME_TR20:
             {
                 strcpy_s ( szLabel, sizeof(szLabel), "Tombraider II" );
 
@@ -1713,7 +1713,7 @@ const char *CTRXDifferences::GetLabel ( unsigned offset )
             }
 
             //
-            case 25:
+            case GAME_TR25:
             {
                 strcpy_s ( szLabel, sizeof(szLabel), "Tombraider II Gold" );
                 //
@@ -1753,8 +1753,8 @@ const char *CTRXDifferences::GetLabel ( unsigned offset )
             }
 
             //
-            case 3:
-            case 30:
+            case GAME_TRR3:
+            case GAME_TR30:
             {
                 strcpy_s ( szLabel, sizeof(szLabel), "Tombraider III" );
 
@@ -1784,7 +1784,7 @@ const char *CTRXDifferences::GetLabel ( unsigned offset )
             }
 
             //
-            case 35:
+            case GAME_TR35:
             {
                 strcpy_s ( szLabel, sizeof(szLabel), "Tombraider III Gold" );
 
@@ -1814,8 +1814,8 @@ const char *CTRXDifferences::GetLabel ( unsigned offset )
             }
 
             //
-            case 4:
-            case 40:
+            case GAME_TRR4:
+            case GAME_TR40:
             {
                 strcpy_s ( szLabel, sizeof(szLabel), "Tombraider IV" );
                 //
@@ -1856,7 +1856,7 @@ const char *CTRXDifferences::GetLabel ( unsigned offset )
             }
 
             //
-            case 45:
+            case GAME_TR45:
             {
                 strcpy_s ( szLabel, sizeof(szLabel), "Tombraider IV Times" );
                 //
@@ -1896,8 +1896,8 @@ const char *CTRXDifferences::GetLabel ( unsigned offset )
             }
 
             //
-            case 5:
-            case 50:
+            case GAME_TRR5:
+            case GAME_TR50:
             {
                 strcpy_s ( szLabel, sizeof(szLabel), "Tombraider V" );
 

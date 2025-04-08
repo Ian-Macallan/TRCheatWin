@@ -749,7 +749,8 @@ void CTRXItemsTRR456::OnBnClickedZero()
     SET_DLG_ITEM_ZERO(26);
     SET_DLG_ITEM_ZERO(27);
     SET_DLG_ITEM_ZERO(28);
-    if ( iVersion == 4 || ( iVersion >= 40 && iVersion <= 49 ) )
+
+    if ( iVersion == GAME_TRR4 || ( iVersion / 10 ) == GAME_TRR4 )
     {
         SET_DLG_ITEM_ZERO(29);
     }
@@ -793,7 +794,8 @@ void CTRXItemsTRR456::OnBnClickedOne()
     SET_DLG_ITEM_ONE(26);
     SET_DLG_ITEM_ONE(27);
     SET_DLG_ITEM_ONE(28);
-    if ( iVersion == 4 || ( iVersion >= 40 && iVersion <= 49 ) )
+
+    if ( iVersion == GAME_TRR4 || ( iVersion / 10 ) == GAME_TRR4 )
     {
         SET_DLG_ITEM_ONE(29);
     }
@@ -843,7 +845,7 @@ void CTRXItemsTRR456::OnBnClickedFour()
     SET_DLG_ITEM_FOUR(27);
     SET_DLG_ITEM_FOUR(28);
 
-    if ( iVersion == 4 || ( iVersion >= 40 && iVersion <= 49 ) )
+    if ( iVersion == GAME_TRR4 || ( iVersion / 10 ) == GAME_TRR4 )
     {
         SET_DLG_ITEM_FOUR(29);
     }
