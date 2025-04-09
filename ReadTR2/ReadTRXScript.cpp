@@ -2482,12 +2482,185 @@ BOOL AnalyzeNGScript(char *pBYtes, long offset, FILE *hTxtFile )
 
 //
 /////////////////////////////////////////////////////////////////////////////
+//  TOMBPC.DAT
+/////////////////////////////////////////////////////////////////////////////
+BOOL ReadTombPC (    const char *pathname, const char *pDirectory, int version, bool bWrite,
+                        FCT_AddToItemsLabels function )
+{
+
+    static xuint32_t Version;             // The Script Version (Always 3 for TR2/3)
+    static xuint8_t Description[256];     // Null-terminated string describing the script copyright info etc. Not encrypted.
+    static xuint16_t GameflowSize;        // Size in bytes of the game flow data, always 128 bytes
+    static xint32_t FirstOption;          // What to do when the game starts
+    static xint32_t TitleReplace;         // What to do when EXIT_TO_TITLE is requested
+    static xint32_t OnDeathDemoMode;      // What to do when Lara dies during the demo mode
+    static xint32_t OnDeathInGame;        // What to do when Lara dies during the game
+    static xuint32_t DemoTime;            // Time in game ticks (1/30th of a second) to wait before starting a demo
+    static xint32_t OnDemoInterrupt;      // What to do when the demo mode is interrupted
+    static xint32_t OnDemoEnd;            // What to do when the demo mode ends
+    static xuint8_t Unknown1[36];         // Filler
+    static xuint16_t NumLevels;           // Number of levels in the game, including the training level, not including the title level.
+    static xuint16_t NumChapterScreens;   // Chapter screens (Present in TR2, first used in TR3)
+    static xuint16_t NumTitles;           // Number of title elements (TITLE.TR2 level + the legal/title pictures in *.PCX format)
+    static xuint16_t NumFMVs;             // Number of FMV cutscenes PC - (*.RPL), PSX - (*STR)
+    static xuint16_t NumCutscenes;        // Number of in-game (engine-rendered) cutscenes (CUT*.TR2)
+    static xuint16_t NumDemoLevels;       // Number of demo levels
+    static xuint16_t TitleSoundID;        // ID of title soundtrack
+    static xuint16_t SingleLevel;         // If doing only a single level, the level ID (starting at 1). -1 means disabled.
+    static xuint8_t Unknown2[32];         // Filler
+    static xuint16_t Flags;               // Various flags, see below
+    static xuint8_t Unknown3[6];          // Filler
+    static xuint8_t XORKey;               // Key used to encrypt/decrypt strings
+    static xuint8_t LanguageID;           // Script Language ID, see below
+    static xuint16_t SecretSoundID;       // ID of soundtrack to play when a secret is found
+    static xuint8_t Unknown4[4];          // Filler
+
+
+
+//     Bit 0 (0x01) — DemoVersion. If set, it indicates that the game is a demo distribution.
+//     Bit 1 (0x02) — TitleDisabled. If set, it indicates that the game has no Title Screen.
+//     Bit 2 (0x04) — CheatModeCheckDisabled. If set, it indicates that the game does not look for the cheat sequence keystrokes and events.
+//     Bit 3 (0x08) — NoInputTimeout. If set, it indicates that the game waits forever if there is no input (won’t enter demo mode).
+//     Bit 4 (0x10) — LoadSaveDisabled. If set, it indicates that the game does not allow save games.
+//     Bit 5 (0x20) — ScreenSizingDisabled. If set, it indicates that the game does not allow screen resizing (with the function keys).
+//     Bit 6 (0x40) — LockoutOptionRing. If set, it indicates that the user has no access to the Option Ring while playing the game.
+//     Bit 7 (0x80) — DozyCheatEnabled. If set, it indicates that the game has the DOZY cheat enabled (only present in the final build of TR2 on PSX).
+//     Bit 8 (0x100) — UseXor. If set, it indicates that a cypher byte was used to encrypt the strings in the script file, and is stored in the XorKey field.
+//     Bit 9 (0x200) — GymEnabled. Is Gym available on title screen.
+//     Bit 10 (0x400) — SelectAnyLevel. If set, it enables level select when New Game is selected.
+//     Bit 11 (0x800) — EnableCheatCode. It apparently has no effect on the PC game.
+
+// If Flags & UseXor true each character (except null-terminator) must be ^ XorKey to decrypt the string.
+
+//  TPCStringArray[NumLevels] LevelStrings;                  // level name strings
+//  TPCStringArray[NumChapterScreens] ChapterScreenStrings;  // chapter screen strings
+//  TPCStringArray[NumTitles] TitleStrings;                  // title strings
+//  TPCStringArray[NumFMVs] FMVStrings;                      // FMV path strings
+//  TPCStringArray[NumLevels] LevelPathStrings;              // level path strings
+//  TPCStringArray[NumCutscenes] CutscenePathStrings;        // cutscene path strings
+
+//  uint16_t SequenceOffsets[NumLevels + 1];                 // Relative offset to sequence info (the +1 is because the first one is the FrontEnd sequence, for when the game starts)
+//  uint16_t SequenceNumBytes;                               // Size of SequenceOffsets in bytes
+//  uint16_t[] Sequences[NumLevels + 1];    
+
+//  dtruct TPCStringArray // (variable length)
+//  {
+//      uint16_t Offsets[Count]; // List containing for each string an offset in the Data block (Count * 2 bytes)
+//      uint16_t TotalSize; // Total size, in bytes (2 bytes)
+//      uint8_t Data[TotalSize]; // Strings block, usually encrypted (XOR-ed with XORKey, see above)
+//  }
+
+    //
+    BOOL bResult = FALSE;
+
+    //
+    if ( ! PathFileExists ( pathname ) )
+    {
+        return FALSE;
+    }
+
+    //
+    static char szOutputFilename [ MAX_PATH ];
+
+    //
+    static char szLogFilename [ MAX_PATH ];
+    strcpy_s ( szLogFilename, sizeof(szLogFilename), pathname );
+    strcat_s ( szLogFilename, sizeof(szLogFilename), ".LOG" );
+
+    //
+    if ( bWrite ) fopen_s ( &hLogFile, szLogFilename, "w" );
+
+    //
+    FILE *hInpFile = NULL;
+    FILE *hTxtFile = NULL;
+
+    fopen_s ( &hInpFile, pathname, "rb" );
+    if ( hInpFile == NULL )
+    {
+        Print ( hLogFile, "File Open Error %s\n", pathname );
+        CloseOneFile ( &hLogFile );
+        return bResult;
+    }
+
+    //
+    if ( bWrite )
+    {
+        strcpy_s ( szOutputFilename, sizeof(szOutputFilename), pathname );
+        strcat_s ( szOutputFilename, sizeof(szOutputFilename), ".TXT" );
+        fopen_s ( &hTxtFile, szOutputFilename, "w" );
+        if ( hTxtFile == NULL )
+        {
+            Print ( hLogFile, "File Open Error %s\n", szOutputFilename );
+            CloseOneFile ( &hInpFile );
+
+            Cleanup();
+
+            CloseOneFile ( &hLogFile );
+
+            return bResult;
+        }
+    }
+
+    //
+    fread ( &Version, sizeof(Version), 1, hInpFile );
+    fread ( &Description, sizeof(Description), 1, hInpFile );
+    fread ( &GameflowSize, sizeof(GameflowSize), 1, hInpFile );
+    fread ( &FirstOption, sizeof(FirstOption), 1, hInpFile );
+    fread ( &TitleReplace, sizeof(TitleReplace), 1, hInpFile );
+    fread ( &OnDeathDemoMode, sizeof(OnDeathDemoMode), 1, hInpFile );
+    fread ( &OnDeathInGame, sizeof(OnDeathInGame), 1, hInpFile );
+    fread ( &DemoTime, sizeof(DemoTime), 1, hInpFile );
+    fread ( &OnDemoInterrupt, sizeof(OnDemoInterrupt), 1, hInpFile );
+    fread ( &OnDemoEnd, sizeof(OnDemoEnd), 1, hInpFile );
+    fread ( &Unknown1, sizeof(Unknown1), 1, hInpFile );
+    fread ( &NumLevels, sizeof(NumLevels), 1, hInpFile );
+    fread ( &NumChapterScreens, sizeof(NumChapterScreens), 1, hInpFile );
+    fread ( &NumTitles, sizeof(NumTitles), 1, hInpFile );
+    fread ( &NumFMVs, sizeof(NumFMVs), 1, hInpFile );
+    fread ( &NumCutscenes, sizeof(NumCutscenes), 1, hInpFile );
+    fread ( &NumDemoLevels, sizeof(NumDemoLevels), 1, hInpFile );
+    fread ( &TitleSoundID, sizeof(TitleSoundID), 1, hInpFile );
+    fread ( &SingleLevel, sizeof(SingleLevel), 1, hInpFile );
+    fread ( &Unknown2, sizeof(Unknown2), 1, hInpFile );
+    fread ( &Flags, sizeof(Flags), 1, hInpFile );
+    fread ( &Unknown3, sizeof(Unknown3), 1, hInpFile );
+    fread ( &XORKey, sizeof(XORKey), 1, hInpFile );
+    fread ( &LanguageID, sizeof(LanguageID), 1, hInpFile );
+    fread ( &SecretSoundID, sizeof(SecretSoundID), 1, hInpFile );
+    fread ( &Unknown4, sizeof(Unknown4), 1, hInpFile );
+
+    //
+    CloseOneFile ( &hTxtFile );
+    CloseOneFile ( &hInpFile );
+
+    CloseOneFile ( &hLogFile );
+
+    bResult     = TRUE;
+
+    //
+    Cleanup();
+
+    return FALSE;   // Then use bResult
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
 //  Full Pathname
 //
 /////////////////////////////////////////////////////////////////////////////
 BOOL ReadTRXScript (    const char *pathname, const char *pDirectory, int version, bool bWrite,
                         FCT_AddToItemsLabels function )
 {
+    if ( version == 2 || version == 3 )
+    {
+        return ReadTombPC ( pathname, pDirectory, version,  bWrite, function );
+    }
+
+    if ( version != 4 && version != 5 )
+    {
+        return FALSE;
+    }
+
     //
     if ( ! PathFileExists ( pathname ) )
     {

@@ -1276,7 +1276,7 @@ unsigned char CTR3SaveGame::GrabWeapon0 ( int iX, bool bAdd, bool bChange )
     if ( ! bChange ) return old;
 
     if ( bChange ) m_pBuffer->trTable [ iX ].cGunBitmap = iMaskCompass;
-    if ( ! bAdd ) m_pBuffer->trTable [ iX ].cGunBitmap &= ( iMaskCompass ^ 0xff );
+    if ( ! bAdd ) m_pBuffer->trTable [ iX ].cGunBitmap &= ( iMaskCompass ^ 0xfff );
     return old;
 }
 
@@ -1290,7 +1290,7 @@ unsigned char CTR3SaveGame::GrabWeapon1 ( int iX, bool bAdd, bool bChange )
     if ( ! bChange ) return old;
 
     if ( bChange ) m_pBuffer->trTable [ iX ].cGunBitmap |= iMaskPistol;
-    if ( ! bAdd ) m_pBuffer->trTable [ iX ].cGunBitmap &= ( iMaskPistol ^ 0xff );
+    if ( ! bAdd ) m_pBuffer->trTable [ iX ].cGunBitmap &= ( iMaskPistol ^ 0xfff );
     return old;
 }
 
@@ -1304,7 +1304,7 @@ unsigned char CTR3SaveGame::GrabWeapon4 ( int iX, bool bAdd, bool bChange )
     if ( ! bChange ) return old;
 
     if ( bChange ) m_pBuffer->trTable [ iX ].cGunBitmap |= iMaskShotGun;
-    if ( ! bAdd ) m_pBuffer->trTable [ iX ].cGunBitmap &= ( iMaskShotGun ^ 0xff );
+    if ( ! bAdd ) m_pBuffer->trTable [ iX ].cGunBitmap &= ( iMaskShotGun ^ 0xfff );
     return old;
 }
 
@@ -1318,7 +1318,7 @@ unsigned char CTR3SaveGame::GrabWeapon2 ( int iX, bool bAdd, bool bChange )
     if ( ! bChange ) return old;
 
     if ( bChange ) m_pBuffer->trTable [ iX ].cGunBitmap |= iMaskDesertEagle;
-    if ( ! bAdd ) m_pBuffer->trTable [ iX ].cGunBitmap &= ( iMaskDesertEagle ^ 0xff );
+    if ( ! bAdd ) m_pBuffer->trTable [ iX ].cGunBitmap &= ( iMaskDesertEagle ^ 0xfff );
     return old;
 }
 
@@ -1332,7 +1332,7 @@ unsigned char CTR3SaveGame::GrabWeapon3 ( int iX, bool bAdd, bool bChange )
     if ( ! bChange ) return old;
 
     if ( bChange ) m_pBuffer->trTable [ iX ].cGunBitmap |= iMaskUzi;
-    if ( ! bAdd ) m_pBuffer->trTable [ iX ].cGunBitmap &= ( iMaskUzi ^ 0xff );
+    if ( ! bAdd ) m_pBuffer->trTable [ iX ].cGunBitmap &= ( iMaskUzi ^ 0xfff );
     return old;
 }
 
@@ -1346,7 +1346,7 @@ unsigned char CTR3SaveGame::GrabWeapon5 ( int iX, bool bAdd, bool bChange )
     if ( ! bChange ) return old;
 
     if ( bChange ) m_pBuffer->trTable [ iX ].cGunBitmap |= iMaskMP5;
-    if ( ! bAdd ) m_pBuffer->trTable [ iX ].cGunBitmap &= ( iMaskMP5 ^ 0xff );
+    if ( ! bAdd ) m_pBuffer->trTable [ iX ].cGunBitmap &= ( iMaskMP5 ^ 0xfff );
     return old;
 }
 
@@ -1360,7 +1360,7 @@ unsigned char CTR3SaveGame::GrabWeapon8 ( int iX, bool bAdd, bool bChange )
     if ( ! bChange ) return old;
 
     if ( bChange ) m_pBuffer->trTable [ iX ].cGunBitmap |= iMaskHarpoon;
-    if ( ! bAdd ) m_pBuffer->trTable [ iX ].cGunBitmap &= ( iMaskHarpoon ^ 0xff );
+    if ( ! bAdd ) m_pBuffer->trTable [ iX ].cGunBitmap &= ( iMaskHarpoon ^ 0xfff );
     return old;
 }
 
@@ -1374,7 +1374,7 @@ unsigned char CTR3SaveGame::GrabWeapon7 ( int iX, bool bAdd, bool bChange )
     if ( ! bChange ) return old;
 
     if ( bChange ) m_pBuffer->trTable [ iX ].cGunBitmap |= iMaskGrenade;
-    if ( ! bAdd ) m_pBuffer->trTable [ iX ].cGunBitmap &= ( iMaskGrenade ^ 0xff );
+    if ( ! bAdd ) m_pBuffer->trTable [ iX ].cGunBitmap &= ( iMaskGrenade ^ 0xfff );
     return old;
 }
 
@@ -1388,7 +1388,7 @@ unsigned char CTR3SaveGame::GrabWeapon6 ( int iX, bool bAdd, bool bChange )
     if ( ! bChange ) return old;
 
     if ( bChange ) m_pBuffer->trTable [ iX ].cGunBitmap |= iMaskRocket;
-    if ( ! bAdd ) m_pBuffer->trTable [ iX ].cGunBitmap &= ( iMaskRocket ^ 0xff );
+    if ( ! bAdd ) m_pBuffer->trTable [ iX ].cGunBitmap &= ( iMaskRocket ^ 0xfff );
     return old;
 }
 

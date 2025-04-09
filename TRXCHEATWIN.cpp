@@ -1179,6 +1179,58 @@ BOOL CTRXCHEATWINApp::InitInstance()
         }
         //
         //  Read Script
+        else if ( __strnicmp ( pCommandLine, "-rs2" ) == 0 )
+        {
+            //
+            ZeroMemory ( szPathname, sizeof(szPathname) );
+            char *pFilename = strchr ( pCommandLine, ' ' );
+            if ( pFilename != NULL )
+            {
+                pFilename = SkipSpaces ( pFilename );
+                CopyBetweenQuotes ( szPathname, sizeof(szPathname), pFilename );
+            }
+
+            if ( strlen (szPathname) == 0 )
+            {
+                strcpy_s ( szPathname, sizeof(szPathname), "data\\tombpc.dat" );
+            }
+
+            LPSTR lpFilepart = NULL;
+            GetFullPathName ( szPathname, sizeof(szFullPathname), szFullPathname, &lpFilepart );
+
+            //
+            strcpy_s ( szDirectory, sizeof(szDirectory), szFullPathname );
+            RemoveFilename ( szDirectory );
+            BOOL bRead = ReadTRXScript ( szFullPathname, szDirectory, 2 );
+        }
+        //
+        //  Read Script
+        else if ( __strnicmp ( pCommandLine, "-rs3" ) == 0 )
+        {
+            //
+            ZeroMemory ( szPathname, sizeof(szPathname) );
+            char *pFilename = strchr ( pCommandLine, ' ' );
+            if ( pFilename != NULL )
+            {
+                pFilename = SkipSpaces ( pFilename );
+                CopyBetweenQuotes ( szPathname, sizeof(szPathname), pFilename );
+            }
+
+            if ( strlen (szPathname) == 0 )
+            {
+                strcpy_s ( szPathname, sizeof(szPathname), "data\\tombpc.dat" );
+            }
+
+            LPSTR lpFilepart = NULL;
+            GetFullPathName ( szPathname, sizeof(szFullPathname), szFullPathname, &lpFilepart );
+
+            //
+            strcpy_s ( szDirectory, sizeof(szDirectory), szFullPathname );
+            RemoveFilename ( szDirectory );
+            BOOL bRead = ReadTRXScript ( szFullPathname, szDirectory, 3 );
+        }
+        //
+        //  Read Script
         else if ( __strnicmp ( pCommandLine, "-rs4" ) == 0 )
         {
             //
