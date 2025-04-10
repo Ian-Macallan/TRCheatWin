@@ -1065,7 +1065,7 @@ void CTRXInfoPage::DisplayValues()
         {
             for ( int i = 0; i < LEN_LOCATION; i++ )
             {
-                if ( strlen(pTable [ i ].szPathname) > 0 )
+                if ( strlen( pTable [ i ].szPathname ) > 0 )
                 {
                     AddComboString ( &m_Custom_Combo, pTable [ i ].szPathname );
                 }
@@ -2936,12 +2936,26 @@ void CTRXInfoPage::OnBnClickedAddCustom()
         }
 
         //
+        //  Read Script for TR2 / TR3
+        if ( tombraider / 10 >= 2 && tombraider / 10 <= 3 )
+        {
+            strcpy_s ( szScriptDirectory, sizeof(szScriptDirectory), szPathname );  // EG root\game\DATA\level.tr4
+            theApp.RemoveFilename ( szScriptDirectory );
+            theApp.RemoveFilename ( szScriptDirectory );
+            strcpy_s ( szScript, sizeof(szScript), szScriptDirectory );
+            strcat_s ( szScript, sizeof(szScript), "\\data\\tombpc.dat" );
+        }
+
+        //
         //  Read Script for TR4 / TR5
-        strcpy_s ( szScriptDirectory, sizeof(szScriptDirectory), szPathname );  // EG root\game\DATA\level.tr4
-        theApp.RemoveFilename ( szScriptDirectory );
-        theApp.RemoveFilename ( szScriptDirectory );
-        strcpy_s ( szScript, sizeof(szScript), szScriptDirectory );
-        strcat_s ( szScript, sizeof(szScript), "\\SCRIPT.DAT" );
+        if ( tombraider / 10 >= 4 )
+        {
+            strcpy_s ( szScriptDirectory, sizeof(szScriptDirectory), szPathname );  // EG root\game\DATA\level.tr4
+            theApp.RemoveFilename ( szScriptDirectory );
+            theApp.RemoveFilename ( szScriptDirectory );
+            strcpy_s ( szScript, sizeof(szScript), szScriptDirectory );
+            strcat_s ( szScript, sizeof(szScript), "\\SCRIPT.DAT" );
+        }
 
         //
         //  Reset TR4 / TR5 data
@@ -2962,7 +2976,10 @@ void CTRXInfoPage::OnBnClickedAddCustom()
                     strcpy_s ( szDataFile, sizeof(szDataFile), szScriptDirectory );
                     strcat_s ( szDataFile, sizeof(szDataFile), "\\" );
                     strcat_s ( szDataFile, sizeof(szDataFile), CustomDataFiles [ i ].datafile );
-                    strcat_s ( szDataFile, sizeof(szDataFile), typeName );
+                    if ( tombraider / 10 >= 4 )
+                    {
+                        strcat_s ( szDataFile, sizeof(szDataFile), typeName );
+                    }
 
                     BOOL bAdded = AddLocation ( pTable, szDataFile );
                     bAdded      = AddComboString ( &m_Custom_Combo,  szDataFile );
@@ -3111,12 +3128,26 @@ void CTRXInfoPage::ChangeCustomCombo(bool bManualChange)
                 }
 
                 //
-                //  Read Script
-                strcpy_s ( szScriptDirectory, sizeof(szScriptDirectory), szPathname );
-                theApp.RemoveFilename ( szScriptDirectory );
-                theApp.RemoveFilename ( szScriptDirectory );
-                strcpy_s ( szScript, sizeof(szScript), szScriptDirectory );
-                strcat_s ( szScript, sizeof(szScript), "\\SCRIPT.DAT" );
+                //  Read Script for TR2 / TR3
+                if ( tombraider / 10 >= 2 && tombraider / 10 <= 3 )
+                {
+                    strcpy_s ( szScriptDirectory, sizeof(szScriptDirectory), szPathname );  // EG root\game\DATA\level.tr4
+                    theApp.RemoveFilename ( szScriptDirectory );
+                    theApp.RemoveFilename ( szScriptDirectory );
+                    strcpy_s ( szScript, sizeof(szScript), szScriptDirectory );
+                    strcat_s ( szScript, sizeof(szScript), "\\data\\tombpc.dat" );
+                }
+
+                //
+                //  Read Script for TR4 / TR5
+                if ( tombraider / 10 >= 4 )
+                {
+                    strcpy_s ( szScriptDirectory, sizeof(szScriptDirectory), szPathname );
+                    theApp.RemoveFilename ( szScriptDirectory );
+                    theApp.RemoveFilename ( szScriptDirectory );
+                    strcpy_s ( szScript, sizeof(szScript), szScriptDirectory );
+                    strcat_s ( szScript, sizeof(szScript), "\\SCRIPT.DAT" );
+                }
 
                 //
                 //  Reset
@@ -3168,7 +3199,7 @@ BOOL CTRXInfoPage::ExtractAfterScript ( int tombraider, TR_MODE trMode, STRUCTLO
         {
             strcat_s ( szTRPathname, sizeof(szTRPathname), ".tr4" );
         }
-        else
+        else if ( tombraider / 10 == 5 )
         {
             strcat_s ( szTRPathname, sizeof(szTRPathname), ".trc" );
         }
@@ -3314,20 +3345,43 @@ void CTRXInfoPage::OnBnClickedSeeCustom()
     //
     static char szScript [ MAX_PATH ];
     static char szScriptDirectory [ MAX_PATH ];
+    ZeroMemory ( szScript, sizeof(szScript) );
+    ZeroMemory ( szScriptDirectory, sizeof(szScriptDirectory) );
 
-    strcpy_s ( szScriptDirectory, sizeof(szScriptDirectory), szFilename );
-    theApp.RemoveFilename ( szScriptDirectory );
-    strcpy_s ( szScript, sizeof(szScript), szScriptDirectory );
-    strcat_s ( szScript, sizeof(szScript), "\\SCRIPT.DAT" );
-
-    //  No SCRIPT.DAT loo^k up
-    if ( ! PathFileExists ( szScript ) )
+    if ( tombraider / 10 >= 2 && tombraider / 10 <= 3 )
     {
         strcpy_s ( szScriptDirectory, sizeof(szScriptDirectory), szFilename );
         theApp.RemoveFilename ( szScriptDirectory );
+        strcpy_s ( szScript, sizeof(szScript), szScriptDirectory );
+        strcat_s ( szScript, sizeof(szScript), "\\data\\tombpc.dat" );
+
+        //  No SCRIPT.DAT loo^k up
+        if ( ! PathFileExists ( szScript ) )
+        {
+            strcpy_s ( szScriptDirectory, sizeof(szScriptDirectory), szFilename );
+            theApp.RemoveFilename ( szScriptDirectory );
+            theApp.RemoveFilename ( szScriptDirectory );
+            strcpy_s ( szScript, sizeof(szScript), szScriptDirectory );
+            strcat_s ( szScript, sizeof(szScript), "\\data\\tombpc.dat" );
+        }
+    }
+
+    if ( tombraider / 10 >= 4 )
+    {
+        strcpy_s ( szScriptDirectory, sizeof(szScriptDirectory), szFilename );
         theApp.RemoveFilename ( szScriptDirectory );
         strcpy_s ( szScript, sizeof(szScript), szScriptDirectory );
         strcat_s ( szScript, sizeof(szScript), "\\SCRIPT.DAT" );
+
+        //  No SCRIPT.DAT loo^k up
+        if ( ! PathFileExists ( szScript ) )
+        {
+            strcpy_s ( szScriptDirectory, sizeof(szScriptDirectory), szFilename );
+            theApp.RemoveFilename ( szScriptDirectory );
+            theApp.RemoveFilename ( szScriptDirectory );
+            strcpy_s ( szScript, sizeof(szScript), szScriptDirectory );
+            strcat_s ( szScript, sizeof(szScript), "\\SCRIPT.DAT" );
+        }
     }
 
     //
@@ -3344,7 +3398,10 @@ void CTRXInfoPage::OnBnClickedSeeCustom()
                 strcpy_s ( szDataFile, sizeof(szDataFile), szScriptDirectory );
                 strcat_s ( szDataFile, sizeof(szDataFile), "\\" );
                 strcat_s ( szDataFile, sizeof(szDataFile), CustomDataFiles [ i ].datafile );
-                strcat_s ( szDataFile, sizeof(szDataFile), typeName );
+                if ( tombraider / 10 >= 4 )
+                {
+                    strcat_s ( szDataFile, sizeof(szDataFile), typeName );
+                }
 
                 BOOL bAdded = AddLocation ( pTable, szDataFile );
                 bAdded      = AddComboString ( &m_Custom_Combo,  szDataFile );

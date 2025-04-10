@@ -94,7 +94,7 @@ BOOL CTRXLevels::OnInitDialog()
 
         m_LevelList.InsertColumn( COL_LEVEL, "Level", LVCFMT_RIGHT, 48 );
         m_LevelList.InsertColumn( COL_NAME, "Name", LVCFMT_LEFT, 320 );
-        if ( m_iVersion == GAME_TR49 )
+        if ( m_iVersion % 10 == GAME_TRC9 )
         {
             m_LevelList.InsertColumn( COL_DATA, "Data File", LVCFMT_LEFT, 192 );
             m_LevelList.InsertColumn( COL_EXIST, "Exists", LVCFMT_LEFT, 48 );
@@ -209,14 +209,63 @@ BOOL CTRXLevels::OnInitDialog()
             }
             //
             case GAME_TR19 :
-            case GAME_TR29 :
-            case GAME_TR39 :
-            case GAME_TR59 :
             {
                 break;
             }
 
+            case GAME_TR29 :
+            case GAME_TR39 :
+            {
+                static char szDirectory [ MAX_PATH ];
+                strcpy_s ( szDirectory, sizeof(szDirectory), m_szSaveName );
+                theApp.RemoveFilename ( szDirectory );
+                strcat_s ( szDirectory, sizeof(szDirectory), "\\data\\tombpc.dat" );
+
+                if ( ! PathFileExists ( szDirectory ) )
+                {
+                    theApp.RemoveFilename ( szDirectory );
+                    theApp.RemoveFilename ( szDirectory );
+                    theApp.RemoveFilename ( szDirectory );
+                }
+                else
+                {
+                    theApp.RemoveFilename ( szDirectory );
+                    theApp.RemoveFilename ( szDirectory );
+                }
+
+                int count = 0;
+                for ( int levelIndex = 0; levelIndex < TR4NGMAXLEVEL; levelIndex++ )
+                {
+                    if ( strlen(CustomDataFiles [ levelIndex ].title) > 0 )
+                    {
+                        static char szFilename [ MAX_PATH ];
+                        strcpy_s ( szFilename, sizeof(szFilename), szDirectory );
+                        strcat_s ( szFilename, sizeof(szFilename), "\\" );
+                        strcat_s ( szFilename, sizeof(szFilename), CustomDataFiles [ levelIndex ].datafile );
+
+                        char szNumber [ 64 ];
+                        sprintf_s ( szNumber, sizeof(szNumber), "%2d", levelIndex );
+                        m_LevelList.InsertItem ( count, szNumber );
+                        m_LevelList.SetItemText ( count, COL_NAME, CustomDataFiles [ levelIndex ].title );
+                        m_LevelList.SetItemText ( count, COL_DATA, CustomDataFiles [ levelIndex ].datafile );
+                        if ( PathFileExists ( szFilename ) )
+                        {
+                            m_LevelList.SetItemText ( count, COL_EXIST, "Yes" );
+                        }
+                        else
+                        {
+                            m_LevelList.SetItemText ( count, COL_EXIST, "No" );
+                            m_LevelList.SetItemData ( count, (DWORD_PTR) ITEM_ITALIC );
+                        }
+                        count++;
+                    }
+                }
+                break;
+            }
+
+            //  Script is at root
             case GAME_TR49 :
+            case GAME_TR59 :
             {
                 static char szDirectory [ MAX_PATH ];
                 strcpy_s ( szDirectory, sizeof(szDirectory), m_szSaveName );
@@ -233,6 +282,7 @@ BOOL CTRXLevels::OnInitDialog()
                     theApp.RemoveFilename ( szDirectory );
                 }
 
+                int count = 0;
                 for ( int levelIndex = 0; levelIndex < TR4NGMAXLEVEL; levelIndex++ )
                 {
                     if ( strlen(CustomDataFiles [ levelIndex ].title) > 0 )
@@ -241,22 +291,30 @@ BOOL CTRXLevels::OnInitDialog()
                         strcpy_s ( szFilename, sizeof(szFilename), szDirectory );
                         strcat_s ( szFilename, sizeof(szFilename), "\\" );
                         strcat_s ( szFilename, sizeof(szFilename), CustomDataFiles [ levelIndex ].datafile );
-                        strcat_s ( szFilename, sizeof(szFilename), ".tr4" );
-
-                        char szNumber [ 64 ];
-                        sprintf_s ( szNumber, sizeof(szNumber), "%2d", levelIndex );
-                        m_LevelList.InsertItem ( levelIndex, szNumber );
-                        m_LevelList.SetItemText ( levelIndex, COL_NAME, CustomDataFiles [ levelIndex ].title );
-                        m_LevelList.SetItemText ( levelIndex, COL_DATA, CustomDataFiles [ levelIndex ].datafile );
-                        if ( PathFileExists ( szFilename ) )
+                        if ( m_iVersion == GAME_TR49 )
                         {
-                            m_LevelList.SetItemText ( levelIndex, COL_EXIST, "Yes" );
+                            strcat_s ( szFilename, sizeof(szFilename), ".tr4" );
                         }
                         else
                         {
-                            m_LevelList.SetItemText ( levelIndex, COL_EXIST, "No" );
-                            m_LevelList.SetItemData ( levelIndex, (DWORD_PTR) ITEM_ITALIC );
+                            strcat_s ( szFilename, sizeof(szFilename), ".trc" );
                         }
+
+                        char szNumber [ 64 ];
+                        sprintf_s ( szNumber, sizeof(szNumber), "%2d", levelIndex );
+                        m_LevelList.InsertItem ( count, szNumber );
+                        m_LevelList.SetItemText ( count, COL_NAME, CustomDataFiles [ levelIndex ].title );
+                        m_LevelList.SetItemText ( count, COL_DATA, CustomDataFiles [ levelIndex ].datafile );
+                        if ( PathFileExists ( szFilename ) )
+                        {
+                            m_LevelList.SetItemText ( count, COL_EXIST, "Yes" );
+                        }
+                        else
+                        {
+                            m_LevelList.SetItemText ( count, COL_EXIST, "No" );
+                            m_LevelList.SetItemData ( count, (DWORD_PTR) ITEM_ITALIC );
+                        }
+                        count++;
                     }
                 }
                 break;

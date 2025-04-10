@@ -574,6 +574,16 @@ TR3AMMOS *CTR3SaveGame::SearchGunStructure ( unsigned short m_iGunAmmos, WORD gu
                 }
             }
 
+            //  Special Case
+            if ( m_iSaveLength == TR3LEVELALTSIZE && pGun->m_iGunAmmos == 9999 && pGun->iAir == 1800 )
+            {
+                if ( CheckIfAmmosMatch ( pGun, gunBitmap ) )
+                {
+                    *iPos = iX - 1;
+                    return pGun;
+                }
+            }
+
             iX--;
         }
 
