@@ -2482,6 +2482,58 @@ BOOL AnalyzeNGScript(char *pBYtes, long offset, FILE *hTxtFile )
 
 //
 /////////////////////////////////////////////////////////////////////////////
+//  Use pDirectory to Add *.phd
+//  
+/////////////////////////////////////////////////////////////////////////////
+BOOL PopulateCustomData (   const char *pathname, const char *pDirectory, int version, bool bWrite,
+                            FCT_AddToItemsLabels function )
+{
+    //  Levels are fixed in TR1
+    static char *pDataNames [] =
+    {
+        "DATA\\TITLE.PHD",  
+        "DATA\\LEVEL1.PHD",  
+        "DATA\\LEVEL2.PHD",  
+        "DATA\\LEVEL3A.PHD",
+        "DATA\\LEVEL3B.PHD",
+        "DATA\\LEVEL4.PHD",
+        "DATA\\LEVEL5.PHD",
+        "DATA\\LEVEL6.PHD",
+        "DATA\\LEVEL7A.PHD",
+        "DATA\\LEVEL7B.PHD",
+        "DATA\\LEVEL8A.PHD",
+        "DATA\\LEVEL8B.PHD",
+        "DATA\\LEVEL8C.PHD",
+        "DATA\\LEVEL10A.PHD",
+        "DATA\\LEVEL10B.PHD",
+        "DATA\\LEVEL10C.PHD",
+        NULL
+    };
+
+    //  EG. DATA\LEVEL1.PHD
+    static char szPHDFilename [ MAX_PATH ];
+    static char szLevelName [ MAX_PATH ];
+
+    int l = 0;
+    while ( pDataNames [ l ] != NULL )
+    {
+        strcpy_s ( szPHDFilename, sizeof(szPHDFilename), pDirectory );
+        strcat_s ( szPHDFilename, sizeof(szPHDFilename), "\\" );
+        strcat_s ( szPHDFilename, sizeof(szPHDFilename), pDataNames [ l ] );
+        if ( PathFileExists ( szPHDFilename ) && function != NULL )
+        {
+            sprintf_s ( szLevelName, sizeof(szLevelName), "TR1 Level %d", l );
+            (*function)(1, l, -1, pDataNames [ l ], szLevelName );
+        }
+
+        l++;
+    }
+
+    return TRUE;
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
 //  TOMBPC.DAT
 /////////////////////////////////////////////////////////////////////////////
 BOOL ReadTombPC (    const char *pathname, const char *pDirectory, int version, bool bWrite,
@@ -2837,7 +2889,6 @@ BOOL ReadTombPC (    const char *pathname, const char *pDirectory, int version, 
                 strcpy_s ( memCoded.ptr, memCoded.len, TextToString ( memCoded.ptr ) );
                 (*function)(1, l, -1, pathString, memCoded.ptr );
             }
-
         }
     }
 
@@ -2863,6 +2914,11 @@ BOOL ReadTombPC (    const char *pathname, const char *pDirectory, int version, 
 BOOL ReadTRXScript (    const char *pathname, const char *pDirectory, int version, bool bWrite,
                         FCT_AddToItemsLabels function )
 {
+    if ( version == 1 )
+    {
+        return PopulateCustomData ( pathname, pDirectory, version,  bWrite, function );
+    }
+
     if ( version == 2 || version == 3 )
     {
         return ReadTombPC ( pathname, pDirectory, version,  bWrite, function );

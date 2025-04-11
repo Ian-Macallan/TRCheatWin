@@ -2260,7 +2260,9 @@ void CTRXInfoPage::OnSelchangeCombo()
         //  Reset Custom Combo
         ZeroMemory ( CustomDataFiles, sizeof(CustomDataFiles) );
         theApp.ResetCustomLabels ();
+
         m_Custom_Combo.SetCurSel ( 0 );
+
         ChangeCustomCombo( true );
     }
 
@@ -2937,7 +2939,18 @@ void CTRXInfoPage::OnBnClickedAddCustom()
 
         //
         //  Read Script for TR2 / TR3
-        if ( tombraider / 10 >= 2 && tombraider / 10 <= 3 )
+        if ( tombraider / 10 == GAME_TRR1 )
+        {
+            strcpy_s ( szScriptDirectory, sizeof(szScriptDirectory), szPathname );  // EG root\game\DATA\level.tr4
+            theApp.RemoveFilename ( szScriptDirectory );
+            theApp.RemoveFilename ( szScriptDirectory );
+            strcpy_s ( szScript, sizeof(szScript), szScriptDirectory );
+            strcat_s ( szScript, sizeof(szScript), "\\data\\TITLE.PHD" );
+        }
+
+        //
+        //  Read Script for TR2 / TR3
+        if ( tombraider / 10 >= GAME_TRR2 && tombraider / 10 <= GAME_TRR3 )
         {
             strcpy_s ( szScriptDirectory, sizeof(szScriptDirectory), szPathname );  // EG root\game\DATA\level.tr4
             theApp.RemoveFilename ( szScriptDirectory );
@@ -2948,7 +2961,7 @@ void CTRXInfoPage::OnBnClickedAddCustom()
 
         //
         //  Read Script for TR4 / TR5
-        if ( tombraider / 10 >= 4 )
+        if ( tombraider / 10 >= GAME_TRR4 )
         {
             strcpy_s ( szScriptDirectory, sizeof(szScriptDirectory), szPathname );  // EG root\game\DATA\level.tr4
             theApp.RemoveFilename ( szScriptDirectory );
@@ -2963,7 +2976,11 @@ void CTRXInfoPage::OnBnClickedAddCustom()
         theApp.ResetCustomLabels ();
 
         //
-        BOOL bRead = ReadTRXScript ( szScript, szScriptDirectory, tombraider / 10, false, AddToItemsLabels );
+        BOOL bRead = FALSE;
+        if ( tombraider / 10 >= GAME_TRR1 )
+        {
+            bRead = ReadTRXScript ( szScript, szScriptDirectory, tombraider / 10, false, AddToItemsLabels );
+        }
 
         //  If Read Add All Items Found
         if ( bRead )
@@ -2976,7 +2993,7 @@ void CTRXInfoPage::OnBnClickedAddCustom()
                     strcpy_s ( szDataFile, sizeof(szDataFile), szScriptDirectory );
                     strcat_s ( szDataFile, sizeof(szDataFile), "\\" );
                     strcat_s ( szDataFile, sizeof(szDataFile), CustomDataFiles [ i ].datafile );
-                    if ( tombraider / 10 >= 4 )
+                    if ( tombraider / 10 >= GAME_TRR4 )
                     {
                         strcat_s ( szDataFile, sizeof(szDataFile), typeName );
                     }
@@ -3129,7 +3146,16 @@ void CTRXInfoPage::ChangeCustomCombo(bool bManualChange)
 
                 //
                 //  Read Script for TR2 / TR3
-                if ( tombraider / 10 >= 2 && tombraider / 10 <= 3 )
+                if ( tombraider / 10 == GAME_TRR1 )
+                {
+                    strcpy_s ( szScriptDirectory, sizeof(szScriptDirectory), szPathname );  // EG root\game\DATA\level.tr4
+                    theApp.RemoveFilename ( szScriptDirectory );
+                    theApp.RemoveFilename ( szScriptDirectory );
+                    strcpy_s ( szScript, sizeof(szScript), szScriptDirectory );
+                    strcat_s ( szScript, sizeof(szScript), "\\data\\TITLE.PHD" );
+                }
+
+                if ( tombraider / 10 >= GAME_TRR2 && tombraider / 10 <= GAME_TRR3 )
                 {
                     strcpy_s ( szScriptDirectory, sizeof(szScriptDirectory), szPathname );  // EG root\game\DATA\level.tr4
                     theApp.RemoveFilename ( szScriptDirectory );
@@ -3140,7 +3166,7 @@ void CTRXInfoPage::ChangeCustomCombo(bool bManualChange)
 
                 //
                 //  Read Script for TR4 / TR5
-                if ( tombraider / 10 >= 4 )
+                if ( tombraider / 10 >= GAME_TRR4 )
                 {
                     strcpy_s ( szScriptDirectory, sizeof(szScriptDirectory), szPathname );
                     theApp.RemoveFilename ( szScriptDirectory );
@@ -3155,7 +3181,11 @@ void CTRXInfoPage::ChangeCustomCombo(bool bManualChange)
                 theApp.ResetCustomLabels ();
 
                 //
-                BOOL bRead = ReadTRXScript ( szScript, szScriptDirectory, tombraider / 10, false, AddToItemsLabels );
+                BOOL bRead = FALSE;
+                if ( tombraider / 10 >= GAME_TRR1 )
+                {
+                    bRead = ReadTRXScript ( szScript, szScriptDirectory, tombraider / 10, false, AddToItemsLabels );
+                }
 
                 //
                 //  Search The best DATA file for this level
@@ -3195,11 +3225,11 @@ BOOL CTRXInfoPage::ExtractAfterScript ( int tombraider, TR_MODE trMode, STRUCTLO
         strcpy_s ( szTRPathname, sizeof(szTRPathname), pScriptDirectory );
         strcat_s ( szTRPathname, sizeof(szTRPathname), "\\" );
         strcat_s ( szTRPathname, sizeof(szTRPathname), CustomDataFiles[datafileIndex].datafile );
-        if ( tombraider / 10 == 4 )
+        if ( tombraider / 10 == GAME_TRR4 )
         {
             strcat_s ( szTRPathname, sizeof(szTRPathname), ".tr4" );
         }
-        else if ( tombraider / 10 == 5 )
+        else if ( tombraider / 10 == GAME_TRR5 )
         {
             strcat_s ( szTRPathname, sizeof(szTRPathname), ".trc" );
         }
@@ -3348,7 +3378,29 @@ void CTRXInfoPage::OnBnClickedSeeCustom()
     ZeroMemory ( szScript, sizeof(szScript) );
     ZeroMemory ( szScriptDirectory, sizeof(szScriptDirectory) );
 
-    if ( tombraider / 10 >= 2 && tombraider / 10 <= 3 )
+    //  TITLE.PHD
+    if ( tombraider / 10 == GAME_TRR1 )
+    {
+        strcpy_s ( szScriptDirectory, sizeof(szScriptDirectory), szFilename );
+        theApp.RemoveFilename ( szScriptDirectory );
+        strcpy_s ( szScript, sizeof(szScript), szScriptDirectory );
+        strcat_s ( szScript, sizeof(szScript), "\\data\\TITLE.PHD" );
+
+        //  No SCRIPT.DAT loo^k up
+        if ( ! PathFileExists ( szScript ) )
+        {
+            strcpy_s ( szScriptDirectory, sizeof(szScriptDirectory), szFilename );
+            theApp.RemoveFilename ( szScriptDirectory );
+            theApp.RemoveFilename ( szScriptDirectory );
+            strcpy_s ( szScript, sizeof(szScript), szScriptDirectory );
+            strcat_s ( szScript, sizeof(szScript), "\\data\\TITLE.PHD" );
+        }
+
+        theApp.RemoveFilename ( szScript );
+        strcat_s ( szScript, sizeof(szScript), "\\NOSCRIPT.TXT" );
+    }
+
+    if ( tombraider / 10 >= GAME_TRR2 && tombraider / 10 <= GAME_TRR3 )
     {
         strcpy_s ( szScriptDirectory, sizeof(szScriptDirectory), szFilename );
         theApp.RemoveFilename ( szScriptDirectory );
@@ -3366,7 +3418,7 @@ void CTRXInfoPage::OnBnClickedSeeCustom()
         }
     }
 
-    if ( tombraider / 10 >= 4 )
+    if ( tombraider / 10 >= GAME_TRR4 )
     {
         strcpy_s ( szScriptDirectory, sizeof(szScriptDirectory), szFilename );
         theApp.RemoveFilename ( szScriptDirectory );
@@ -3385,7 +3437,17 @@ void CTRXInfoPage::OnBnClickedSeeCustom()
     }
 
     //
-    BOOL bRead = ReadTRXScript ( szScript, szScriptDirectory, tombraider / 10, false, AddToItemsLabels );
+    //  Normally we should reset CustomDataFiles
+    //  Because ReadTRXScript will populate data
+    ZeroMemory ( CustomDataFiles, sizeof(CustomDataFiles) );
+    theApp.ResetCustomLabels ();
+
+    //
+    BOOL bRead = FALSE;
+    if ( tombraider / 10 >= GAME_TRR1 )
+    {
+        bRead = ReadTRXScript ( szScript, szScriptDirectory, tombraider / 10, false, AddToItemsLabels );
+    }
 
     //  If Read Add All Items Found
     if ( bRead )
@@ -3393,12 +3455,12 @@ void CTRXInfoPage::OnBnClickedSeeCustom()
         static char szDataFile [ MAX_PATH ];
         for ( int i = 0; i < TR4NGMAXLEVEL; i++ )
         {
-            if ( strlen(CustomDataFiles [ i ].datafile) > 0 )
+            if ( strlen(CustomDataFiles [ i ].datafile ) > 0 )
             {
                 strcpy_s ( szDataFile, sizeof(szDataFile), szScriptDirectory );
                 strcat_s ( szDataFile, sizeof(szDataFile), "\\" );
                 strcat_s ( szDataFile, sizeof(szDataFile), CustomDataFiles [ i ].datafile );
-                if ( tombraider / 10 >= 4 )
+                if ( tombraider / 10 >= GAME_TRR4 )
                 {
                     strcat_s ( szDataFile, sizeof(szDataFile), typeName );
                 }

@@ -87,7 +87,7 @@ BOOL CTRXLevels::OnInitDialog()
             }
         }
 
-        if ( countCustom > 0 )
+        if ( countCustom > 0 || IsCustomArea ( ) )
         {
             m_iVersion  = ( m_iVersion / 10 ) * 10 + GAME_TRC9;
         }
@@ -210,6 +210,51 @@ BOOL CTRXLevels::OnInitDialog()
             //
             case GAME_TR19 :
             {
+                static char szDirectory [ MAX_PATH ];
+                strcpy_s ( szDirectory, sizeof(szDirectory), m_szSaveName );
+                theApp.RemoveFilename ( szDirectory );
+                strcat_s ( szDirectory, sizeof(szDirectory), "\\DATA\\TITLE.PHD" );
+
+                if ( ! PathFileExists ( szDirectory ) )
+                {
+                    theApp.RemoveFilename ( szDirectory );
+                    theApp.RemoveFilename ( szDirectory );
+                    theApp.RemoveFilename ( szDirectory );
+                }
+                else
+                {
+                    theApp.RemoveFilename ( szDirectory );
+                    theApp.RemoveFilename ( szDirectory );
+                }
+
+                int count = 0;
+                for ( int levelIndex = 0; levelIndex < TR4NGMAXLEVEL; levelIndex++ )
+                {
+                    if ( strlen(CustomDataFiles [ levelIndex ].title) > 0 )
+                    {
+                        static char szFilename [ MAX_PATH ];
+                        strcpy_s ( szFilename, sizeof(szFilename), szDirectory );
+                        strcat_s ( szFilename, sizeof(szFilename), "\\" );
+                        strcat_s ( szFilename, sizeof(szFilename), CustomDataFiles [ levelIndex ].datafile );
+
+                        char szNumber [ 64 ];
+                        sprintf_s ( szNumber, sizeof(szNumber), "%2d", levelIndex );
+                        m_LevelList.InsertItem ( count, szNumber );
+                        m_LevelList.SetItemText ( count, COL_NAME, CustomDataFiles [ levelIndex ].title );
+                        m_LevelList.SetItemText ( count, COL_DATA, CustomDataFiles [ levelIndex ].datafile );
+                        if ( PathFileExists ( szFilename ) )
+                        {
+                            m_LevelList.SetItemText ( count, COL_EXIST, "Yes" );
+                        }
+                        else
+                        {
+                            m_LevelList.SetItemText ( count, COL_EXIST, "No" );
+                            m_LevelList.SetItemData ( count, (DWORD_PTR) ITEM_ITALIC );
+                        }
+                        count++;
+                    }
+                }
+                break;
                 break;
             }
 

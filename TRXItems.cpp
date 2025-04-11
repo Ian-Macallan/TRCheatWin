@@ -620,6 +620,11 @@ BOOL CTRXItems::OnSetActive()
     int iFullVersion    = CTRSaveGame::GetFullVersion();
     int iLevelIndex     = CTRSaveGame::GetLevelIndex();
 
+    if ( IsCustomArea() )
+    {
+        iFullVersion = iFullVersion / 10 + GAME_TRC9;
+    }
+
     //
     CWnd *tableCheckWnd [] =
     {
