@@ -2491,7 +2491,7 @@ BOOL PopulateCustomData (   const char *pathname, const char *pDirectory, int ve
     //  Levels are fixed in TR1
     static char *pDataNames [] =
     {
-        "DATA\\TITLE.PHD",  
+        "DATA\\GYM.PHD",
         "DATA\\LEVEL1.PHD",  
         "DATA\\LEVEL2.PHD",  
         "DATA\\LEVEL3A.PHD",
@@ -2507,7 +2507,17 @@ BOOL PopulateCustomData (   const char *pathname, const char *pDirectory, int ve
         "DATA\\LEVEL10A.PHD",
         "DATA\\LEVEL10B.PHD",
         "DATA\\LEVEL10C.PHD",
-        NULL
+        //
+        NULL,
+
+        "DATA\\TITLE.PHD",  
+        "DATA\\CUT1.PHD",
+        "DATA\\CUT2.PHD",
+        "DATA\\CUT3.PHD",
+        "DATA\\CUT4.PHD",
+
+        //
+        NULL,
     };
 
     //  EG. DATA\LEVEL1.PHD
