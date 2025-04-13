@@ -598,6 +598,11 @@ void CTRXGunPage::OnBnClickedAllGuns()
             m_Harpoon.SetCheck ( TRUE );
         }
 
+        if ( m_Rocket_Launcher.IsWindowEnabled() )
+        {
+            m_Rocket_Launcher.SetCheck ( TRUE );
+        }
+
         if ( m_iHitCountForAll > 0 )
         {
             m_Crowbar.SetCheck ( TRUE );
