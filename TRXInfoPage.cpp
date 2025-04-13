@@ -3300,6 +3300,8 @@ BOOL CTRXInfoPage::SelectCustomFromDir (const char *pDirectory)
 {
     static char szFilename [ MAX_PATH ];
 
+    int count = m_Custom_Combo.GetCount();
+
     //  Only If nothing selected
     for ( int i = 1; i < m_Custom_Combo.GetCount(); i++ )
     {

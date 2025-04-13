@@ -105,9 +105,9 @@ CTR2SaveGame::CTR2SaveGame()
     iMaskDesertEagle    = 0x04;
     iMaskUzi            = 0x08;
     MaskShotGun         = 0x10;
-    iMaskHarpoon        = 0x20;
-    iMaskM16            = 0x40;
-    iMaskGrenade        = 0x80;
+    iMaskM16            = 0x20;
+    iMaskGrenade        = 0x40;
+    iMaskHarpoon        = 0x80;
 
     m_pRealHealth       = NULL;
 
@@ -533,14 +533,14 @@ int CTR2SaveGame::CheckIfAmmosMatch ( TR2AMMOS *pGun, WORD gunBitmap )
 
     if ( m_pBuffer->trTable [ iX ].cGunBitmap & iMaskDesertEagle )
     {
-        if ( pGun->m_iDesertEagle  != m_iDesertEagle  )
+        if ( pGun->m_iDesertEagle != m_iDesertEagle  )
         {
             return 0;
         }
     }
     else
     {
-        if ( pGun->m_iDesertEagle  != 0 && pGun->m_iDesertEagle != m_iDesertEagle )
+        if ( pGun->m_iDesertEagle != 0 && pGun->m_iDesertEagle != m_iDesertEagle )
         {
             return 0;
         }
@@ -555,7 +555,7 @@ int CTR2SaveGame::CheckIfAmmosMatch ( TR2AMMOS *pGun, WORD gunBitmap )
     }
     else
     {
-        if (    pGun->m_iUzis  != 0 && pGun->m_iUzis  != m_iUzis )
+        if ( pGun->m_iUzis != 0 && pGun->m_iUzis  != m_iUzis )
         {
             return 0;
         }
@@ -585,7 +585,7 @@ int CTR2SaveGame::CheckIfAmmosMatch ( TR2AMMOS *pGun, WORD gunBitmap )
     }
     else
     {
-        if ( pGun->m_iGrenades != 0 && pGun->m_iGrenades != m_iGrenades)
+        if ( pGun->m_iGrenades != 0 && pGun->m_iGrenades != m_iGrenades )
         {
             return 0;
         }
@@ -622,7 +622,6 @@ int CTR2SaveGame::CheckIfAmmosMatch ( TR2AMMOS *pGun, WORD gunBitmap )
     }
 
     return 1;
-
 }
 
 //
@@ -659,14 +658,14 @@ void CTR2SaveGame::GetAmmosValues()
         /*
          *      Get current values for ammos.
          */
-        m_iGunAmmos      = m_pBuffer->trTable [ iX ].m_iGunAmmos;
-        m_iDesertEagle = m_pBuffer->trTable [ iX ].m_iDesertEagleAmmos;
-        m_iRiotGun     = m_pBuffer->trTable [ iX ].m_iRiotGunAmmos;
-        m_iUzis        = m_pBuffer->trTable [ iX ].m_iUziAmmos;
-        m_iGrenades    = m_pBuffer->trTable [ iX ].m_iGrenadeAmmos;
-//      m_iRockets     = m_pBuffer->trTable [ iX ].m_iRockets;
-        m_iHarpoon     = m_pBuffer->trTable [ iX ].m_iHarpoonAmmos;
-        m_iMP5         = m_pBuffer->trTable [ iX ].m_iM16GunAmmos;
+        m_iGunAmmos     = m_pBuffer->trTable [ iX ].m_iGunAmmos;
+        m_iDesertEagle  = m_pBuffer->trTable [ iX ].m_iDesertEagleAmmos;
+        m_iRiotGun      = m_pBuffer->trTable [ iX ].m_iRiotGunAmmos;
+        m_iUzis         = m_pBuffer->trTable [ iX ].m_iUziAmmos;
+        m_iGrenades     = m_pBuffer->trTable [ iX ].m_iGrenadeAmmos;
+//      m_iRockets      = m_pBuffer->trTable [ iX ].m_iRockets;
+        m_iHarpoon      = m_pBuffer->trTable [ iX ].m_iHarpoonAmmos;
+        m_iMP5          = m_pBuffer->trTable [ iX ].m_iM16GunAmmos;
 
 
 }

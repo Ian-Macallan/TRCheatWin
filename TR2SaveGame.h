@@ -47,7 +47,7 @@ struct          TR2Ammos
     BYTE   cState;
 
     //
-    char            cFiller2 [ 145 ];
+    char    cFiller2 [ 145 ];
 
     //
     WORD    m_iGunAmmos;
