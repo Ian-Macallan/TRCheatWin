@@ -10,17 +10,6 @@
 /////////////////////////////////////////////////////////////////////////////
 //
 
-//  00000001
-#define TR40_GUN_SET1       0x01
-//  00000100
-#define TR40_GUN_SET4       0x04
-//  00001000
-#define TR40_GUN_SET8       0x08
-//  00001001
-#define TR40_GUN_SET        (TR40_GUN_SET1|TR40_GUN_SET8)
-//  00001101
-#define TR40_GUN_MASK       (TR40_GUN_SET1|TR40_GUN_SET4|TR40_GUN_SET8)
-
 //
 /////////////////////////////////////////////////////////////////////////////
 // CTR4SaveGame document

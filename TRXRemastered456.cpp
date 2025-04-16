@@ -1220,13 +1220,13 @@ void CTRXRemastered456::DisplayOne ( int line )
                     //
                     if ( pGun != NULL )
                     {
-                        SET_BLOCK_CHECK ( m_Guns, m_gunPistol, CTR8SaveGame::m_TR5MaskPistol );          //  0x09
+                        SET_BLOCK_CHECK ( m_Guns, m_gunPistol, CTR8SaveGame::m_TR5MaskPistol );         //  0x09
 
-                        SET_BLOCK_CHECK ( m_Uzi, m_gunUzis, CTR8SaveGame::m_TR5MaskUzi );             //  0x09
-                        SET_BLOCK_CHECK ( m_Riotgun, m_gunRiotGun, CTR8SaveGame::m_TR5MaskShotgun );      //  0x09
-                        SET_BLOCK_CHECK ( m_Harpoon, m_gunGrappling, CTR8SaveGame::m_TR5MaskGrap );    //  0x09
-                        SET_BLOCK_CHECK ( m_M16, m_gunHK, CTR8SaveGame::m_TR5MaskHK );              //  0x01
-                        SET_BLOCK_CHECK ( m_Magnum, m_gunRevolver, CTR8SaveGame::m_TR5MaskRevolver );      //  0x09
+                        SET_BLOCK_CHECK ( m_Uzi, m_gunUzis, CTR8SaveGame::m_TR5MaskUzi );               //  0x09
+                        SET_BLOCK_CHECK ( m_Riotgun, m_gunRiotGun, CTR8SaveGame::m_TR5MaskShotgun );    //  0x09
+                        SET_BLOCK_CHECK ( m_Harpoon, m_gunGrappling, CTR8SaveGame::m_TR5MaskGrap );     //  0x09
+                        SET_BLOCK_CHECK ( m_M16, m_gunHK, CTR8SaveGame::m_TR5MaskHKGun );               //  0x01
+                        SET_BLOCK_CHECK ( m_Magnum, m_gunRevolver, CTR8SaveGame::m_TR5MaskRevolver );   //  0x09
                     }
                      
                     SET_BLOCK_HIDE ( m_Rocket );

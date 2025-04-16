@@ -91,235 +91,239 @@ TwoLabels TR1_Map_Label [TR1_LEVELS] =
 
 //
 /////////////////////////////////////////////////////////////////////////////
-//  TR2
+//  TR2 Extracted
 /////////////////////////////////////////////////////////////////////////////
 FourLabels TR2_Key_Label [TR2_LEVELS] =
 {
-    { "Guardhouse Key", "Rusty Key",    "", "" },
+    {     "Guardhouse Key",     "Rusty Key",     "",     "",     }, /* 1 */
 
-    { "Boathouse Key",  "Steel Key",    "Iron Key", "" },
-    { "Library Key",    "Detonator Key",    "", "" },
-    { "Ornate Key", "", "", "" },
+    {     "Boathouse Key",     "Steel Key",     "Iron Key",     "",     }, /* 2 */
+    {     "Library Key",     "Detonator Key",     "",     "",     }, /* 3 */
+    {     "Ornate Key",     "",     "",     "",     }, /* 4 */
 
-    { "Red Pass",   "Yellow Pass",  "Green Pass",   "" },
-    { "Red Pass Card",  "", "", "Blue Pass Card" },
-    { "",   "", "", "" },
-    { "Rest Room Key",  "Rusty Key",    "Cabin Key",    "" },
-    { "Theatre Key",    "Rusty Key",    "", "" },
-    { "",   "Stern Key",    "Storage Key",  "Cabin Key" },
+    {     "Red Pass Card",     "Yellow Pass Card",     "Green Pass Card",     "",     }, /* 5 */
+    {     "Red Pass Card",     "",     "",     "Blue Pass Card",     }, /* 6 */
+    {     "",     "",     "",     "",     }, /* 7 */
+    {     "Rest Room Key",     "Rusty Key",     "Cabin Key",     "",     }, /* 8 */
+    {     "Theatre Key",     "Rusty Key",     "",     "",     }, /* 9 */
+    {     "",     "Stern Key",     "Storage Key",     "Cabin Key",     }, /* 10 */
 
-    { "Drawbridge Key", "Hut Key",  "", "" },
-    { "Strongroom Key", "Trapdoor Key", "Rooftops Key", "Main Hall Key" },
-    { "",   "", "", "" },
-    { "",   "Gong Hammer",  "", "" },
+    {     "Drawbridge Key",     "Hut Key",     "",     "",     }, /* 11 */
+    {     "Strongroom Key",     "Trapdoor Key",     "Rooftops Key",     "Main Hall Key",     }, /* 12 */
+    {     "",     "",     "",     "",     }, /* 13 */
+    {     "",     "Gong Hammer",     "",     "",     }, /* 14 */
 
-    { "Gold Key",   "Silver Key",   "Main Chamber Key", "" },
-    { "",   "", "", "" },
-    { "",   "", "", "" },
+    {     "",     "Gold Key",     "Silver Key",     "Main Chamber Key",     }, /* 15 */
 
-    { "Gun Cupbrard Key",   "", "", "" },
+    {     "",     "",     "",     "",     }, /* 16 */
+    {     "",     "",     "",     "",     }, /* 17 */
+    {     "Gun Cupboard Key",     "",     "",     "",     }, /* 18 */
 
     // The Cold War
-    { "Guard Room Key", "Shaft B Key",  "", "" },
-    { "Card Key 1", "", "", "Card Key 2" },
-    { "",   "", "", "" },
-    { "",   "", "", "" },
+    {     "Guardroom Key",     "Shaft 'B' Key",     "",     "",     }, /* 1 */
+    {     "CardKey 1",     "",     "",     "CardKey 2",     }, /* 2 */
+    {     "",     "",     "",     "",     }, /* 3 */
+    {     "",     "",     "",     "",     }, /* 4 */
+    {     "Hotel Key",     "",     "",     "",     }, /* 5 */
 
-    { "Hotel Key",  "", "", "" },
 };
 
+//  TR2 Extracted
 FourLabels TR2_Object_Label [TR2_LEVELS] =
 {
-    { "",   "", "", "" },
+    {     "",     "",     "",     "",     }, /* 1 */
 
-    { "",   "", "", "" },
-    { "",   "", "", "" },
-    { "Relay Box",  "Circuit Board",    "", "" },
+    {     "",     "",     "",     "",     }, /* 2 */
+    {     "",     "",     "",     "",     }, /* 3 */
+    {     "Relay Box",     "Circuit Board",     "",     "",     }, /* 4 */
 
-    { "",   "", "", "" },
-    { "Machine Clip",   "", "", "" },
-    { "",   "", "", "" },
-    { "Circuit Breaker",    "", "", "" },
-    { "",   "", "", "" },
-    { "",   "", "", "The Seraph" },
+    {     "",     "",     "",     "",     }, /* 5 */
+    {     "Machine Chip",     "",     "",     "",     }, /* 6 */
+    {     "",     "",     "",     "",     }, /* 7 */
+    {     "Circuit Breaker",     "",     "",     "",     }, /* 8 */
+    {     "",     "",     "",     "",     }, /* 9 */
+    {     "",     "",     "",     "The Seraph",     }, /* 10 */
 
-    { "",   "", "", "The Seraph" },
-    { "Prayer Wheel",   "Gemstone", "", "The Seraph" },
-    { "Tibetan Mask",   "", "", "" },
-    { "Tibetan Mask",   "", "", "" },
+    {     "",     "",     "",     "The Seraph",     }, /* 11 */
+    {     "Prayer Wheels",     "Gemstones",     "",     "The Seraph",     }, /* 12 */
+    {     "Tibetan Mask",     "",     "",     "",     }, /* 13 */
+    {     "Tibetan Mask",     "",     "",     "",     }, /* 14 */
 
-    { "The Dragon Seal",    "", "", "" },
-    { "Mystic Plaque",  "Mystic Plaque",    "", "" },
-    { "Mystic Plaque",  "Dagger Of Xian",   "", "" },
+    {     "The Dragon Seal",     "",     "",     "",     }, /* 15 */
+    {     "Mystic Plaque",     "Mystic Plaque",     "",     "",     }, /* 16 */
+    {     "Mystic Plaque",     "Dagger of Xian",     "",     "",     }, /* 17 */
 
-    { "Dagger Of Xian", "", "", "" },
+    {     "Dagger of Xian",     "",     "",     "",     }, /* 18 */
 
     //  The Cold War
-    { "",   "", "", "" },
-    { "Circuit Board",  "", "", "" },
-    { "Mask Of Tornarsuk",  "Gold Nugget",  "", "" },
-    { "Mask Of Tornarsuk",  "", "", "" },
+    {     "",     "",     "",     "",     }, /* 1 */
+    {     "Circuit Board",     "",     "",     "",     }, /* 2 */
+    {     "Mask Of Tornarsuk",     "Gold Nugget",     "",     "",     }, /* 3 */
+    {     "Mask Of Tornarsuk",     "",     "",     "",     }, /* 4 */
+    {     "Elevator Junction",     "Door Circuit",     "",     "",     }, /* 5 */
 
-    { "Elevator Junction",  "Door Circuit", "", "" },
 };
 
+//  TR2 Extracted
 TwoLabels TR2_Map_Label [TR2_LEVELS] =
 {
-    { "",   "" },
+    {     "",     "",     }, /* 1 */
 
-    { "",   "" },
-    { "",   "" },
-    { "",   "" },
+    {     "",     "",     }, /* 2 */
+    {     "",     "",     }, /* 3 */
+    {     "",     "",     }, /* 4 */
 
-    { "",   "" },
-    { "",   "" },
-    { "",   "" },
-    { "",   "" },
-    { "",   "" },
+    {     "",     "",     }, /* 5 */
+    {     "",     "",     }, /* 6 */
+    {     "",     "",     }, /* 7 */
+    {     "",     "",     }, /* 8 */
+    {     "",     "",     }, /* 9 */
+    {     "",     "",     }, /* 10 */
 
-    { "",   "" },
-    { "",   "" },
-    { "Gong Hammer",    "" },
-    { "",   "Talion" },
+    {     "",     "",     }, /* 11 */
+    {     "",     "",     }, /* 12 */
+    {     "Gong Hammer",     "",     }, /* 13 */
+    {     "",     "Talion",     }, /* 14 */
 
-    { "",   "" },
-    { "",   "" },
-    { "",   "" },
+    {     "",     "",     }, /* 15 */
+    {     "",     "",     }, /* 16 */
+    {     "",     "",     }, /* 17 */
 
-    { "",   "" },
+    {     "",     "",     }, /* 18 */
 
     //  The Cold War
-    { "",   "" },
-    { "",   "" },
-    { "",   "" },
-    { "",   "" },
-
-    { "",   "" },
+    {     "",     "",     }, /* 1 */
+    {     "",     "",     }, /* 2 */
+    {     "",     "",     }, /* 3 */
+    {     "",     "",     }, /* 4 */
+    {     "",     "",     }, /* 5 */
 };
 
 //
 /////////////////////////////////////////////////////////////////////////////
-//  TR3
+//  TR3 Extracted
 /////////////////////////////////////////////////////////////////////////////
-
 FourLabels TR3_Key_Label [TR3_LEVELS] =
 {
     //  India
-    { "",   "", "", "Indra Key" },
-    { "Key Of Gansha",  "", "", "" },
-    { "Gate Key",   "", "", "" },
-    { "",   "", "", "" },
+    {     "",     "",     "",     "Indra Key",     }, /* 1 */
+    {     "Key Of Ganesha",     "Key Of Ganesha",     "Key Of Ganesha",     "Key Of Ganesha",     }, /* 2 */
+    {     "Gate Key",     "",     "",     "",     }, /* 3 */
+    {     "",     "",     "",     "",     }, /* 4 */
 
     // Pacific
-    { "Smuggler's Key", "", "", "" },
-    { "Commander Bishop Key",   "Lt Tuckerman's Key",   "", "" },
-    { "",   "", "", "" },
-    { "",   "", "", "" },
+    {     "Smuggler's Key",     "",     "",     "",     }, /* 5 */
+    {     "Commander Bishop's Key",     "Lt. Tuckerman's Key",     "",     "",     }, /* 6 */
+    {     "",     "",     "",     "",     }, /* 7 */
+    {     "",     "",     "",     "",     }, /* 8 */
 
     //  London
-    { "Flue Room Key",  "Cathedral Key",    "", "" },
-    { "Maintenance Key",    "Solomon's Key",    "Solomon's Key",    "" },
-    { "Boiler Room Key",    "", "", "" },
-    { "",   "", "", "" },
+    {     "Flue Room Key",     "Cathedral Key",     "",     "",     }, /* 9 */
+    {     "Maintenance Key",     "Solomon's Key",     "Solomon's Key",     "Solomon's Key",     }, /* 10 */
+    {     "Boiler Room Key",     "",     "",     "",     }, /* 11 */
+    {     "",     "",     "",     "",     }, /* 12 */
 
     //  Nevada
-    { "Generator Access",   "Detonator Switch", "", "" },
-    { "Keycard Type A", "Keycard Type B",   "", "" },
-    { "Launch Code Pass",   "", "", "Select Level" },
+    {     "Generator Access",     "Detonator Switch",     "",     "",     }, /* 13 */
+    {     "Keycard Type A",     "Keycard Type B",     "",     "",     }, /* 14 */
+    {     "Launch Code Pass",     "",     "",     "",     }, /* 15 */
 
     //  Antartica
-    { "Hut Key",    "", "", "" },
-    { "",   "", "", "" },
-    { "Uli Key",    "", "", "" },
-    { "",   "", "", "" },
+    {     "Hut Key",     "",     "",     "",     }, /* 16 */
+    {     "",     "",     "",     "",     }, /* 17 */
+    {     "Uli Key",     "",     "",     "",     }, /* 18 */
+    {     "",     "",     "",     "",     }, /* 19 */
 
     //  All Hallows
-    { "Vault Key",  "", "", "" },
+    {     "Vault Key",     "",     "",     "",     }, /* 20 */
 
     //  Gold
-    { "",   "", "", "" },
-    { "Cairn Key",  "", "", "" },
-    { "Drill Activator Card",   "", "", "" },
-    { "",   "", "", "" },
-    { "Zoo Key",    "", "", "Aviary Key" },
-    { "",   "", "", "" },
+    {     "",     "",     "",     "",     }, /* 1 */
+    {     "Cairn Key",     "",     "",     "",     }, /* 2 */
+    {     "Drill Activator Card",     "",     "",     "",     }, /* 3 */
+    {     "",     "",     "",     "",     }, /* 4 */
+    {     "Zoo Key",     "",     "",     "Aviary Key",     }, /* 5 */
+    {     "",     "",     "",     "",     }, /* 6 */
 };
 
-
+//  TR3 Extracted
 FourLabels TR3_Object_Label [TR3_LEVELS] =
 {
-    { "",   "", "", "" },
-    { "Scimitar",   "Scimitar", "", "" },
-    { "",   "", "", "" },
-    { "",   "", "", "" },
+    {     "",     "",     "",     "",     }, /* 1 */
+    {     "Scimitar",     "Scimitar",     "",     "",     }, /* 2 */
+    {     "",     "",     "",     "",     }, /* 3 */
+    {     "",     "",     "",     "",     }, /* 4 */
 
-    { "Serpent Stone",  "", "", "" },
-    { "",   "", "", "" },
-    { "",   "", "", "" },
-    { "",   "", "", "" },
+    {     "Serpent Stone",     "",     "",     "",     }, /* 5 */
+    {     "",     "",     "",     "",     }, /* 6 */
+    {     "",     "",     "",     "",     }, /* 7 */
+    {     "",     "",     "",     "",     }, /* 8 */
 
-    { "",   "", "", "" },
-    { "Old Penny",  "Ticket",   "Masonic Mallet",   "Ornate Star" },
-    { "Embalming Fluid",    "", "", "" },
-    { "",   "", "", "" },
+    {     "",     "",     "",     "",     }, /* 9 */
+    {     "Old Penny",     "Ticket",     "Masonic Mallet",     "Ornate Star",     }, /* 10 */
+    {     "Embalming Fluid",     "",     "",     "",     }, /* 11 */
+    {     "",     "",     "",     "",     }, /* 12 */
 
-    { "",   "", "", "" },
-    { "Blue Secutity Pass", "Yellow Secutity Pass", "", "" },
-    { "Tower Access Key",   "Code Clearance Disk",  "Code Clearance Disk",  "Hanger Access Key" },
+    {     "",     "",     "",     "",     }, /* 13 */
+    {     "Blue Security Pass",     "Yellow Security Pass",     "",     "",     }, /* 14 */
+    {     "Tower Access Key",     "Code Clearance Disk",     "Code Clearance Disk",     "Hanger Access Key",     }, /* 15 */
 
-    { "Crowbar",    "Gate Control Key", "", "" },
-    { "Crowbar",    "Lead Acid Battery",    "Winch Starter",    "" },
-    { "Oceanic Mask",   "", "", "" },
-    { "Select Level",   "", "", "" },
+    {     "Crowbar",     "Gate Control Key",     "",     "",     }, /* 16 */
+    {     "Crowbar",     "Lead Acid Battery",     "Winch Starter",     "",     }, /* 17 */
+    {     "Oceanic Mask",     "",     "",     "",     }, /* 18 */
+    {     "",     "",     "",     "",     }, /* 19 */
 
-    //
-    { "",   "", "", "" },
+    {     "",     "",     "",     "",     }, /* 20 */
+
 
     //  Gold
-    { "Crowbar",    "Thisle Stone", "", "" },
-    { "Crowbar",    "", "", "" },
-    { "Pump Acess Disk",    "", "", "" },
-    { "Circuit Bulb Blue",  "Mutant Sample Greenish",   "Mutant Sample Purplish",   "Circuit Bulb Yellow" },
-    { "The Hand Of Rathmore",   "", "", "" },
-    { "The Hand Of Rathmore",   "", "", "" },
+    {     "Crowbar",     "Thistle Stone",     "",     "",     }, /* 1 */
+    {     "Crowbar",     "",     "",     "",     }, /* 2 */
+    {     "Pump Access Disk",     "",     "",     "",     }, /* 3 */
+    {     "Circuit Bulb",     "Mutant Sample",     "Mutant Sample",     "Circuit Bulb",     }, /* 4 */
+    {     "The Hand Of Rathmore",     "",     "",     "",     }, /* 5 */
+    {     "The Hand Of Rathmore",     "",     "",     "",     }, /* 6 */
 };
 
+//  TR3 Extracted
 TwoLabels TR3_Map_Label [TR3_LEVELS] =
 {
-    { "",   "" },
-    { "",   "" },
-    { "",   "" },
-    { "",   "" },
+    {     "",     "",     }, /* 1 */
+    {     "",     "",     }, /* 2 */
+    {     "",     "",     }, /* 3 */
+    {     "",     "",     }, /* 4 */
 
-    { "",   "" },
-    { "Swamp Map",  "" },
-    { "",   "" },
-    { "",   "" },
+    {     "",     "",     }, /* 5 */
+    {     "Swamp Map",     "",     }, /* 6 */
+    {     "",     "",     }, /* 7 */
+    {     "",     "",     }, /* 8 */
 
-    { "",   "" },
-    { "",   "" },
-    { "",   "" },
-    { "",   "" },
+    {     "",     "",     }, /* 9 */
+    {     "",     "",     }, /* 10 */
+    {     "",     "",     }, /* 11 */
+    {     "",     "",     }, /* 12 */
 
-    { "",   "" },
-    { "",   "" },
-    { "",   "" },
+    {     "",     "",     }, /* 13 */
+    {     "",     "",     }, /* 14 */
+    {     "",     "",     }, /* 15 */
 
-    { "",   "" },
-    { "",   "" },
-    { "",   "" },
-    { "",   "" },
+    {     "",     "",     }, /* 16 */
+    {     "",     "",     }, /* 17 */
+    {     "",     "",     }, /* 18 */
+    {     "",     "",     }, /* 19 */
+
+    {     "",     "",     }, /* 20 */
 
     //
-    { "",   "" },
 
     //  Gold
-    { "",   "" },
-    { "",   "" },
-    { "",   "" },
-    { "",   "" },
-    { "",   "" },
-    { "",   "" },
+    {     "",     "",     }, /* 1 */
+    {     "",     "",     }, /* 2 */
+    {     "",     "",     }, /* 3 */
+    {     "The Hand Of Rathmore",     "",     }, /* 4 */
+    {     "",     "",     }, /* 5 */
+    {     "",     "",     }, /* 6 */
+
 };
 
 FourLabels TR3_Treasure_Label [TR3_LEVELS] =
@@ -2206,4 +2210,12 @@ char *TR5ItemsName14 [NB_BUTTONS] =
 /////////////////////////////////////////////////////////////////////////////
 char *TR49ItemsNameInd [ TR4NGMAXLEVEL ] [ NB_BUTTONS ];
 char *TR49ItemsNameGen [ NB_BUTTONS ];
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//  TR2 andf TR3 Custom Levels
+/////////////////////////////////////////////////////////////////////////////
+FourLabels  TR39PuzzleName [ TR4NGMAXLEVEL ];
+TwoLabels   TR39PickupName [ TR4NGMAXLEVEL ];
+FourLabels  TR39KeyName [ TR4NGMAXLEVEL ];
 

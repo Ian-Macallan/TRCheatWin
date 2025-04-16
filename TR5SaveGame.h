@@ -22,19 +22,6 @@
 #define TR5LEVELMAXSIZE     7743
 #define TR5LEVELBUFSIZE     80*1024
 
-//  00000001
-#define TR50_GUN_SET1       0x01    
-//  00000100
-#define TR50_GUN_SET4       0x04
-//  00001000
-#define TR50_GUN_SET8       0x08
-//  00001100
-#define TR50_GUN_SETC       0x0C
-//  00001001
-#define TR50_GUN_SET        (TR50_GUN_SET1|TR50_GUN_SET8)
-//  00001101
-#define TR50_GUN_MASK       (TR50_GUN_SET1|TR50_GUN_SET4|TR50_GUN_SET8|TR50_GUN_SETC)
-
 //
 /*
  *      ------------------------------------------------
@@ -272,7 +259,7 @@ class CTR5SaveGame : public CTR45SaveGame
         BYTE                    iMaskUzi;
         BYTE                    iMaskRiotGun;
         BYTE                    iMaskDesertEagle;
-        BYTE                    iMaskHK;
+        BYTE                    iMaskHKGun;
         BYTE                    iMaskRevolver;
         BYTE                    iMaskLaser;
         BYTE                    iMaskHeadSet;
@@ -393,7 +380,7 @@ class CTR5SaveGame : public CTR45SaveGame
         BYTE GrabWeapon1 ( int iX, bool bAdd = true, bool bChange = true );
         virtual BOOL HasWeapon1 ()
         {
-            if ( m_pBuffer != NULL && ( m_pBuffer->tagGuns.m_gunPistol & TR50_GUN_MASK ) )
+            if ( m_pBuffer != NULL && ( m_pBuffer->tagGuns.m_gunPistol & TR5_MASK_ANY ) )
             {
                 return TRUE;
             }
@@ -409,7 +396,7 @@ class CTR5SaveGame : public CTR45SaveGame
         BYTE GrabWeapon2 ( int iX, bool bAdd = true, bool bChange = true );
         virtual BOOL HasWeapon2 ()
         {
-            if ( m_pBuffer != NULL && ( m_pBuffer->tagGuns.m_gunRevolver & TR50_GUN_MASK ) )
+            if ( m_pBuffer != NULL && ( m_pBuffer->tagGuns.m_gunRevolver & TR5_MASK_ANY ) )
             {
                 return TRUE;
             }
@@ -425,7 +412,7 @@ class CTR5SaveGame : public CTR45SaveGame
         BYTE GrabWeapon3 ( int iX, bool bAdd = true, bool bChange = true );
         virtual BOOL HasWeapon3 ()
         {
-            if ( m_pBuffer != NULL && ( m_pBuffer->tagGuns.m_gunUzis & TR50_GUN_MASK ) )
+            if ( m_pBuffer != NULL && ( m_pBuffer->tagGuns.m_gunUzis & TR5_MASK_ANY ) )
             {
                 return true;
             }
@@ -440,7 +427,7 @@ class CTR5SaveGame : public CTR45SaveGame
         BYTE GrabWeapon4 ( int iX, bool bAdd = true, bool bChange = true );
         virtual BOOL HasWeapon4 ()
         {
-            if ( m_pBuffer != NULL && ( m_pBuffer->tagGuns.m_gunRiotGun & TR50_GUN_MASK ) )
+            if ( m_pBuffer != NULL && ( m_pBuffer->tagGuns.m_gunRiotGun & TR5_MASK_ANY ) )
             {
                 return true;
             }
@@ -456,7 +443,7 @@ class CTR5SaveGame : public CTR45SaveGame
         BYTE GrabWeapon5 ( int iX, bool bAdd = true, bool bChange = true );
         virtual BOOL HasWeapon5 ()
         {
-            if ( m_pBuffer != NULL && ( m_pBuffer->tagGuns.m_gunHK & TR50_GUN_MASK ) )
+            if ( m_pBuffer != NULL && ( m_pBuffer->tagGuns.m_gunHK & TR5_MASK_ANY ) )
             {
                 return true;
             }
@@ -490,7 +477,7 @@ class CTR5SaveGame : public CTR45SaveGame
         BYTE GrabWeapon8 ( int iX, bool bAdd = true, bool bChange = true );
         virtual BOOL HasWeapon8 ()
         {
-            if ( m_pBuffer != NULL && ( m_pBuffer->tagGuns.m_gunDesertEagle & TR50_GUN_MASK ) )
+            if ( m_pBuffer != NULL && ( m_pBuffer->tagGuns.m_gunDesertEagle & TR5_MASK_ANY ) )
             {
                 return TRUE;
             }

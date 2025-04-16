@@ -105,3 +105,8 @@ extern char *TR5ItemsName14 [NB_BUTTONS];
 extern char *TR49ItemsNameInd [ TR4NGMAXLEVEL ] [ NB_BUTTONS ];
 extern char *TR49ItemsNameGen [ NB_BUTTONS ];
 
+extern FourLabels   TR39PuzzleName [ TR4NGMAXLEVEL ];
+extern TwoLabels    TR39PickupName [ TR4NGMAXLEVEL ];
+extern FourLabels   TR39KeyName [ TR4NGMAXLEVEL ];
+
+extern void AddToItemsLabels ( int what, int level, int button, const char *pText, const char *pTitle );

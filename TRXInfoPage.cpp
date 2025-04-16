@@ -168,7 +168,7 @@ static int SortLocation(const void *pVoid1, const void *pVoid2)
 /////////////////////////////////////////////////////////////////////////////
 //  what = 0 for items labels
 /////////////////////////////////////////////////////////////////////////////
-static void AddToItemsLabels ( int what, int level, int button, const char *pText, const char *pTitle )
+void AddToItemsLabels ( int what, int level, int button, const char *pText, const char *pTitle )
 {
     //  What = 0, level = level, button = button, pText = item label
     if ( what == 0 )
@@ -210,6 +210,146 @@ static void AddToItemsLabels ( int what, int level, int button, const char *pTex
             if ( pSlash != NULL )
             {
                 *pSlash = '\\';
+            }
+        }
+    }
+    //  Puzzle
+    else if ( what == 31 )
+    {
+        if ( level >= 0 && level < TR4NGMAXLEVEL && button >= 0 && button < 4 )
+        {
+            switch ( button )
+            {
+                case 0 :
+                {
+                    if ( TR39PuzzleName [ level ].label1 != NULL )
+                    {
+                        free ( TR39PuzzleName [ level ].label1 );
+                        TR39PuzzleName [ level ].label1 = NULL;
+                    }
+                    TR39PuzzleName [ level ].label1 = ( char * ) malloc ( strlen(pText) + 1 );
+                    strcpy_s ( TR39PuzzleName [ level ].label1, strlen(pText) + 1, pText );
+                    break;
+                }
+                case 1 :
+                {
+                    if ( TR39PuzzleName [ level ].label2 != NULL )
+                    {
+                        free ( TR39PuzzleName [ level ].label2 );
+                        TR39PuzzleName [ level ].label2 = NULL;
+                    }
+                    TR39PuzzleName [ level ].label2 = ( char * ) malloc ( strlen(pText) + 1 );
+                    strcpy_s ( TR39PuzzleName [ level ].label2, strlen(pText) + 1, pText );
+                    break;
+                }
+                case 2 :
+                {
+                    if ( TR39PuzzleName [ level ].label3 != NULL )
+                    {
+                        free ( TR39PuzzleName [ level ].label3 );
+                        TR39PuzzleName [ level ].label3 = NULL;
+                    }
+                    TR39PuzzleName [ level ].label3 = ( char * ) malloc ( strlen(pText) + 1 );
+                    strcpy_s ( TR39PuzzleName [ level ].label3, strlen(pText) + 1, pText );
+                    break;
+                }
+                case 3 :
+                {
+                    if ( TR39PuzzleName [ level ].label4 != NULL )
+                    {
+                        free ( TR39PuzzleName [ level ].label4 );
+                        TR39PuzzleName [ level ].label4 = NULL;
+                    }
+                    TR39PuzzleName [ level ].label4 = ( char * ) malloc ( strlen(pText) + 1 );
+                    strcpy_s ( TR39PuzzleName [ level ].label4, strlen(pText) + 1, pText );
+                    break;
+                }
+            }
+        }
+    }
+    //  Pickup
+    else if ( what == 32 )
+    {
+        if ( level >= 0 && level < TR4NGMAXLEVEL && button >= 0 && button < 4 )
+        {
+            switch ( button )
+            {
+                case 0 :
+                {
+                    if ( TR39PickupName [ level ].label1 != NULL )
+                    {
+                        free ( TR39PickupName [ level ].label1 );
+                        TR39PickupName [ level ].label1 = NULL;
+                    }
+                    TR39PickupName [ level ].label1 = ( char * ) malloc ( strlen(pText) + 1 );
+                    strcpy_s ( TR39PickupName [ level ].label1, strlen(pText) + 1, pText );
+                    break;
+                }
+                case 1 :
+                {
+                    if ( TR39PickupName [ level ].label2 != NULL )
+                    {
+                        free ( TR39PickupName [ level ].label2 );
+                        TR39PickupName [ level ].label2 = NULL;
+                    }
+                    TR39PickupName [ level ].label2 = ( char * ) malloc ( strlen(pText) + 1 );
+                    strcpy_s ( TR39PickupName [ level ].label2, strlen(pText) + 1, pText );
+                    break;
+                }
+            }
+        }
+    }
+    //  Keys
+    else if ( what == 33 )
+    {
+        if ( level >= 0 && level < TR4NGMAXLEVEL && button >= 0 && button < 4 )
+        {
+            switch ( button )
+            {
+                case 0 :
+                {
+                    if ( TR39KeyName [ level ].label1 != NULL )
+                    {
+                        free ( TR39KeyName [ level ].label1 );
+                        TR39KeyName [ level ].label1 = NULL;
+                    }
+                    TR39KeyName [ level ].label1 = ( char * ) malloc ( strlen(pText) + 1 );
+                    strcpy_s ( TR39KeyName [ level ].label1, strlen(pText) + 1, pText );
+                    break;
+                }
+                case 1 :
+                {
+                    if ( TR39KeyName [ level ].label2 != NULL )
+                    {
+                        free ( TR39KeyName [ level ].label2 );
+                        TR39KeyName [ level ].label2 = NULL;
+                    }
+                    TR39KeyName [ level ].label2 = ( char * ) malloc ( strlen(pText) + 1 );
+                    strcpy_s ( TR39KeyName [ level ].label2, strlen(pText) + 1, pText );
+                    break;
+                }
+                case 2 :
+                {
+                    if ( TR39KeyName [ level ].label3 != NULL )
+                    {
+                        free ( TR39KeyName [ level ].label3 );
+                        TR39KeyName [ level ].label3 = NULL;
+                    }
+                    TR39KeyName [ level ].label3 = ( char * ) malloc ( strlen(pText) + 1 );
+                    strcpy_s ( TR39KeyName [ level ].label3, strlen(pText) + 1, pText );
+                    break;
+                }
+                case 3 :
+                {
+                    if ( TR39KeyName [ level ].label4 != NULL )
+                    {
+                        free ( TR39KeyName [ level ].label4 );
+                        TR39KeyName [ level ].label4 = NULL;
+                    }
+                    TR39KeyName [ level ].label4 = ( char * ) malloc ( strlen(pText) + 1 );
+                    strcpy_s ( TR39KeyName [ level ].label4, strlen(pText) + 1, pText );
+                    break;
+                }
             }
         }
     }

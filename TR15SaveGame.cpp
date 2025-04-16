@@ -71,6 +71,15 @@ CTUBSaveGame::CTUBSaveGame()
     m_iSaveLength       = TUBLEVELMAXSIZE;
     m_iMaxLevel         = TUBMAXLEVEL;
 
+    iMaskCompass        = TR1_MASK_COMPASS;
+    iMaskPistol         = TR1_MASK_PISTOL;
+    iMaskMagnum         = TR1_MASK_MAGNUM;
+    iMaskUzi            = TR1_MASK_UZI;
+    iMaskShotGun        = TR1_MASK_SHOTGUN;
+    iMaskHarpoon        = TR1_MASK_HARPOON;
+    iMaskMP5            = TR1_MASK_MP5;
+    iMaskGrenade        = TR1_MASK_GRENADE;
+
     iMaskCompass        = 0x01;
     iMaskPistol         = 0x02;
     iMaskMagnum         = 0x04;
@@ -1053,7 +1062,7 @@ unsigned char CTUBSaveGame::GrabWeapon0 ( int iX, bool bAdd, bool bChange )
     if ( ! bChange ) return old;
 
     if ( bChange ) m_pBuffer->trSingle.cGunBitmap = iMaskCompass;
-    if ( ! bAdd ) m_pBuffer->trSingle.cGunBitmap &= ( iMaskCompass ^ 0xff );
+    if ( ! bAdd ) m_pBuffer->trSingle.cGunBitmap &= ( iMaskCompass ^ TR1_MASK_ANY );
     return old;
 }
 
@@ -1067,7 +1076,7 @@ unsigned char CTUBSaveGame::GrabWeapon1 ( int iX, bool bAdd, bool bChange )
     if ( ! bChange ) return old;
 
     if ( bChange ) m_pBuffer->trSingle.cGunBitmap |= iMaskPistol;
-    if ( ! bAdd ) m_pBuffer->trSingle.cGunBitmap &= ( iMaskPistol ^ 0xff );
+    if ( ! bAdd ) m_pBuffer->trSingle.cGunBitmap &= ( iMaskPistol ^ TR1_MASK_ANY );
     return old;
 }
 
@@ -1081,7 +1090,7 @@ unsigned char CTUBSaveGame::GrabWeapon4 ( int iX, bool bAdd, bool bChange )
     if ( ! bChange ) return old;
 
     if ( bChange ) m_pBuffer->trSingle.cGunBitmap |= iMaskShotGun;
-    if ( ! bAdd ) m_pBuffer->trSingle.cGunBitmap &= ( iMaskShotGun ^ 0xff );
+    if ( ! bAdd ) m_pBuffer->trSingle.cGunBitmap &= ( iMaskShotGun ^ TR1_MASK_ANY );
     return old;
 }
 
@@ -1095,7 +1104,7 @@ unsigned char CTUBSaveGame::GrabWeapon2 ( int iX, bool bAdd, bool bChange )
     if ( ! bChange ) return old;
 
     if ( bChange ) m_pBuffer->trSingle.cGunBitmap |= iMaskMagnum;
-    if ( ! bAdd ) m_pBuffer->trSingle.cGunBitmap &= ( iMaskMagnum ^ 0xff );
+    if ( ! bAdd ) m_pBuffer->trSingle.cGunBitmap &= ( iMaskMagnum ^ TR1_MASK_ANY );
     return old;
 }
 
@@ -1109,7 +1118,7 @@ unsigned char CTUBSaveGame::GrabWeapon3 ( int iX, bool bAdd, bool bChange )
     if ( ! bChange ) return old;
 
     if ( bChange ) m_pBuffer->trSingle.cGunBitmap |= iMaskUzi;
-    if ( ! bAdd ) m_pBuffer->trSingle.cGunBitmap &= ( iMaskUzi ^ 0xff );
+    if ( ! bAdd ) m_pBuffer->trSingle.cGunBitmap &= ( iMaskUzi ^ TR1_MASK_ANY );
     return old;
 }
 
@@ -1123,7 +1132,7 @@ unsigned char CTUBSaveGame::GrabWeapon5 ( int iX, bool bAdd, bool bChange )
     if ( ! bChange ) return old;
 
     if ( bChange ) m_pBuffer->trSingle.cGunBitmap |= iMaskMP5;
-    if ( ! bAdd ) m_pBuffer->trSingle.cGunBitmap &= ( iMaskMP5 ^ 0xff );
+    if ( ! bAdd ) m_pBuffer->trSingle.cGunBitmap &= ( iMaskMP5 ^ TR1_MASK_ANY );
     return old;
 }
 
@@ -1137,7 +1146,7 @@ unsigned char CTUBSaveGame::GrabWeapon8 ( int iX, bool bAdd, bool bChange )
     if ( ! bChange ) return old;
 
     if ( bChange ) m_pBuffer->trSingle.cGunBitmap |= iMaskHarpoon;
-    if ( ! bAdd ) m_pBuffer->trSingle.cGunBitmap &= ( iMaskHarpoon ^ 0xff );
+    if ( ! bAdd ) m_pBuffer->trSingle.cGunBitmap &= ( iMaskHarpoon ^ TR1_MASK_ANY );
     return old;
 }
 
@@ -1151,7 +1160,7 @@ unsigned char CTUBSaveGame::GrabWeapon7 ( int iX, bool bAdd, bool bChange )
     if ( ! bChange ) return old;
 
     if ( bChange ) m_pBuffer->trSingle.cGunBitmap |= iMaskGrenade;
-    if ( ! bAdd ) m_pBuffer->trSingle.cGunBitmap &= ( iMaskGrenade ^ 0xff );
+    if ( ! bAdd ) m_pBuffer->trSingle.cGunBitmap &= ( iMaskGrenade ^ TR1_MASK_ANY );
     return old;
 }
 
@@ -1165,7 +1174,7 @@ unsigned char CTUBSaveGame::GrabWeapon6 ( int iX, bool bAdd, bool bChange )
     if ( ! bChange ) return old;
 
     if ( bChange ) m_pBuffer->trSingle.cGunBitmap |= iMaskGrenade;
-    if ( ! bAdd ) m_pBuffer->trSingle.cGunBitmap &= ( iMaskGrenade ^ 0xff );
+    if ( ! bAdd ) m_pBuffer->trSingle.cGunBitmap &= ( iMaskGrenade ^ TR1_MASK_ANY );
     return old;
 }
 

@@ -192,15 +192,15 @@ CTR4SaveGame::CTR4SaveGame()
     m_iSaveLength       = TR4LEVELMINSIZE;
     m_iMaxLevel         = TR4MAXLEVEL;
 
-    iMaskGun            = TR40_GUN_SET1 | TR40_GUN_SET8;        //  Pistol
-    iMaskUzi            = TR40_GUN_SET1;
-    iMaskRiotGun        = TR40_GUN_SET1 | TR40_GUN_SET8;
-    iMaskCrossBow       = TR40_GUN_SET1 | TR40_GUN_SET8;        // Crossbow
-    iMaskGrenade        = TR40_GUN_SET1 | TR40_GUN_SET8;
-    iMaskRevolver       = TR40_GUN_SET1;                        // Revolver
-    iMaskLaser          = TR40_GUN_SET1;
-    iMaskBinocular      = TR40_GUN_SET1;
-    iMaskCrowBar        = TR40_GUN_SET1;
+    iMaskGun            = TR4_MASK_PISTOL;      //  Pistol
+    iMaskUzi            = TR4_MASK_UZI;
+    iMaskRiotGun        = TR4_MASK_SHOTGUN;
+    iMaskCrossBow       = TR4_MASK_CROSSBOW;    // Crossbow
+    iMaskGrenade        = TR4_MASK_GRENADE;
+    iMaskRevolver       = TR4_MASK_REVOLVER;    // Revolver
+    iMaskLaser          = TR4_MASK_LASER;
+    iMaskBinocular      = TR4_MASK_BINOCULAR;
+    iMaskCrowBar        = TR4_MASK_CROWBAR;
 
     iRiotGunUnits       = 6;
 
@@ -916,43 +916,43 @@ int CTR4SaveGame::GetUnlimitedAmmos()
 /////////////////////////////////////////////////////////////////////////////
 int CTR4SaveGame::Valid()
 {
-    if ( m_pBuffer->tagGuns.m_gunRevolver != 0 && ( m_pBuffer->tagGuns.m_gunRevolver & TR40_GUN_MASK ) == 0 &&
-        ( m_pBuffer->tagGuns.m_gunRevolver & TR40_GUN_SET4 ) == 0 )
+    if ( m_pBuffer->tagGuns.m_gunRevolver != 0 && ( m_pBuffer->tagGuns.m_gunRevolver & TR4_MASK_ANY ) == 0 &&
+        ( m_pBuffer->tagGuns.m_gunRevolver & TR4_GUN_SET4 ) == 0 )
     {
         AddToStatus ( "Revolver Invalid" );
         return 0;
     }
 
-    if ( m_pBuffer->tagGuns.m_gunRiotGun != 0 && ( m_pBuffer->tagGuns.m_gunRiotGun & TR40_GUN_MASK ) == 0 &&
-        ( m_pBuffer->tagGuns.m_gunRiotGun & TR40_GUN_SET4 ) == 0 )
+    if ( m_pBuffer->tagGuns.m_gunRiotGun != 0 && ( m_pBuffer->tagGuns.m_gunRiotGun & TR4_MASK_ANY ) == 0 &&
+        ( m_pBuffer->tagGuns.m_gunRiotGun & TR4_GUN_SET4 ) == 0 )
     {
         AddToStatus ( "RiotGun Invalid" );
         return 0;
     }
 
-    if ( m_pBuffer->tagGuns.m_gunUzis != 0 && ( m_pBuffer->tagGuns.m_gunUzis & TR40_GUN_MASK ) == 0 &&
-        ( m_pBuffer->tagGuns.m_gunUzis & TR40_GUN_SET4 ) == 0 )
+    if ( m_pBuffer->tagGuns.m_gunUzis != 0 && ( m_pBuffer->tagGuns.m_gunUzis & TR4_MASK_ANY ) == 0 &&
+        ( m_pBuffer->tagGuns.m_gunUzis & TR4_GUN_SET4 ) == 0 )
     {
         AddToStatus ( "Uzis Invalid" );
         return 0;
     }
 
-    if ( m_pBuffer->tagGuns.m_gunGrenadesLauncher != 0 && ( m_pBuffer->tagGuns.m_gunGrenadesLauncher & TR40_GUN_MASK ) == 0  &&
-        ( m_pBuffer->tagGuns.m_gunGrenadesLauncher & TR40_GUN_SET4 ) == 0 )
+    if ( m_pBuffer->tagGuns.m_gunGrenadesLauncher != 0 && ( m_pBuffer->tagGuns.m_gunGrenadesLauncher & TR4_MASK_ANY ) == 0  &&
+        ( m_pBuffer->tagGuns.m_gunGrenadesLauncher & TR4_GUN_SET4 ) == 0 )
     {
         AddToStatus ( "Grenades Launcher Invalid" );
         return 0;
     }
 
-    if ( m_pBuffer->tagGuns.m_gunCrossBow != 0 && ( m_pBuffer->tagGuns.m_gunCrossBow & TR40_GUN_MASK ) == 0 &&
-        ( m_pBuffer->tagGuns.m_gunCrossBow & TR40_GUN_SET4 ) == 0 )
+    if ( m_pBuffer->tagGuns.m_gunCrossBow != 0 && ( m_pBuffer->tagGuns.m_gunCrossBow & TR4_MASK_ANY ) == 0 &&
+        ( m_pBuffer->tagGuns.m_gunCrossBow & TR4_GUN_SET4 ) == 0 )
     {
         AddToStatus ( "CrossBow Invalid" );
         return 0;
     }
 
-    if ( m_pBuffer->tagGuns.m_gunCrowBar != 0 && ( m_pBuffer->tagGuns.m_gunCrowBar & TR40_GUN_MASK ) == 0  &&
-        ( m_pBuffer->tagGuns.m_gunCrowBar & TR40_GUN_SET4 ) == 0 )
+    if ( m_pBuffer->tagGuns.m_gunCrowBar != 0 && ( m_pBuffer->tagGuns.m_gunCrowBar & TR4_MASK_ANY ) == 0  &&
+        ( m_pBuffer->tagGuns.m_gunCrowBar & TR4_GUN_SET4 ) == 0 )
     {
         AddToStatus ( "CrowBar Invalid" );
         return 0;
@@ -1104,9 +1104,9 @@ unsigned char CTR4SaveGame::GrabWeapon1 ( int iX, bool bAdd, bool bChange )
     unsigned char old = m_pBuffer->tagGuns.m_gunPistol;
     if ( ! bChange ) return old;
 
-    m_pBuffer->tagGuns.m_gunPistol &= ( TR40_GUN_SET4 ^ 0xffff );
+    m_pBuffer->tagGuns.m_gunPistol &= ( TR4_GUN_SET4 ^ TR4_MASK_ALL );
     if ( bAdd ) m_pBuffer->tagGuns.m_gunPistol |= iMaskGun;
-    if ( ! bAdd ) m_pBuffer->tagGuns.m_gunPistol &= ( iMaskGun ^ 0xff );
+    if ( ! bAdd ) m_pBuffer->tagGuns.m_gunPistol &= ( iMaskGun ^ TR4_MASK_ALL );
 
     return old;
 }
@@ -1120,9 +1120,9 @@ unsigned char CTR4SaveGame::GrabWeapon4 ( int iX, bool bAdd, bool bChange )
     unsigned char old = m_pBuffer->tagGuns.m_gunRiotGun;
     if ( ! bChange ) return old;
 
-    m_pBuffer->tagGuns.m_gunRiotGun &= ( TR40_GUN_SET4 ^ 0xffff );
+    m_pBuffer->tagGuns.m_gunRiotGun &= ( TR4_GUN_SET4 ^ TR4_MASK_ALL );
     if ( bAdd ) m_pBuffer->tagGuns.m_gunRiotGun |= iMaskRiotGun;
-    if ( ! bAdd ) m_pBuffer->tagGuns.m_gunRiotGun &= ( iMaskRiotGun ^ 0xff );
+    if ( ! bAdd ) m_pBuffer->tagGuns.m_gunRiotGun &= ( iMaskRiotGun ^ TR4_MASK_ALL );
 
     return old;
 }
@@ -1136,9 +1136,9 @@ unsigned char CTR4SaveGame::GrabWeapon2 ( int iX, bool bAdd, bool bChange )
     unsigned char old = m_pBuffer->tagGuns.m_gunRevolver;
     if ( ! bChange ) return old;
 
-    m_pBuffer->tagGuns.m_gunRevolver &= ( TR40_GUN_SET1 ^ 0xffff );
+    m_pBuffer->tagGuns.m_gunRevolver &= ( TR4_GUN_SET1 ^ TR4_MASK_ALL );
     if ( bAdd ) m_pBuffer->tagGuns.m_gunRevolver |= iMaskRevolver;
-    if ( ! bAdd ) m_pBuffer->tagGuns.m_gunRevolver &= ( iMaskRevolver ^ 0xff );
+    if ( ! bAdd ) m_pBuffer->tagGuns.m_gunRevolver &= ( iMaskRevolver ^ TR4_MASK_ALL );
 
     return old;
 }
@@ -1152,9 +1152,9 @@ unsigned char CTR4SaveGame::GrabWeapon3 ( int iX, bool bAdd, bool bChange )
     unsigned char old = m_pBuffer->tagGuns.m_gunUzis;
     if ( ! bChange ) return old;
 
-    m_pBuffer->tagGuns.m_gunUzis &= ( TR40_GUN_SET4 ^ 0xffff );
+    m_pBuffer->tagGuns.m_gunUzis &= ( TR4_GUN_SET4 ^ TR4_MASK_ALL );
     if ( bAdd ) m_pBuffer->tagGuns.m_gunUzis |= iMaskUzi;
-    if ( ! bAdd ) m_pBuffer->tagGuns.m_gunUzis &= ( iMaskUzi ^ 0xff );
+    if ( ! bAdd ) m_pBuffer->tagGuns.m_gunUzis &= ( iMaskUzi ^ TR4_MASK_ALL );
 
     return old;
 }
@@ -1190,9 +1190,9 @@ unsigned char CTR4SaveGame::GrabWeapon7 ( int iX, bool bAdd, bool bChange )
     unsigned char old = m_pBuffer->tagGuns.m_gunGrenadesLauncher;
     if ( ! bChange ) return old;
 
-    m_pBuffer->tagGuns.m_gunGrenadesLauncher &= ( TR40_GUN_SET4 ^ 0xffff );
+    m_pBuffer->tagGuns.m_gunGrenadesLauncher &= ( TR4_GUN_SET4 ^ TR4_MASK_ALL );
     if ( bAdd ) m_pBuffer->tagGuns.m_gunGrenadesLauncher |= iMaskGrenade;
-    if ( ! bAdd ) m_pBuffer->tagGuns.m_gunGrenadesLauncher &= ( iMaskGrenade ^ 0xff );
+    if ( ! bAdd ) m_pBuffer->tagGuns.m_gunGrenadesLauncher &= ( iMaskGrenade ^ TR4_MASK_ALL );
 
     return old;
 }
@@ -1206,9 +1206,9 @@ unsigned char CTR4SaveGame::GrabWeapon8 ( int iX, bool bAdd, bool bChange )
     unsigned char old = m_pBuffer->tagGuns.m_gunCrossBow;
     if ( ! bChange ) return old;
 
-    m_pBuffer->tagGuns.m_gunCrossBow &= ( TR40_GUN_SET4 ^ 0xffff );
+    m_pBuffer->tagGuns.m_gunCrossBow &= ( TR4_GUN_SET4 ^ TR4_MASK_ALL );
     if ( bAdd ) m_pBuffer->tagGuns.m_gunCrossBow |= iMaskCrossBow;
-    if ( ! bAdd ) m_pBuffer->tagGuns.m_gunCrossBow &= ( iMaskCrossBow ^ 0xff );
+    if ( ! bAdd ) m_pBuffer->tagGuns.m_gunCrossBow &= ( iMaskCrossBow ^ TR4_MASK_ALL );
 
     return old;
 }
@@ -1223,9 +1223,9 @@ unsigned char CTR4SaveGame::GrabWeapon9 ( int iX, bool bAdd, bool bChange )
     unsigned char old = m_pBuffer->tagGuns.m_gunCrowBar;
     if ( ! bChange ) return old;
 
-    m_pBuffer->tagGuns.m_gunCrowBar &= ( TR40_GUN_SET4 ^ 0xffff );
+    m_pBuffer->tagGuns.m_gunCrowBar &= ( TR4_GUN_SET4 ^ TR4_MASK_ALL );
     if ( bAdd ) m_pBuffer->tagGuns.m_gunCrowBar |= iMaskCrowBar;
-    if ( ! bAdd ) m_pBuffer->tagGuns.m_gunCrowBar &= ( iMaskCrowBar ^ 0xff );
+    if ( ! bAdd ) m_pBuffer->tagGuns.m_gunCrowBar &= ( iMaskCrowBar ^ TR4_MASK_ALL );
 
     return old;
 }

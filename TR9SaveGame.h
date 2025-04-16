@@ -3,6 +3,7 @@
 #include <Windows.h>
 #include <afx.h>
 
+#include "TRSaveGame.h"
 #include "TRXTools.h"
 
 #define TR123LEVELSIZE      1384452
@@ -20,34 +21,6 @@
 
 //  TR3 Save Level Here
 #define TR3_LEVEL_SAVE      20
-
-//
-#define TRR1_MASK_COMPASS   0x01
-#define TRR1_MASK_GUN       0x02
-#define TRR1_MASK_MAGNUM    0x04
-#define TRR1_MASK_UZI       0x08
-#define TRR1_MASK_RIOT      0x10
-
-//
-#define TRR2_MASK_COMPASS   0x01
-#define TRR2_MASK_GUN       0x02
-#define TRR2_MASK_MAGNUM    0x04
-#define TRR2_MASK_UZI       0x08
-#define TRR2_MASK_RIOT      0x10
-#define TRR2_MASK_M16       0x20
-#define TRR2_MASK_GRENADE   0x40
-#define TRR2_MASK_HARPOON   0x80
-
-//
-#define TRR3_MASK_COMPASS   0x001
-#define TRR3_MASK_GUN       0x002
-#define TRR3_MASK_MAGNUM    0x004
-#define TRR3_MASK_UZI       0x008
-#define TRR3_MASK_RIOT      0x010
-#define TRR3_MASK_M16       0x020
-#define TRR3_MASK_ROCKET    0x040
-#define TRR3_MASK_GRENADE   0x080
-#define TRR3_MASK_HARPOON   0x100
 
 //  Secrets
 //  0x0DB040 = 1000 - Save (db00c): 39 Level 16 (db628) (#62) 16: Floating Islands

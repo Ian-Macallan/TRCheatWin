@@ -141,7 +141,7 @@ class CTR1SaveGame : public CTR123SaveGame
         BYTE                iMaskPistol;
         BYTE                iMaskMagnum;
         BYTE                iMaskUzi;
-        BYTE                MaskShotGun;
+        BYTE                iMaskShotGun;
         BYTE                iMaskHarpoon;
         BYTE                iMaskMP5;
         BYTE                iMaskGrenade;

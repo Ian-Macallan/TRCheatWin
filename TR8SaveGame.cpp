@@ -473,35 +473,13 @@ IMPLEMENT_DYNAMIC(CTR8SaveGame, CObject)
 //    iMaskBinocular      = TRR4_GUN_SET1;
 //    iMaskCrowBar        = TRR4_GUN_SET1;
 
-//
-//  00000001
-#define TRR4_GUN_SET1       0x01
-//  00000100
-#define TRR4_GUN_SET4       0x04
-//  00001000
-#define TRR4_GUN_SET8       0x08
-//  00001001
-#define TRR4_GUN_SET        (TRR4_GUN_SET1|TRR4_GUN_SET8)
-//  00001101
-#define TRR4_GUN_MASK       (TRR4_GUN_SET1|TRR4_GUN_SET4|TRR4_GUN_SET8)
-
-
-#define TRR4_MASK_PISTOL    TRR4_GUN_SET
-#define TRR4_MASK_UZI       TRR4_GUN_SET1
-#define TRR4_MASK_RIOTGUN   TRR4_GUN_SET
-#define TRR4_MASK_CROSSBOW  TRR4_GUN_SET
-#define TRR4_MASK_GRENADE   TRR4_GUN_SET
-#define TRR4_MASK_MAGNUM    TRR4_GUN_SET
-#define TRR4_MASK_LASER     TRR4_GUN_SET1
-#define TRR4_MASK_BINOCULAR TRR4_GUN_SET1
-#define TRR4_MASK_CROWBAR   TRR4_GUN_SET1
 
 BYTE CTR8SaveGame::m_TR4MaskPistol      = TRR4_MASK_PISTOL;
 BYTE CTR8SaveGame::m_TR4MaskUzi         = TRR4_MASK_UZI;
-BYTE CTR8SaveGame::m_TR4MaskShotgun     = TRR4_MASK_RIOTGUN;
+BYTE CTR8SaveGame::m_TR4MaskShotgun     = TRR4_MASK_SHOTGUN;
 BYTE CTR8SaveGame::m_TR4MaskCrossbow    = TRR4_MASK_CROSSBOW;
 BYTE CTR8SaveGame::m_TR4MaskGrenade     = TRR4_MASK_GRENADE;
-BYTE CTR8SaveGame::m_TR4MaskRevolver    = TRR4_MASK_MAGNUM;
+BYTE CTR8SaveGame::m_TR4MaskRevolver    = TRR4_MASK_REVOLVER;
 BYTE CTR8SaveGame::m_TR4MaskLaser       = TRR4_MASK_LASER;
 BYTE CTR8SaveGame::m_TR4MaskBinocular   = TRR4_MASK_BINOCULAR;
 BYTE CTR8SaveGame::m_TR4MaskCrowbar     = TRR4_MASK_CROWBAR;
@@ -516,34 +494,11 @@ BYTE CTR8SaveGame::m_TR4MaskCrowbar     = TRR4_MASK_CROWBAR;
 //    iMaskHeadSet        = TRR5_GUN_SET1;
 //    iMaskRevolver       = TRR5_GUN_SET1 | TRR5_GUN_SETC;
 
-//  00000001
-#define TRR5_GUN_SET1       0x01    
-//  00000100
-#define TRR5_GUN_SET4       0x04
-//  00001000
-#define TRR5_GUN_SET8       0x08
-//  00001100
-#define TRR5_GUN_SETC       0x0C
-//  00001001
-#define TRR5_GUN_SET        (TRR5_GUN_SET1|TRR5_GUN_SET8)
-//  00001101
-#define TRR5_GUN_MASK       (TRR5_GUN_SET1|TRR5_GUN_SET4|TRR5_GUN_SET8|TRR5_GUN_SETC)
-
-#define TRR5_MASK_PISTOL    (TRR5_GUN_SET1|TRR5_GUN_SET8)
-#define TRR5_MASK_UZI       (TRR5_GUN_SET1|TRR5_GUN_SET8)
-#define TRR5_MASK_RIOTGUN   (TRR5_GUN_SET1|TRR5_GUN_SET8)
-#define TRR5_MASK_HK        TRR5_GUN_SET1
-#define TRR5_MASK_REVOLVER  (TRR5_GUN_SET1|TRR5_GUN_SETC)
-#define TRR5_MASK_GRAP      (TRR5_GUN_SET1|TRR5_GUN_SETC)
-#define TRR5_MASK_LASER     TRR5_GUN_SET1
-#define TRR5_MASK_BINOCULAR TRR5_GUN_SET1
-#define TRR5_MASK_CROWBAR   TRR5_GUN_SET1
-
 
 BYTE CTR8SaveGame::m_TR5MaskPistol      = TRR5_MASK_PISTOL;
 BYTE CTR8SaveGame::m_TR5MaskUzi         = TRR5_MASK_UZI;
-BYTE CTR8SaveGame::m_TR5MaskShotgun     = TRR5_MASK_RIOTGUN;
-BYTE CTR8SaveGame::m_TR5MaskHK          = TRR5_MASK_HK;
+BYTE CTR8SaveGame::m_TR5MaskShotgun     = TRR5_MASK_SHOTGUN;
+BYTE CTR8SaveGame::m_TR5MaskHKGun       = TRR5_MASK_HKGUN;
 BYTE CTR8SaveGame::m_TR5MaskRevolver    = TRR5_MASK_REVOLVER;
 BYTE CTR8SaveGame::m_TR5MaskGrap        = TRR5_MASK_GRAP;
 BYTE CTR8SaveGame::m_TR5MaskLaser       = TRR5_MASK_LASER;
@@ -4546,7 +4501,7 @@ void CTR8SaveGame::SetPistols ( int tombraider, void *pBlocks, void *pGuns, int 
             {
                 if ( pGun )
                 {
-                    pGun->m_gunPistol       = pGun->m_gunPistol & ( CTR8SaveGame::m_TR4MaskPistol ^ 0xff );
+                    pGun->m_gunPistol       = pGun->m_gunPistol & ( CTR8SaveGame::m_TR4MaskPistol ^ TRR4_MASK_ALL );
                 }
 
                 if ( pBlock )
@@ -4595,7 +4550,7 @@ void CTR8SaveGame::SetPistols ( int tombraider, void *pBlocks, void *pGuns, int 
             {
                 if ( pGun )
                 {
-                    pGun->m_gunPistol       = pGun->m_gunPistol & ( CTR8SaveGame::m_TR5MaskPistol ^ 0xff );
+                    pGun->m_gunPistol       = pGun->m_gunPistol & ( CTR8SaveGame::m_TR5MaskPistol ^ TRR5_MASK_ALL );
                 }
 
                 if ( pBlock )
@@ -4717,7 +4672,7 @@ void CTR8SaveGame::SetMagnum ( int tombraider, void *pBlocks, void *pGuns, int l
             {
                 if ( pGun )
                 {
-                    pGun->m_gunRevolver         = pGun->m_gunRevolver & ( CTR8SaveGame::m_TR4MaskRevolver ^ 0xff );
+                    pGun->m_gunRevolver         = pGun->m_gunRevolver & ( CTR8SaveGame::m_TR4MaskRevolver ^ TRR4_MASK_ALL );
                 }
 
                 if ( pBlock )
@@ -4766,7 +4721,7 @@ void CTR8SaveGame::SetMagnum ( int tombraider, void *pBlocks, void *pGuns, int l
             {
                 if ( pGun )
                 {
-                    pGun->m_gunRevolver         = pGun->m_gunRevolver & ( CTR8SaveGame::m_TR5MaskRevolver ^ 0xff );
+                    pGun->m_gunRevolver         = pGun->m_gunRevolver & ( CTR8SaveGame::m_TR5MaskRevolver ^ TRR5_MASK_ALL );
                 }
 
                 if ( pBlock )
@@ -4881,7 +4836,7 @@ void CTR8SaveGame::SetUzi ( int tombraider, void *pBlocks, void *pGuns, int leve
             {
                 if ( pGun )
                 {
-                    pGun->m_gunUzis         = pGun->m_gunUzis & ( CTR8SaveGame::m_TR4MaskUzi ^ 0xff );
+                    pGun->m_gunUzis         = pGun->m_gunUzis & ( CTR8SaveGame::m_TR4MaskUzi ^ TRR4_MASK_ALL );
                 }
 
                 if ( pBlock )
@@ -4930,7 +4885,7 @@ void CTR8SaveGame::SetUzi ( int tombraider, void *pBlocks, void *pGuns, int leve
             {
                 if ( pGun )
                 {
-                    pGun->m_gunUzis         = pGun->m_gunUzis & ( CTR8SaveGame::m_TR5MaskUzi ^ 0xff );
+                    pGun->m_gunUzis         = pGun->m_gunUzis & ( CTR8SaveGame::m_TR5MaskUzi ^ TRR5_MASK_ALL );
                 }
 
                 if ( pBlock )
@@ -5047,7 +5002,7 @@ void CTR8SaveGame::SetRiotgun ( int tombraider, void *pBlocks, void *pGuns, int 
             {
                 if ( pGun )
                 {
-                    pGun->m_gunRiotGun          = pGun->m_gunRiotGun & ( CTR8SaveGame::m_TR4MaskShotgun ^ 0xff );
+                    pGun->m_gunRiotGun          = pGun->m_gunRiotGun & ( CTR8SaveGame::m_TR4MaskShotgun ^ TRR4_MASK_ALL );
                 }
 
                 if ( pBlock )
@@ -5100,7 +5055,7 @@ void CTR8SaveGame::SetRiotgun ( int tombraider, void *pBlocks, void *pGuns, int 
             {
                 if ( pGun )
                 {
-                    pGun->m_gunRiotGun          = pGun->m_gunRiotGun & ( CTR8SaveGame::m_TR5MaskShotgun ^ 0xff );
+                    pGun->m_gunRiotGun          = pGun->m_gunRiotGun & ( CTR8SaveGame::m_TR5MaskShotgun ^ TRR5_MASK_ALL );
                 }
 
                 if ( pBlock )
@@ -5219,7 +5174,7 @@ void CTR8SaveGame::SetHarpoon ( int tombraider, void *pBlocks, void *pGuns, int 
             {
                 if ( pGun )
                 {
-                    pGun->m_gunCrossBow         = pGun->m_gunCrossBow & ( CTR8SaveGame::m_TR4MaskCrossbow ^ 0xff );
+                    pGun->m_gunCrossBow         = pGun->m_gunCrossBow & ( CTR8SaveGame::m_TR4MaskCrossbow ^ TRR4_MASK_ALL );
                 }
 
                 if ( pBlock )
@@ -5274,7 +5229,7 @@ void CTR8SaveGame::SetHarpoon ( int tombraider, void *pBlocks, void *pGuns, int 
             {
                 if ( pGun )
                 {
-                    pGun->m_gunGrappling        = pGun->m_gunGrappling & ( CTR8SaveGame::m_TR5MaskGrap ^ 0xff );
+                    pGun->m_gunGrappling        = pGun->m_gunGrappling & ( CTR8SaveGame::m_TR5MaskGrap ^ TRR5_MASK_ALL );
                 }
 
                 if ( pBlock )
@@ -5384,7 +5339,7 @@ void CTR8SaveGame::SetM16 ( int tombraider, void *pBlocks, void *pGuns, int leve
             {
                 if ( pGun )
                 {
-                    pGun->m_gunHK               |= CTR8SaveGame::m_TR5MaskHK; // Magnum
+                    pGun->m_gunHK               |= CTR8SaveGame::m_TR5MaskHKGun; // Magnum
                 }
 
                 if ( pBlock )
@@ -5396,7 +5351,7 @@ void CTR8SaveGame::SetM16 ( int tombraider, void *pBlocks, void *pGuns, int leve
             {
                 if ( pGun )
                 {
-                    pGun->m_gunHK               = pGun->m_gunHK & ( CTR8SaveGame::m_TR5MaskHK ^ 0xff );
+                    pGun->m_gunHK               = pGun->m_gunHK & ( CTR8SaveGame::m_TR5MaskHKGun ^ TRR5_MASK_ALL );
                 }
 
                 if ( pBlock )
@@ -5508,7 +5463,7 @@ void CTR8SaveGame::SetGrenade ( int tombraider, void *pBlocks, void *pGuns, int 
             {
                 if ( pGun )
                 {
-                    pGun->m_gunGrenadesLauncher = pGun->m_gunGrenadesLauncher & ( CTR8SaveGame::m_TR4MaskGrenade ^ 0xff );
+                    pGun->m_gunGrenadesLauncher = pGun->m_gunGrenadesLauncher & ( CTR8SaveGame::m_TR4MaskGrenade ^ TRR4_MASK_ALL );
                 }
 
                 if ( pBlock )
@@ -5563,7 +5518,7 @@ void CTR8SaveGame::SetGrenade ( int tombraider, void *pBlocks, void *pGuns, int 
             {
                 if ( pGun )
                 {
-                    pGun->m_gunGrappling        = pGun->m_gunGrappling & ( CTR8SaveGame::m_TR5MaskGrap ^ 0xff );
+                    pGun->m_gunGrappling        = pGun->m_gunGrappling & ( CTR8SaveGame::m_TR5MaskGrap ^ TRR5_MASK_ALL );
                 }
 
                 if ( pBlock )
@@ -6114,7 +6069,7 @@ void CTR8SaveGame::SetBinocular ( int tombraider, int block, BYTE value )
                 }
                 else
                 {
-                    pGun->m_gunBinocular    = pGun->m_gunBinocular & ( CTR8SaveGame::m_TR4MaskBinocular ^ 0xff );
+                    pGun->m_gunBinocular    = pGun->m_gunBinocular & ( CTR8SaveGame::m_TR4MaskBinocular ^ TRR4_MASK_ALL );
                 }
             }
             break;
@@ -6131,7 +6086,7 @@ void CTR8SaveGame::SetBinocular ( int tombraider, int block, BYTE value )
                 }
                 else
                 {
-                    pGun->m_gunBinocular    = pGun->m_gunBinocular & ( CTR8SaveGame::m_TR5MaskBinocular ^ 0xff );
+                    pGun->m_gunBinocular    = pGun->m_gunBinocular & ( CTR8SaveGame::m_TR5MaskBinocular ^ TRR5_MASK_ALL );
                 }
             }
             break;
@@ -6172,7 +6127,7 @@ void CTR8SaveGame::SetLaser ( int tombraider, int block, BYTE value )
                 }
                 else
                 {
-                    pGun->m_gunLaserLight    = pGun->m_gunLaserLight & ( CTR8SaveGame::m_TR4MaskLaser ^ 0xff );
+                    pGun->m_gunLaserLight    = pGun->m_gunLaserLight & ( CTR8SaveGame::m_TR4MaskLaser ^ TRR4_MASK_ALL );
                 }
             }
             break;
@@ -6189,7 +6144,7 @@ void CTR8SaveGame::SetLaser ( int tombraider, int block, BYTE value )
                 }
                 else
                 {
-                    pGun->m_gunLaserLight    = pGun->m_gunLaserLight & ( CTR8SaveGame::m_TR5MaskLaser ^ 0xff );
+                    pGun->m_gunLaserLight    = pGun->m_gunLaserLight & ( CTR8SaveGame::m_TR5MaskLaser ^ TRR5_MASK_ALL );
                 }
             }
             break;
@@ -6230,7 +6185,7 @@ void CTR8SaveGame::SetCrowbar ( int tombraider, int block, BYTE value )
                 }
                 else
                 {
-                    pGun->m_gunCrowBar    = pGun->m_gunCrowBar & ( CTR8SaveGame::m_TR4MaskCrowbar ^ 0xff );
+                    pGun->m_gunCrowBar    = pGun->m_gunCrowBar & ( CTR8SaveGame::m_TR4MaskCrowbar ^ TRR4_MASK_ALL );
                 }
             }
             break;
@@ -6247,7 +6202,7 @@ void CTR8SaveGame::SetCrowbar ( int tombraider, int block, BYTE value )
                 }
                 else
                 {
-                    pGun->m_gunCrowBar    = pGun->m_gunCrowBar & ( CTR8SaveGame::m_TR5MaskCrowbar ^ 0xff );
+                    pGun->m_gunCrowBar    = pGun->m_gunCrowBar & ( CTR8SaveGame::m_TR5MaskCrowbar ^ TRR5_MASK_ALL );
                 }
             }
             break;
@@ -6293,7 +6248,7 @@ void CTR8SaveGame::SetHeadSet ( int tombraider, int block, BYTE value )
                 }
                 else
                 {
-                    pGun->m_gunHeadSet    = pGun->m_gunHeadSet & ( CTR8SaveGame::m_TR5MaskBinocular ^ 0xff );
+                    pGun->m_gunHeadSet    = pGun->m_gunHeadSet & ( CTR8SaveGame::m_TR5MaskBinocular ^ TRR5_MASK_ALL );
                 }
             }
             break;

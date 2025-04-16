@@ -150,6 +150,69 @@ void CTRXCHEATWINApp::ResetCustomLabels ()
             TR49ItemsNameGen [ b ] = NULL;
         }
     }
+
+    //
+    for ( int l = 0; l < TR4NGMAXLEVEL; l++ )
+    {
+        for ( int b = 0; b < 4; b++ )
+        {
+            if ( TR39PuzzleName [ l ].label1 != NULL )
+            {
+                free ( TR39PuzzleName [ l ].label1 );
+                TR39PuzzleName [ l ].label1 = NULL;
+            }
+            if ( TR39PuzzleName [ l ].label2 != NULL )
+            {
+                free ( TR39PuzzleName [ l ].label2 );
+                TR39PuzzleName [ l ].label2 = NULL;
+            }
+            if ( TR39PuzzleName [ l ].label3 != NULL )
+            {
+                free ( TR39PuzzleName [ l ].label3 );
+                TR39PuzzleName [ l ].label3 = NULL;
+            }
+            if ( TR39PuzzleName [ l ].label4 != NULL )
+            {
+                free ( TR39PuzzleName [ l ].label4 );
+                TR39PuzzleName [ l ].label4 = NULL;
+            }
+
+            //
+            if ( TR39PickupName [ l ].label1 != NULL )
+            {
+                free ( TR39PickupName [ l ].label1 );
+                TR39PickupName [ l ].label1 = NULL;
+            }
+            if ( TR39PickupName [ l ].label2 != NULL )
+            {
+                free ( TR39PickupName [ l ].label2 );
+                TR39PickupName [ l ].label2 = NULL;
+            }
+
+            //
+            if ( TR39KeyName [ l ].label1 != NULL )
+            {
+                free ( TR39KeyName [ l ].label1 );
+                TR39KeyName [ l ].label1 = NULL;
+            }
+            if ( TR39KeyName [ l ].label2 != NULL )
+            {
+                free ( TR39KeyName [ l ].label2 );
+                TR39KeyName [ l ].label2 = NULL;
+            }
+            if ( TR39KeyName [ l ].label3 != NULL )
+            {
+                free ( TR39KeyName [ l ].label3 );
+                TR39KeyName [ l ].label3 = NULL;
+            }
+            if ( TR39KeyName [ l ].label4 != NULL )
+            {
+                free ( TR39KeyName [ l ].label4 );
+                TR39KeyName [ l ].label4 = NULL;
+            }
+        }
+    }
+
 }
 
 //
@@ -733,6 +796,10 @@ BOOL CTRXCHEATWINApp::InitInstance()
     //  Custom Levels
     ZeroMemory ( TR49ItemsNameInd, sizeof(TR49ItemsNameInd) );
     ZeroMemory ( TR49ItemsNameGen, sizeof(TR49ItemsNameGen) );
+
+    ZeroMemory ( TR39PuzzleName, sizeof(TR39PuzzleName) );
+    ZeroMemory ( TR39PickupName, sizeof(TR39PickupName) );
+    ZeroMemory ( TR39KeyName, sizeof(TR39KeyName) );
 
     //  Instanciate Colors
     CTRXColors::Instanciate();

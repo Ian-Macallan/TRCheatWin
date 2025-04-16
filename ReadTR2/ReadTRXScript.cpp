@@ -7,6 +7,7 @@
 #include "MCMemA.h"
 #include "TR4NG.h"
 #include "TRXTools.h"
+#include "TRLabelItems.h"
 
 #ifndef     NB_BUTTONS
 #define     NB_BUTTONS      29
@@ -2549,6 +2550,10 @@ BOOL PopulateCustomData (   const char *pathname, const char *pDirectory, int ve
 BOOL ReadTombPC (    const char *pathname, const char *pDirectory, int version, bool bWrite,
                         FCT_AddToItemsLabels function )
 {
+    if ( function == NULL )
+    {
+        function = AddToItemsLabels;
+    }
 
     static xuint32_t Version;             // The Script Version (Always 3 for TR2/3)
     static xuint8_t Description[256];     // Null-terminated string describing the script copyright info etc. Not encrypted.
@@ -2577,8 +2582,6 @@ BOOL ReadTombPC (    const char *pathname, const char *pDirectory, int version, 
     static xuint16_t SecretSoundID;       // ID of soundtrack to play when a secret is found
     static xuint8_t Unknown4[4];          // Filler
 
-
-
 //     Bit 0 (0x01) — DemoVersion. If set, it indicates that the game is a demo distribution.
 //     Bit 1 (0x02) — TitleDisabled. If set, it indicates that the game has no Title Screen.
 //     Bit 2 (0x04) — CheatModeCheckDisabled. If set, it indicates that the game does not look for the cheat sequence keystrokes and events.
@@ -2592,6 +2595,7 @@ BOOL ReadTombPC (    const char *pathname, const char *pDirectory, int version, 
 //     Bit 10 (0x400) — SelectAnyLevel. If set, it enables level select when New Game is selected.
 //     Bit 11 (0x800) — EnableCheatCode. It apparently has no effect on the PC game.
 
+
 //      If Flags & UseXor true each character (except null-terminator) must be ^ XorKey to decrypt the string.
 
 //  TPCStringArray[NumLevels] LevelStrings;                  // level name strings
@@ -2603,8 +2607,31 @@ BOOL ReadTombPC (    const char *pathname, const char *pDirectory, int version, 
 
 //  uint16_t SequenceOffsets[NumLevels + 1];                 // Relative offset to sequence info (the +1 is because the first one is the FrontEnd sequence, for when the game starts)
 //  uint16_t SequenceNumBytes;                               // Size of SequenceOffsets in bytes
-//  uint16_t[] Sequences[NumLevels + 1];    
+//  uint16_t[] Sequences[NumLevels + 1];                     // Sequence info see explanation below (SIZE is dependant on first opcode)
 
+//  uint16_t DemoLevelIDs[NumDemoLevels];
+
+//  #if PSX
+//      PSXFMVInfo[NumFMVs];
+//  #endif
+
+//  uint16_t NumGameStrings;
+//  TPCStringArray[NumGameStrings] GameStrings;
+
+//  #if PSX
+//      TPCStringArray[size] PSXStrings; // size is 79 for the TR2 beta, 80 for all other versions
+//  #else
+//      TPCStringArray[41] PCStrings;
+//  #endif
+
+//  TPCStringArray[NumLevels] PuzzleStrings[4];
+//  #if PSX && TR2_BETA
+//      TPCStringArray[NumLevels] SecretsStrings[4];
+//      TPCStringArray[NumLevels] SpecialStrings[2];
+//  #endif
+//  TPCStringArray[NumLevels] PickupStrings[2];
+//  TPCStringArray[NumLevels] KeyStrings[4];
+    
 //  dtruct TPCStringArray // (variable length)
 //  {
 //      uint16_t Offsets[Count]; // List containing for each string an offset in the Data block (Count * 2 bytes)
@@ -2718,7 +2745,6 @@ BOOL ReadTombPC (    const char *pathname, const char *pDirectory, int version, 
     //  LevelStrings
     MCMemA LevelStrings;
     static xuint16_t OffsetsLevelStrings [ 1024 ];
-
     {
         ZeroMemory ( OffsetsLevelStrings, sizeof(OffsetsLevelStrings) );
         iRead = fread ( &OffsetsLevelStrings, NumLevels * sizeof(xuint16_t), 1, hInpFile );
@@ -2752,9 +2778,10 @@ BOOL ReadTombPC (    const char *pathname, const char *pDirectory, int version, 
     }
 
     //  ChapterScreenStrings
-    MCMemA ChapterScreenStrings;
-    static xuint16_t OffsetsChapterScreenStrings [ 1024 ];
     {
+        MCMemA ChapterScreenStrings;
+        static xuint16_t OffsetsChapterScreenStrings [ 1024 ];
+
         ZeroMemory ( OffsetsChapterScreenStrings, sizeof(OffsetsChapterScreenStrings) );
         iRead = fread ( &OffsetsChapterScreenStrings, NumChapterScreens * sizeof(xuint16_t), 1, hInpFile );
 
@@ -2787,9 +2814,10 @@ BOOL ReadTombPC (    const char *pathname, const char *pDirectory, int version, 
     }
 
     //  TitleStrings
-    MCMemA TitleStrings;
-    static xuint16_t OffsetsTitleStrings [ 1024 ];
     {
+        MCMemA TitleStrings;
+        static xuint16_t OffsetsTitleStrings [ 1024 ];
+
         ZeroMemory ( OffsetsTitleStrings, sizeof(OffsetsTitleStrings) );
         iRead = fread ( &OffsetsTitleStrings, NumTitles * sizeof(xuint16_t), 1, hInpFile );
 
@@ -2822,9 +2850,10 @@ BOOL ReadTombPC (    const char *pathname, const char *pDirectory, int version, 
     }
 
     //  FMVStrings
-    MCMemA FMVStrings;
-    static xuint16_t OffsetsFMVStrings [ 1024 ];
     {
+        MCMemA FMVStrings;
+        static xuint16_t OffsetsFMVStrings [ 1024 ];
+
         ZeroMemory ( OffsetsFMVStrings, sizeof(OffsetsFMVStrings) );
         iRead = fread ( &OffsetsFMVStrings, NumFMVs * sizeof(xuint16_t), 1, hInpFile );
 
@@ -2900,6 +2929,328 @@ BOOL ReadTombPC (    const char *pathname, const char *pDirectory, int version, 
                 (*function)(1, l, -1, pathString, memCoded.ptr );
             }
         }
+    }
+
+    //  CutscenePathStrings
+    {
+        MCMemA CutscenePathStrings;
+        static xuint16_t OffsetsCutscenePathStrings [ 1024 ];
+
+        ZeroMemory ( OffsetsCutscenePathStrings, sizeof(OffsetsCutscenePathStrings) );
+        iRead = fread ( &OffsetsCutscenePathStrings, NumCutscenes * sizeof(xuint16_t), 1, hInpFile );
+
+        xuint16_t TotalSize = 0;
+        iRead = fread ( &TotalSize, sizeof(TotalSize), 1, hInpFile );
+
+        //
+        CutscenePathStrings.AllocateA ( TotalSize + 1 );
+        iRead = fread ( CutscenePathStrings.ptr, TotalSize, 1, hInpFile );
+
+        //
+        //  Decrypt
+        if ( Flags & 0x100 )
+        {
+            for ( unsigned short i = 0; i < TotalSize; i++ )
+            {
+                if ( CutscenePathStrings.ptr [ i ] != '\0' )
+                {
+                    CutscenePathStrings.ptr [ i ] = CutscenePathStrings.ptr [ i ] ^ XORKey;
+                }
+            }
+        }
+
+        //
+        //  List
+        for ( unsigned short l = 0; l < NumCutscenes; l++ )
+        {
+            Print ( hLogFile, "CutscenePathStrings %d : %s\n", l, CutscenePathStrings.ptr + OffsetsCutscenePathStrings [ l ] );
+        }
+    }
+
+//  uint16_t SequenceOffsets[NumLevels + 1];                 // Relative offset to sequence info (the +1 is because the first one is the FrontEnd sequence, for when the game starts)
+//  uint16_t SequenceNumBytes;                               // Size of SequenceOffsets in bytes
+//  uint16_t[] Sequences[NumLevels + 1];                     // Sequence info see explanation below (SIZE is dependant on first opcode)
+    static xuint16_t SequenceOffsets [ 1024 ];
+    {
+        ZeroMemory ( SequenceOffsets, sizeof(SequenceOffsets) );
+        iRead = fread ( &SequenceOffsets, ( NumLevels + 1 ) * sizeof(xuint16_t), 1, hInpFile );
+        xuint16_t SequenceNumBytes;
+        iRead = fread ( &SequenceNumBytes, sizeof(xuint16_t), 1, hInpFile );
+        MCMemA Sequences( SequenceNumBytes );
+        iRead = fread ( Sequences.ptr, SequenceNumBytes, 1, hInpFile );
+    }
+
+    //  uint16_t DemoLevelIDs[NumDemoLevels];
+    static xuint16_t DemoLevelIDs [ 1024 ];
+    if ( NumDemoLevels > 0 )
+    {
+        ZeroMemory ( DemoLevelIDs, sizeof(DemoLevelIDs) );
+        iRead = fread ( &DemoLevelIDs, ( NumDemoLevels ) * sizeof(xuint16_t), 1, hInpFile );
+    }
+
+    //  uint16_t NumGameStrings;
+    //  TPCStringArray[NumGameStrings] GameStrings;
+    {
+        xuint16_t NumGameStrings = 0;
+        iRead = fread ( &NumGameStrings, sizeof(NumGameStrings), 1, hInpFile );
+
+        MCMemA GameStrings;
+        static xuint16_t OffsetsGameStrings [ 1024 ];
+
+        ZeroMemory ( OffsetsGameStrings, sizeof(OffsetsGameStrings) );
+        iRead = fread ( &OffsetsGameStrings, NumGameStrings * sizeof(xuint16_t), 1, hInpFile );
+
+        xuint16_t TotalSize = 0;
+        iRead = fread ( &TotalSize, sizeof(TotalSize), 1, hInpFile );
+
+        //
+        GameStrings.AllocateA ( TotalSize + 1 );
+        iRead = fread ( GameStrings.ptr, TotalSize, 1, hInpFile );
+
+        //
+        //  Decrypt
+        if ( Flags & 0x100 )
+        {
+            for ( unsigned short i = 0; i < TotalSize; i++ )
+            {
+                if ( GameStrings.ptr [ i ] != '\0' )
+                {
+                    GameStrings.ptr [ i ] = GameStrings.ptr [ i ] ^ XORKey;
+                }
+            }
+        }
+
+        //
+        //  List
+        for ( unsigned short l = 0; l < NumGameStrings; l++ )
+        {
+            if ( OffsetsGameStrings [ l ] < GameStrings.len )
+            {
+                Print ( hLogFile, "GameStrings %d : %s\n", l, GameStrings.ptr + OffsetsGameStrings [ l ] );
+            }
+        }
+    }
+    
+    //  TPCStringArray[41] PCStrings;
+    {
+        const xuint16_t numPCStrings = 41;
+        MCMemA PCStrings;
+        static xuint16_t OffsetsPCStrings [ numPCStrings ];
+
+        ZeroMemory ( OffsetsPCStrings, sizeof(OffsetsPCStrings) );
+        iRead = fread ( &OffsetsPCStrings, numPCStrings * sizeof(xuint16_t), 1, hInpFile );
+
+        xuint16_t TotalSize = 0;
+        iRead = fread ( &TotalSize, sizeof(TotalSize), 1, hInpFile );
+
+        //
+        PCStrings.AllocateA ( TotalSize + 1 );
+        iRead = fread ( PCStrings.ptr, TotalSize, 1, hInpFile );
+
+        //
+        //  Decrypt
+        if ( Flags & 0x100 )
+        {
+            for ( unsigned short i = 0; i < TotalSize; i++ )
+            {
+                if ( PCStrings.ptr [ i ] != '\0' )
+                {
+                    PCStrings.ptr [ i ] = PCStrings.ptr [ i ] ^ XORKey;
+                }
+            }
+        }
+
+        //
+        //  List
+        for ( unsigned short l = 0; l < numPCStrings; l++ )
+        {
+            if ( OffsetsPCStrings [ l ] < PCStrings.len )
+            {
+                Print ( hLogFile, "PCStrings %d : %s\n", l, PCStrings.ptr + OffsetsPCStrings [ l ] );
+            }
+        }
+    }
+
+    //  TPCStringArray[NumLevels] PuzzleStrings[4];
+    for ( int item = 0; item < 4; item++ )
+    {
+        const xuint16_t numStrings = /* 4 * */ NumLevels;
+        MCMemA PuzzleStrings;
+        static xuint16_t OffsetsPuzzleStrings [ 1024 ];
+
+        ZeroMemory ( OffsetsPuzzleStrings, sizeof(OffsetsPuzzleStrings) );
+        iRead = fread ( &OffsetsPuzzleStrings, numStrings * sizeof(xuint16_t), 1, hInpFile );
+
+        xuint16_t TotalSize = 0;
+        iRead = fread ( &TotalSize, sizeof(TotalSize), 1, hInpFile );
+
+        //
+        PuzzleStrings.AllocateA ( TotalSize + 1 );
+        iRead = fread ( PuzzleStrings.ptr, TotalSize, 1, hInpFile );
+
+        //
+        //  Decrypt
+        if ( Flags & 0x100 )
+        {
+            for ( unsigned short i = 0; i < TotalSize; i++ )
+            {
+                if ( PuzzleStrings.ptr [ i ] != '\0' )
+                {
+                    PuzzleStrings.ptr [ i ] = PuzzleStrings.ptr [ i ] ^ XORKey;
+                }
+            }
+        }
+
+        //
+        //  List
+        for ( unsigned short level = 0; level < numStrings; level++ )
+        {
+            if ( OffsetsPuzzleStrings [ level ] < PuzzleStrings.len )
+            {
+                char *pString = PuzzleStrings.ptr + OffsetsPuzzleStrings [ level ];
+                Print ( hLogFile, "PuzzleStrings (%d,%d] : %s\n", level, item, pString );
+                if  ( function != NULL )
+                {
+                    ( *function ) ( 31, level, item, pString, "Puzzle" );
+                }
+            }
+        }
+    }
+
+    //  TPCStringArray[NumLevels] PickupStrings[2];
+    for ( int item = 0; item < 2; item++ )
+    {
+        const xuint16_t numStrings = /* 2 * */ NumLevels;
+        MCMemA PickupStrings;
+        static xuint16_t OffsetsPickupStrings [ 1024 ];
+
+        ZeroMemory ( OffsetsPickupStrings, sizeof(OffsetsPickupStrings) );
+        iRead = fread ( &OffsetsPickupStrings, numStrings * sizeof(xuint16_t), 1, hInpFile );
+
+        xuint16_t TotalSize = 0;
+        iRead = fread ( &TotalSize, sizeof(TotalSize), 1, hInpFile );
+
+        //
+        PickupStrings.AllocateA ( TotalSize + 1 );
+        iRead = fread ( PickupStrings.ptr, TotalSize, 1, hInpFile );
+
+        //
+        //  Decrypt
+        if ( Flags & 0x100 )
+        {
+            for ( unsigned short i = 0; i < TotalSize; i++ )
+            {
+                if ( PickupStrings.ptr [ i ] != '\0' )
+                {
+                    PickupStrings.ptr [ i ] = PickupStrings.ptr [ i ] ^ XORKey;
+                }
+            }
+        }
+
+        //
+        //  List
+        for ( unsigned short level = 0; level < numStrings; level++ )
+        {
+            if ( OffsetsPickupStrings [ level ] < PickupStrings.len )
+            {
+                char *pString = PickupStrings.ptr + OffsetsPickupStrings [ level ];
+                Print ( hLogFile, "PickupStrings (%d,%d] : %s\n", level, item, pString );
+                if  ( function != NULL )
+                {
+                    ( *function ) ( 32, level, item, pString, "Pickup" );
+                }
+            }
+        }
+    }
+
+    //  TPCStringArray[NumLevels] KeyStrings[4];
+    for ( int item = 0; item < 4; item++ )
+    {
+        xuint16_t numStrings = /* 4 * */ NumLevels;
+        MCMemA KeyStrings;
+        static xuint16_t OffsetsKeyStrings [ 1024 ];
+
+        ZeroMemory ( OffsetsKeyStrings, sizeof(OffsetsKeyStrings) );
+        iRead = fread ( &OffsetsKeyStrings, numStrings * sizeof(xuint16_t), 1, hInpFile );
+
+        xuint16_t TotalSize = 0;
+        iRead = fread ( &TotalSize, sizeof(TotalSize), 1, hInpFile );
+
+        //
+        KeyStrings.AllocateA ( TotalSize + 1 );
+        iRead = fread ( KeyStrings.ptr, TotalSize, 1, hInpFile );
+
+        //
+        //  Decrypt
+        if ( Flags & 0x100 )
+        {
+            for ( unsigned short i = 0; i < TotalSize; i++ )
+            {
+                if ( KeyStrings.ptr [ i ] != '\0' )
+                {
+                    KeyStrings.ptr [ i ] = KeyStrings.ptr [ i ] ^ XORKey;
+                }
+            }
+        }
+
+        //
+        //  List
+        for ( unsigned short level = 0; level < numStrings; level++ )
+        {
+            char *pString = KeyStrings.ptr + OffsetsKeyStrings [ level ];
+            if ( OffsetsKeyStrings [ level ] < KeyStrings.len )
+            {
+                Print ( hLogFile, "KeyStrings (%d,%d] : %s\n", level, item, pString );
+                if  ( function != NULL )
+                {
+                    ( *function ) ( 33, level, item, pString, "Key" );
+                }
+            }
+        }
+    }
+
+    //
+    //  Write Files
+    if ( hTxtFile != NULL )
+    {
+        Print ( hTxtFile, "FourLabels TRPuzzleName [%d] =\n", NumLevels );
+        Print ( hTxtFile, "{\n" );
+        for ( int level = 0; level < NumLevels; level++ )
+        {
+            Print ( hTxtFile, "    { "  );
+            Print ( hTxtFile, "    \"%s\", " , TR39PuzzleName [ level ].label1 );
+            Print ( hTxtFile, "    \"%s\", " , TR39PuzzleName [ level ].label2 );
+            Print ( hTxtFile, "    \"%s\", " , TR39PuzzleName [ level ].label3 );
+            Print ( hTxtFile, "    \"%s\", " , TR39PuzzleName [ level ].label4 );
+            Print ( hTxtFile, "    }, /* %d */\n", level );
+        }
+        Print ( hTxtFile, "};\n" );
+
+        //
+        Print ( hTxtFile, "TwoLabels TRPickup [%d] =\n", NumLevels );
+        Print ( hTxtFile, "{\n" );
+        for ( int level = 0; level < NumLevels; level++ )
+        {
+            Print ( hTxtFile, "    { "  );
+            Print ( hTxtFile, "    \"%s\", " , TR39PickupName [ level ].label1 );
+            Print ( hTxtFile, "    \"%s\", " , TR39PickupName [ level ].label2 );
+            Print ( hTxtFile, "    }, /* %d */\n", level );
+        }
+        Print ( hTxtFile, "};\n" );
+
+        //
+        Print ( hTxtFile, "FourLabels TRKeyName [%d] =\n", NumLevels );
+        Print ( hTxtFile, "{\n" );
+        for ( int level = 0; level < NumLevels; level++ )
+        {
+            Print ( hTxtFile, "    { "  );
+            Print ( hTxtFile, "    \"%s\", " , TR39KeyName [ level ].label1 );
+            Print ( hTxtFile, "    \"%s\", " , TR39KeyName [ level ].label2 );
+            Print ( hTxtFile, "    \"%s\", " , TR39KeyName [ level ].label3 );
+            Print ( hTxtFile, "    \"%s\", " , TR39KeyName [ level ].label4 );
+            Print ( hTxtFile, "    }, /* %d */\n", level );
+        }
+        Print ( hTxtFile, "};\n" );
     }
 
     //

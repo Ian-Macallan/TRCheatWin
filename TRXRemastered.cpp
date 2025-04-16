@@ -1300,11 +1300,11 @@ void CTRXRemastered::DisplayOne ( int line )
                     SET_GUN_HIDE(m_XRocket);
 
                     //
-                    SET_BLOCK_CHECK ( m_Guns, TRR1_MASK_GUN );
+                    SET_BLOCK_CHECK ( m_Guns, TRR1_MASK_PISTOL );
 
                     SET_BLOCK_CHECK ( m_Magnum, TRR1_MASK_MAGNUM );
                     SET_BLOCK_CHECK ( m_Uzi, TRR1_MASK_UZI );
-                    SET_BLOCK_CHECK ( m_Riotgun, TRR1_MASK_RIOT );
+                    SET_BLOCK_CHECK ( m_Riotgun, TRR1_MASK_SHOTGUN );
 
                     SET_BLOCK_HIDE ( m_M16 );
                     SET_BLOCK_HIDE ( m_Grenade );
@@ -1475,11 +1475,11 @@ void CTRXRemastered::DisplayOne ( int line )
                     SET_GUN_HIDE(m_XRocket);
 
                     //
-                    SET_BLOCK_CHECK ( m_Guns, TRR2_MASK_GUN );
+                    SET_BLOCK_CHECK ( m_Guns, TRR2_MASK_PISTOL );
 
-                    SET_BLOCK_CHECK ( m_Magnum, TRR2_MASK_MAGNUM );
+                    SET_BLOCK_CHECK ( m_Magnum, TRR2_MASK_DESERT );
                     SET_BLOCK_CHECK ( m_Uzi, TRR2_MASK_UZI );
-                    SET_BLOCK_CHECK ( m_Riotgun, TRR2_MASK_RIOT );
+                    SET_BLOCK_CHECK ( m_Riotgun, TRR2_MASK_SHOTGUN );
 
                     SET_BLOCK_CHECK ( m_M16, TRR2_MASK_M16 );
                     SET_BLOCK_CHECK ( m_Grenade, TRR2_MASK_GRENADE );
@@ -1652,13 +1652,13 @@ void CTRXRemastered::DisplayOne ( int line )
                     SET_GUN_VALUE(m_XRocket,rocket);
 
                     //
-                    SET_BLOCK_CHECK ( m_Guns, TRR3_MASK_GUN );
+                    SET_BLOCK_CHECK ( m_Guns, TRR3_MASK_PISTOL );
 
-                    SET_BLOCK_CHECK ( m_Magnum, TRR3_MASK_MAGNUM );
+                    SET_BLOCK_CHECK ( m_Magnum, TRR3_MASK_DESERT );
                     SET_BLOCK_CHECK ( m_Uzi, TRR3_MASK_UZI );
-                    SET_BLOCK_CHECK ( m_Riotgun, TRR3_MASK_RIOT );
+                    SET_BLOCK_CHECK ( m_Riotgun, TRR3_MASK_SHOTGUN );
 
-                    SET_BLOCK_CHECK ( m_M16, TRR3_MASK_M16 );
+                    SET_BLOCK_CHECK ( m_M16, TRR3_MASK_MP5 );
                     SET_BLOCK_CHECK ( m_Grenade, TRR3_MASK_GRENADE );
                     SET_BLOCK_CHECK ( m_Harpoon, TRR3_MASK_HARPOON );
                     SET_BLOCK_CHECK ( m_Rocket, TRR3_MASK_ROCKET );
@@ -4177,6 +4177,52 @@ const char *CTRXRemastered::GetLabelForObject ( int tombraider, int levelIndex, 
 
             break;
         }
+
+        case GAME_TR29:
+        case GAME_TR39:
+        {
+            switch ( iObject )
+            {
+                case 0:
+                case 1:
+                case 2:
+                case 3:
+                {
+                    pFourTable  = TR39PuzzleName;
+                    index       = iObject;
+                    count       = sizeof(TR39PuzzleName)/sizeof(FourLabels);
+                    break;
+                }
+                case 4:
+                case 5:
+                case 6:
+                case 7:
+                {
+                    pFourTable  = TR39KeyName;
+                    index       = iObject - 4;
+                    count       = sizeof(TR39KeyName)/sizeof(FourLabels);
+                    break;
+                }
+                case 8:
+                case 9:
+                {
+                    pTwoTable   = TR39PickupName;
+                    index       = iObject - 8;
+                    count       = sizeof(TR39PickupName)/sizeof(TwoLabels);
+                    break;
+                }
+                case 10:
+                case 11:
+                case 12:
+                case 13:
+                {
+                    break;
+                }
+            }
+
+            break;
+        }
+
     }
 
     //
@@ -4279,19 +4325,19 @@ const char *CTRXRemastered::GetLabelForObject ( int tombraider, int levelIndex, 
     //
     if ( ! bDouble )
     {
-        if ( strlen ( pTempText1 ) > 0 )
+        if ( pTempText1 != NULL && strlen ( pTempText1 ) > 0 )
         {
             strcpy_s ( szLabel, sizeof(szLabel), pTempText1 );
         }
     }
     else
     {
-        if ( strlen ( pTempText1 ) > 0 )
+        if (  pTempText1 != NULL && strlen ( pTempText1 ) > 0 )
         {
             strcpy_s ( szLabel, sizeof(szLabel), pTempText1 );
         }
 
-        if ( strlen ( pTempText2 ) > 0 )
+        if (  pTempText2 != NULL && strlen ( pTempText2 ) > 0 )
         {
             strcat_s ( szLabel, sizeof(szLabel), "/" );
             strcat_s ( szLabel, sizeof(szLabel), pTempText2 );

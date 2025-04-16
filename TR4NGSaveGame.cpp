@@ -176,15 +176,15 @@ CTR4NGSaveGame::CTR4NGSaveGame()
     m_iSaveLength       = CTRXGlobal::m_iMaxNGSize;
     m_iMaxLevel         = TR4NGMAXLEVEL;
 
-    iMaskGun            = TR40NG_GUN_SET1 | TR40NG_GUN_SET8;        //  Pistol
-    iMaskUzi            = TR40NG_GUN_SET1;
-    iMaskRiotGun        = TR40NG_GUN_SET1 | TR40NG_GUN_SET8;
-    iMaskCrossBow       = TR40NG_GUN_SET1 | TR40NG_GUN_SET8;        // Crossbow
-    iMaskGrenade        = TR40NG_GUN_SET1 | TR40NG_GUN_SET8;
-    iMaskRevolver       = TR40NG_GUN_SET1;                          // Revolver
-    iMaskLaser          = TR40NG_GUN_SET1;
-    iMaskBinocular      = TR40NG_GUN_SET1;
-    iMaskCrowBar        = TR40NG_GUN_SET1;
+    iMaskGun            = TR4NG_MASK_PISTOL;        //  Pistol
+    iMaskUzi            = TR4NG_MASK_UZI;
+    iMaskRiotGun        = TR4NG_MASK_SHOTGUN;
+    iMaskCrossBow       = TR4NG_MASK_CROSSBOW;      // Crossbow
+    iMaskGrenade        = TR4NG_MASK_GRENADE;
+    iMaskRevolver       = TR4NG_MASK_REVOLVER;      // Revolver
+    iMaskLaser          = TR4NG_MASK_LASER;
+    iMaskBinocular      = TR4NG_MASK_BINOCULAR;
+    iMaskCrowBar        = TR4NG_MASK_CROWBAR;
 
     iRiotGunUnits       = 6;
 
@@ -1735,43 +1735,43 @@ int CTR4NGSaveGame::Valid()
     }
 
     //
-    if ( pGun->m_gunRevolver != 0 && ( pGun->m_gunRevolver & TR40NG_GUN_MASK ) == 0 &&
-        ( pGun->m_gunRevolver & TR40NG_GUN_SET4 ) == 0 )
+    if ( pGun->m_gunRevolver != 0 && ( pGun->m_gunRevolver & TR4NG_MASK_ANY ) == 0 &&
+        ( pGun->m_gunRevolver & TR4NG_GUN_SET4 ) == 0 )
     {
         AddToStatus ( "Revolver Invalid" );
         return 0;
     }
 
-    if ( pGun->m_gunRiotGun != 0 && ( pGun->m_gunRiotGun & TR40NG_GUN_MASK ) == 0 &&
-        ( pGun->m_gunRiotGun & TR40NG_GUN_SET4 ) == 0 )
+    if ( pGun->m_gunRiotGun != 0 && ( pGun->m_gunRiotGun & TR4NG_MASK_ANY ) == 0 &&
+        ( pGun->m_gunRiotGun & TR4NG_GUN_SET4 ) == 0 )
     {
         AddToStatus ( "Riot Gun Invalid" );
         return 0;
     }
 
-    if ( pGun->m_gunUzis != 0 && ( pGun->m_gunUzis & TR40NG_GUN_MASK ) == 0 &&
-        ( pGun->m_gunUzis & TR40NG_GUN_SET4 ) == 0 )
+    if ( pGun->m_gunUzis != 0 && ( pGun->m_gunUzis & TR4NG_MASK_ANY ) == 0 &&
+        ( pGun->m_gunUzis & TR4NG_GUN_SET4 ) == 0 )
     {
         AddToStatus ( "Uzi Invalid" );
         return 0;
     }
 
-    if ( pGun->m_gunGrenadesLauncher != 0 && ( pGun->m_gunGrenadesLauncher & TR40NG_GUN_MASK ) == 0  &&
-        ( pGun->m_gunGrenadesLauncher & TR40NG_GUN_SET4 ) == 0 )
+    if ( pGun->m_gunGrenadesLauncher != 0 && ( pGun->m_gunGrenadesLauncher & TR4NG_MASK_ANY ) == 0  &&
+        ( pGun->m_gunGrenadesLauncher & TR4NG_GUN_SET4 ) == 0 )
     {
         AddToStatus ( "Grenade Launcher Invalid" );
         return 0;
     }
 
-    if ( pGun->m_gunCrossBow != 0 && ( pGun->m_gunCrossBow & TR40NG_GUN_MASK ) == 0 &&
-        ( pGun->m_gunCrossBow & TR40NG_GUN_SET4 ) == 0 )
+    if ( pGun->m_gunCrossBow != 0 && ( pGun->m_gunCrossBow & TR4NG_MASK_ANY ) == 0 &&
+        ( pGun->m_gunCrossBow & TR4NG_GUN_SET4 ) == 0 )
     {
         AddToStatus ( "CrossBow Invalid" );
         return 0;
     }
 
     if ( pGun->m_gunCrowBar != 0 && ( pGun->m_gunCrowBar & TR40NG_CROWBAR_MASK ) == 0  &&
-        ( pGun->m_gunCrowBar & TR40NG_GUN_SET6 ) == 0 )
+        ( pGun->m_gunCrowBar & TR4NG_GUN_SET6 ) == 0 )
     {
         AddToStatus ( "Crowbar Invalid" );
         return 0;
@@ -2022,9 +2022,9 @@ unsigned char CTR4NGSaveGame::GrabWeapon1 ( int iX, bool bAdd, bool bChange )
     unsigned char old = pGun->m_gunPistol;
     if ( ! bChange ) return old;
 
-    pGun->m_gunPistol &= ( TR40NG_GUN_SET4 ^ 0xffff );
+    pGun->m_gunPistol &= ( TR4NG_GUN_SET4 ^ TR4NG_MASK_ALL );
     if ( bAdd ) pGun->m_gunPistol |= iMaskGun;
-    if ( ! bAdd ) pGun->m_gunPistol &= ( iMaskGun ^ 0xff );
+    if ( ! bAdd ) pGun->m_gunPistol &= ( iMaskGun ^ TR4NG_MASK_ALL );
 
     return old;
 }
@@ -2177,9 +2177,9 @@ unsigned char CTR4NGSaveGame::GrabWeapon2 ( int iX, bool bAdd, bool bChange )
     unsigned char old = pGun->m_gunRevolver;
     if ( ! bChange ) return old;
 
-    pGun->m_gunRevolver &= ( TR40NG_GUN_SET1 ^ 0xffff );
+    pGun->m_gunRevolver &= ( TR4NG_GUN_SET1 ^ TR4NG_MASK_ALL );
     if ( bAdd ) pGun->m_gunRevolver |= iMaskRevolver;
-    if ( ! bAdd ) pGun->m_gunRevolver &= ( iMaskRevolver ^ 0xff );
+    if ( ! bAdd ) pGun->m_gunRevolver &= ( iMaskRevolver ^ TR4NG_MASK_ALL );
 
     return old;
 }
@@ -2202,9 +2202,9 @@ unsigned char CTR4NGSaveGame::GrabWeapon3 ( int iX, bool bAdd, bool bChange )
     unsigned char old = pGun->m_gunUzis;
     if ( ! bChange ) return old;
 
-    pGun->m_gunUzis &= ( TR40NG_GUN_SET4 ^ 0xffff );
+    pGun->m_gunUzis &= ( TR4NG_GUN_SET4 ^ TR4NG_MASK_ALL );
     if ( bAdd ) pGun->m_gunUzis |= iMaskUzi;
-    if ( ! bAdd ) pGun->m_gunUzis &= ( iMaskUzi ^ 0xff );
+    if ( ! bAdd ) pGun->m_gunUzis &= ( iMaskUzi ^ TR4NG_MASK_ALL );
 
     return old;
 }
@@ -2227,9 +2227,9 @@ unsigned char CTR4NGSaveGame::GrabWeapon4 ( int iX, bool bAdd, bool bChange )
     unsigned char old = pGun->m_gunRiotGun;
     if ( ! bChange ) return old;
 
-    pGun->m_gunRiotGun &= ( TR40NG_GUN_SET4 ^ 0xffff );
+    pGun->m_gunRiotGun &= ( TR4NG_GUN_SET4 ^ TR4NG_MASK_ALL );
     if ( bAdd ) pGun->m_gunRiotGun |= iMaskRiotGun;
-    if ( ! bAdd ) pGun->m_gunRiotGun &= ( iMaskRiotGun ^ 0xff );
+    if ( ! bAdd ) pGun->m_gunRiotGun &= ( iMaskRiotGun ^ TR4NG_MASK_ALL );
 
     return old;
 }
@@ -2291,9 +2291,9 @@ unsigned char CTR4NGSaveGame::GrabWeapon7 ( int iX, bool bAdd, bool bChange )
     unsigned char old = pGun->m_gunGrenadesLauncher;
     if ( ! bChange ) return old;
 
-    pGun->m_gunGrenadesLauncher &= ( TR40NG_GUN_SET4 ^ 0xffff );
+    pGun->m_gunGrenadesLauncher &= ( TR4NG_GUN_SET4 ^ TR4NG_MASK_ALL );
     if ( bAdd ) pGun->m_gunGrenadesLauncher |= iMaskGrenade;
-    if ( ! bAdd ) pGun->m_gunGrenadesLauncher &= ( iMaskGrenade ^ 0xff );
+    if ( ! bAdd ) pGun->m_gunGrenadesLauncher &= ( iMaskGrenade ^ TR4NG_MASK_ALL );
 
     return old;
 }
@@ -2316,9 +2316,9 @@ unsigned char CTR4NGSaveGame::GrabWeapon8 ( int iX, bool bAdd, bool bChange )
     unsigned char old = pGun->m_gunCrossBow;
     if ( ! bChange ) return old;
 
-    pGun->m_gunCrossBow &= ( TR40NG_GUN_SET4 ^ 0xffff );
+    pGun->m_gunCrossBow &= ( TR4NG_GUN_SET4 ^ TR4NG_MASK_ALL );
     if ( bAdd ) pGun->m_gunCrossBow |= iMaskCrossBow;
-    if ( ! bAdd ) pGun->m_gunCrossBow &= ( iMaskCrossBow ^ 0xff );
+    if ( ! bAdd ) pGun->m_gunCrossBow &= ( iMaskCrossBow ^ TR4NG_MASK_ALL );
 
     return old;
 }
@@ -2342,9 +2342,9 @@ unsigned char CTR4NGSaveGame::GrabWeapon9 ( int iX, bool bAdd, bool bChange )
     unsigned char old = pGun->m_gunCrowBar;
     if ( ! bChange ) return old;
 
-    pGun->m_gunCrowBar &= ( TR40NG_GUN_SET4 ^ 0xffff );
+    pGun->m_gunCrowBar &= ( TR4NG_GUN_SET4 ^ TR4NG_MASK_ALL );
     if ( bAdd ) pGun->m_gunCrowBar |= iMaskCrowBar;
-    if ( ! bAdd ) pGun->m_gunCrowBar &= ( iMaskCrowBar ^ 0xff );
+    if ( ! bAdd ) pGun->m_gunCrowBar &= ( iMaskCrowBar ^ TR4NG_MASK_ALL );
 
     return old;
 }

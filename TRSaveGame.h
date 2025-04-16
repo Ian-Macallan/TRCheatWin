@@ -26,6 +26,252 @@
 
 //
 /////////////////////////////////////////////////////////////////////////////
+// TR1
+/////////////////////////////////////////////////////////////////////////////
+#define TR1_MASK_ANY            0xFF
+#define TR1_MASK_COMPASS        0x01
+#define TR1_MASK_PISTOL         0x02
+#define TR1_MASK_MAGNUM         0x04
+#define TR1_MASK_UZI            0x08
+#define TR1_MASK_SHOTGUN        0x10
+
+//  Normally no weapons of this kind in TR1
+#define TR1_MASK_HARPOON        0x20
+#define TR1_MASK_MP5            0x40
+#define TR1_MASK_GRENADE        0x80
+
+//
+/////////////////////////////////////////////////////////////////////////////
+// TR1 Remastered
+/////////////////////////////////////////////////////////////////////////////
+//
+#define TRR1_MASK_ANY           0xFF
+#define TRR1_MASK_COMPASS       0x01
+#define TRR1_MASK_PISTOL        0x02
+#define TRR1_MASK_MAGNUM        0x04
+#define TRR1_MASK_UZI           0x08
+#define TRR1_MASK_SHOTGUN       0x10
+
+//
+/////////////////////////////////////////////////////////////////////////////
+// TR2
+/////////////////////////////////////////////////////////////////////////////
+#define TR2_MASK_ANY            0xFF
+#define TR2_MASK_COMPASS        0x01
+#define TR2_MASK_PISTOL         0x02
+#define TR2_MASK_DESERT         0x04
+#define TR2_MASK_UZI            0x08
+#define TR2_MASK_SHOTGUN        0x10
+#define TR2_MASK_M16            0x20
+#define TR2_MASK_GRENADE        0x40
+#define TR2_MASK_HARPOON        0x80
+
+//
+/////////////////////////////////////////////////////////////////////////////
+// TR2 Remastered
+/////////////////////////////////////////////////////////////////////////////
+//
+#define TRR2_MASK_ANY           0xFF
+#define TRR2_MASK_COMPASS       0x01
+#define TRR2_MASK_PISTOL        0x02
+#define TRR2_MASK_DESERT        0x04
+#define TRR2_MASK_UZI           0x08
+#define TRR2_MASK_SHOTGUN       0x10
+#define TRR2_MASK_M16           0x20
+#define TRR2_MASK_GRENADE       0x40
+#define TRR2_MASK_HARPOON       0x80
+
+
+//
+/////////////////////////////////////////////////////////////////////////////
+// TR3
+/////////////////////////////////////////////////////////////////////////////
+#define TR3_MASK_ANY            0x01FF
+#define TR3_MASK_COMPASS        0x0001
+#define TR3_MASK_PISTOL         0x0002
+#define TR3_MASK_DESERT         0x0004
+#define TR3_MASK_UZI            0x0008
+#define TR3_MASK_SHOTGUN        0x0010
+#define TR3_MASK_MP5            0x0020
+#define TR3_MASK_ROCKET         0x0040
+#define TR3_MASK_GRENADE        0x0080
+#define TR3_MASK_HARPOON        0x0100
+
+//
+/////////////////////////////////////////////////////////////////////////////
+// TR3 Remastered
+/////////////////////////////////////////////////////////////////////////////
+
+//
+#define TRR3_MASK_ANY           0x01FF
+#define TRR3_MASK_COMPASS       0x001
+#define TRR3_MASK_PISTOL        0x002
+#define TRR3_MASK_DESERT        0x004
+#define TRR3_MASK_UZI           0x008
+#define TRR3_MASK_SHOTGUN       0x010
+#define TRR3_MASK_MP5           0x020
+#define TRR3_MASK_ROCKET        0x040
+#define TRR3_MASK_GRENADE       0x080
+#define TRR3_MASK_HARPOON       0x100
+
+
+//
+/////////////////////////////////////////////////////////////////////////////
+// TR4
+/////////////////////////////////////////////////////////////////////////////
+//  00000001
+#define TR4_GUN_SET1            0x01
+//  00000100
+#define TR4_GUN_SET4            0x04
+//  00001000
+#define TR4_GUN_SET8            0x08
+//  00001001
+#define TR4_GUN_SET9            (TR4_GUN_SET1|TR4_GUN_SET8)
+//  00001101
+#define TR4_GUN_MASK            (TR4_GUN_SET1|TR4_GUN_SET4|TR4_GUN_SET8)
+
+#define TR4_MASK_ALL            0xFF
+#define TR4_MASK_ANY            TR4_GUN_MASK
+#define TR4_MASK_PISTOL         TR4_GUN_SET9
+#define TR4_MASK_UZI            TR4_GUN_SET1
+#define TR4_MASK_SHOTGUN        TR4_GUN_SET9
+#define TR4_MASK_CROSSBOW       TR4_GUN_SET9
+#define TR4_MASK_GRENADE        TR4_GUN_SET9
+#define TR4_MASK_REVOLVER       TR4_GUN_SET1
+#define TR4_MASK_LASER          TR4_GUN_SET1
+#define TR4_MASK_BINOCULAR      TR4_GUN_SET1
+#define TR4_MASK_CROWBAR        TR4_GUN_SET1
+
+
+//
+/////////////////////////////////////////////////////////////////////////////
+// TR4 Next Gen
+/////////////////////////////////////////////////////////////////////////////
+
+//  00000001
+#define TR4NG_GUN_SET1          0x01
+//  00000010
+#define TR4NG_GUN_SET2          0x02
+//  00000100
+#define TR4NG_GUN_SET4          0x04
+//  00000110
+#define TR4NG_GUN_SET6          (TR4NG_GUN_SET2|TR4NG_GUN_SET4)
+//  00001000
+#define TR4NG_GUN_SET8          0x08
+//  00001001
+#define TR4NG_GUN_SET9          (TR4NG_GUN_SET1|TR4NG_GUN_SET8)
+
+//  For Some Reason CROWBAR may differ
+//  00001111
+#define TR40NG_CROWBAR_MASK     (TR4NG_GUN_SET1|TR4NG_GUN_SET2|TR4NG_GUN_SET4|TR4NG_GUN_SET8)
+
+//  00001101
+#define TR4NG_GUN_MASK          (TR4NG_GUN_SET1|TR4NG_GUN_SET4|TR4NG_GUN_SET8)
+
+#define TR4NG_MASK_ALL          0xFF
+#define TR4NG_MASK_ANY          TR4NG_GUN_MASK
+#define TR4NG_MASK_PISTOL       TR4NG_GUN_SET9
+#define TR4NG_MASK_UZI          TR4NG_GUN_SET1
+#define TR4NG_MASK_SHOTGUN      TR4NG_GUN_SET9
+#define TR4NG_MASK_CROSSBOW     TR4NG_GUN_SET9
+#define TR4NG_MASK_GRENADE      TR4NG_GUN_SET9
+#define TR4NG_MASK_REVOLVER     TR4NG_GUN_SET1
+#define TR4NG_MASK_LASER        TR4NG_GUN_SET1
+#define TR4NG_MASK_BINOCULAR    TR4NG_GUN_SET1
+#define TR4NG_MASK_CROWBAR      TR4NG_GUN_SET1
+
+//
+/////////////////////////////////////////////////////////////////////////////
+// TRR4 Remastered
+/////////////////////////////////////////////////////////////////////////////
+//
+//  00000001
+#define TRR4_GUN_SET1           0x01
+//  00000100
+#define TRR4_GUN_SET4           0x04
+//  00001000
+#define TRR4_GUN_SET8           0x08
+//  00001001
+#define TRR4_GUN_SET9           (TRR4_GUN_SET1|TRR4_GUN_SET8)
+//  00001101
+#define TRR4_GUN_MASK           (TRR4_GUN_SET1|TRR4_GUN_SET4|TRR4_GUN_SET8)
+
+#define TRR4_MASK_ALL           0xFF
+#define TRR4_MASK_ANY           TRR4_GUN_MASK
+#define TRR4_MASK_PISTOL        TRR4_GUN_SET9
+#define TRR4_MASK_UZI           TRR4_GUN_SET1
+#define TRR4_MASK_SHOTGUN       TRR4_GUN_SET9
+#define TRR4_MASK_CROSSBOW      TRR4_GUN_SET9
+#define TRR4_MASK_GRENADE       TRR4_GUN_SET9
+#define TRR4_MASK_REVOLVER      TRR4_GUN_SET9
+#define TRR4_MASK_LASER         TRR4_GUN_SET1
+#define TRR4_MASK_BINOCULAR     TRR4_GUN_SET1
+#define TRR4_MASK_CROWBAR       TRR4_GUN_SET1
+
+//
+/////////////////////////////////////////////////////////////////////////////
+// TR5
+/////////////////////////////////////////////////////////////////////////////
+//  00000001
+#define TR5_GUN_SET1            0x01    
+//  00000100
+#define TR5_GUN_SET4            0x04
+//  00001000
+#define TR5_GUN_SET8            0x08
+//  00001100
+#define TR5_GUN_SETC            (TR5_GUN_SET4|TR5_GUN_SET8)
+//  00001001
+#define TR5_GUN_SET9            (TR5_GUN_SET1|TR5_GUN_SET8)
+//
+#define TR5_GUN_SETD            (TR5_GUN_SET1|TR5_GUN_SETC)
+//  00001101
+#define TR5_GUN_MASK            (TR5_GUN_SET1|TR5_GUN_SET4|TR5_GUN_SET8|TR5_GUN_SETC)
+
+#define TR5_MASK_ALL            0xFF
+#define TR5_MASK_ANY            TR5_GUN_MASK
+#define TR5_MASK_PISTOL         TR5_GUN_SET9
+#define TR5_MASK_UZI            TR5_GUN_SET9
+#define TR5_MASK_SHOTGUN        TR5_GUN_SET9
+#define TR5_MASK_HKGUN          TR5_GUN_SET9
+#define TR5_MASK_DESERT         TR5_GUN_SETD
+#define TR5_MASK_LASER          TR5_GUN_SET1
+#define TR5_MASK_BINOCULAR      TR5_GUN_SET1
+#define TR5_MASK_HEADSET        TR5_GUN_SET1
+#define TR5_MASK_REVOLVER       TR5_GUN_SETD
+
+//
+/////////////////////////////////////////////////////////////////////////////
+// TRR5 Remastered
+/////////////////////////////////////////////////////////////////////////////
+//  00000001
+#define TRR5_GUN_SET1           0x01    
+//  00000100
+#define TRR5_GUN_SET4           0x04
+//  00001000
+#define TRR5_GUN_SET8           0x08
+//  00001100
+#define TRR5_GUN_SETC           (TRR5_GUN_SET4|TRR5_GUN_SET8)
+//  00001001
+#define TRR5_GUN_SET9           (TRR5_GUN_SET1|TRR5_GUN_SET8)
+//
+#define TRR5_GUN_SETD           (TRR5_GUN_SET1|TRR5_GUN_SETC)
+//  00001101
+#define TRR5_GUN_MASK           (TRR5_GUN_SET1|TRR5_GUN_SET4|TRR5_GUN_SET8|TRR5_GUN_SETC)
+
+#define TRR5_MASK_ALL           0xFF
+#define TRR5_MASK_ANY           TRR5_GUN_MASK
+#define TRR5_MASK_PISTOL        TRR5_GUN_SET9
+#define TRR5_MASK_UZI           TRR5_GUN_SET9
+#define TRR5_MASK_SHOTGUN       TRR5_GUN_SET9
+#define TRR5_MASK_HKGUN         TRR5_GUN_SET1
+#define TRR5_MASK_REVOLVER      TRR5_GUN_SETD
+#define TRR5_MASK_GRAP          TRR5_GUN_SETD
+#define TRR5_MASK_LASER         TRR5_GUN_SET1
+#define TRR5_MASK_BINOCULAR     TRR5_GUN_SET1
+#define TRR5_MASK_CROWBAR       TRR5_GUN_SET1
+
+//
+/////////////////////////////////////////////////////////////////////////////
 // CTRSaveGame document
 //
 /////////////////////////////////////////////////////////////////////////////

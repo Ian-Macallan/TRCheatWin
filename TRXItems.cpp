@@ -622,7 +622,14 @@ BOOL CTRXItems::OnSetActive()
 
     if ( IsCustomArea() )
     {
-        iFullVersion = iFullVersion / 10 + GAME_TRC9;
+        iFullVersion = ( iFullVersion / 10 ) * 10 + GAME_TRC9;
+    }
+
+    //  On Custom TR2 TR3 adapt level index
+    //  Because on custom level we have also Level 0 -Home or Any Level)
+    if ( iFullVersion % 10 == GAME_TRC9 )
+    {
+        iLevelIndex++;
     }
 
     //
@@ -1108,6 +1115,18 @@ BOOL CTRXItems::OnToolTipNotify(UINT id, NMHDR *pNMH, LRESULT *pResult)
             int iVersion        = CTRSaveGame::GetVersion();
             int iFullVersion    = CTRSaveGame::GetFullVersion();
             int iLevelIndex     = CTRSaveGame::GetLevelIndex();
+
+            if ( IsCustomArea() )
+            {
+                iFullVersion = ( iFullVersion / 10 ) * 10 + GAME_TRC9;
+            }
+
+            //  On Custom TR2 TR3 adapt level indexf
+            //  Because on custom level we have also Level 0 -Home or Any Level)
+            if ( iFullVersion % 10 == GAME_TRC9 )
+            {
+                iLevelIndex++;
+            }
 
             const char *pLabel = CTRXRemastered::GetLabelForObject ( iFullVersion, iLevelIndex, iX );
             if ( strlen(pLabel) > 0 )

@@ -5,6 +5,7 @@
 #include "TRXTools.h"
 #include "TRSaveGame.h"
 
+
 //  Full Lenbgth : 0x3DCA04
 #define TR456LEVELSIZE      4049412
 #define NB_SLOT_456         32
@@ -591,9 +592,11 @@ struct TR8_POSITION
     WORD    health;             //  0012
 };
 
+//
 #define TR4_GAME_PLUS       0x0001A4
 #define TR5_GAME_PLUS       0x0001A8
 #define TR6_GAME_PLUS       0x0001AC
+
 
 #pragma pack(pop, pack1)
 
@@ -623,16 +626,6 @@ class CTR8SaveGame : public CObject
         //  Each block contains 31 structures for save position
 
     public :
-#define TRR4_MASK_PISTOL    TRR4_GUN_SET
-#define TRR4_MASK_UZI       TRR4_GUN_SET1
-#define TRR4_MASK_RIOTGUN   TRR4_GUN_SET
-#define TRR4_MASK_CROSSBOW  TRR4_GUN_SET
-#define TRR4_MASK_GRENADE   TRR4_GUN_SET
-#define TRR4_MASK_MAGNUM    TRR4_GUN_SET
-#define TRR4_MASK_LASER     TRR4_GUN_SET1
-#define TRR4_MASK_BINOCULAR TRR4_GUN_SET1
-#define TRR4_MASK_CROWBAR   TRR4_GUN_SET1
-
         static BYTE m_TR4MaskPistol;
         static BYTE m_TR4MaskUzi;
         static BYTE m_TR4MaskShotgun;
@@ -643,21 +636,10 @@ class CTR8SaveGame : public CObject
         static BYTE m_TR4MaskBinocular;
         static BYTE m_TR4MaskCrowbar;
 
-#define TRR5_MASK_PISTOL    (TRR5_GUN_SET1|TRR5_GUN_SET8)
-#define TRR5_MASK_UZI       (TRR5_GUN_SET1|TRR5_GUN_SET8)
-#define TRR5_MASK_RIOTGUN   (TRR5_GUN_SET1|TRR5_GUN_SET8)
-#define TRR5_MASK_HK        TRR5_GUN_SET1
-#define TRR5_MASK_REVOLVER  (TRR5_GUN_SET1|TRR5_GUN_SETC)
-#define TRR5_MASK_GRAP      (TRR5_GUN_SET1|TRR5_GUN_SETC)
-#define TRR5_MASK_LASER     TRR5_GUN_SET1
-#define TRR5_MASK_BINOCULAR TRR5_GUN_SET1
-#define TRR5_MASK_CROWBAR   TRR5_GUN_SET1
-
-
         static BYTE m_TR5MaskPistol;
         static BYTE m_TR5MaskUzi;
         static BYTE m_TR5MaskShotgun;
-        static BYTE m_TR5MaskHK;
+        static BYTE m_TR5MaskHKGun;
         static BYTE m_TR5MaskRevolver;
         static BYTE m_TR5MaskGrap;
         static BYTE m_TR5MaskLaser;

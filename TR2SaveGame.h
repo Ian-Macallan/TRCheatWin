@@ -1,13 +1,9 @@
-#if !defined(AFX_TR2SAVEGAME_H__F8F73C01_A0DB_11D2_8146_444553540000__INCLUDED_)
-#define AFX_TR2SAVEGAME_H__F8F73C01_A0DB_11D2_8146_444553540000__INCLUDED_
+#pragma once
 
 #include "TR123SaveGame.h"
 
 #include "TRXTools.h"
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
 //
 /////////////////////////////////////////////////////////////////////////////
 // TR2SaveGame.h : header file
@@ -410,4 +406,3 @@ class CTR2SaveGame : public CTR123SaveGame
 // The savegame object.
 
 
-#endif // !defined(AFX_TR2SAVEGAME_H__F8F73C01_A0DB_11D2_8146_444553540000__INCLUDED_)

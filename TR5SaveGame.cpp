@@ -147,15 +147,15 @@ CTR5SaveGame::CTR5SaveGame()
     m_iSaveLength       = TR5LEVELMAXSIZE;
     m_iMaxLevel         = TR5MAXLEVEL;
 
-    iMaskPistol         = TR50_GUN_SET1 | TR50_GUN_SET8;        //  Pistol
-    iMaskUzi            = TR50_GUN_SET1 | TR50_GUN_SET8;
-    iMaskRiotGun        = TR50_GUN_SET1 | TR50_GUN_SET8;
-    iMaskHK             = TR50_GUN_SET1 | TR50_GUN_SET8;
-    iMaskDesertEagle    = TR50_GUN_SET1 | TR50_GUN_SETC;        // Revolver
-    iMaskLaser          = TR50_GUN_SET1;
-    iMaskBinocular      = TR50_GUN_SET1;
-    iMaskHeadSet        = TR50_GUN_SET1;
-    iMaskRevolver       = TR50_GUN_SET1 | TR50_GUN_SETC;
+    iMaskPistol         = TR5_MASK_PISTOL;      //  Pistol
+    iMaskUzi            = TR5_MASK_UZI;
+    iMaskRiotGun        = TR5_MASK_SHOTGUN;
+    iMaskHKGun          = TR5_MASK_HKGUN;
+    iMaskDesertEagle    = TR5_MASK_DESERT;      // Revolver
+    iMaskLaser          = TR5_MASK_LASER;
+    iMaskBinocular      = TR5_MASK_BINOCULAR;
+    iMaskHeadSet        = TR5_MASK_HEADSET;
+    iMaskRevolver       = TR5_MASK_REVOLVER;
 
     iRiotGunUnits       = 6;
 
@@ -298,7 +298,7 @@ void CTR5SaveGame::writeSaveGame()
         m_pBuffer->tagGuns.m_gunRiotGun = 0;
     }
 
-    if ( ! ( m_pBuffer->tagGuns.m_gunHK & iMaskHK ) )
+    if ( ! ( m_pBuffer->tagGuns.m_gunHK & iMaskHKGun ) )
     {
         m_pBuffer->tagGuns.m_gunHK = 0;
     }
@@ -795,42 +795,42 @@ int CTR5SaveGame::GetUnlimitedAmmos()
 /////////////////////////////////////////////////////////////////////////////
 int CTR5SaveGame::Valid()
 {
-    if ( m_pBuffer->tagGuns.m_gunUzis != 0 && ( m_pBuffer->tagGuns.m_gunUzis & TR50_GUN_MASK ) == 0  &&
-            ( m_pBuffer->tagGuns.m_gunUzis & TR50_GUN_SET4 ) == 0 )
+    if ( m_pBuffer->tagGuns.m_gunUzis != 0 && ( m_pBuffer->tagGuns.m_gunUzis & TR5_MASK_ANY ) == 0  &&
+            ( m_pBuffer->tagGuns.m_gunUzis & TR5_GUN_SET4 ) == 0 )
     {
         AddToStatus ( "Guns Invalid" );
         return 0;
     }
 
-    if ( m_pBuffer->tagGuns.m_gunRiotGun != 0 && ( m_pBuffer->tagGuns.m_gunRiotGun & TR50_GUN_MASK ) == 0  &&
-            ( m_pBuffer->tagGuns.m_gunRiotGun & TR50_GUN_SET4 ) == 0 )
+    if ( m_pBuffer->tagGuns.m_gunRiotGun != 0 && ( m_pBuffer->tagGuns.m_gunRiotGun & TR5_MASK_ANY ) == 0  &&
+            ( m_pBuffer->tagGuns.m_gunRiotGun & TR5_GUN_SET4 ) == 0 )
     {
         AddToStatus ( "Riot Gun Invalid" );
         return 0;
     }
 
-    if ( m_pBuffer->tagGuns.m_gunDesertEagle != 0 && ( m_pBuffer->tagGuns.m_gunDesertEagle & TR50_GUN_MASK ) == 0  &&
-            ( m_pBuffer->tagGuns.m_gunDesertEagle & TR50_GUN_SET4 ) == 0 )
+    if ( m_pBuffer->tagGuns.m_gunDesertEagle != 0 && ( m_pBuffer->tagGuns.m_gunDesertEagle & TR5_MASK_ANY ) == 0  &&
+            ( m_pBuffer->tagGuns.m_gunDesertEagle & TR5_GUN_SET4 ) == 0 )
     {
         AddToStatus ( "Desert Eagle Invalid" );
         return 0;
     }
 
-    if ( m_pBuffer->tagGuns.m_gunHK != 0 && ( m_pBuffer->tagGuns.m_gunHK & TR50_GUN_MASK ) == 0 &&
-            ( m_pBuffer->tagGuns.m_gunHK & TR50_GUN_SET4 ) == 0 )
+    if ( m_pBuffer->tagGuns.m_gunHK != 0 && ( m_pBuffer->tagGuns.m_gunHK & TR5_MASK_ANY ) == 0 &&
+            ( m_pBuffer->tagGuns.m_gunHK & TR5_GUN_SET4 ) == 0 )
     {
         AddToStatus ( "HK Invalid" );
         return 0;
     }
 
-    if (    m_pBuffer->tagGuns.m_gunRevolver != 0 && ( m_pBuffer->tagGuns.m_gunRevolver & TR50_GUN_MASK ) == 0 )
+    if (    m_pBuffer->tagGuns.m_gunRevolver != 0 && ( m_pBuffer->tagGuns.m_gunRevolver & TR5_MASK_ANY ) == 0 )
     {
         AddToStatus ( "Revolver Invalid" );
         return 0;
     }
 
-    if ( m_pBuffer->tagGuns.m_gunHeadSet != 0 && ( m_pBuffer->tagGuns.m_gunHeadSet & TR50_GUN_MASK ) == 0 &&
-            ( m_pBuffer->tagGuns.m_gunHeadSet & TR50_GUN_SET4 ) == 0 )
+    if ( m_pBuffer->tagGuns.m_gunHeadSet != 0 && ( m_pBuffer->tagGuns.m_gunHeadSet & TR5_MASK_ANY ) == 0 &&
+            ( m_pBuffer->tagGuns.m_gunHeadSet & TR5_GUN_SET4 ) == 0 )
     {
         AddToStatus ( "HeadSet Invalid" );
         return 0;
@@ -909,7 +909,7 @@ int CTR5SaveGame::CheckWeapon4 ( int iX )
 /////////////////////////////////////////////////////////////////////////////
 int CTR5SaveGame::CheckWeapon5 ( int iX )
 {
-    if ( m_pBuffer->tagGuns.m_gunHK & iMaskHK )
+    if ( m_pBuffer->tagGuns.m_gunHK & iMaskHKGun )
     {
         return 1;
     }
@@ -984,9 +984,9 @@ unsigned char CTR5SaveGame::GrabWeapon1 ( int iX, bool bAdd, bool bChange )
     unsigned char old = m_pBuffer->tagGuns.m_gunPistol;
     if ( ! bChange ) return old;
 
-    m_pBuffer->tagGuns.m_gunPistol &= ( TR50_GUN_SET4 ^ 0xffff );
+    m_pBuffer->tagGuns.m_gunPistol &= ( TR5_GUN_SET4 ^ TR5_MASK_ALL );
     if ( bAdd ) m_pBuffer->tagGuns.m_gunPistol |= iMaskPistol;
-    if ( ! bAdd ) m_pBuffer->tagGuns.m_gunPistol &= ( iMaskPistol ^ 0xff );
+    if ( ! bAdd ) m_pBuffer->tagGuns.m_gunPistol &= ( iMaskPistol ^ TR5_MASK_ALL );
 
     return old;
 }
@@ -1000,9 +1000,9 @@ unsigned char CTR5SaveGame::GrabWeapon2 ( int iX, bool bAdd, bool bChange )
     unsigned char old = m_pBuffer->tagGuns.m_gunRevolver;
     if ( ! bChange ) return old;
 
-    m_pBuffer->tagGuns.m_gunRevolver &= ( TR50_GUN_SET1 ^ 0xffff );
+    m_pBuffer->tagGuns.m_gunRevolver &= ( TR5_GUN_SET1 ^ TR5_MASK_ALL );
     if ( bAdd ) m_pBuffer->tagGuns.m_gunRevolver |= iMaskRevolver;
-    if ( ! bAdd ) m_pBuffer->tagGuns.m_gunRevolver &= ( iMaskRevolver ^ 0xff );
+    if ( ! bAdd ) m_pBuffer->tagGuns.m_gunRevolver &= ( iMaskRevolver ^ TR5_MASK_ALL );
 
     return old;
 }
@@ -1016,9 +1016,9 @@ unsigned char CTR5SaveGame::GrabWeapon3 ( int iX, bool bAdd, bool bChange )
     unsigned char old = m_pBuffer->tagGuns.m_gunUzis;
     if ( ! bChange ) return old;
 
-    m_pBuffer->tagGuns.m_gunUzis &= ( TR50_GUN_SET4 ^ 0xffff );
+    m_pBuffer->tagGuns.m_gunUzis &= ( TR5_GUN_SET4 ^ TR5_MASK_ALL );
     if ( bAdd ) m_pBuffer->tagGuns.m_gunUzis |= iMaskUzi;
-    if ( ! bAdd ) m_pBuffer->tagGuns.m_gunUzis &= ( iMaskUzi ^ 0xff );
+    if ( ! bAdd ) m_pBuffer->tagGuns.m_gunUzis &= ( iMaskUzi ^ TR5_MASK_ALL );
 
     return old;
 }
@@ -1032,9 +1032,9 @@ unsigned char CTR5SaveGame::GrabWeapon4 ( int iX, bool bAdd, bool bChange )
     unsigned char old = m_pBuffer->tagGuns.m_gunRiotGun;
     if ( ! bChange ) return old;
 
-    m_pBuffer->tagGuns.m_gunRiotGun &= ( TR50_GUN_SET4 ^ 0xffff );
+    m_pBuffer->tagGuns.m_gunRiotGun &= ( TR5_GUN_SET4 ^ TR5_MASK_ALL );
     if ( bAdd ) m_pBuffer->tagGuns.m_gunRiotGun |= iMaskRiotGun;
-    if ( ! bAdd ) m_pBuffer->tagGuns.m_gunRiotGun &= ( iMaskRiotGun ^ 0xff );
+    if ( ! bAdd ) m_pBuffer->tagGuns.m_gunRiotGun &= ( iMaskRiotGun ^ TR5_MASK_ALL );
 
     return old;
 }
@@ -1048,9 +1048,9 @@ unsigned char CTR5SaveGame::GrabWeapon5 ( int iX, bool bAdd, bool bChange )
     unsigned char old = m_pBuffer->tagGuns.m_gunHK;
     if ( ! bChange ) return old;
 
-    m_pBuffer->tagGuns.m_gunHK &= ( TR50_GUN_SET4 ^ 0xffff );
-    if ( bAdd ) m_pBuffer->tagGuns.m_gunHK |= iMaskHK;
-    if ( ! bAdd ) m_pBuffer->tagGuns.m_gunHK &= ( iMaskHK ^ 0xff );
+    m_pBuffer->tagGuns.m_gunHK &= ( TR5_GUN_SET4 ^ TR5_MASK_ALL );
+    if ( bAdd ) m_pBuffer->tagGuns.m_gunHK |= iMaskHKGun;
+    if ( ! bAdd ) m_pBuffer->tagGuns.m_gunHK &= ( iMaskHKGun ^ TR5_MASK_ALL );
 
     return old;
 }
@@ -1082,9 +1082,9 @@ unsigned char CTR5SaveGame::GrabWeapon8 ( int iX, bool bAdd, bool bChange )
     unsigned char old = m_pBuffer->tagGuns.m_gunDesertEagle;
     if ( ! bChange ) return old;
 
-    m_pBuffer->tagGuns.m_gunDesertEagle &= ( TR50_GUN_SET4 ^ 0xffff );
+    m_pBuffer->tagGuns.m_gunDesertEagle &= ( TR5_GUN_SET4 ^ TR5_MASK_ALL );
     if ( bAdd ) m_pBuffer->tagGuns.m_gunDesertEagle |= iMaskDesertEagle;
-    if ( ! bAdd ) m_pBuffer->tagGuns.m_gunDesertEagle &= ( iMaskDesertEagle ^ 0xff );
+    if ( ! bAdd ) m_pBuffer->tagGuns.m_gunDesertEagle &= ( iMaskDesertEagle ^ TR5_MASK_ALL );
 
     return old;
 }
@@ -1098,9 +1098,9 @@ unsigned char CTR5SaveGame::GrabWeapon9 ( int iX, bool bAdd, bool bChange )
     unsigned char old = m_pBuffer->tagGuns.m_gunHeadSet;
     if ( ! bChange ) return old;
 
-    m_pBuffer->tagGuns.m_gunHeadSet &= ( TR50_GUN_SET4 ^ 0xffff );
+    m_pBuffer->tagGuns.m_gunHeadSet &= ( TR5_GUN_SET4 ^ TR5_MASK_ALL );
     if ( bAdd ) m_pBuffer->tagGuns.m_gunHeadSet |= iMaskHeadSet;
-    if ( ! bAdd ) m_pBuffer->tagGuns.m_gunHeadSet &= ( iMaskHeadSet ^ 0xff );
+    if ( ! bAdd ) m_pBuffer->tagGuns.m_gunHeadSet &= ( iMaskHeadSet ^ TR5_MASK_ALL );
 
     return old;
 }
