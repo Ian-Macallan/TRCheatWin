@@ -1442,7 +1442,22 @@ BOOL CTRXCHEATWINApp::InitInstance()
 
             if ( strlen (szPathname) == 0 )
             {
-                strcpy_s ( szPathname, sizeof(szPathname), "script.dat" );
+                if ( PathFileExists ( "data\\tombpc.dat" ) )
+                {
+                    strcpy_s ( szPathname, sizeof(szPathname), "data\\tombpc.dat" );
+                }
+                else if ( PathFileExists ( "tombpc.dat" ) )
+                {
+                    strcpy_s ( szPathname, sizeof(szPathname), "tombpc.dat" );
+                }
+                else if ( PathFileExists ( "script.dat" ) )
+                {
+                    strcpy_s ( szPathname, sizeof(szPathname), "script.dat" );
+                }
+                else
+                {
+                    strcpy_s ( szPathname, sizeof(szPathname), "script.dat" );
+                }
             }
 
             LPSTR lpFilepart = NULL;
@@ -1471,7 +1486,22 @@ BOOL CTRXCHEATWINApp::InitInstance()
 
             if ( strlen (szPathname) == 0 )
             {
-                strcpy_s ( szPathname, sizeof(szPathname), "script.dat" );
+                if ( PathFileExists ( "data\\tombpc.dat" ) )
+                {
+                    strcpy_s ( szPathname, sizeof(szPathname), "data\\tombpc.dat" );
+                }
+                else if ( PathFileExists ( "tombpc.dat" ) )
+                {
+                    strcpy_s ( szPathname, sizeof(szPathname), "tombpc.dat" );
+                }
+                else if ( PathFileExists ( "script.dat" ) )
+                {
+                    strcpy_s ( szPathname, sizeof(szPathname), "script.dat" );
+                }
+                else
+                {
+                    strcpy_s ( szPathname, sizeof(szPathname), "script.dat" );
+                }
             }
 
             LPSTR lpFilepart = NULL;

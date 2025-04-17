@@ -133,7 +133,8 @@ static BYTE SoftBuffer [ LEN_SCRIPT_BUFFER ];
 static char TRXScriptVersion [ 32 ] = "";
 
 //
-static BYTE AlteredBuffer [ LEN_SCRIPT_BUFFER ];
+static BYTE AlteredBufferB [ LEN_SCRIPT_BUFFER ];
+static WORD AlteredBufferW [ LEN_SCRIPT_BUFFER ];
 
 //  Start Of NG Script
 //  NG
@@ -2691,46 +2692,99 @@ BOOL ReadTombPC (    const char *pathname, const char *pDirectory, int version, 
     }
 
     //
-    size_t iRead = 0;
-    iRead = fread ( &Version, sizeof(Version), 1, hInpFile );
-    iRead = fread ( &Description, sizeof(Description), 1, hInpFile );
-    iRead = fread ( &GameflowSize, sizeof(GameflowSize), 1, hInpFile );
-    iRead = fread ( &FirstOption, sizeof(FirstOption), 1, hInpFile );
-    iRead = fread ( &TitleReplace, sizeof(TitleReplace), 1, hInpFile );
-    iRead = fread ( &OnDeathDemoMode, sizeof(OnDeathDemoMode), 1, hInpFile );
-    iRead = fread ( &OnDeathInGame, sizeof(OnDeathInGame), 1, hInpFile );
-    iRead = fread ( &DemoTime, sizeof(DemoTime), 1, hInpFile );
-    iRead = fread ( &OnDemoInterrupt, sizeof(OnDemoInterrupt), 1, hInpFile );
-    iRead = fread ( &OnDemoEnd, sizeof(OnDemoEnd), 1, hInpFile );
-    iRead = fread ( &Unknown1, sizeof(Unknown1), 1, hInpFile );
-    iRead = fread ( &NumLevels, sizeof(NumLevels), 1, hInpFile );
-    iRead = fread ( &NumChapterScreens, sizeof(NumChapterScreens), 1, hInpFile );
-    iRead = fread ( &NumTitles, sizeof(NumTitles), 1, hInpFile );
-    iRead = fread ( &NumFMVs, sizeof(NumFMVs), 1, hInpFile );
-    iRead = fread ( &NumCutscenes, sizeof(NumCutscenes), 1, hInpFile );
-    iRead = fread ( &NumDemoLevels, sizeof(NumDemoLevels), 1, hInpFile );
-    iRead = fread ( &TitleSoundID, sizeof(TitleSoundID), 1, hInpFile );
-    iRead = fread ( &SingleLevel, sizeof(SingleLevel), 1, hInpFile );
-    iRead = fread ( &Unknown2, sizeof(Unknown2), 1, hInpFile );
-    iRead = fread ( &Flags, sizeof(Flags), 1, hInpFile );
-    iRead = fread ( &Unknown3, sizeof(Unknown3), 1, hInpFile );
-    iRead = fread ( &XORKey, sizeof(XORKey), 1, hInpFile );
-    iRead = fread ( &LanguageID, sizeof(LanguageID), 1, hInpFile );
-    iRead = fread ( &SecretSoundID, sizeof(SecretSoundID), 1, hInpFile );
-    iRead = fread ( &Unknown4, sizeof(Unknown4), 1, hInpFile );
+    size_t  iRead       = 0;
+    long    lPosition   = 0;
+    lPosition = ftell ( hInpFile );
+    iRead = fread ( &Version, 1, sizeof(Version), hInpFile );
+    Print ( hLogFile, "%04lx: Version %d\n", lPosition, Version );
 
-    Print ( hLogFile, "Version %d\n", Version );
-    Print ( hLogFile, "NumLevels %d\n", NumLevels );
-    Print ( hLogFile, "NumChapterScreens %d\n", NumChapterScreens );
-    Print ( hLogFile, "NumTitles %d\n", NumTitles );
-    Print ( hLogFile, "NumFMVs %d\n", NumFMVs );
-    Print ( hLogFile, "NumDemoLevels %d\n", NumDemoLevels );
-    Print ( hLogFile, "LanguageID %d\n", LanguageID );
+    lPosition = ftell ( hInpFile );
+    iRead = fread ( &Description, 1, sizeof(Description), hInpFile );
 
+    lPosition = ftell ( hInpFile );
+    iRead = fread ( &GameflowSize, 1, sizeof(GameflowSize), hInpFile );
+
+    lPosition = ftell ( hInpFile );
+    iRead = fread ( &FirstOption, 1, sizeof(FirstOption), hInpFile );
+
+    lPosition = ftell ( hInpFile );
+    iRead = fread ( &TitleReplace, 1, sizeof(TitleReplace), hInpFile );
+
+    lPosition = ftell ( hInpFile );
+    iRead = fread ( &OnDeathDemoMode, 1, sizeof(OnDeathDemoMode), hInpFile );
+
+    lPosition = ftell ( hInpFile );
+    iRead = fread ( &OnDeathInGame, 1, sizeof(OnDeathInGame), hInpFile );
+
+    lPosition = ftell ( hInpFile );
+    iRead = fread ( &DemoTime, 1, sizeof(DemoTime), hInpFile );
+
+    lPosition = ftell ( hInpFile );
+    iRead = fread ( &OnDemoInterrupt, 1, sizeof(OnDemoInterrupt), hInpFile );
+
+    lPosition = ftell ( hInpFile );
+    iRead = fread ( &OnDemoEnd, 1, sizeof(OnDemoEnd), hInpFile );
+
+    lPosition = ftell ( hInpFile );
+    iRead = fread ( &Unknown1, 1, sizeof(Unknown1), hInpFile );
+
+    lPosition = ftell ( hInpFile );
+    iRead = fread ( &NumLevels, 1, sizeof(NumLevels), hInpFile );
+    Print ( hLogFile, "%04lx: NumLevels %d\n", lPosition, NumLevels );
+
+    lPosition = ftell ( hInpFile );
+    iRead = fread ( &NumChapterScreens, 1, sizeof(NumChapterScreens), hInpFile );
+    Print ( hLogFile, "%04lx: NumChapterScreens %d\n", lPosition, NumChapterScreens );
+
+    lPosition = ftell ( hInpFile );
+    iRead = fread ( &NumTitles, 1, sizeof(NumTitles), hInpFile );
+    Print ( hLogFile, "%04lx: NumTitles %d\n", lPosition, NumTitles );
+
+    lPosition = ftell ( hInpFile );
+    iRead = fread ( &NumFMVs, 1, sizeof(NumFMVs), hInpFile );
+    Print ( hLogFile, "%04lx: NumFMVs %d\n", lPosition, NumFMVs );
+
+    lPosition = ftell ( hInpFile );
+    iRead = fread ( &NumCutscenes, 1, sizeof(NumCutscenes), hInpFile );
+
+    lPosition = ftell ( hInpFile );
+    iRead = fread ( &NumDemoLevels, 1, sizeof(NumDemoLevels), hInpFile );
+    Print ( hLogFile, "%04lx: NumDemoLevels %d\n", lPosition, NumDemoLevels );
+
+    lPosition = ftell ( hInpFile );
+    iRead = fread ( &TitleSoundID, 1, sizeof(TitleSoundID), hInpFile );
+
+    lPosition = ftell ( hInpFile );
+    iRead = fread ( &SingleLevel, 1, sizeof(SingleLevel), hInpFile );
+
+    lPosition = ftell ( hInpFile );
+    iRead = fread ( &Unknown2, 1, sizeof(Unknown2), hInpFile );
+
+    lPosition = ftell ( hInpFile );
+    iRead = fread ( &Flags, 1, sizeof(Flags), hInpFile );
+    Print ( hLogFile, "%04lx: Flags %04x\n", lPosition, Flags );
+
+    lPosition = ftell ( hInpFile );
+    iRead = fread ( &Unknown3, 1, sizeof(Unknown3), hInpFile );
+
+    lPosition = ftell ( hInpFile );
+    iRead = fread ( &XORKey, 1, sizeof(XORKey), hInpFile );
+
+    //
     if ( Flags & 0x100 )
     {
         Print ( hLogFile, "XOR will be used %02x\n", XORKey );
     }
+
+    lPosition = ftell ( hInpFile );
+    iRead = fread ( &LanguageID, 1, sizeof(LanguageID), hInpFile );
+    Print ( hLogFile, "%04lx: LanguageID %d\n", lPosition, LanguageID );
+
+    lPosition = ftell ( hInpFile );
+    iRead = fread ( &SecretSoundID, 1, sizeof(SecretSoundID), hInpFile );
+
+    lPosition = ftell ( hInpFile );
+    iRead = fread ( &Unknown4, 1, sizeof(Unknown4), hInpFile );
 
     //
     //  Read Level Strings
@@ -2747,14 +2801,14 @@ BOOL ReadTombPC (    const char *pathname, const char *pDirectory, int version, 
     static xuint16_t OffsetsLevelStrings [ 1024 ];
     {
         ZeroMemory ( OffsetsLevelStrings, sizeof(OffsetsLevelStrings) );
-        iRead = fread ( &OffsetsLevelStrings, NumLevels * sizeof(xuint16_t), 1, hInpFile );
+        iRead = fread ( &OffsetsLevelStrings, 1, NumLevels * sizeof(xuint16_t), hInpFile );
 
         xuint16_t TotalSize = 0;
-        iRead = fread ( &TotalSize, sizeof(TotalSize), 1, hInpFile );
+        iRead = fread ( &TotalSize, 1, sizeof(TotalSize), hInpFile );
 
         //
         LevelStrings.AllocateA(TotalSize + 1);
-        iRead = fread ( LevelStrings.ptr, TotalSize, 1, hInpFile );
+        iRead = fread ( LevelStrings.ptr, 1, TotalSize, hInpFile );
 
         //
         //  Decrypt
@@ -2783,14 +2837,14 @@ BOOL ReadTombPC (    const char *pathname, const char *pDirectory, int version, 
         static xuint16_t OffsetsChapterScreenStrings [ 1024 ];
 
         ZeroMemory ( OffsetsChapterScreenStrings, sizeof(OffsetsChapterScreenStrings) );
-        iRead = fread ( &OffsetsChapterScreenStrings, NumChapterScreens * sizeof(xuint16_t), 1, hInpFile );
+        iRead = fread ( &OffsetsChapterScreenStrings, 1, NumChapterScreens * sizeof(xuint16_t), hInpFile );
 
         xuint16_t TotalSize = 0;
-        iRead = fread ( &TotalSize, sizeof(TotalSize), 1, hInpFile );
+        iRead = fread ( &TotalSize, 1, sizeof(TotalSize), hInpFile );
 
         //
         ChapterScreenStrings.AllocateA ( TotalSize + 1 );
-        iRead = fread ( ChapterScreenStrings.ptr, TotalSize, 1, hInpFile );
+        iRead = fread ( ChapterScreenStrings.ptr, 1, TotalSize, hInpFile );
 
         //
         //  Decrypt
@@ -2819,14 +2873,14 @@ BOOL ReadTombPC (    const char *pathname, const char *pDirectory, int version, 
         static xuint16_t OffsetsTitleStrings [ 1024 ];
 
         ZeroMemory ( OffsetsTitleStrings, sizeof(OffsetsTitleStrings) );
-        iRead = fread ( &OffsetsTitleStrings, NumTitles * sizeof(xuint16_t), 1, hInpFile );
+        iRead = fread ( &OffsetsTitleStrings, 1, NumTitles * sizeof(xuint16_t), hInpFile );
 
         xuint16_t TotalSize = 0;
-        iRead = fread ( &TotalSize, sizeof(TotalSize), 1, hInpFile );
+        iRead = fread ( &TotalSize, 1, sizeof(TotalSize), hInpFile );
 
         //
         TitleStrings.AllocateA ( TotalSize + 1 );
-        iRead = fread ( TitleStrings.ptr, TotalSize, 1, hInpFile );
+        iRead = fread ( TitleStrings.ptr, 1, TotalSize, hInpFile );
 
         //
         //  Decrypt
@@ -2855,14 +2909,14 @@ BOOL ReadTombPC (    const char *pathname, const char *pDirectory, int version, 
         static xuint16_t OffsetsFMVStrings [ 1024 ];
 
         ZeroMemory ( OffsetsFMVStrings, sizeof(OffsetsFMVStrings) );
-        iRead = fread ( &OffsetsFMVStrings, NumFMVs * sizeof(xuint16_t), 1, hInpFile );
+        iRead = fread ( &OffsetsFMVStrings, 1, NumFMVs * sizeof(xuint16_t), hInpFile );
 
         xuint16_t TotalSize = 0;
-        iRead = fread ( &TotalSize, sizeof(TotalSize), 1, hInpFile );
+        iRead = fread ( &TotalSize, 1, sizeof(TotalSize), hInpFile );
 
         //
         FMVStrings.AllocateA ( TotalSize + 1 );
-        iRead = fread ( FMVStrings.ptr, TotalSize, 1, hInpFile );
+        iRead = fread ( FMVStrings.ptr, 1, TotalSize, hInpFile );
 
         //
         //  Decrypt
@@ -2890,14 +2944,14 @@ BOOL ReadTombPC (    const char *pathname, const char *pDirectory, int version, 
     static xuint16_t OffsetsLevelPathStrings [ 1024 ];
     {
         ZeroMemory ( OffsetsLevelPathStrings, sizeof(OffsetsLevelPathStrings) );
-        iRead = fread ( &OffsetsLevelPathStrings, NumLevels * sizeof(xuint16_t), 1, hInpFile );
+        iRead = fread ( &OffsetsLevelPathStrings, 1, NumLevels * sizeof(xuint16_t), hInpFile );
 
         xuint16_t TotalSize = 0;
-        iRead = fread ( &TotalSize, sizeof(TotalSize), 1, hInpFile );
+        iRead = fread ( &TotalSize, 1, sizeof(TotalSize), hInpFile );
 
         //
         LevelPathStrings.AllocateA ( TotalSize + 1 );
-        iRead = fread ( LevelPathStrings.ptr, TotalSize, 1, hInpFile );
+        iRead = fread ( LevelPathStrings.ptr, 1, TotalSize, hInpFile );
 
         //
         //  Decrypt
@@ -2937,14 +2991,14 @@ BOOL ReadTombPC (    const char *pathname, const char *pDirectory, int version, 
         static xuint16_t OffsetsCutscenePathStrings [ 1024 ];
 
         ZeroMemory ( OffsetsCutscenePathStrings, sizeof(OffsetsCutscenePathStrings) );
-        iRead = fread ( &OffsetsCutscenePathStrings, NumCutscenes * sizeof(xuint16_t), 1, hInpFile );
+        iRead = fread ( &OffsetsCutscenePathStrings, 1, NumCutscenes * sizeof(xuint16_t), hInpFile );
 
         xuint16_t TotalSize = 0;
-        iRead = fread ( &TotalSize, sizeof(TotalSize), 1, hInpFile );
+        iRead = fread ( &TotalSize, 1, sizeof(TotalSize), hInpFile );
 
         //
         CutscenePathStrings.AllocateA ( TotalSize + 1 );
-        iRead = fread ( CutscenePathStrings.ptr, TotalSize, 1, hInpFile );
+        iRead = fread ( CutscenePathStrings.ptr, 1, TotalSize, hInpFile );
 
         //
         //  Decrypt
@@ -2973,11 +3027,11 @@ BOOL ReadTombPC (    const char *pathname, const char *pDirectory, int version, 
     static xuint16_t SequenceOffsets [ 1024 ];
     {
         ZeroMemory ( SequenceOffsets, sizeof(SequenceOffsets) );
-        iRead = fread ( &SequenceOffsets, ( NumLevels + 1 ) * sizeof(xuint16_t), 1, hInpFile );
+        iRead = fread ( &SequenceOffsets, 1, ( NumLevels + 1 ) * sizeof(xuint16_t), hInpFile );
         xuint16_t SequenceNumBytes;
-        iRead = fread ( &SequenceNumBytes, sizeof(xuint16_t), 1, hInpFile );
+        iRead = fread ( &SequenceNumBytes, 1, sizeof(xuint16_t), hInpFile );
         MCMemA Sequences( SequenceNumBytes );
-        iRead = fread ( Sequences.ptr, SequenceNumBytes, 1, hInpFile );
+        iRead = fread ( Sequences.ptr, 1, SequenceNumBytes, hInpFile );
     }
 
     //  uint16_t DemoLevelIDs[NumDemoLevels];
@@ -2985,27 +3039,27 @@ BOOL ReadTombPC (    const char *pathname, const char *pDirectory, int version, 
     if ( NumDemoLevels > 0 )
     {
         ZeroMemory ( DemoLevelIDs, sizeof(DemoLevelIDs) );
-        iRead = fread ( &DemoLevelIDs, ( NumDemoLevels ) * sizeof(xuint16_t), 1, hInpFile );
+        iRead = fread ( &DemoLevelIDs, 1, ( NumDemoLevels ) * sizeof(xuint16_t), hInpFile );
     }
 
     //  uint16_t NumGameStrings;
     //  TPCStringArray[NumGameStrings] GameStrings;
     {
         xuint16_t NumGameStrings = 0;
-        iRead = fread ( &NumGameStrings, sizeof(NumGameStrings), 1, hInpFile );
+        iRead = fread ( &NumGameStrings, 1, sizeof(NumGameStrings), hInpFile );
 
         MCMemA GameStrings;
         static xuint16_t OffsetsGameStrings [ 1024 ];
 
         ZeroMemory ( OffsetsGameStrings, sizeof(OffsetsGameStrings) );
-        iRead = fread ( &OffsetsGameStrings, NumGameStrings * sizeof(xuint16_t), 1, hInpFile );
+        iRead = fread ( &OffsetsGameStrings, 1, NumGameStrings * sizeof(xuint16_t), hInpFile );
 
         xuint16_t TotalSize = 0;
-        iRead = fread ( &TotalSize, sizeof(TotalSize), 1, hInpFile );
+        iRead = fread ( &TotalSize, 1, sizeof(TotalSize), hInpFile );
 
         //
         GameStrings.AllocateA ( TotalSize + 1 );
-        iRead = fread ( GameStrings.ptr, TotalSize, 1, hInpFile );
+        iRead = fread ( GameStrings.ptr, 1, TotalSize, hInpFile );
 
         //
         //  Decrypt
@@ -3038,14 +3092,14 @@ BOOL ReadTombPC (    const char *pathname, const char *pDirectory, int version, 
         static xuint16_t OffsetsPCStrings [ numPCStrings ];
 
         ZeroMemory ( OffsetsPCStrings, sizeof(OffsetsPCStrings) );
-        iRead = fread ( &OffsetsPCStrings, numPCStrings * sizeof(xuint16_t), 1, hInpFile );
+        iRead = fread ( &OffsetsPCStrings, 1, numPCStrings * sizeof(xuint16_t), hInpFile );
 
         xuint16_t TotalSize = 0;
-        iRead = fread ( &TotalSize, sizeof(TotalSize), 1, hInpFile );
+        iRead = fread ( &TotalSize, 1, sizeof(TotalSize), hInpFile );
 
         //
         PCStrings.AllocateA ( TotalSize + 1 );
-        iRead = fread ( PCStrings.ptr, TotalSize, 1, hInpFile );
+        iRead = fread ( PCStrings.ptr, 1, TotalSize, hInpFile );
 
         //
         //  Decrypt
@@ -3079,14 +3133,14 @@ BOOL ReadTombPC (    const char *pathname, const char *pDirectory, int version, 
         static xuint16_t OffsetsPuzzleStrings [ 1024 ];
 
         ZeroMemory ( OffsetsPuzzleStrings, sizeof(OffsetsPuzzleStrings) );
-        iRead = fread ( &OffsetsPuzzleStrings, numStrings * sizeof(xuint16_t), 1, hInpFile );
+        iRead = fread ( &OffsetsPuzzleStrings, 1, numStrings * sizeof(xuint16_t), hInpFile );
 
         xuint16_t TotalSize = 0;
-        iRead = fread ( &TotalSize, sizeof(TotalSize), 1, hInpFile );
+        iRead = fread ( &TotalSize, 1, sizeof(TotalSize), hInpFile );
 
         //
         PuzzleStrings.AllocateA ( TotalSize + 1 );
-        iRead = fread ( PuzzleStrings.ptr, TotalSize, 1, hInpFile );
+        iRead = fread ( PuzzleStrings.ptr, 1, TotalSize, hInpFile );
 
         //
         //  Decrypt
@@ -3125,14 +3179,14 @@ BOOL ReadTombPC (    const char *pathname, const char *pDirectory, int version, 
         static xuint16_t OffsetsPickupStrings [ 1024 ];
 
         ZeroMemory ( OffsetsPickupStrings, sizeof(OffsetsPickupStrings) );
-        iRead = fread ( &OffsetsPickupStrings, numStrings * sizeof(xuint16_t), 1, hInpFile );
+        iRead = fread ( &OffsetsPickupStrings, 1, numStrings * sizeof(xuint16_t), hInpFile );
 
         xuint16_t TotalSize = 0;
-        iRead = fread ( &TotalSize, sizeof(TotalSize), 1, hInpFile );
+        iRead = fread ( &TotalSize, 1, sizeof(TotalSize), hInpFile );
 
         //
         PickupStrings.AllocateA ( TotalSize + 1 );
-        iRead = fread ( PickupStrings.ptr, TotalSize, 1, hInpFile );
+        iRead = fread ( PickupStrings.ptr, 1, TotalSize, hInpFile );
 
         //
         //  Decrypt
@@ -3171,14 +3225,14 @@ BOOL ReadTombPC (    const char *pathname, const char *pDirectory, int version, 
         static xuint16_t OffsetsKeyStrings [ 1024 ];
 
         ZeroMemory ( OffsetsKeyStrings, sizeof(OffsetsKeyStrings) );
-        iRead = fread ( &OffsetsKeyStrings, numStrings * sizeof(xuint16_t), 1, hInpFile );
+        iRead = fread ( &OffsetsKeyStrings, 1, numStrings * sizeof(xuint16_t), hInpFile );
 
         xuint16_t TotalSize = 0;
-        iRead = fread ( &TotalSize, sizeof(TotalSize), 1, hInpFile );
+        iRead = fread ( &TotalSize, 1, sizeof(TotalSize), hInpFile );
 
         //
         KeyStrings.AllocateA ( TotalSize + 1 );
-        iRead = fread ( KeyStrings.ptr, TotalSize, 1, hInpFile );
+        iRead = fread ( KeyStrings.ptr, 1, TotalSize, hInpFile );
 
         //
         //  Decrypt
@@ -4379,12 +4433,12 @@ BOOL RemoveTRXScript ( const char *pathname, const char *pDirectory, const char 
     size_t remainToRead     = TR4NGOffset;
     do
     {
-        ZeroMemory ( AlteredBuffer, sizeof(AlteredBuffer) );
-        size_t sizeToRead   = min ( sizeof(AlteredBuffer), remainToRead );
-        size_t iRead = fread ( AlteredBuffer, 1, sizeToRead, hInpFile );
+        ZeroMemory ( AlteredBufferB, sizeof(AlteredBufferB) );
+        size_t sizeToRead   = min ( sizeof(AlteredBufferB), remainToRead );
+        size_t iRead = fread ( AlteredBufferB, 1, sizeToRead, hInpFile );
         if ( iRead > 0 )
         {
-            fwrite ( AlteredBuffer, 1, iRead, hOutFile );
+            fwrite ( AlteredBufferB, 1, iRead, hOutFile );
             remainToRead -= iRead;
         }
         else
@@ -4406,12 +4460,12 @@ BOOL RemoveTRXScript ( const char *pathname, const char *pDirectory, const char 
 
     //  Position at 
     fseek ( hInpFile, 0, SEEK_SET );
-    ZeroMemory ( AlteredBuffer, sizeof(AlteredBuffer) );
-    size_t iRead = fread ( AlteredBuffer, 1, sizeof(AlteredBuffer), hInpFile );
+    ZeroMemory ( AlteredBufferB, sizeof(AlteredBufferB) );
+    size_t iRead = fread ( AlteredBufferB, 1, sizeof(AlteredBufferB), hInpFile );
 
     //
     //  Currrent Pointer is at AlteredBuffer + TR4NGOffset
-    char *pBuffer = (char*) AlteredBuffer;
+    char *pBuffer = (char*) AlteredBufferB;
     WriteNGScript( pBuffer + TR4NGOffset, TR4NGOffset, hOutFile );
 
     //
@@ -4502,20 +4556,32 @@ BOOL AlterTRXScript ( const char *pathname, const char *pDirectory, bool bAnyLev
         return FALSE;
     }
 
+    int iVersion = 4;
+    if ( __strstri ( pathname, "script.dat" ) != NULL )
+    {
+        iVersion = 4;
+    }
+
+    if ( __strstri ( pathname, "tombpc.dat" ) != NULL )
+    {
+        iVersion = 3;
+    }
+
     //
-    BOOL bRead = ReadTRXScript ( pathname, pDirectory );
+    BOOL bRead = ReadTRXScript ( pathname, pDirectory, iVersion );
     if ( ! bRead )
     {
         return FALSE;
     }
 
     //  Do Not ALter TRNG Script
-    if ( TR4NGOffset != NULL )
+    if ( iVersion == 4 && TR4NGOffset != NULL )
     {
         return FALSE;
     }
     
     //
+    //  Backup script file
     BackupTRXScript ( pathname );
 
     //
@@ -4528,35 +4594,82 @@ BOOL AlterTRXScript ( const char *pathname, const char *pDirectory, bool bAnyLev
     }
 
     //
-    //  Backup script file
-    FILE *hInpFile = NULL;
-
-    //
-    //  Alter script file : first byte
-    fopen_s ( &hInpFile, pathname, "rb+" );
-    if ( hInpFile == NULL )
+    //  Alter TR2 / TR3 File
+    if ( iVersion == 2 || iVersion == 3 )
     {
-        return FALSE;
+        FILE *hInpFile = NULL;
+
+        //
+        //  Alter script file : Word is at 0x0176
+        fopen_s ( &hInpFile, pathname, "rb+" );
+        if ( hInpFile == NULL )
+        {
+            return FALSE;
+        }
+        size_t iRead = fread ( AlteredBufferW, 1, sizeof(AlteredBufferW), hInpFile );
+//     Bit 0 (0x01) — DemoVersion. If set, it indicates that the game is a demo distribution.
+//     Bit 1 (0x02) — TitleDisabled. If set, it indicates that the game has no Title Screen.
+//     Bit 2 (0x04) — CheatModeCheckDisabled. If set, it indicates that the game does not look for the cheat sequence keystrokes and events.
+//     Bit 3 (0x08) — NoInputTimeout. If set, it indicates that the game waits forever if there is no input (won’t enter demo mode).
+//     Bit 4 (0x10) — LoadSaveDisabled. If set, it indicates that the game does not allow save games.
+//     Bit 5 (0x20) — ScreenSizingDisabled. If set, it indicates that the game does not allow screen resizing (with the function keys).
+//     Bit 6 (0x40) — LockoutOptionRing. If set, it indicates that the user has no access to the Option Ring while playing the game.
+//     Bit 7 (0x80) — DozyCheatEnabled. If set, it indicates that the game has the DOZY cheat enabled (only present in the final build of TR2 on PSX).
+//     Bit 8 (0x100) — UseXor. If set, it indicates that a cypher byte was used to encrypt the strings in the script file, and is stored in the XorKey field.
+//     Bit 9 (0x200) — GymEnabled. Is Gym available on title screen.
+//     Bit 10 (0x400) — SelectAnyLevel. If set, it enables level select when New Game is selected.
+//     Bit 11 (0x800) — EnableCheatCode. It apparently has no effect on the PC game.
+
+        if ( bAnyLevel )
+        {
+            AlteredBufferW [ 0x0176 / 2 ] |= 0x400;
+        }
+        else
+        {
+            AlteredBufferW [ 0x0176 / 2 ] &= ( 0xffff ^ 0x0400 );
+        }
+
+        WORD otherValues    = 0x04 | 0x10 | 0x40 | 0x80; 
+        otherValues         = 0x0000;
+        AlteredBufferW [ 0x0176 / 2 ] &= ( 0xffff ^ otherValues );
+
+        //
+        fseek ( hInpFile, 0, SEEK_SET );
+        size_t iWrite = fwrite ( AlteredBufferW, 1, iRead, hInpFile );
+        CloseOneFile ( &hInpFile );
     }
-    size_t iRead = fread ( AlteredBuffer, 1, sizeof(AlteredBuffer), hInpFile );
-    if ( bAnyLevel )
+    //  Alter TR4 / TR5 File
+    else if ( iVersion == 4 || iVersion == 5 )
     {
-        AlteredBuffer [ 0 ] |= 0x08;
+        FILE *hInpFile = NULL;
+
+        //
+        //  Alter script file : first byte
+        fopen_s ( &hInpFile, pathname, "rb+" );
+        if ( hInpFile == NULL )
+        {
+            return FALSE;
+        }
+        size_t iRead = fread ( AlteredBufferB, 1, sizeof(AlteredBufferB), hInpFile );
+        if ( bAnyLevel )
+        {
+            AlteredBufferB [ 0 ] |= 0x08;
+        }
+        else
+        {
+            AlteredBufferB [ 0 ] &= ( 0xff ^ 0x08 );
+        }
+
+        //  Enable Load / Save
+        AlteredBufferB [ 0 ] |= 0x02;
+
+        //
+        fseek ( hInpFile, 0, SEEK_SET );
+        size_t iWrite = fwrite ( AlteredBufferB, 1, iRead, hInpFile );
+        CloseOneFile ( &hInpFile );
     }
-    else
-    {
-        AlteredBuffer [ 0 ] &= ( 0xff ^ 0x08 );
-    }
 
-    //  Enable Load / Save
-    AlteredBuffer [ 0 ] |= 0x02;
-
-    //
-    fseek ( hInpFile, 0, SEEK_SET );
-    size_t iWrite = fwrite ( AlteredBuffer, 1, iRead, hInpFile );
-    CloseOneFile ( &hInpFile );
-
-    return FALSE;
+    return TRUE;
 }
 
 //

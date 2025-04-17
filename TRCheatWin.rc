@@ -922,8 +922,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 4,6,08,008
- PRODUCTVERSION 4,6,08,008
+ FILEVERSION 4,7,00,001
+ PRODUCTVERSION 4,7,00,001
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x29L
@@ -941,15 +941,15 @@ BEGIN
             VALUE "Comments", "mailto:ian.macallan@gmail.com\0"
             VALUE "CompanyName", "Macallan (c)\0"
             VALUE "FileDescription", "TRCheatWin - (MSVC)\0"
-            VALUE "FileVersion", "4.6.08.008\0"
+            VALUE "FileVersion", "4.7.00.001\0"
             VALUE "InternalName", "https://www.macallan.org/\0"
-            VALUE "LegalCopyright", "Copyright (C) Wed Apr 16 13:15, 2025\0"
+            VALUE "LegalCopyright", "Copyright (C) Wed Apr 16 16:23, 2025\0"
             VALUE "LegalTrademarks", "Author: Ian Macallan\0"
             VALUE "OriginalFilename", ORIGINAL_FILENAME
-            VALUE "PrivateBuild", "1197\0"
+            VALUE "PrivateBuild", "1199\0"
             VALUE "ProductName", PRODUCT_NAME
-            VALUE "ProductVersion", "4.6.08.008\0"
-            VALUE "SpecialBuild", "1197\0"
+            VALUE "ProductVersion", "4.7.00.001\0"
+            VALUE "SpecialBuild", "1199\0"
         END
     END
     BLOCK "VarFileInfo"
