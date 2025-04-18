@@ -180,6 +180,7 @@
 #define IDB_BITMAP5                     280
 #define IDB_AMMOS_GRAP                  280
 #define IDD_ITEMS_TRR456                280
+#define IDD_ITEMS_TR123                 281
 #define IDR_HELPTEXT1                   282
 #define IDR_HELP_TEXT                   282
 #define IDI_ICON1                       283
@@ -332,6 +333,7 @@
 #define IDC_KILLS_MAX                   1052
 #define IDC_NTREASURE1                  1053
 #define IDC_NBSECRETS                   1054
+#define IDC_NKEY5                       1054
 #define IDC_STATUS                      1055
 #define IDC_NMAP2                       1056
 #define IDC_STATUS2                     1056

@@ -272,8 +272,10 @@ int CTR4SaveGame::ReadSavegame ( const char *pFilename )
     /*
      *      Get Buffer.
      */
-    if ( CTRXGlobal::m_ForceSaveGame == FORCE_NONE && m_iSaveLength != TR4LEVELALTSIZE &&
-        ( m_iSaveLength < TR4LEVELMINSIZE || m_iSaveLength > TR4LEVELMAXSIZE ) )
+    if (    CTRXGlobal::m_ForceSaveGame == FORCE_NONE &&
+            m_iSaveLength != TR4LEVELALT1SIZE &&
+            m_iSaveLength != TR4LEVELALT2SIZE &&
+            ( m_iSaveLength < TR4LEVELMINSIZE || m_iSaveLength > TR4LEVELMAXSIZE ) )
     {
         AddFormatToStatus ( "Internal error in length %d versus %d = %d.",
             (int) sizeof ( TR4SAVE ), m_iSaveLength,
@@ -388,8 +390,10 @@ void CTR4SaveGame::writeSaveGame()
     /*
      *      Get Buffer.
      */
-    if ( CTRXGlobal::m_ForceSaveGame == FORCE_NONE && m_iSaveLength != TR4LEVELALTSIZE &&
-        ( m_iSaveLength < TR4LEVELMINSIZE || m_iSaveLength > TR4LEVELMAXSIZE ) )
+    if (    CTRXGlobal::m_ForceSaveGame == FORCE_NONE &&
+            m_iSaveLength != TR4LEVELALT1SIZE &&
+            m_iSaveLength != TR4LEVELALT2SIZE &&
+            ( m_iSaveLength < TR4LEVELMINSIZE || m_iSaveLength > TR4LEVELMAXSIZE ) )
     {
         AddFormatToStatus ( "Internal error in length %d versus %d = %d.",
             (int) sizeof ( TR4SAVE ), m_iSaveLength,
@@ -440,7 +444,7 @@ void CTR4SaveGame::RetrieveInformation( const char *pFilename )
             m_iSubVersion   = 0;
         }
 
-        if ( m_iSaveLength == TR4LEVELALTSIZE )
+        if ( m_iSaveLength < TR4LEVELMINSIZE || m_iSaveLength > TR4LEVELMAXSIZE )
         {
             m_iSubVersion   = GAME_TRC9;
         }
@@ -571,9 +575,9 @@ void CTR4SaveGame::GetDetailedInfo (    char *szGame, size_t iSize, int *iGame, 
         m_iSubVersion   = GAME_TRG5;
     }
 
-    if ( m_iSaveLength == TR4LEVELALTSIZE )
+    if ( m_iSaveLength < TR4LEVELMINSIZE || m_iSaveLength > TR4LEVELMAXSIZE )
     {
-        strcpy_s ( szGame, iSize, "TR4 TRLE" );
+        strcpy_s ( szGame, iSize, "TR4LE" );
         m_iSubVersion   = GAME_TRC9;
     }
 }
@@ -602,7 +606,7 @@ int CTR4SaveGame::getLevel()
 
 
     //  Some case where level not found
-    if ( iLevel == 0 && m_iSaveLength == TR4LEVELALTSIZE )
+    if ( iLevel == 0 && ( m_iSaveLength < TR4LEVELMINSIZE || m_iSaveLength > TR4LEVELMAXSIZE ) )
     {
         iLevel = m_pBuffer->m_cLevelNum;
     }

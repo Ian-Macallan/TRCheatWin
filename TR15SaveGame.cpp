@@ -613,7 +613,7 @@ int CTUBSaveGame::ConvertSecretBack(int iSecret)
 void CTUBSaveGame::GetDetailedInfo (    char *szGame, size_t iSize, int *iGame, int *iLevel,
                                         char *szTitle, size_t iSizeTitle)
 {
-    strcpy_s ( szGame, iSize, "TR1ub" );
+    strcpy_s ( szGame, iSize, "TR1UB" );
     strcpy_s ( szTitle, iSizeTitle, m_pBuffer->szSavename );
     *iGame          = m_pBuffer->iSaveNumber;
     *iLevel         = m_pBuffer->cLevel + 1;

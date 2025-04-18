@@ -41,7 +41,7 @@ IMPLEMENT_DYNCREATE(CTRXItems, CTRXPropertyPage)
 /////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////
-CTRXItems::CTRXItems() : CTRXPropertyPage(CTRXItems::IDD)
+CTRXItems::CTRXItems() : CTRXPropertyPage(CTRXItems::IDD2)
 {
     //{{AFX_DATA_INIT(CTRXItems)
         // NOTE: the ClassWizard will add member initialization here

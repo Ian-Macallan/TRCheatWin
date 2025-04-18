@@ -1164,7 +1164,7 @@ int CTR4NGSaveGame::ConvertSecretBack(int iSecret)
 void CTR4NGSaveGame::GetDetailedInfo (  char *szGame, size_t iSize, int *iGame, int *iLevel,
                                         char *szTitle, size_t iSizeTile)
 {
-    strcpy_s ( szGame, iSize, "TR4 Next Gen" );
+    strcpy_s ( szGame, iSize, "TR4NG" );
     strcpy_s ( szTitle, iSizeTile, m_pBuffer->szSavename );
     *iGame  = m_pBuffer->iSaveNumber;
     *iLevel = getLevel();

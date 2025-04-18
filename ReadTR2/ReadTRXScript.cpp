@@ -3251,9 +3251,9 @@ BOOL ReadTombPC (    const char *pathname, const char *pDirectory, int version, 
         //  List
         for ( unsigned short level = 0; level < numStrings; level++ )
         {
-            char *pString = KeyStrings.ptr + OffsetsKeyStrings [ level ];
             if ( OffsetsKeyStrings [ level ] < KeyStrings.len )
             {
+                char *pString = KeyStrings.ptr + OffsetsKeyStrings [ level ];
                 Print ( hLogFile, "KeyStrings (%d,%d] : %s\n", level, item, pString );
                 if  ( function != NULL )
                 {

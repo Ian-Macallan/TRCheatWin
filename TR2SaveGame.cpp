@@ -23,36 +23,36 @@ extern CTRXCHEATWINApp theApp;
  *      Data.
  *      ------------------------------------------------
  */
-static unsigned TR2Positions [ ] =
+static unsigned TR20Positions [ ] =
 {
-    0xfc0-0xA6,     /* 01 */
-    0x10cc-0xA6,    /* 02 */
-    0x1294-0xA6,    /* 03 */
-    0x19da-0xA6,    /* 04 */
-    0x1000-0xA6,    /* 05 */
-    0x1254-0xA6,    /* 06 */
-    0xbee-0xA6,     /* 07 */
-    0x16c8-0xA6,    /* 08 */
-    0xe78-0xA6,     /* 09 */
-    0x11b4-0xA6,    /* 10 */
-    0x13ee-0xA6,    /* 11 */
-    0x1946-0xA6,    /* 12 */
-    0x1502-0xA6,    /* 13 */
-    0x120a-0xA6,    /* 14 */
-    0x1a4a-0xA6,    /* 15 */
-    0x11e4-0xA6,    /* 16 */
-    0xd10-0xA6,     /* 17 */
-    0x103c-0xA6,    /* 18 */
-    0xa3f-0xA6,     /* 19 */
-    0xf71-0xA6,     /* 20 */
-    0x00,           /* 0 */
-    0x00,           /* 0 */
-    0x00,           /* 0 */
-    0x00,           /* 0 */
-    0x00,           /* 0 */
+    0xfc0-0xA6,         /* 01 */
+    0x10cc-0xA6,        /* 02 */
+    0x1294-0xA6,        /* 03 */
+    0x19da-0xA6,        /* 04 */
+    0x1000-0xA6,        /* 05 */
+    0x1254-0xA6,        /* 06 */
+    0xbee-0xA6,         /* 07 */
+    0x16c8-0xA6,        /* 08 */
+    0xe78-0xA6,         /* 09 */
+    0x11b4-0xA6,        /* 10 */
+    0x13ee-0xA6,        /* 11 */
+    0x1946-0xA6,        /* 12 */
+    0x1502-0xA6,        /* 13 */
+    0x120a-0xA6,        /* 14 */
+    0x1a4a-0xA6,        /* 15 */
+    0x11e4-0xA6,        /* 16 */
+    0xd10-0xA6,         /* 17 */
+    0x103c-0xA6,        /* 18 */
+    0xa3f-0xA6,         /* 19 */
+    0xf71-0xA6,         /* 20 */
+    0x00,               /* 0 */
+    0x00,               /* 0 */
+    0x00,               /* 0 */
+    0x00,               /* 0 */
+    0x00,               /* 0 */
 };
 
-static unsigned TR2GPositions [ ] =
+static unsigned TR25Positions [ ] =
 {
     0x1b80,             /* 01 */
     0x1b7e,             /* 02 */
@@ -79,6 +79,36 @@ static unsigned TR2GPositions [ ] =
     0x00,               /* 0 */
     0x00,               /* 0 */
     0x00,               /* 0 */
+};
+
+static unsigned TR29Positions [ ] =
+{
+    0x0001,     /* 01 */
+    0x0002,     /* 02 */
+    0x0003,     /* 03 */
+    0x0004,     /* 04 */
+    0x0005,     /* 05 */
+    0x0006,     /* 06 */
+    0x0007,     /* 07 */
+    0x0008,     /* 08 */
+    0x0009,     /* 09 */
+    0x000a,     /* 10 */
+    0x000b,     /* 11 */
+    0x000c,     /* 12 */
+    0x000d,     /* 13 */
+    0x000e,     /* 14 */
+    0x000f,     /* 15 */
+    0x0000,     /* 16 */
+    0x0000,     /* 17 */
+    0x0000,     /* 18 */
+    0x0000,     /* 19 */
+    0x0000,     /* 20 */
+    0x0000,     /* 0 */
+    0x0000,     /* 0 */
+    0x0000,     /* 0 */
+    0x0000,     /* 0 */
+    0x0000,     /* 0 */
+    0x0000,     /* 0 */
 };
 
 //
@@ -180,7 +210,10 @@ int CTR2SaveGame::ReadSavegame( const char *pFilename )
     /*
      *      Get Buffer.
      */
-    if ( CTRXGlobal::m_ForceSaveGame == FORCE_NONE && ( m_iSaveLength <  TR2LEVELMINSIZE || m_iSaveLength > TR2LEVELMAXSIZE ) )
+    if (    CTRXGlobal::m_ForceSaveGame == FORCE_NONE &&
+            m_iSaveLength != TR2LEVELALT1SIZE &&
+            m_iSaveLength != TR2LEVELALT2SIZE &&
+            ( m_iSaveLength < TR2LEVELMINSIZE || m_iSaveLength > TR2LEVELMAXSIZE ) )
     {
         AddToStatus ( "Internal error in length." );
         CloseOneFile ( &hFile );
@@ -279,7 +312,10 @@ void CTR2SaveGame::writeSaveGame()
     /*
      *      Get Buffer.
      */
-    if ( CTRXGlobal::m_ForceSaveGame == FORCE_NONE && ( m_iSaveLength < TR2LEVELMINSIZE || m_iSaveLength > TR2LEVELMAXSIZE ) )
+    if (    CTRXGlobal::m_ForceSaveGame == FORCE_NONE &&
+            m_iSaveLength != TR2LEVELALT1SIZE &&
+            m_iSaveLength != TR2LEVELALT2SIZE &&
+            ( m_iSaveLength < TR2LEVELMINSIZE || m_iSaveLength > TR2LEVELMAXSIZE ) )
     {
         AddToStatus ( "Internal error in length." );
         CloseOneFile ( &hFile );
@@ -333,6 +369,8 @@ void CTR2SaveGame::RetrieveInformation( const char *pFilename )
 
     m_iSubVersion   = 0;
 
+    unsigned *TR2Positions     = TR20Positions;
+
     /*
      *      Read file.
      */
@@ -342,11 +380,19 @@ void CTR2SaveGame::RetrieveInformation( const char *pFilename )
 
         if ( m_pBuffer->ind1 == 'P' )
         {
-            m_iSubVersion = GAME_TRG5;
+            m_iSubVersion   = GAME_TRG5;
+            TR2Positions    = TR25Positions;
         }
         else if ( m_pBuffer->ind1 == 'L' )
         {
-            m_iSubVersion = 0;
+            m_iSubVersion   = 0;
+            TR2Positions    = TR20Positions;
+        }
+
+        if ( m_iSaveLength < TR2LEVELMINSIZE || m_iSaveLength > TR2LEVELMAXSIZE )
+        {
+            m_iSubVersion   = GAME_TRC9;
+            TR2Positions    = TR29Positions;
         }
 
         /*
@@ -377,14 +423,14 @@ void CTR2SaveGame::RetrieveInformation( const char *pFilename )
                  *      Test if it it the same as in the table.
                  */
                 pStartAddress = ( char * ) m_pBuffer;
-                pGunAddress = pStartAddress + TR2Positions [ iX ];
+                pGunAddress = pStartAddress + TR20Positions [ iX ];
                 if ( ( char * ) m_pGun == pGunAddress )
                 {
                     bExactFound = 1;
                 }
 
                 pStartAddress = ( char * ) m_pBuffer;
-                pGunAddress = pStartAddress + TR2GPositions [ iX ];
+                pGunAddress = pStartAddress + TR25Positions [ iX ];
                 if ( ( char * ) m_pGun == pGunAddress )
                 {
                     bExactGold  = 1;
@@ -399,14 +445,14 @@ void CTR2SaveGame::RetrieveInformation( const char *pFilename )
         if ( bExactFound )
         {
             pStartAddress = ( char * ) m_pBuffer;
-            pGunAddress   = pStartAddress + TR2Positions [ iX ];
+            pGunAddress   = pStartAddress + TR20Positions [ iX ];
             m_pGun = (TR2AMMOS * ) pGunAddress;
         }
 
         if ( bExactGold )
         {
             pStartAddress = ( char * ) m_pBuffer;
-            pGunAddress   = pStartAddress + TR2GPositions [ iX ];
+            pGunAddress   = pStartAddress + TR25Positions [ iX ];
             m_pGun = (TR2AMMOS * ) pGunAddress;
         }
 
@@ -421,7 +467,7 @@ void CTR2SaveGame::RetrieveInformation( const char *pFilename )
             iX = getLevelIndex ();
 
             pStartAddress = ( char * ) m_pBuffer;
-            pGunAddress   = pStartAddress + TR2Positions [ iX ];
+            pGunAddress   = pStartAddress + TR20Positions [ iX ];
             m_pGun = (TR2AMMOS * ) pGunAddress;
 
             AddFormatToStatus ("Unable to find something in the file: Setting the address %04x.", TR2Positions [ iX ] );
@@ -455,15 +501,15 @@ void CTR2SaveGame::RetrieveInformation( const char *pFilename )
          */
         iX = getLevelIndex ();
 
-        pGunAddress         = pStartAddress + TR2Positions [ iX ];
-        char *pGoldAddress  = pStartAddress + TR2GPositions [ iX ];
+        pGunAddress         = pStartAddress + TR20Positions [ iX ];
+        char *pGoldAddress  = pStartAddress + TR25Positions [ iX ];
         if (   ( char * ) m_pGun != pGunAddress && ( char * ) m_pGun != pGoldAddress )
         {
             pAddress = ( char * ) m_pGun;
             iPosition = (unsigned) ( pAddress - pStartAddress );
             AddFormatToStatus ( 
                 "The %d address(es) differ(s): Reference is at the address %04lx or %04lx instead of %04lx.",
-                iCount, TR2Positions [ iX ], TR2GPositions [ iX ], iPosition );
+                iCount, TR2Positions [ iX ], TR25Positions [ iX ], iPosition );
             if ( false )
             {
                 AddFormatToStatus ( 
@@ -728,8 +774,15 @@ void CTR2SaveGame::GetDetailedInfo (    char *szGame, size_t iSize, int *iGame, 
     if ( m_pBuffer->ind1 == 'P' )
     {
         strcpy_s ( szGame, iSize, "TR2G" );
-        m_iSubVersion = GAME_TRG5;
+        m_iSubVersion   = GAME_TRG5;
     }
+
+    if ( m_iSaveLength < TR2LEVELMINSIZE || m_iSaveLength > TR2LEVELMAXSIZE )
+    {
+        strcpy_s ( szGame, iSize, "TR2LE" );
+        m_iSubVersion   = GAME_TRC9;
+    }
+
 }
 
 //

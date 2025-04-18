@@ -145,6 +145,8 @@ static unsigned TR39Positions [ ] =
     0x0000,     /* 0 */
     0x0000,     /* 0 */
 };
+
+
 //
 /////////////////////////////////////////////////////////////////////////////
 // CTR3SaveGame
@@ -244,8 +246,10 @@ int CTR3SaveGame::ReadSavegame( const char *pFilename )
     /*
      *      Get Buffer.
      */
-    if ( CTRXGlobal::m_ForceSaveGame == FORCE_NONE && m_iSaveLength != TR3LEVELALTSIZE && 
-        ( m_iSaveLength < TR3LEVELMINSIZE || m_iSaveLength > TR3LEVELMAXSIZE ) )
+    if (    CTRXGlobal::m_ForceSaveGame == FORCE_NONE &&
+            m_iSaveLength != TR3LEVELALT1SIZE && 
+            m_iSaveLength != TR3LEVELALT2SIZE && 
+            ( m_iSaveLength < TR3LEVELMINSIZE || m_iSaveLength > TR3LEVELMAXSIZE ) )
     {
         AddToStatus ( "Internal error in length." );
         CloseOneFile ( &hFile );
@@ -350,8 +354,10 @@ void CTR3SaveGame::writeSaveGame()
     /*
      *      Get Buffer.
      */
-    if ( CTRXGlobal::m_ForceSaveGame == FORCE_NONE && m_iSaveLength != TR3LEVELALTSIZE && 
-        ( m_iSaveLength < TR3LEVELMINSIZE || m_iSaveLength > TR3LEVELMAXSIZE ) )
+    if (    CTRXGlobal::m_ForceSaveGame == FORCE_NONE &&
+            m_iSaveLength != TR3LEVELALT1SIZE && 
+            m_iSaveLength != TR3LEVELALT2SIZE && 
+            ( m_iSaveLength < TR3LEVELMINSIZE || m_iSaveLength > TR3LEVELMAXSIZE ) )
     {
         AddToStatus ( "Internal error in length." );
         CloseOneFile ( &hFile );
@@ -422,7 +428,7 @@ void CTR3SaveGame::RetrieveInformation( const char *pFilename )
             m_iSubVersion       = GAME_TRG5;
         }
 
-        if ( m_iSaveLength == TR3LEVELALTSIZE )
+        if ( m_iSaveLength < TR3LEVELMINSIZE || m_iSaveLength > TR3LEVELMAXSIZE )
         {
             m_iSubVersion       = GAME_TRC9;
             TR3Positions        = TR39Positions;
@@ -575,7 +581,8 @@ TR3AMMOS *CTR3SaveGame::SearchGunStructure ( unsigned short m_iGunAmmos, WORD gu
             }
 
             //  Special Case
-            if ( m_iSaveLength == TR3LEVELALTSIZE && pGun->m_iGunAmmos == 9999 && pGun->iAir == 1800 )
+            if (    ( m_iSaveLength < TR3LEVELMINSIZE || m_iSaveLength > TR3LEVELMAXSIZE ) &&
+                    pGun->m_iGunAmmos == 9999 && pGun->iAir == 1800 )
             {
                 if ( CheckIfAmmosMatch ( pGun, gunBitmap ) )
                 {
@@ -813,12 +820,12 @@ void CTR3SaveGame::GetDetailedInfo (    char *szGame, size_t iSize, int *iGame, 
     if ( m_pBuffer->ind1 != 0xFA )
     {
         strcpy_s ( szGame, iSize, "TR3G" );
-        m_iSubVersion = GAME_TRG5;
+        m_iSubVersion       = GAME_TRG5;
     }
 
-    if ( m_iSaveLength == TR3LEVELALTSIZE )
+    if ( m_iSaveLength < TR3LEVELMINSIZE || m_iSaveLength > TR3LEVELMAXSIZE )
     {
-        strcpy_s ( szGame, iSize, "TR3X" );
+        strcpy_s ( szGame, iSize, "TR3LE" );
         m_iSubVersion       = GAME_TRC9;
     }
 }

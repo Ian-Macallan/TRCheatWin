@@ -34,7 +34,8 @@ class CTRXItems : public CTRXPropertyPage
 
     // Dialog Data
         //{{AFX_DATA(CTRXItems)
-        enum { IDD = IDD_ITEMS };
+        enum { IDD1 = IDD_ITEMS };
+        enum { IDD2 = IDD_ITEMS_TR123 };
         CTRXEditBase    m_Status;
 
         CTRXButtonBase  m_Treasure1;
