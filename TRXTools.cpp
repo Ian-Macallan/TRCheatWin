@@ -71,6 +71,10 @@ BOOL CTRXTools::IsAmmosEnabled ( int tombraider, int level, int gun )
             {
                 return GunGrid1 [ level ] [ gun ];
             }
+            else
+            {
+                return TRUE;
+            }
             break;
         }
 
@@ -81,6 +85,10 @@ BOOL CTRXTools::IsAmmosEnabled ( int tombraider, int level, int gun )
             if ( level >= 0 && level < TR1G_LEVELS )
             {
                 return GunGrid15 [ level ] [ gun ];
+            }
+            else
+            {
+                return TRUE;
             }
             break;
         }
@@ -95,6 +103,10 @@ BOOL CTRXTools::IsAmmosEnabled ( int tombraider, int level, int gun )
             {
                 return GunGrid2 [ level ] [ gun ];
             }
+            else
+            {
+                return TRUE;
+            }
             break;
         }
 
@@ -105,6 +117,10 @@ BOOL CTRXTools::IsAmmosEnabled ( int tombraider, int level, int gun )
             if ( level >= 0 && level < TR2G_LEVELS )
             {
                 return GunGrid25 [ level ] [ gun ];
+            }
+            else
+            {
+                return TRUE;
             }
             break;
         }
@@ -119,6 +135,10 @@ BOOL CTRXTools::IsAmmosEnabled ( int tombraider, int level, int gun )
             {
                 return GunGrid3 [ level ] [ gun ];
             }
+            else
+            {
+                return TRUE;
+            }
             break;
         }
 
@@ -129,6 +149,10 @@ BOOL CTRXTools::IsAmmosEnabled ( int tombraider, int level, int gun )
             if ( level >= 0 && level < TR3G_LEVELS )
             {
                 return GunGrid35 [ level ] [ gun ];
+            }
+            else
+            {
+                return TRUE;
             }
             break;
         }
@@ -144,6 +168,10 @@ BOOL CTRXTools::IsAmmosEnabled ( int tombraider, int level, int gun )
             {
                 return GunGrid4 [ level ] [ gun ];
             }
+            else
+            {
+                return TRUE;
+            }
             break;
         }
 
@@ -156,6 +184,10 @@ BOOL CTRXTools::IsAmmosEnabled ( int tombraider, int level, int gun )
             if ( level >= 0 && level < TR5_LEVELS )
             {
                 return GunGrid5 [ level ] [ gun ];
+            }
+            else
+            {
+                return TRUE;
             }
             break;
         }
@@ -193,6 +225,10 @@ BOOL CTRXTools::IsAGunEnabled ( int tombraider, int level, int gun )
             {
                 return GunGrid1 [ level ] [ gun ];
             }
+            else
+            {
+                return TRUE;
+            }
             break;
         }
 
@@ -203,6 +239,10 @@ BOOL CTRXTools::IsAGunEnabled ( int tombraider, int level, int gun )
             if ( level >= 0 && level < TR1G_LEVELS )
             {
                 return GunGrid15 [ level ] [ gun ];
+            }
+            else
+            {
+                return TRUE;
             }
             break;
         }
@@ -217,6 +257,10 @@ BOOL CTRXTools::IsAGunEnabled ( int tombraider, int level, int gun )
             {
                 return GunGrid2 [ level ] [ gun ];
             }
+            else
+            {
+                return TRUE;
+            }
             break;
         }
 
@@ -227,6 +271,10 @@ BOOL CTRXTools::IsAGunEnabled ( int tombraider, int level, int gun )
             if ( level >= 0 && level < TR2G_LEVELS )
             {
                 return GunGrid25 [ level ] [ gun ];
+            }
+            else
+            {
+                return TRUE;
             }
             break;
         }
@@ -241,6 +289,10 @@ BOOL CTRXTools::IsAGunEnabled ( int tombraider, int level, int gun )
             {
                 return GunGrid3 [ level ] [ gun ];
             }
+            else
+            {
+                return TRUE;
+            }
             break;
         }
 
@@ -251,6 +303,10 @@ BOOL CTRXTools::IsAGunEnabled ( int tombraider, int level, int gun )
             if ( level >= 0 && level < TR3G_LEVELS )
             {
                 return GunGrid35 [ level ] [ gun ];
+            }
+            else
+            {
+                return TRUE;
             }
             break;
         }
@@ -266,6 +322,10 @@ BOOL CTRXTools::IsAGunEnabled ( int tombraider, int level, int gun )
             {
                 return GunGrid4 [ level ] [ gun ];
             }
+            else
+            {
+                return TRUE;
+            }
             break;
         }
 
@@ -278,6 +338,10 @@ BOOL CTRXTools::IsAGunEnabled ( int tombraider, int level, int gun )
             if ( level >= 0 && level < TR5_LEVELS )
             {
                 return GunGrid5 [ level ] [ gun ];
+            }
+            else
+            {
+                return TRUE;
             }
             break;
         }

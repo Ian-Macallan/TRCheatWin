@@ -1156,7 +1156,7 @@ int CTR3SaveGame::Valid()
 {
     if ( m_pGun != NULL )
     {
-        return ( 1 );
+        return 1;
     }
 
     return 0;

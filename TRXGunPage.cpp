@@ -91,9 +91,9 @@ BEGIN_MESSAGE_MAP(CTRXGunPage, CTRXPropertyPage)
     ON_BN_CLICKED(IDC_ROCKETLAUNCHER, &CTRXGunPage::OnBnClickedRocketlauncher)
     ON_BN_CLICKED(IDC_CROWBAR, &CTRXGunPage::OnBnClickedCrowbar)
     ON_BN_CLICKED(ID_HELP, OnHelp)
-    //}}AFX_MSG_MAP
     ON_WM_CTLCOLOR()
     ON_BN_CLICKED(IDC_ALL_GUNS, &CTRXGunPage::OnBnClickedAllGuns)
+    //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 //
@@ -402,7 +402,8 @@ int CTRXGunPage::EnableForVersion()
 
     if ( CTRSaveGame::I() != NULL && iVersion != 0 )
     {   
-        m_Guns.EnableWindow ( CTRSaveGame::I()->HasWeapon1 ( ));
+        BOOL bEnabled = CTRSaveGame::I()->HasWeapon1 ( );
+        m_Guns.EnableWindow ( bEnabled );
         m_Desert_Eagle.EnableWindow ( CTRSaveGame::I()->HasWeapon2 ( ) );
         m_Uzis.EnableWindow ( CTRSaveGame::I()->HasWeapon3 ( ) );
         m_Riot_Gun.EnableWindow ( CTRSaveGame::I()->HasWeapon4 ( ) );
