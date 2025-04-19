@@ -8,6 +8,7 @@
 #include "TRXCHEATWINDlg.h"
 #include "TRXGlobal.h"
 #include "TRXColors.h"
+#include "TR_Areas.h"
 
 extern CTRXCHEATWINApp theApp;
 
@@ -63,8 +64,6 @@ BOOL CTRXTools::IsAmmosEnabled ( int tombraider, int level, int gun )
     {
         //  TR1
         case GAME_TRR1:
-        case GAME_TR10:
-        case GAME_TR19:
         {
             level       = level - 1;
             if ( level >= 0 && level < TR1_LEVELS )
@@ -73,7 +72,21 @@ BOOL CTRXTools::IsAmmosEnabled ( int tombraider, int level, int gun )
             }
             else
             {
-                return TRUE;
+                return TRUE;    // MayBe a custom level
+            }
+            break;
+        }
+
+        case GAME_TR10:
+        {
+            level       = level - 1;
+            if ( ! IsCustomArea () && level >= 0 && level < TR1_LEVELS )
+            {
+                return GunGrid1 [ level ] [ gun ];
+            }
+            else
+            {
+                return TRUE;    // MayBe a custom level
             }
             break;
         }
@@ -82,21 +95,25 @@ BOOL CTRXTools::IsAmmosEnabled ( int tombraider, int level, int gun )
         case GAME_TR15:
         {
             level       = level - 1;
-            if ( level >= 0 && level < TR1G_LEVELS )
+            if ( ! IsCustomArea () && level >= 0 && level < TR1G_LEVELS )
             {
                 return GunGrid15 [ level ] [ gun ];
             }
             else
             {
-                return TRUE;
+                return TRUE;    // MayBe a custom level
             }
+            break;
+        }
+
+        case GAME_TR19:
+        {
+            return TRUE;
             break;
         }
 
         //  TR2
         case GAME_TRR2:
-        case GAME_TR20:
-        case GAME_TR29:
         {
             level       = level - 1;
             if ( level >= 0 && level < TR2_LEVELS )
@@ -105,7 +122,21 @@ BOOL CTRXTools::IsAmmosEnabled ( int tombraider, int level, int gun )
             }
             else
             {
-                return TRUE;
+                return TRUE;    // MayBe a custom level
+            }
+            break;
+        }
+
+        case GAME_TR20:
+        {
+            level       = level - 1;
+            if ( ! IsCustomArea () && level >= 0 && level < TR2_LEVELS )
+            {
+                return GunGrid2 [ level ] [ gun ];
+            }
+            else
+            {
+                return TRUE;    // MayBe a custom level
             }
             break;
         }
@@ -114,21 +145,24 @@ BOOL CTRXTools::IsAmmosEnabled ( int tombraider, int level, int gun )
         case GAME_TR25:
         {
             level       = level - 1;
-            if ( level >= 0 && level < TR2G_LEVELS )
+            if ( ! IsCustomArea () && level >= 0 && level < TR2G_LEVELS )
             {
                 return GunGrid25 [ level ] [ gun ];
             }
             else
             {
-                return TRUE;
+                return TRUE;    // MayBe a custom level
             }
             break;
         }
 
+        case GAME_TR29:
+        {
+            return TRUE;
+        }
+
         //
         case GAME_TRR3:
-        case GAME_TR30:
-        case GAME_TR39:
         {
             level       = level - 1;
             if ( level >= 0 && level < TR3_LEVELS )
@@ -137,7 +171,21 @@ BOOL CTRXTools::IsAmmosEnabled ( int tombraider, int level, int gun )
             }
             else
             {
-                return TRUE;
+                return TRUE;    // MayBe a custom level
+            }
+            break;
+        }
+
+        case GAME_TR30:
+        {
+            level       = level - 1;
+            if ( ! IsCustomArea () && level >= 0 && level < TR3_LEVELS )
+            {
+                return GunGrid3 [ level ] [ gun ];
+            }
+            else
+            {
+                return TRUE;    // MayBe a custom level
             }
             break;
         }
@@ -146,22 +194,25 @@ BOOL CTRXTools::IsAmmosEnabled ( int tombraider, int level, int gun )
         case GAME_TR35:
         {
             level       = level - 1;
-            if ( level >= 0 && level < TR3G_LEVELS )
+            if ( ! IsCustomArea () && level >= 0 && level < TR3G_LEVELS )
             {
                 return GunGrid35 [ level ] [ gun ];
             }
             else
             {
-                return TRUE;
+                return TRUE;    // MayBe a custom level
             }
+            break;
+        }
+
+        case GAME_TR39:
+        {
+            return TRUE;
             break;
         }
 
         //  Last Revelations
         case GAME_TRR4:
-        case GAME_TR40:
-        case GAME_TR45:
-        case GAME_TR49:
         {
             level       = level - 1;
             if ( level >= 0 && level < TR4_LEVELS )
@@ -170,15 +221,34 @@ BOOL CTRXTools::IsAmmosEnabled ( int tombraider, int level, int gun )
             }
             else
             {
-                return TRUE;
+                return TRUE;    // MayBe a custom level
             }
+            break;
+        }
+
+        case GAME_TR40:
+        case GAME_TR45:
+        {
+            level       = level - 1;
+            if ( ! IsCustomArea () && level >= 0 && level < TR4_LEVELS )
+            {
+                return GunGrid4 [ level ] [ gun ];
+            }
+            else
+            {
+                return TRUE;    // MayBe a custom level
+            }
+            break;
+        }
+
+        case GAME_TR49:
+        {
+            return TRUE;
             break;
         }
 
         //  Chronicles
         case GAME_TRR5:
-        case GAME_TR50:
-        case GAME_TR59:
         {
             level       = level - 1;
             if ( level >= 0 && level < TR5_LEVELS )
@@ -187,8 +257,28 @@ BOOL CTRXTools::IsAmmosEnabled ( int tombraider, int level, int gun )
             }
             else
             {
-                return TRUE;
+                return TRUE;    // MayBe a custom level
             }
+            break;
+        }
+
+        case GAME_TR50:
+        {
+            level       = level - 1;
+            if ( ! IsCustomArea () && level >= 0 && level < TR5_LEVELS )
+            {
+                return GunGrid5 [ level ] [ gun ];
+            }
+            else
+            {
+                return TRUE;    // MayBe a custom level
+            }
+            break;
+        }
+
+        case GAME_TR59:
+        {
+            return TRUE;
             break;
         }
     }
@@ -217,8 +307,6 @@ BOOL CTRXTools::IsAGunEnabled ( int tombraider, int level, int gun )
     {
         //  TR1
         case GAME_TRR1:
-        case GAME_TR10:
-        case GAME_TR19:
         {
             level       = level - 1;
             if ( level >= 0 && level < TR1_LEVELS )
@@ -227,7 +315,21 @@ BOOL CTRXTools::IsAGunEnabled ( int tombraider, int level, int gun )
             }
             else
             {
-                return TRUE;
+                return TRUE;    // MayBe a custom level
+            }
+            break;
+        }
+
+        case GAME_TR10:
+        {
+            level       = level - 1;
+            if ( ! IsCustomArea () && level >= 0 && level < TR1_LEVELS )
+            {
+                return GunGrid1 [ level ] [ gun ];
+            }
+            else
+            {
+                return TRUE;    // MayBe a custom level
             }
             break;
         }
@@ -236,21 +338,25 @@ BOOL CTRXTools::IsAGunEnabled ( int tombraider, int level, int gun )
         case GAME_TR15:
         {
             level       = level - 1;
-            if ( level >= 0 && level < TR1G_LEVELS )
+            if ( ! IsCustomArea () && level >= 0 && level < TR1G_LEVELS )
             {
                 return GunGrid15 [ level ] [ gun ];
             }
             else
             {
-                return TRUE;
+                return TRUE;    // MayBe a custom level
             }
+            break;
+        }
+
+        case GAME_TR19:
+        {
+            return TRUE;
             break;
         }
 
         //  TR2
         case GAME_TRR2:
-        case GAME_TR20:
-        case GAME_TR29:
         {
             level       = level - 1;
             if ( level >= 0 && level < TR2_LEVELS )
@@ -259,7 +365,21 @@ BOOL CTRXTools::IsAGunEnabled ( int tombraider, int level, int gun )
             }
             else
             {
-                return TRUE;
+                return TRUE;    // MayBe a custom level
+            }
+            break;
+        }
+
+        case GAME_TR20:
+        {
+            level       = level - 1;
+            if ( ! IsCustomArea () && level >= 0 && level < TR2_LEVELS )
+            {
+                return GunGrid2 [ level ] [ gun ];
+            }
+            else
+            {
+                return TRUE;    // MayBe a custom level
             }
             break;
         }
@@ -268,21 +388,25 @@ BOOL CTRXTools::IsAGunEnabled ( int tombraider, int level, int gun )
         case GAME_TR25:
         {
             level       = level - 1;
-            if ( level >= 0 && level < TR2G_LEVELS )
+            if ( ! IsCustomArea () && level >= 0 && level < TR2G_LEVELS )
             {
                 return GunGrid25 [ level ] [ gun ];
             }
             else
             {
-                return TRUE;
+                return TRUE;    // MayBe a custom level
             }
+            break;
+        }
+
+        case GAME_TR29:
+        {
+            return TRUE;
             break;
         }
 
         //
         case GAME_TRR3:
-        case GAME_TR30:
-        case GAME_TR39:
         {
             level       = level - 1;
             if ( level >= 0 && level < TR3_LEVELS )
@@ -291,7 +415,21 @@ BOOL CTRXTools::IsAGunEnabled ( int tombraider, int level, int gun )
             }
             else
             {
-                return TRUE;
+                return TRUE;    // MayBe a custom level
+            }
+            break;
+        }
+
+        case GAME_TR30:
+        {
+            level       = level - 1;
+            if ( ! IsCustomArea () && level >= 0 && level < TR3_LEVELS )
+            {
+                return GunGrid3 [ level ] [ gun ];
+            }
+            else
+            {
+                return TRUE;    // MayBe a custom level
             }
             break;
         }
@@ -300,22 +438,25 @@ BOOL CTRXTools::IsAGunEnabled ( int tombraider, int level, int gun )
         case GAME_TR35:
         {
             level       = level - 1;
-            if ( level >= 0 && level < TR3G_LEVELS )
+            if ( ! IsCustomArea () && level >= 0 && level < TR3G_LEVELS )
             {
                 return GunGrid35 [ level ] [ gun ];
             }
             else
             {
-                return TRUE;
+                return TRUE;    // MayBe a custom level
             }
+            break;
+        }
+
+        case GAME_TR39:
+        {
+            return TRUE;
             break;
         }
 
         //  Last Revelations
         case GAME_TRR4:
-        case GAME_TR40:
-        case GAME_TR45:
-        case GAME_TR49:
         {
             level       = level - 1;
             if ( level >= 0 && level < TR4_LEVELS )
@@ -324,15 +465,34 @@ BOOL CTRXTools::IsAGunEnabled ( int tombraider, int level, int gun )
             }
             else
             {
-                return TRUE;
+                return TRUE;    // MayBe a custom level
             }
+            break;
+        }
+
+        case GAME_TR40:
+        case GAME_TR45:
+        {
+            level       = level - 1;
+            if ( ! IsCustomArea () && level >= 0 && level < TR4_LEVELS )
+            {
+                return GunGrid4 [ level ] [ gun ];
+            }
+            else
+            {
+                return TRUE;    // MayBe a custom level
+            }
+            break;
+        }
+
+        case GAME_TR49:
+        {
+            return TRUE;
             break;
         }
 
         //  Chronicles
         case GAME_TRR5:
-        case GAME_TR50:
-        case GAME_TR59:
         {
             level       = level - 1;
             if ( level >= 0 && level < TR5_LEVELS )
@@ -341,8 +501,28 @@ BOOL CTRXTools::IsAGunEnabled ( int tombraider, int level, int gun )
             }
             else
             {
-                return TRUE;
+                return TRUE;    // MayBe a custom level
             }
+            break;
+        }
+
+        case GAME_TR50:
+        {
+            level       = level - 1;
+            if ( ! IsCustomArea () && level >= 0 && level < TR5_LEVELS )
+            {
+                return GunGrid5 [ level ] [ gun ];
+            }
+            else
+            {
+                return TRUE;    // MayBe a custom level
+            }
+            break;
+        }
+
+        case GAME_TR59:
+        {
+            return TRUE;
             break;
         }
     }
