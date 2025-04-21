@@ -34,6 +34,7 @@ TR123_INDICATORS IndicatorsTR123Table1 [ MAX_INDICATORS ] =
     {   FALSE,  0x0008, 0x0008, 0x0000, 0x0112, FALSE,  1,  "Quad Bike" },
     {   FALSE,  0x000d, 0x000d, 0x0000, 0x006c, FALSE,  1,  "Indicator 1" },
     {   FALSE,  0x0012, 0x0012, 0x0000, 0x0057, FALSE,  1,  "Indicator 2" },
+    {   FALSE,  0x0021, 0x0021, 0x0000, 0x006E, FALSE,  1,  "Swimming" },
     {   TRUE,   0xffff, 0xffff, 0xffff, 0xffff, TRUE,   0,  "End" },
 };
 int IndicatorsTR123Table1Count = sizeof(IndicatorsTR123Table1)/sizeof(TR123_INDICATORS);

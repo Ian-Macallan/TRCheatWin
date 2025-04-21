@@ -1649,7 +1649,9 @@ BOOL CTRXCHEATWINApp::InitInstance()
             }
         }
         //
-        else if ( __strstri ( pCommandLine, "savegame." ) != NULL )
+        else if (   __strstri ( pCommandLine, "savegame." ) != NULL ||
+                    __strstri ( pCommandLine, "saveub." ) != NULL ||
+                    __strstri ( pCommandLine, "saveati." ) != NULL )
         {
             ZeroMemory ( szPathname, sizeof(szPathname) );
             char *pFilename = SkipSpaces ( pCommandLine );
