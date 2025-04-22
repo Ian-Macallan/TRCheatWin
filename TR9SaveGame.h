@@ -533,19 +533,34 @@ struct  TR_START_CONDITIONS
 
 #pragma pack(pop, pack1)
 
+#ifndef INDICATOR_LABEL_SIZE
+#define INDICATOR_LABEL_SIZE    32
+#endif // !INDICATOR_LABEL_SIZE
+
 //  Indicator Structure for TR 4 and 5
 #pragma pack(push, pack1, 1)
-typedef struct indicatorTRRStruct
+typedef struct indicatorBytesTRR
 {
     BOOL    bEnd;
     BYTE    b1;
     BYTE    b2;
     BYTE    b3;
     int     step;
-    char    szLabel [ 32 ];
-} TRR_INDICATORS;
-#pragma pack(pop, pack1)
+    char    szLabel [ INDICATOR_LABEL_SIZE ];
+} TRR_BYTES_INDICATORS;
 
+typedef struct indicatorWordsTRR
+{
+    BOOL    bEnd;
+    WORD    w1;
+    WORD    w2;
+    WORD    w3;
+    WORD    w4;
+    BOOL    useW3;
+    int     step;
+    char    szLabel [ INDICATOR_LABEL_SIZE ];
+} TRR_WORDS_INDICATORS;
+#pragma pack(pop, pack1)
 
 //
 /////////////////////////////////////////////////////////////////////////////
@@ -888,17 +903,52 @@ class CTR9SaveGame : public CObject
         {
             return ".trr.txt";
         }
-        static int ReadIndicators( TRR_INDICATORS *IndicatorsTRTable, const int maxTable, const char *pFilename );
-        static BOOL WriteIndicators( TRR_INDICATORS *IndicatorsTRTable, const int maxTable, const char *pFilename );
-        static int CountIndicators( TRR_INDICATORS *IndicatorsTRTable, const int maxTable );
-        static int MinIndicators( TRR_INDICATORS *IndicatorsTRTable, const int maxTable );
-        static int MaxIndicators( TRR_INDICATORS *IndicatorsTRTable, const int maxTable );
+        static int ReadIndicators( TRR_BYTES_INDICATORS *IndicatorsTRTable, const int maxTable, const char *pFilename );
+        static BOOL WriteIndicators( TRR_BYTES_INDICATORS *IndicatorsTRTable, const int maxTable, const char *pFilename );
+        static int CountIndicators( TRR_BYTES_INDICATORS *IndicatorsTRTable, const int maxTable );
+        static int MinIndicators( TRR_BYTES_INDICATORS *IndicatorsTRTable, const int maxTable );
+        static int MaxIndicators( TRR_BYTES_INDICATORS *IndicatorsTRTable, const int maxTable );
 
 
 };
 
+//  Struct Size 12 in decimal
+struct          TRR_Byte_Health
+{
+    BYTE  b1;
+    BYTE  b2;
+    BYTE  b3;  
+    BYTE  b4;
+    BYTE  b5;
+    BYTE  b6;
+    BYTE  b7;  
+    BYTE  b8;
+    WORD  cFiller2;
+    WORD  wRealHealth;      /* This is the Life */
+};
+typedef struct TRR_Byte_Health   TRR_BYTE_HEALTH;
+
+//  Struct Size 12 in decimal
+struct          TRR_Word_Health
+{
+    WORD  w1;               /* Must Be 0x0002 */
+    WORD  w2;               /* Must Be 0x0002 */
+    WORD  w3;  
+    WORD  w4;               /* Must Be 0x0067 */
+    WORD  cFiller2;
+    WORD  wRealHealth;      /* This is the Life */
+};
+typedef struct TRR_Word_Health   TRR_WORD_HEALTH;
+
+union TRR_Health
+{
+    TRR_BYTE_HEALTH bytes;
+    TRR_WORD_HEALTH words;
+};
+typedef union TRR_Health   TRR_HEALTH;
+
 //
 extern  BOOL TraceMode;
 
-extern TRR_INDICATORS IndicatorsTRRTable [ MAX_INDICATORS ];
-extern int IndicatorsTRRTableCount;
+extern TRR_BYTES_INDICATORS IndicatorsTRRTableBytes [ MAX_INDICATORS ];
+extern int IndicatorsTRRTableBytesCount;

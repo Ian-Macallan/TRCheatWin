@@ -32,22 +32,32 @@ TR123_INDICATORS IndicatorsTR123Table1 [ MAX_INDICATORS ] =
 {
     {   FALSE,  0x0002, 0x0002, 0x0000, 0x0067, FALSE,  0,  "Standing" },
     {   FALSE,  0x0008, 0x0008, 0x0000, 0x0112, FALSE,  1,  "Quad Bike" },
-    {   FALSE,  0x000d, 0x000d, 0x0000, 0x006c, FALSE,  1,  "Indicator 1" },
+    {   FALSE,  0x000d, 0x000d, 0x0000, 0x006c, FALSE,  1,  "Swimming" },
     {   FALSE,  0x0012, 0x0012, 0x0000, 0x0057, FALSE,  1,  "Indicator 2" },
-    {   FALSE,  0x0021, 0x0021, 0x0000, 0x006E, FALSE,  1,  "Swimming" },
-    {   TRUE,   0xffff, 0xffff, 0xffff, 0xffff, TRUE,   0,  "End" },
+    {   FALSE,  0x0021, 0x0021, 0x0000, 0x006E, TRUE,   1,  "Swimming" },       //  Use W3
+    {   FALSE,  0x0018, 0x0018, 0x0000, 0x0046, TRUE,   1,  "Sliding" },        //  Use W3
+    {   FALSE,  0x000d, 0x0012, 0x0000, 0x006c, TRUE,   1,  "Underwater" },     //  Use W3
+    {   FALSE,  0x0002, 0x0002, 0x0047, 0x00bd, TRUE,   1,  "Standing" },       //  Use W3
+
+    {   FALSE,  0x0002, 0x0002, 0x0000, 0x000B, TRUE,   9,  "Standing" },       //  Use W3
+    {   TRUE,   0xffff, 0xffff, 0xffff, 0xffff, TRUE,   0,  "End" },            //  End
 };
 int IndicatorsTR123Table1Count = sizeof(IndicatorsTR123Table1)/sizeof(TR123_INDICATORS);
 
 //
 TR123_INDICATORS IndicatorsTR123Table2 [ MAX_INDICATORS ] =
 {
+    {   FALSE,  0x000f, 0x000f, 0x0000, 0x0173, TRUE,   2,  "Quad Bike" },      //  Use W3
+    {   FALSE,  0x0001, 0x0001, 0x0000, 0x0163, TRUE,   2,  "Quad Bike" },      //  Use W3
+
     {   FALSE,  0x0001, 0x0002, 0x0000, 0x000a, FALSE,  2,  "Indicator 10" },
     {   FALSE,  0x0001, 0x0002, 0x0000, 0x0008, FALSE,  2,  "Indicator 11" },
-    {   TRUE,   0xffff, 0xffff, 0xffff, 0xffff, TRUE,   0,  "End" },
+    {   TRUE,   0xffff, 0xffff, 0xffff, 0xffff, TRUE,   0,  "End" },            //  End
 };
 int IndicatorsTR123Table2Count = sizeof(IndicatorsTR123Table2)/sizeof(TR123_INDICATORS);
 
+//
+static int LastGoodHealth = 0;
 
 //
 /////////////////////////////////////////////////////////////////////////////
@@ -899,8 +909,11 @@ TRREALHEALTH *CTRSaveGame::GetRealHealthAddress ()
         return m_pRealHealth;
     }
 
+    static char szDebugString [ MAX_PATH ];
 #ifdef _DEBUG
-    OutputDebugString ( "GetRealHealthAddress TR Standard\n" );
+    ZeroMemory ( szDebugString, sizeof(szDebugString) );
+    strcpy_s ( szDebugString, sizeof(szDebugString), "GetRealHealthAddress TR Standard\n" );
+    OutputDebugString ( szDebugString );
 #endif
 
     //
@@ -954,6 +967,19 @@ TRREALHEALTH *CTRSaveGame::GetRealHealthAddress ()
                 m_pRealHealth = pRealHealth;
                 m_wRealHealth = pRealHealth->wRealHealth;
                 strcpy_s ( m_szIndicatorLabel, sizeof(m_szIndicatorLabel), IndicatorsTR123Table1 [ i ].szLabel );
+                //  Just To Log It
+                LastGoodHealth  = (int) ( (BYTE *) pRealHealth - (BYTE *) getBufferAddress () );
+#ifdef _DEBUG
+                ZeroMemory ( szDebugString, sizeof(szDebugString) );
+                sprintf_s ( szDebugString, sizeof(szDebugString), "GetRealHealthAddress TR Standard: Last Address: %04lx\n", LastGoodHealth );
+                OutputDebugString ( szDebugString );
+
+                TRREALHEALTH *pStruct = (TRREALHEALTH *) ( getBufferAddress () + LastGoodHealth );
+                ZeroMemory ( szDebugString, sizeof(szDebugString) );
+                sprintf_s ( szDebugString, sizeof(szDebugString), "GetRealHealthAddress TR Standard: %04x %04x %04x %04x\n",
+                    pStruct->w1, pStruct->w2, pStruct->w3, pStruct->w4 );
+                OutputDebugString ( szDebugString );
+#endif
                 return m_pRealHealth;
             }
         }
@@ -995,7 +1021,20 @@ TRREALHEALTH *CTRSaveGame::GetRealHealthAddress ()
 
                 m_pRealHealth = pRealHealth;
                 m_wRealHealth = pRealHealth->wRealHealth;
-                strcpy_s ( m_szIndicatorLabel, sizeof(m_szIndicatorLabel), IndicatorsTR123Table1 [ i ].szLabel );
+                strcpy_s ( m_szIndicatorLabel, sizeof(m_szIndicatorLabel), IndicatorsTR123Table2 [ i ].szLabel );
+                //  Just To Log It
+                LastGoodHealth  = (int) ( (BYTE *) pRealHealth - (BYTE *) getBufferAddress () );
+#ifdef _DEBUG
+                ZeroMemory ( szDebugString, sizeof(szDebugString) );
+                sprintf_s ( szDebugString, sizeof(szDebugString), "GetRealHealthAddress TR Standard: Last Address: %04lx\n", LastGoodHealth );
+                OutputDebugString ( szDebugString );
+
+                TRREALHEALTH *pStruct = (TRREALHEALTH *) ( getBufferAddress () + LastGoodHealth );
+                ZeroMemory ( szDebugString, sizeof(szDebugString) );
+                sprintf_s ( szDebugString, sizeof(szDebugString), "GetRealHealthAddress TR Standard: %04x %04x %04x %04x\n",
+                    pStruct->w1, pStruct->w2, pStruct->w3, pStruct->w4 );
+                OutputDebugString ( szDebugString );
+#endif
                 return m_pRealHealth;
             }
         }
@@ -1003,6 +1042,20 @@ TRREALHEALTH *CTRSaveGame::GetRealHealthAddress ()
         iX--;
         pBuffer++;
     }
+
+#ifdef _DEBUG
+    ZeroMemory ( szDebugString, sizeof(szDebugString) );
+    sprintf_s ( szDebugString, sizeof(szDebugString), "GetRealHealthAddress TR Standard: Last Address: %04lx\n", LastGoodHealth );
+    OutputDebugString ( szDebugString );
+    if ( LastGoodHealth > 0 )
+    {
+        TRREALHEALTH *pStruct = (TRREALHEALTH *) ( getBufferAddress () + LastGoodHealth );
+        ZeroMemory ( szDebugString, sizeof(szDebugString) );
+        sprintf_s ( szDebugString, sizeof(szDebugString), "GetRealHealthAddress TR Standard: %04x %04x %04x %04x\n",
+            pStruct->w1, pStruct->w2, pStruct->w3, pStruct->w4 );
+        OutputDebugString ( szDebugString );
+    }
+#endif
 
     //
     return NULL;

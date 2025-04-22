@@ -316,7 +316,10 @@ typedef struct TRRealHealth   TRREALHEALTH;
 
 //  Indicator Structure for TR 4 and 5
 #pragma pack(push, pack1, 1)
+#ifndef INDICATOR_LABEL_SIZE
 #define INDICATOR_LABEL_SIZE    32
+#endif // !INDICATOR_LABEL_SIZE
+
 
 typedef struct indicatorTR123Struct
 {

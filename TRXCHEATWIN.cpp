@@ -592,7 +592,7 @@ void CTRXCHEATWINApp::ReadIndicators()
     strcpy_s ( szIndicatorsFilename, sizeof(szIndicatorsFilename), InitFileName );
     RemoveFileType ( szIndicatorsFilename );
     strcat_s ( szIndicatorsFilename, sizeof(szIndicatorsFilename), CTR9SaveGame::GetIndicatorFileType() );
-    CTR9SaveGame::ReadIndicators ( IndicatorsTRRTable, IndicatorsTRRTableCount, szIndicatorsFilename );
+    CTR9SaveGame::ReadIndicators ( IndicatorsTRRTableBytes, IndicatorsTRRTableBytesCount, szIndicatorsFilename );
 
     //
     strcpy_s ( szIndicatorsFilename, sizeof(szIndicatorsFilename), InitFileName );
@@ -654,7 +654,7 @@ void CTRXCHEATWINApp::WriteIndicators()
     strcpy_s ( szIndicatorsFilename, sizeof(szIndicatorsFilename), InitFileName );
     RemoveFileType ( szIndicatorsFilename );
     strcat_s ( szIndicatorsFilename, sizeof(szIndicatorsFilename), CTR9SaveGame::GetIndicatorFileType() );
-    CTR9SaveGame::WriteIndicators ( IndicatorsTRRTable, IndicatorsTRRTableCount, szIndicatorsFilename );
+    CTR9SaveGame::WriteIndicators ( IndicatorsTRRTableBytes, IndicatorsTRRTableBytesCount, szIndicatorsFilename );
 
     //
     strcpy_s ( szIndicatorsFilename, sizeof(szIndicatorsFilename), InitFileName );

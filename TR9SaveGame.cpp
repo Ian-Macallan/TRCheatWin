@@ -12,10 +12,12 @@ extern CTRXCHEATWINApp theApp;
 //
 /////////////////////////////////////////////////////////////////////////////
 //  Indicator Table
+//  The Table use only the first two words (3 bytes)
+//  But anyway the position is checked too
 /////////////////////////////////////////////////////////////////////////////
-TRR_INDICATORS IndicatorsTRRTable [ MAX_INDICATORS ] =
+TRR_BYTES_INDICATORS IndicatorsTRRTableBytes [ MAX_INDICATORS ] =
 {
-    {   FALSE,  0x02,   0x00,   0x02,   0,  "Standing", },
+    {   FALSE,  0x02,   0x00,   0x02,   0,  "Standing", },          //  Normally 0x0002 0x0002 0xnnnn 0x0067
 
     {   FALSE,  0x03,   0x00,   0x03,   1,  "Sliding forward", },  
     {   FALSE,  0x0D,   0x00,   0x0D,   1,  "Underwater", },  
@@ -34,7 +36,31 @@ TRR_INDICATORS IndicatorsTRRTable [ MAX_INDICATORS ] =
     {   TRUE,   0xff,   0xff,   0xff,   0,  "End", },
 
 };
-int IndicatorsTRRTableCount = sizeof(IndicatorsTRRTable)/sizeof(TRR_INDICATORS);
+int IndicatorsTRRTableBytesCount = sizeof(IndicatorsTRRTableBytes)/sizeof(TRR_BYTES_INDICATORS);
+
+//
+//  Normally we could use a table like follows
+TRR_WORDS_INDICATORS IndicatorsTRRTableWords [ MAX_INDICATORS ] =
+{
+    {   FALSE,  0x0002, 0x0002, 0x0000, 0x0067, FALSE,  0,  "Standing" },
+    {   FALSE,  0x0008, 0x0008, 0x0000, 0x0112, FALSE,  1,  "Quad Bike" },
+    {   FALSE,  0x000d, 0x000d, 0x0000, 0x006c, FALSE,  1,  "Swimming" },
+    {   FALSE,  0x0012, 0x0012, 0x0000, 0x0057, FALSE,  1,  "Indicator 2" },
+    {   FALSE,  0x0021, 0x0021, 0x0000, 0x006E, TRUE,   1,  "Swimming" },       //  Use W3
+    {   FALSE,  0x0018, 0x0018, 0x0000, 0x0046, TRUE,   1,  "Sliding" },        //  Use W3
+    {   FALSE,  0x000d, 0x0012, 0x0000, 0x006c, TRUE,   1,  "Underwater" },     //  Use W3
+    {   FALSE,  0x0002, 0x0002, 0x0047, 0x00bd, TRUE,   1,  "Standing" },       //  Use W3
+
+    {   FALSE,  0x000f, 0x000f, 0x0000, 0x0173, TRUE,   2,  "Quad Bike" },      //  Use W3
+    {   FALSE,  0x0001, 0x0001, 0x0000, 0x0163, TRUE,   2,  "Quad Bike" },      //  Use W3
+
+    {   FALSE,  0x0001, 0x0002, 0x0000, 0x000a, FALSE,  2,  "Indicator 10" },
+    {   FALSE,  0x0001, 0x0002, 0x0000, 0x0008, FALSE,  2,  "Indicator 11" },
+
+    {   FALSE,  0x0002, 0x0002, 0x0000, 0x000B, TRUE,   9,  "Standing" },       //  Use W3
+    {   TRUE,   0xffff, 0xffff, 0xffff, 0xffff, TRUE,   0,  "End" },            //  End
+};
+int IndicatorsTRRTableWordsCount = sizeof(IndicatorsTRRTableWords)/sizeof(TRR_WORDS_INDICATORS);
 
 //
 /////////////////////////////////////////////////////////////////////////////
@@ -2194,35 +2220,35 @@ const char *CTR9SaveGame::GetBlockDistance ( int tombraider, int block )
 /////////////////////////////////////////////////////////////////////////////
 bool CTR9SaveGame::isKnown(const char *position)
 {
-    BYTE byte1 = *( position - 10 );
-    BYTE byte2 = *( position - 9 );
-    BYTE byte3 = *( position - 8 );
+    TRR_HEALTH *pStruct = (TRR_HEALTH *) position;
 
 #ifdef _DEBUG
     static char szDebugString [ MAX_PATH ];
     DWORD dwRelativeAddress = CTRXTools::RelativeAddress ( position, m_pBuffer );
     sprintf_s ( szDebugString, sizeof(szDebugString), 
-        "Looking 0x%08x : 0x%02x 0x%02x 0x%02x\n", 
-        dwRelativeAddress, byte1 & 0xff, byte2 & 0xff, byte3 & 0xff );
+        "Looking 0x%08x : 0x%04x 0x%04x 0x%04x 0x%04x\n", 
+        dwRelativeAddress, pStruct->words.w1, pStruct->words.w2, pStruct->words.w3, pStruct->words.w4 );
     OutputDebugString ( szDebugString );
 #endif
 
     ZeroMemory ( m_szIndicatorLabel, sizeof(m_szIndicatorLabel) );
-    for ( int i = 0; i < IndicatorsTRRTableCount; i++ )
+    for ( int i = 0; i < IndicatorsTRRTableBytesCount; i++ )
     {
-        if ( IndicatorsTRRTable [ i ].bEnd )
+        if ( IndicatorsTRRTableBytes [ i ].bEnd )
         {
             break;
         }
 
-        if ( IndicatorsTRRTable [ i ].step > CTRXGlobal::m_TRRIndexMaximum )
+        if ( IndicatorsTRRTableBytes [ i ].step > CTRXGlobal::m_TRRIndexMaximum )
         {
             continue;
         }
 
-        if ( byte1 == IndicatorsTRRTable [ i ].b1 && byte2 == IndicatorsTRRTable [ i ].b2 && byte3 == IndicatorsTRRTable [ i ].b3 )
+        if (    pStruct->bytes.b1 == IndicatorsTRRTableBytes [ i ].b1 &&
+                pStruct->bytes.b2 == IndicatorsTRRTableBytes [ i ].b2 && 
+                pStruct->bytes.b3 == IndicatorsTRRTableBytes [ i ].b3 )
         {
-            strcpy_s ( m_szIndicatorLabel, sizeof(m_szIndicatorLabel), IndicatorsTRRTable [ i ].szLabel );
+            strcpy_s ( m_szIndicatorLabel, sizeof(m_szIndicatorLabel), IndicatorsTRRTableBytes [ i ].szLabel );
 
             return true; 
         }
@@ -2235,35 +2261,37 @@ bool CTR9SaveGame::isKnown(const char *position)
 /////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////
-const char *CTR9SaveGame::getPositionLabel(const char *position)
+const char *CTR9SaveGame::getPositionLabel(const char *pHealth)
 {
-    BYTE byte1 = *( position - 10 );
-    BYTE byte2 = *( position - 9 );
-    BYTE byte3 = *( position - 8 );
+    int offset = offsetof(TRR_WORD_HEALTH,wRealHealth);
+
+    const TRR_HEALTH *pStruct = (TRR_HEALTH *) ( pHealth - offset );
 
     ZeroMemory ( m_szIndicatorLabel, sizeof(m_szIndicatorLabel) );
 
-    for ( int i = 0; i < IndicatorsTRRTableCount; i++ )
+    for ( int i = 0; i < IndicatorsTRRTableBytesCount; i++ )
     {
-        if ( IndicatorsTRRTable [ i ].bEnd )
+        if ( IndicatorsTRRTableBytes [ i ].bEnd )
         {
             break;
         }
 
-        if ( IndicatorsTRRTable [ i ].step > CTRXGlobal::m_TRRIndexMaximum )
+        if ( IndicatorsTRRTableBytes [ i ].step > CTRXGlobal::m_TRRIndexMaximum )
         {
             continue;
         }
 
-        if ( byte1 == IndicatorsTRRTable [ i ].b1 && byte2 == IndicatorsTRRTable [ i ].b2 && byte3 == IndicatorsTRRTable [ i ].b3 )
+        if (    pStruct->bytes.b1 == IndicatorsTRRTableBytes [ i ].b1 &&
+                pStruct->bytes.b2 == IndicatorsTRRTableBytes [ i ].b2 &&
+                pStruct->bytes.b3 == IndicatorsTRRTableBytes [ i ].b3 )
         {
-            strcpy_s ( m_szIndicatorLabel, sizeof(m_szIndicatorLabel), IndicatorsTRRTable [ i ].szLabel );
+            strcpy_s ( m_szIndicatorLabel, sizeof(m_szIndicatorLabel), IndicatorsTRRTableBytes [ i ].szLabel );
 #ifdef _DEBUG
             static char szDebugString [ MAX_PATH ];
-            DWORD dwRelativeAddress = CTRXTools::RelativeAddress ( position, m_pBuffer );
+            DWORD dwRelativeAddress = CTRXTools::RelativeAddress ( pHealth, m_pBuffer );
             sprintf_s ( szDebugString, sizeof(szDebugString), 
-                "Indicators 0x%08x : 0x%02x 0x%02x 0x%02x Found\n", 
-                dwRelativeAddress, byte1 & 0xff, byte2 & 0xff, byte3 & 0xff );
+                "Indicators 0x%08x : 0x%04x 0x%04x 0x%04x 0x%04x Found\n", 
+                dwRelativeAddress, pStruct->words.w1 & 0xff, pStruct->words.w2 & 0xff, pStruct->words.w3, pStruct->words.w4 );
             OutputDebugString ( szDebugString );
 #endif
             return m_szIndicatorLabel; 
@@ -2273,10 +2301,10 @@ const char *CTR9SaveGame::getPositionLabel(const char *position)
 //
 #ifdef _DEBUG
     static char szDebugString [ MAX_PATH ];
-    DWORD dwRelativeAddress = CTRXTools::RelativeAddress ( position, m_pBuffer );
+    DWORD dwRelativeAddress = CTRXTools::RelativeAddress ( pHealth, m_pBuffer );
     sprintf_s ( szDebugString, sizeof(szDebugString), 
-        "Indicators 0x%08x : 0x%02x 0x%02x 0x%02x Not Found\n", 
-        dwRelativeAddress, byte1 & 0xff, byte2 & 0xff, byte3 & 0xff );
+        "Indicators 0x%08x : 0x%04x 0x%04x 0x%04x 0x%04x Found\n", 
+        dwRelativeAddress, pStruct->words.w1 & 0xff, pStruct->words.w2 & 0xff, pStruct->words.w3, pStruct->words.w4 );
     OutputDebugString ( szDebugString );
 #endif
 
@@ -2377,16 +2405,6 @@ WORD *CTR9SaveGame::GetRealHealthAddress ( int tombraider, int block )
                 strcpy_s ( m_szIndicatorLabel, sizeof(m_szIndicatorLabel), "Full Health" );
             }
             return pHealth;
-        }
-
-        // printf ( "%lx ", relative );
-        if ( isKnown ( position ) )
-        {
-            pHealth = ( WORD * ) position;
-            if ( *pHealth > 0 )
-            {
-                return pHealth;
-            }
         }
     }
 
@@ -9453,7 +9471,7 @@ void CTR9SaveGame::SetRocket ( int tombraider, int block, int slot, BOOL bEnable
 /////////////////////////////////////////////////////////////////////////////
 //  { FALSE,  0x02,   0x02,   0x00,   0x67,   TRUE }
 /////////////////////////////////////////////////////////////////////////////
-int CTR9SaveGame::ReadIndicators(TRR_INDICATORS *IndicatorsTRTable, const int maxTable, const char *pFilename)
+int CTR9SaveGame::ReadIndicators(TRR_BYTES_INDICATORS *IndicatorsTRTable, const int maxTable, const char *pFilename)
 {
     if ( ! PathFileExists(pFilename) )
     {
@@ -9480,7 +9498,7 @@ int CTR9SaveGame::ReadIndicators(TRR_INDICATORS *IndicatorsTRTable, const int ma
         if ( pLine != NULL )
         {
             //
-            TRR_INDICATORS indicators;
+            TRR_BYTES_INDICATORS indicators;
             ZeroMemory ( &indicators, sizeof(indicators) );
 
             //
@@ -9602,7 +9620,7 @@ int CTR9SaveGame::ReadIndicators(TRR_INDICATORS *IndicatorsTRTable, const int ma
     //
     if ( line < maxTable )
     {
-        TRR_INDICATORS indicators;
+        TRR_BYTES_INDICATORS indicators;
         ZeroMemory ( &indicators, sizeof(indicators) );
         indicators.bEnd     = TRUE;
         indicators.b1       = 0xff;
@@ -9623,7 +9641,7 @@ int CTR9SaveGame::ReadIndicators(TRR_INDICATORS *IndicatorsTRTable, const int ma
 /////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////
-BOOL CTR9SaveGame::WriteIndicators(TRR_INDICATORS *IndicatorsTRTable, const int maxTable, const char *pFilename)
+BOOL CTR9SaveGame::WriteIndicators(TRR_BYTES_INDICATORS *IndicatorsTRTable, const int maxTable, const char *pFilename)
 {
     //
     FILE *hFile = NULL;
@@ -9638,7 +9656,7 @@ BOOL CTR9SaveGame::WriteIndicators(TRR_INDICATORS *IndicatorsTRTable, const int 
     do
     {
         fprintf_s ( hFile, "{ " );
-        TRR_INDICATORS indicator = IndicatorsTRTable [ index ];
+        TRR_BYTES_INDICATORS indicator = IndicatorsTRTable [ index ];
         if ( indicator.bEnd )
         {
             fprintf_s ( hFile, "TRUE, " );
@@ -9677,13 +9695,13 @@ BOOL CTR9SaveGame::WriteIndicators(TRR_INDICATORS *IndicatorsTRTable, const int 
 /////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////
-int CTR9SaveGame::CountIndicators( TRR_INDICATORS *IndicatorsTRTable, const int maxTable )
+int CTR9SaveGame::CountIndicators( TRR_BYTES_INDICATORS *IndicatorsTRTable, const int maxTable )
 {
     //
     int count = 0;
     do
     {
-        TRR_INDICATORS indicator = IndicatorsTRTable [ count ];
+        TRR_BYTES_INDICATORS indicator = IndicatorsTRTable [ count ];
         if ( indicator.bEnd )
         {
             return count;
@@ -9699,14 +9717,14 @@ int CTR9SaveGame::CountIndicators( TRR_INDICATORS *IndicatorsTRTable, const int 
 /////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////
-int CTR9SaveGame::MinIndicators( TRR_INDICATORS *IndicatorsTRTable, const int maxTable )
+int CTR9SaveGame::MinIndicators( TRR_BYTES_INDICATORS *IndicatorsTRTable, const int maxTable )
 {
     //
     int count       = 0;
     int minimum     = -1;
     do
     {
-        TRR_INDICATORS indicator = IndicatorsTRTable [ count ];
+        TRR_BYTES_INDICATORS indicator = IndicatorsTRTable [ count ];
         if ( indicator.bEnd )
         {
             return minimum;
@@ -9727,14 +9745,14 @@ int CTR9SaveGame::MinIndicators( TRR_INDICATORS *IndicatorsTRTable, const int ma
 /////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////
-int CTR9SaveGame::MaxIndicators( TRR_INDICATORS *IndicatorsTRTable, const int maxTable )
+int CTR9SaveGame::MaxIndicators( TRR_BYTES_INDICATORS *IndicatorsTRTable, const int maxTable )
 {
     //
     int count       = 0;
     int maximum     = -1;
     do
     {
-        TRR_INDICATORS indicator = IndicatorsTRTable [ count ];
+        TRR_BYTES_INDICATORS indicator = IndicatorsTRTable [ count ];
         if ( indicator.bEnd )
         {
             return maximum;
