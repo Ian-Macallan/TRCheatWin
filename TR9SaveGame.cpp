@@ -2218,7 +2218,7 @@ const char *CTR9SaveGame::GetBlockDistance ( int tombraider, int block )
 /////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////
-bool CTR9SaveGame::isKnown(const char *position)
+bool CTR9SaveGame::isKnown ( const char *position )
 {
     TRR_HEALTH *pStruct = (TRR_HEALTH *) position;
 
@@ -2226,7 +2226,7 @@ bool CTR9SaveGame::isKnown(const char *position)
     static char szDebugString [ MAX_PATH ];
     DWORD dwRelativeAddress = CTRXTools::RelativeAddress ( position, m_pBuffer );
     sprintf_s ( szDebugString, sizeof(szDebugString), 
-        "Looking 0x%08x : 0x%04x 0x%04x 0x%04x 0x%04x\n", 
+        "Looking 0x%08x : 0x%04x 0x%04x 0x%04x 0x%04x ", 
         dwRelativeAddress, pStruct->words.w1, pStruct->words.w2, pStruct->words.w3, pStruct->words.w4 );
     OutputDebugString ( szDebugString );
 #endif
@@ -2250,10 +2250,16 @@ bool CTR9SaveGame::isKnown(const char *position)
         {
             strcpy_s ( m_szIndicatorLabel, sizeof(m_szIndicatorLabel), IndicatorsTRRTableBytes [ i ].szLabel );
 
+#ifdef _DEBUG
+            OutputDebugString ( "Match\n" );
+#endif
             return true; 
         }
     }
 
+#ifdef _DEBUG
+            OutputDebugString ( "\n" );
+#endif
     return false;
 }
 
@@ -2362,49 +2368,98 @@ WORD *CTR9SaveGame::GetRealHealthAddress ( int tombraider, int block )
     }
 
     //
-    int level = GetBlockLevelNumber ( tombraider, block );
-    if ( level < 1 || level > 32 )
+    int levelNumber = GetBlockLevelNumber ( tombraider, block );
+    if ( levelNumber < 1 || levelNumber > 32 )
     {
         return NULL;
     }
 
-    level = level - 1;
-    if ( pRanges [ level ].minOffset == 0 )
+    //
+    int levelIndex = levelNumber - 1;
+    if ( pRanges [ levelIndex ].minOffset == 0 )
     {
         return NULL;
     }
 
-    if ( pRanges [ level ].maxOffset == 0 )
+    if ( pRanges [ levelIndex ].maxOffset == 0 )
     {
-        pRanges [ level ].maxOffset = pRanges [ level ].minOffset;
+        pRanges [ levelIndex ].maxOffset = pRanges [ levelIndex ].minOffset;
     }
     
     //  Only One Position
-    if ( pRanges [ level ].minOffset == ( pRanges [ level ].maxOffset + iExtended ) )
+    if ( pRanges [ levelIndex ].minOffset == ( pRanges [ levelIndex ].maxOffset + iExtended ) )
     {
-        char *position  = pStart - iSubtract + pRanges [ level ].minOffset;
-        if ( *position != 0 )
+        char *pHealth  = pStart - iSubtract + pRanges [ levelIndex ].minOffset;
+        if ( *pHealth != 0 )
         {
-            getPositionLabel ( position );
-            return ( WORD * ) position;
+            getPositionLabel ( pHealth );
+            return ( WORD * ) pHealth;
         }
     }
 
-    for ( DWORD i = pRanges [ level ].minOffset; i <= pRanges [ level ].maxOffset + iExtended; i++ )
+    //
+    //  Search Within Range
+    for ( DWORD i = pRanges [ levelIndex ].minOffset; i <= pRanges [ levelIndex ].maxOffset + iExtended; i++ )
     {
-        char *position  = pStart - iSubtract + i;
-        int relative    = (int)( position - m_pBuffer );
+        char *pCurrent  = pStart - iSubtract + i;
+        int relative    = (int)( pCurrent - m_pBuffer );
 
         //  Are we on full health
-        WORD *pHealth = (WORD *)position;
+        WORD *pHealth = (WORD *)pCurrent;
         if ( *pHealth == 1000 )
         {
-            getPositionLabel ( position );
+            getPositionLabel ( pCurrent );
             if ( strlen(m_szIndicatorLabel) == 0 )
             {
                 strcpy_s ( m_szIndicatorLabel, sizeof(m_szIndicatorLabel), "Full Health" );
             }
             return pHealth;
+        }
+
+        //
+        //  Chevk Indicators
+        int offset          = offsetof(TRR_WORD_HEALTH,wRealHealth);
+        char *pIndicators   = pCurrent - offset;
+        if ( isKnown ( pIndicators ) )
+        {
+            //
+            //  Verify Position
+            for ( int i = 0; i <= CTRXGlobal::m_iExtSearchPos; i++ )
+            {
+                TR9_POSITION *position = NULL;
+
+                switch ( tombraider )
+                {
+                    case GAME_TRR1:
+                    {
+                        position = (TR9_POSITION *)(pCurrent - TR1_OFFSET_POS);
+                        break;
+                    }
+                    case GAME_TRR2:
+                    {
+                        position = (TR9_POSITION *)(pCurrent - TR2_OFFSET_POS);
+                        break;
+                    }
+                    case GAME_TRR3:
+                    {
+                        position = (TR9_POSITION *)(pCurrent - TR3_OFFSET_POS);
+                        break;
+                    }
+                }
+
+                DWORD dwSouthToNorth    = ( DWORD ) position->dwSouthToNorth;
+                DWORD dwVertical        = ( DWORD ) position->dwVertical;
+                DWORD dwWestToEast      = ( DWORD ) position->dwWestToEast;
+                WORD wRoom              = position->wRoom;
+
+                BOOL bCheck = CheckAreaForCoordinates ( tombraider, levelIndex,  wRoom, dwWestToEast, dwVertical, dwSouthToNorth );
+                if ( bCheck )
+                {
+                    //
+                    pHealth = (WORD *) pCurrent;
+                    return pHealth;
+                }
+            }
         }
     }
 
