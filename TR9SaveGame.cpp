@@ -2311,10 +2311,20 @@ const char *CTR9SaveGame::getPositionLabel(const char *pHealth)
     static char szDebugString [ MAX_PATH ];
     DWORD dwRelativeAddress = CTRXTools::RelativeAddress ( pHealth, m_pBuffer );
     sprintf_s ( szDebugString, sizeof(szDebugString), 
-        "Indicators 0x%08x : 0x%04x 0x%04x 0x%04x 0x%04x Found\n", 
+        "Indicators 0x%08x : 0x%04x 0x%04x 0x%04x 0x%04x Not Found\n", 
         dwRelativeAddress, pStruct->words.w1 & 0xff, pStruct->words.w2 & 0xff, pStruct->words.w3, pStruct->words.w4 );
     OutputDebugString ( szDebugString );
 #endif
+
+    if ( *( (WORD *) pHealth ) == 1000 )
+    {
+        strcpy_s ( m_szIndicatorLabel, sizeof(m_szIndicatorLabel), "Full Health" );
+    }
+
+    if ( strlen(m_szIndicatorLabel) == 0 )
+    {
+        strcpy_s ( m_szIndicatorLabel, sizeof(m_szIndicatorLabel), "Range" );
+    }
 
     return m_szIndicatorLabel;
 }
@@ -2469,7 +2479,6 @@ WORD *CTR9SaveGame::GetRealHealthAddress ( int tombraider, int block )
                 }
             }
         }
-
     }
 
     return NULL;
