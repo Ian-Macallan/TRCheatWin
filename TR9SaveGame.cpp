@@ -25,6 +25,7 @@ TRR_BYTES_INDICATORS IndicatorsTRRTableBytes [ MAX_INDICATORS ] =
     {   FALSE,  0x12,   0x00,   0x12,   1,  "Other", },
     {   FALSE,  0x13,   0x00,   0x13,   1,  "Climbing", },
     {   FALSE,  0x17,   0x00,   0x02,   1,  "Rolling", },
+    {   FALSE,  0x18,   0x00,   0x18,   1,  "Sliding", },
     {   FALSE,  0x20,   0x00,   0x20,   1,  "Sliding backward", },
     {   FALSE,  0x21,   0x00,   0x21,   1,  "On water", },
     {   FALSE,  0x41,   0x00,   0x02,   1,  "Walking in water", },
@@ -2257,8 +2258,9 @@ bool CTR9SaveGame::isKnown ( const char *position )
         }
     }
 
+    //
 #ifdef _DEBUG
-            OutputDebugString ( "\n" );
+    OutputDebugString ( "\n" );
 #endif
     return false;
 }
@@ -2399,32 +2401,39 @@ WORD *CTR9SaveGame::GetRealHealthAddress ( int tombraider, int block )
 
     //
     //  Search Within Range
-    for ( DWORD i = pRanges [ levelIndex ].minOffset; i <= pRanges [ levelIndex ].maxOffset + iExtended; i++ )
+    for ( DWORD ir = pRanges [ levelIndex ].minOffset; ir <= pRanges [ levelIndex ].maxOffset + iExtended; ir++ )
     {
-        char *pCurrent  = pStart - iSubtract + i;
-        int relative    = (int)( pCurrent - m_pBuffer );
+        //
+        char *pCurrentHealth    = pStart - iSubtract + ir;
+        int relative            = (int)( pCurrentHealth - m_pBuffer );
 
-        //  Are we on full health
-        WORD *pHealth = (WORD *)pCurrent;
-        if ( *pHealth == 1000 )
+        //
+        WORD *pHealth       = (WORD *) pCurrentHealth;
+        BYTE *pFoundHealth  = NULL;
+        //
+        //  Chevk Indicators
+        int offset          = offsetof(TRR_WORD_HEALTH,wRealHealth);
+        char *pIndicators   = pCurrentHealth - offset;
+        if ( isKnown ( pIndicators ) )
         {
-            getPositionLabel ( pCurrent );
+            pFoundHealth = (BYTE *) pCurrentHealth;
+        }
+        //
+        else if ( *pHealth == 1000 )
+        {
+            getPositionLabel ( pCurrentHealth );
             if ( strlen(m_szIndicatorLabel) == 0 )
             {
                 strcpy_s ( m_szIndicatorLabel, sizeof(m_szIndicatorLabel), "Full Health" );
             }
-            return pHealth;
+            pFoundHealth = (BYTE *) pHealth;
         }
 
         //
-        //  Chevk Indicators
-        int offset          = offsetof(TRR_WORD_HEALTH,wRealHealth);
-        char *pIndicators   = pCurrent - offset;
-        if ( isKnown ( pIndicators ) )
+        //  Verify Position
+        if ( pFoundHealth != NULL )
         {
-            //
-            //  Verify Position
-            for ( int i = 0; i <= CTRXGlobal::m_iExtSearchPos; i++ )
+            //  for ( int i = 0; i <= CTRXGlobal::m_iExtSearchPos; i++ )
             {
                 TR9_POSITION *position = NULL;
 
@@ -2432,17 +2441,17 @@ WORD *CTR9SaveGame::GetRealHealthAddress ( int tombraider, int block )
                 {
                     case GAME_TRR1:
                     {
-                        position = (TR9_POSITION *)(pCurrent - TR1_OFFSET_POS);
+                        position = (TR9_POSITION *)(pFoundHealth - TR1_OFFSET_POS);
                         break;
                     }
                     case GAME_TRR2:
                     {
-                        position = (TR9_POSITION *)(pCurrent - TR2_OFFSET_POS);
+                        position = (TR9_POSITION *)(pFoundHealth - TR2_OFFSET_POS);
                         break;
                     }
                     case GAME_TRR3:
                     {
-                        position = (TR9_POSITION *)(pCurrent - TR3_OFFSET_POS);
+                        position = (TR9_POSITION *)(pFoundHealth - TR3_OFFSET_POS);
                         break;
                     }
                 }
@@ -2456,11 +2465,11 @@ WORD *CTR9SaveGame::GetRealHealthAddress ( int tombraider, int block )
                 if ( bCheck )
                 {
                     //
-                    pHealth = (WORD *) pCurrent;
-                    return pHealth;
+                    return (WORD *) pFoundHealth;
                 }
             }
         }
+
     }
 
     return NULL;
@@ -2476,24 +2485,24 @@ TR9_POSITION *CTR9SaveGame::GetPositionAddress ( int tombraider, int block )
     OutputDebugString ( "GetPositionAddress TR Remastered\n" );
 #endif
 
-    BYTE *pAddress = (BYTE *) GetRealHealthAddress ( tombraider, block );
-    if ( pAddress )
+    BYTE *pHealth = (BYTE *) GetRealHealthAddress ( tombraider, block );
+    if ( pHealth )
     {
         switch ( tombraider )
         {
             case GAME_TRR1:
             {
-                return (TR9_POSITION *)(pAddress - TR1_OFFSET_POS);
+                return (TR9_POSITION *)(pHealth - TR1_OFFSET_POS);
                 break;
             }
             case GAME_TRR2:
             {
-                return (TR9_POSITION *)(pAddress - TR2_OFFSET_POS);
+                return (TR9_POSITION *)(pHealth - TR2_OFFSET_POS);
                 break;
             }
             case GAME_TRR3:
             {
-                return (TR9_POSITION *)(pAddress - TR3_OFFSET_POS);
+                return (TR9_POSITION *)(pHealth - TR3_OFFSET_POS);
                 break;
             }
         }
@@ -2508,10 +2517,10 @@ TR9_POSITION *CTR9SaveGame::GetPositionAddress ( int tombraider, int block )
 /////////////////////////////////////////////////////////////////////////////
 WORD CTR9SaveGame::GetRealHealth ( int tombraider, int block )
 {
-    WORD *pAddress = GetRealHealthAddress ( tombraider, block );
-    if ( pAddress != NULL )
+    WORD *pHealth = GetRealHealthAddress ( tombraider, block );
+    if ( pHealth != NULL )
     {
-        return *pAddress;
+        return *pHealth;
     }
 
     return 0;
@@ -2523,10 +2532,10 @@ WORD CTR9SaveGame::GetRealHealth ( int tombraider, int block )
 /////////////////////////////////////////////////////////////////////////////
 void CTR9SaveGame::SetRealHealth ( int tombraider, int block, WORD value )
 {
-    WORD *pAddress = GetRealHealthAddress ( tombraider, block );
-    if ( pAddress != NULL )
+    WORD *pHealth = GetRealHealthAddress ( tombraider, block );
+    if ( pHealth != NULL )
     {
-        *pAddress = value;
+        *pHealth = value;
     }
 
     return;
@@ -2540,10 +2549,10 @@ void CTR9SaveGame::KillWillard ( int tombraider, int block )
 {
     if ( tombraider == 3 && GetBlockLevelNumber (tombraider, block ) == 19 )
     {
-        BYTE *pAddress = (BYTE *) GetRealHealthAddress ( tombraider, block );
-        if ( pAddress != NULL )
+        BYTE *pHealth = (BYTE *) GetRealHealthAddress ( tombraider, block );
+        if ( pHealth != NULL )
         {
-            BYTE *pWillard = (BYTE *)(pAddress+TR3_WILLARD_DEAD);
+            BYTE *pWillard = (BYTE *)(pHealth+TR3_WILLARD_DEAD);
             if ( *pWillard == 0 )
             {
                 *pWillard       = 1;
@@ -2562,10 +2571,10 @@ void CTR9SaveGame::KillTR1Boss ( int tombraider, int block )
 {
     if ( tombraider == 1 && GetBlockLevelNumber (tombraider, block ) == 15 )
     {
-        BYTE *pAddress = (BYTE *) GetRealHealthAddress ( tombraider, block );
-        if ( pAddress != NULL )
+        BYTE *pHealth = (BYTE *) GetRealHealthAddress ( tombraider, block );
+        if ( pHealth != NULL )
         {
-            WORD *pTr1Boss = (WORD *)(pAddress+TR1_BOSS);
+            WORD *pTr1Boss = (WORD *)(pHealth+TR1_BOSS);
             if ( *pTr1Boss > 0 && *pTr1Boss <= 500 )
             {
                 *pTr1Boss       = 0;
@@ -2583,10 +2592,10 @@ BOOL CTR9SaveGame::IsKillEnabled ( int tombraider, int block )
 {
     if ( tombraider == 1 && GetBlockLevelNumber (tombraider, block ) == 15 )
     {
-        BYTE *pAddress = (BYTE *) GetRealHealthAddress ( tombraider, block );
-        if ( pAddress != NULL )
+        BYTE *pHealth = (BYTE *) GetRealHealthAddress ( tombraider, block );
+        if ( pHealth != NULL )
         {
-            WORD *pTr1Boss = (WORD *)(pAddress+TR1_BOSS);
+            WORD *pTr1Boss = (WORD *)(pHealth+TR1_BOSS);
             if ( *pTr1Boss > 0 && *pTr1Boss <= 500 )
             {
                 return TRUE;
@@ -2596,10 +2605,10 @@ BOOL CTR9SaveGame::IsKillEnabled ( int tombraider, int block )
 
     if ( tombraider == 3 && GetBlockLevelNumber (tombraider, block ) == 19 )
     {
-        BYTE *pAddress = (BYTE *) GetRealHealthAddress ( tombraider, block );
-        if ( pAddress != NULL )
+        BYTE *pHealth = (BYTE *) GetRealHealthAddress ( tombraider, block );
+        if ( pHealth != NULL )
         {
-            BYTE *pWillard = (BYTE *)(pAddress+TR3_WILLARD_DEAD);
+            BYTE *pWillard = (BYTE *)(pHealth+TR3_WILLARD_DEAD);
             if ( *pWillard == 0 )
             {
                 return TRUE;
@@ -2973,8 +2982,8 @@ BYTE CTR9SaveGame::GetBlockIndicator ( int tombraider, int block )
     void *pStartBlock = GetBlockStart ( tombraider, block );
     if ( pStartBlock )
     {
-        BYTE *pAddress = (BYTE*) pStartBlock - TR_OFFSET_INDICATOR;
-        return *pAddress;
+        BYTE *pIndicator = (BYTE*) pStartBlock - TR_OFFSET_INDICATOR;
+        return *pIndicator;
     }
 
     return 0;

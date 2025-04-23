@@ -198,7 +198,7 @@
 //  Increase when going to north
 #define TR1_POS_SOUTH_NORTH     0x00002809  //  0x280A  DWORD
 
-//
+//  0x0023 = 35
 #define TR1_OFFSET_POS      (0x00002825-TR1_POS_WEST_EAST)
 #define TR2_OFFSET_POS      (0x00002825-TR1_POS_WEST_EAST)
 #define TR3_OFFSET_POS      (0x00002825-TR1_POS_WEST_EAST)
