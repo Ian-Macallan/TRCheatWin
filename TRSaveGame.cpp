@@ -48,6 +48,7 @@ int IndicatorsTR123Table1Count = sizeof(IndicatorsTR123Table1)/sizeof(TR123_INDI
 TR123_INDICATORS IndicatorsTR123Table2 [ MAX_INDICATORS ] =
 {
     {   FALSE,  0x000f, 0x000f, 0x0000, 0x0173, TRUE,   2,  "Quad Bike" },      //  Use W3
+    {   FALSE,  0x000f, 0x000f, 0x0000, 0x0174, TRUE,   2,  "Quad Bike" },      //  Use W3
     {   FALSE,  0x0001, 0x0001, 0x0000, 0x0163, TRUE,   2,  "Quad Bike" },      //  Use W3
 
     {   FALSE,  0x0001, 0x0002, 0x0000, 0x000a, FALSE,  2,  "Indicator 10" },

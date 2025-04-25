@@ -2405,7 +2405,20 @@ WORD *CTR9SaveGame::GetRealHealthAddress ( int tombraider, int block )
         if ( *pHealth != 0 )
         {
             getPositionLabel ( pHealth );
-            return ( WORD * ) pHealth;
+
+            TR9_POSITION *position =  GetPositionAddress ( tombraider, (BYTE *) pHealth );
+
+            DWORD dwSouthToNorth    = position->dwSouthToNorth;
+            DWORD dwVertical        = position->dwVertical;
+            DWORD dwWestToEast      = position->dwWestToEast;
+            WORD wRoom              = position->wRoom;
+
+            BOOL bCheck = CheckAreaForCoordinates ( tombraider, levelIndex,  wRoom, dwWestToEast, dwVertical, dwSouthToNorth );
+            if ( bCheck )
+            {
+                //
+                return (WORD *) pHealth;
+            }
         }
     }
 
@@ -2445,30 +2458,11 @@ WORD *CTR9SaveGame::GetRealHealthAddress ( int tombraider, int block )
         {
             //  for ( int i = 0; i <= CTRXGlobal::m_iExtSearchPos; i++ )
             {
-                TR9_POSITION *position = NULL;
+                TR9_POSITION *position =  GetPositionAddress ( tombraider, pFoundHealth );
 
-                switch ( tombraider )
-                {
-                    case GAME_TRR1:
-                    {
-                        position = (TR9_POSITION *)(pFoundHealth - TR1_OFFSET_POS);
-                        break;
-                    }
-                    case GAME_TRR2:
-                    {
-                        position = (TR9_POSITION *)(pFoundHealth - TR2_OFFSET_POS);
-                        break;
-                    }
-                    case GAME_TRR3:
-                    {
-                        position = (TR9_POSITION *)(pFoundHealth - TR3_OFFSET_POS);
-                        break;
-                    }
-                }
-
-                DWORD dwSouthToNorth    = ( DWORD ) position->dwSouthToNorth;
-                DWORD dwVertical        = ( DWORD ) position->dwVertical;
-                DWORD dwWestToEast      = ( DWORD ) position->dwWestToEast;
+                DWORD dwSouthToNorth    = position->dwSouthToNorth;
+                DWORD dwVertical        = position->dwVertical;
+                DWORD dwWestToEast      = position->dwWestToEast;
                 WORD wRoom              = position->wRoom;
 
                 BOOL bCheck = CheckAreaForCoordinates ( tombraider, levelIndex,  wRoom, dwWestToEast, dwVertical, dwSouthToNorth );
@@ -2488,13 +2482,8 @@ WORD *CTR9SaveGame::GetRealHealthAddress ( int tombraider, int block )
 /////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////
-TR9_POSITION *CTR9SaveGame::GetPositionAddress ( int tombraider, int block )
+TR9_POSITION *CTR9SaveGame::GetPositionAddress ( int tombraider, BYTE *pHealth )
 {
-#ifdef _DEBUG
-    OutputDebugString ( "GetPositionAddress TR Remastered\n" );
-#endif
-
-    BYTE *pHealth = (BYTE *) GetRealHealthAddress ( tombraider, block );
     if ( pHealth )
     {
         switch ( tombraider )
@@ -2514,6 +2503,50 @@ TR9_POSITION *CTR9SaveGame::GetPositionAddress ( int tombraider, int block )
                 return (TR9_POSITION *)(pHealth - TR3_OFFSET_POS);
                 break;
             }
+        }
+    }
+
+    return NULL;
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
+TR9_POSITION *CTR9SaveGame::GetPositionAddress ( int tombraider, int block )
+{
+#ifdef _DEBUG
+    OutputDebugString ( "GetPositionAddress TR Remastered\n" );
+#endif
+
+    //
+    int levelNumber = GetBlockLevelNumber ( tombraider, block );
+    if ( levelNumber < 1 || levelNumber > 32 )
+    {
+        return NULL;
+    }
+
+    //
+    int levelIndex = levelNumber - 1;
+
+    //
+    BYTE *pHealth = (BYTE *) GetRealHealthAddress ( tombraider, block );
+    if ( pHealth )
+    {
+        TR9_POSITION *position = GetPositionAddress ( tombraider, pHealth );
+
+        //
+        //  Check
+        DWORD dwSouthToNorth    = position->dwSouthToNorth;
+        DWORD dwVertical        = position->dwVertical;
+        DWORD dwWestToEast      = position->dwWestToEast;
+        WORD wRoom              = position->wRoom;
+
+        BOOL bCheck = CheckAreaForCoordinates ( tombraider, levelIndex,  wRoom, dwWestToEast, dwVertical, dwSouthToNorth );
+        if ( bCheck )
+        {
+            //
+            return position;
         }
     }
 

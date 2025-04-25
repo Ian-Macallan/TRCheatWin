@@ -692,6 +692,7 @@ class CTR9SaveGame : public CObject
         WORD *GetRealHealthAddress ( int tombraider, int block );
 
         //
+        TR9_POSITION *GetPositionAddress ( int tombraider, BYTE *pHealth );
         TR9_POSITION *GetPositionAddress ( int tombraider, int block );
 
         WORD GetRealHealth ( int tombraider, int block );
