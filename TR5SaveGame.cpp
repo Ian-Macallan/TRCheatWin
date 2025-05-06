@@ -24,8 +24,8 @@ extern CTRXCHEATWINApp theApp;
 /////////////////////////////////////////////////////////////////////////////
 TR45_INDICATORS IndicatorsTR5Table [ MAX_INDICATORS ] =
 {
-    {   FALSE,  0x02,   0x02,   0x00,   0x67,   TRUE,   0,  "Standing", },
-    {   FALSE,  0x02,   0x02,   0x47,   0x67,   TRUE,   0,  "Standing", },
+    {   FALSE,  0x02,   0x02,   0x00,   0x67,   TRUE,   0,  "Standing", },          // Step 0 must be
+    {   FALSE,  0x02,   0x02,   0x47,   0x67,   TRUE,   0,  "Standing", },          // At Start
 
     {   FALSE,  0x02,   0x02,   0x00,   0x0b,   TRUE,   1,  "Indicator 10", },
     {   FALSE,  0x02,   0x02,   0x00,   0x1f,   TRUE,   1,  "Indicator 11", },

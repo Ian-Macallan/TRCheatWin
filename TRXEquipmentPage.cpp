@@ -14,10 +14,13 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 static const char *pValueMinusOne   = "-1";
-static const char *pValue10K        = "10000";
-static const char *pSome5K          = "5000";
+static const char *pValue10K1       = "10001";
+static const char *pValue10K2       = "10002";
+static const char *pValue10K3       = "10003";
 static const char *pSome1K          = "1000";
-static const char *pValue255        = "255";
+static const char *pValue201        = "201";
+static const char *pValue202        = "202";
+static const char *pValue203        = "203";
 static const char *pMany32K         = "0x7fff";
 
 static const int Many32K            = 0x7fff;
@@ -447,11 +450,11 @@ void CTRXEquipmentPage::OnButSmedi()
     // m_But_Small_MediPak.SetCheck ( FALSE );
     if ( CTRSaveGame::I() != NULL && CTRSaveGame::GetVersion () >= 40 )
     {
-        m_Small_Medipak.SetWindowText ( pValue10K );
+        m_Small_Medipak.SetWindowText ( pValue10K1 );
     }
     else
     {
-        m_Small_Medipak.SetWindowText ( pValue255 );
+        m_Small_Medipak.SetWindowText ( pValue201 );
     }
 }
 
@@ -467,11 +470,11 @@ void CTRXEquipmentPage::OnButLmedi()
     // m_But_Large_MediPak.SetCheck ( FALSE );
     if ( CTRSaveGame::I() != NULL && CTRSaveGame::GetVersion () >= 40 )
     {
-        m_Large_Medipak.SetWindowText ( pValue10K );
+        m_Large_Medipak.SetWindowText ( pValue10K2 );
     }
     else
     {
-        m_Large_Medipak.SetWindowText ( pValue255 );
+        m_Large_Medipak.SetWindowText ( pValue202 );
     }
 }
 
@@ -495,11 +498,11 @@ void CTRXEquipmentPage::OnButFlares()
 
         if ( CTRSaveGame::GetVersion () >= 40 )
         {
-            m_Flares.SetWindowText ( pValue10K );
+            m_Flares.SetWindowText ( pValue10K3 );
         }
         else
         {
-            m_Flares.SetWindowText ( pValue255 );
+            m_Flares.SetWindowText ( pValue203 );
         }
 
     }
@@ -633,15 +636,15 @@ void CTRXEquipmentPage::OnBnClickedFull()
     {
         if ( CTRSaveGame::GetVersion () >= 40 )
         {
-            m_Large_Medipak.SetWindowText ( pValue10K );
-            m_Small_Medipak.SetWindowText ( pValue10K );
-            m_Flares.SetWindowText ( pValue10K );
+            m_Small_Medipak.SetWindowText ( pValue10K1 );
+            m_Large_Medipak.SetWindowText ( pValue10K2 );
+            m_Flares.SetWindowText ( pValue10K3 );
         }
         else
         {
-            m_Large_Medipak.SetWindowText ( pValue255 );
-            m_Small_Medipak.SetWindowText ( pValue255 );
-            m_Flares.SetWindowText ( pValue255 );
+            m_Small_Medipak.SetWindowText ( pValue201 );
+            m_Large_Medipak.SetWindowText ( pValue202 );
+            m_Flares.SetWindowText ( pValue203 );
         }
 
         if ( m_iHitCountForAll > 0 )

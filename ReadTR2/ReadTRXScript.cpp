@@ -9,6 +9,8 @@
 #include "TRXTools.h"
 #include "TRLabelItems.h"
 
+#include "zlib.h"
+
 #ifndef     NB_BUTTONS
 #define     NB_BUTTONS      29
 #endif
@@ -6604,6 +6606,128 @@ BOOL WriteTRXScript ( const char *pathname, const char *pDirectory, int version 
     Cleanup();
 
     CloseOneFile ( &hLogFile );
+
+    return bResult;
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//  TR1X
+//  
+//  const SAVEGAME_BSON_HEADER header = {
+//          .magic = SAVEGAME_BSON_MAGIC,
+//          .initial_version = Savegame_GetInitialVersion(),
+//          .version = version,
+//          .compressed_size = compressed_size,
+//          .uncompressed_size = uncompressed_size,
+//      };
+//      File_WriteData(fp, &header, sizeof(header));
+//  
+//      File_WriteData(fp, compressed, compressed_size);
+//  
+//      const GF_LEVEL *const level = Game_GetCurrentLevel();
+//      const SAVEGAME_BSON_EXTENDED_HEADER extra_header = {
+//          .flags = Game_GetBonusFlag(),
+//          .counter = Savegame_GetCounter(),
+//          .level_num = level->num,
+//          .title_size = strlen(level->title),
+//      };
+//      File_WriteData(fp, &extra_header, sizeof(extra_header));
+//      File_WriteData(fp, level->title, strlen(level->title));
+//  TR2X
+//   const SAVEGAME_BSON_HEADER header = {
+//          .magic = SAVEGAME_BSON_MAGIC,
+//          .initial_version = Savegame_GetInitialVersion(),
+//          .version = SAVEGAME_CURRENT_VERSION,
+//          .compressed_size = compressed_size,
+//          .uncompressed_size = uncompressed_size,
+//      };
+//      const SAVEGAME_BSON_EXTENDED_HEADER extra_header = {
+//          .flags = Game_GetBonusFlag(),
+//          .counter = Savegame_GetCounter(),
+//          .level_num = level->num,
+//          .title_size = strlen(level->title),
+//      };
+//  
+//      File_WriteData(fp, &header, sizeof(header));
+//      File_WriteData(fp, compressed, compressed_size);
+//      File_WriteData(fp, &extra_header, sizeof(extra_header));
+//      File_WriteData(fp, level->title, strlen(level->title));
+//  
+//      char [ 4 ] Signature  = T1MB / T2XB
+//      WORD VersionInitial 
+//      WORD VersionCurrent
+//      DWORD compressedSize;
+//      DWORD unCompressedSize;
+//
+/////////////////////////////////////////////////////////////////////////////
+BOOL UnZipTRXSavegame ( const char *pathname, const char *pDirectory, int version )
+{
+    BOOL bResult = FALSE;
+
+    TRXStruct   header;
+    ZeroMemory ( &header, sizeof(header) );
+
+    //
+    static char szOutputFilename [ MAX_PATH ];
+
+    //
+    FILE *hInpFile = NULL;
+    FILE *hOutFile = NULL;
+
+    //
+    fopen_s ( &hInpFile, pathname, "rb" );
+    if ( hInpFile == NULL )
+    {
+        return bResult;
+    }
+
+    //
+    size_t iRead = 0;
+    iRead = fread ( &header, 1, sizeof(header), hInpFile );
+
+    //
+    //  Check Header
+    if (    memcmp ( header.szSignature, "T1MB", sizeof(header.szSignature) ) != 0 && 
+            memcmp ( header.szSignature, "T2XB", sizeof(header.szSignature) ) != 0 )
+    {
+        CloseOneFile ( &hInpFile );
+        return bResult;
+    }
+
+    //
+    strcpy_s ( szOutputFilename, sizeof(szOutputFilename), pathname );
+    strcat_s ( szOutputFilename, sizeof(szOutputFilename), ".clear" );
+    fopen_s ( &hOutFile, szOutputFilename, "wb" );
+    if ( hOutFile == NULL )
+    {
+        CloseOneFile ( &hInpFile );
+        return bResult;
+    }
+
+    //
+    MCMemA memCompressed;
+    memCompressed.AllocateA ( header.dwCompressedSize + 2 );
+
+    //
+    MCMemA memUnCompressed;
+    memUnCompressed.AllocateA ( header.dwUnCompressedSize + 2 );
+
+    //
+    iRead = fread ( memCompressed.ptr, 1, header.dwCompressedSize, hInpFile );
+    if ( iRead > 0 )
+    {
+        int compressStatus = uncompress2( (Bytef *) memUnCompressed.ptr, &header.dwUnCompressedSize,
+            (Bytef *) memCompressed.ptr, &header.dwCompressedSize);
+        if ( compressStatus == Z_OK )
+        {
+            fwrite ( memUnCompressed.ptr, 1, header.dwUnCompressedSize, hOutFile );
+        }
+    }
+
+    //
+    CloseOneFile ( &hOutFile );
+    CloseOneFile ( &hInpFile );
 
     return bResult;
 }

@@ -74,6 +74,7 @@ class CTRXCHEATWINApp : public CWinApp
         //  Remove filename including trailing \ or /
         static char *RemoveFilename ( char *pText );
         static char *SkipSpaces ( char *pText );
+        static bool __strrepiA ( char *lineRead, size_t sizeType, const char *pSearched, const char *pReplaced, bool bGlobal );
         static void RemoveEnclosingQuotes ( char *pText, size_t iLength );
         static char *CopyBetweenQuotes ( char *pTarget, size_t iLength, char *pSource );
 

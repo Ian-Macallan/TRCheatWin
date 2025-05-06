@@ -31,7 +31,6 @@ extern CTRXCHEATWINApp theApp;
 TR123_INDICATORS IndicatorsTR123Table1 [ MAX_INDICATORS ] =
 {
     {   FALSE,  0x0002, 0x0002, 0x0000, 0x0067, FALSE,  0,  "Standing" },
-    {   FALSE,  0x0008, 0x0008, 0x0000, 0x0112, FALSE,  1,  "Quad Bike" },
     {   FALSE,  0x000d, 0x000d, 0x0000, 0x006c, FALSE,  1,  "Swimming" },
     {   FALSE,  0x0012, 0x0012, 0x0000, 0x0057, FALSE,  1,  "Indicator 2" },
     {   FALSE,  0x0021, 0x0021, 0x0000, 0x006E, TRUE,   1,  "Swimming" },       //  Use W3
@@ -47,9 +46,11 @@ int IndicatorsTR123Table1Count = sizeof(IndicatorsTR123Table1)/sizeof(TR123_INDI
 //
 TR123_INDICATORS IndicatorsTR123Table2 [ MAX_INDICATORS ] =
 {
+    {   FALSE,  0x0008, 0x0008, 0x0000, 0x0112, FALSE,  2,  "Quad Bike" },
     {   FALSE,  0x000f, 0x000f, 0x0000, 0x0173, TRUE,   2,  "Quad Bike" },      //  Use W3
     {   FALSE,  0x000f, 0x000f, 0x0000, 0x0174, TRUE,   2,  "Quad Bike" },      //  Use W3
     {   FALSE,  0x0001, 0x0001, 0x0000, 0x0163, TRUE,   2,  "Quad Bike" },      //  Use W3
+    {   FALSE,  0x0001, 0x0001, 0x0000, 0x016f, TRUE,   2,  "Boat" },           //  Use W3
 
     {   FALSE,  0x0001, 0x0002, 0x0000, 0x000a, FALSE,  2,  "Indicator 10" },
     {   FALSE,  0x0001, 0x0002, 0x0000, 0x0008, FALSE,  2,  "Indicator 11" },
@@ -373,11 +374,15 @@ int CTRSaveGame::GetInfo (  char *szGame, size_t iSize, int *iGame, int *iLevel,
 /////////////////////////////////////////////////////////////////////////////
 int CTRSaveGame::InstanciateVersion (const char *szFilename )
 {
-    FILE        *hFile      = NULL;
+    FILE *hFile     = NULL;
 
-    size_t  uLen            = 0;
+    size_t uLen     = 0;
 
-    int         iVersion    = 0;
+    int iVersion    = -1;
+
+    int iTRX        = 0;
+
+    BOOL bTR4NG     = FALSE;
 
     /*
      *  Size of saved games.
@@ -403,126 +408,195 @@ int CTRSaveGame::InstanciateVersion (const char *szFilename )
         CloseOneFile ( &hFile );
 
         //
+        //  We can check some value
+        if ( memcmp ( m_szBuffer, "T1MB", strlen("T1MB" ) ) == 0 )
+        {
+            iTRX    = 1;
+
+            //
+            CTRXMessageBox::ShowMessage( "Load Savegame Error", "TRX 1 Savegame not supported");
+            return -1;
+        }
+
+        if ( memcmp ( m_szBuffer, "T2XB", strlen("T2XB" ) ) == 0 )
+        {
+            iTRX    = 2;
+
+            //
+            CTRXMessageBox::ShowMessage( "Load Savegame Error", "TRX 2 Savegame not supported");
+            return -1;
+        }
+
+        //
+        if ( uLen > 8 )
+        {
+            char *pSignature    = ( char* ) m_szBuffer + uLen - 8;
+            if ( memcmp ( pSignature, "NGLE", strlen("NGLE") ) == 0  )
+            {
+               bTR4NG     = TRUE;
+            }
+        }
+
+        //
+        //  Treat Special Case : TR4NG
+        if ( bTR4NG && uLen >= CTRXGlobal::m_iMinNGSize && uLen <= CTRXGlobal::m_iMaxNGSize )
+        {
+            //
+            CTR4NGSaveGame *pGame = dynamic_cast<CTR4NGSaveGame *>( GetTR4NGInstance() );
+            if ( pGame != NULL )
+            {
+                iVersion    = GAME_TR49;
+                pGame->Reset();
+                memcpy_s ( pGame->getBufferAddress(), sizeof(TR4NGSAVE), m_szBuffer, uLen );
+                memcpy_s ( pGame->getBufferBackupAddress(), sizeof(TR4NGSAVE), m_szBuffer, uLen );
+                pGame->SetBufferLength ( uLen );
+
+                return iVersion;
+            }
+        }
+
+        //  Do Not use break : just return or continue
         switch ( CTRXGlobal::m_ForceSaveGame )
         {
             case FORCE_TR1 :
             {
-                iVersion = GAME_TR10;
-                CTR1SaveGame *pGame = dynamic_cast<CTR1SaveGame *>( GetTR1Instance() );
-                if ( pGame != NULL && uLen <= sizeof(TR1SAVE) )
+                if ( uLen <= sizeof(TR1SAVE) )
                 {
-                    pGame->Reset();
-                    memcpy_s ( pGame->getBufferAddress(), sizeof(TR1SAVE), m_szBuffer, uLen );
-                    memcpy_s ( pGame->getBufferBackupAddress(), sizeof(TR1SAVE), m_szBuffer, uLen );
-                    pGame->SetBufferLength ( uLen );
+                    CTR1SaveGame *pGame = dynamic_cast<CTR1SaveGame *>( GetTR1Instance() );
+                    if ( pGame != NULL )
+                    {
+                        iVersion = GAME_TR10;
+                        pGame->Reset();
+                        memcpy_s ( pGame->getBufferAddress(), sizeof(TR1SAVE), m_szBuffer, uLen );
+                        memcpy_s ( pGame->getBufferBackupAddress(), sizeof(TR1SAVE), m_szBuffer, uLen );
+                        pGame->SetBufferLength ( uLen );
+
+                        return iVersion;
+                    }
                 }
-                break;
             }
 
             case FORCE_TUB :
             {
-                iVersion = GAME_TR15;
-                CTUBSaveGame *pGame = dynamic_cast<CTUBSaveGame *>( GetTUBInstance() );
-                if ( pGame != NULL && uLen <= sizeof(TUBSAVE) )
+                if  ( uLen <= sizeof(TUBSAVE) )
                 {
-                    pGame->Reset();
-                    memcpy_s ( pGame->getBufferAddress(), sizeof(TUBSAVE), m_szBuffer, uLen );
-                    memcpy_s ( pGame->getBufferBackupAddress(), sizeof(TUBSAVE), m_szBuffer, uLen );
-                    pGame->SetBufferLength ( uLen );
+                    CTUBSaveGame *pGame = dynamic_cast<CTUBSaveGame *>( GetTUBInstance() );
+                    if ( pGame != NULL )
+                    {
+                        iVersion = GAME_TR15;
+                        pGame->Reset();
+                        memcpy_s ( pGame->getBufferAddress(), sizeof(TUBSAVE), m_szBuffer, uLen );
+                        memcpy_s ( pGame->getBufferBackupAddress(), sizeof(TUBSAVE), m_szBuffer, uLen );
+                        pGame->SetBufferLength ( uLen );
+
+                        return iVersion;
+                    }
                 }
-                break;
             }
 
+            //
             case FORCE_TR2 :
             case FORCE_TR2G :
             {
-                iVersion = GAME_TR20;
-                CTR2SaveGame *pGame = dynamic_cast<CTR2SaveGame *>( GetTR2Instance() );
-                if ( pGame != NULL && uLen <= sizeof(TR2SAVE) )
+                if ( uLen <= sizeof(TR2SAVE) )
                 {
-                    pGame->Reset();
-                    memcpy_s ( pGame->getBufferAddress(), sizeof(TR2SAVE), m_szBuffer, uLen );
-                    memcpy_s ( pGame->getBufferBackupAddress(), sizeof(TR2SAVE), m_szBuffer, uLen );
-                    pGame->SetBufferLength ( uLen );
+                    CTR2SaveGame *pGame = dynamic_cast<CTR2SaveGame *>( GetTR2Instance() );
+                    if ( pGame != NULL )
+                    {
+                        iVersion = GAME_TR20;
+                        pGame->Reset();
+                        memcpy_s ( pGame->getBufferAddress(), sizeof(TR2SAVE), m_szBuffer, uLen );
+                        memcpy_s ( pGame->getBufferBackupAddress(), sizeof(TR2SAVE), m_szBuffer, uLen );
+                        pGame->SetBufferLength ( uLen );
+
+                        return iVersion;
+                    }
                 }
-                break;
             }
 
+            //
             case FORCE_TR3 :
             case FORCE_TR3G :
             {
-                iVersion = GAME_TR30;
-                CTR3SaveGame *pGame = dynamic_cast<CTR3SaveGame *>( GetTR3Instance() );
-                if ( pGame != NULL && uLen <= sizeof(TR3SAVE) )
+                if ( uLen <= sizeof(TR3SAVE) )
                 {
-                    pGame->Reset();
-                    memcpy_s ( pGame->getBufferAddress(), sizeof(TR3SAVE), m_szBuffer, uLen );
-                    memcpy_s ( pGame->getBufferBackupAddress(), sizeof(TR3SAVE), m_szBuffer, uLen );
-                    pGame->SetBufferLength ( uLen );
+                    CTR3SaveGame *pGame = dynamic_cast<CTR3SaveGame *>( GetTR3Instance() );
+                    if ( pGame != NULL  )
+                    {
+                        iVersion = GAME_TR30;
+                        pGame->Reset();
+                        memcpy_s ( pGame->getBufferAddress(), sizeof(TR3SAVE), m_szBuffer, uLen );
+                        memcpy_s ( pGame->getBufferBackupAddress(), sizeof(TR3SAVE), m_szBuffer, uLen );
+                        pGame->SetBufferLength ( uLen );
+
+                        return iVersion;
+                    }
                 }
-                break;
             }
 
             case FORCE_TR4 :
             {
-                iVersion    = GAME_TR40;
-                CTR4SaveGame *pGame = dynamic_cast<CTR4SaveGame *>( GetTR4Instance() );
-                if ( pGame != NULL && uLen <= sizeof(TR4SAVE) )
+                if ( uLen <= sizeof(TR4SAVE) )
                 {
-                    pGame->Reset();
-                    memcpy_s ( pGame->getBufferAddress(), sizeof(TR4SAVE), m_szBuffer, uLen );
-                    memcpy_s ( pGame->getBufferBackupAddress(), sizeof(TR4SAVE), m_szBuffer, uLen );
-                    pGame->SetBufferLength ( uLen );
+                    CTR4SaveGame *pGame = dynamic_cast<CTR4SaveGame *>( GetTR4Instance() );
+                    if ( pGame != NULL )
+                    {
+                        iVersion    = GAME_TR40;
+                        pGame->Reset();
+                        memcpy_s ( pGame->getBufferAddress(), sizeof(TR4SAVE), m_szBuffer, uLen );
+                        memcpy_s ( pGame->getBufferBackupAddress(), sizeof(TR4SAVE), m_szBuffer, uLen );
+                        pGame->SetBufferLength ( uLen );
+
+                        return iVersion;
+                    }
                 }
-                break;
             }
 
+            //
             case FORCE_TR4NG :
             {
-                if ( uLen >= CTRXGlobal::m_iMinNGSize && uLen <= CTRXGlobal::m_iMaxNGSize )
+                //
+                //  The last eight byte if the file is
+                //  4E474C4526120000    NGLE&...
+                if ( bTR4NG && uLen >= CTRXGlobal::m_iMinNGSize && uLen <= CTRXGlobal::m_iMaxNGSize )
                 {
                     //
-                    //  The last eight byte if the file is
-                    //  4E474C4526120000    NGLE&...
-                    char *pSignature = (char* ) m_szBuffer + uLen - 8;
-                    if ( memcmp ( pSignature, "NGLE", 4 ) != 0  )
-                    {
-                        CTRXMessageBox::ShowMessage( "Load Savegame Error", "File Signature does not match NGLE");
-                        return -1;
-                    }
-
-                    //
-                    iVersion    = GAME_TR49;
                     CTR4NGSaveGame *pGame = dynamic_cast<CTR4NGSaveGame *>( GetTR4NGInstance() );
                     if ( pGame != NULL )
                     {
+                        iVersion    = GAME_TR49;
                         pGame->Reset();
                         memcpy_s ( pGame->getBufferAddress(), sizeof(TR4NGSAVE), m_szBuffer, uLen );
                         memcpy_s ( pGame->getBufferBackupAddress(), sizeof(TR4NGSAVE), m_szBuffer, uLen );
                         pGame->SetBufferLength ( uLen );
+
+                        return iVersion;
                     }
                 }
                 else
                 {
                     //
-                    CTRXMessageBox::ShowMessage( "Load Savegame Error", "File size does not match any game format");
+                    CTRXMessageBox::ShowMessage( "Load Savegame Error", "File does not match TR4NG");
                     return -1;
                 }
-                break;
             }
 
             case FORCE_TR5 :
             {
-                iVersion = GAME_TR50;
-                CTR5SaveGame *pGame = dynamic_cast<CTR5SaveGame *>( GetTR5Instance() );
-                if ( pGame != NULL && uLen <= sizeof(TR5SAVE ) )
+                if ( uLen <= sizeof(TR5SAVE ) )
                 {
-                    pGame->Reset();
-                    memcpy_s ( pGame->getBufferAddress(), sizeof(TR5SAVE), m_szBuffer, uLen );
-                    memcpy_s ( pGame->getBufferBackupAddress(), sizeof(TR5SAVE), m_szBuffer, uLen );
-                    pGame->SetBufferLength ( uLen );
+                    CTR5SaveGame *pGame = dynamic_cast<CTR5SaveGame *>( GetTR5Instance() );
+                    if ( pGame != NULL )
+                    {
+                        iVersion = GAME_TR50;
+                        pGame->Reset();
+                        memcpy_s ( pGame->getBufferAddress(), sizeof(TR5SAVE), m_szBuffer, uLen );
+                        memcpy_s ( pGame->getBufferBackupAddress(), sizeof(TR5SAVE), m_szBuffer, uLen );
+                        pGame->SetBufferLength ( uLen );
+
+                        return iVersion;
+                    }
                 }
-                break;
             }
 
             //
@@ -534,34 +608,33 @@ int CTRSaveGame::InstanciateVersion (const char *szFilename )
                 {
                     case TR1LEVELMINSIZE:
                     {
-                        iVersion = GAME_TR10;
                         CTR1SaveGame *pGame = dynamic_cast<CTR1SaveGame *>( GetTR1Instance() );
                         if ( pGame != NULL )
                         {
+                            iVersion = GAME_TR10;
                             pGame->Reset();
                             memcpy_s ( pGame->getBufferAddress(), sizeof(TR1SAVE), m_szBuffer, uLen );
                             memcpy_s ( pGame->getBufferBackupAddress(), sizeof(TR1SAVE), m_szBuffer, uLen );
                             pGame->SetBufferLength ( uLen );
+
+                            return iVersion;
                         }
-                        // m_pInstance->RetrieveInformation( szFilename );
-                        break;
                     }
 
                     case TUBLEVELMINSIZE :
                     case TUBLEVELMAXSIZE :
                     {
-                        iVersion = GAME_TR15;
                         CTUBSaveGame *pGame = dynamic_cast<CTUBSaveGame *>( GetTUBInstance() );
                         if ( pGame != NULL )
                         {
+                            iVersion = GAME_TR15;
                             pGame->Reset();
                             memcpy_s ( pGame->getBufferAddress(), sizeof(TUBSAVE), m_szBuffer, uLen );
                             memcpy_s ( pGame->getBufferBackupAddress(), sizeof(TUBSAVE), m_szBuffer, uLen );
                             pGame->SetBufferLength ( uLen );
-                        }
 
-                        // m_pInstance->RetrieveInformation( szFilename );
-                        break;
+                            return iVersion;
+                        }
                     }
 
                     case TR2LEVELMINSIZE :
@@ -569,17 +642,17 @@ int CTRSaveGame::InstanciateVersion (const char *szFilename )
                     case TR2LEVELALT1SIZE : // Not Correct
                     case TR2LEVELALT2SIZE : // Not Used
                     {
-                        iVersion = GAME_TR20;
                         CTR2SaveGame *pGame = dynamic_cast<CTR2SaveGame *>( GetTR2Instance() );
                         if ( pGame != NULL )
                         {
+                            iVersion = GAME_TR20;
                             pGame->Reset();
                             memcpy_s ( pGame->getBufferAddress(), sizeof(TR2SAVE), m_szBuffer, uLen );
                             memcpy_s ( pGame->getBufferBackupAddress(), sizeof(TR2SAVE), m_szBuffer, uLen );
                             pGame->SetBufferLength ( uLen );
+
+                            return iVersion;
                         }
-                        // m_pInstance->RetrieveInformation( szFilename );
-                        break;
                     }
 
                     case TR3LEVELMINSIZE :
@@ -587,17 +660,17 @@ int CTRSaveGame::InstanciateVersion (const char *szFilename )
                     case TR3LEVELALT1SIZE :
                     case TR3LEVELALT2SIZE :
                     {
-                        iVersion = GAME_TR30;
                         CTR3SaveGame *pGame = dynamic_cast<CTR3SaveGame *>( GetTR3Instance() );
                         if ( pGame != NULL )
                         {
+                            iVersion = GAME_TR30;
                             pGame->Reset();
                             memcpy_s ( pGame->getBufferAddress(), sizeof(TR3SAVE), m_szBuffer, uLen );
                             memcpy_s ( pGame->getBufferBackupAddress(), sizeof(TR3SAVE), m_szBuffer, uLen );
                             pGame->SetBufferLength ( uLen );
+
+                            return iVersion;
                         }
-                        // m_pInstance->RetrieveInformation( szFilename );
-                        break;
                     }
 
                     case TR4LEVELMINSIZE :
@@ -605,57 +678,53 @@ int CTRSaveGame::InstanciateVersion (const char *szFilename )
                     case TR4LEVELALT1SIZE :
                     case TR4LEVELALT2SIZE :
                     {
-                        iVersion    = GAME_TR40;
                         CTR4SaveGame *pGame = dynamic_cast<CTR4SaveGame *>( GetTR4Instance() );
                         if ( pGame != NULL )
                         {
+                            iVersion    = GAME_TR40;
                             pGame->Reset();
                             memcpy_s ( pGame->getBufferAddress(), sizeof(TR4SAVE), m_szBuffer, uLen );
                             memcpy_s ( pGame->getBufferBackupAddress(), sizeof(TR4SAVE), m_szBuffer, uLen );
                             pGame->SetBufferLength ( uLen );
+
+                            return iVersion;
                         }
-                        // m_pInstance->RetrieveInformation( szFilename );
-                        break;
                     }
 
+                    //
                     case TR5LEVELMAXSIZE :
                     {
-                        iVersion = GAME_TR50;
                         CTR5SaveGame *pGame = dynamic_cast<CTR5SaveGame *>( GetTR5Instance() );
                         if ( pGame != NULL )
                         {
+                            iVersion = GAME_TR50;
                             pGame->Reset();
                             memcpy_s ( pGame->getBufferAddress(), sizeof(TR5SAVE), m_szBuffer, uLen );
                             memcpy_s ( pGame->getBufferBackupAddress(), sizeof(TR5SAVE), m_szBuffer, uLen );
                             pGame->SetBufferLength ( uLen );
+
+                            return iVersion;
                         }
-                        // m_pInstance->RetrieveInformation( szFilename );
-                        break;
                     }
 
                     default:
                     {
-                        if ( uLen >= CTRXGlobal::m_iMinNGSize && uLen <= CTRXGlobal::m_iMaxNGSize )
+                        //
+                        //  The last eight byte if the file is
+                        //  4E474C4526120000    NGLE&...
+                        if ( bTR4NG && uLen >= CTRXGlobal::m_iMinNGSize && uLen <= CTRXGlobal::m_iMaxNGSize)
                         {
                             //
-                            //  The last eight byte if the file is
-                            //  4E474C4526120000    NGLE&...
-                            char *pSignature = (char* ) m_szBuffer + uLen - 8;
-                            if ( memcmp ( pSignature, "NGLE", 4 ) != 0  )
-                            {
-                                CTRXMessageBox::ShowMessage( "Load Savegame Error", "File Signature does not match NGLE");
-                                return -1;
-                            }
-
-                            //
-                            iVersion    = GAME_TR49;
                             CTR4NGSaveGame *pGame = dynamic_cast<CTR4NGSaveGame *>( GetTR4NGInstance() );
                             if ( pGame != NULL )
                             {
+                                iVersion    = GAME_TR49;
                                 pGame->Reset();
                                 memcpy_s ( pGame->getBufferAddress(), sizeof(TR4NGSAVE), m_szBuffer, uLen );
                                 memcpy_s ( pGame->getBufferBackupAddress(), sizeof(TR4NGSAVE), m_szBuffer, uLen );
                                 pGame->SetBufferLength ( uLen );
+
+                                return iVersion;
                             }
                         }
                         else
@@ -664,15 +733,13 @@ int CTRSaveGame::InstanciateVersion (const char *szFilename )
                             CTRXMessageBox::ShowMessage( "Load Savegame Error", "File size does not match any game format");
                             return -1;
                         }
-                        break;
                     }
                 }
-                break;
             }
         }
     }
 
-    return iVersion;
+    return -1;
 
 }
 

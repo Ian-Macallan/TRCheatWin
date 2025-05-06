@@ -15,6 +15,8 @@
 #include "TRLabelItems.h"
 #include "resource.h"
 
+extern CTRXCHEATWINApp theApp;
+
 //
 static  UINT IDArray [ ] =
 {
@@ -268,6 +270,14 @@ void CTRXItemsTR4::SetLabel ( UINT checkId, UINT editId, char **pTableInd, char 
             {
                 *pCR = '\0';
             }
+            int len = (int) strlen ( szLabel );
+            for ( int i = 0; i < len; i++ )
+            {
+                if ( szLabel [ i ] == '\n' )
+                {
+                    szLabel [ i ] = ' ';
+                }
+            }
 
             //  Puzzle
             if ( index >= 6 && index < 18 )
@@ -298,6 +308,15 @@ void CTRXItemsTR4::SetLabel ( UINT checkId, UINT editId, char **pTableInd, char 
             if ( pCR != NULL )
             {
                 *pCR = '\0';
+            }
+
+            int len = (int) strlen ( szLabel );
+            for ( int i = 0; i < len; i++ )
+            {
+                if ( szLabel [ i ] == '\n' )
+                {
+                    szLabel [ i ] = ' ';
+                }
             }
 
             //  Puzzle
@@ -536,6 +555,18 @@ BOOL CTRXItemsTR4::GetMenuLabel ( int button )
     {
         strcat_s ( szLabels, sizeof(szLabels), pTableGen [ button ] );
     }
+
+    //
+    int len = (int) strlen(szLabels);
+    for ( int i = 0; i < len - 2; i++ )
+    {
+        if ( szLabels [ i ] != '\r' &&  szLabels [ i + 1 ] == '\n' )
+        {
+            szLabels [ i + 1 ] = ' ';
+        }
+    }
+
+    theApp.__strrepiA ( szLabels, sizeof(szLabels), "  ", " ", true );
 
     //
     char *nextToken = NULL;
@@ -1132,7 +1163,7 @@ BOOL CTRXItemsTR4::OnToolTipNotify(UINT id, NMHDR *pNMH, LRESULT *pResult)
     ScreenToClient ( &ptAction );
 
     //
-    static char szText [ MAX_PATH * 4 ] = "";
+    static char szText [ MAX_PATH * 8 ] = "";
 
     TOOLTIPTEXT *pText = (TOOLTIPTEXT *)pNMH;
 
@@ -1180,9 +1211,21 @@ BOOL CTRXItemsTR4::OnToolTipNotify(UINT id, NMHDR *pNMH, LRESULT *pResult)
             //
             if ( pTable != NULL && pTable [ iX ] != NULL )
             {
+                ZeroMemory ( szText, sizeof(szText) );
+
                 if ( strlen(pTable [ iX ]) > 0 )
                 {
-                    pText->lpszText = pTable [ iX ];
+                    strcpy_s ( szText, sizeof(szText), pTable [ iX ] );
+                    int len = (int) strlen(szText);
+                    for ( int i = 0; i < len - 2; i++ )
+                    {
+                        if ( szText [ i ] != '\r' &&  szText [ i + 1 ] == '\n' )
+                        {
+                            szText [ i + 1 ] = ' ';
+                        }
+                    }
+                    theApp.__strrepiA ( szText, sizeof(szText), "  ", " ", true );
+                    pText->lpszText = szText;
                 }
                 else
                 {

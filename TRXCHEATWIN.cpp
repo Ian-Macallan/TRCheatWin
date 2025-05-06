@@ -351,6 +351,100 @@ char *CTRXCHEATWINApp::SkipSpaces ( char *pText )
 }
 
 //
+//====================================================================================
+//  Search String and Replace Ignore Case
+//====================================================================================
+bool CTRXCHEATWINApp::__strrepiA (   char *lineRead, size_t sizeType,
+                                    const char *pSearched, const char *pReplaced, bool bGlobal )
+{
+    bool replaced   = false;
+
+    if ( lineRead == NULL || strlen ( lineRead ) == 0 )
+    {
+        return replaced;
+    }
+
+    if ( pSearched == NULL || strlen ( pSearched ) == 0 )
+    {
+        return replaced;
+    }
+
+    if ( pReplaced == NULL )
+    {
+        return replaced;
+    }
+
+    if ( _stricmp ( pSearched, pReplaced ) == 0 )
+    {
+        return replaced;
+    }
+
+    //
+    while ( sizeType > 0 && *lineRead != '\0' )
+    {
+        int compare = _strnicmp ( lineRead, pSearched, strlen ( pSearched ) );
+        if ( compare == 0 )
+        {
+            if ( sizeType >= strlen ( pReplaced ) )
+            {
+                size_t  lenSearched = strlen ( pSearched );
+                size_t  lenReplaced = strlen ( pReplaced );
+                size_t  lenLine     = strlen ( lineRead );
+
+                //
+                //      Move
+                int deltaType   = ( int ) lenSearched - ( int ) lenReplaced;
+
+                int sizeToMove = ( int ) lenLine - deltaType + 1;
+                if ( ( lenSearched != lenReplaced ) && ( sizeToMove > 0 ) )
+                {
+                    memmove_s ( lineRead + lenReplaced, sizeType, lineRead + lenSearched, sizeToMove );
+                }
+                else
+                {
+                    //
+                    //  Zero End Of Line
+//                  wmemset ( lineRead, NULL, lenReplaced + 1 );
+                }
+                //
+                //  Copy String
+                memcpy_s ( lineRead, sizeType, pReplaced, lenReplaced );
+
+                //
+                //  Do Not Advance when global
+                if ( ! bGlobal || ( lenReplaced >= lenSearched ) ) 
+                {
+                    lineRead    += lenReplaced;
+                    sizeType    -= lenReplaced;
+                }
+
+                //
+                //      Say it has been replaced
+                replaced    = true;
+
+                if ( ! bGlobal )
+                {
+                    return replaced;
+                }
+            }
+            else
+            {
+                sizeType    = 0;
+                return  replaced;
+            }
+        }
+        else
+        {
+            lineRead++;
+            sizeType--;
+        }
+    }
+
+    return replaced;
+}
+
+
+//
 /////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////
@@ -1321,6 +1415,32 @@ BOOL CTRXCHEATWINApp::InitInstance()
             strcpy_s ( szDirectory, sizeof(szDirectory), szFullPathname );
             RemoveFilename ( szDirectory );
             BOOL bRead = ReadTRXScript ( szFullPathname, szDirectory, 4 );
+        }
+        //
+        //  Read Savegame
+        else if ( __strnicmp ( pCommandLine, "-unziptrx" ) == 0 )
+        {
+            //
+            ZeroMemory ( szPathname, sizeof(szPathname) );
+            char *pFilename = strchr ( pCommandLine, ' ' );
+            if ( pFilename != NULL )
+            {
+                pFilename = SkipSpaces ( pFilename );
+                CopyBetweenQuotes ( szPathname, sizeof(szPathname), pFilename );
+            }
+
+            if ( strlen (szPathname) == 0 )
+            {
+                strcpy_s ( szPathname, sizeof(szPathname), "saves\\save_tr1_00.dat" );
+            }
+
+            LPSTR lpFilepart = NULL;
+            GetFullPathName ( szPathname, sizeof(szFullPathname), szFullPathname, &lpFilepart );
+
+            //
+            strcpy_s ( szDirectory, sizeof(szDirectory), szFullPathname );
+            RemoveFilename ( szDirectory );
+            BOOL bRead = UnZipTRXSavegame ( szFullPathname, szDirectory, 1 );
         }
         //
         //  Read .TR4 for NG values

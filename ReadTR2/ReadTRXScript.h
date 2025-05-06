@@ -222,6 +222,17 @@ struct LevelDataxDA
     xuint16_t   itemNumber;
 };
 
+
+//  TRX1 / TRX2 Structure
+struct TRXStruct
+{
+    char    szSignature [ 4 ];
+    WORD    wInitialVersion;
+    WORD    wCurrentVersion;
+    DWORD   dwCompressedSize;
+    DWORD   dwUnCompressedSize;
+};
+
 //
 #pragma pack(pop, pack1)
 
@@ -234,6 +245,9 @@ typedef void (*FCT_AddToItemsLabels)( int what, int level, int button, const cha
 extern BOOL ReadTRXLanguage (   const char *pFilename, const char *pDirectory, int iLang, int version, bool bWrite = true );
 extern BOOL ReadTRXScript (     const char *pathname, const char *pDirectory, int version = 4, bool bWrite = true,
                                 FCT_AddToItemsLabels function = NULL );
+
+extern BOOL UnZipTRXSavegame (     const char *pathname, const char *pDirectory, int version = 1 );
+
 //  Pathname is the savegame name
 extern BOOL IsScriptBlinded ( const char *pathname );
 extern BOOL UnBlindTRXScript ( const char *pathname, const char *pDirectory );

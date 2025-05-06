@@ -20,6 +20,9 @@ static char THIS_FILE[] = __FILE__;
 
 extern CTRXCHEATWINApp theApp;
 
+//
+static int LastGoodIndicator = 0;
+
 /*
  *      ------------------------------------------------
  *      Data.
@@ -77,8 +80,8 @@ static char    TR4NBSecrets [ ] =
 /////////////////////////////////////////////////////////////////////////////
 TR45_INDICATORS IndicatorsTR4NGTable [ MAX_INDICATORS ] =
 {
-    {   FALSE,  0x02,   0x02,   0x00,   0x67,   TRUE,   0,  "Standing", },
-    {   FALSE,  0x02,   0x02,   0x47,   0x67,   TRUE,   0,  "Standing", },
+    {   FALSE,  0x02,   0x02,   0x00,   0x67,   TRUE,   0,  "Standing", },      // Step 0 must be
+    {   FALSE,  0x02,   0x02,   0x47,   0x67,   TRUE,   0,  "Standing", },      // At Start
 
     {   FALSE,  0x02,   0x02,   0x00,   0x28,   TRUE,   1,  "Indicator 1", },
     {   FALSE,  0x02,   0x02,   0x00,   0x0c,   TRUE,   1,  "Indicator 3", },
@@ -3011,6 +3014,7 @@ void *CTR4NGSaveGame::GetIndicatorAddress (int index)
                 {
                     strcpy_s (  m_szIndicatorLabel, sizeof(m_szIndicatorLabel), IndicatorsTR4NGTable [ indice ].szLabel );
 
+                    LastGoodIndicator = iBuffer;
                     return pBuffer + iBuffer;
                 }
             }
