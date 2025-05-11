@@ -233,6 +233,12 @@ struct TRXStruct
     DWORD   dwUnCompressedSize;
 };
 
+#define TRX_STRING      0x02
+#define TRX_DWORD1      0x03
+#define TRX_ELEVEN      0x04
+#define TRX_BOOLEAN     0x08
+#define TRX_DWORD2      0x10
+
 //
 #pragma pack(pop, pack1)
 

@@ -6676,6 +6676,14 @@ BOOL UnZipTRXSavegame ( const char *pathname, const char *pDirectory, int versio
     FILE *hOutFile = NULL;
 
     //
+    static char szLogFilename [ MAX_PATH ];
+    strcpy_s ( szLogFilename, sizeof(szLogFilename), pathname );
+    strcat_s ( szLogFilename, sizeof(szLogFilename), ".LOG" );
+
+    //
+    fopen_s ( &hLogFile, szLogFilename, "w" );
+
+    //
     fopen_s ( &hInpFile, pathname, "rb" );
     if ( hInpFile == NULL )
     {
@@ -6692,16 +6700,18 @@ BOOL UnZipTRXSavegame ( const char *pathname, const char *pDirectory, int versio
             memcmp ( header.szSignature, "T2XB", sizeof(header.szSignature) ) != 0 )
     {
         CloseOneFile ( &hInpFile );
+        CloseOneFile ( &hLogFile );
         return bResult;
     }
 
     //
     strcpy_s ( szOutputFilename, sizeof(szOutputFilename), pathname );
-    strcat_s ( szOutputFilename, sizeof(szOutputFilename), ".clear" );
+    strcat_s ( szOutputFilename, sizeof(szOutputFilename), ".unzip" );
     fopen_s ( &hOutFile, szOutputFilename, "wb" );
     if ( hOutFile == NULL )
     {
         CloseOneFile ( &hInpFile );
+        CloseOneFile ( &hLogFile );
         return bResult;
     }
 
@@ -6722,12 +6732,104 @@ BOOL UnZipTRXSavegame ( const char *pathname, const char *pDirectory, int versio
         if ( compressStatus == Z_OK )
         {
             fwrite ( memUnCompressed.ptr, 1, header.dwUnCompressedSize, hOutFile );
+
+            //
+            //  Browse The Uncompressed data
+            char    *pBuffer    = memUnCompressed.ptr;
+            int     size        = (int) header.dwUnCompressedSize;
+
+            //
+            //  First dWord is the full size
+            int fullSize = (int) ( * ( (DWORD * ) pBuffer ) );
+            fullSize    -= sizeof(DWORD);
+            pBuffer     += sizeof(DWORD);
+            while ( fullSize > 0 )
+            {
+                DWORD relative = (DWORD)( pBuffer - memUnCompressed.ptr );
+                BYTE code = (BYTE) *pBuffer;
+
+                pBuffer++;
+                fullSize--;
+
+                //
+                switch ( code )
+                {
+                    //
+                    case TRX_STRING :
+                    {
+                        Print ( hLogFile, "%08x : Code 0x%02x : %s\n", relative, code, pBuffer );
+                        fullSize    -= (int) strlen(pBuffer) + 1;
+                        pBuffer     += strlen(pBuffer) + 1;
+
+                        int stringSize = (int) ( * ( (DWORD * ) pBuffer ) );
+                        fullSize    -= sizeof(DWORD);
+                        pBuffer     += sizeof(DWORD);
+
+                        Print ( hLogFile, "\tValue : %s\n", pBuffer );
+                        fullSize    -= stringSize;
+                        pBuffer     += stringSize;
+
+                        break;
+                    }
+
+                    //
+                    case TRX_BOOLEAN :
+                    {
+                        Print ( hLogFile, "%08x : Code 0x%02x : %s\n", relative, code, pBuffer );
+                        fullSize    -= (int) strlen(pBuffer) + 1;
+                        pBuffer     += strlen(pBuffer) + 1;
+
+                        Print ( hLogFile, "\tValue : 0x%02x\n", ( *(BYTE *)pBuffer) );
+                        fullSize    -= (int) sizeof(BYTE);
+                        pBuffer     += sizeof(BYTE);
+
+                        break;
+                    }
+
+                    //
+                    case TRX_DWORD1 :
+                    case TRX_DWORD2 :
+                    {
+                        Print ( hLogFile, "%08x : Code 0x%02x : %s\n", relative, code, pBuffer );
+                        fullSize    -= (int) strlen(pBuffer) + 1;
+                        pBuffer     += strlen(pBuffer) + 1;
+
+                        Print ( hLogFile, "\tValue : 0x%08x\n", ( *(DWORD *)pBuffer) );
+                        fullSize    -= (int) sizeof(DWORD);
+                        pBuffer     += sizeof(DWORD);
+
+                        break;
+                    }
+
+                    //
+                    case TRX_ELEVEN :
+                    {
+                        Print ( hLogFile, "%08x : Code 0x%02x : %s\n", relative, code, pBuffer );
+                        fullSize    -= (int) strlen(pBuffer) + 1;
+                        pBuffer     += strlen(pBuffer) + 1;
+
+                        fullSize    -= 11;
+                        pBuffer     += 11;
+                        break;
+                    }
+
+                    //
+                    default :
+                    {
+                        Print ( hLogFile, "%08x : Unknown code 0x%02x\n", relative, code );
+                        // fullSize = 0;
+                        break;
+                    }
+                }
+            }
+
         }
     }
 
     //
     CloseOneFile ( &hOutFile );
     CloseOneFile ( &hInpFile );
+    CloseOneFile ( &hLogFile );
 
     return bResult;
 }

@@ -638,7 +638,7 @@ BOOL CTRXPosition::OnInitDialog()
 
     if ( m_bToolTip )
     {
-        const char *pTools = "You will have to adjust thos values\r\nto get a correct position\r\n";
+        const char *pTools = "You will have to adjust those values\r\nto get a correct position\r\n";
         m_ToolTip.AddTool( &m_Search, "Search Correct Room for Position");
         m_ToolTip.AddTool( &m_AreasList, "List Of All Rooms (Area) for this level");
         m_ToolTip.AddTool( &m_OK, "Validate your changes\r\nBeware the values could be wrong\r\n");
