@@ -8,13 +8,14 @@ tags: Tombraider Savegame Editor
  TRCHEATWIN
 ============
 
-This Program can modify savegames files from :
+TRCHEATWIN can modify savegames files from :
 - Tombraider I, Unfinished Business,
 - Tombraider II, II The Golden Mask,
 - Tombraider III, III The Lost Artefact
 - Tombraider IV The Last Revelation, IV Times Exclusive and
 - Tombraider V Chronicles and
 - Tombraider Remastered 1 2 3.
+- Tombraider Remastered 4 5.
 The executable for x86 is TRCheatWin.zip.
 The executable for x64 is TRCheatWinx64.zip
 For the both versions you will need Visual Sudio Redistribuable
