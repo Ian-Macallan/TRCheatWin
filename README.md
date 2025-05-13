@@ -8,13 +8,16 @@ tags: Tomb Raider Save Game Editor
  Tomb Raider Save Game Editor - TRCHEATWIN
 =========================================
 
-This Program can modify savegames files from :
+TRCHEATWIN can modify savegames files from :
 - Tombraider I, Unfinished Business,
 - Tombraider II, II The Golden Mask,
 - Tombraider III, III The Lost Artefact
 - Tombraider IV The Last Revelation, IV Times Exclusive and
 - Tombraider V Chronicles and
 - Tombraider Remastered 1 2 3.
+- Tombraider Remastered 4 5.
+- Tombraider levels created by level editor
+  (TR1, TR2, TR3, TR4, TR4 NextGen and TR5)
 
 The features are :
 - Getting all guns and ammos, life pak, flares,
