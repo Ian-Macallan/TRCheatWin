@@ -122,6 +122,8 @@ TR45_INDICATORS IndicatorsTR4Table [ MAX_INDICATORS ] =
 
     {   FALSE,  0x01,   0x02,   0x47,   0x08,   TRUE,   1,  "Indicator 24", }, 
 
+    {   FALSE,  0x18,   0x18,   0x00,   0x46,   TRUE,   1,  "Sliding Forward", }, 
+
     //
     {   TRUE,   0xff,   0xff,   0xff,   0xff,   TRUE,   0,  "End", },
 };
