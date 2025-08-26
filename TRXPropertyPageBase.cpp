@@ -138,6 +138,7 @@ BOOL CTRXPropertyPageBase::AddLocation ( STRUCTLOCATION *pTable, const char *pLo
         }
     }
 
+#if 0
     // Move Up
     for ( int i = 1; i < LEN_LOCATION; i++ )
     {
@@ -146,6 +147,16 @@ BOOL CTRXPropertyPageBase::AddLocation ( STRUCTLOCATION *pTable, const char *pLo
 
     //  Add at End
     strcpy_s ( pTable [ LEN_LOCATION - 1 ].szPathname, MAX_PATH, pLocation );
+#else
+    //  Reset Halft Table
+    for ( int i = LEN_LOCATION / 2; i < LEN_LOCATION; i++ )
+    {
+        strcpy_s ( pTable [ i ].szPathname, MAX_PATH, "" );
+    }
+
+    //  Add at End
+    strcpy_s ( pTable [ LEN_LOCATION / 2 ].szPathname, MAX_PATH, pLocation );
+#endif
 
     return TRUE;
 }

@@ -1766,7 +1766,7 @@ int CTR4NGSaveGame::Valid()
         return 0;
     }
 
-    if ( pGun->m_gunCrossBow != 0 && ( pGun->m_gunCrossBow & TR4NG_MASK_ANY ) == 0 &&
+    if ( pGun->m_gunCrossBow != 0 && ( pGun->m_gunCrossBow & TR4NG_CROSSBOX_MASK ) == 0 &&
         ( pGun->m_gunCrossBow & TR4NG_GUN_SET4 ) == 0 )
     {
         AddToStatus ( "CrossBow Invalid" );
@@ -1779,7 +1779,7 @@ int CTR4NGSaveGame::Valid()
         AddToStatus ( "Crowbar Invalid" );
         return 0;
     }
-    return ( 1 );
+    return 1;
 }
 
 //

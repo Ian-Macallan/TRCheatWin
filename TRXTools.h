@@ -19,6 +19,7 @@
 #define G_HAR       7       //  Harpoon
 #define G_CRO       8       //  Crowbar
 
+static const int numberOfChangeNotification = 3;
 
 //
 /////////////////////////////////////////////////////////////////////////////
@@ -32,6 +33,12 @@ class CTRXTools
 
         //
     public:
+
+        //  0 = TRR 123
+        //  1 = TRR 45
+        //  2 = TR12345
+
+        static HANDLE changeNotification [ numberOfChangeNotification ];
 
         //
         static BOOL IsAmmosEnabled ( int tombraider, int level, int gun );
@@ -81,6 +88,13 @@ class CTRXTools
 
         static void ToLowercase ( char *pText );
         static void ToUppercase ( char *pText );
+
+        static HANDLE TrackFirstChange( int notif, const char *dirname );
+        static BOOL TrackNextChange ( int notif );
+
+        static BOOL TrackCheckChange ( int notif );
+
+        static BOOL TrackClose ( int notif );
 
 };
 

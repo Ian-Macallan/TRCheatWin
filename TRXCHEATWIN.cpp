@@ -946,6 +946,7 @@ BOOL CTRXCHEATWINApp::InitInstance()
     CTRXGlobal::m_UseTR4PositionRange   = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_USE_TR4_RANGE, -1, TRUE );
     CTRXGlobal::m_UseTR5PositionRange   = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_USE_TR5_RANGE, -1, TRUE );
 
+    CTRXGlobal::m_bAutoSearch           = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_AUTO_SEARCH, -1, FALSE );
     //
     CTRXGlobal::m_TR123IndexMaximum     = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_TR123_INDEX, -1, TR_SECURE_POSITION );
 

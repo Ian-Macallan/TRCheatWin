@@ -772,7 +772,7 @@ void CTRXInfoPage::LoadDirectory()
     /*
      *      Starts a dialog box.
      */
-    if ( dlgFileDialog.DoModal () == IDOK)
+    if ( dlgFileDialog.DoModal () == IDOK )
     {
         /*
          *  Set filename Text.
@@ -882,7 +882,39 @@ void CTRXInfoPage::OnWrite()
 /////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////
-void CTRXInfoPage::DisplayValues()
+void CTRXInfoPage::AutoSearch()
+{
+    //
+    if ( CTRXGlobal::m_bAutoSearch )
+    {
+        if ( CTRSaveGame::I() != NULL )
+        {
+            int version     = CTRSaveGame::GetFullVersion();
+            switch ( version )
+            {
+                case GAME_TR19 :
+                case GAME_TR29 :
+                case GAME_TR39 :
+                case GAME_TR49 :
+                case GAME_TR59 :
+                {
+                    if ( ! CTRSaveGame::I()->getAutoSearchDone () )
+                    {
+                        CTRSaveGame::I()->setAutoSearchDone ( TRUE );
+                        OnBnClickedSeeCustom();
+                    }
+                    break;
+                }
+            }
+        }
+    }
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
+void CTRXInfoPage::DisplayValues(BOOL bAutoSearch)
 {
     BOOL bModified = IsGUIModified();
 
@@ -897,6 +929,11 @@ void CTRXInfoPage::DisplayValues()
     if ( CTRSaveGame::I() != NULL )
     {
         // m_Status.SetWindowText ( CTRSaveGame::I()->GetStatus () );
+    }
+
+    if ( bAutoSearch )
+    {
+        AutoSearch();
     }
 
     /*
@@ -1916,7 +1953,7 @@ void CTRXInfoPage::DisplayOne ( int line )
             CTRSaveGame::I()->RetrieveInformation ( szFilename );
             m_Status.SetWindowText ( CTRSaveGame::I()->GetStatus() );
 
-            DisplayValues ();
+            DisplayValues();
         }
     }
 
@@ -3339,7 +3376,7 @@ void CTRXInfoPage::ChangeCustomCombo(bool bManualChange)
             }
 
             //
-            DisplayValues();
+            DisplayValues( FALSE );
         }
     }
 
@@ -3616,7 +3653,7 @@ void CTRXInfoPage::OnBnClickedSeeCustom()
     }
 
     //
-    DisplayValues();
+    DisplayValues( );
 
     //
     BOOL bSelected = SelectCustomFromPath ( szScript );

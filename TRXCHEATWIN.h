@@ -150,6 +150,7 @@ class CTRXCHEATWINApp : public CWinApp
 #define PROFILE_TRR_BACKUP          "TRR Backup"
 #define PROFILE_TR_BACKUP           "TR Backup"
 #define PROFILE_EXT_SEA_POS         "Extra Search Position v1.0"
+#define PROFILE_AUTO_SEARCH         "Auto Search"
 
 #define PROFILE_USE_TR4_RANGE       "Use TR4 Position Range"
 #define PROFILE_USE_TR5_RANGE       "Use TR5 Position Range"

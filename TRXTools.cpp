@@ -23,6 +23,8 @@ static BYTE         *SecondBlock                    = NULL;
 #define LEN_DIFF_LINE       15
 static char szDifference [ ( LEN_DIFF_LINE + 2 ) * DifferencesMax ] = "";
 
+//
+HANDLE CTRXTools::changeNotification [ numberOfChangeNotification ] = { INVALID_HANDLE_VALUE, INVALID_HANDLE_VALUE, INVALID_HANDLE_VALUE };
 
 //
 // #pragma comment(lib, "uxtheme.lib")
@@ -1002,3 +1004,77 @@ void CTRXTools::ToUppercase ( char *pText )
     }
 }
 
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
+HANDLE CTRXTools::TrackFirstChange( int notif, const char *dirname )
+{
+    notif = notif % numberOfChangeNotification;
+
+    TrackClose ( notif );
+
+    if ( dirname != NULL )
+    {
+        changeNotification [ notif ] = 
+            FindFirstChangeNotification ( dirname, TRUE, FILE_NOTIFY_CHANGE_FILE_NAME |  FILE_NOTIFY_CHANGE_LAST_WRITE );
+    }
+
+    return changeNotification [ notif ] ;
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
+BOOL CTRXTools::TrackNextChange ( int notif )
+{
+    BOOL bResult = FALSE;
+
+    notif = notif % numberOfChangeNotification;
+
+    if ( changeNotification [ notif ] != INVALID_HANDLE_VALUE )
+    {
+        bResult = FindNextChangeNotification ( changeNotification );
+    }
+
+    return bResult;
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
+BOOL CTRXTools::TrackCheckChange ( int notif )
+{
+    BOOL bSignaled = FALSE;
+
+    notif = notif % numberOfChangeNotification;
+
+    DWORD dwWaitStatus = WaitForSingleObject ( changeNotification [ notif ] , 0 );
+    if ( dwWaitStatus == WAIT_OBJECT_0 )
+    {
+        TrackNextChange ( notif );
+        bSignaled = TRUE;
+    }
+    return bSignaled;
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
+BOOL CTRXTools::TrackClose ( int notif )
+{
+    BOOL bResult = FALSE;
+
+    notif = notif % numberOfChangeNotification;
+
+    if ( changeNotification [ notif ] != INVALID_HANDLE_VALUE )
+    {
+        bResult = FindCloseChangeNotification ( changeNotification [ notif ] );
+        changeNotification [ notif ]  = INVALID_HANDLE_VALUE;
+    }
+
+    return bResult;
+}

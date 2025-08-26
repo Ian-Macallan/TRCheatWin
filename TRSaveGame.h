@@ -158,15 +158,20 @@
 #define TR4NG_GUN_SET6          (TR4NG_GUN_SET2|TR4NG_GUN_SET4)
 //  00001000
 #define TR4NG_GUN_SET8          0x08
+#define TR4NG_GUN_SET20         0x20
 //  00001001
 #define TR4NG_GUN_SET9          (TR4NG_GUN_SET1|TR4NG_GUN_SET8)
+
+//  0000 1101
+#define TR4NG_GUN_MASK          (TR4NG_GUN_SET1|TR4NG_GUN_SET4|TR4NG_GUN_SET8)
+
+//  For Some Reason CROSSBOX may differ
+//  0010 1101
+#define TR4NG_CROSSBOX_MASK     (TR4NG_GUN_SET1|TR4NG_GUN_SET4|TR4NG_GUN_SET8|TR4NG_GUN_SET20)
 
 //  For Some Reason CROWBAR may differ
 //  00001111
 #define TR40NG_CROWBAR_MASK     (TR4NG_GUN_SET1|TR4NG_GUN_SET2|TR4NG_GUN_SET4|TR4NG_GUN_SET8)
-
-//  00001101
-#define TR4NG_GUN_MASK          (TR4NG_GUN_SET1|TR4NG_GUN_SET4|TR4NG_GUN_SET8)
 
 #define TR4NG_MASK_ALL          0xFF
 #define TR4NG_MASK_ANY          TR4NG_GUN_MASK
@@ -396,6 +401,8 @@ class CTRSaveGame  : public CObject
         //  Subversion 0, 5, 9
         int                 m_iSubVersion;
 
+        BOOL                m_bAutoSearchDone;
+
     // Operations
     public:
 
@@ -433,6 +440,18 @@ class CTRSaveGame  : public CObject
         static char *GetBufferAddress();
         static char *GetBufferBackupAddress();
         static DWORD RelativeAddress( const void *pAddress );
+
+        //
+        //      Auto Search Done
+        BOOL getAutoSearchDone ()
+        {
+            return m_bAutoSearchDone;
+        }
+
+        void setAutoSearchDone ( BOOL bAutoSearch )
+        {
+            m_bAutoSearchDone = bAutoSearch;
+        }
 
         //  Status
         virtual const char *GetStatus() { return m_Status; };

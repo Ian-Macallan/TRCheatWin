@@ -96,6 +96,8 @@ CTRSaveGame::CTRSaveGame()
     m_iSaveLength       = 0;
     m_iMaxLevel         = 0;
 
+    m_bAutoSearchDone   = FALSE;
+
     ZeroMemory ( m_szIndicatorLabel, sizeof(m_szIndicatorLabel) );
 
     Reset();
@@ -109,6 +111,7 @@ void CTRSaveGame::StaticReset()
 {
     ZeroMemory ( m_szBuffer, sizeof(m_szBuffer) );
     ZeroMemory ( m_szBufferBackup, sizeof(m_szBufferBackup) );
+
 }
 
 //
@@ -125,6 +128,8 @@ void CTRSaveGame::Reset()
 
     m_wRealHealth           = 0;
     m_pRealHealth           = NULL;
+
+    m_bAutoSearchDone       = FALSE;
 
 }
 
