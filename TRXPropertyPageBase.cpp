@@ -110,7 +110,7 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////
-BOOL CTRXPropertyPageBase::AddLocation ( STRUCTLOCATION *pTable, const char *pLocation )
+BOOL CTRXPropertyPageBase::AddLocation ( STRUCTLOCATION *pTable, const char *pLocation, int indicator )
 {
     if ( pTable == NULL )
     {
@@ -134,30 +134,36 @@ BOOL CTRXPropertyPageBase::AddLocation ( STRUCTLOCATION *pTable, const char *pLo
         if ( strlen(pTable [ i ].szPathname) == 0 )
         {
             strcpy_s ( pTable [ i ].szPathname, MAX_PATH, pLocation );
+            pTable [ i ].indicator  = indicator;
             return TRUE;
         }
     }
 
-#if 0
-    // Move Up
-    for ( int i = 1; i < LEN_LOCATION; i++ )
+    //
+    for ( int i = 0; i < LEN_LOCATION; i++ )
     {
-        strcpy_s ( pTable [ i - 1 ].szPathname, MAX_PATH, pTable [ i ].szPathname );
+        //  Remove an Old One
+        if ( pTable [ i ].indicator == 0 )
+        {
+            strcpy_s ( pTable [ i ].szPathname, MAX_PATH, pLocation );
+            pTable [ i ].indicator  = indicator + 1;
+            return TRUE;
+        }
     }
 
-    //  Add at End
-    strcpy_s ( pTable [ LEN_LOCATION - 1 ].szPathname, MAX_PATH, pLocation );
-#else
-    //  Reset Halft Table
-    for ( int i = LEN_LOCATION / 2; i < LEN_LOCATION; i++ )
+    //  Reset Part Table
+    int lastQuarter = ( 3 * LEN_LOCATION ) / 4;
+    for ( int i = lastQuarter; i < LEN_LOCATION; i++ )
     {
         strcpy_s ( pTable [ i ].szPathname, MAX_PATH, "" );
+        pTable [ i ].indicator  = 0;
     }
 
     //  Add at End
-    strcpy_s ( pTable [ LEN_LOCATION / 2 ].szPathname, MAX_PATH, pLocation );
-#endif
+    strcpy_s ( pTable [ lastQuarter ].szPathname, MAX_PATH, pLocation );
+    pTable [ lastQuarter ].indicator  = indicator;
 
+    //
     return TRUE;
 }
 
@@ -315,7 +321,7 @@ void CTRXPropertyPageBase::LoadLocation ( STRUCTLOCATION *pTable, const char *pC
         strcpy_s  ( szTemp, sizeof(szTemp), location );
         if ( strlen(szTemp) > 0 )
         {
-            AddLocation ( pTable, szTemp );
+            AddLocation ( pTable, szTemp, 0 );
         }
     }
 }

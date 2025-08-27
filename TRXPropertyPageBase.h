@@ -20,9 +20,10 @@
 typedef struct  structLocation
 {
     char    szPathname [ MAX_PATH ];
+    int     indicator;
 } STRUCTLOCATION;
 
-#define LEN_LOCATION    192
+#define LEN_LOCATION    256
 
 //
 /////////////////////////////////////////////////////////////////////////////
@@ -56,7 +57,7 @@ class CTRXPropertyPageBase : public CPropertyPage
         CTRXMenuBase            *m_pContextMenu;
 
     public :
-        static BOOL AddLocation ( STRUCTLOCATION *pTable, const char *pLocation );
+        static BOOL AddLocation ( STRUCTLOCATION *pTable, const char *pLocation, int indicator );
         static BOOL RemoveLocation ( STRUCTLOCATION *pTable, const char *pLocation );
         static int CountLocation ( STRUCTLOCATION *pTable );
 

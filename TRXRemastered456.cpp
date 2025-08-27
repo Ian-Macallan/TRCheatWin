@@ -538,7 +538,7 @@ void CTRXRemastered456::OnBnClickedLoad()
          *  Write Profile String.
          */
         //
-        BOOL bAdded = AddLocation ( LocationPathname, szFilename );
+        BOOL bAdded = AddLocation ( LocationPathname, szFilename, 1 );
         bAdded      = AddComboString ( &m_Combo, szFilename );
     }
 
@@ -4404,7 +4404,7 @@ void CTRXRemastered456::DoDropFiles(const char *pFilename)
     DisplayList ( pFilename );
 
     //
-    BOOL bAdded = AddLocation ( LocationPathname, pFilename );
+    BOOL bAdded = AddLocation ( LocationPathname, pFilename, 1 );
     bAdded      = AddComboString ( &m_Combo, pFilename );
 }
 

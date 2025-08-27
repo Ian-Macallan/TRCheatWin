@@ -1808,7 +1808,7 @@ void CTRXInfoPage::FillListCtrl(const char *pDirectory)
     m_SetManualList = false;
 
     //
-    BOOL bAdded = AddLocation ( LocationPathname, pDirectory );
+    BOOL bAdded = AddLocation ( LocationPathname, pDirectory, 1 );
     bAdded      = AddComboString ( &m_Combo, pDirectory );
 
     //
@@ -3105,7 +3105,7 @@ void CTRXInfoPage::OnBnClickedAddCustom()
         BOOL bExtracted = ExtractData ( NULL, 99, szPathname, "Custom", trMode, "TRC_", AddToCustomArea );
         if ( bExtracted )
         {
-            BOOL bAdded = AddLocation ( pTable, szPathname );
+            BOOL bAdded = AddLocation ( pTable, szPathname, 1 );
             bAdded      = AddComboString ( &m_Custom_Combo,  szPathname );
             qsort ( pTable, LEN_LOCATION, sizeof ( STRUCTLOCATION ), SortLocation );
         }
@@ -3175,7 +3175,7 @@ void CTRXInfoPage::OnBnClickedAddCustom()
                         strcat_s ( szDataFile, sizeof(szDataFile), typeName );
                     }
 
-                    BOOL bAdded = AddLocation ( pTable, szDataFile );
+                    BOOL bAdded = AddLocation ( pTable, szDataFile, 1 );
                     bAdded      = AddComboString ( &m_Custom_Combo,  szDataFile );
                 }
             } 
@@ -3419,7 +3419,7 @@ BOOL CTRXInfoPage::ExtractAfterScript ( int tombraider, TR_MODE trMode, STRUCTLO
             bExtracted = ExtractData ( NULL, 99, szTRPathname, "Custom", trMode, "TRC_", AddToCustomArea );
             if ( bExtracted )
             {
-                BOOL bAdded = AddLocation ( pTable, szTRPathname );
+                BOOL bAdded = AddLocation ( pTable, szTRPathname, 1 );
                 bAdded      = AddComboString ( &m_Custom_Combo,  szTRPathname );
 
                 //
@@ -3644,7 +3644,7 @@ void CTRXInfoPage::OnBnClickedSeeCustom()
                     strcat_s ( szDataFile, sizeof(szDataFile), typeName );
                 }
 
-                BOOL bAdded = AddLocation ( pTable, szDataFile );
+                BOOL bAdded = AddLocation ( pTable, szDataFile, 1 );
                 bAdded      = AddComboString ( &m_Custom_Combo,  szDataFile );
             }
         } 
