@@ -260,6 +260,9 @@ extern BOOL UnBlindTRXScript ( const char *pathname, const char *pDirectory );
 
 //
 extern BOOL UnSoftTRXScript ( const char *pathname, const char *pDirectory );
+
+extern BOOL EnCheatTRXScript ( const char *pathname, const char *pDirectory );
+
 extern BOOL RemoveTRXScript ( const char *pathname, const char *pDirectory, const char *pArguments );
 
 //

@@ -1516,6 +1516,31 @@ BOOL CTRXCHEATWINApp::InitInstance()
             BOOL bRead = UnSoftTRXScript ( szFullPathname, szDirectory );
         }
         //
+        //  Unblind Script
+        else if ( __strnicmp ( pCommandLine, "-encheat" ) == 0 )
+        {
+            //
+            ZeroMemory ( szPathname, sizeof(szPathname) );
+            char *pFilename = strchr ( pCommandLine, ' ' );
+            if ( pFilename != NULL )
+            {
+                pFilename = SkipSpaces ( pFilename );
+                CopyBetweenQuotes ( szPathname, sizeof(szPathname), pFilename );
+            }
+            if ( strlen (szPathname) == 0 )
+            {
+                strcpy_s ( szPathname, sizeof(szPathname), "script.dat" );
+            }
+
+            LPSTR lpFilepart = NULL;
+            GetFullPathName ( szPathname, sizeof(szFullPathname), szFullPathname, &lpFilepart );
+
+            //
+            strcpy_s ( szDirectory, sizeof(szDirectory), szFullPathname );
+            RemoveFilename ( szDirectory );
+            BOOL bRead = EnCheatTRXScript ( szFullPathname, szDirectory );
+        }
+        //
         //  Remove Some NG Script
         else if ( __strnicmp ( pCommandLine, "-remove" ) == 0 )
         {

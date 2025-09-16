@@ -132,6 +132,11 @@ static DWORD SoftOffset [ 3 ];
 static BYTE SoftBuffer [ LEN_SCRIPT_BUFFER ];
 
 //
+static WORD CheatValues [ 3 ];
+static DWORD CheatOffset [ 3 ];
+static BYTE CheatBuffer [ LEN_SCRIPT_BUFFER ];
+
+//
 static char TRXScriptVersion [ 32 ] = "";
 
 //
@@ -2145,6 +2150,10 @@ BOOL AnalyzeNGScript(char *pBYtes, long offset, FILE *hTxtFile )
     ZeroMemory ( SoftOffset, sizeof(SoftOffset) );
 
     //
+    ZeroMemory ( CheatValues, sizeof(CheatValues) );
+    ZeroMemory ( CheatOffset, sizeof(CheatOffset) );
+
+    //
     ZeroMemory ( TRXScriptVersion, sizeof(TRXScriptVersion) );
 
     //
@@ -2399,6 +2408,62 @@ BOOL AnalyzeNGScript(char *pBYtes, long offset, FILE *hTxtFile )
                     OutputTRNGScriptString( "; TRNGSCRIPT : Script file is not SET_FORCE_SOFT_FULL_SCREEN\n", hTxtFile );
                 }
 
+                //  Cheat Settings
+                if ( ( ctnSettings & SET_DISABLE_CHEATS ) != 0 && ( memUncrypted.ptr [ 19 ] & SET_DISABLE_CHEATS ) != 0 )
+                {
+                    WORD mask               = 0xffff ^ SET_DISABLE_CHEATS;
+                    ctnSettings             &= mask;
+                    memUncrypted.ptr [ 19 ] &= mask;
+
+                    //  Compute Checksum
+                    int checkSum = 0;
+                    BYTE *pAddress = (BYTE * ) memUncrypted.ptr;
+                    for ( int i = 1; i < nb; i++ )
+                    {
+                        checkSum += pAddress [ i ];
+                    }
+                    checkSum &= 0xff;
+
+                    memUncrypted.ptr [ 0 ] = checkSum & 0xff;
+
+                    //
+                    pAddress = (BYTE * ) pValues;
+                    DWORD checkSumAddress = CTRXTools::RelativeAddress ( pAddress, pBYtes ) + (DWORD) offset;
+                    DWORD settingAddress = CTRXTools::RelativeAddress ( pAddress + 19, pBYtes ) + (DWORD) offset;
+
+                    //
+                    MCMemA memCrypted ( nb );
+                    DecriptaControlloScriptDat ( (BYTE * ) memUncrypted.ptr, nb, (BYTE * ) memCrypted.ptr );
+
+                    sprintf_s ( szDebugString, sizeof(szDebugString), "; TRNGSCRIPT : To Remove SET_DISABLE_CHEATS\n" );
+                    OutputTRNGScriptString( szDebugString, hTxtFile );
+
+                    //  Save Soft Values and Offset
+                    CheatValues [ 0 ] = ctnSettings;
+                    CheatValues [ 1 ] = checkSum;
+                    CheatValues [ 2 ] = memCrypted.ptr [ 19 ];
+
+                    CheatOffset [ 0 ] = ctnSettingsAddress;
+                    CheatOffset [ 1 ] = checkSumAddress;
+                    CheatOffset [ 2 ] = settingAddress;
+
+                    //
+                    sprintf_s ( szDebugString, sizeof(szDebugString), 
+                        "; TRNGSCRIPT : ctn_Settings %08lx New=%04x versus [19] %08lx Old=%02x New=%02x CheckSum %08lx Old=%02x New=%02x\n", 
+                        CheatOffset [ 0 ], CheatValues [ 0 ],
+                        CheatOffset [ 2 ], pAddress [ 19 ], CheatValues [ 2 ] & 0xff,
+                        CheatOffset [ 1 ], pAddress [ 0 ], CheatValues [ 1 ] & 0xff );
+                    OutputTRNGScriptString( szDebugString, hTxtFile );
+
+                    //
+                    DumpControl ( (BYTE *) memCrypted.ptr, "TRNGSCRIPT", "ReCrypted", nb, hTxtFile, 19 );
+                }
+                else
+                {
+                    OutputTRNGScriptString( "; TRNGSCRIPT : Script file is not SET_DISABLE_CHEATS\n", hTxtFile );
+                }
+
+                //
                 break;
             }
 
@@ -4043,6 +4108,88 @@ BOOL UnSoftTRXScript ( const char *pathname, const char *pDirectory )
 
     return TRUE;
 }
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//  Unblind Savegame
+/////////////////////////////////////////////////////////////////////////////
+BOOL EnCheatTRXScript ( const char *pathname, const char *pDirectory )
+{
+    //
+    static char szEnCheatScript [ MAX_PATH ];
+
+    BOOL bRead = ReadTRXScript ( pathname, pDirectory, 4, false, NULL );
+    if ( ! bRead )
+    {
+        return FALSE;
+    }
+
+    if ( CheatOffset [ 0 ] == 0 || CheatOffset [ 1 ] == 0 || CheatOffset [ 2 ] == 0 )
+    {
+        return FALSE;
+    }
+
+    //
+    BackupTRXScript ( pathname );
+
+    //
+    FILE *hInpFile = NULL;
+    FILE *hOutFile = NULL;
+
+    //
+    fopen_s ( &hInpFile, pathname, "rb" );
+    if ( hInpFile == NULL )
+    {
+        return FALSE;
+    }
+
+    //
+    strcpy_s ( szEnCheatScript, sizeof(szEnCheatScript), pathname );
+    RemoveFileType ( szEnCheatScript );
+    strcat_s ( szEnCheatScript, sizeof(szEnCheatScript), ".enCheat.dat" );
+
+    //
+    fopen_s ( &hOutFile, szEnCheatScript, "wb" );
+    if ( hOutFile == NULL )
+    {
+        CloseOneFile ( &hInpFile );
+        return FALSE;
+    }
+
+    //  First Copy All
+    BOOL bContinue = TRUE;
+    do
+    {
+        ZeroMemory ( CheatBuffer, sizeof(CheatBuffer) );
+        size_t iRead = fread ( CheatBuffer, 1, sizeof(CheatBuffer), hInpFile );
+        if ( iRead > 0 )
+        {
+            fwrite ( CheatBuffer, 1, iRead, hOutFile );
+        }
+        else
+        {
+            bContinue = FALSE;
+        }
+
+    } while ( bContinue );
+
+    //  Then Write Altered Bytes
+    fseek ( hOutFile, (long) CheatOffset [ 0 ], SEEK_SET );
+    fwrite ( &CheatValues [ 0 ], 1, sizeof(BYTE), hOutFile );
+
+    fseek ( hOutFile, (long) CheatOffset [ 1 ], SEEK_SET );
+    fwrite ( &CheatValues [ 1 ], 1, sizeof(BYTE), hOutFile );
+
+    fseek ( hOutFile, (long) CheatOffset [ 2 ], SEEK_SET );
+    fwrite ( &CheatValues [ 2 ], 1, sizeof(BYTE), hOutFile );
+
+    //
+    CloseOneFile ( &hInpFile );
+    CloseOneFile ( &hOutFile );
+
+    return TRUE;
+}
+
 
 //
 /////////////////////////////////////////////////////////////////////////////
