@@ -8,6 +8,8 @@
 #include "TRXCHEATWIN.h"
 #include "TRXDifferences.h"
 
+extern CTRXCHEATWINApp theApp;
+
 //
 BOOL        CTRXPropertyPage::m_bModified   = FALSE;
 
@@ -43,6 +45,7 @@ CTRXPropertyPage::CTRXPropertyPage( UINT code ) : CTRXPropertyPageBase(code)
     m_pBitmapWeapon8    = NULL;
 
     m_bInitDone         = false;
+    m_bTimerInit        = false;
 
     m_pContextMenu      = NULL;
 

@@ -50,6 +50,7 @@ class CTRXDialogBase : public CDialog
 
         bool                    m_SetManualCombo;
         bool                    m_bInitDone;
+        bool                    m_bTimerInit;
 
         HICON                   m_hIcon;
 

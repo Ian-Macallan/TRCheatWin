@@ -284,6 +284,8 @@ class CTRXRemastered456 : public CTRXPropertyPage456
         void SingleClick();
         void DoDropFiles(const char *pFilename);
 
+        virtual BOOL NotifyChanges ( );
+
         //  Ca Be Use by other
         static const char *GetLabelForObject ( int tombraider, int levelIndex, int iObject, bool bDouble = false );
 };

@@ -2,6 +2,14 @@
 
 #include "GunGrids.h"
 
+#define TIMER_TRR123        1000
+#define TIMER_TRR456        1001
+#define TIMER_TR1TO5        1002
+
+#define NOTIF_TRR123        0
+#define NOTIF_TRR456        1
+#define NOTIF_TR1TO5        2
+
 //  Buffer for Remastered Savegame 
 #define LEN_BUFFER          (5*1024*1024)
 
@@ -39,6 +47,7 @@ class CTRXTools
         //  2 = TR12345
 
         static HANDLE changeNotification [ numberOfChangeNotification ];
+        static BOOL TimerState [ numberOfChangeNotification ];
 
         //
         static BOOL IsAmmosEnabled ( int tombraider, int level, int gun );
@@ -95,6 +104,9 @@ class CTRXTools
         static BOOL TrackCheckChange ( int notif );
 
         static BOOL TrackClose ( int notif );
+
+        static BOOL StartTimer ( HWND hWnd, int notif );
+        static BOOL StopTimer ( HWND hWnd, int notif );
 
 };
 

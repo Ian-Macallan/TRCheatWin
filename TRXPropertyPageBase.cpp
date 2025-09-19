@@ -16,6 +16,7 @@
 #include "TRXColors.h"
 
 #include "TRXPropertySheet.h"
+#include "TRXGlobal.h"
 
 //
 /////////////////////////////////////////////////////////////////////////////
@@ -44,7 +45,9 @@ CTRXPropertyPageBase::CTRXPropertyPageBase(UINT code) : CPropertyPage(code)
 
     m_SetManualCombo    = true;
     m_SetManualList     = true;
+
     m_bInitDone         = false;
+    m_bTimerInit        = false;
 
     ZeroMemory ( m_ParmPathname, sizeof(m_ParmPathname) );
 }
@@ -582,3 +585,102 @@ void CTRXPropertyPageBase::OnDropFiles(HDROP hDropInfo)
     CPropertyPage::OnDropFiles(hDropInfo);
 }
 
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
+BOOL CTRXPropertyPageBase::InitTimerNotif ( int notif, BOOL bKill )
+{
+    if ( CTRXGlobal::m_bWatchFiles )
+    {
+        //
+        if ( bKill )
+        {
+            CloseTimerNotif ( notif );
+        }
+
+        //  Every Second
+        CTRXTools::StartTimer ( this->m_hWnd, notif );
+
+        //
+        static char szFilename [ MAX_PATH ] = "";
+        static char szDirectory [ MAX_PATH ] = "";
+        CString lastRead  = "";
+        switch ( notif )
+        {
+            case 0 :
+            {
+                lastRead = theApp.GetProfileString( PROFILE_SETTING, PROFILE_TRX_LAST_OPENED, szFilename );
+                break;
+            }
+            case 1 :
+            {
+                lastRead = theApp.GetProfileString( PROFILE_SETTING, PROFILE_TRX2_LAST_OPENED, szFilename );
+                break;
+            }
+            case 2 :
+            {
+                lastRead = theApp.GetProfileString( PROFILE_SETTING, PROFILE_LAST_OPENED, szFilename );
+                break;
+            }
+        }
+        
+        if ( lastRead != "" )
+        {
+            strcpy_s ( szDirectory, sizeof(szDirectory), lastRead );
+            theApp.RemoveFilename ( szDirectory );
+            CTRXTools::TrackFirstChange ( notif, szDirectory );
+        }
+    }
+
+    return TRUE;
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
+BOOL CTRXPropertyPageBase::HandleTimerNotif ( int notif )
+{
+    //
+    if ( CTRXGlobal::m_bWatchFiles )
+    {
+        CTRXTools::StopTimer ( this->m_hWnd, notif );
+
+        //
+        //  Check if change
+        BOOL bSignaled = CTRXTools::TrackCheckChange ( notif );
+        if ( bSignaled )
+        {
+            //
+            CTRXTools::TrackClose ( notif );
+
+            //  Do Some Job
+            NotifyChanges ( );
+
+            //  Restart
+            //  Another way would be TrackNextChange and SetTimer
+            InitTimerNotif ( notif, TRUE );
+        }
+        else
+        {
+            CTRXTools::StartTimer ( this->m_hWnd, notif);
+        }
+    }
+
+    //
+    return TRUE;
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
+BOOL CTRXPropertyPageBase::CloseTimerNotif ( int notif )
+{
+    CTRXTools::StopTimer ( this->m_hWnd, notif );
+
+    CTRXTools::TrackClose ( notif );
+
+    return TRUE;
+}

@@ -198,6 +198,10 @@ CTRXRemastered::CTRXRemastered() : CTRXPropertyPage123(CTRXRemastered::IDD)
 /////////////////////////////////////////////////////////////////////////////
 CTRXRemastered::~CTRXRemastered()
 {
+    //
+    CloseTimerNotif ( NOTIF_TRR123 );
+
+    //
     CTR9SaveGame *pGame = CTR9SaveGame::I(FALSE);
     if ( pGame != NULL )
     {
@@ -565,6 +569,9 @@ void CTRXRemastered::OnBnClickedLoad()
 void CTRXRemastered::OnBnClickedWrite()
 {
     //
+    CloseTimerNotif ( NOTIF_TRR123 );
+
+    //
     if ( m_Update.GetCheck() )
     {
         BOOL bRecurse = m_Recurse.GetCheck();
@@ -575,6 +582,8 @@ void CTRXRemastered::OnBnClickedWrite()
 
     DisplayOne ( m_Line );
 
+    //
+    InitTimerNotif ( NOTIF_TRR123 );
 }
 
 //
@@ -1993,6 +2002,8 @@ void CTRXRemastered::DisplayList ( const char *pFilename )
             CTR9SaveGame::I()->Load ( );
             BOOL bWritten = theApp.WriteProfileString ( PROFILE_SETTING, PROFILE_TRX_LAST_OPENED, pFilename );
 
+            //
+            InitTimerNotif ( NOTIF_TRR123, TRUE );
         }
         else
         {
@@ -5511,4 +5522,18 @@ void CTRXRemastered::OnBnClickedShell()
     m_Filename.GetWindowText ( szDirectory, sizeof ( szDirectory ) - 1 );
     theApp.RemoveFilename ( szDirectory );
     HINSTANCE hInst = ShellExecute ( NULL, "open", szDirectory, "", "", SW_SHOWDEFAULT );
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
+BOOL CTRXRemastered::NotifyChanges()
+{
+    if ( CTRXGlobal::m_bWatchFiles )
+    {
+        OnBnClickedRefresh();
+    }
+
+    return TRUE;
 }

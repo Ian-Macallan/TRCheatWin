@@ -50,6 +50,7 @@ class CTRXPropertySheet : public CPropertySheet
         int                     m_iRemastered123Added;
         int                     m_iRemastered456Added;
         bool                    m_bInitDone;
+        bool                    m_bTimerInit;
         char                    m_ParmPathname [ MAX_PATH ];
 
         //  For Subclassing

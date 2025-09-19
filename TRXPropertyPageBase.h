@@ -52,6 +52,7 @@ class CTRXPropertyPageBase : public CPropertyPage
         bool                    m_SetManualCombo;
         bool                    m_SetManualList;
         bool                    m_bInitDone;
+        bool                    m_bTimerInit;
         char                    m_ParmPathname [ MAX_PATH ];
 
         CTRXMenuBase            *m_pContextMenu;
@@ -68,6 +69,13 @@ class CTRXPropertyPageBase : public CPropertyPage
 
         BOOL RemoveFromCombo ( CComboBox *pCombo, const char *pString );
         BOOL RemoveFromCombo ( CComboBox *pCombo, int sel );
+
+        virtual BOOL InitTimerNotif ( int notif, BOOL bKill = FALSE );
+        virtual BOOL HandleTimerNotif ( int notif );
+        virtual BOOL CloseTimerNotif ( int notif );
+
+
+        virtual BOOL NotifyChanges ( ) { return FALSE; };
 
         //
         void SetParmPathname ( const char *pathname );

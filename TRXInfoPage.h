@@ -78,6 +78,7 @@ class CTRXInfoPage : public CTRXPropertyPage
         BOOL ExtractAfterScript ( int tombraider, TR_MODE trMode, STRUCTLOCATION *pTable,
                                     const char *pScriptDirectory, const char *pathname );
         BOOL GetCustomParams ( TR_MODE *pTrMode, STRUCTLOCATION  **ppTable, char BASED_CODE **ppFilter, char **ppNames, char **ppTypeName );
+        virtual BOOL NotifyChanges ( );
 
         virtual void SetThemeChanged ( bool bDarkTheme );
 
@@ -131,13 +132,14 @@ class CTRXInfoPage : public CTRXPropertyPage
     // Overrides
         // ClassWizard generate virtual function overrides
         //{{AFX_VIRTUAL(CTRXInfoPage)
-        public:
+    public:
         virtual BOOL OnSetActive();
         virtual BOOL OnKillActive();
         virtual void OnCancel();
         virtual void OnOK();
         virtual BOOL OnApply();
-        protected:
+
+    protected:
         virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
         //}}AFX_VIRTUAL
 
@@ -185,6 +187,7 @@ class CTRXInfoPage : public CTRXPropertyPage
         afx_msg void OnBnClickedShell();
         afx_msg void OnBnClickedLevels();
         afx_msg void OnBnClickedRoomSearch();
+        afx_msg void OnTimer(UINT_PTR nIDEvent);
 };
 
 //

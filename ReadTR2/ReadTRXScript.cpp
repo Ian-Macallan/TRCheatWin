@@ -3396,6 +3396,10 @@ BOOL ReadTombPC (    const char *pathname, const char *pDirectory, int version, 
 BOOL ReadTRXScript (    const char *pathname, const char *pDirectory, int version, bool bWrite,
                         FCT_AddToItemsLabels function )
 {
+    //  Wait Cursor
+    CWaitCursor wait;
+
+    //
     if ( version == 1 )
     {
         return PopulateCustomData ( pathname, pDirectory, version,  bWrite, function );

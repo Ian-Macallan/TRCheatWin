@@ -32,6 +32,7 @@ CTRXDialogBase::CTRXDialogBase(UINT nIDTemplate, CWnd* pParent /*=NULL*/) : CDia
 
     m_SetManualCombo    = true;
     m_bInitDone         = false;
+    m_bTimerInit        = false;
 
     m_hIcon             = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
     

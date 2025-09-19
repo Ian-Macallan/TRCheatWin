@@ -459,6 +459,7 @@ CTRXInfoPage::CTRXInfoPage() : CTRXPropertyPage(CTRXInfoPage::IDD)
 /////////////////////////////////////////////////////////////////////////////
 CTRXInfoPage::~CTRXInfoPage()
 {
+    CloseTimerNotif ( NOTIF_TR1TO5 );
 
 #define DELETE_OBJECT(o) if ( o != NULL ) { delete o; o = NULL; }
 
@@ -580,6 +581,7 @@ BEGIN_MESSAGE_MAP(CTRXInfoPage, CTRXPropertyPage)
     ON_BN_CLICKED(IDC_SHELL, &CTRXInfoPage::OnBnClickedShell)
     ON_BN_CLICKED(IDC_LEVELS, &CTRXInfoPage::OnBnClickedLevels)
     ON_BN_CLICKED(IDC_ROOM_SEARCH, &CTRXInfoPage::OnBnClickedRoomSearch)
+    ON_WM_TIMER()
 END_MESSAGE_MAP()
 //}}AFX_MSG_MAP
 
@@ -793,6 +795,11 @@ void CTRXInfoPage::LoadDirectory()
         m_Filename.GetWindowText ( szFilename, sizeof ( szFilename ) - 1 );
         BOOL bWritten = theApp.WriteProfileString ( PROFILE_SETTING, PROFILE_LAST_OPENED, szFilename );
 
+        //
+        //
+        InitTimerNotif ( NOTIF_TR1TO5, TRUE );
+
+        //
         iVersion = CTRSaveGame::InstanciateVersion ( szFilename );
         if ( iVersion != -1 && CTRSaveGame::I() != NULL )
         {
@@ -868,6 +875,9 @@ void CTRXInfoPage::OnLoad()
 void CTRXInfoPage::OnWrite()
 {
     //
+    CloseTimerNotif ( NOTIF_TR1TO5 );
+
+    //
     if ( CTRSaveGame::I() != NULL )
     {
         UpdateBuffer();
@@ -875,6 +885,9 @@ void CTRXInfoPage::OnWrite()
     }
     DisplayValues ();
     SetGUIModified ( FALSE );
+
+    //
+    InitTimerNotif ( NOTIF_TR1TO5 );
 
 }
 
@@ -1941,6 +1954,10 @@ void CTRXInfoPage::DisplayOne ( int line )
         m_Filename.SetWindowText ( szFilename );
         BOOL bWritten = theApp.WriteProfileString ( PROFILE_SETTING, PROFILE_LAST_OPENED, szFilename );
 
+        //
+        //
+        InitTimerNotif ( NOTIF_TR1TO5, TRUE );
+
         /*
          *  Retrieve informations.
          */
@@ -2528,7 +2545,14 @@ BOOL CTRXInfoPage::OnInitDialog()
     }
 
     //
+    if ( ! m_bTimerInit )
+    {
+        InitTimerNotif ( NOTIF_TR1TO5 );
 
+        m_bTimerInit    = true;
+    }
+
+    //
     m_bInitDone = true;
 
     return TRUE;  // return TRUE unless you set the focus to a control
@@ -3777,6 +3801,10 @@ void CTRXInfoPage::DoDropFiles(const char *pFilemame)
     m_Filename.GetWindowText ( szFilename, sizeof ( szFilename ) - 1 );
     BOOL bWritten = theApp.WriteProfileString ( PROFILE_SETTING, PROFILE_LAST_OPENED, pFilemame );
 
+    //
+    InitTimerNotif ( NOTIF_TR1TO5, TRUE );
+
+    //
     iVersion = CTRSaveGame::InstanciateVersion ( szFilename );
     if ( iVersion != -1 && CTRSaveGame::I() != NULL )
     {
@@ -3929,4 +3957,33 @@ void CTRXInfoPage::OnBnClickedRoomSearch()
             CTRXMessageBox::MessageBox ( "Room/Area Not Found" );
         }
     }
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
+void CTRXInfoPage::OnTimer(UINT_PTR nIDEvent)
+{
+    // TODO: add your code here
+    if ( nIDEvent == TIMER_TR1TO5 )
+    {
+        HandleTimerNotif ( NOTIF_TR1TO5 );
+    }
+
+    CTRXPropertyPage::OnTimer(nIDEvent);
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
+BOOL CTRXInfoPage::NotifyChanges()
+{
+    if ( CTRXGlobal::m_bWatchFiles )
+    {
+        OnBnClickedRefresh();
+    }
+
+    return TRUE;
 }

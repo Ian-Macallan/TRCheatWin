@@ -24,7 +24,13 @@ static BYTE         *SecondBlock                    = NULL;
 static char szDifference [ ( LEN_DIFF_LINE + 2 ) * DifferencesMax ] = "";
 
 //
+//  0 for TRR123
+//  1 for TRR456
+//  2 for TR1-5
 HANDLE CTRXTools::changeNotification [ numberOfChangeNotification ] = { INVALID_HANDLE_VALUE, INVALID_HANDLE_VALUE, INVALID_HANDLE_VALUE };
+
+//  1000, 1001, 1002
+BOOL CTRXTools::TimerState [ numberOfChangeNotification ] = { FALSE, FALSE, FALSE };
 
 //
 // #pragma comment(lib, "uxtheme.lib")
@@ -1020,7 +1026,7 @@ HANDLE CTRXTools::TrackFirstChange( int notif, const char *dirname )
             FindFirstChangeNotification ( dirname, TRUE, FILE_NOTIFY_CHANGE_FILE_NAME |  FILE_NOTIFY_CHANGE_LAST_WRITE );
     }
 
-    return changeNotification [ notif ] ;
+    return changeNotification [ notif ];
 }
 
 //
@@ -1043,7 +1049,10 @@ BOOL CTRXTools::TrackNextChange ( int notif )
 
 //
 /////////////////////////////////////////////////////////////////////////////
-//
+//  Can be used un a Timer
+//  Call if return TRUE
+//  Do The job
+//  Then call TrackNextChange
 /////////////////////////////////////////////////////////////////////////////
 BOOL CTRXTools::TrackCheckChange ( int notif )
 {
@@ -1051,10 +1060,9 @@ BOOL CTRXTools::TrackCheckChange ( int notif )
 
     notif = notif % numberOfChangeNotification;
 
-    DWORD dwWaitStatus = WaitForSingleObject ( changeNotification [ notif ] , 0 );
+    DWORD dwWaitStatus = WaitForSingleObject ( changeNotification [ notif ], 0 );
     if ( dwWaitStatus == WAIT_OBJECT_0 )
     {
-        TrackNextChange ( notif );
         bSignaled = TRUE;
     }
     return bSignaled;
@@ -1077,4 +1085,43 @@ BOOL CTRXTools::TrackClose ( int notif )
     }
 
     return bResult;
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
+BOOL CTRXTools::StartTimer ( HWND hWnd, int notif )
+{
+    if ( notif >= 0 && notif <= 2 )
+    {
+        if ( ! TimerState [ notif ] )
+        {
+            SetTimer ( hWnd, notif + 1000, 2000, NULL );
+
+            TimerState [ notif ] = TRUE;
+        }
+    }
+
+    return TRUE;
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
+BOOL CTRXTools::StopTimer ( HWND hWnd, int notif )
+{
+    if ( notif >= 0 && notif <= 2 )
+    {
+        if ( TimerState [ notif ] )
+        {
+            KillTimer ( hWnd, notif + 1000 );
+        }
+
+        TimerState [ notif ] = FALSE;
+    }
+
+    //
+    return TRUE;
 }

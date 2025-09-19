@@ -509,14 +509,46 @@ static size_t ReadChunk ( void *pBuffer, size_t iLen, FILE *hFile )
 /////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////
+static long FileSize(const char * name)
+{
+    WIN32_FILE_ATTRIBUTE_DATA fad;
+    if (!GetFileAttributesEx(name, GetFileExInfoStandard, &fad))
+    {
+        return -1; // error condition, could call GetLastError to find out more
+    }
+    if ( fad.nFileSizeHigh != 0 )
+    {
+        return -1;
+    }
+    return fad.nFileSizeLow;
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
 BOOL ExtractData (  FILE *hOutputFile, int game,
                     const char *pPathname, const char *pName, TR_MODE TRMode, const char *pPrefix,
                     FCT_AddToCustomArea function )
 {
-    MCMemA memBuffer(64 * 1024 * 1024);
-    MCMemA memLevelDataCompressed ( 64 * 1024 * 1024 );
-    MCMemA memLevelDataUnCompressed ( 128 * 1024 * 1024 );
+    //  Wait Cursor
+    CWaitCursor wait;
 
+    //
+    //  Get File size
+    long fileSize = FileSize ( pPathname );
+    if ( fileSize < 0 )
+    {
+        return FALSE;
+    }
+
+    //
+    fileSize += 2;
+    MCMemA memBuffer(fileSize);
+    MCMemA memLevelDataCompressed ( fileSize );
+    MCMemA memLevelDataUnCompressed ( fileSize * 2 );
+
+    //
     BOOL  bResult = FALSE;
 
     static char szName [ MAX_PATH ];

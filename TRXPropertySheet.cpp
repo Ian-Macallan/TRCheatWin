@@ -45,7 +45,8 @@ CTRXPropertySheet::CTRXPropertySheet(UINT nIDCaption, CWnd* pParentWnd, UINT iSe
 
     m_Remastered123_Page   = NULL;
     m_Remastered456_Page   = NULL;
-    m_bInitDone             = false;
+    m_bInitDone            = false;
+    m_bTimerInit           = false;
 
     ZeroMemory ( m_ParmPathname, sizeof(m_ParmPathname) );
 
@@ -81,6 +82,7 @@ CTRXPropertySheet::CTRXPropertySheet(LPCTSTR pszCaption, CWnd* pParentWnd, UINT 
     m_Remastered123_Page    = NULL;
     m_Remastered456_Page    = NULL;
     m_bInitDone             = false;
+    m_bTimerInit            = false;
 
     ZeroMemory ( m_ParmPathname, sizeof(m_ParmPathname) );
 

@@ -200,6 +200,10 @@ CTRXRemastered456::CTRXRemastered456() : CTRXPropertyPage456(CTRXRemastered456::
 /////////////////////////////////////////////////////////////////////////////
 CTRXRemastered456::~CTRXRemastered456()
 {
+    //
+    CloseTimerNotif ( NOTIF_TRR456 );
+
+    //
     CTR8SaveGame *pGame = CTR8SaveGame::I(FALSE);
     if ( pGame != NULL )
     {
@@ -551,6 +555,9 @@ void CTRXRemastered456::OnBnClickedLoad()
 void CTRXRemastered456::OnBnClickedWrite()
 {
     //
+    CloseTimerNotif ( NOTIF_TRR456 );
+
+    //
     if ( m_Update.GetCheck() )
     {
         UpdateBuffer();
@@ -559,6 +566,9 @@ void CTRXRemastered456::OnBnClickedWrite()
     WriteFile();
 
     DisplayOne ( m_Line );
+
+    //
+    InitTimerNotif ( NOTIF_TRR456 );
 
 }
 
@@ -1510,6 +1520,8 @@ void CTRXRemastered456::DisplayList ( const char *pFilename )
             CTR8SaveGame::I()->Load ( );
             BOOL bWritten = theApp.WriteProfileString ( PROFILE_SETTING, PROFILE_TRX2_LAST_OPENED, pFilename );
 
+            //
+            InitTimerNotif ( NOTIF_TRR456, TRUE );
         }
         else
         {
@@ -4453,4 +4465,18 @@ void CTRXRemastered456::OnBnClickedItems()
         }
     }
 
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
+BOOL CTRXRemastered456::NotifyChanges()
+{
+    if ( CTRXGlobal::m_bWatchFiles )
+    {
+        OnBnClickedRefresh();
+    }
+
+    return TRUE;
 }

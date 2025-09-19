@@ -54,6 +54,7 @@ void CTRXPropertyPage123::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(CTRXPropertyPage123, CTRXPropertyPageBase)
     ON_WM_SIZE()
     ON_WM_MOVE()
+    ON_WM_TIMER()
 END_MESSAGE_MAP()
 
 //
@@ -158,6 +159,15 @@ BOOL CTRXPropertyPage123::OnInitDialog()
     CTRXPropertyPageBase::OnInitDialog();
 
     //
+    //
+    if ( ! m_bTimerInit )
+    {
+        InitTimerNotif ( NOTIF_TRR123 );
+
+        m_bTimerInit = TRUE;
+    }
+
+    //
     return TRUE;  // return TRUE unless you set the focus to a control
     // EXCEPTION : les pages de propriétés OCX devraient retourner FALSE
 }
@@ -197,5 +207,20 @@ BOOL CTRXPropertyPage123::IsGUIModified()
 void CTRXPropertyPage123::SetApply(BOOL bApply )
 {
      m_bApplyActive = bApply;
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
+void CTRXPropertyPage123::OnTimer(UINT_PTR nIDEvent)
+{
+    // TODO: add your code here
+    if ( nIDEvent == TIMER_TRR123 )
+    {
+        HandleTimerNotif ( NOTIF_TRR123 );
+    }
+
+    CTRXPropertyPageBase::OnTimer(nIDEvent);
 }
 

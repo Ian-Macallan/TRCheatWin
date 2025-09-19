@@ -15,6 +15,7 @@ int             CTRXGlobal::m_iExtSearchPos                 = 3;
 unsigned        CTRXGlobal::m_iMinNGSize                    = 37400;
 unsigned        CTRXGlobal::m_iMaxNGSize                    = 37500;
 BOOL            CTRXGlobal::m_bAutoSearch                   = TRUE;
+BOOL            CTRXGlobal::m_bWatchFiles                   = TRUE;
 
 BOOL            CTRXGlobal::m_UseTR4PositionRange           = TRUE;
 BOOL            CTRXGlobal::m_UseTR5PositionRange           = TRUE;

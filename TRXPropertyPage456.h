@@ -39,6 +39,7 @@ class CTRXPropertyPage456 : public CTRXPropertyPageBase
     public:
         afx_msg void OnSize(UINT nType, int cx, int cy);
         afx_msg void OnMove(int x, int y);
+        afx_msg void OnTimer(UINT_PTR nIDEvent);
 
         virtual void OnCancel();
         virtual void OnOK();
@@ -52,6 +53,7 @@ class CTRXPropertyPage456 : public CTRXPropertyPageBase
         virtual void SetApply(BOOL bApply );
         void SetGUIModified( BOOL bChanged = TRUE );
         BOOL IsGUIModified();
+       
 
 };
 
