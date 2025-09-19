@@ -1020,7 +1020,7 @@ HANDLE CTRXTools::TrackFirstChange( int notif, const char *dirname )
 
     TrackClose ( notif );
 
-    if ( dirname != NULL )
+    if ( dirname != NULL && strlen(dirname) > 0 && PathFileExists ( dirname ) )
     {
         changeNotification [ notif ] = 
             FindFirstChangeNotification ( dirname, TRUE, FILE_NOTIFY_CHANGE_FILE_NAME |  FILE_NOTIFY_CHANGE_LAST_WRITE );
