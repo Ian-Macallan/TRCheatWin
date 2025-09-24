@@ -8,6 +8,7 @@
 #include "TR4NG.h"
 #include "TRXTools.h"
 #include "TRLabelItems.h"
+#include "TRXCHEATWIN.h"
 
 #include "zlib.h"
 
@@ -1333,7 +1334,7 @@ BOOL ReadTRXLanguage ( const char *pFilename, const char *pDirectory, int iLang,
     FILE *hOutFile = NULL;
 
     //
-    fopen_s ( &hInpFile, szLanguage, "rb" );
+    openRead ( hInpFile, szLanguage, "rb" );
     if ( hInpFile == NULL )
     {
         Print ( hLogFile, "File Open Error %s\n", szLanguage );
@@ -2731,7 +2732,7 @@ BOOL ReadTombPC (    const char *pathname, const char *pDirectory, int version, 
     FILE *hInpFile = NULL;
     FILE *hTxtFile = NULL;
 
-    fopen_s ( &hInpFile, pathname, "rb" );
+    openRead ( hInpFile, pathname, "rb" );
     if ( hInpFile == NULL )
     {
         Print ( hLogFile, "File Open Error %s\n", pathname );
@@ -3469,7 +3470,7 @@ BOOL ReadTRXScript (    const char *pathname, const char *pDirectory, int versio
     FILE *hInpFile = NULL;
     FILE *hTxtFile = NULL;
 
-    fopen_s ( &hInpFile, pathname, "rb" );
+    openRead ( hInpFile, pathname, "rb" );
     if ( hInpFile == NULL )
     {
         Print ( hLogFile, "File Open Error %s\n", pathname );
@@ -3979,7 +3980,7 @@ BOOL UnBlindTRXScript ( const char *pathname, const char *pDirectory )
     FILE *hOutFile = NULL;
 
     //
-    fopen_s ( &hInpFile, pathname, "rb" );
+    openRead ( hInpFile, pathname, "rb" );
     if ( hInpFile == NULL )
     {
         return FALSE;
@@ -4060,7 +4061,7 @@ BOOL UnSoftTRXScript ( const char *pathname, const char *pDirectory )
     FILE *hOutFile = NULL;
 
     //
-    fopen_s ( &hInpFile, pathname, "rb" );
+    openRead ( hInpFile, pathname, "rb" );
     if ( hInpFile == NULL )
     {
         return FALSE;
@@ -4141,7 +4142,7 @@ BOOL EnCheatTRXScript ( const char *pathname, const char *pDirectory )
     FILE *hOutFile = NULL;
 
     //
-    fopen_s ( &hInpFile, pathname, "rb" );
+    openRead ( hInpFile, pathname, "rb" );
     if ( hInpFile == NULL )
     {
         return FALSE;
@@ -4562,7 +4563,7 @@ BOOL RemoveTRXScript ( const char *pathname, const char *pDirectory, const char 
     FILE *hOutFile = NULL;
 
     //
-    fopen_s ( &hInpFile, pathname, "rb" );
+    openRead ( hInpFile, pathname, "rb" );
     if ( hInpFile == NULL )
     {
         return FALSE;
@@ -4659,7 +4660,7 @@ BOOL BackupTRXScript ( const char *pathname )
     if ( ! PathFileExists ( szBackupFilename ) )
     {
         //
-        fopen_s ( &hInpFile, pathname, "rb" );
+        openRead ( hInpFile, pathname, "rb" );
         if ( hInpFile == NULL )
         {
             return FALSE;
@@ -4754,7 +4755,7 @@ BOOL AlterTRXScript ( const char *pathname, const char *pDirectory, bool bAnyLev
 
         //
         //  Alter script file : Word is at 0x0176
-        fopen_s ( &hInpFile, pathname, "rb+" );
+        openRead ( hInpFile, pathname, "rb+" );
         if ( hInpFile == NULL )
         {
             return FALSE;
@@ -4798,7 +4799,7 @@ BOOL AlterTRXScript ( const char *pathname, const char *pDirectory, bool bAnyLev
 
         //
         //  Alter script file : first byte
-        fopen_s ( &hInpFile, pathname, "rb+" );
+        openRead ( hInpFile, pathname, "rb+" );
         if ( hInpFile == NULL )
         {
             return FALSE;
@@ -4868,7 +4869,7 @@ BOOL WriteTRXLanguage ( const char *pFilename, const char *pDirectory, int iLang
         FILE *hOutFile = NULL;
 
         //
-        fopen_s ( &hInpFile, szLanguage, "r" );
+        openRead ( hInpFile, szLanguage, "r" );
         if ( hInpFile == NULL )
         {
             Print ( hLogFile, "File Open Error %s\n", szLanguage );
@@ -5156,7 +5157,7 @@ BOOL WriteTRXScript ( const char *pathname, const char *pDirectory, int version 
         FILE *hInpFile = NULL;
         FILE *hOutFile = NULL;
 
-        fopen_s ( &hInpFile, pathname, "r" );
+        openRead ( hInpFile, pathname, "r" );
         if ( hInpFile == NULL )
         {
             Print ( hLogFile, "File Open Error %s\n", pathname );
@@ -6835,7 +6836,7 @@ BOOL UnZipTRXSavegame ( const char *pathname, const char *pDirectory, int versio
     fopen_s ( &hLogFile, szLogFilename, "w" );
 
     //
-    fopen_s ( &hInpFile, pathname, "rb" );
+    openRead ( hInpFile, pathname, "rb" );
     if ( hInpFile == NULL )
     {
         return bResult;

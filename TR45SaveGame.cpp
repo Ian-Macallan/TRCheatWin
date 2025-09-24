@@ -108,7 +108,7 @@ int CTR45SaveGame::ReadIndicators(TR45_INDICATORS *IndicatorsTRTable, const int 
     }
 
     FILE *hFile = NULL;
-    fopen_s ( &hFile, pFilename, "r" );
+    openRead ( hFile, pFilename, "r" );
     if ( hFile == NULL )
     {
         return 0;

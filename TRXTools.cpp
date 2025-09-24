@@ -1097,7 +1097,7 @@ BOOL CTRXTools::StartTimer ( HWND hWnd, int notif )
     {
         if ( ! TimerState [ notif ] )
         {
-            SetTimer ( hWnd, notif + 1000, 2000, NULL );
+            SetTimer ( hWnd, notif + 1000, 3500, NULL );
 
             TimerState [ notif ] = TRUE;
         }

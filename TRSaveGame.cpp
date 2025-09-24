@@ -402,7 +402,7 @@ int CTRSaveGame::InstanciateVersion (const char *szFilename )
 
     //
     hFile = NULL;
-    fopen_s ( &hFile,  szFilename, "rb" );
+    openRead ( hFile,  szFilename, "rb" );
     if ( hFile != NULL )
     {
         StaticReset();
@@ -1175,7 +1175,7 @@ BOOL CTRSaveGame::ReadIndicators(TR123_INDICATORS *IndicatorsTRTable, const int 
     }
 
     FILE *hFile = NULL;
-    fopen_s ( &hFile, pFilename, "r" );
+    openRead ( hFile, pFilename, "r" );
     if ( hFile == NULL )
     {
         return FALSE;

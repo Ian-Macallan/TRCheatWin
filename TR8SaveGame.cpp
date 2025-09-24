@@ -904,7 +904,7 @@ BOOL CTR8SaveGame::ReadFile ( const char *pFilename )
     CTRXGlobal::m_iUnchecked = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_UNCHECKED, 0 );
 
     //
-    fopen_s ( &m_hFile, pFilename, "rb" );
+    openRead ( m_hFile, pFilename, "rb" );
     if ( m_hFile != NULL )
     {
         m_iSaveLength = (int) fread ( m_pBuffer, 1, LEN_BUFFER, m_hFile );
@@ -3726,7 +3726,7 @@ BOOL CTR8SaveGame::Import( const char *pFilename, int tombraider, int block )
 
     //
     FILE *hFile = NULL;
-    fopen_s ( & hFile, pFilename, "rb" );
+    openRead (  hFile, pFilename, "rb" );
     if ( hFile != NULL )
     {
         switch ( tombraider )
@@ -5679,7 +5679,7 @@ int CTR8SaveGame::ReadIndicators(TRR45_INDICATORS *IndicatorsTRTable, const int 
     }
 
     FILE *hFile = NULL;
-    fopen_s ( &hFile, pFilename, "r" );
+    openRead ( hFile, pFilename, "r" );
     if ( hFile == NULL )
     {
         return 0;

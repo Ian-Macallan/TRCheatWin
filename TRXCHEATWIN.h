@@ -14,6 +14,8 @@
 
 #include <afx.h>
 #include "afxdlgs.h"
+#include <stdio.h>
+#include <share.h>
 
 #include "TR10SaveGame.h"
 #include "TR15SaveGame.h"
@@ -25,6 +27,9 @@
 #include "ReadTR2\ReadTRXScript.h"
 
 #include "AutomaticVersionHeader.h"
+
+// #define openRead(handle,name,mode)     fopen_s(&handle,name,mode)
+#define openRead(handle,name,mode)      handle=_fsopen(name,mode,_SH_DENYNO)
 
 //
 /////////////////////////////////////////////////////////////////////////////

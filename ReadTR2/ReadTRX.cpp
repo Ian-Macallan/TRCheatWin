@@ -8,6 +8,7 @@
 
 #include "ReadTRX.h"
 #include "ReadTRXScript.h"
+#include "TRXCHEATWIN.h"
 
 #include "MCMemA.h"
 
@@ -562,7 +563,7 @@ BOOL ExtractData (  FILE *hOutputFile, int game,
     FILE *hFile = NULL;
     size_t iRead = 0;
 
-    fopen_s ( &hFile, pPathname, "rb" );
+    openRead ( hFile, pPathname, "rb" );
     if ( hFile )
     {
         iRead = ReadChunk (  &Version, sizeof(Version), hFile );
@@ -1674,7 +1675,7 @@ extern BOOL ReadTR4ForNG ( const char *pathname )
     BOOL bResult = FALSE;
 
     FILE *hFile = NULL;
-    fopen_s ( &hFile, pathname, "rb" );
+    openRead ( hFile, pathname, "rb" );
     if ( hFile == NULL )
     {
         return bResult;

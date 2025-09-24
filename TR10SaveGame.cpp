@@ -140,7 +140,7 @@ int CTR1SaveGame::ReadSavegame ( const char *pFilename )
      *      Read file.
      */
     hFile = NULL;
-    fopen_s ( &hFile, m_Filename, "rb" );
+    openRead ( hFile, m_Filename, "rb" );
     if ( hFile == NULL )
     {
         AddToStatus ( "Unable to read file." );
