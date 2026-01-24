@@ -134,7 +134,7 @@ CTR2SaveGame::CTR2SaveGame()
     iMaskPistol         = TR2_MASK_PISTOL;
     iMaskDesertEagle    = TR2_MASK_DESERT;
     iMaskUzi            = TR2_MASK_UZI;
-    MaskShotGun         = TR2_MASK_SHOTGUN;
+    iMaskShotGun        = TR2_MASK_SHOTGUN;
     iMaskM16            = TR2_MASK_M16;
     iMaskGrenade        = TR2_MASK_GRENADE;
     iMaskHarpoon        = TR2_MASK_HARPOON;
@@ -274,7 +274,7 @@ void CTR2SaveGame::writeSaveGame()
             m_pGun->m_iUzis = 0;
         }
 
-        if ( ! ( m_pBuffer->trTable [ iX ].cGunBitmap & MaskShotGun ) )
+        if ( ! ( m_pBuffer->trTable [ iX ].cGunBitmap & iMaskShotGun ) )
         {
             m_pGun->m_iRiotGun = 0;
         }
@@ -390,6 +390,14 @@ void CTR2SaveGame::RetrieveInformation( const char *pFilename )
         }
 
         if ( m_iSaveLength < TR2LEVELMINSIZE || m_iSaveLength > TR2LEVELMAXSIZE )
+        {
+            m_iSubVersion   = GAME_TRC9;
+            TR2Positions    = TR29Positions;
+        }
+
+        //
+        const char *saves = "saves";
+        if ( _stricmp ( theApp.FindLastDirectory ( pFilename ), saves ) == 0 )
         {
             m_iSubVersion   = GAME_TRC9;
             TR2Positions    = TR29Positions;
@@ -575,99 +583,162 @@ int CTR2SaveGame::CheckIfAmmosMatch ( TR2AMMOS *pGun, WORD gunBitmap )
 {
     int             iX;
 
+    //
+    int iCount = 0;
+
+    //
     iX = getLevelIndex ();
 
+    //
     if ( m_pBuffer->trTable [ iX ].cGunBitmap & iMaskDesertEagle )
     {
         if ( pGun->m_iDesertEagle != m_iDesertEagle  )
         {
-            return 0;
+            // return FALSE;
+        }
+        else
+        {
+            iCount++;
         }
     }
     else
     {
         if ( pGun->m_iDesertEagle != 0 && pGun->m_iDesertEagle != m_iDesertEagle )
         {
-            return 0;
+            // return FALSE;
+        }
+        else
+        {
+            iCount++;
         }
     }
 
+    //
     if ( m_pBuffer->trTable [ iX ].cGunBitmap & iMaskUzi )
     {
         if ( pGun->m_iUzis     != m_iUzis  )
         {
-            return 0;
+            // return FALSE;
+        }
+        else
+        {
+            iCount++;
         }
     }
     else
     {
         if ( pGun->m_iUzis != 0 && pGun->m_iUzis  != m_iUzis )
         {
-            return 0;
+            // return FALSE;
+        }
+        else
+        {
+            iCount++;
         }
     }
 
-    if ( m_pBuffer->trTable [ iX ].cGunBitmap & MaskShotGun )
+    //
+    if ( m_pBuffer->trTable [ iX ].cGunBitmap & iMaskShotGun )
     {
         if ( pGun->m_iRiotGun != m_iRiotGun  )
         {
-            return 0;
+            // return FALSE;
+        }
+        else
+        {
+            iCount++;
         }
     }
     else
     {
         if ( pGun->m_iRiotGun != 0 && pGun->m_iRiotGun != m_iRiotGun )
         {
-            return 0;
+            // return FALSE;
+        }
+        else
+        {
+            iCount++;
         }
     }
 
+    //
     if ( m_pBuffer->trTable [ iX ].cGunBitmap & iMaskGrenade )
     {
         if ( pGun->m_iGrenades != m_iGrenades  )
         {
-            return 0;
+            // return FALSE;
+        }
+        else
+        {
+            iCount++;
         }
     }
     else
     {
         if ( pGun->m_iGrenades != 0 && pGun->m_iGrenades != m_iGrenades )
         {
-            return 0;
+            // return FALSE;
+        }
+        else
+        {
+            iCount++;
         }
     }
 
+    //
     if ( m_pBuffer->trTable [ iX ].cGunBitmap & iMaskHarpoon )
     {
         if ( pGun->m_iHarpoon != m_iHarpoon  )
         {
-            return 0;
+            // return FALSE;
+        }
+        else
+        {
+            iCount++;
         }
     }
     else
     {
         if ( pGun->m_iHarpoon != 0 && pGun->m_iHarpoon != m_iHarpoon )
         {
-            return 0;
+            // return FALSE;
+        }
+        else
+        {
+            iCount++;
         }
     }
 
+    //
     if ( m_pBuffer->trTable [ iX ].cGunBitmap & iMaskM16 )
     {
         if ( pGun->m_iM16Gun != m_iMP5  )
         {
-            return 0;
+            // return FALSE;
+        }
+        else
+        {
+            iCount++;
         }
     }
     else
     {
         if ( pGun->m_iM16Gun != 0  && pGun->m_iM16Gun != m_iMP5 )
         {
-            return 0;
+            // return FALSE;
+        }
+        else
+        {
+            iCount++;
         }
     }
 
-    return 1;
+    if ( iCount >= ( 6 - CTRXGlobal::m_CheckAmmosTolerance ) )
+    {
+        return TRUE;
+    }
+
+    return FALSE;
 }
 
 //
@@ -778,6 +849,14 @@ void CTR2SaveGame::GetDetailedInfo (    char *szGame, size_t iSize, int *iGame, 
     }
 
     if ( m_iSaveLength < TR2LEVELMINSIZE || m_iSaveLength > TR2LEVELMAXSIZE )
+    {
+        strcpy_s ( szGame, iSize, "TR2LE" );
+        m_iSubVersion   = GAME_TRC9;
+    }
+
+    //
+    const char *saves = "saves";
+    if ( _stricmp ( theApp.FindLastDirectory ( m_Filename ), saves ) == 0 )
     {
         strcpy_s ( szGame, iSize, "TR2LE" );
         m_iSubVersion   = GAME_TRC9;
@@ -1142,7 +1221,7 @@ int CTR2SaveGame::CheckWeapon1 ( int iX )
 /////////////////////////////////////////////////////////////////////////////
 int CTR2SaveGame::CheckWeapon4 ( int iX )
 {
-    if ( m_pBuffer->trTable [ iX ].cGunBitmap & MaskShotGun )
+    if ( m_pBuffer->trTable [ iX ].cGunBitmap & iMaskShotGun )
     {
         return 1;
     }
@@ -1268,11 +1347,11 @@ unsigned char CTR2SaveGame::GrabWeapon1 ( int iX, bool bAdd, bool bChange )
 /////////////////////////////////////////////////////////////////////////////
 unsigned char CTR2SaveGame::GrabWeapon4 ( int iX, bool bAdd, bool bChange )
 {
-    unsigned char old = m_pBuffer->trTable [ iX ].cGunBitmap & MaskShotGun;
+    unsigned char old = m_pBuffer->trTable [ iX ].cGunBitmap & iMaskShotGun;
     if ( ! bChange ) return old;
 
-    if ( bChange ) m_pBuffer->trTable [ iX ].cGunBitmap |= MaskShotGun;
-    if ( ! bAdd ) m_pBuffer->trTable [ iX ].cGunBitmap &= ( MaskShotGun ^ TR2_MASK_ANY );
+    if ( bChange ) m_pBuffer->trTable [ iX ].cGunBitmap |= iMaskShotGun;
+    if ( ! bAdd ) m_pBuffer->trTable [ iX ].cGunBitmap &= ( iMaskShotGun ^ TR2_MASK_ANY );
     return old;
 }
 

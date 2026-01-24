@@ -121,7 +121,7 @@ void CTRSaveGame::StaticReset()
 void CTRSaveGame::Reset()
 {
     ZeroMemory ( m_Filename, sizeof(m_Filename) );
-    ZeroMemory ( m_FilenameBak, sizeof(m_FilenameBak) );
+    // ZeroMemory ( m_FilenameBak, sizeof(m_FilenameBak) );
     ZeroMemory ( m_Status, sizeof(m_Status) );
 
     m_iGunAmmos             = 0;
@@ -342,7 +342,7 @@ int CTRSaveGame::GetInfo (  char *szGame, size_t iSize, int *iGame, int *iLevel,
 {
 
     //
-    CTRXGlobal::m_iUnchecked = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_UNCHECKED, 0 );
+    CTRXGlobal::m_iUnchecked = theApp.GetProfileInt ( PROFILE_SETTING, PROFILE_UNCHECKED, 0 );
 
     //
     int         iVersion    = 0;
@@ -452,6 +452,11 @@ int CTRSaveGame::InstanciateVersion (const char *szFilename )
             {
                 iVersion    = GAME_TR49;
                 pGame->Reset();
+
+                //
+                strcpy_s ( pGame->m_Filename, sizeof(pGame->m_Filename),  szFilename );
+
+                //
                 memcpy_s ( pGame->getBufferAddress(), sizeof(TR4NGSAVE), m_szBuffer, uLen );
                 memcpy_s ( pGame->getBufferBackupAddress(), sizeof(TR4NGSAVE), m_szBuffer, uLen );
                 pGame->SetBufferLength ( uLen );
@@ -472,6 +477,11 @@ int CTRSaveGame::InstanciateVersion (const char *szFilename )
                     {
                         iVersion = GAME_TR10;
                         pGame->Reset();
+
+                        //
+                        strcpy_s ( pGame->m_Filename, sizeof(pGame->m_Filename),  szFilename );
+
+                        //
                         memcpy_s ( pGame->getBufferAddress(), sizeof(TR1SAVE), m_szBuffer, uLen );
                         memcpy_s ( pGame->getBufferBackupAddress(), sizeof(TR1SAVE), m_szBuffer, uLen );
                         pGame->SetBufferLength ( uLen );
@@ -490,6 +500,11 @@ int CTRSaveGame::InstanciateVersion (const char *szFilename )
                     {
                         iVersion = GAME_TR15;
                         pGame->Reset();
+
+                        //
+                        strcpy_s ( pGame->m_Filename, sizeof(pGame->m_Filename),  szFilename );
+
+                        //
                         memcpy_s ( pGame->getBufferAddress(), sizeof(TUBSAVE), m_szBuffer, uLen );
                         memcpy_s ( pGame->getBufferBackupAddress(), sizeof(TUBSAVE), m_szBuffer, uLen );
                         pGame->SetBufferLength ( uLen );
@@ -510,6 +525,11 @@ int CTRSaveGame::InstanciateVersion (const char *szFilename )
                     {
                         iVersion = GAME_TR20;
                         pGame->Reset();
+
+                        //
+                        strcpy_s ( pGame->m_Filename, sizeof(pGame->m_Filename),  szFilename );
+
+                        //
                         memcpy_s ( pGame->getBufferAddress(), sizeof(TR2SAVE), m_szBuffer, uLen );
                         memcpy_s ( pGame->getBufferBackupAddress(), sizeof(TR2SAVE), m_szBuffer, uLen );
                         pGame->SetBufferLength ( uLen );
@@ -530,6 +550,11 @@ int CTRSaveGame::InstanciateVersion (const char *szFilename )
                     {
                         iVersion = GAME_TR30;
                         pGame->Reset();
+
+                        //
+                        strcpy_s ( pGame->m_Filename, sizeof(pGame->m_Filename),  szFilename );
+
+                        //
                         memcpy_s ( pGame->getBufferAddress(), sizeof(TR3SAVE), m_szBuffer, uLen );
                         memcpy_s ( pGame->getBufferBackupAddress(), sizeof(TR3SAVE), m_szBuffer, uLen );
                         pGame->SetBufferLength ( uLen );
@@ -548,6 +573,11 @@ int CTRSaveGame::InstanciateVersion (const char *szFilename )
                     {
                         iVersion    = GAME_TR40;
                         pGame->Reset();
+
+                        //
+                        strcpy_s ( pGame->m_Filename, sizeof(pGame->m_Filename),  szFilename );
+
+                        //
                         memcpy_s ( pGame->getBufferAddress(), sizeof(TR4SAVE), m_szBuffer, uLen );
                         memcpy_s ( pGame->getBufferBackupAddress(), sizeof(TR4SAVE), m_szBuffer, uLen );
                         pGame->SetBufferLength ( uLen );
@@ -571,6 +601,11 @@ int CTRSaveGame::InstanciateVersion (const char *szFilename )
                     {
                         iVersion    = GAME_TR49;
                         pGame->Reset();
+
+                        //
+                        strcpy_s ( pGame->m_Filename, sizeof(pGame->m_Filename),  szFilename );
+
+                        //
                         memcpy_s ( pGame->getBufferAddress(), sizeof(TR4NGSAVE), m_szBuffer, uLen );
                         memcpy_s ( pGame->getBufferBackupAddress(), sizeof(TR4NGSAVE), m_szBuffer, uLen );
                         pGame->SetBufferLength ( uLen );
@@ -595,6 +630,11 @@ int CTRSaveGame::InstanciateVersion (const char *szFilename )
                     {
                         iVersion = GAME_TR50;
                         pGame->Reset();
+
+                        //
+                        strcpy_s ( pGame->m_Filename, sizeof(pGame->m_Filename),  szFilename );
+
+                        //
                         memcpy_s ( pGame->getBufferAddress(), sizeof(TR5SAVE), m_szBuffer, uLen );
                         memcpy_s ( pGame->getBufferBackupAddress(), sizeof(TR5SAVE), m_szBuffer, uLen );
                         pGame->SetBufferLength ( uLen );
@@ -618,6 +658,11 @@ int CTRSaveGame::InstanciateVersion (const char *szFilename )
                         {
                             iVersion = GAME_TR10;
                             pGame->Reset();
+
+                            //
+                            strcpy_s ( pGame->m_Filename, sizeof(pGame->m_Filename),  szFilename );
+
+                            //
                             memcpy_s ( pGame->getBufferAddress(), sizeof(TR1SAVE), m_szBuffer, uLen );
                             memcpy_s ( pGame->getBufferBackupAddress(), sizeof(TR1SAVE), m_szBuffer, uLen );
                             pGame->SetBufferLength ( uLen );
@@ -634,6 +679,11 @@ int CTRSaveGame::InstanciateVersion (const char *szFilename )
                         {
                             iVersion = GAME_TR15;
                             pGame->Reset();
+
+                            //
+                            strcpy_s ( pGame->m_Filename, sizeof(pGame->m_Filename),  szFilename );
+
+                            //
                             memcpy_s ( pGame->getBufferAddress(), sizeof(TUBSAVE), m_szBuffer, uLen );
                             memcpy_s ( pGame->getBufferBackupAddress(), sizeof(TUBSAVE), m_szBuffer, uLen );
                             pGame->SetBufferLength ( uLen );
@@ -652,6 +702,11 @@ int CTRSaveGame::InstanciateVersion (const char *szFilename )
                         {
                             iVersion = GAME_TR20;
                             pGame->Reset();
+
+                            //
+                            strcpy_s ( pGame->m_Filename, sizeof(pGame->m_Filename),  szFilename );
+
+                            //
                             memcpy_s ( pGame->getBufferAddress(), sizeof(TR2SAVE), m_szBuffer, uLen );
                             memcpy_s ( pGame->getBufferBackupAddress(), sizeof(TR2SAVE), m_szBuffer, uLen );
                             pGame->SetBufferLength ( uLen );
@@ -670,6 +725,11 @@ int CTRSaveGame::InstanciateVersion (const char *szFilename )
                         {
                             iVersion = GAME_TR30;
                             pGame->Reset();
+
+                            //
+                            strcpy_s ( pGame->m_Filename, sizeof(pGame->m_Filename),  szFilename );
+
+                            //
                             memcpy_s ( pGame->getBufferAddress(), sizeof(TR3SAVE), m_szBuffer, uLen );
                             memcpy_s ( pGame->getBufferBackupAddress(), sizeof(TR3SAVE), m_szBuffer, uLen );
                             pGame->SetBufferLength ( uLen );
@@ -688,6 +748,11 @@ int CTRSaveGame::InstanciateVersion (const char *szFilename )
                         {
                             iVersion    = GAME_TR40;
                             pGame->Reset();
+
+                            //
+                            strcpy_s ( pGame->m_Filename, sizeof(pGame->m_Filename),  szFilename );
+
+                            //
                             memcpy_s ( pGame->getBufferAddress(), sizeof(TR4SAVE), m_szBuffer, uLen );
                             memcpy_s ( pGame->getBufferBackupAddress(), sizeof(TR4SAVE), m_szBuffer, uLen );
                             pGame->SetBufferLength ( uLen );
@@ -704,6 +769,11 @@ int CTRSaveGame::InstanciateVersion (const char *szFilename )
                         {
                             iVersion = GAME_TR50;
                             pGame->Reset();
+
+                            //
+                            strcpy_s ( pGame->m_Filename, sizeof(pGame->m_Filename),  szFilename );
+
+                            //
                             memcpy_s ( pGame->getBufferAddress(), sizeof(TR5SAVE), m_szBuffer, uLen );
                             memcpy_s ( pGame->getBufferBackupAddress(), sizeof(TR5SAVE), m_szBuffer, uLen );
                             pGame->SetBufferLength ( uLen );
@@ -725,6 +795,11 @@ int CTRSaveGame::InstanciateVersion (const char *szFilename )
                             {
                                 iVersion    = GAME_TR49;
                                 pGame->Reset();
+
+                                //
+                                strcpy_s ( pGame->m_Filename, sizeof(pGame->m_Filename),  szFilename );
+
+                                //
                                 memcpy_s ( pGame->getBufferAddress(), sizeof(TR4NGSAVE), m_szBuffer, uLen );
                                 memcpy_s ( pGame->getBufferBackupAddress(), sizeof(TR4NGSAVE), m_szBuffer, uLen );
                                 pGame->SetBufferLength ( uLen );

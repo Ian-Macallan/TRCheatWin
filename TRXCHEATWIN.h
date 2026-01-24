@@ -122,6 +122,7 @@ class CTRXCHEATWINApp : public CWinApp
         static int __strnicmp ( const char *pString, const char *pBegining );
         static BOOL EndsWithI ( const char *pText, const char *pEnd );
         static void ResetCustomLabels ();
+        static const char *FindLastDirectory ( const char *pathname );
 
         afx_msg void OnHelp();
 
@@ -171,6 +172,8 @@ class CTRXCHEATWINApp : public CWinApp
 #define PROFILE_ALTER_TRNG_POS      "Alter TRNG Position"
 #define PROFILE_ALTER_TRNG_IND      "Alter TRNG Indice"
 #define PROFILE_ALTER_TRNG_AGUNS    "Alter TRNG Ammos and Guns"
+
+#define PROFILE_CHECK_TOLERANCE     "Check Ammos Tolerance"
 
 #define PROFILE_TRX                 "TRX Number"
 #define PROFILE_TRX2                "TRX2 Number"

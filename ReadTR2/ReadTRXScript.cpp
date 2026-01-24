@@ -458,7 +458,7 @@ const char *GetTRXScriptVersion ()
 //  TRNG
 // decriptare zona dei primi 64 bytes di script dat puntati da pScript
 //====================================================================================
-void DecriptaScript(BYTE *pScript)
+static void DecriptaScript(BYTE *pScript)
 {
     int i;
     int Indice;
@@ -467,32 +467,37 @@ void DecriptaScript(BYTE *pScript)
     int j;
     int TotOrd;
 
-    static BYTE VetCryptTableXor[17] = {
-        239, 85, 225, 248, 61, 111, 214, 25, 218, 151, 29, 139,
-        133, 15, 180, 10, 196}; 
+    static BYTE VetCryptTableXor[17] =
+    {
+        239, 85, 225, 248, 
+        61, 111, 214, 25, 
+        218, 151, 29, 139,
+        133, 15, 180, 10, 
+        196 }; 
 
     TotXor = 8;
     TotOrd = 20;
 
     static BYTE VetCryptOrd[64] =
-        {57, 49, 1, 7, 36, 37, 0, 17, 45, 13, 40, 44,
-        46, 33, 30, 34, 20, 41, 26, 19, 59, 53, 43, 2,
-        22, 6, 23, 9, 31, 10, 21, 15, 5, 8, 42, 24,
-        55, 14, 48, 56, 47, 60, 12, 39, 28, 32, 16, 27,
-        52, 35, 62, 58, 63, 11, 18, 38, 4, 54, 50, 61,
-        51, 25, 29, 3};
+        {   57, 49,  1,  7, 36, 37,  0, 17, 45, 13, 40, 44,
+            46, 33, 30, 34, 20, 41, 26, 19, 59, 53, 43,  2,
+            22,  6, 23,  9, 31, 10, 21, 15,  5,  8, 42, 24,
+            55, 14, 48, 56, 47, 60, 12, 39, 28, 32, 16, 27,
+            52, 35, 62, 58, 63, 11, 18, 38,  4, 54, 50, 61,
+            51, 25, 29,  3 };
 
     // fare in modo che il valore dei totali delle due serie
     // costanti sia corretto
-    TotXor = TotXor << 1;       //  16
-    TotOrd *=3;                 //  60
+    TotXor  = TotXor << 1;      //  16
+    TotOrd  *=3;                //  60
     TotXor++;                   //  17
-    TotOrd +=4;                 //  64
+    TotOrd  += 4;               //  64
     // adesso totXor = 17
     // e TotOrd = 64
     // prima usare lo xor per togliere la mascheratura
     Indice=0;
-    for (i=0;i<TotOrd;i++) {
+    for ( i=0; i<TotOrd; i++ )
+    {
         if (Indice >= TotXor) Indice=0;
 
         pScript[i] ^= VetCryptTableXor[Indice];
@@ -500,18 +505,91 @@ void DecriptaScript(BYTE *pScript)
     }
 
     // adesso rimettere a posto l'ordine
-    for (i=0;i<TotOrd;i++) {
-        for (j=0;j<TotOrd;j++) {
-            if (VetCryptOrd[j] == i) break;
+    //  [0] = [57]
+    //  [1] = [49]
+    //  [6] = [0]   <-- XOR with 214
+    for ( i=0; i<TotOrd; i++ )
+    {
+        for ( j=0; j<TotOrd; j++ )
+        {
+            if ( VetCryptOrd[j] == i ) break;
         }
         VetOut[i] = pScript[j];
     }
 
-    for (i=0;i<TotOrd;i++) {
+    for ( i=0; i<TotOrd; i++ )
+    {
         pScript[i] = VetOut[i];
     }
+}
 
+//
+//====================================================================================
+//  TRNG
+//  recrypt 
+//====================================================================================
+static void CriptaScript(BYTE *pScript)
+{
+    int i;
+    int Indice;
+    BYTE VetOut[64];
+    int TotXor;
+    int j;
+    int TotOrd;
 
+    static BYTE VetCryptTableXor[17] =
+    {
+        239, 85, 225, 248, 
+        61, 111, 214, 25, 
+        218, 151, 29, 139,
+        133, 15, 180, 10, 
+        196 }; 
+
+    TotXor = 8;
+    TotOrd = 20;
+
+    static BYTE VetCryptOrd[64] =
+        {    6,  2, 23, 63, 56, 32, 25,  3, 33, 27, 29, 53, 42,  9, 37, 31,
+            46,  7, 54, 19, 16, 30, 24, 26, 35, 61, 18, 47, 44, 62, 14, 28,
+            45, 13, 15, 49,  4,  5, 55, 43, 10, 17, 34, 22, 11,  8, 12, 40,
+            38,  1, 58, 60, 48, 21, 57, 36, 39,  0, 51, 20, 41, 59, 50, 52,
+        };
+
+    // fare in modo che il valore dei totali delle due serie
+    // costanti sia corretto
+    TotXor  = TotXor << 1;      //  16
+    TotOrd  *=3;                //  60
+    TotXor++;                   //  17
+    TotOrd  += 4;               //  64
+    // adesso rimettere a posto l'ordine
+    //  [0] = [57]
+    //  [1] = [49]
+    //  [6] = [0]   <-- XOR with 214
+    for ( i=0; i<TotOrd; i++ )
+    {
+        for ( j=0; j<TotOrd; j++ )
+        {
+            if ( VetCryptOrd[j] == i ) break;
+        }
+        VetOut[i] = pScript[j];
+    }
+
+    // adesso totXor = 17
+    // e TotOrd = 64
+    // prima usare lo xor per togliere la mascheratura
+    Indice=0;
+    for ( i=0; i<TotOrd; i++ )
+    {
+        if (Indice >= TotXor) Indice=0;
+
+        VetOut[i] ^= VetCryptTableXor[Indice];
+        Indice++;
+    }
+
+    for ( i=0; i<TotOrd; i++ )
+    {
+        pScript[i] = VetOut[i];
+    }
 }
 
 //
@@ -3919,6 +3997,213 @@ BOOL ReadTRXScript (    const char *pathname, const char *pDirectory, int versio
     Cleanup();
 
     //
+    return bResult;
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//  Only to see what is inside
+//  Do not copy over script.dat
+/////////////////////////////////////////////////////////////////////////////
+BOOL UncryptTR4Script ( const char *pathname, const char *pDirectory )
+{
+    //  Wait Cursor
+    CWaitCursor wait;
+
+    //
+    BOOL bResult = FALSE;
+
+    //
+    if ( ! PathFileExists ( pathname ) )
+    {
+        return bResult;
+    }
+
+    //
+    static char szDataFileType [ 32 ];
+    strcpy_s ( szDataFileType, sizeof(szDataFileType), ".TR4" );
+
+    //
+    static char szOutputFilename [ MAX_PATH ];
+    strcpy_s ( szOutputFilename, pathname );
+    RemoveFileType ( szOutputFilename );
+    strcat_s ( szOutputFilename, ".uncrypt.dat" );
+
+    //
+    FILE *hInpFile = NULL;
+
+    openRead ( hInpFile, pathname, "rb" );
+    if ( hInpFile == NULL )
+    {
+        Print ( hLogFile, "File Open Error %s\n", pathname );
+        return bResult;
+    }
+
+    size_t uRead = 0;
+
+    //  Look If Encryot
+    ////////////////////////////////////
+    BOOL fileIsCrypted = FALSE;
+    BYTE cryptHeader [ 64 ];
+    ZeroMemory ( cryptHeader, sizeof(cryptHeader) );
+    uRead = fread ( cryptHeader, 1, sizeof(cryptHeader), hInpFile );
+    if ( uRead != sizeof(cryptHeader) )
+    {
+        CloseOneFile ( &hInpFile );
+
+        Cleanup();
+
+        return bResult;
+    }
+
+    //  Preserve Buffer
+    //  The crypted part covers the two headers and it will remain 8 bytes.
+    DecriptaScript ( cryptHeader );
+    tr4_script_header       *pScriptHeader      = (tr4_script_header *) cryptHeader;
+    tr4_script_levelheader  *pScriptLevelHeader = (tr4_script_levelheader *)( cryptHeader + sizeof(tr4_script_header) );
+
+    //
+    //  Check
+    bool bGood = false;
+    if (    _strnicmp ( (char *) pScriptLevelHeader->PCLevelString, ".TR4", strlen(".TR4") ) == 0  &&
+            _strnicmp ( (char *) pScriptLevelHeader->PCCutString, ".TR4", strlen(".TR4") ) == 0    &&
+            _strnicmp ( (char *) pScriptLevelHeader->PCFMVString, ".", strlen(".") ) == 0               )
+    {
+        fileIsCrypted   = TRUE;
+        bGood           = true;
+    }
+
+    //  File not Crypted : Rewind and Read Normally
+    if ( ! fileIsCrypted )
+    {
+        CloseOneFile ( &hInpFile );
+        Cleanup();
+
+        return bResult;
+    }
+    //  Crypted : OK Open file and write
+    FILE *hOutFile = NULL;
+    fopen_s ( &hOutFile, szOutputFilename, "wb" );
+    fwrite ( cryptHeader, 1, sizeof(cryptHeader), hOutFile );
+
+    //  Scripts are generally less than 64k
+    MCMemA memBuffer ( 1024 * 1024 );
+    uRead = fread ( memBuffer.ptr, 1, memBuffer.len, hInpFile );
+    if ( uRead > 0 )
+    {
+        fwrite ( memBuffer.ptr, 1, uRead, hOutFile );
+
+    }
+
+    CloseOneFile ( &hInpFile );
+    CloseOneFile ( &hOutFile );
+
+    bResult = TRUE;
+
+    return bResult;
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//  Only to see what is inside
+//  Do not copy over script.dat
+/////////////////////////////////////////////////////////////////////////////
+BOOL EncryptTR4Script ( const char *pathname, const char *pDirectory )
+{
+    //  Wait Cursor
+    CWaitCursor wait;
+
+    //
+    BOOL bResult = FALSE;
+
+    //
+    if ( ! PathFileExists ( pathname ) )
+    {
+        return bResult;
+    }
+
+    //
+    static char szDataFileType [ 32 ];
+    strcpy_s ( szDataFileType, sizeof(szDataFileType), ".TR4" );
+
+    //
+    static char szOutputFilename [ MAX_PATH ];
+    strcpy_s ( szOutputFilename, pathname );
+    RemoveFileType ( szOutputFilename );
+    strcat_s ( szOutputFilename, ".encrypt.dat" );
+
+    //
+    FILE *hInpFile = NULL;
+
+    openRead ( hInpFile, pathname, "rb" );
+    if ( hInpFile == NULL )
+    {
+        Print ( hLogFile, "File Open Error %s\n", pathname );
+        return bResult;
+    }
+
+    size_t uRead = 0;
+
+    //  Look If Encryot
+    ////////////////////////////////////
+    BYTE uncryptHeader [ 64 ];
+    ZeroMemory ( uncryptHeader, sizeof(uncryptHeader) );
+    uRead = fread ( uncryptHeader, 1, sizeof(uncryptHeader), hInpFile );
+    if ( uRead != sizeof(uncryptHeader) )
+    {
+        CloseOneFile ( &hInpFile );
+
+        Cleanup();
+
+        return bResult;
+    }
+
+    tr4_script_header       *pScriptHeader      = (tr4_script_header *) uncryptHeader;
+    tr4_script_levelheader  *pScriptLevelHeader = (tr4_script_levelheader *)( uncryptHeader + sizeof(tr4_script_header) );
+
+    //
+    //  Check
+    BOOL fileIsClear   = FALSE;
+    bool bGood = false;
+    if (    _strnicmp ( (char *) pScriptLevelHeader->PCLevelString, ".TR4", strlen(".TR4") ) == 0  &&
+            _strnicmp ( (char *) pScriptLevelHeader->PCCutString, ".TR4", strlen(".TR4") ) == 0    &&
+            _strnicmp ( (char *) pScriptLevelHeader->PCFMVString, ".", strlen(".") ) == 0               )
+    {
+        fileIsClear   = TRUE;
+        bGood           = true;
+    }
+
+    //  Preserve Buffer
+    //  The crypted part covers the two headers and it will remain 8 bytes.
+    //  File not Crypted : Rewind and Read Normally
+    if ( ! fileIsClear )
+    {
+        CloseOneFile ( &hInpFile );
+        Cleanup();
+
+        return bResult;
+    }
+
+    CriptaScript ( uncryptHeader );
+
+    //  UnCrypted : OK Open file and write
+    FILE *hOutFile = NULL;
+    fopen_s ( &hOutFile, szOutputFilename, "wb" );
+    fwrite ( uncryptHeader, 1, sizeof(uncryptHeader), hOutFile );
+
+    //  Scripts are generally less than 64k
+    MCMemA memBuffer ( 1024 * 1024 );
+    uRead = fread ( memBuffer.ptr, 1, memBuffer.len, hInpFile );
+    if ( uRead > 0 )
+    {
+        fwrite ( memBuffer.ptr, 1, uRead, hOutFile );
+    }
+
+    CloseOneFile ( &hInpFile );
+    CloseOneFile ( &hOutFile );
+
+    bResult = TRUE;
+
     return bResult;
 }
 

@@ -285,6 +285,21 @@ void CTR1SaveGame::RetrieveInformation( const char *pFilename )
 
     m_iSubVersion   = 0;
 
+    //
+    const char *saveati = "saveati.";
+    const char *pName = theApp.FindFileName ( pFilename );
+    if ( _strnicmp ( pName, saveati, strlen ( saveati ) ) == 0 )
+    {
+        m_iSubVersion   = GAME_TRC9;
+    }
+
+    //
+    const char *saves = "saves";
+    if ( _stricmp ( theApp.FindLastDirectory ( pFilename ), saves ) == 0 )
+    {
+        m_iSubVersion   = GAME_TRC9;
+    }
+
     /*
      *      Read file.
      */
@@ -448,19 +463,30 @@ TR1AMMOS *CTR1SaveGame::SearchGunStructure ( WORD m_iGunAmmos, WORD gunBitmap, i
 /////////////////////////////////////////////////////////////////////////////
 int CTR1SaveGame::CheckIfAmmosMatch ( TR1AMMOS *pGun, WORD gunBitmap )
 {
+    //
+    int iCount = 0;
 
+    //
     if ( m_pBuffer->trSingle.cGunBitmap & iMaskMagnum )
     {
         if ( pGun->m_iDesertEagle  != m_iDesertEagle  )
         {
-            return 0;
+            // return FALSE;
+        }
+        else
+        {
+            iCount++;
         }
     }
     else
     {
         if ( pGun->m_iDesertEagle  != 0 && pGun->m_iDesertEagle  != m_iDesertEagle )
         {
-            return 0;
+            // return FALSE;
+        }
+        else
+        {
+            iCount++;
         }
     }
 
@@ -468,14 +494,22 @@ int CTR1SaveGame::CheckIfAmmosMatch ( TR1AMMOS *pGun, WORD gunBitmap )
     {
         if ( pGun->m_iUzis != m_iUzis  )
         {
-            return 0;
+            // return FALSE;
+        }
+        else
+        {
+            iCount++;
         }
     }
     else
     {
         if ( pGun->m_iUzis != 0 && pGun->m_iUzis != m_iUzis )
         {
-            return 0;
+            // return FALSE;
+        }
+        else
+        {
+            iCount++;
         }
     }
 
@@ -483,19 +517,31 @@ int CTR1SaveGame::CheckIfAmmosMatch ( TR1AMMOS *pGun, WORD gunBitmap )
     {
         if ( pGun->m_iRiotGun != m_iRiotGun  )
         {
-            return 0;
+            // return FALSE;
+        }
+        else
+        {
+            iCount++;
         }
     }
     else
     {
         if ( pGun->m_iRiotGun != 0 && pGun->m_iRiotGun != m_iRiotGun )
         {
-            return 0;
+            // return FALSE;
+        }
+        else
+        {
+            iCount++;
         }
     }
 
-    return 1;
+    if ( iCount >= ( 3 - CTRXGlobal::m_CheckAmmosTolerance ) )
+    {
+        return TRUE;
+    }
 
+    return FALSE;
 }
 
 //
@@ -599,7 +645,29 @@ int CTR1SaveGame::ConvertSecretBack(int iSecret)
 void CTR1SaveGame::GetDetailedInfo (    char *szGame, size_t iSize, int *iGame, int *iLevel,
                                         char *szTitle, size_t iSizeTile)
 {
-    strcpy_s ( szGame, iSize, "TR1" );
+    //
+    const char *saveati = "saveati.";
+    const char *pName = theApp.FindFileName ( m_Filename );
+    if ( _strnicmp ( pName, saveati, strlen ( saveati ) ) == 0 )
+    {
+        m_iSubVersion   = GAME_TRC9;
+    }
+
+    //
+    const char *saves = "saves";
+    if ( _stricmp ( theApp.FindLastDirectory ( m_Filename ), saves ) == 0 )
+    {
+        m_iSubVersion   = GAME_TRC9;
+    }
+
+    if ( m_iSubVersion == 0 )
+    {
+        strcpy_s ( szGame, iSize, "TR1" );
+    }
+    else
+    {
+        strcpy_s ( szGame, iSize, "TR1LE" );
+    }
     strcpy_s ( szTitle, iSizeTile, m_pBuffer->szSavename );
     *iGame  = m_pBuffer->iSaveNumber;
     *iLevel = m_pBuffer->cLevel;

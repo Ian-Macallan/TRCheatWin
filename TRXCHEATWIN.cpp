@@ -122,6 +122,19 @@ int CTRXCHEATWINApp::__strnicmp ( const char *pString, const char *pBegining )
 }
 
 //
+//====================================================================================
+//
+//====================================================================================
+const char *CTRXCHEATWINApp::FindLastDirectory ( const char *pathname )
+{
+    static char lastDirectory [ MAX_PATH ];
+
+    strcpy_s ( lastDirectory, sizeof(lastDirectory), pathname );
+    RemoveFilename ( lastDirectory );
+    return FindFileName ( lastDirectory );
+}
+
+//
 /////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////
@@ -965,6 +978,8 @@ BOOL CTRXCHEATWINApp::InitInstance()
     CTRXGlobal::m_iAlterTRNGIndice      = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_ALTER_TRNG_IND, -1, 84 );
     CTRXGlobal::m_bAlterTRNGAmmosGuns   = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_ALTER_TRNG_AGUNS, -1, FALSE );
 
+    CTRXGlobal::m_CheckAmmosTolerance   = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_CHECK_TOLERANCE, -1, 0 );
+
     //
     //  Get Default directories for Remastered
     SearchRemasteredDirectory();
@@ -1419,6 +1434,58 @@ BOOL CTRXCHEATWINApp::InitInstance()
             strcpy_s ( szDirectory, sizeof(szDirectory), szFullPathname );
             RemoveFilename ( szDirectory );
             BOOL bRead = ReadTRXScript ( szFullPathname, szDirectory, 4 );
+        }
+        //
+        //  Uncrypt Script
+        else if ( __strnicmp ( pCommandLine, "-uncrypt" ) == 0 )
+        {
+            //
+            ZeroMemory ( szPathname, sizeof(szPathname) );
+            char *pFilename = strchr ( pCommandLine, ' ' );
+            if ( pFilename != NULL )
+            {
+                pFilename = SkipSpaces ( pFilename );
+                CopyBetweenQuotes ( szPathname, sizeof(szPathname), pFilename );
+            }
+
+            if ( strlen (szPathname) == 0 )
+            {
+                strcpy_s ( szPathname, sizeof(szPathname), "script.dat" );
+            }
+
+            LPSTR lpFilepart = NULL;
+            GetFullPathName ( szPathname, sizeof(szFullPathname), szFullPathname, &lpFilepart );
+
+            //
+            strcpy_s ( szDirectory, sizeof(szDirectory), szFullPathname );
+            RemoveFilename ( szDirectory );
+            BOOL bRead = UncryptTR4Script ( szFullPathname, szDirectory );
+        }
+        //
+        //  Recrypt Script
+        else if ( __strnicmp ( pCommandLine, "-encrypt" ) == 0 )
+        {
+            //
+            ZeroMemory ( szPathname, sizeof(szPathname) );
+            char *pFilename = strchr ( pCommandLine, ' ' );
+            if ( pFilename != NULL )
+            {
+                pFilename = SkipSpaces ( pFilename );
+                CopyBetweenQuotes ( szPathname, sizeof(szPathname), pFilename );
+            }
+
+            if ( strlen (szPathname) == 0 )
+            {
+                strcpy_s ( szPathname, sizeof(szPathname), "script.dat" );
+            }
+
+            LPSTR lpFilepart = NULL;
+            GetFullPathName ( szPathname, sizeof(szFullPathname), szFullPathname, &lpFilepart );
+
+            //
+            strcpy_s ( szDirectory, sizeof(szDirectory), szFullPathname );
+            RemoveFilename ( szDirectory );
+            BOOL bRead = EncryptTR4Script ( szFullPathname, szDirectory );
         }
         //
         //  Read Savegame

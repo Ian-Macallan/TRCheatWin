@@ -434,6 +434,14 @@ void CTR3SaveGame::RetrieveInformation( const char *pFilename )
             TR3Positions        = TR39Positions;
         }
 
+        //
+        const char *saves = "saves";
+        if ( _stricmp ( theApp.FindLastDirectory ( pFilename ), saves ) == 0 )
+        {
+            m_iSubVersion       = GAME_TRC9;
+            TR3Positions        = TR39Positions;
+        }
+
         /*
          *      Search for health in file.
          */
@@ -608,114 +616,186 @@ int CTR3SaveGame::CheckIfAmmosMatch ( TR3AMMOS *pGun, WORD gunBitmap )
 {
     int             iX;
 
+    //
+    int iCount = 0;
+
     iX = getLevelIndex ();
 
+    //
     if ( m_pBuffer->trTable [ iX ].cGunBitmap & iMaskDesertEagle )
     {
         if ( pGun->m_iDesertEagle  != m_iDesertEagle  )
         {
-            return 0;
+            // return FALSE;
+        }
+        else
+        {
+            iCount++;
         }
     }
     else
     {
         if ( pGun->m_iDesertEagle  != 0 && pGun->m_iDesertEagle  != m_iDesertEagle )
         {
-            return 0;
+            // return FALSE;
+        }
+        else
+        {
+            iCount++;
         }
     }
 
+    //
     if ( m_pBuffer->trTable [ iX ].cGunBitmap & iMaskUzi )
     {
         if ( pGun->m_iUzis     != m_iUzis  )
         {
-            return 0;
+            // return FALSE;
+        }
+        else
+        {
+            iCount++;
         }
     }
     else
     {
         if (    pGun->m_iUzis  != 0 && pGun->m_iUzis  != m_iUzis )
         {
-            return 0;
+            // return FALSE;
+        }
+        else
+        {
+            iCount++;
         }
     }
 
+    //
     if ( m_pBuffer->trTable [ iX ].cGunBitmap & iMaskShotGun )
     {
         if ( pGun->m_iRiotGun != m_iRiotGun  )
         {
-            return 0;
+            // return FALSE;
+        }
+        else
+        {
+            iCount++;
         }
     }
     else
     {
         if ( pGun->m_iRiotGun != 0 && pGun->m_iRiotGun != m_iRiotGun )
         {
-            return 0;
+            // return FALSE;
+        }
+        else
+        {
+            iCount++;
         }
     }
 
+    //
     if ( m_pBuffer->trTable [ iX ].cGunBitmap & iMaskGrenade )
     {
         if ( pGun->m_iGrenades != m_iGrenades  )
         {
-            return 0;
+            // return FALSE;
+        }
+        else
+        {
+            iCount++;
         }
     }
     else
     {
         if ( pGun->m_iGrenades != 0 && pGun->m_iGrenades != m_iGrenades )
         {
-            return 0;
+            // return FALSE;
+        }
+        else
+        {
+            iCount++;
         }
     }
 
+    //
     if ( m_pBuffer->trTable [ iX ].cGunBitmap & iMaskRocket )
     {
         if ( pGun->m_iRockets != m_iRockets  )
         {
-            return 0;
+            // return FALSE;
+        }
+        else
+        {
+            iCount++;
         }
     }
     else
     {
         if ( pGun->m_iRockets != 0 && pGun->m_iRockets != m_iRockets )
         {
-            return 0;
+            // return FALSE;
+        }
+        else
+        {
+            iCount++;
         }
     }
 
+    //
     if ( m_pBuffer->trTable [ iX ].cGunBitmap & iMaskHarpoon )
     {
         if ( pGun->m_iHarpoon != m_iHarpoon  )
         {
-            return 0;
+            // return FALSE;
+        }
+        else
+        {
+            iCount++;
         }
     }
     else
     {
         if ( pGun->m_iHarpoon  != 0 && pGun->m_iHarpoon  != m_iHarpoon )
         {
-            return 0;
+            // return FALSE;
+        }
+        else
+        {
+            iCount++;
         }
     }
 
+    //
     if ( m_pBuffer->trTable [ iX ].cGunBitmap & iMaskMP5 )
     {
         if ( pGun->m_iMP5 != m_iMP5  )
         {
-            return 0;
+            // return FALSE;
+        }
+        else
+        {
+            iCount++;
         }
     }
     else
     {
         if ( pGun->m_iMP5 != 0 && pGun->m_iMP5 != m_iMP5 )
         {
-            return 0;
+            // return FALSE;
+        }
+        else
+        {
+            iCount++;
         }
     }
 
-    return 1;
+    if ( iCount >= ( 7 - CTRXGlobal::m_CheckAmmosTolerance ) )
+    {
+        return TRUE;
+    }
+
+    return FALSE;
+
 }
 
 //
@@ -828,6 +908,15 @@ void CTR3SaveGame::GetDetailedInfo (    char *szGame, size_t iSize, int *iGame, 
         strcpy_s ( szGame, iSize, "TR3LE" );
         m_iSubVersion       = GAME_TRC9;
     }
+
+    //
+    const char *saves = "saves";
+    if ( _stricmp ( theApp.FindLastDirectory ( m_Filename ), saves ) == 0 )
+    {
+        strcpy_s ( szGame, iSize, "TR3LE" );
+        m_iSubVersion       = GAME_TRC9;
+    }
+
 }
 
 //

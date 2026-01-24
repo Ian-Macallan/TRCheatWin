@@ -368,7 +368,7 @@ class CTRSaveGame  : public CObject
 
     protected :
         char                m_Filename [ MAX_PATH ];
-        char                m_FilenameBak [ MAX_PATH ];
+        // char                m_FilenameBak [ MAX_PATH ];
         char                m_Status [ 256 ];
 
         char                m_szIndicatorLabel [ INDICATOR_LABEL_SIZE ];

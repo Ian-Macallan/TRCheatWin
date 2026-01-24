@@ -95,12 +95,28 @@ CustomDataFilesType CustomDataFiles [ TR4NGMAXLEVEL ];
 static  STRUCTDATA tagData [ maxData ];
 
 static const int ValueMinusOne      = -1;
-static const int Value10K           = 10000;
-static const int Many32K            = 0x7fff;
-static const int Some5K             = 5000;
+
+static const int Value10K1          = 10001;
+static const int Value10K2          = 10002;
+static const int Value10K3          = 10003;
+
+static const int Value201           = 201;
+static const int Value202           = 202;
+static const int Value203           = 203;
+
+
 static const int Value255           = 255;
 static const int Value1000          = 1000;
 static const int Value1800          = 1800;
+
+static const int ValueGun            = -1;
+static const int ValueHarpoon        = 3000;
+static const int ValueDesert         = 4000;
+static const int ValueGrenade        = 5000;
+static const int ValueRiot           = 6000;
+static const int ValueM16            = 9000;
+static const int ValueRocket         = 10000;
+static const int ValueUzi            = 12000;
 
 //
 /////////////////////////////////////////////////////////////////////////////
@@ -914,7 +930,7 @@ void CTRXInfoPage::AutoSearch()
                     if ( ! CTRSaveGame::I()->getAutoSearchDone () )
                     {
                         CTRSaveGame::I()->setAutoSearchDone ( TRUE );
-                        OnBnClickedSeeCustom();
+                        SearchUsableMap();
                     }
                     break;
                 }
@@ -1420,6 +1436,29 @@ void CTRXInfoPage::DisplayValues(BOOL bAutoSearch)
         m_Write.EnableWindow ( TRUE );
         m_Max.EnableWindow ( TRUE );
 
+    }
+    //  Not Valid
+    else
+    {
+        m_West_East.EnableWindow ( FALSE );
+        m_Vertical.EnableWindow ( FALSE );
+        m_South_North.EnableWindow ( FALSE );
+        m_Direction.EnableWindow ( FALSE );
+        m_Area.EnableWindow ( FALSE );
+
+        m_West_East.SetWindowText ( "" );
+        m_Vertical.SetWindowText ( "" );
+        m_South_North.SetWindowText ( "" );
+        m_Direction.SetWindowText ( "" );
+        m_Area.SetWindowText ( "" );
+
+        m_AreaInfos.SetWindowText ( "" );
+
+        if ( m_bRoomCreated )
+        {
+            m_Room.EnableWindow ( FALSE );
+            m_Room.ShowWindow ( SW_HIDE );
+        }
     }
 
     SetGUIModified ( bModified, "Info DisplayValues" );
@@ -2197,88 +2236,47 @@ void CTRXInfoPage::OnBnClickedMax()
          */
         if ( CTRSaveGame::GetVersion () >= 40 )
         {
-            CTRSaveGame::I()->SetSmallMedipak ( Value10K, iLevelIndex );
-            CTRSaveGame::I()->SetLargeMedipak ( Value10K, iLevelIndex );
-            CTRSaveGame::I()->SetFlares ( Value10K, iLevelIndex );
+            CTRSaveGame::I()->SetSmallMedipak ( Value10K1, iLevelIndex );
+            CTRSaveGame::I()->SetLargeMedipak ( Value10K2, iLevelIndex );
+            CTRSaveGame::I()->SetFlares ( Value10K3, iLevelIndex );
         }
         else
         {
-            CTRSaveGame::I()->SetSmallMedipak ( Value255, iLevelIndex );
-            CTRSaveGame::I()->SetLargeMedipak ( Value255, iLevelIndex );
-            CTRSaveGame::I()->SetFlares ( Value255, iLevelIndex );
+            CTRSaveGame::I()->SetSmallMedipak ( Value201, iLevelIndex );
+            CTRSaveGame::I()->SetLargeMedipak ( Value202, iLevelIndex );
+            CTRSaveGame::I()->SetFlares ( Value203, iLevelIndex );
         }
 
         //  Ammos
-        if ( CTRSaveGame::GetVersion() >= 40 )
-        {
-            if ( CTRSaveGame::I()->HasAmmos2() ) CTRSaveGame::I()->SetAmmos2 ( ValueMinusOne, iLevelIndex );
+        //  Guns
 
-            if ( CTRSaveGame::I()->HasAmmos3() ) CTRSaveGame::I()->SetAmmos3 ( ValueMinusOne, iLevelIndex );
+        //  Desert
+        if ( CTRSaveGame::I()->HasAmmos2() ) CTRSaveGame::I()->SetAmmos2 ( ValueDesert, iLevelIndex );
 
-            if ( CTRSaveGame::I()->HasAmmos4() ) CTRSaveGame::I()->SetAmmos4a ( ValueMinusOne, iLevelIndex );
-            if ( CTRSaveGame::I()->HasAmmos4() ) CTRSaveGame::I()->SetAmmos4b ( ValueMinusOne, iLevelIndex );
+        //  Uzi
+        if ( CTRSaveGame::I()->HasAmmos3() ) CTRSaveGame::I()->SetAmmos3 ( ValueUzi, iLevelIndex );
 
-            if ( CTRSaveGame::I()->HasAmmos5() ) CTRSaveGame::I()->SetAmmos5 ( ValueMinusOne, iLevelIndex );
+        // Riot
+        if ( CTRSaveGame::I()->HasAmmos4() ) CTRSaveGame::I()->SetAmmos4a ( ValueRiot, iLevelIndex );
+        if ( CTRSaveGame::I()->HasAmmos4() ) CTRSaveGame::I()->SetAmmos4b ( ValueRiot, iLevelIndex );
 
-            if ( CTRSaveGame::I()->HasAmmos6() ) CTRSaveGame::I()->SetAmmos6 ( ValueMinusOne, iLevelIndex );
+        //  MP5
+        if ( CTRSaveGame::I()->HasAmmos5() ) CTRSaveGame::I()->SetAmmos5 ( ValueM16, iLevelIndex );
 
-            if ( CTRSaveGame::I()->HasAmmos7() ) CTRSaveGame::I()->SetAmmos7a ( ValueMinusOne, iLevelIndex );
-            if ( CTRSaveGame::I()->HasAmmos7() ) CTRSaveGame::I()->SetAmmos7b ( ValueMinusOne, iLevelIndex );
-            if ( CTRSaveGame::I()->HasAmmos7() ) CTRSaveGame::I()->SetAmmos7c ( ValueMinusOne, iLevelIndex );
+        //  Rocket
+        if ( CTRSaveGame::I()->HasAmmos6() ) CTRSaveGame::I()->SetAmmos6 ( ValueRocket, iLevelIndex );
 
-            if ( CTRSaveGame::I()->HasAmmos8() ) CTRSaveGame::I()->SetAmmos8a ( ValueMinusOne, iLevelIndex );
-            if ( CTRSaveGame::I()->HasAmmos8() ) CTRSaveGame::I()->SetAmmos8b ( ValueMinusOne, iLevelIndex );
-            if ( CTRSaveGame::I()->HasAmmos8() ) CTRSaveGame::I()->SetAmmos8c ( ValueMinusOne, iLevelIndex );
-        }
-        else
-        {
-            if ( CTRSaveGame::I()->HasAmmos2() ) CTRSaveGame::I()->SetAmmos2 ( Value1000, iLevelIndex );
+        //  Grenade
+        if ( CTRSaveGame::I()->HasAmmos7() ) CTRSaveGame::I()->SetAmmos7a ( ValueGrenade, iLevelIndex );
+        if ( CTRSaveGame::I()->HasAmmos7() ) CTRSaveGame::I()->SetAmmos7b ( ValueGrenade, iLevelIndex );
+        if ( CTRSaveGame::I()->HasAmmos7() ) CTRSaveGame::I()->SetAmmos7c ( ValueGrenade, iLevelIndex );
 
-            if ( CTRSaveGame::I()->HasAmmos3() ) CTRSaveGame::I()->SetAmmos3 ( Value1000, iLevelIndex );
+        //  Harpoon
+        if ( CTRSaveGame::I()->HasAmmos8() ) CTRSaveGame::I()->SetAmmos8a ( ValueHarpoon, iLevelIndex );
+        if ( CTRSaveGame::I()->HasAmmos8() ) CTRSaveGame::I()->SetAmmos8b ( ValueHarpoon, iLevelIndex );
+        if ( CTRSaveGame::I()->HasAmmos8() ) CTRSaveGame::I()->SetAmmos8c ( ValueHarpoon, iLevelIndex );
 
-            if ( CTRSaveGame::I()->HasAmmos4() ) CTRSaveGame::I()->SetAmmos4a ( Value1000, iLevelIndex );
-            if ( CTRSaveGame::I()->HasAmmos4() ) CTRSaveGame::I()->SetAmmos4b ( Value1000, iLevelIndex );
-
-            if ( CTRSaveGame::I()->HasAmmos5() ) CTRSaveGame::I()->SetAmmos5 ( Value1000, iLevelIndex );
-
-            if ( CTRSaveGame::I()->HasAmmos6() ) CTRSaveGame::I()->SetAmmos6 ( Value1000, iLevelIndex );
-
-            if ( CTRSaveGame::I()->HasAmmos7() ) CTRSaveGame::I()->SetAmmos7a ( Value1000, iLevelIndex );
-            if ( CTRSaveGame::I()->HasAmmos7() ) CTRSaveGame::I()->SetAmmos7b ( Value1000, iLevelIndex );
-            if ( CTRSaveGame::I()->HasAmmos7() ) CTRSaveGame::I()->SetAmmos7c ( Value1000, iLevelIndex );
-
-            if ( CTRSaveGame::I()->HasAmmos8() ) CTRSaveGame::I()->SetAmmos8a ( Value1000, iLevelIndex );
-            if ( CTRSaveGame::I()->HasAmmos8() ) CTRSaveGame::I()->SetAmmos8b ( Value1000, iLevelIndex );
-            if ( CTRSaveGame::I()->HasAmmos8() ) CTRSaveGame::I()->SetAmmos8c ( Value1000, iLevelIndex );
-        }
-
-        //  Unlimited
-        if ( CTRSaveGame::GetVersion() >= 40 )
-        {
-            if ( CTRSaveGame::I()->HasAmmos2() ) CTRSaveGame::I()->SetAmmos2 ( ValueMinusOne, iLevelIndex );
-
-            if ( CTRSaveGame::I()->HasAmmos3() ) CTRSaveGame::I()->SetAmmos3 ( ValueMinusOne, iLevelIndex );
-
-            if ( CTRSaveGame::I()->HasAmmos4() ) CTRSaveGame::I()->SetAmmos4a ( ValueMinusOne, iLevelIndex );
-            if ( CTRSaveGame::I()->HasAmmos4() ) CTRSaveGame::I()->SetAmmos4b ( ValueMinusOne, iLevelIndex );
-
-            if ( CTRSaveGame::I()->HasAmmos5() ) CTRSaveGame::I()->SetAmmos5 ( ValueMinusOne, iLevelIndex );
-
-            if ( CTRSaveGame::I()->HasAmmos6() ) CTRSaveGame::I()->SetAmmos6 ( ValueMinusOne, iLevelIndex );
-
-            if ( CTRSaveGame::I()->HasAmmos7() ) CTRSaveGame::I()->SetAmmos7a ( ValueMinusOne, iLevelIndex );
-            if ( CTRSaveGame::I()->HasAmmos7() ) CTRSaveGame::I()->SetAmmos7b ( ValueMinusOne, iLevelIndex );
-            if ( CTRSaveGame::I()->HasAmmos7() ) CTRSaveGame::I()->SetAmmos7c ( ValueMinusOne, iLevelIndex );
-
-            if ( CTRSaveGame::I()->HasAmmos8() ) CTRSaveGame::I()->SetAmmos8a ( ValueMinusOne, iLevelIndex );
-            if ( CTRSaveGame::I()->HasAmmos8() ) CTRSaveGame::I()->SetAmmos8b ( ValueMinusOne, iLevelIndex );
-            if ( CTRSaveGame::I()->HasAmmos8() ) CTRSaveGame::I()->SetAmmos8c ( ValueMinusOne, iLevelIndex );
-
-        }
-        else
-        {
-            CTRSaveGame::I()->SetUnlimitedAmmos ( Value255 );
-        }
+        // CTRSaveGame::I()->SetUnlimitedAmmos ( Value255 );
 
         /*
          *      Set air.
@@ -2344,31 +2342,16 @@ void CTRXInfoPage::OnBnClickedMax()
 
         //
         //  Guns
-        if ( CTRSaveGame::GetVersion () <= GAME_TR49 )
-        {
-            if ( CTRSaveGame::I()->HasWeapon1() ) CTRSaveGame::I()->GrabWeapon1 ( iLevelIndex );
-            if ( CTRSaveGame::I()->HasWeapon2() ) CTRSaveGame::I()->GrabWeapon2 ( iLevelIndex );
-            if ( CTRSaveGame::I()->HasWeapon3() ) CTRSaveGame::I()->GrabWeapon3 ( iLevelIndex );
-            if ( CTRSaveGame::I()->HasWeapon4() ) CTRSaveGame::I()->GrabWeapon4 ( iLevelIndex );
-            if ( CTRSaveGame::I()->HasWeapon5() ) CTRSaveGame::I()->GrabWeapon5 ( iLevelIndex );
-            if ( CTRSaveGame::I()->HasWeapon6() ) CTRSaveGame::I()->GrabWeapon6 ( iLevelIndex );
-            if ( CTRSaveGame::I()->HasWeapon7() ) CTRSaveGame::I()->GrabWeapon7 ( iLevelIndex );
-            if ( CTRSaveGame::I()->HasWeapon8() ) CTRSaveGame::I()->GrabWeapon8 ( iLevelIndex );
-            if ( CTRSaveGame::I()->HasWeapon9() ) CTRSaveGame::I()->GrabWeapon9 ( iLevelIndex );
-        }
+        if ( CTRSaveGame::I()->HasWeapon1() ) CTRSaveGame::I()->GrabWeapon1 ( iLevelIndex );
+        if ( CTRSaveGame::I()->HasWeapon2() ) CTRSaveGame::I()->GrabWeapon2 ( iLevelIndex );
+        if ( CTRSaveGame::I()->HasWeapon3() ) CTRSaveGame::I()->GrabWeapon3 ( iLevelIndex );
+        if ( CTRSaveGame::I()->HasWeapon4() ) CTRSaveGame::I()->GrabWeapon4 ( iLevelIndex );
+        if ( CTRSaveGame::I()->HasWeapon5() ) CTRSaveGame::I()->GrabWeapon5 ( iLevelIndex );
+        if ( CTRSaveGame::I()->HasWeapon6() ) CTRSaveGame::I()->GrabWeapon6 ( iLevelIndex );
+        if ( CTRSaveGame::I()->HasWeapon7() ) CTRSaveGame::I()->GrabWeapon7 ( iLevelIndex );
+        if ( CTRSaveGame::I()->HasWeapon8() ) CTRSaveGame::I()->GrabWeapon8 ( iLevelIndex );
+        if ( CTRSaveGame::I()->HasWeapon9() ) CTRSaveGame::I()->GrabWeapon9 ( iLevelIndex );
 
-        if ( CTRSaveGame::GetVersion () >= 50 && CTRSaveGame::GetVersion () <= 59 )
-        {
-            if ( CTRSaveGame::I()->HasWeapon1() ) CTRSaveGame::I()->GrabWeapon1 ( iLevelIndex );
-            if ( CTRSaveGame::I()->HasWeapon2() ) CTRSaveGame::I()->GrabWeapon2 ( iLevelIndex );
-            if ( CTRSaveGame::I()->HasWeapon3() ) CTRSaveGame::I()->GrabWeapon3 ( iLevelIndex );
-            if ( CTRSaveGame::I()->HasWeapon4() ) CTRSaveGame::I()->GrabWeapon4 ( iLevelIndex );
-            if ( CTRSaveGame::I()->HasWeapon5() ) CTRSaveGame::I()->GrabWeapon5 ( iLevelIndex );
-            if ( CTRSaveGame::I()->HasWeapon6() ) CTRSaveGame::I()->GrabWeapon6 ( iLevelIndex );
-            if ( CTRSaveGame::I()->HasWeapon7() ) CTRSaveGame::I()->GrabWeapon7 ( iLevelIndex );
-            if ( CTRSaveGame::I()->HasWeapon8() ) CTRSaveGame::I()->GrabWeapon8 ( iLevelIndex );
-            if ( CTRSaveGame::I()->HasWeapon9() ) CTRSaveGame::I()->GrabWeapon9 ( iLevelIndex );
-        }
     }
 }
 
@@ -2457,7 +2440,7 @@ void CTRXInfoPage::OnSelchangeCombo()
 
         m_Custom_Combo.SetCurSel ( 0 );
 
-        ChangeCustomCombo( true );
+        ChangeCustomCombo ( true );
     }
 
     SetGUIModified ( FALSE );
@@ -2993,7 +2976,8 @@ void CTRXInfoPage::OnChangeRoom()
 /////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////
-BOOL CTRXInfoPage::GetCustomParams ( TR_MODE *pTrMode, STRUCTLOCATION  **ppTable, char BASED_CODE **ppFilter, char **ppNames, char **ppTypeName )
+BOOL CTRXInfoPage::GetCustomParams (    TR_MODE *pTrMode, STRUCTLOCATION  **ppTable, 
+                                        char BASED_CODE **ppFilter, char **ppNames, char **ppTypeName )
 {
     //
     int tombraider      = CTRSaveGame::GetFullVersion ();
@@ -3481,7 +3465,7 @@ void CTRXInfoPage::OnSelchangeCustomCombo()
     theApp.ResetCustomLabels ();
 
     //
-    ChangeCustomCombo( true );
+    ChangeCustomCombo ( true );
 }
 
 //
@@ -3548,9 +3532,8 @@ BOOL CTRXInfoPage::SelectCustomFromPath (const char *pathname)
 /////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////
-void CTRXInfoPage::OnBnClickedSeeCustom()
+void CTRXInfoPage::SearchUsableMap ( bool bManualChange )
 {
-
     static char szFilename [ MAX_PATH ];
     ZeroMemory ( szFilename, sizeof(szFilename) );
 
@@ -3686,6 +3669,16 @@ void CTRXInfoPage::OnBnClickedSeeCustom()
         //  This Will select the good level
         ChangeCustomCombo(false);
     }
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
+void CTRXInfoPage::OnBnClickedSeeCustom()
+{
+    SearchUsableMap ( true );
+
 }
 
 //

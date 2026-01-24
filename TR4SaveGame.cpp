@@ -568,7 +568,7 @@ int CTR4SaveGame::ConvertSecretBack(int iSecret)
 //
 /////////////////////////////////////////////////////////////////////////////
 void CTR4SaveGame::GetDetailedInfo (    char *szGame, size_t iSize, int *iGame, int *iLevel,
-                                        char *szTitle, size_t iSizeTile)
+                                        char *szTitle, size_t iSizeTile )
 {
     strcpy_s ( szGame, iSize, "TR4 Last Revelation" );
     strcpy_s ( szTitle, iSizeTile, m_pBuffer->szSavename );

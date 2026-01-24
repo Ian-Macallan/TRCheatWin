@@ -35,6 +35,8 @@ BOOL            CTRXGlobal::m_iAlterTRNGIndice              = 84;
 BOOL            CTRXGlobal::m_bAlterTRNGAmmosGuns           = FALSE;
 ForceGame       CTRXGlobal::m_ForceSaveGame                 = FORCE_NONE;
 
+int             CTRXGlobal::m_CheckAmmosTolerance           = 0;
+
 char            CTRXGlobal::m_szTRXNumber [ 32 ]            = ""; // "292733983277432559";
 char            CTRXGlobal::m_szTRX2Number [ 32 ]           = ""; // "72057598332895233";
 

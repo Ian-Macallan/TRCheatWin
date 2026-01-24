@@ -72,6 +72,7 @@ class CTRXGlobal
 
         static ForceGame    m_ForceSaveGame;
 
+        static int          m_CheckAmmosTolerance;
 
         static char         m_szTRXNumber [ 32 ];
         static char         m_szTRX2Number [ 32 ];

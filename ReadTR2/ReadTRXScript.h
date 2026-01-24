@@ -251,6 +251,8 @@ typedef void (*FCT_AddToItemsLabels)( int what, int level, int button, const cha
 extern BOOL ReadTRXLanguage (   const char *pFilename, const char *pDirectory, int iLang, int version, bool bWrite = true );
 extern BOOL ReadTRXScript (     const char *pathname, const char *pDirectory, int version = 4, bool bWrite = true,
                                 FCT_AddToItemsLabels function = NULL );
+extern BOOL UncryptTR4Script (     const char *pathname, const char *pDirectory );
+extern BOOL EncryptTR4Script (     const char *pathname, const char *pDirectory );
 
 extern BOOL UnZipTRXSavegame (     const char *pathname, const char *pDirectory, int version = 1 );
 

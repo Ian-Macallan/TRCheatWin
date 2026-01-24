@@ -69,6 +69,7 @@ class CTRXInfoPage : public CTRXPropertyPage
         void UpdateBuffer();
         void DisplayValues( BOOL bAutoSearch = TRUE );
         void AutoSearch ( );
+        void SearchUsableMap ( bool bManualChange = false );
         void LoadDirectory();
         void SortItems ( int col);
         void DisplayOne ( int line );

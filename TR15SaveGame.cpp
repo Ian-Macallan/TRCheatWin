@@ -463,18 +463,29 @@ TUBAMMOS *CTUBSaveGame::SearchGunStructure ( WORD m_iGunAmmos, WORD gunBitmap, i
 int CTUBSaveGame::CheckIfAmmosMatch ( TUBAMMOS *pGun, WORD gunBitmap )
 {
 
+    //
+    int iCount = 0;
+
     if ( m_pBuffer->trSingle.cGunBitmap & iMaskMagnum )
     {
         if ( pGun->m_iDesertEagle  != m_iDesertEagle  )
         {
-            return 0;
+            // return FALSE;
+        }
+        else
+        {
+            iCount++;
         }
     }
     else
     {
         if ( pGun->m_iDesertEagle  != 0 && pGun->m_iDesertEagle  != m_iDesertEagle )
         {
-            return 0;
+            // return FALSE;
+        }
+        else
+        {
+            iCount++;
         }
     }
 
@@ -482,14 +493,22 @@ int CTUBSaveGame::CheckIfAmmosMatch ( TUBAMMOS *pGun, WORD gunBitmap )
     {
         if ( pGun->m_iUzis     != m_iUzis  )
         {
-            return 0;
+            // return FALSE;
+        }
+        else
+        {
+            iCount++;
         }
     }
     else
     {
         if ( pGun->m_iUzis != 0 && pGun->m_iUzis != m_iUzis)
         {
-            return 0;
+            // return FALSE;
+        }
+        else
+        {
+            iCount++;
         }
     }
 
@@ -497,18 +516,31 @@ int CTUBSaveGame::CheckIfAmmosMatch ( TUBAMMOS *pGun, WORD gunBitmap )
     {
         if ( pGun->m_iRiotGun != m_iRiotGun  )
         {
-            return 0;
+            // return FALSE;
+        }
+        else
+        {
+            iCount++;
         }
     }
     else
     {
         if ( pGun->m_iRiotGun != 0 && pGun->m_iRiotGun != m_iRiotGun )
         {
-            return 0;
+            // return FALSE;
+        }
+        else
+        {
+            iCount++;
         }
     }
 
-    return 1;
+    if ( iCount >= ( 3 - CTRXGlobal::m_CheckAmmosTolerance ) )
+    {
+        return TRUE;
+    }
+
+    return FALSE;
 }
 
 //
