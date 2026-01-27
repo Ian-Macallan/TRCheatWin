@@ -249,6 +249,7 @@ int CTR3SaveGame::ReadSavegame( const char *pFilename )
     if (    CTRXGlobal::m_ForceSaveGame == FORCE_NONE &&
             m_iSaveLength != TR3LEVELALT1SIZE && 
             m_iSaveLength != TR3LEVELALT2SIZE && 
+            m_iSaveLength != TR3LEVELALT3SIZE && 
             ( m_iSaveLength < TR3LEVELMINSIZE || m_iSaveLength > TR3LEVELMAXSIZE ) )
     {
         AddToStatus ( "Internal error in length." );
@@ -357,6 +358,7 @@ void CTR3SaveGame::writeSaveGame()
     if (    CTRXGlobal::m_ForceSaveGame == FORCE_NONE &&
             m_iSaveLength != TR3LEVELALT1SIZE && 
             m_iSaveLength != TR3LEVELALT2SIZE && 
+            m_iSaveLength != TR3LEVELALT3SIZE && 
             ( m_iSaveLength < TR3LEVELMINSIZE || m_iSaveLength > TR3LEVELMAXSIZE ) )
     {
         AddToStatus ( "Internal error in length." );

@@ -719,6 +719,7 @@ int CTRSaveGame::InstanciateVersion (const char *szFilename )
                     case TR3LEVELMAXSIZE :
                     case TR3LEVELALT1SIZE :
                     case TR3LEVELALT2SIZE :
+                    case TR3LEVELALT3SIZE :
                     {
                         CTR3SaveGame *pGame = dynamic_cast<CTR3SaveGame *>( GetTR3Instance() );
                         if ( pGame != NULL )
