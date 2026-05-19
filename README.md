@@ -31,6 +31,9 @@ Latest Binaries build on github are available in Release :
 [http://github.com/Ian-Macallan/TRCheatWin/releases](https://github.com/Ian-Macallan/TRCheatWin/releases)
 or at [https://www.macallan.org/](https://www.macallan.org)
 
+The 64 bits version handles the Challenge TRR 123 (version 1.1).
+The 32 bits version handles the Original TRR 123 (version 1.0).
+
 ## Tombraider Remastered
 
 For Tombraider Remastered Edition all stuff is in the same page (First Tab) :
