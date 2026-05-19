@@ -896,7 +896,7 @@ size_t CTR8SaveGame::getBufferLength()
 /////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////
-BOOL CTR8SaveGame::ReadFile ( const char *pFilename )
+BOOL CTR8SaveGame::ReadFile ( const char *pFilename, size_t *lengthRead )
 {
     Init();
 
@@ -907,7 +907,12 @@ BOOL CTR8SaveGame::ReadFile ( const char *pFilename )
     openRead ( m_hFile, pFilename, "rb" );
     if ( m_hFile != NULL )
     {
-        m_iSaveLength = (int) fread ( m_pBuffer, 1, LEN_BUFFER, m_hFile );
+        size_t nbRead = fread ( m_pBuffer, 1, LEN_BUFFER, m_hFile );
+        if ( lengthRead != NULL )
+        {
+            *lengthRead = nbRead;
+        }
+        m_iSaveLength = (int) nbRead;
         CloseOneFile ( &m_hFile );
         m_hFile = NULL;
 

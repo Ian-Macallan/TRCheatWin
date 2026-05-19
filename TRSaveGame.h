@@ -723,6 +723,9 @@ class CTRSaveGame  : public CObject
         virtual int GetBinocular ( int iX = 0 ) { return 0; };
 
         //
+        virtual void SetSaveNumber ( int number ) = 0;
+
+        //
         virtual void SetGunAmmos ( const char *szGunAmmos ) = 0;
         virtual void SetGunAmmos ( int val )
         {

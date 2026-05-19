@@ -562,7 +562,8 @@ TR3AMMOS *CTR3SaveGame::SearchGunStructure ( unsigned short m_iGunAmmos, WORD gu
         TR3AMMOS                *pGun;
         
         //
-        DWORD offset = offsetof(TR3SAVE,szRemain);
+        DWORD offsetRemain  = offsetof(TR3SAVE,szRemain);
+        DWORD offsetSingle  = offsetof(TR3SAVE,trSingle);
 
         //
         if ( *iPos == -1 )
@@ -575,10 +576,26 @@ TR3AMMOS *CTR3SaveGame::SearchGunStructure ( unsigned short m_iGunAmmos, WORD gu
             iX = *iPos;
         }
 
+        //
+        DWORD minAddress = 0xffffffff;
+        DWORD maxAddress = 0x00000000;
+
+        //
         while ( iX >= 0 )
         {
             pString = & ( m_pBuffer->szRemain [ iX ] );
-            pGun = ( TR3AMMOS * )(  pString );
+            pGun    = ( TR3AMMOS * )(  pString );
+            DWORD address = (DWORD)( (char *) pString - (char *) m_pBuffer );
+
+            if ( address > maxAddress )
+            {
+                maxAddress = address;
+            }
+            if ( address < minAddress )
+            {
+                minAddress = address;
+            }
+
             if (    ( pGun->m_iGunAmmos == ( unsigned short )( m_iGunAmmos     ) )
                  || ( pGun->m_iGunAmmos == ( unsigned short )( m_iGunAmmos + 1 ) )
                  || ( pGun->m_iGunAmmos == ( unsigned short )( m_iGunAmmos - 1 ) ) )
@@ -1617,6 +1634,16 @@ char *CTR3SaveGame::GetSaveName ()
 int CTR3SaveGame::GetSaveNumber ()
 {
     return ( m_pBuffer->iSaveNumber );
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
+void CTR3SaveGame::SetSaveNumber ( int number )
+{
+    m_pBuffer->iSaveNumber = number;
+    return;
 }
 
 //

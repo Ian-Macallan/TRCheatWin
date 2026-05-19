@@ -298,7 +298,6 @@ void CTRXRoomPicture::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct )
             }
         }
     }
-
 }
 
 //

@@ -283,6 +283,8 @@ class CTR2SaveGame : public CTR123SaveGame
         int GetFlares ( int iX );
         int GetAir ( );
 
+        void SetSaveNumber ( int number );
+
         void SetGunAmmos ( const char *szGunAmmos );
 
         void SetSmallMedipak ( const char *szString, int iX );

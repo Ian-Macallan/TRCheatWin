@@ -449,6 +449,14 @@ void CTR4SaveGame::RetrieveInformation( const char *pFilename )
             m_iSubVersion   = 0;
         }
 
+        //
+        const char *save = "save";
+        if ( _stricmp ( theApp.FindLastDirectory ( pFilename ), save ) == 0 )
+        {
+            m_iSubVersion   = GAME_TRC9;
+        }
+
+        //
         if ( m_iSaveLength < TR4LEVELMINSIZE || m_iSaveLength > TR4LEVELMAXSIZE )
         {
             m_iSubVersion   = GAME_TRC9;
@@ -580,6 +588,15 @@ void CTR4SaveGame::GetDetailedInfo (    char *szGame, size_t iSize, int *iGame, 
         m_iSubVersion   = GAME_TRG5;
     }
 
+    //
+    const char *save = "save";
+    if ( _stricmp ( theApp.FindLastDirectory ( m_Filename ), save ) == 0 )
+    {
+        strcpy_s ( szGame, iSize, "TR4LE" );
+        m_iSubVersion       = GAME_TRC9;
+    }
+
+    //
     if ( m_iSaveLength < TR4LEVELMINSIZE || m_iSaveLength > TR4LEVELMAXSIZE )
     {
         strcpy_s ( szGame, iSize, "TR4LE" );
@@ -1371,6 +1388,16 @@ char *CTR4SaveGame::GetSaveName ()
 int CTR4SaveGame::GetSaveNumber ()
 {
     return ( m_pBuffer->iSaveNumber );
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
+void CTR4SaveGame::SetSaveNumber ( int number )
+{
+    m_pBuffer->iSaveNumber  = number;
+    return;
 }
 
 //

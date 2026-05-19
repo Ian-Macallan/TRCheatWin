@@ -13,6 +13,8 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
+static const char *pValueInfinite       = "-1";
+
 static const char *pValueMinusOne   = "-1";
 static const char *pValue10K1       = "10001";
 static const char *pValue10K2       = "10002";

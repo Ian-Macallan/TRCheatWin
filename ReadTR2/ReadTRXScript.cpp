@@ -2910,6 +2910,71 @@ BOOL ReadTombPC (    const char *pathname, const char *pDirectory, int version, 
     iRead = fread ( &Flags, 1, sizeof(Flags), hInpFile );
     Print ( hLogFile, "%04lx: Flags %04x\n", lPosition, Flags );
 
+    //
+    //  Detailed
+    //     Bit 0 (0x01) — DemoVersion. If set, it indicates that the game is a demo distribution.
+    //     Bit 1 (0x02) — TitleDisabled. If set, it indicates that the game has no Title Screen.
+    //     Bit 2 (0x04) — CheatModeCheckDisabled. If set, it indicates that the game does not look for the cheat sequence keystrokes and events.
+    //     Bit 3 (0x08) — NoInputTimeout. If set, it indicates that the game waits forever if there is no input (won’t enter demo mode).
+    Print ( hLogFile, "-" );
+    if ( Flags & 0x01 )
+    {
+        Print ( hLogFile, " DemoVersion" );
+    }
+    if ( Flags & 0x02 )
+    {
+        Print ( hLogFile, " TitleDisabled" );
+    }
+    if ( Flags & 0x04 )
+    {
+        Print ( hLogFile, " CheatModeCheckDisabled" );
+    }
+    if ( Flags & 0x08 )
+    {
+        Print ( hLogFile, " NoInputTimeout" );
+    }
+    //     Bit 4 (0x10) — LoadSaveDisabled. If set, it indicates that the game does not allow save games.
+    //     Bit 5 (0x20) — ScreenSizingDisabled. If set, it indicates that the game does not allow screen resizing (with the function keys).
+    //     Bit 6 (0x40) — LockoutOptionRing. If set, it indicates that the user has no access to the Option Ring while playing the game.
+    //     Bit 7 (0x80) — DozyCheatEnabled. If set, it indicates that the game has the DOZY cheat enabled (only present in the final build of TR2 on PSX).
+    if ( Flags & 0x10 )
+    {
+        Print ( hLogFile, " LoadSaveDisabled" );
+    }
+    if ( Flags & 0x20 )
+    {
+        Print ( hLogFile, " ScreenSizingDisabled" );
+    }
+    if ( Flags & 0x40 )
+    {
+        Print ( hLogFile, " LockoutOptionRing" );
+    }
+    if ( Flags & 0x80 )
+    {
+        Print ( hLogFile, " DozyCheatEnabled" );
+    }
+    //     Bit 8 (0x100) — UseXor. If set, it indicates that a cypher byte was used to encrypt the strings in the script file, and is stored in the XorKey field.
+    //     Bit 9 (0x200) — GymEnabled. Is Gym available on title screen.
+    //     Bit 10 (0x400) — SelectAnyLevel. If set, it enables level select when New Game is selected.
+    //     Bit 11 (0x800) — EnableCheatCode. It apparently has no effect on the PC game.
+    if ( Flags & 0x100 )
+    {
+        Print ( hLogFile, " UseXor" );
+    }
+    if ( Flags & 0x200 )
+    {
+        Print ( hLogFile, " GymEnabled" );
+    }
+    if ( Flags & 0x400 )
+    {
+        Print ( hLogFile, " SelectAnyLevel" );
+    }
+    if ( Flags & 0x800 )
+    {
+        Print ( hLogFile, " EnableCheatCode" );
+    }
+    Print ( hLogFile, "\n" );
+
     lPosition = ftell ( hInpFile );
     iRead = fread ( &Unknown3, 1, sizeof(Unknown3), hInpFile );
 

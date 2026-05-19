@@ -126,6 +126,7 @@ class CTRXInfoPage : public CTRXPropertyPage
         CTRXStaticBase      m_AreaInfos;
         CTRXButtonBase      m_Room_Search;
         CTRXEditBase        m_Versions;
+        CTRXEditBase        m_SaveNumEdit;
 
         //}}AFX_DATA
 

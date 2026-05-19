@@ -456,7 +456,6 @@ bool CTRXCHEATWINApp::__strrepiA (   char *lineRead, size_t sizeType,
     return replaced;
 }
 
-
 //
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -1194,7 +1193,8 @@ BOOL CTRXCHEATWINApp::InitInstance()
 
                 //
                 CTR9SaveGame *pTombraider = CTR9SaveGame::I();
-                BOOL bRead = pTombraider->ReadFile(szFullPathname);
+                size_t nbRead = 0;
+                BOOL bRead = pTombraider->ReadFile(szFullPathname, &nbRead);
                 if ( bRead )
                 {
                     TraceMode = TRUE;

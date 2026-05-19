@@ -320,6 +320,8 @@
 #define IDC_TREASURE2                   1047
 #define IDC_NB_SECRETS2                 1047
 #define IDC_SECRETS_2                   1047
+#define IDC_SECRETS3                    1047
+#define IDC_SAVENUM                     1047
 #define IDC_TREASURE3                   1048
 #define IDC_SECRETS_3                   1048
 #define IDC_SECRETS_MAX                 1048

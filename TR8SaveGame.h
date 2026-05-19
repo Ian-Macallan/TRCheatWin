@@ -724,7 +724,7 @@ class CTR8SaveGame : public CObject
         static DWORD RelativeAddress ( const void *pAddress );
 
         //
-        BOOL ReadFile ( const char *pFilename );
+        BOOL ReadFile ( const char *pFilename, size_t *lengthRead );
         BOOL Load (  );
         BOOL writeFile ( const char *pFilename );
 

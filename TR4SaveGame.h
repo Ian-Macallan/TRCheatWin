@@ -402,6 +402,8 @@ class CTR4SaveGame : public CTR45SaveGame
         int GetLaser ( int iX = 0 );
         int GetBinocular ( int iX = 0 );
 
+        void SetSaveNumber ( int number );
+
         void SetGunAmmos ( const char *szGunAmmos );
 
         void SetSmallMedipak ( const char *szString, int iX );

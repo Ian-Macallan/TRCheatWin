@@ -1513,7 +1513,8 @@ void CTRXRemastered456::DisplayList ( const char *pFilename )
         m_Filename.SetWindowText ( pFilename );
 
         //  Retrieve Info
-        BOOL bRead = CTR8SaveGame::I()->ReadFile ( pFilename );
+        size_t nbRead = 0;
+        BOOL bRead = CTR8SaveGame::I()->ReadFile ( pFilename, &nbRead );
         if ( bRead )
         {
             m_Status.SetWindowText ( "File sucessfuily read" );
@@ -1527,7 +1528,6 @@ void CTRXRemastered456::DisplayList ( const char *pFilename )
         {
             m_Status.SetWindowText ( "File read fails" );
             m_Filename.SetWindowText ( "" );
-
             //
             RemoveLocation ( LocationPathname, pFilename );
 

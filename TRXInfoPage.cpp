@@ -524,6 +524,7 @@ void CTRXInfoPage::DoDataExchange(CDataExchange* pDX)
     DDX_Control(pDX, IDC_WRITE, m_Write);
     DDX_Control(pDX, IDC_STATUS, m_Status);
     DDX_Control(pDX, IDC_LARABURNING, m_Lara_Burning);
+    DDX_Control(pDX, IDC_SAVENUM, m_SaveNumEdit);
     DDX_Control(pDX, IDC_NBSECRETS, m_Nb_Secrets);
     DDX_Control(pDX, IDC_SECRETS, m_Secrets);
     DDX_Control(pDX, IDC_LEVELNAME, m_Level_Name);
@@ -1321,6 +1322,10 @@ void CTRXInfoPage::DisplayValues(BOOL bAutoSearch)
         sprintf_s ( szString, sizeof(szString), "%d", CTRSaveGame::I()->GetMaximumSecrets ( iLevelIndex ) );
         m_Nb_Secrets.SetWindowText ( szString );
 
+        //
+        sprintf_s ( szString, sizeof(szString), "%03d", CTRSaveGame::I()->GetSaveNumber () );
+        m_SaveNumEdit.SetWindowText ( szString );
+
         /*
          *      Display if we are burning.
          *      0x10 means that you are burning.
@@ -1718,6 +1723,21 @@ void CTRXInfoPage::UpdateBuffer()
         m_Secrets.GetWindowText ( szString, sizeof ( szString ) );
         CTRSaveGame::I()->SetCurrentSecrets ( szString, iLevelIndex );
 
+        //
+        m_SaveNumEdit.GetWindowText ( szString, sizeof ( szString ) );
+        CTRSaveGame::I()->SetSaveNumber ( atoi ( szString ) );
+
+        //  Update Save Number
+        sprintf_s ( szString, sizeof(szString), "%03d", CTRSaveGame::I()->GetSaveNumber () );
+        m_Savenumber.SetWindowText ( szString );
+
+        //
+        //  Update Current Line
+        if ( m_Line >= 0 && m_Line < m_ListCtrl.GetItemCount()  )
+        {
+            m_ListCtrl.SetItemText ( m_Line, COL_GAME_NO, szString );
+        }
+
         /*
          *      Objects mask.
          */
@@ -1758,7 +1778,6 @@ void CTRXInfoPage::UpdateBuffer()
         WORD wRoom              = atoi ( szString );
 
         CTRSaveGame::I()->SetPosition ( dwWestToEast, dwVertical, dwSouthToNorth, wDirection, wRoom );
-
     }
 
 }

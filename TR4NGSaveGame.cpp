@@ -121,6 +121,13 @@ TR45_INDICATORS IndicatorsTR4NGTable [ MAX_INDICATORS ] =
     {   FALSE,  0x01,   0x02,   0x00,   0x0a,   TRUE,   2,  "Advancing 1", }, 
     {   FALSE,  0x01,   0x02,   0x00,   0x08,   TRUE,   2,  "Advancing 2", },
 
+    //  Caution
+#if 0
+    {   FALSE,  0x1a,   0x1a,   0x00,   0x50,   TRUE,   5,  "Side Jumping", },
+    {   FALSE,  0x01,   0x02,   0x00,   0x37,   TRUE,   5,  "Forward Stepping", },
+    {   FALSE,  0x05,   0x02,   0x00,   0x59,   TRUE,   5,  "Backward Stepping", },
+#endif
+
     {   FALSE,  0x18,   0x18,   0x00,   0x46,   TRUE,   8,  "Sliding", },
     {   FALSE,  0x18,   0x18,   0x47,   0x46,   TRUE,   8,  "Sliding", },
 
@@ -2589,6 +2596,16 @@ char *CTR4NGSaveGame::GetSaveName ()
 int CTR4NGSaveGame::GetSaveNumber ()
 {
     return ( m_pBuffer->iSaveNumber );
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
+void CTR4NGSaveGame::SetSaveNumber ( int number )
+{
+    m_pBuffer->iSaveNumber = number;
+    return;
 }
 
 //

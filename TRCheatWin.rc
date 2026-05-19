@@ -129,7 +129,8 @@ BEGIN
     CONTROL         "Max",IDC_MAX,"Button",BS_OWNERDRAW | WS_TABSTOP,442,24,32,14
     CONTROL         "Write",IDC_WRITE,"Button",BS_OWNERDRAW | WS_TABSTOP,480,24,32,14
     CONTROL         "List1",IDC_LISTCTRL,"SysListView32",LVS_REPORT | LVS_SINGLESEL | LVS_SHOWSELALWAYS | WS_BORDER | WS_TABSTOP,7,42,505,145
-    LTEXT           "Secrets",IDC_STATIC,125,196,26,8
+    EDITTEXT        IDC_SAVENUM,125,194,17,12,ES_AUTOHSCROLL
+    LTEXT           "Secrets",IDC_STATIC,150,196,26,8
     EDITTEXT        IDC_SECRETS,182,194,17,12,ES_AUTOHSCROLL
     LTEXT           "/",IDC_STATIC,203,196,8,8
     EDITTEXT        IDC_NBSECRETS,212,194,18,12,ES_AUTOHSCROLL | ES_READONLY | NOT WS_TABSTOP
@@ -984,8 +985,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 4,7,03,011
- PRODUCTVERSION 4,7,03,011
+ FILEVERSION 4,7,04,002
+ PRODUCTVERSION 4,7,04,002
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x29L
@@ -1003,15 +1004,15 @@ BEGIN
             VALUE "Comments", "mailto:ian.macallan@gmail.com\0"
             VALUE "CompanyName", "Macallan (c)\0"
             VALUE "FileDescription", "TRCheatWin - (MSVC)\0"
-            VALUE "FileVersion", "4.7.03.011\0"
+            VALUE "FileVersion", "4.7.04.002\0"
             VALUE "InternalName", "https://www.macallan.org/\0"
-            VALUE "LegalCopyright", "Copyright (C) Tue Jan 27 09:01, 2026\0"
+            VALUE "LegalCopyright", "Copyright (C) Tue May 19 08:29, 2026\0"
             VALUE "LegalTrademarks", "Author: Ian Macallan\0"
             VALUE "OriginalFilename", ORIGINAL_FILENAME
-            VALUE "PrivateBuild", "1246\0"
+            VALUE "PrivateBuild", "1252\0"
             VALUE "ProductName", PRODUCT_NAME
-            VALUE "ProductVersion", "4.7.03.011\0"
-            VALUE "SpecialBuild", "1246\0"
+            VALUE "ProductVersion", "4.7.04.002\0"
+            VALUE "SpecialBuild", "1252\0"
         END
     END
     BLOCK "VarFileInfo"

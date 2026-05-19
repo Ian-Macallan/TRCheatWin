@@ -6,7 +6,21 @@
 #include "TRSaveGame.h"
 #include "TRXTools.h"
 
-#define TR123LEVELSIZE      1384452
+#define TR123LEVELSIZE_O    1384452
+#define TR123LEVELSIZE_P    2564100
+
+//  The 64 bits version willo handle the new TR123 version
+#ifdef _WIN64
+#define TR123_PATCHED       1
+#else
+#define TR123_PATCHED       0
+#endif
+
+#if TR123_PATCHED
+#define TR123LEVELSIZE      TR123LEVELSIZE_P
+#else
+#define TR123LEVELSIZE      TR123LEVELSIZE_O
+#endif
 
 //  for TR1
 //  First Address       0x003071
@@ -21,6 +35,14 @@
 
 //  TR3 Save Level Here
 #define TR3_LEVEL_SAVE      20
+
+#define TR123_BLOCK_LENGTH_O  0x3800
+#define TR123_BLOCK_LENGTH_P  0x6800
+#if TR123_PATCHED
+#define TR123_BLOCK_LENGTH    TR123_BLOCK_LENGTH_P
+#else
+#define TR123_BLOCK_LENGTH    TR123_BLOCK_LENGTH_O
+#endif
 
 //  Secrets
 //  0x0DB040 = 1000 - Save (db00c): 39 Level 16 (db628) (#62) 16: Floating Islands
@@ -50,9 +72,9 @@
 //  0x0D7840 = 1000 - Save (d780c): 40 Level 18 (d7e28) (#61) 18: Home Sweet Home
 //  000D9128: 0A 1A
 //  From Health Found
-#define TR1_OFFSET_STATE    (0x0D922C-0x00D9128)    // 0x104 From Gun Found
-#define TR2_OFFSET_STATE    (0x0D922C-0x00D9128)    // 0x104 From Gun Found
-#define TR3_OFFSET_STATE    (0x0D922C-0x00D9128)    // 0x104 From Gun Found
+#define TR1_OFFSET_STATE    (0x00D922C-0x00D9128)    // 0x104 From Gun Found
+#define TR2_OFFSET_STATE    (0x00D922C-0x00D9128)    // 0x104 From Gun Found
+#define TR3_OFFSET_STATE    (0x00D922C-0x00D9128)    // 0x104 From Gun Found
 
 //
 #define NB_OF_SLOTS         31                      // 32 Positions for TR1 and TRUB, for TR2 and TR2G, for TR3 and TR3G
@@ -65,29 +87,32 @@
 #define NB_TR3_BLOCKS       NB_TR_BLOCKS
 
 //
-#define TR1_BLOCK_START     0x002000
-#define TR1_BLOCK_LENGTH    0x003800
+#define TR1_BLOCK_START     0x002000                //  In patch version starts at 0x002000
+#define TR1_BLOCK_LENGTH    TR123_BLOCK_LENGTH      //  6800 for Patch Version
 #define TR1_SLOT_LENGTH     0x000030
-#define TR1_BLOCK_OFFSET    0x000040
+#define TR1_BLOCK_OFFSET    0x000040                //  0x002040
 #define TR1_FIRST_BLOCK     (TR1_BLOCK_START+TR1_BLOCK_OFFSET)
 // From Start of First Block
-#define TR1_SAVE_PLUS       (TR1_FIRST_BLOCK - 0x02008)
+#define TR1_SAVE_PLUS       (TR1_FIRST_BLOCK-TR1_BLOCK_START-0x08)
 
-#define TR2_BLOCK_START     0x072000
-#define TR2_BLOCK_LENGTH    0x003800
+//  0x072000 In patch version starts at 0x0D2000
+#define TR2_BLOCK_START     (TR1_BLOCK_START+NB_TR_BLOCKS*TR123_BLOCK_LENGTH)   
+#define TR2_BLOCK_LENGTH    TR123_BLOCK_LENGTH      //  6800 for Patch Version
 #define TR2_SLOT_LENGTH     0x000030
-#define TR2_BLOCK_OFFSET    0x000040
+#define TR2_BLOCK_OFFSET    0x000040                //  0x0D2040
 #define TR2_FIRST_BLOCK     (TR2_BLOCK_START+TR2_BLOCK_OFFSET)
 // From Start of First Block
-#define TR2_SAVE_PLUS       (TR2_FIRST_BLOCK - 0x72008)
+#define TR2_SAVE_PLUS       (TR2_FIRST_BLOCK-TR2_BLOCK_START-0x08)
 
-#define TR3_BLOCK_START     0x0E2000
-#define TR3_BLOCK_LENGTH    0x003800
+//  0x0E2000 In patch version starts at 0x1A2000
+#define TR3_BLOCK_START     (TR2_BLOCK_START+NB_TR_BLOCKS*TR123_BLOCK_LENGTH)   
+#define TR3_BLOCK_LENGTH    TR123_BLOCK_LENGTH      //  6800 for Patch Version
 #define TR3_SLOT_LENGTH     0x000040
-#define TR3_BLOCK_OFFSET    0x0000A4
+#define TR3_BLOCK_OFFSET    0x0000A4                //  0x1A20A4
+//  0x0E20A4
 #define TR3_FIRST_BLOCK     (TR3_BLOCK_START+TR3_BLOCK_OFFSET)
 // From Start of First Block
-#define TR3_SAVE_PLUS       (TR3_FIRST_BLOCK - 0x0E2008)
+#define TR3_SAVE_PLUS       (TR3_FIRST_BLOCK-TR3_BLOCK_START-0x8)
 
 //  00002626/2628 seems to be the bitmap (0x016 before count)
 //  0000263C seems to be the count
@@ -123,34 +148,35 @@
 //  TR1 / TR2
 ///////////////
 #define FIRST_X30           TR1_FIRST_BLOCK                         // Start of x30 bytes structures
-#define NEXT_X30            0x005840
-#define LEN_31_X30          (NEXT_X30-FIRST_X30)                    //  14336
+#define NEXT_X30            (TR1_FIRST_BLOCK+TR1_BLOCK_LENGTH)      // 0x005840
+#define LEN_31_X30          (TR1_BLOCK_LENGTH)                      //  14336 = 0x3800
 
 #define SAVE_X30            0x00200C
 
-#define LEVEL1_X30          (0x00262C-FIRST_X30)
+// #define LEVEL1_X30          (0x00262C-FIRST_X30)
 
 //
-#define LEVEL2_X30          (0x072628-TR2_FIRST_BLOCK)
+// #define LEVEL2_X30          (0x072628-TR2_FIRST_BLOCK)
 #define TR1_SAVE_OFFSET     (0x002E35-FIRST_X30)
-#define TR1_SAVE_OFFSET_24  (0x003071-0x0024C0)
+// #define TR1_SAVE_OFFSET_24  (0x003071-0x0024C0)
 
 //  From Health 0x12A
 #define TR1_OFFSET_AIR      (0x00D84F-0x00D725)                     // 0x12A From Health Found
 #define TR2_OFFSET_AIR      (0x00D84F-0x00D725)                     // 0x12A From Health Found
 #define TR3_OFFSET_AIR      (0x00D84F-0x00D725)                     // 0x12A From Health Found
 
-#define LAST_X30            0xDE840                             //  Last Address of X30 area
+//  FIRST_X30 + (64 - 1)*TR1_BLOCK_LENGTH
+#define LAST_X30            (FIRST_X30+(2*NB_TR1_BLOCKS-1)*TR1_BLOCK_LENGTH)       // 0xDE840 - Last Address of X30 area
 
 //  TR3
 ///////////////
-#define FIRST_X40           (TR3_BLOCK_START+TR3_BLOCK_OFFSET)      //  Start of x40 bytes structures
-#define END_X40             0x0E2824                                //  End of one structure
-#define LEN_31_X40          (END_X40-FIRST_X40)                     //  1920
-#define NEXT_X40            0x0E58A4                                //  Next Structure for X40
+#define FIRST_X40           TR3_FIRST_BLOCK                         //  Start of x40 bytes structures
+#define END_X40             (FIRST_X40+0x780)                       //  0x0E2824 - End of one structure
+#define LEN_31_X40          (END_X40-FIRST_X40)                     //  0x780 : 1920 = (30 * 64)
+#define NEXT_X40            (TR3_FIRST_BLOCK+TR1_BLOCK_LENGTH)      //  0x0E58A4 - Next Structure for X40
 #define LEN_X40             0x000040
 #define SAVE_X40            0x000098
-#define LEVEL_X40           0x0E28D6
+#define LEVEL_X40           0x832                                   // 0x0E28D6
 
 #define TR_OFFSET_INDICATOR 0x000004
 
@@ -665,7 +691,7 @@ class CTR9SaveGame : public CObject
         static DWORD RelativeAddress ( const void *pAddress );
 
         //
-        BOOL ReadFile ( const char *pFilename );
+        BOOL ReadFile ( const char *pFilename, size_t *lengthRead );
         BOOL Load (  );
         BOOL writeFile ( const char *pFilename );
 

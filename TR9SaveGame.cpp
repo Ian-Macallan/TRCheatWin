@@ -645,6 +645,127 @@ static WORD TR3_Secrets_Offsets[] =
     0x80,   //  0xe2964 - 0xe28e4,          //  Reunion
 };
 
+//  New TRR 123 : Version 1.1
+
+//  Add 0x300 and add Start of Block
+//  Health Will Be 10 bytes after
+#if TR123_PATCHED
+
+TR_HEALTH_RANGE TR1_HEALTH_RANGES[32] =
+{
+    { 0x825,    0x825+0x100,    },  // Caves
+    { 0x181D,   0x181D+0x200,   },  // City of Vilacamba
+    { 0x82D,    0x82D+0x100,    },  // Lost Valley
+    { 0xC41,    0xC41+0x100,    },  // Tomb of Qualopec
+    { 0x1A39,   0x1A39+0x200,   },  // St. Francis' Folly
+    { 0xF4F,    0xF4F+0x100,    },  // Colosseum
+    { 0x82F,    0x82F+0x100,    },  // Palace Midas
+    { 0x197B,   0x197B+0x200,   },  // The Cistern
+    { 0xA29,    0xA29+0x200,    },  // Tomb of Tihocan
+    { 0x827,    0x827+0x100,    },  // City of Khamoon
+    { 0xA8F,    0xA8F+0x100,    },  // Obelisk of Khamoon
+    { 0x114F,   0x114F+0x200,   },  // Sanctuary of the Scion
+    { 0x12D3,   0x12D3+0x100,   },  // Natla's Mines
+    { 0xD0F,    0xD0F+0x100,    },  // Atlantis
+    { 0x10FD,   0x10FD+0x200,   },  // The Great Pyramid
+    { 0x8F3,    0x8F3+0x100,    },  // Return to Egypt
+    { 0xE1D,    0xE1D+0x100,    },  // Temple of the Cat
+    { 0xE35,    0xE35+0x100,    },  // Atlantean Stronghold
+    { 0x10DF,   0x10DF+0x200,   },  // The Hive
+    { 0, 0 },
+    { 0, 0 },
+    { 0, 0 },
+    { 0, 0 },
+    { 0, 0 },
+    { 0, 0 },
+    { 0, 0 },
+    { 0, 0 },
+    { 0, 0 },
+    { 0, 0 },
+    { 0, 0 },
+    { 0, 0 },
+    { 0, 0 },
+
+};
+
+//  Add 0x300 and add Start of Block
+TR_HEALTH_RANGE TR2_HEALTH_RANGES[32] =
+{
+    {   0xB64,  0xB64+0x100,    },  // The Great Wall
+    {   0x7FA,  0x7FA+0x100,    },  // Venice
+    {   0x1734, 0x1734+0x100,   },  // Bartoli's Hideout
+    {   0x1E20, 0x1E20+0x100,   },  // Opera House
+    {   0xAC4,  0xAC4+0x100,    },  // Offshore Rig
+    {   0x12DE, 0x12DE+0x100,   },  // Diving Area
+    {   0x7FC,  0x7FC+0x100,    },  // 40 Fathoms
+    {   0x238E, 0x238E+0x100,   },  // Wreck of the Maria Doria
+    {   0x90A,  0x90A+0x100,    },  // Living Quarters
+    {   0xBAC,  0xBAC+0x100,    },  // The Deck
+    {   0x12E4, 0x12E4+0x100,   },  // Tibetan Foothills
+    {   0x2522, 0x2552+0x100,   },  // Barkhang Monastery
+    {   0x7F8,  0x7F8+0x100,    },  // Catacombs of the Talion
+    {   0xE2A,  0xE2A+0x200,    },  // Ice Palace
+    {   0x2A7A, 0x2A7A+0x200,   },  // Temple of Xian
+    {   0x9CC,  0x9CC+0x100,    },  // Floating Islands
+    {   0xF78,  0xF78+0x100,    },  // The Dragon's Lair
+    {   0xE86,  0xE86+0x200,    },  // Home Sweet Home
+    {   0x1626, 0x1626+0x200,   },  // The Cold War
+    {   0x1D80, 0x1D80+0x100,   },  // Fool's Gold
+    {   0x1FD4, 0x1FD4+0x100,   },  // Furnace of the Gods
+    {   0x91A,  0x91A+0x100,    },  // Kingdom
+    {   0xDDA,  0xDDA+0x200,    },  // Nightmare in Vegas
+    //
+    { 0, 0 },
+    { 0, 0 },
+    { 0, 0 },
+    { 0, 0 },
+    { 0, 0 },
+    { 0, 0 },
+    { 0, 0 },
+    { 0, 0 },
+    { 0, 0 },
+};
+
+//  Add 0x300 and add Start of Block
+TR_HEALTH_RANGE TR3_HEALTH_RANGES [32] =
+{
+    {   0xB26,  0xB26+0x100,    },  // Jungle
+    {   0xDCC,  0xDCC+0x100,    },  // Temple Ruins
+    {   0xAFC,  0xAFC+0x100,    },  // The River Ganges
+    {   0x1038, 0x1038+0x100,   },  // Caves of Kaliya
+    {   0xCB8,  0xCB8+0x100,    },  // Coastal Village
+    {   0x2046, 0x2046+0x300,   },  // Crash Site
+    {   0x1250, 0x1250+0x100,   },  // Madubu Gorge
+    {   0xAD2,  0xAD2+0x100,    },  // Temple of Puna
+    {   0x10AA, 0x10AA+0x100,   },  // Thames Wharf
+    {   0x2C9A, 0x2C9A+0x400,   },  // Aldwych
+    {   0xFF0,  0xFF0+0x100,    },  // Lud's Gate
+    {   0xBB2,  0xBB2+0x100,    },  // City
+    {   0xAF8,  0xAF8+0x100,    },  // Nevada Desert
+    {   0xB4C,  0xB4C+0x100,    },  // High Security Compound
+    {   0x11E4, 0x11E4+0x100,   },  // Area 51
+    {   0xB12,  0xB12+0x100,    },  // Antarctica
+    {   0xFB0,  0xFB0+0x100,    },  // RX-Tech Mines
+    {   0xB7C,  0xB7C+0x100,    },  // Lost City of Tinnos
+    {   0xAD0,  0xAD0+0x100,    },  // Meteorite Cavern
+    {   0x1076, 0x1076+0x200,   },  // All Hallows
+    {   0x1BF4, 0x1BF4+0x200,   },  // Highland Fling
+    {   0x15EE, 0x15EE+0x200,   },  // Willard's Lair
+    {   0x1338, 0x1338+0x200,   },  // Shakespeare Cliff
+    {   0xB5A,  0xB5A+0x100,    },  // Sleeping with the Fishes
+    {   0x1084, 0x1084+0x200,   },  // It's a Madhouse!
+    {   0x1810, 0x1844+0x100,   },  // Reunion
+    //
+    { 0, 0 },
+    { 0, 0 },
+    { 0, 0 },
+    { 0, 0 },
+    { 0, 0 },
+    { 0, 0 },
+};
+
+//  Old TRR 123 : Version 1.0
+#else
 //  Add 0x300 and add Start of Block
 //  Health Will Be 10 bytes after
 TR_HEALTH_RANGE TR1_HEALTH_RANGES[32] =
@@ -759,6 +880,8 @@ TR_HEALTH_RANGE TR3_HEALTH_RANGES [32] =
     { 0, 0 },
     { 0, 0 },
 };
+
+#endif
 
 static const char *TR4LevelNames [] =
 {
@@ -1623,7 +1746,7 @@ size_t CTR9SaveGame::getBufferLength()
 /////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////
-BOOL CTR9SaveGame::ReadFile ( const char *pFilename )
+BOOL CTR9SaveGame::ReadFile ( const char *pFilename, size_t *lengthRead )
 {
     Init();
 
@@ -1634,7 +1757,12 @@ BOOL CTR9SaveGame::ReadFile ( const char *pFilename )
     openRead ( m_hFile, pFilename, "rb" );
     if ( m_hFile != NULL )
     {
-        m_iSaveLength = (int) fread ( m_pBuffer, 1, LEN_BUFFER, m_hFile );
+        size_t nbRead = fread ( m_pBuffer, 1, LEN_BUFFER, m_hFile );
+        if ( lengthRead != NULL )
+        {
+            *lengthRead = nbRead;
+        }
+        m_iSaveLength = (int) nbRead;
         CloseOneFile ( &m_hFile );
         m_hFile = NULL;
 
@@ -1951,7 +2079,7 @@ BOOL CTR9SaveGame::Load ( )
         m_TR3_Start [ block ]           = pBlockAddress;
 
         WORD    *saveAddress =  (WORD *) ( pBlockAddress - SAVE_X40 );
-        WORD    *levelAddress =  (WORD *) ( pBlockAddress + (LEVEL_X40-FIRST_X40) );
+        WORD    *levelAddress =  (WORD *) ( pBlockAddress + LEVEL_X40 );
         WORD    save = GetSaveNumber ( tombraider, block ); // *saveAddress;
         WORD    level = GetBlockLevelNumber ( tombraider, block ); // *levelAddress;
         WORD    value = * (WORD *) ( pBlockAddress );
@@ -2376,7 +2504,12 @@ WORD *CTR9SaveGame::GetRealHealthAddress ( int tombraider, int block )
     int iExtended = 0;
     if ( CTRXGlobal::m_iSearchExt )
     {
+        //
+#if TR123_PATCHED
         iExtended   = 0x40;
+#else
+        iExtended   = 0x40;
+#endif
     }
 
     //

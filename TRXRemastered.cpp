@@ -1995,7 +1995,8 @@ void CTRXRemastered::DisplayList ( const char *pFilename )
         m_Filename.SetWindowText ( pFilename );
 
         //  Retrieve Info
-        BOOL bRead = CTR9SaveGame::I()->ReadFile ( pFilename );
+        size_t nbRead = 0;
+        BOOL bRead = CTR9SaveGame::I()->ReadFile ( pFilename, &nbRead );
         if ( bRead )
         {
             m_Status.SetWindowText ( "File sucessfuily read" );
@@ -2007,8 +2008,20 @@ void CTRXRemastered::DisplayList ( const char *pFilename )
         }
         else
         {
+            //
             m_Status.SetWindowText ( "File read fails" );
             m_Filename.SetWindowText ( "" );
+
+            if ( nbRead == TR123LEVELSIZE_O )
+            {
+                CTRXMessageBox::ShowMessage( "Load Savegame Error",
+                    "Use the TRCheatWin 32 bits for Tombraider Remastered 123 Original version 1.0");
+            }
+            else if ( nbRead == TR123LEVELSIZE_P )
+            {
+                CTRXMessageBox::ShowMessage( "Load Savegame Error", 
+                    "Use the TRCheatWin 64 bits for Tombraider Remastered 123 Challenge version 1.1" );
+            }
 
             //
             RemoveLocation ( LocationPathname, pFilename );

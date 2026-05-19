@@ -533,7 +533,7 @@ int CTRXAmmosPage::EnableForVersion()
 /////////////////////////////////////////////////////////////////////////////
 void CTRXAmmosPage::OnCguns()
 {
-    m_Ammos_Guns.SetWindowText (pValueGun );
+    m_Ammos_Guns.SetWindowText ( pValueGun );
 }
 
 //
