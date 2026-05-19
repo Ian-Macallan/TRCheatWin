@@ -651,27 +651,30 @@ static WORD TR3_Secrets_Offsets[] =
 //  Health Will Be 10 bytes after
 #if TR123_PATCHED
 
+//  Health is relative to Block Start minus _BLOCK_OFFSET
+//  _BLOCK_OFFSET is 0x40, 0x40 and 0xA4
+//  For example if in Info the address is 0x800 we can set address to 0x840
 TR_HEALTH_RANGE TR1_HEALTH_RANGES[32] =
 {
-    { 0x825,    0x825+0x100,    },  // Caves
-    { 0x181D,   0x181D+0x200,   },  // City of Vilacamba
-    { 0x82D,    0x82D+0x100,    },  // Lost Valley
-    { 0xC41,    0xC41+0x100,    },  // Tomb of Qualopec
-    { 0x1A39,   0x1A39+0x200,   },  // St. Francis' Folly
-    { 0xF4F,    0xF4F+0x100,    },  // Colosseum
-    { 0x82F,    0x82F+0x100,    },  // Palace Midas
-    { 0x197B,   0x197B+0x200,   },  // The Cistern
-    { 0xA29,    0xA29+0x200,    },  // Tomb of Tihocan
-    { 0x827,    0x827+0x100,    },  // City of Khamoon
-    { 0xA8F,    0xA8F+0x100,    },  // Obelisk of Khamoon
-    { 0x114F,   0x114F+0x200,   },  // Sanctuary of the Scion
-    { 0x12D3,   0x12D3+0x100,   },  // Natla's Mines
-    { 0xD0F,    0xD0F+0x100,    },  // Atlantis
-    { 0x10FD,   0x10FD+0x200,   },  // The Great Pyramid
-    { 0x8F3,    0x8F3+0x100,    },  // Return to Egypt
-    { 0xE1D,    0xE1D+0x100,    },  // Temple of the Cat
-    { 0xE35,    0xE35+0x100,    },  // Atlantean Stronghold
-    { 0x10DF,   0x10DF+0x200,   },  // The Hive
+    { 0x800,    0x800+0x100,    },  // Caves
+    { 0x196C,   0x196C+0x100,   },  // City of Vilacamba
+    { 0x808,    0x808+0x100,    },  // Lost Valley
+    { 0xCA4,    0xCA4+0x100,    },  // Tomb of Qualopec
+    { 0x1BB4,   0x1BB4+0x100,   },  // St. Francis' Folly
+    { 0x100A,   0x100A+0x100,   },  // Colosseum
+    { 0X80A,    0X80A+0x100,    },  // Palace Midas
+    { 0x1B12,   0x1B12+0x100,   },  // The Cistern
+    { 0xA40,    0xA40+0x200,    },  // Tomb of Tihocan
+    { 0x802,    0x802+0x100,    },  // City of Khamoon
+    { 0xACA,    0xACA+0x100,    },  // Obelisk of Khamoon
+    { 0x1246,   0x1246+0x100,   },  // Sanctuary of the Scion
+    { 0x1348,   0x1348+0x100,   },  // Natla's Mines
+    { 0xD82,    0xD82+0x100,    },  // Atlantis
+    { 0x1234,   0x1234+0x100,   },  // The Great Pyramid
+    { 0x8EE,    0x8EE+0x100,    },  // Return to Egypt
+    { 0xEAC,    0xEAC+0x100,    },  // Temple of the Cat
+    { 0xEBC,    0xEBC+0x100,    },  // Atlantean Stronghold
+    { 0x11C2,   0x11C2+0x100,   },  // The Hive
     { 0, 0 },
     { 0, 0 },
     { 0, 0 },
@@ -691,29 +694,29 @@ TR_HEALTH_RANGE TR1_HEALTH_RANGES[32] =
 //  Add 0x300 and add Start of Block
 TR_HEALTH_RANGE TR2_HEALTH_RANGES[32] =
 {
-    {   0xB64,  0xB64+0x100,    },  // The Great Wall
-    {   0x7FA,  0x7FA+0x100,    },  // Venice
-    {   0x1734, 0x1734+0x100,   },  // Bartoli's Hideout
-    {   0x1E20, 0x1E20+0x100,   },  // Opera House
-    {   0xAC4,  0xAC4+0x100,    },  // Offshore Rig
-    {   0x12DE, 0x12DE+0x100,   },  // Diving Area
-    {   0x7FC,  0x7FC+0x100,    },  // 40 Fathoms
-    {   0x238E, 0x238E+0x100,   },  // Wreck of the Maria Doria
-    {   0x90A,  0x90A+0x100,    },  // Living Quarters
-    {   0xBAC,  0xBAC+0x100,    },  // The Deck
-    {   0x12E4, 0x12E4+0x100,   },  // Tibetan Foothills
-    {   0x2522, 0x2552+0x100,   },  // Barkhang Monastery
-    {   0x7F8,  0x7F8+0x100,    },  // Catacombs of the Talion
-    {   0xE2A,  0xE2A+0x200,    },  // Ice Palace
-    {   0x2A7A, 0x2A7A+0x200,   },  // Temple of Xian
-    {   0x9CC,  0x9CC+0x100,    },  // Floating Islands
-    {   0xF78,  0xF78+0x100,    },  // The Dragon's Lair
-    {   0xE86,  0xE86+0x200,    },  // Home Sweet Home
-    {   0x1626, 0x1626+0x200,   },  // The Cold War
-    {   0x1E80, 0x1E80+0x100,   },  // Fool's Gold
-    {   0x20D4, 0x20D4+0x200,   },  // Furnace of the Gods
-    {   0x91A,  0x91A+0x100,    },  // Kingdom
-    {   0xDDA,  0xDDA+0x200,    },  // Nightmare in Vegas
+    {   0xB56,  0xB56+0x100,    },  // The Great Wall
+    {   0x7DC,  0x7DC+0x100,    },  // Venice
+    {   0x1782, 0x1782+0x100,   },  // Bartoli's Hideout
+    {   0x1E90, 0x1E90+0x100,   },  // Opera House
+    {   0xAF6,  0xAF6+0x100,    },  // Offshore Rig
+    {   0x12A4, 0x12A4+0x100,   },  // Diving Area
+    {   0x7DE,  0x7DE+0x100,    },  // 40 Fathoms
+    {   0x23DE, 0x23DE+0x100,   },  // Wreck of the Maria Doria
+    {   0x90C,  0x90C+0x100,    },  // Living Quarters
+    {   0xB82,  0xB82+0x100,    },  // The Deck
+    {   0x139A, 0x139A+0x100,   },  // Tibetan Foothills
+    {   0x2530, 0x2530+0x100,   },  // Barkhang Monastery
+    {   0x7DA,  0x7DA+0x100,    },  // Catacombs of the Talion
+    {   0xEF4,  0xEF4+0x100,    },  // Ice Palace
+    {   0x2BBE, 0x2BBE+0x100,   },  // Temple of Xian
+    {   0x9D6,  0x9D6+0x100,    },  // Floating Islands
+    {   0x1002, 0x1002+0x100,   },  // The Dragon's Lair
+    {   0xF50,  0xF50+0x100,    },  // Home Sweet Home
+    {   0x16F8, 0x16F8+0x100,   },  // The Cold War
+    {   0x1F3E, 0x1F3E+0x100,   },  // Fool's Gold
+    {   0x21BE, 0x21BE+0x100,   },  // Furnace of the Gods
+    {   0x918,  0x918+0x100,    },  // Kingdom
+    {   0xE54,  0xE54+0x100,    },  // Nightmare in Vegas
     //
     { 0, 0 },
     { 0, 0 },
@@ -729,32 +732,32 @@ TR_HEALTH_RANGE TR2_HEALTH_RANGES[32] =
 //  Add 0x300 and add Start of Block
 TR_HEALTH_RANGE TR3_HEALTH_RANGES [32] =
 {
-    {   0xB26,  0xB26+0x100,    },  // Jungle
-    {   0xE00,  0xE00+0x100,    },  // Temple Ruins
-    {   0xAFC,  0xAFC+0x100,    },  // The River Ganges
-    {   0x10A0, 0x10A0+0x100,   },  // Caves of Kaliya
-    {   0xCB8,  0xCB8+0x100,    },  // Coastal Village
-    {   0x2046, 0x2046+0x300,   },  // Crash Site
-    {   0x1300, 0x1300+0x100,   },  // Madubu Gorge
-    {   0xAD2,  0xAD2+0x100,    },  // Temple of Puna
-    {   0x10AA, 0x10AA+0x100,   },  // Thames Wharf
-    {   0x2C9A, 0x2C9A+0x400,   },  // Aldwych
-    {   0xFF0,  0xFF0+0x100,    },  // Lud's Gate
-    {   0xBB2,  0xBB2+0x100,    },  // City
-    {   0xAF8,  0xAF8+0x100,    },  // Nevada Desert
-    {   0xB4C,  0xB4C+0x100,    },  // High Security Compound
-    {   0x11E4, 0x11E4+0x100,   },  // Area 51
-    {   0xB12,  0xB12+0x100,    },  // Antarctica
-    {   0xFB0,  0xFB0+0x100,    },  // RX-Tech Mines
-    {   0xB7C,  0xB7C+0x100,    },  // Lost City of Tinnos
-    {   0xAD0,  0xAD0+0x100,    },  // Meteorite Cavern
-    {   0x1076, 0x1076+0x200,   },  // All Hallows
-    {   0x1BF4, 0x1BF4+0x200,   },  // Highland Fling
-    {   0x15EE, 0x15EE+0x200,   },  // Willard's Lair
-    {   0x1338, 0x1338+0x200,   },  // Shakespeare Cliff
-    {   0xB5A,  0xB5A+0x100,    },  // Sleeping with the Fishes
-    {   0x1084, 0x1084+0x200,   },  // It's a Madhouse!
-    {   0x1810, 0x1844+0x100,   },  // Reunion
+    {   0xAA6,  0xAA6+0x100,    },  // Jungle
+    {   0xD96,  0xD96+0x100,    },  // Temple Ruins
+    {   0xA70,  0xA70+0x100,    },  // The River Ganges
+    {   0x100C, 0x100C+0x100,   },  // Caves of Kaliya
+    {   0xC60,  0xC60+0x100,    },  // Coastal Village
+    {   0x21FE, 0x21FE+0x100,   },  // Crash Site
+    {   0x1284, 0x1284+0x100,   },  // Madubu Gorge
+    {   0xA46,  0xA46+0x100,    },  // Temple of Puna
+    {   0x10E2, 0x10E2+0x100,   },  // Thames Wharf
+    {   0x2FD2, 0x2FD2+0x100,   },  // Aldwych
+    {   0x100E, 0x100E+0x100,   },  // Lud's Gate
+    {   0xB42,  0xB42+0x100,    },  // City
+    {   0xA6C,  0xA6C+0x100,    },  // Nevada Desert
+    {   0xACC,  0xACC+0x100,    },  // High Security Compound
+    {   0x1230, 0x1230+0x100,   },  // Area 51
+    {   0xA8A,  0xA8A+0x100,    },  // Antarctica
+    {   0xFB4,  0xFB4+0x100,    },  // RX-Tech Mines
+    {   0xB04,  0xB04+0x100,    },  // Lost City of Tinnos
+    {   0xA94,  0xA94+0x100,    },  // Meteorite Cavern
+    {   0x1092, 0x1092+0x100,   },  // All Hallows
+    {   0x1D4C, 0x1D4C+0x100,   },  // Highland Fling
+    {   0x168A, 0x168A+0x100,   },  // Willard's Lair
+    {   0x13EC, 0x13EC+0x100,   },  // Shakespeare Cliff
+    {   0xAD6,  0xAD6+0x100,    },  // Sleeping with the Fishes
+    {   0x108C, 0x108C+0x100,   },  // It's a Madhouse!
+    {   0x1786, 0x1786+0x100,   },  // Reunion
     //
     { 0, 0 },
     { 0, 0 },
@@ -7326,6 +7329,7 @@ const char *CTR9SaveGame::GetInterest ( int tombraider, int block, int slot )
         }
 
         pAddress = ( char *) GetBlockStart ( tombraider, block );
+        char *pBlockStart = pAddress;
         if ( pAddress )
         {
             sprintf_s ( szResponse + strlen(szResponse), sizeof(szResponse) - strlen(szResponse),
@@ -7344,7 +7348,7 @@ const char *CTR9SaveGame::GetInterest ( int tombraider, int block, int slot )
         if ( pAddress )
         {
             sprintf_s ( szResponse + strlen(szResponse), sizeof(szResponse) - strlen(szResponse),
-                        "%16s: 0x%08lX\r\n", "Block", RelativeAddress ( pAddress ) );
+                        "%16s: 0x%08lX\r\n", "Slot", RelativeAddress ( pAddress ) );
         }
         else
         {
@@ -7436,7 +7440,10 @@ const char *CTR9SaveGame::GetInterest ( int tombraider, int block, int slot )
             sprintf_s ( szResponse + strlen(szResponse), sizeof(szResponse) - strlen(szResponse),
                         "%16s: 0x%08lX : %d\r\n", "Health", RelativeAddress ( pAddress ), *((WORD *) pAddress) );
             sprintf_s ( szResponse + strlen(szResponse), sizeof(szResponse) - strlen(szResponse),
-                        "%16s: 0x%08lX : %d\r\n", "Health", CTRXTools::RelativeAddress ( pAddress, pSlot ),
+                        "%16s: 0x%08lX : %d\r\n", "Health / Start", CTRXTools::RelativeAddress ( pAddress, pBlockStart ),
+                        *((WORD *) pAddress) );
+            sprintf_s ( szResponse + strlen(szResponse), sizeof(szResponse) - strlen(szResponse),
+                        "%16s: 0x%08lX : %d\r\n", "Health / Slot", CTRXTools::RelativeAddress ( pAddress, pSlot ),
                         *((WORD *) pAddress) );
         }
         else

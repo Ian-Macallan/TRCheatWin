@@ -229,6 +229,17 @@
 #define TR2_OFFSET_POS      (0x00002825-TR1_POS_WEST_EAST)
 #define TR3_OFFSET_POS      (0x00002825-TR1_POS_WEST_EAST)
 
+//  UNLOCK_OUTFIT
+//  0000024C: 00 01
+//  00000250: 00 06
+//  00000252: 00 04
+//  00000254: 00 06
+//  00000256: 00 04
+//  00000258: 00 03
+//  00000268: 00 02
+//  00000274: 00 01
+#define TR_UNLOCK_OUTFIT    0x254
+
 #pragma pack(push, pack1, 1)
 
 //  Divider to Get approximative Meters

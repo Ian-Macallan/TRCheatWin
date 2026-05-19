@@ -1,4 +1,4 @@
-4.7.4.3
+4.7.4.4
 TRCheatWin
-TRCheatWin (x86) : Tue May 19 11:15 4.7.4.3
-TRCheatWin (x64) : Tue May 19 11:15 4.7.4.3
+TRCheatWin (x86) : Tue May 19 17:09 4.7.4.4
+TRCheatWin (x64) : Tue May 19 17:09 4.7.4.4
