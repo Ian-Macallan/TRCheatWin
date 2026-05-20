@@ -626,6 +626,8 @@
 #define IDC_WORD5                       1239
 #define IDC_CHECK3                      1240
 #define IDC_WORD3                       1240
+#define IDC_RECURSE2                    1240
+#define IDC_OUTFITS                     1240
 #define IDC_WEST_EAST_M                 1241
 #define IDC_VERTICAL_M                  1242
 #define IDC_SOUTH_NORTH_M               1243

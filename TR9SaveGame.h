@@ -238,8 +238,66 @@
 //  00000258: 00 03
 //  00000268: 00 02
 //  00000274: 00 01
-#define TR_UNLOCK_OUTFIT    0x254
 
+//  Activate the Plus when set to 0x01
+#define TR1_COMPLETED_OFFSET        0x18C
+#define TR2_COMPLETED_OFFSET        0x190
+#define TR3_COMPLETED_OFFSET        0x194
+
+#define TR4_COMPLETED_OFFSET        0x1A4
+#define TR5_COMPLETED_OFFSET        0x1A8
+#define TR6_COMPLETED_OFFSET        0x1AC
+
+// Base start of outfit bitfield
+#define OUTFITS_BASE_OFFSET         0x250
+
+// Mirror offset    = 0x250 + 0x84 (not Used)
+#define OUTFITS_MIRROR_DELTA        0x04
+
+// Individual bytes
+#define OUTFITS_BYTE_0              (OUTFITS_BASE_OFFSET+0)
+#define OUTFITS_BYTE_1              (OUTFITS_BASE_OFFSET+1)
+#define OUTFITS_BYTE_2              (OUTFITS_BASE_OFFSET+2)
+#define OUTFITS_BYTE_3              (OUTFITS_BASE_OFFSET+3)
+
+// Byte 0 (0x250)
+#define PARAGON_B                   0x01
+#define PARAGON_S                   0x02
+#define PARAGON_G                   0x04
+
+#define ESTABLISHED_B               0x08
+#define ESTABLISHED_S               0x10
+#define ESTABLISHED_G               0x20
+
+#define ATLANTEAN_B                 0x40
+#define ATLANTEAN_S                 0x80
+
+// Byte 1 (0x251)
+#define ATLANTEAN_G                 0x01
+
+#define MASTER_MOBSTER_B            0x02
+#define MASTER_MOBSTER_S            0x04
+#define MASTER_MOBSTER_G            0x08
+
+#define AHAB_B                      0x10
+#define AHAB_S                      0x20
+#define AHAB_G                      0x40
+
+#define DRAGON_B                    0x80
+
+// Byte 2 (0x252)
+#define DRAGON_S                    0x01
+#define DRAGON_G                    0x02
+
+#define SPEED_B                     0x04
+#define SPEED_S                     0x08
+#define SPEED_G                     0x10
+
+#define FLYING_B                    0x20
+#define FLYING_S                    0x40
+#define FLYING_G                    0x80
+
+//
 #pragma pack(push, pack1, 1)
 
 //  Divider to Get approximative Meters
@@ -865,6 +923,9 @@ class CTR9SaveGame : public CObject
 
         DWORD GetTRPlus ( int tombraider );
         void SetTRPlus ( int tombraider, DWORD value );
+
+        DWORD GetOutfits ( );
+        void SetOutfits ( DWORD value );
 
         BYTE IsGamePlus ( int tombraider, int block );
         void SetGamePlus ( int tombraider, int block, BYTE value );

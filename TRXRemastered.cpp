@@ -371,6 +371,7 @@ void CTRXRemastered::DoDataExchange(CDataExchange* pDX)
     DDX_Control(pDX, IDC_FRAME_POSITION, m_Frame_Position);
     DDX_Control(pDX, IDC_SHELL, m_Shell);
     DDX_Control(pDX, IDC_POS_LABEL, m_Position_Label);
+    DDX_Control(pDX, IDC_OUTFITS, m_Outfits);
 }
 
 //
@@ -1235,6 +1236,8 @@ void CTRXRemastered::DisplayOne ( int line )
         m_TR1_Plus.SetCheck ( CTR9SaveGame::I()->GetTRPlus ( GAME_TRR1 ) );
         m_TR2_Plus.SetCheck ( CTR9SaveGame::I()->GetTRPlus ( GAME_TRR2 ) );
         m_TR3_Plus.SetCheck ( CTR9SaveGame::I()->GetTRPlus ( GAME_TRR3 ) );
+
+        m_Outfits.SetCheck ( CTR9SaveGame::I()->GetOutfits ( ) );
 
         //
         if ( pBlockEntry != NULL /* && pGunEntry != NULL */ )
@@ -3158,6 +3161,7 @@ void CTRXRemastered::UpdateBuffer(BOOL bRecurse)
         CTR9SaveGame::I()->SetTRPlus ( 2, m_TR2_Plus.GetCheck () );
         CTR9SaveGame::I()->SetTRPlus ( 3, m_TR3_Plus.GetCheck () );
 
+        CTR9SaveGame::I()->SetOutfits ( m_Outfits.GetCheck () );
 
         CTR9SaveGame::I()->SetSaveNumber ( tombraider, block, GetValue ( m_Save_No ) );
         sprintf_s ( szText, sizeof(szText), "%03d", GetValue ( m_Save_No ) );
