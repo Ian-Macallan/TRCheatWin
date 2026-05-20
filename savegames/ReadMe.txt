@@ -1,9 +1,9 @@
 ## Savegame for TRR 1 2 3
 
-The savegame.TR123.Unlocked.zip enables all levels in challenge mode
+The savegame.TRR123.Unlocked.zip enables all levels in challenge mode
 All Hallows and Vegas included.
 
-The savegame.TR123.Challenge.zip enables all levels in challenge mode
+The savegame.TRR123.Challenge.zip enables all levels in challenge mode
 and contains levels at different states.
 
 ## Savegame for TRR 4 5 6
