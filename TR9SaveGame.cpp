@@ -3964,6 +3964,10 @@ DWORD CTR9SaveGame::GetTRPlus ( int tombraider )
 /////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////
+//  0x25c 0x25d 0x25e : FF FF 7F : TR1 Bitmap
+//  0x262 : 7F : TR2G Bitmap
+//  0x266 0x267 : FF 03
+/////////////////////////////////////////////////////////////////////////////
 void CTR9SaveGame::SetTRPlus ( int tombraider, DWORD value )
 {
     if ( m_pBuffer == NULL )
@@ -3979,6 +3983,14 @@ void CTR9SaveGame::SetTRPlus ( int tombraider, DWORD value )
             if ( current == 0 || current == 1 )
             {
                 * ( DWORD * ) ( m_pBuffer + TR1_GAME_PLUS ) = value;
+#if TR123_PATCHED
+                if ( value != 0 )
+                {
+                    * ( BYTE * ) ( m_pBuffer + 0x25c ) = 0xFF;
+                    * ( BYTE * ) ( m_pBuffer + 0x25d ) = 0xFF;
+                    * ( BYTE * ) ( m_pBuffer + 0x25e ) = 0x7F;
+                }
+#endif
             }
             break;
         }
@@ -3988,6 +4000,12 @@ void CTR9SaveGame::SetTRPlus ( int tombraider, DWORD value )
             if ( current == 0 || current == 1 )
             {
                 * ( DWORD * ) ( m_pBuffer + TR2_GAME_PLUS ) = value;
+#if TR123_PATCHED
+                if ( value != 0 )
+                {
+                    * ( BYTE * ) ( m_pBuffer + 0x262 ) = 0xFF;
+                }
+#endif
             }
             break;
         }
@@ -3997,6 +4015,13 @@ void CTR9SaveGame::SetTRPlus ( int tombraider, DWORD value )
             if ( current == 0 || current == 1 )
             {
                 * ( DWORD * ) ( m_pBuffer + TR3_GAME_PLUS ) = value;
+#if TR123_PATCHED
+                if ( value != 0 )
+                {
+                    * ( BYTE * ) ( m_pBuffer + 0x266 ) = 0xFF;
+                    * ( BYTE * ) ( m_pBuffer + 0x267 ) = 0x03;
+                }
+#endif
             }
             break;
         }

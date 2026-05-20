@@ -248,6 +248,10 @@
 #define TR5_COMPLETED_OFFSET        0x1A8
 #define TR6_COMPLETED_OFFSET        0x1AC
 
+//  0x25c 0x25d 0x25e : FF FF 7F : TR1 Bitmap
+//  0x262 : 7F : TR2G Bitmap
+//  0x266 0x267 : FF 03
+
 // Base start of outfit bitfield
 #define OUTFITS_BASE_OFFSET         0x250
 

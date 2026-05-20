@@ -3131,6 +3131,13 @@ void CTRXRemastered::UpdateBuffer(BOOL bRecurse)
     bool bMax = false;
 
     //
+    CTR9SaveGame::I()->SetTRPlus ( 1, m_TR1_Plus.GetCheck () );
+    CTR9SaveGame::I()->SetTRPlus ( 2, m_TR2_Plus.GetCheck () );
+    CTR9SaveGame::I()->SetTRPlus ( 3, m_TR3_Plus.GetCheck () );
+
+    CTR9SaveGame::I()->SetOutfits ( m_Outfits.GetCheck () );
+
+    //
     if ( m_Line >= 0 )
     {
         //
@@ -3157,12 +3164,7 @@ void CTRXRemastered::UpdateBuffer(BOOL bRecurse)
             pGunEntry       = CTR9SaveGame::I()->SearchGunEntry ( tombraider, block );
         }
 
-        CTR9SaveGame::I()->SetTRPlus ( 1, m_TR1_Plus.GetCheck () );
-        CTR9SaveGame::I()->SetTRPlus ( 2, m_TR2_Plus.GetCheck () );
-        CTR9SaveGame::I()->SetTRPlus ( 3, m_TR3_Plus.GetCheck () );
-
-        CTR9SaveGame::I()->SetOutfits ( m_Outfits.GetCheck () );
-
+        //
         CTR9SaveGame::I()->SetSaveNumber ( tombraider, block, GetValue ( m_Save_No ) );
         sprintf_s ( szText, sizeof(szText), "%03d", GetValue ( m_Save_No ) );
         m_ListCtrl.SetItemText ( m_Line, COLR_SAVE_NO, szText);
