@@ -172,6 +172,7 @@ class CTRXRemastered : public CTRXPropertyPage123
 
         CTRXStaticBase m_Position_Label;
         CTRXButtonBase m_Outfits;
+        CTRXButtonBase m_Challenge;
 
         //
         afx_msg void OnBnClickedLoad();

@@ -93,7 +93,8 @@
 #define TR1_BLOCK_OFFSET    0x000040                //  0x002040
 #define TR1_FIRST_BLOCK     (TR1_BLOCK_START+TR1_BLOCK_OFFSET)
 // From Start of First Block
-#define TR1_SAVE_PLUS       (TR1_FIRST_BLOCK-TR1_BLOCK_START-0x08)
+#define TR1_SAVE_PLUS       (TR1_BLOCK_OFFSET-0x08)
+#define TR1_SAVE_CHAL       0x6EC
 
 //  0x072000 In patch version starts at 0x0D2000
 #define TR2_BLOCK_START     (TR1_BLOCK_START+NB_TR_BLOCKS*TR123_BLOCK_LENGTH)   
@@ -102,7 +103,8 @@
 #define TR2_BLOCK_OFFSET    0x000040                //  0x0D2040
 #define TR2_FIRST_BLOCK     (TR2_BLOCK_START+TR2_BLOCK_OFFSET)
 // From Start of First Block
-#define TR2_SAVE_PLUS       (TR2_FIRST_BLOCK-TR2_BLOCK_START-0x08)
+#define TR2_SAVE_PLUS       (TR2_BLOCK_OFFSET-0x08)
+#define TR2_SAVE_CHAL       0x6B0
 
 //  0x0E2000 In patch version starts at 0x1A2000
 #define TR3_BLOCK_START     (TR2_BLOCK_START+NB_TR_BLOCKS*TR123_BLOCK_LENGTH)   
@@ -112,7 +114,8 @@
 //  0x0E20A4
 #define TR3_FIRST_BLOCK     (TR3_BLOCK_START+TR3_BLOCK_OFFSET)
 // From Start of First Block
-#define TR3_SAVE_PLUS       (TR3_FIRST_BLOCK-TR3_BLOCK_START-0x8)
+#define TR3_SAVE_PLUS       (TR3_BLOCK_OFFSET-0x08)
+#define TR3_SAVE_CHAL       0x990
 
 //  00002626/2628 seems to be the bitmap (0x016 before count)
 //  0000263C seems to be the count
@@ -940,6 +943,9 @@ class CTR9SaveGame : public CObject
         BYTE IsGamePlus ( int tombraider, int block );
         void SetGamePlus ( int tombraider, int block, BYTE value );
 
+        BYTE IsGameChallenge ( int tombraider, int block );
+        void SetGameChallenge ( int tombraider, int block, BYTE value );
+
         //
         void KillWillard ( int tombraider, int block );
         void KillTR1Boss ( int tombraider, int block );
@@ -986,6 +992,7 @@ class CTR9SaveGame : public CObject
         //
         static int GetBlockLength ( int tombraider );
         static int GetSlotLength ( int tombraider );
+
         static void *GetBlockStart ( int tombraider, int block, bool bForce = false );
         static void *GetSlotsEnd ( int tombraider, int block, bool bForce = false );
         //  Return directly m_TRx_Blocks [ b ] [ s ]

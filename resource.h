@@ -562,6 +562,8 @@
 #define IDC_NITEM_29_SPIN               1219
 #define IDC_TR3_PLUS                    1220
 #define IDC_GAME_PLUS                   1221
+#define IDC_GAME_PLUS2                  1222
+#define IDC_GAME_CHALL                  1222
 #define IDC_KILL_WILLARD                1223
 #define IDC_TEXT                        1224
 #define IDC_INFO                        1224

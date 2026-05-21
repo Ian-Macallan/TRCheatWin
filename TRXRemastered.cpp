@@ -372,6 +372,7 @@ void CTRXRemastered::DoDataExchange(CDataExchange* pDX)
     DDX_Control(pDX, IDC_SHELL, m_Shell);
     DDX_Control(pDX, IDC_POS_LABEL, m_Position_Label);
     DDX_Control(pDX, IDC_OUTFITS, m_Outfits);
+    DDX_Control(pDX, IDC_GAME_CHALL, m_Challenge);
 }
 
 //
@@ -1421,6 +1422,10 @@ void CTRXRemastered::DisplayOne ( int line )
                     m_Game_Plus.EnableWindow ( TRUE );
 
                     //
+                    m_Challenge.SetCheck ( CTR9SaveGame::I()->IsGameChallenge(tombraider, block) );
+                    m_Challenge.EnableWindow ( TRUE );
+
+                    //
                     m_Write.EnableWindow ( TRUE );
                     m_Max.EnableWindow ( TRUE );
                     m_ResetToPlus.EnableWindow ( TRUE );
@@ -1596,6 +1601,10 @@ void CTRXRemastered::DisplayOne ( int line )
                     //
                     m_Game_Plus.SetCheck ( CTR9SaveGame::I()->IsGamePlus(tombraider, block) );
                     m_Game_Plus.EnableWindow ( TRUE );
+
+                    //
+                    m_Challenge.SetCheck ( CTR9SaveGame::I()->IsGameChallenge(tombraider, block) );
+                    m_Challenge.EnableWindow ( TRUE );
 
                     //
                     m_Write.EnableWindow ( TRUE );
@@ -1782,6 +1791,10 @@ void CTRXRemastered::DisplayOne ( int line )
                     m_Game_Plus.EnableWindow ( TRUE );
 
                     //
+                    m_Challenge.SetCheck ( CTR9SaveGame::I()->IsGameChallenge(tombraider, block) );
+                    m_Challenge.EnableWindow ( TRUE );
+
+                    //
                     m_Write.EnableWindow ( TRUE );
                     m_Max.EnableWindow ( TRUE );
                     m_ResetToPlus.EnableWindow ( TRUE );
@@ -1892,6 +1905,7 @@ void CTRXRemastered::DisplayOne ( int line )
     m_Show.EnableWindow ( FALSE );
 
     m_Game_Plus.EnableWindow ( FALSE );
+    m_Challenge.EnableWindow ( FALSE );
 
     m_Kill_Willard.EnableWindow ( FALSE );
 
@@ -3217,6 +3231,10 @@ void CTRXRemastered::UpdateBuffer(BOOL bRecurse)
 
                     CTR9SaveGame::I()->SetGamePlus ( tombraider, block, m_Game_Plus.GetCheck() );
 
+#if 0
+                    CTR9SaveGame::I()->SetGameChallenge ( tombraider, block, m_Challenge.GetCheck() );
+#endif
+
                     break;
                 }
 
@@ -3261,6 +3279,9 @@ void CTRXRemastered::UpdateBuffer(BOOL bRecurse)
                     CTR9SaveGame::I()->SetBlockSecretsAcquired ( tombraider, block, GetValue ( m_Secrets_A ) );
 
                     CTR9SaveGame::I()->SetGamePlus ( tombraider, block, m_Game_Plus.GetCheck() );
+#if 0
+                    CTR9SaveGame::I()->SetGameChallenge ( tombraider, block, m_Challenge.GetCheck() );
+#endif
 
                     break;
                 }
@@ -3312,6 +3333,9 @@ void CTRXRemastered::UpdateBuffer(BOOL bRecurse)
                     CTR9SaveGame::I()->SetBlockSecretsAcquired ( tombraider, block, GetValue ( m_Secrets_A ) );
 
                     CTR9SaveGame::I()->SetGamePlus ( tombraider, block, m_Game_Plus.GetCheck() );
+#if 0
+                    CTR9SaveGame::I()->SetGameChallenge ( tombraider, block, m_Challenge.GetCheck() );
+#endif
 
                     break;
                 }

@@ -4200,6 +4200,146 @@ void CTR9SaveGame::SetGamePlus ( int tombraider, int block, BYTE value )
 
 //
 /////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
+BYTE CTR9SaveGame::IsGameChallenge ( int tombraider, int block )
+{
+#if TR123_PATCHED
+    if ( block >= NB_TR_BLOCKS )
+    {
+        tombraider  = 2;
+        block       -= NB_TR_BLOCKS;
+    }
+
+    if ( block < 0 || block >= NB_TR_BLOCKS )
+    {
+        return 0;
+    }
+
+    switch ( tombraider )
+    {
+        //
+        case GAME_TRR1:
+        {
+            char *pBlockAddress = (char*) GetBlockStart ( tombraider, block );
+            if ( pBlockAddress )
+            {
+                BYTE *challenge = (BYTE*) ( pBlockAddress - TR1_BLOCK_OFFSET + TR1_SAVE_CHAL );
+                return *challenge;
+            }
+            break;
+        }
+        //
+        case GAME_TRR2:
+        {
+            char *pBlockAddress = (char*) GetBlockStart ( tombraider, block );
+            if ( pBlockAddress )
+            {
+                BYTE *challenge      = (BYTE*) ( pBlockAddress - TR2_BLOCK_OFFSET + TR2_SAVE_CHAL );
+                return *challenge;
+            }
+            break;
+        }
+
+        //
+        case GAME_TRR3:
+        {
+            char *pBlockAddress = (char*) GetBlockStart ( tombraider, block );
+            if ( pBlockAddress )
+            {
+                BYTE *challenge = (BYTE*) ( pBlockAddress - TR3_BLOCK_OFFSET + TR3_SAVE_CHAL );
+                return *challenge;
+            }
+            break;
+        }
+    }
+#endif
+    return 0;
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+/////////////////////////////////////////////////////////////////////////////
+void CTR9SaveGame::SetGameChallenge ( int tombraider, int block, BYTE value )
+{
+#if TR123_PATCHED
+    if ( block >= NB_TR_BLOCKS )
+    {
+        tombraider  = 2;
+        block       -= NB_TR_BLOCKS;
+    }
+
+    if ( block < 0 || block >= NB_TR_BLOCKS )
+    {
+        return;
+    }
+
+    switch ( tombraider )
+    {
+        //
+        case GAME_TRR1:
+        {
+            char *pBlockAddress = (char *) GetBlockStart ( tombraider, block );
+            if ( pBlockAddress )
+            {
+                BYTE *challenge = (BYTE*) ( pBlockAddress - TR1_BLOCK_OFFSET + TR1_SAVE_CHAL );
+                if ( value )
+                {
+                    *challenge  = 1;
+                }
+                else
+                {
+                    *challenge  = 0;
+                }
+            }
+            break;
+        }
+        //
+        case GAME_TRR2:
+        {
+            char *pBlockAddress = (char *) GetBlockStart ( tombraider, block );
+            if ( pBlockAddress )
+            {
+                BYTE *challenge = (BYTE*) ( pBlockAddress - TR2_BLOCK_OFFSET + TR2_SAVE_CHAL );
+                if ( value )
+                {
+                    *challenge  = 1;
+                }
+                else
+                {
+                    *challenge  = 0;
+                }
+            }
+            break;
+        }
+
+        //
+        case GAME_TRR3:
+        {
+            char *pBlockAddress = (char *) GetBlockStart ( tombraider, block );
+            if ( pBlockAddress )
+            {
+                BYTE *challenge = (BYTE*) ( pBlockAddress - TR3_BLOCK_OFFSET + TR3_SAVE_CHAL );
+                if ( value )
+                {
+                    *challenge  = 1;
+                }
+                else
+                {
+                    *challenge  = 0;
+                }
+            }
+            break;
+        }
+    }
+
+#endif
+    return;
+}
+
+//
+/////////////////////////////////////////////////////////////////////////////
 //  return the first TABLE_TR1 / TABLE_TR2 / TABLE_TR3 pointer that has a mask & 1
 /////////////////////////////////////////////////////////////////////////////
 void *CTR9SaveGame::GetDefaultBlockEntry ( int tombraider, int block, int *piSlot )
@@ -7374,8 +7514,32 @@ const char *CTR9SaveGame::GetInterest ( int tombraider, int block, int slot )
         return szResponse;
     }
 
+    int blockOffset = 0;
+    switch ( tombraider )
+    {
+        case 1 :
+        {
+            blockOffset = TR1_BLOCK_OFFSET;
+            break;
+        }
+            
+        case 2 : 
+        {
+            blockOffset = TR2_BLOCK_OFFSET;
+            break;
+        }
+
+        case 3 : 
+        { 
+            blockOffset = TR3_BLOCK_OFFSET;
+            break;
+        }
+    }
+
     {
         char *pAddress = NULL;
+
+        //
         pAddress = ( char *) GetSaveAddress ( tombraider, block );
         if ( pAddress )
         {
@@ -7387,10 +7551,13 @@ const char *CTR9SaveGame::GetInterest ( int tombraider, int block, int slot )
             sprintf_s ( szResponse + strlen(szResponse), sizeof(szResponse) - strlen(szResponse), "%16s: NULL\r\n", "Save" );
         }
 
+        //
         pAddress = ( char *) GetBlockStart ( tombraider, block );
         char *pBlockStart = pAddress;
         if ( pAddress )
         {
+            sprintf_s ( szResponse + strlen(szResponse), sizeof(szResponse) - strlen(szResponse),
+                        "%16s: 0x%08lX\r\n", "Header", RelativeAddress ( pAddress - blockOffset ) );
             sprintf_s ( szResponse + strlen(szResponse), sizeof(szResponse) - strlen(szResponse),
                         "%16s: 0x%08lX\r\n", "Start", RelativeAddress ( pAddress ) );
             pAddress = (char * ) pAddress + GetSlotLength ( tombraider ) * NB_OF_SLOTS;
