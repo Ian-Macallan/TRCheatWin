@@ -250,12 +250,13 @@
 
 //  0x25c 0x25d 0x25e : FF FF 7F : TR1 Bitmap
 //  0x262 : 7F : TR2G Bitmap
-//  0x266 0x267 : FF 03
+//  0x266 0x267 : FF 03 TR3 Bitmap
 
-// Base start of outfit bitfield
+//  Base start of outfit bitfield
+//  It is a DWORD
 #define OUTFITS_BASE_OFFSET         0x250
 
-// Mirror offset    = 0x250 + 0x84 (not Used)
+// Mirror offset    = 0x254
 #define OUTFITS_MIRROR_DELTA        0x04
 
 // Individual bytes
@@ -264,42 +265,47 @@
 #define OUTFITS_BYTE_2              (OUTFITS_BASE_OFFSET+2)
 #define OUTFITS_BYTE_3              (OUTFITS_BASE_OFFSET+3)
 
-// Byte 0 (0x250)
-#define PARAGON_B                   0x01
-#define PARAGON_S                   0x02
-#define PARAGON_G                   0x04
+#define PARAGON_B                   0x00000001
+#define PARAGON_S                   0x00000002
+#define PARAGON_G                   0x00000004
 
-#define ESTABLISHED_B               0x08
-#define ESTABLISHED_S               0x10
-#define ESTABLISHED_G               0x20
+#define ESTABLISHED_B               0x00000008
+#define ESTABLISHED_S               0x00000010
+#define ESTABLISHED_G               0x00000020
 
-#define ATLANTEAN_B                 0x40
-#define ATLANTEAN_S                 0x80
+#define ATLANTEAN_B                 0x00000040
+#define ATLANTEAN_S                 0x00000080
+#define ATLANTEAN_G                 0x00000100
 
-// Byte 1 (0x251)
-#define ATLANTEAN_G                 0x01
+#define MASTER_MOBSTER_B            0x00000200
+#define MASTER_MOBSTER_S            0x00000400
+#define MASTER_MOBSTER_G            0x00000800
 
-#define MASTER_MOBSTER_B            0x02
-#define MASTER_MOBSTER_S            0x04
-#define MASTER_MOBSTER_G            0x08
+#define AHAB_B                      0x00001000
+#define AHAB_S                      0x00002000
+#define AHAB_G                      0x00004000
 
-#define AHAB_B                      0x10
-#define AHAB_S                      0x20
-#define AHAB_G                      0x40
+#define DRAGON_B                    0x00008000
+#define DRAGON_S                    0x00010000
+#define DRAGON_G                    0x00020000
 
-#define DRAGON_B                    0x80
+#define SPEED_B                     0x00040000
+#define SPEED_S                     0x00080000
+#define SPEED_G                     0x00100000
 
-// Byte 2 (0x252)
-#define DRAGON_S                    0x01
-#define DRAGON_G                    0x02
+#define FLYING_B                    0x00200000
+#define FLYING_S                    0x00400000
+#define FLYING_G                    0x00800000
 
-#define SPEED_B                     0x04
-#define SPEED_S                     0x08
-#define SPEED_G                     0x10
+#define HONORY_B                    0x01000000
+#define HONORY_S                    0x02000000
+#define HONORY_G                    0x04000000
 
-#define FLYING_B                    0x20
-#define FLYING_S                    0x40
-#define FLYING_G                    0x80
+#define COOLER_B                    0x08000000
+#define COOLER_S                    0x10000000
+#define COOLER_G                    0x20000000
+
+#define OUTFITS_ALL                 0x3FFFFFFF
 
 //
 #pragma pack(push, pack1, 1)
