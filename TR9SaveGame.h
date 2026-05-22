@@ -262,7 +262,7 @@
 //  Mirror offset    = 0x254
 //  In fact only deals with the message on the screen
 //  Outfit Unlocked
-#define OUTFITS_MIRROR_OFFSET       0x254
+#define OUTFITS_DISP_OFFSET       0x254
 
 // Individual bytes
 #define OUTFITS_BYTE_0              (OUTFITS_BASE_OFFSET+0)
@@ -310,7 +310,8 @@
 #define COOLER_S                    0x10000000
 #define COOLER_G                    0x20000000
 
-#define OUTFITS_ALL                 0x3FFFFFFF
+#define OUTFITS_BASE_ALL            0x3FFFFFFF
+#define OUTFITS_DISP_ALL            0x17FFFFB6
 
 //
 #pragma pack(push, pack1, 1)

@@ -4052,12 +4052,13 @@ void CTR9SaveGame::SetOutfits ( DWORD value )
 #if TR123_PATCHED
     if ( value )
     {
-        * ( DWORD * ) ( m_pBuffer + OUTFITS_BASE_OFFSET ) = OUTFITS_ALL;
-        * ( DWORD * ) ( m_pBuffer + OUTFITS_MIRROR_OFFSET ) = OUTFITS_ALL;
+        * ( DWORD * ) ( m_pBuffer + OUTFITS_BASE_OFFSET )   = OUTFITS_BASE_ALL;
+        * ( DWORD * ) ( m_pBuffer + OUTFITS_DISP_OFFSET )   = OUTFITS_DISP_ALL;
     }
     else
     {
-        * ( DWORD * ) ( m_pBuffer + OUTFITS_BASE_OFFSET ) = 0x0;
+        * ( DWORD * ) ( m_pBuffer + OUTFITS_BASE_OFFSET )   = 0x0;
+        * ( DWORD * ) ( m_pBuffer + OUTFITS_DISP_OFFSET )   = 0x0;
     }
 #endif
 }
