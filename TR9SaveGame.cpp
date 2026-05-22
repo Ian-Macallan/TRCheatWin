@@ -1566,7 +1566,7 @@ char *CTR9SaveGame::SearchGunStructure (    int tombraider, int block, WORD guns
         {
             char *pBlockAddress = ( char *) GetBlockStart ( tombraider, block );
             char *pFirstAddress = pBlockAddress + (NB_OF_SLOTS + 1 ) * sizeof(TABLE_TR1);
-            char *pLastAddress  = pBlockAddress + ( NEXT_X30 - FIRST_X30 ) - 1;
+            char *pLastAddress  = pBlockAddress + ( NEXT_BLOCK_X30 - FIRST_BLOCK_X30 ) - 1;
             return SearchGunStructure ( pFirstAddress, pLastAddress,  guns, magnum, uzi, riot, countResult, valueResult, mask, allowZero, noGuns );
             break;
         }
@@ -1574,7 +1574,7 @@ char *CTR9SaveGame::SearchGunStructure (    int tombraider, int block, WORD guns
         {
             char *pBlockAddress = ( char *) GetBlockStart ( tombraider, block );
             char *pFirstAddress = pBlockAddress + (NB_OF_SLOTS + 1 ) * sizeof(TABLE_TR2);
-            char *pLastAddress  = pBlockAddress + ( NEXT_X30 - FIRST_X30 ) - 1;
+            char *pLastAddress  = pBlockAddress + ( NEXT_BLOCK_X30 - FIRST_BLOCK_X30 ) - 1;
             return SearchGunStructure ( pFirstAddress, pLastAddress,  guns, magnum, uzi, riot, countResult, valueResult, mask, allowZero, noGuns );
             break;
         }
@@ -1582,7 +1582,7 @@ char *CTR9SaveGame::SearchGunStructure (    int tombraider, int block, WORD guns
         {
             char *pBlockAddress = ( char *) GetBlockStart ( tombraider, block );
             char *pFirstAddress = pBlockAddress + (NB_OF_SLOTS + 1 ) * sizeof(TABLE_TR3);
-            char *pLastAddress  = pBlockAddress + ( NEXT_X40 - FIRST_X40 ) - 1;
+            char *pLastAddress  = pBlockAddress + ( NEXT_BLOCK_X40 - FIRST_BLOCK_X40 ) - 1;
             return SearchGunStructure ( pFirstAddress, pLastAddress,  guns, magnum, uzi, riot, countResult, valueResult, mask, allowZero, noGuns );
             break;
         }
@@ -1620,7 +1620,7 @@ char *CTR9SaveGame::SearchGunStructure ( int tombraider, int block, WORD guns,
         {
             char *pBlockAddress = (char*) GetBlockStart ( tombraider, block );
             char *pFirstAddress = pBlockAddress + (NB_OF_SLOTS + 1 ) * sizeof(TABLE_TR1);
-            char *pLastAddress  = pBlockAddress + ( NEXT_X30 - FIRST_X30 ) - 1;
+            char *pLastAddress  = pBlockAddress + ( NEXT_BLOCK_X30 - FIRST_BLOCK_X30 ) - 1;
             return SearchGunStructure ( pFirstAddress, pLastAddress,  guns, magnum, uzi, riot,
                 m16, grenade, harpoon, countResult, valueResult, mask, allowZero, noGuns );
             break;
@@ -1629,7 +1629,7 @@ char *CTR9SaveGame::SearchGunStructure ( int tombraider, int block, WORD guns,
         {
             char *pBlockAddress = (char*) GetBlockStart ( tombraider, block );
             char *pFirstAddress = pBlockAddress + (NB_OF_SLOTS + 1 ) * sizeof(TABLE_TR1);
-            char *pLastAddress  = pBlockAddress + ( NEXT_X30 - FIRST_X30 ) - 1;
+            char *pLastAddress  = pBlockAddress + ( NEXT_BLOCK_X30 - FIRST_BLOCK_X30 ) - 1;
             return SearchGunStructure ( pFirstAddress, pLastAddress,  guns, magnum, uzi, riot,
                 m16, grenade, harpoon, countResult, valueResult, mask, allowZero, noGuns );
             break;
@@ -1638,7 +1638,7 @@ char *CTR9SaveGame::SearchGunStructure ( int tombraider, int block, WORD guns,
         {
             char *pBlockAddress = (char*) GetBlockStart ( tombraider, block );
             char *pFirstAddress = pBlockAddress + (NB_OF_SLOTS + 1 ) * sizeof(TABLE_TR3);
-            char *pLastAddress  = pBlockAddress + ( NEXT_X40 - FIRST_X40 ) - 1;
+            char *pLastAddress  = pBlockAddress + ( NEXT_BLOCK_X40 - FIRST_BLOCK_X40 ) - 1;
             return SearchGunStructure ( pFirstAddress, pLastAddress,  guns, magnum, uzi, riot,
                 m16, grenade, harpoon, countResult, valueResult, mask, allowZero, noGuns );
             break;
@@ -1677,7 +1677,7 @@ char *CTR9SaveGame::SearchGunStructure ( int tombraider, int block, WORD guns,
         {
             char *pBlockAddress = (char*) GetBlockStart ( tombraider, block );
             char *pFirstAddress = pBlockAddress + (NB_OF_SLOTS + 1 ) * sizeof(TABLE_TR1);
-            char *pLastAddress  = pBlockAddress + ( NEXT_X30 - FIRST_X30 ) - 1;
+            char *pLastAddress  = pBlockAddress + ( NEXT_BLOCK_X30 - FIRST_BLOCK_X30 ) - 1;
             return SearchGunStructure ( pFirstAddress, pLastAddress,  guns, magnum, uzi, riot,
                 m16, grenade, harpoon, countResult, valueResult, mask, allowZero, noGuns );
             break;
@@ -1686,7 +1686,7 @@ char *CTR9SaveGame::SearchGunStructure ( int tombraider, int block, WORD guns,
         {
             char *pBlockAddress = (char*) GetBlockStart ( tombraider, block );
             char *pFirstAddress = pBlockAddress + (NB_OF_SLOTS + 1 ) * sizeof(TABLE_TR1);
-            char *pLastAddress  = pBlockAddress + ( NEXT_X30 - FIRST_X30 ) - 1;
+            char *pLastAddress  = pBlockAddress + ( NEXT_BLOCK_X30 - FIRST_BLOCK_X30 ) - 1;
             return SearchGunStructure ( pFirstAddress, pLastAddress,  guns, magnum, uzi, riot,
                 m16, grenade, harpoon, countResult, valueResult, mask, allowZero, noGuns );
             break;
@@ -1695,7 +1695,7 @@ char *CTR9SaveGame::SearchGunStructure ( int tombraider, int block, WORD guns,
         {
             char *pBlockAddress = (char*) GetBlockStart ( tombraider, block );
             char *pFirstAddress = pBlockAddress + (NB_OF_SLOTS + 1 ) * sizeof(TABLE_TR3);
-            char *pLastAddress  = pBlockAddress + ( NEXT_X40 - FIRST_X40 ) - 1;
+            char *pLastAddress  = pBlockAddress + ( NEXT_BLOCK_X40 - FIRST_BLOCK_X40 ) - 1;
             return SearchGunStructure ( pFirstAddress, pLastAddress,  guns, magnum, uzi, riot,
                 m16, grenade, harpoon, rocket, countResult, valueResult, mask, allowZero, noGuns );
             break;
@@ -1864,7 +1864,7 @@ BOOL CTR9SaveGame::Load ( )
     int iCount      = 0;
     int tombraider  = 1;
     int block       = 0;
-    for ( int i = FIRST_X30; i <= LAST_X30; i = i + LEN_31_X30 )
+    for ( int i = FIRST_BLOCK_X30; i <= LAST_BLOCK_X30; i = i + TR1_BLOCK_LENGTH )
     {
         //
         int block = iCount;
@@ -1929,7 +1929,7 @@ BOOL CTR9SaveGame::Load ( )
         if ( health != 0 )
         {
             char *pFirstAddress = pBlockAddress + (NB_OF_SLOTS + 1 ) * sizeof(TABLE_TR1);
-            char *pLastAddress  = pBlockAddress + ( NEXT_X30 - FIRST_X30 ) - 1;
+            char *pLastAddress  = pBlockAddress + ( NEXT_BLOCK_X30 - FIRST_BLOCK_X30 ) - 1;
 
             for ( int slot = 0; slot < NB_OF_SLOTS; slot++ )
             {
@@ -2079,7 +2079,7 @@ BOOL CTR9SaveGame::Load ( )
     block           = 0;
     tombraider      = 3;
 
-    for ( int i = FIRST_X40; block < NB_TR3_BLOCKS; i = i + (NEXT_X40-FIRST_X40) )
+    for ( int i = FIRST_BLOCK_X40; block < NB_TR3_BLOCKS; i = i + (NEXT_BLOCK_X40-FIRST_BLOCK_X40) )
     {
         char    *pBlockAddress          = m_pBuffer + i;
         m_TR3_Start [ block ]           = pBlockAddress;
@@ -2101,10 +2101,10 @@ BOOL CTR9SaveGame::Load ( )
         if ( value != 0 )
         {
             char *pFirstAddress = pBlockAddress + (NB_OF_SLOTS + 1 ) * sizeof(TABLE_TR3);
-            char *pLastAddress  = pBlockAddress + ( NEXT_X40 - FIRST_X40 ) - 1;
+            char *pLastAddress  = pBlockAddress + ( NEXT_BLOCK_X40 - FIRST_BLOCK_X40 ) - 1;
 
             int slot = 0;
-            for ( int j = i; j <= i + LEN_31_X40; j = j + LEN_X40 )
+            for ( int j = i; j <= i + LEN_30_SLOT_X40; j = j + LEN_X40 )
             {
                 char *pAddress = m_pBuffer + j;
 
@@ -2755,11 +2755,13 @@ void CTR9SaveGame::KillTR1Boss ( int tombraider, int block )
         BYTE *pHealth = (BYTE *) GetRealHealthAddress ( tombraider, block );
         if ( pHealth != NULL )
         {
+#if TR123_ORIGINAL
             WORD *pTr1Boss = (WORD *)(pHealth+TR1_BOSS);
             if ( *pTr1Boss > 0 && *pTr1Boss <= 500 )
             {
                 *pTr1Boss       = 0;
             }
+#endif
         }
     }
     return;
@@ -2827,7 +2829,7 @@ WORD *CTR9SaveGame::GetSaveAddress ( int tombraider, int block )
         {
             if ( pStartBlock != NULL )
             {
-                WORD    *saveAddress = (WORD *) ( pStartBlock  - ( FIRST_X30 - SAVE_X30 ) );
+                WORD    *saveAddress = (WORD *) ( pStartBlock - ( FIRST_BLOCK_X30 - SAVE_X30 ) );
                 return  saveAddress;
             }
             break;
@@ -2836,7 +2838,7 @@ WORD *CTR9SaveGame::GetSaveAddress ( int tombraider, int block )
         {
             if ( pStartBlock != NULL )
             {
-                WORD    *saveAddress = (WORD *) ( pStartBlock - ( FIRST_X30 - SAVE_X30 ) );
+                WORD    *saveAddress = (WORD *) ( pStartBlock - ( FIRST_BLOCK_X30 - SAVE_X30 ) );
                 return  saveAddress;
             }
             break;

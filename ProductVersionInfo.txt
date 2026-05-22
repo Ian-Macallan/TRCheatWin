@@ -1,4 +1,4 @@
-4.7.5.8
+4.7.5.12
 TRCheatWin
-TRCheatWin (x86) : Fri May 22 10:11 4.7.5.8
-TRCheatWin (x64) : Fri May 22 10:11 4.7.5.8
+TRCheatWin (x86) : Fri May 22 13:04 4.7.5.12
+TRCheatWin (x64) : Fri May 22 13:04 4.7.5.12

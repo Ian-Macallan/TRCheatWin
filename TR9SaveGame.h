@@ -12,8 +12,11 @@
 //  The 64 bits version willo handle the new TR123 version
 #ifdef _WIN64
 #define TR123_PATCHED       1
+#define TR123_ORIGINAL      0
+
 #else
 #define TR123_PATCHED       0
+#define TR123_ORIGINAL      1
 #endif
 
 #if TR123_PATCHED
@@ -87,8 +90,8 @@
 #define NB_TR3_BLOCKS       NB_TR_BLOCKS
 
 //
-#define TR1_BLOCK_START     0x002000                //  In patch version starts at 0x002000
 #define TR1_BLOCK_LENGTH    TR123_BLOCK_LENGTH      //  6800 for Patch Version
+#define TR1_BLOCK_START     0x002000                //  In patch version starts at 0x002000
 #define TR1_SLOT_LENGTH     0x000030
 #define TR1_BLOCK_OFFSET    0x000040                //  0x002040
 #define TR1_FIRST_BLOCK     (TR1_BLOCK_START+TR1_BLOCK_OFFSET)
@@ -97,8 +100,8 @@
 #define TR1_SAVE_CHAL       0x6EC
 
 //  0x072000 In patch version starts at 0x0D2000
-#define TR2_BLOCK_START     (TR1_BLOCK_START+NB_TR_BLOCKS*TR123_BLOCK_LENGTH)   
 #define TR2_BLOCK_LENGTH    TR123_BLOCK_LENGTH      //  6800 for Patch Version
+#define TR2_BLOCK_START     (TR1_BLOCK_START+NB_TR1_BLOCKS*TR1_BLOCK_LENGTH)   
 #define TR2_SLOT_LENGTH     0x000030
 #define TR2_BLOCK_OFFSET    0x000040                //  0x0D2040
 #define TR2_FIRST_BLOCK     (TR2_BLOCK_START+TR2_BLOCK_OFFSET)
@@ -107,8 +110,8 @@
 #define TR2_SAVE_CHAL       0x6B0
 
 //  0x0E2000 In patch version starts at 0x1A2000
-#define TR3_BLOCK_START     (TR2_BLOCK_START+NB_TR_BLOCKS*TR123_BLOCK_LENGTH)   
 #define TR3_BLOCK_LENGTH    TR123_BLOCK_LENGTH      //  6800 for Patch Version
+#define TR3_BLOCK_START     (TR2_BLOCK_START+NB_TR2_BLOCKS*TR2_BLOCK_LENGTH)   
 #define TR3_SLOT_LENGTH     0x000040
 #define TR3_BLOCK_OFFSET    0x0000A4                //  0x1A20A4
 //  0x0E20A4
@@ -150,9 +153,8 @@
 
 //  TR1 / TR2
 ///////////////
-#define FIRST_X30           TR1_FIRST_BLOCK                         // Start of x30 bytes structures
-#define NEXT_X30            (TR1_FIRST_BLOCK+TR1_BLOCK_LENGTH)      // 0x005840
-#define LEN_31_X30          (TR1_BLOCK_LENGTH)                      //  14336 = 0x3800
+#define FIRST_BLOCK_X30      TR1_FIRST_BLOCK                         // Start of x30 bytes structures
+#define NEXT_BLOCK_X30      (TR1_FIRST_BLOCK+TR1_BLOCK_LENGTH)      // 0x005840
 
 #define SAVE_X30            0x00200C
 
@@ -169,15 +171,19 @@
 #define TR3_OFFSET_AIR      (0x00D84F-0x00D725)                     // 0x12A From Health Found
 
 //  FIRST_X30 + (64 - 1)*TR1_BLOCK_LENGTH
-#define LAST_X30            (FIRST_X30+(2*NB_TR1_BLOCKS-1)*TR1_BLOCK_LENGTH)       // 0xDE840 - Last Address of X30 area
+// 0xDE840 - Last Address of X30 area
+#define LAST_BLOCK_X30      (FIRST_BLOCK_X30+NB_TR1_BLOCKS*TR1_BLOCK_LENGTH+(NB_TR2_BLOCKS-1)*TR2_BLOCK_LENGTH)
 
 //  TR3
 ///////////////
-#define FIRST_X40           TR3_FIRST_BLOCK                         //  Start of x40 bytes structures
-#define END_X40             (FIRST_X40+0x780)                       //  0x0E2824 - End of one structure
-#define LEN_31_X40          (END_X40-FIRST_X40)                     //  0x780 : 1920 = (30 * 64)
-#define NEXT_X40            (TR3_FIRST_BLOCK+TR1_BLOCK_LENGTH)      //  0x0E58A4 - Next Structure for X40
+#define FIRST_BLOCK_X40     TR3_FIRST_BLOCK                         //  Start of x40 bytes structures
+//  0x780 is 0x40 * 30 the last slot
 #define LEN_X40             0x000040
+#define LEN_30_SLOT_X40     (30*LEN_X40)                            //  0x780 : 1920 = (30 * 64)
+//  Not Used
+#define LAST_SLOT_X40       (FIRST_BLOCK_X40+LEN_30_SLOT_X40)       //  0x0E2824 - End of one structure
+//
+#define NEXT_BLOCK_X40      (FIRST_BLOCK_X40+TR3_BLOCK_LENGTH)      //  0x0E58A4 - Next Structure for X40
 #define SAVE_X40            0x000098
 #define LEVEL_X40           0x832                                   // 0x0E28D6
 
