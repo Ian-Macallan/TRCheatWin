@@ -259,8 +259,10 @@
 //  It is a DWORD
 #define OUTFITS_BASE_OFFSET         0x250
 
-// Mirror offset    = 0x254
-#define OUTFITS_MIRROR_DELTA        0x04
+//  Mirror offset    = 0x254
+//  In fact only deals with the message on the screen
+//  Outfit Unlocked
+#define OUTFITS_MIRROR_OFFSET       0x254
 
 // Individual bytes
 #define OUTFITS_BYTE_0              (OUTFITS_BASE_OFFSET+0)

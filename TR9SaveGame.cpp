@@ -4053,6 +4053,7 @@ void CTR9SaveGame::SetOutfits ( DWORD value )
     if ( value )
     {
         * ( DWORD * ) ( m_pBuffer + OUTFITS_BASE_OFFSET ) = OUTFITS_ALL;
+        * ( DWORD * ) ( m_pBuffer + OUTFITS_MIRROR_OFFSET ) = OUTFITS_ALL;
     }
     else
     {
