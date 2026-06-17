@@ -134,9 +134,17 @@ class CTRXCHEATWINApp : public CWinApp
 #define PROFILE_REMASTERED          "Remastered"
 #define PROFILE_STANDARD            "Standard"
 #define PROFILE_LAST_OPENED         "Last Opened"
-#define PROFILE_TRX_LAST_OPENED     "TRX Last Opened"
-#define PROFILE_TRX_LOC_COUNT       "TRX Last Location Count"
-#define PROFILE_TRX_LOCATION        "TRX Last Location %02d"
+
+//  Separate TRR123 Configuration between 1.0 and 1.1
+#define PROFILE_TRX_SEPARATE        "TRX Separate"
+
+#define PROFILE_TRX10_LAST_OPENED   "TRX Last Opened"
+#define PROFILE_TRX10_LOC_COUNT     "TRX Last Location Count"
+#define PROFILE_TRX10_LOCATION      "TRX Last Location %02d"
+
+#define PROFILE_TRX11_LAST_OPENED   "TRX 1.1 Last Opened"
+#define PROFILE_TRX11_LOC_COUNT     "TRX 1.1 Last Location Count"
+#define PROFILE_TRX11_LOCATION      "TRX 1.1 Last Location %02d"
 
 #define PROFILE_TRX2_LAST_OPENED    "TRX2 Last Opened"
 #define PROFILE_TRX2_LOC_COUNT      "TRX2 Last Location Count"

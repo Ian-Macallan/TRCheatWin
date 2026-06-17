@@ -184,7 +184,16 @@ CTRXRemastered::CTRXRemastered() : CTRXPropertyPage123(CTRXRemastered::IDD)
     }
 
     //
-    LoadLocation ( LocationPathname, PROFILE_TRX_LOC_COUNT, PROFILE_TRX_LOCATION );
+    const char *pKey1 = PROFILE_TRX10_LOC_COUNT;
+    const char *pKey2 = PROFILE_TRX10_LOCATION;
+#if TR123_PATCHED
+    if ( CTRXGlobal::m_iSeparateTRR123 )
+    {
+        pKey1 = PROFILE_TRX11_LOC_COUNT;
+        pKey2 = PROFILE_TRX11_LOCATION;
+    }
+#endif
+    LoadLocation ( LocationPathname, pKey1, pKey2 );
 
     //
     m_bRoomCreated  = false;
@@ -208,7 +217,17 @@ CTRXRemastered::~CTRXRemastered()
         delete pGame;
     }
 
-    SaveLocation ( LocationPathname, PROFILE_TRX_LOC_COUNT, PROFILE_TRX_LOCATION );
+    //
+    const char *pKey1 = PROFILE_TRX10_LOC_COUNT;
+    const char *pKey2 = PROFILE_TRX10_LOCATION;
+#if TR123_PATCHED
+    if ( CTRXGlobal::m_iSeparateTRR123 )
+    {
+        pKey1 = PROFILE_TRX11_LOC_COUNT;
+        pKey2 = PROFILE_TRX11_LOCATION;
+    }
+#endif
+    SaveLocation ( LocationPathname, pKey1, pKey2 );
 }
 
 //
@@ -529,7 +548,14 @@ void CTRXRemastered::OnBnClickedLoad()
     m_Write.EnableWindow ( FALSE );
     m_Max.EnableWindow ( FALSE );
 
-    CString lastRead  = theApp.GetProfileString( PROFILE_SETTING, PROFILE_TRX_LAST_OPENED, szFilename );
+    const char *pKey = PROFILE_TRX10_LAST_OPENED;
+#if TR123_PATCHED
+    if ( CTRXGlobal::m_iSeparateTRR123 )
+    {
+        pKey = PROFILE_TRX11_LAST_OPENED;
+    }
+#endif
+    CString lastRead  = theApp.GetProfileString( PROFILE_SETTING, pKey, szFilename );
     if ( lastRead != "" )
     {
         m_Filename.SetWindowText ( lastRead );
@@ -804,7 +830,14 @@ BOOL CTRXRemastered::OnSetActive()
         }
         else
         {
-            lastRead = theApp.GetProfileString( PROFILE_SETTING, PROFILE_TRX_LAST_OPENED, szFilename );
+            const char *pKey = PROFILE_TRX10_LAST_OPENED;
+#if TR123_PATCHED
+            if ( CTRXGlobal::m_iSeparateTRR123 )
+            {
+                pKey = PROFILE_TRX11_LAST_OPENED;
+            }
+#endif
+            lastRead = theApp.GetProfileString( PROFILE_SETTING, pKey, szFilename );
         }
 
         //
@@ -2018,7 +2051,14 @@ void CTRXRemastered::DisplayList ( const char *pFilename )
         {
             m_Status.SetWindowText ( "File sucessfuily read" );
             CTR9SaveGame::I()->Load ( );
-            BOOL bWritten = theApp.WriteProfileString ( PROFILE_SETTING, PROFILE_TRX_LAST_OPENED, pFilename );
+            const char *pKey = PROFILE_TRX10_LAST_OPENED;
+#if TR123_PATCHED
+            if ( CTRXGlobal::m_iSeparateTRR123 )
+            {
+                pKey = PROFILE_TRX11_LAST_OPENED;
+            }
+#endif
+            BOOL bWritten = theApp.WriteProfileString ( PROFILE_SETTING, pKey, pFilename );
 
             //
             InitTimerNotif ( NOTIF_TRR123, TRUE );

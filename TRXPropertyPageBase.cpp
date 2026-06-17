@@ -610,7 +610,14 @@ BOOL CTRXPropertyPageBase::InitTimerNotif ( int notif, BOOL bKill )
         {
             case 0 :
             {
-                lastRead = theApp.GetProfileString( PROFILE_SETTING, PROFILE_TRX_LAST_OPENED, szFilename );
+                const char *pKey = PROFILE_TRX10_LAST_OPENED;
+#if TR123_PATCHED
+                if ( CTRXGlobal::m_iSeparateTRR123 )
+                {
+                    pKey = PROFILE_TRX11_LAST_OPENED;
+                }
+#endif
+                lastRead = theApp.GetProfileString( PROFILE_SETTING, pKey, szFilename );
                 break;
             }
             case 1 :

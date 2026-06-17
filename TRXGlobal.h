@@ -52,6 +52,8 @@ class CTRXGlobal
         static unsigned     m_iMinNGSize;
         static unsigned     m_iMaxNGSize;
 
+        static BOOL         m_iSeparateTRR123;
+
         static BOOL         m_bAutoSearch;
         static BOOL         m_bWatchFiles;
 

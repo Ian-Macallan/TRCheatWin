@@ -14,6 +14,10 @@ int             CTRXGlobal::m_iTRBackup                     = 4;
 int             CTRXGlobal::m_iExtSearchPos                 = 3;
 unsigned        CTRXGlobal::m_iMinNGSize                    = 37400;
 unsigned        CTRXGlobal::m_iMaxNGSize                    = 37500;
+
+//  Separate TRR123 Configuration between 1.0 and 1.1
+BOOL            CTRXGlobal::m_iSeparateTRR123               = FALSE;
+
 BOOL            CTRXGlobal::m_bAutoSearch                   = TRUE;
 BOOL            CTRXGlobal::m_bWatchFiles                   = TRUE;
 

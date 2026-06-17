@@ -927,14 +927,17 @@ BOOL CTRXCHEATWINApp::InitInstance()
     INT_PTR nResponse   = 0;
 
     //
-    CTRXGlobal::m_iUnchecked        = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_UNCHECKED, 0 );
+    CTRXGlobal::m_iSeparateTRR123       = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_TRX_SEPARATE, -1, FALSE );
+
+    //
+    CTRXGlobal::m_iUnchecked            = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_UNCHECKED, 0 );
 
     //
 
     //  Savegame of TRNG are generally aound 40 Kb.
     //  But there are some of 900Kb.
-    CTRXGlobal::m_iMinNGSize    = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_MIN_NG_SIZE, 0, TR_NG_MIN_SIZE );
-    CTRXGlobal::m_iMaxNGSize    = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_MAX_NG_SIZE, 0, TR_NG_MAX_SIZE );
+    CTRXGlobal::m_iMinNGSize            = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_MIN_NG_SIZE, 0, TR_NG_MIN_SIZE );
+    CTRXGlobal::m_iMaxNGSize            = theApp.GetProfileInt( PROFILE_SETTING, PROFILE_MAX_NG_SIZE, 0, TR_NG_MAX_SIZE );
     if ( CTRXGlobal::m_iMaxNGSize > MAX_SAVELENGTH )
     {
         CTRXGlobal::m_iMaxNGSize    = MAX_SAVELENGTH;
