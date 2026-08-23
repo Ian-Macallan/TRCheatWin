@@ -365,7 +365,9 @@ void CTR4SaveGame::writeSaveGame()
 
     unsigned checkSum = m_pBufferBackup->checkSum;
     int offsetCheckSum = offsetof ( TR4SAVE, checkSum );
-    for ( int i = 0; i < offsetCheckSum - 1; i++ )
+    int startCheckSum = offsetof ( TR4SAVE, iSaveNumber ) + sizeof(WORD);
+    //  Checksum after save game number
+    for ( int i = startCheckSum; i < offsetCheckSum - 1; i++ )
     {
         if ( pBackup [ i ] != pBuffer [ i ] )
         {

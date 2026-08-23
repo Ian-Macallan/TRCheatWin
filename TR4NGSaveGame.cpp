@@ -969,7 +969,9 @@ void CTR4NGSaveGame::writeSaveGame()
     //  Compute checksum without TR4NG Extension
     unsigned checkSum = m_pBufferBackup->checkSum;
     int offsetCheckSum = offsetof ( TR4NGSAVE, checkSum );
-    for ( int i = 0; i < offsetCheckSum - 1; i++ )
+    int startCheckSum = offsetof ( TR4NGSAVE, iSaveNumber ) + sizeof(WORD);
+    //  Checksum after save game number
+    for ( int i = startCheckSum; i < offsetCheckSum - 1; i++ )
     {
         if ( pBackup [ i ] != pBuffer [ i ] )
         {
